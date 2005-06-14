@@ -24,112 +24,111 @@ namespace Yusen.GExplorer {
 		/// </summary>
 		private void InitializeComponent() {
 			this.statstripMain = new System.Windows.Forms.StatusStrip();
+			this.tspbPackages = new System.Windows.Forms.ToolStripProgressBar();
 			this.tsslCategoryStat = new System.Windows.Forms.ToolStripStatusLabel();
-			this.numUserId = new System.Windows.Forms.NumericUpDown();
-			this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-			this.panel1 = new System.Windows.Forms.Panel();
-			this.lblUserId = new System.Windows.Forms.Label();
-			this.categoryViewer1 = new Yusen.GExplorer.CategoryViewer();
-			this.categorySelector1 = new Yusen.GExplorer.CategorySelector();
+			this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
+			this.genreViewer1 = new Yusen.GExplorer.GenreViewer();
+			this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+			this.ファイルFToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiQuit = new System.Windows.Forms.ToolStripMenuItem();
 			this.statstripMain.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.numUserId)).BeginInit();
-			this.tableLayoutPanel1.SuspendLayout();
-			this.panel1.SuspendLayout();
+			this.toolStripContainer1.ContentPanel.SuspendLayout();
+			this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
+			this.toolStripContainer1.SuspendLayout();
+			this.menuStrip1.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// statstripMain
 			// 
 			this.statstripMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tspbPackages,
             this.tsslCategoryStat});
 			this.statstripMain.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Table;
-			this.statstripMain.Location = new System.Drawing.Point(0, 383);
+			this.statstripMain.Location = new System.Drawing.Point(0, 393);
 			this.statstripMain.Name = "statstripMain";
-			this.statstripMain.Size = new System.Drawing.Size(632, 23);
+			this.statstripMain.Size = new System.Drawing.Size(592, 23);
 			this.statstripMain.TabIndex = 4;
+			// 
+			// tspbPackages
+			// 
+			this.tspbPackages.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.ImageAndText;
+			this.tspbPackages.Name = "tspbPackages";
+			this.tspbPackages.Size = new System.Drawing.Size(100, 16);
+			this.tspbPackages.Text = "toolStripProgressBar1";
 			// 
 			// tsslCategoryStat
 			// 
 			this.tsslCategoryStat.Name = "tsslCategoryStat";
-			this.tsslCategoryStat.Text = "tsslCategoryStat";
+			this.tsslCategoryStat.Text = "tsslListViewItemsCount";
 			// 
-			// numUserId
+			// toolStripContainer1
 			// 
-			this.numUserId.ImeMode = System.Windows.Forms.ImeMode.Off;
-			this.numUserId.Location = new System.Drawing.Point(246, 11);
-			this.numUserId.Maximum = new decimal(new int[] {
-            9999999,
-            0,
-            0,
-            0});
-			this.numUserId.Name = "numUserId";
-			this.numUserId.Size = new System.Drawing.Size(69, 19);
-			this.numUserId.TabIndex = 3;
-			this.numUserId.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
 			// 
-			// tableLayoutPanel1
+			// toolStripContainer1.ContentPanel
 			// 
-			this.tableLayoutPanel1.ColumnCount = 1;
-			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-			this.tableLayoutPanel1.Controls.Add(this.panel1, 0, 0);
-			this.tableLayoutPanel1.Controls.Add(this.categoryViewer1, 0, 1);
-			this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
-			this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-			this.tableLayoutPanel1.RowCount = 2;
-			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
-			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-			this.tableLayoutPanel1.Size = new System.Drawing.Size(632, 383);
-			this.tableLayoutPanel1.TabIndex = 6;
+			this.toolStripContainer1.ContentPanel.Controls.Add(this.genreViewer1);
+			this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.toolStripContainer1.Location = new System.Drawing.Point(0, 0);
+			this.toolStripContainer1.Name = "toolStripContainer1";
+			this.toolStripContainer1.Size = new System.Drawing.Size(592, 393);
+			this.toolStripContainer1.TabIndex = 5;
+			this.toolStripContainer1.Text = "toolStripContainer1";
 			// 
-			// panel1
+			// toolStripContainer1.TopToolStripPanel
 			// 
-			this.panel1.Controls.Add(this.lblUserId);
-			this.panel1.Controls.Add(this.numUserId);
-			this.panel1.Controls.Add(this.categorySelector1);
-			this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.panel1.Location = new System.Drawing.Point(3, 3);
-			this.panel1.Name = "panel1";
-			this.panel1.Size = new System.Drawing.Size(626, 44);
-			this.panel1.TabIndex = 0;
+			this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.menuStrip1);
 			// 
-			// lblUserId
+			// genreViewer1
 			// 
-			this.lblUserId.AutoSize = true;
-			this.lblUserId.Location = new System.Drawing.Point(203, 14);
-			this.lblUserId.Name = "lblUserId";
-			this.lblUserId.Size = new System.Drawing.Size(39, 12);
-			this.lblUserId.TabIndex = 2;
-			this.lblUserId.Text = "&userNo";
+			this.genreViewer1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.genreViewer1.Location = new System.Drawing.Point(0, 0);
+			this.genreViewer1.Name = "genreViewer1";
+			this.genreViewer1.Size = new System.Drawing.Size(592, 369);
+			this.genreViewer1.TabIndex = 0;
 			// 
-			// categoryViewer1
+			// menuStrip1
 			// 
-			this.categoryViewer1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.categoryViewer1.Location = new System.Drawing.Point(3, 53);
-			this.categoryViewer1.Name = "categoryViewer1";
-			this.categoryViewer1.Size = new System.Drawing.Size(626, 327);
-			this.categoryViewer1.TabIndex = 4;
+			this.menuStrip1.Dock = System.Windows.Forms.DockStyle.None;
+			this.menuStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Visible;
+			this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ファイルFToolStripMenuItem});
+			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+			this.menuStrip1.Name = "menuStrip1";
+			this.menuStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
+			this.menuStrip1.Size = new System.Drawing.Size(592, 24);
+			this.menuStrip1.TabIndex = 0;
+			this.menuStrip1.Text = "menuStrip1";
 			// 
-			// categorySelector1
+			// ファイルFToolStripMenuItem
 			// 
-			this.categorySelector1.Location = new System.Drawing.Point(9, 8);
-			this.categorySelector1.Name = "categorySelector1";
-			this.categorySelector1.Size = new System.Drawing.Size(170, 27);
-			this.categorySelector1.TabIndex = 4;
+			this.ファイルFToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiQuit});
+			this.ファイルFToolStripMenuItem.Name = "ファイルFToolStripMenuItem";
+			this.ファイルFToolStripMenuItem.Text = "ファイル (&F)";
+			// 
+			// tsmiQuit
+			// 
+			this.tsmiQuit.Name = "tsmiQuit";
+			this.tsmiQuit.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Q)));
+			this.tsmiQuit.Text = "終了 (&Q)";
 			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(632, 406);
-			this.Controls.Add(this.tableLayoutPanel1);
+			this.ClientSize = new System.Drawing.Size(592, 416);
+			this.Controls.Add(this.toolStripContainer1);
 			this.Controls.Add(this.statstripMain);
+			this.MainMenuStrip = this.menuStrip1;
 			this.Name = "MainForm";
 			this.Text = "MainForm";
 			this.statstripMain.ResumeLayout(false);
-			((System.ComponentModel.ISupportInitialize)(this.numUserId)).EndInit();
-			this.tableLayoutPanel1.ResumeLayout(false);
-			this.panel1.ResumeLayout(false);
-			this.panel1.PerformLayout();
+			this.toolStripContainer1.ContentPanel.ResumeLayout(false);
+			this.toolStripContainer1.TopToolStripPanel.ResumeLayout(false);
+			this.toolStripContainer1.TopToolStripPanel.PerformLayout();
+			this.toolStripContainer1.ResumeLayout(false);
+			this.toolStripContainer1.PerformLayout();
+			this.menuStrip1.ResumeLayout(false);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -139,12 +138,12 @@ namespace Yusen.GExplorer {
 
 		private System.Windows.Forms.StatusStrip statstripMain;
 		private System.Windows.Forms.ToolStripStatusLabel tsslCategoryStat;
-		private System.Windows.Forms.NumericUpDown numUserId;
-		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-		private System.Windows.Forms.Panel panel1;
-		private System.Windows.Forms.Label lblUserId;
-		private CategorySelector categorySelector1;
-		private CategoryViewer categoryViewer1;
+		private System.Windows.Forms.ToolStripContainer toolStripContainer1;
+		private System.Windows.Forms.MenuStrip menuStrip1;
+		private System.Windows.Forms.ToolStripMenuItem ファイルFToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem tsmiQuit;
+		private System.Windows.Forms.ToolStripProgressBar tspbPackages;
+		private GenreViewer genreViewer1;
 	}
 }
 

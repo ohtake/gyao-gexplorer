@@ -9,6 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Yusen.GExplorer</RootNamespace>
     <AssemblyName>GExplorer</AssemblyName>
+    <ApplicationIcon>Resources\Icon_4_13.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -36,24 +37,37 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Category.cs" />
-    <Compile Include="CategorySelector.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="CategorySelector.Designer.cs">
-      <DependentUpon>CategorySelector.cs</DependentUpon>
-    </Compile>
-    <Compile Include="CategoryViewer.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="CategoryViewer.Designer.cs">
-      <DependentUpon>CategoryViewer.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DetailForm.cs">
+    <Compile Include="AboutBox.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="DetailForm.Designer.cs">
-      <DependentUpon>DetailForm.cs</DependentUpon>
+    <Compile Include="AboutBox.Designer.cs">
+      <DependentUpon>AboutBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GCookie.cs" />
+    <Compile Include="GCookieFetchForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GCookieFetchForm.Designer.cs">
+      <DependentUpon>GCookieFetchForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PlayerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PlayerForm.Designer.cs">
+      <DependentUpon>PlayerForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GContent.cs" />
+    <Compile Include="GenreListView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GenreListView.Designer.cs">
+      <DependentUpon>GenreListView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GenreViewer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GenreViewer.Designer.cs">
+      <DependentUpon>GenreViewer.cs</DependentUpon>
     </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
@@ -61,17 +75,22 @@
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Parser.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="CategorySelector.resx">
-      <DependentUpon>CategorySelector.cs</DependentUpon>
+    <EmbeddedResource Include="AboutBox.resx">
+      <DependentUpon>AboutBox.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="CategoryViewer.resx">
-      <DependentUpon>CategoryViewer.cs</DependentUpon>
+    <EmbeddedResource Include="GCookieFetchForm.resx">
+      <DependentUpon>GCookieFetchForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="DetailForm.resx">
-      <DependentUpon>DetailForm.cs</DependentUpon>
+    <EmbeddedResource Include="PlayerForm.resx">
+      <DependentUpon>PlayerForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GenreListView.resx">
+      <DependentUpon>GenreListView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GenreViewer.resx">
+      <DependentUpon>GenreViewer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
@@ -96,7 +115,6 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="Utility.cs" />
-    <Compile Include="VideoItem.cs" />
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="AxWMPLib">
@@ -123,6 +141,18 @@
       <WrapperTool>tlbimp</WrapperTool>
       <Isolated>False</Isolated>
     </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Icon_4_13.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ChangeLog.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ReadMe.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Icon_3_973.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

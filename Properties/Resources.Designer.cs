@@ -64,5 +64,17 @@ namespace Yusen.GExplorer.Properties {
                 resourceCulture = value;
             }
         }
+        
+        internal static System.Drawing.Icon Icon_3_973 {
+            get {
+                return ((System.Drawing.Icon)(ResourceManager.GetObject("Icon_3_973", resourceCulture)));
+            }
+        }
+        
+        internal static System.Drawing.Icon Icon_4_13 {
+            get {
+                return ((System.Drawing.Icon)(ResourceManager.GetObject("Icon_4_13", resourceCulture)));
+            }
+        }
     }
 }
