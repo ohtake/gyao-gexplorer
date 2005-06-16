@@ -30,14 +30,14 @@ namespace Yusen.GExplorer {
 		}
 		
 		public static void DisplayException(Exception e) {
-			MessageBox.Show(e.StackTrace, e.Message, MessageBoxButtons.OK, MessageBoxIcon.Error);
+			MessageBox.Show(e.Message + "\n\n" + e.StackTrace, e.GetType().ToString(), MessageBoxButtons.OK, MessageBoxIcon.Error);
 		}
 		
 		public static Icon GetGExplorerIcon() {
 			return Resources.Icon_3_973;
 			//return Resources.Icon_4_13;
 		}
-
+		
 		public static string ReadNextLineTextBeforeTag(TextReader reader) {
 			string line = ReadNextLineHtml(reader);
 			int indexOfLt = line.IndexOf('<');
@@ -45,6 +45,9 @@ namespace Yusen.GExplorer {
 				line = line.Substring(0, indexOfLt);
 			}
 			line = line.Replace("&nbsp;", " ");
+			line = line.Replace("&lt;", "<");
+			line = line.Replace("&gt;", ">");
+			line = line.Replace("&amp;", "&");
 			return line.Trim();
 		}
 		public static string ReadNextLineHtml(TextReader reader){
@@ -77,8 +80,11 @@ namespace Yusen.GExplorer {
 			menuStrip.Items.Add(help);
 		}
 
-		public static void BrowseByIE(Uri uri) {
+		public static void BrowseWithIE(Uri uri) {
 			Process.Start(Utility.GetPathForIE(), uri.AbsoluteUri);
+		}
+		public static void PlayWithWMP(Uri uri) {
+			Process.Start(Utility.GetPathForWMP(), uri.AbsoluteUri);
 		}
 	}
 }

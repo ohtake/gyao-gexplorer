@@ -32,6 +32,7 @@ namespace Yusen.GExplorer {
 		
 		void tabControl1_SelectedIndexChanged(object sender, EventArgs e) {
 			GGenre genre = (GGenre)this.tabControl1.SelectedTab.Tag;
+			if(!genre.IsLoaded) genre.FetchAll();
 			this.genreListView1.Display(genre);
 		}
 		

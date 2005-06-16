@@ -44,7 +44,7 @@ namespace Yusen.GExplorer {
 			this.tableLayoutPanel1.RowCount = 2;
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-			this.tableLayoutPanel1.Size = new System.Drawing.Size(545, 331);
+			this.tableLayoutPanel1.Size = new System.Drawing.Size(567, 331);
 			this.tableLayoutPanel1.TabIndex = 0;
 			// 
 			// tabControl1
@@ -56,7 +56,7 @@ namespace Yusen.GExplorer {
 			this.tabControl1.Margin = new System.Windows.Forms.Padding(0);
 			this.tabControl1.Name = "tabControl1";
 			this.tabControl1.SelectedIndex = 0;
-			this.tabControl1.Size = new System.Drawing.Size(545, 20);
+			this.tabControl1.Size = new System.Drawing.Size(567, 20);
 			this.tabControl1.TabIndex = 0;
 			// 
 			// tabPage1
@@ -64,7 +64,7 @@ namespace Yusen.GExplorer {
 			this.tabPage1.Location = new System.Drawing.Point(4, 21);
 			this.tabPage1.Name = "tabPage1";
 			this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage1.Size = new System.Drawing.Size(537, 0);
+			this.tabPage1.Size = new System.Drawing.Size(559, 0);
 			this.tabPage1.TabIndex = 0;
 			this.tabPage1.Text = "tabPage1";
 			// 
@@ -73,7 +73,7 @@ namespace Yusen.GExplorer {
 			this.tabPage2.Location = new System.Drawing.Point(4, 21);
 			this.tabPage2.Name = "tabPage2";
 			this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage2.Size = new System.Drawing.Size(192, 0);
+			this.tabPage2.Size = new System.Drawing.Size(537, 0);
 			this.tabPage2.TabIndex = 1;
 			this.tabPage2.Text = "tabPage2";
 			// 
@@ -83,7 +83,7 @@ namespace Yusen.GExplorer {
 			this.genreListView1.Location = new System.Drawing.Point(0, 20);
 			this.genreListView1.Margin = new System.Windows.Forms.Padding(0);
 			this.genreListView1.Name = "genreListView1";
-			this.genreListView1.Size = new System.Drawing.Size(545, 311);
+			this.genreListView1.Size = new System.Drawing.Size(567, 311);
 			this.genreListView1.TabIndex = 1;
 			// 
 			// GenreViewer
@@ -92,7 +92,7 @@ namespace Yusen.GExplorer {
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.Controls.Add(this.tableLayoutPanel1);
 			this.Name = "GenreViewer";
-			this.Size = new System.Drawing.Size(545, 331);
+			this.Size = new System.Drawing.Size(567, 331);
 			this.tableLayoutPanel1.ResumeLayout(false);
 			this.tabControl1.ResumeLayout(false);
 			this.ResumeLayout(false);

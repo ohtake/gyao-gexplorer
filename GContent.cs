@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -12,7 +13,7 @@ using System.IO;
  */
 
 namespace Yusen.GExplorer{
-	delegate void LoadingPackagesEventHandler(GGenre sender, GPackage package, int nume, int denom);
+	delegate void LoadingPackagesEventHandler(GGenre sender, int nume, int denom);
 
 	/// <summary>GyaOにおける genre．映画，ドラマなど．</summary>
 	class GGenre{
@@ -54,56 +55,75 @@ namespace Yusen.GExplorer{
 			this.dir = dir;
 		}
 		
+		[Category("付随情報")]
+		[DisplayName("ジャンル名")]
+		[Description("")]
 		public string GenreName {
 			get {
 				return this.name;
 			}
 		}
+		[Category("キー")]
+		[DisplayName("ディレクトリ名")]
+		[Description("ジャンルに対応するディレクトリ名．")]
 		public string DirectoryName {
 			get {
 				return this.dir;
 			}
 		}
+		[Category("URI")]
+		[DisplayName("ジャンルトップ")]
+		[Description("")]
 		public Uri GenreTopPageUri {
 			get {
 				return new Uri("http://www.gyao.jp/sityou/catetop/genre_id/" + this.GenreId + "/");
 			}
 		}
+		[Category("キー")]
+		[DisplayName("genre_id")]
+		[Description("")]
 		public string GenreId {
 			get {
 				return "gen" + this.keyNo.ToString("0000000");
 			}
 		}
+		[Category("専ブラが付加した情報")]
+		[DisplayName("読み込み済み")]
+		[Description("")]
 		public bool IsLoaded {
 			get {
 				return null != this.children;
 			}
 		}
+		[Browsable(false)]
 		public IEnumerable<GPackage> Packages {
 			get {
 				if(! this.IsLoaded) throw new InvalidOperationException();
 				return this.children;
 			}
 		}
+		[Category("専ブラが付加した情報")]
+		[DisplayName("最終読み込み日時")]
+		[Description("カテゴリトップページを専ブラが最後に読み込んだ日時")]
 		public DateTime LastFetchTime{
 			get{
 				return this.lastFetch;
 			}
 		}
 		public override string ToString() {
-			return this.GenreName;
+			return "<" + this.GenreId + "> " + this.GenreName;
 		}
 		public IEnumerable<GPackage> FetchPackages() {
 			List<GPackage> packages = new List<GPackage>();
 			TextReader reader = new StreamReader(new WebClient().OpenRead(this.GenreTopPageUri), Encoding.GetEncoding("Shift_JIS"));
-
+			
 			string line;
 			Queue<string> sgName = new Queue<string>();
 			Queue<string> sgCatch = new Queue<string>();
 			string packName = "";
 			List<string> specialPages = new List<string>();
 			while(null != (line = reader.ReadLine())) {
-				if(!line.StartsWith("<!--")) continue;
+				if(!line.StartsWith("<!--")) continue;//下記のswitch文を弄るときに要注意
 				Match match;
 				switch(line) {
 					case "<!--サブジャンル名 ↓-->":
@@ -148,15 +168,16 @@ namespace Yusen.GExplorer{
 			this.lastFetch = DateTime.Now;
 			return this.Packages;
 		}
-		public void FetchAll() {
+		public void FetchAll(){
 			IEnumerable<GPackage> ps = this.FetchPackages();
-			int denom = 0;
+			int denom = 1;
 			foreach(GPackage p in ps) denom++;
 			int nume = 0;
 			foreach(GPackage p in this.FetchPackages()) {
+				GGenre.LoadingPackages(this, ++nume, denom);
 				p.FetchContents();
-				GGenre.LoadingPackages(this, p, ++nume, denom);
 			}
+			GGenre.LoadingPackages(this, denom, denom);
 		}
 	}
 	
@@ -164,7 +185,7 @@ namespace Yusen.GExplorer{
 	/// GyaOにおける pac．「全シリーズを見る」のボタンを押したときの飛び先．
 	/// 「全シリーズを見る」のボタンがなくても，各コンテンツは何らかのパックに所属している模様．
 	/// </summary>
-	class GPackage{
+	class GPackage {
 		private static readonly Regex regexPCatch =
 			new Regex("^\t\t" + @"<td class=""text12b""><b>(.*?)<!-- パックキャッチコピー -->", RegexOptions.Compiled | RegexOptions.Singleline);
 		private static readonly Regex regexPText =
@@ -172,7 +193,7 @@ namespace Yusen.GExplorer{
 		private static readonly Regex regexSnum =
 			new Regex("^\t\t\t\t" + @"<td align=""left"" class=""title12"">(.*?)<!-- ストーリー番号 -->", RegexOptions.Compiled | RegexOptions.Singleline);
 		private static readonly Regex regexLimit =
-			new Regex("^\t\t\t\t\t\t\t\t\t\t\t\t" + "(.*正午まで)", RegexOptions.Compiled | RegexOptions.Singleline);
+			new Regex("^\t\t\t\t\t\t\t\t\t\t\t\t" + "(?:<[^>]*>)*(.*正午まで)", RegexOptions.Compiled | RegexOptions.Singleline);
 		private static readonly Regex regexStory =
 			new Regex("^\t\t\t\t\t\t\t" + @"<td valign=""top"" class=""text10"">(.*?)<!-- ストーリー -->", RegexOptions.Compiled | RegexOptions.Singleline);
 		private static readonly Regex regexCnt =
@@ -197,37 +218,56 @@ namespace Yusen.GExplorer{
 			this.subgenreName = subgenreName;
 			this.subgenreCatch = subgenreCatch;
 		}
-		
+		[Browsable(false)]
 		public GGenre Genre {
 			get {
 				return this.parent;
 			}
 		}
+		[Category("付随情報")]
+		[DisplayName("パッケージ名")]
+		[Description("")]
 		public string PackageName {
 			get {
 				return this.name;
 			}
 		}
+		[Category("URI")]
+		[DisplayName("パッケージページ")]
+		[Description("パッケージ内のコンテンツ一覧を見られるページのURI．")]
 		public Uri PackagePageUri {
 			get {
 				return new Uri("http://www.gyao.jp/sityou/catelist/pac_id/" + this.PackageId + "/");
 			}
 		}
+		[Category("キー")]
+		[DisplayName("pac_id")]
+		[Description("")]
 		public string PackageId {
 			get {
 				return "pac" + this.keyNo.ToString("0000000");
 			}
 		}
+		[Category("付随情報")]
+		[DisplayName("サブジャンル名")]
+		[Description("")]
 		public string SubgenreName {
 			get {
 				return this.subgenreName;
 			}
 		}
+		[Category("付随情報")]
+		[DisplayName("サブジャンルのキャッチコピー")]
+		[Description("")]
 		public string SubgenreCatch {
 			get {
 				return this.subgenreCatch;
 			}
 		}
+		[ReadOnly(true)]
+		[Category("付随情報")]
+		[DisplayName("キャッチコピー")]
+		[Description("")]
 		public string PackageCatch {
 			get {
 				if(null == this.pacCatch) throw new InvalidOperationException();
@@ -239,6 +279,10 @@ namespace Yusen.GExplorer{
 				this.pacCatch = value;
 			}
 		}
+		[ReadOnly(true)]
+		[Category("付随情報")]
+		[DisplayName("説明文")]
+		[Description("")]
 		public string PackageText {
 			get {
 				if(null == this.pacText) throw new InvalidOperationException();
@@ -250,9 +294,16 @@ namespace Yusen.GExplorer{
 				this.pacText = value;
 			}
 		}
+		[ReadOnly(true)]
+		[Category("URI")]
+		[DisplayName("特集ページ")]
+		[Description("専ブラでは特集ページの解析は行っていないので通常のウェブブラウザで中身を確認する必要あり．")]
 		public Uri SpecialPageUri {
 			get {
-				if(null == this.specialPage) throw new InvalidOperationException();
+				if(null == this.specialPage) {
+					//throw new InvalidOperationException();
+					return null;
+				}
 				return this.specialPage;
 			}
 			set {
@@ -261,29 +312,49 @@ namespace Yusen.GExplorer{
 				this.specialPage = value;
 			}
 		}
+		[Category("専ブラが付加した情報")]
+		[DisplayName("特集ページの有無")]
+		[Description("")]
 		public bool HasSpecialPage {
 			get {
 				return null != this.specialPage;
 			}
 		}
+		[Category("専ブラが付加した情報")]
+		[DisplayName("読み込み済み")]
+		[Description("")]
 		public bool IsLoaded {
 			get {
 				return null != this.children;
 			}
 		}
+		[Browsable(false)]
 		public IEnumerable<GContent> Contents {
 			get {
 				if(! this.IsLoaded) throw new InvalidOperationException();
 				return this.children;
 			}
 		}
+		[Category("専ブラが付加した情報")]
+		[DisplayName("最終取得日時")]
+		[Description("パッケージページを最後に読み込んだ日時")]
 		public DateTime LastFetchTime {
 			get {
 				return this.lastFetch;
 			}
 		}
+		[Category("URI")]
+		[DisplayName("画像 (中)")]
+		[Description("")]
+		public Uri ImageMiddleUri {
+			get {
+				return new Uri("http://www.gyao.jp/img/info/"
+					+ this.Genre.DirectoryName + "/"
+					+ this.PackageId + "_m.jpg");
+			}
+		}
 		public override string ToString() {
-			return "<" + this.PackageId + "> " + this.PackageName + " [" + this.SubgenreName + "]";
+			return "<" + this.PackageId + "> " + this.PackageName;
 		}
 		
 		public IEnumerable<GContent> FetchContents() {
@@ -381,118 +452,123 @@ namespace Yusen.GExplorer{
 			this.isNew = isNew;
 			this.limit = limit;
 		}
-		
+		[Browsable(false)]
 		public GPackage Package {
 			get {
 				return this.parent;
 			}
 		}
+		[Browsable(false)]
 		public GGenre Genre {
 			get {
 				return this.Package.Genre;
 			}
 		}
+		[Category("付随情報")]
+		[DisplayName("話")]
+		[Description("")]
 		public string ContentName {
 			get {
 				return this.name;
 			}
 		}
+		[Category("キー")]
+		[DisplayName("contsnts_id")]
+		[Description("")]
 		public string ContentId {
 			get {
 				return "cnt" + this.keyNo.ToString("0000000");
 			}
 		}
+		[Category("付随情報")]
+		[DisplayName("New")]
+		[Description("Newマークがついているか否か．")]
 		public bool IsNew {
 			get {
 				return this.isNew;
 			}
 		}
+		[Category("付随情報")]
+		[DisplayName("リード")]
+		[Description("もっと長い説明文を読みたければ詳細ページを読むべし．")]
 		public string Lead {
 			get {
 				return this.lead;
 			}
 		}
+		[Category("付随情報")]
+		[DisplayName("配信終了日")]
+		[Description("")]
 		public string Limit {
 			get {
 				return this.limit;
 			}
 		}
+		[Category("URI")]
+		[DisplayName("詳細ページ")]
+		[Description("catedetail のページのこと．")]
 		public Uri DetailPageUri {
 			get {
 				return new Uri("http://www.gyao.jp/sityou/catedetail/contents_id/" + this.ContentId + "/");
 			}
 		}
+		[Category("URI")]
+		[DisplayName("本来の再生ページ")]
+		[Description("右クリックできねー，全画面に出来ねー，うぜー．のページのこと．")]
 		public Uri PlayerPageUri {
 			get {
 				return new Uri("http://www.gyao.jp/sityou/movie/"
 					+ "contentsId/" + this.ContentId + "/"
-					+ "rateId/" + GBitRate.Default.RateId + "/"
+					+ "rateId/" + UserSettings.Instance.GyaoBitRateId + "/"
 					+ "login_from/shityou/");
 			}
 		}
+		[Category("URI")]
+		[DisplayName("プレイリスト")]
+		[Description("")]
 		public Uri PlayListUri {
 			get {
 				return new Uri("http://www.gyao.jp/sityou/asx.php?"
 					+ "contentsId=" + this.ContentId
-					+ "&userNo=" + GCookie.UserNo.ToString()
-					+ "rateId=" + GBitRate.Default.RateId);
+					+ "&userNo=" + UserSettings.Instance.GyaoUserNo.ToString()
+					+ "rateId=" + UserSettings.Instance.GyaoBitRateId);
 			}
 		}
+		[Category("URI")]
+		[DisplayName("メディアファイル")]
+		[Description("プレイリストの2項目目？")]
 		public Uri MediaFileUri {
 			get {
 				return new Uri("rtsp://wms.cd.gyao.jp/gyaovod01?QueryString="
 					+ "contentsId=" + this.ContentId
-					+ ":userNo=" + GCookie.UserNo.ToString()
-					+ ":rateId=" + GBitRate.Default.RateId);
+					+ ":userNo=" + UserSettings.Instance.GyaoUserNo.ToString()
+					+ ":rateId=" + UserSettings.Instance.GyaoBitRateId);
+			}
+		}
+		[Category("URI")]
+		[DisplayName("画像 (大)")]
+		[Description("")]
+		public Uri ImageLargeUri {
+			get {
+				return new Uri("http://www.gyao.jp/img/info/"
+					+ this.Genre.DirectoryName + "/"
+					+ this.ContentId + "_l.jpg");
+			}
+		}
+		[Category("URI")]
+		[DisplayName("画像 (小)")]
+		[Description("")]
+		public Uri ImageSmallUri {
+			get {
+				return new Uri("http://www.gyao.jp/img/info/"
+					+ this.Genre.DirectoryName + "/"
+					+ this.ContentId + "_s.jpg");
 			}
 		}
 		public override string ToString() {
 			return "<" + this.ContentId + "> " + this.ContentName
-				+ " <" + this.Package.PackageId + ">" + this.Package.PackageName;
-		}
-	}
-	
-	/// <summary>ビットレートのタイプセイフイニューム．</summary>
-	class GBitRate {
-		private readonly static GBitRate high;
-		private readonly static GBitRate low;
-		private static GBitRate defa;
-		
-		static GBitRate() {
-			GBitRate.high = new GBitRate(2);
-			GBitRate.low = new GBitRate(1);
-			GBitRate.defa = GBitRate.high;
-		}
-		public static GBitRate Default {
-			get {
-				return GBitRate.defa;
-			}
-			set {
-				if(null == value) throw new ArgumentNullException();
-				GBitRate.defa = value;
-			}
-		}
-		public static GBitRate High {
-			get {
-				return GBitRate.high;
-			}
-		}
-		public static GBitRate Low {
-			get {
-				return GBitRate.low;
-			}
-		}
-		
-		private int keyNo;
-		
-		private GBitRate(int keyNo) {
-			this.keyNo = keyNo;
-		}
-		
-		public string RateId {
-			get {
-				return "bit" + this.keyNo.ToString("0000000");
-			}
+				+ " [" + this.Package.ToString() + "]";
 		}
 	}
 }
+

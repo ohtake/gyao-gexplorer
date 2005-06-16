@@ -32,14 +32,20 @@ namespace Yusen.GExplorer {
 			this.chLead = new System.Windows.Forms.ColumnHeader();
 			this.cmsListView = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.tsmiPlay = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiWMP = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiDetail = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiPackage = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiSpecial = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiGenre = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-			this.tsmiView = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+			this.tsmiGenre = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiCommands = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+			this.tsmiMultipulSelect = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiView = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
+			this.tsmiProperty = new System.Windows.Forms.ToolStripMenuItem();
 			this.ilLarge = new System.Windows.Forms.ImageList(this.components);
 			this.ilSmall = new System.Windows.Forms.ImageList(this.components);
 			this.cmsListView.SuspendLayout();
@@ -47,8 +53,6 @@ namespace Yusen.GExplorer {
 			// 
 			// lviewGenre
 			// 
-			this.lviewGenre.Activation = System.Windows.Forms.ItemActivation.OneClick;
-			this.lviewGenre.AllowColumnReorder = true;
 			this.lviewGenre.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.chId,
             this.chLimit,
@@ -56,12 +60,13 @@ namespace Yusen.GExplorer {
             this.chLead});
 			this.lviewGenre.ContextMenuStrip = this.cmsListView;
 			this.lviewGenre.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.lviewGenre.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
 			this.lviewGenre.LargeImageList = this.ilLarge;
 			this.lviewGenre.Location = new System.Drawing.Point(0, 0);
 			this.lviewGenre.MultiSelect = false;
 			this.lviewGenre.Name = "lviewGenre";
 			this.lviewGenre.ShowItemToolTips = true;
-			this.lviewGenre.Size = new System.Drawing.Size(572, 258);
+			this.lviewGenre.Size = new System.Drawing.Size(584, 258);
 			this.lviewGenre.SmallImageList = this.ilSmall;
 			this.lviewGenre.TabIndex = 0;
 			this.lviewGenre.View = System.Windows.Forms.View.Details;
@@ -84,7 +89,7 @@ namespace Yusen.GExplorer {
 			// chLead
 			// 
 			this.chLead.Text = "リード";
-			this.chLead.Width = 306;
+			this.chLead.Width = 320;
 			// 
 			// cmsListView
 			// 
@@ -92,28 +97,43 @@ namespace Yusen.GExplorer {
 			this.cmsListView.GripMargin = new System.Windows.Forms.Padding(2);
 			this.cmsListView.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiPlay,
+            this.tsmiWMP,
             this.tsmiDetail,
+            this.toolStripSeparator1,
             this.tsmiPackage,
             this.tsmiSpecial,
-            this.tsmiGenre,
-            this.toolStripSeparator1,
-            this.tsmiView,
             this.toolStripSeparator2,
-            this.tsmiCommands});
+            this.tsmiGenre,
+            this.toolStripSeparator3,
+            this.tsmiCommands,
+            this.toolStripSeparator4,
+            this.tsmiMultipulSelect,
+            this.tsmiView,
+            this.toolStripSeparator5,
+            this.tsmiProperty});
 			this.cmsListView.Location = new System.Drawing.Point(21, 36);
 			this.cmsListView.Name = "contextMenuStrip1";
 			this.cmsListView.RightToLeft = System.Windows.Forms.RightToLeft.No;
-			this.cmsListView.Size = new System.Drawing.Size(218, 170);
+			this.cmsListView.Size = new System.Drawing.Size(247, 254);
 			// 
 			// tsmiPlay
 			// 
 			this.tsmiPlay.Name = "tsmiPlay";
 			this.tsmiPlay.Text = "専用プレーヤで再生 (&O)";
 			// 
+			// tsmiWMP
+			// 
+			this.tsmiWMP.Name = "tsmiWMP";
+			this.tsmiWMP.Text = "WMPで再生 (&W)";
+			// 
 			// tsmiDetail
 			// 
 			this.tsmiDetail.Name = "tsmiDetail";
 			this.tsmiDetail.Text = "解説ページをIEで開く (&D)";
+			// 
+			// toolStripSeparator1
+			// 
+			this.toolStripSeparator1.Name = "toolStripSeparator1";
 			// 
 			// tsmiPackage
 			// 
@@ -122,33 +142,51 @@ namespace Yusen.GExplorer {
 			// 
 			// tsmiSpecial
 			// 
-			this.tsmiSpecial.Enabled = false;
 			this.tsmiSpecial.Name = "tsmiSpecial";
-			this.tsmiSpecial.Text = "特集ページをIEで開く (&S)";
+			this.tsmiSpecial.Text = "パッケージの特集ページをIEで開く (&S)";
+			// 
+			// toolStripSeparator2
+			// 
+			this.toolStripSeparator2.Name = "toolStripSeparator2";
 			// 
 			// tsmiGenre
 			// 
 			this.tsmiGenre.Name = "tsmiGenre";
 			this.tsmiGenre.Text = "ジャンルページをIEで開く (&G)";
 			// 
-			// toolStripSeparator1
+			// toolStripSeparator3
 			// 
-			this.toolStripSeparator1.Name = "toolStripSeparator1";
+			this.toolStripSeparator3.Name = "toolStripSeparator3";
+			// 
+			// tsmiCommands
+			// 
+			this.tsmiCommands.Enabled = false;
+			this.tsmiCommands.Name = "tsmiCommands";
+			this.tsmiCommands.Text = "外部コマンドの予定 (&C)";
+			// 
+			// toolStripSeparator4
+			// 
+			this.toolStripSeparator4.Name = "toolStripSeparator4";
+			// 
+			// tsmiMultipulSelect
+			// 
+			this.tsmiMultipulSelect.CheckOnClick = true;
+			this.tsmiMultipulSelect.Name = "tsmiMultipulSelect";
+			this.tsmiMultipulSelect.Text = "複数選択を有効 (&M)";
 			// 
 			// tsmiView
 			// 
 			this.tsmiView.Name = "tsmiView";
 			this.tsmiView.Text = "表示形式 (&V)";
 			// 
-			// toolStripSeparator2
+			// toolStripSeparator5
 			// 
-			this.toolStripSeparator2.Name = "toolStripSeparator2";
+			this.toolStripSeparator5.Name = "toolStripSeparator5";
 			// 
-			// tsmiCommands
+			// tsmiProperty
 			// 
-			this.tsmiCommands.Enabled = false;
-			this.tsmiCommands.Name = "tsmiCommands";
-			this.tsmiCommands.Text = "外部コマンドみたなものの予定？";
+			this.tsmiProperty.Name = "tsmiProperty";
+			this.tsmiProperty.Text = "プロパティ (&R)";
 			// 
 			// ilLarge
 			// 
@@ -172,7 +210,7 @@ namespace Yusen.GExplorer {
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.Controls.Add(this.lviewGenre);
 			this.Name = "GenreListView";
-			this.Size = new System.Drawing.Size(572, 258);
+			this.Size = new System.Drawing.Size(584, 258);
 			this.cmsListView.ResumeLayout(false);
 			this.ResumeLayout(false);
 
@@ -193,9 +231,15 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ToolStripMenuItem tsmiGenre;
 		private System.Windows.Forms.ToolStripMenuItem tsmiSpecial;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
 		private System.Windows.Forms.ToolStripMenuItem tsmiDetail;
 		private System.Windows.Forms.ImageList ilSmall;
 		private System.Windows.Forms.ImageList ilLarge;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+		private System.Windows.Forms.ToolStripMenuItem tsmiWMP;
+		private System.Windows.Forms.ToolStripMenuItem tsmiMultipulSelect;
+		private System.Windows.Forms.ToolStripMenuItem tsmiProperty;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
 	}
 }

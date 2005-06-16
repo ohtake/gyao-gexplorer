@@ -169,11 +169,9 @@ namespace Yusen.GExplorer {
 			// 
 			// tsmiAutoVolume
 			// 
-			this.tsmiAutoVolume.Checked = true;
 			this.tsmiAutoVolume.CheckOnClick = true;
-			this.tsmiAutoVolume.CheckState = System.Windows.Forms.CheckState.Checked;
 			this.tsmiAutoVolume.Name = "tsmiAutoVolume";
-			this.tsmiAutoVolume.Text = "CMÇÃâπó Çè¨Ç≥Ç≠Ç∑ÇÈ (&V)";
+			this.tsmiAutoVolume.Text = "é©ìÆâπó í≤êÆ (&V)";
 			// 
 			// PlayerForm
 			// 

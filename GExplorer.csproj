@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Yusen.GExplorer</RootNamespace>
     <AssemblyName>GExplorer</AssemblyName>
-    <ApplicationIcon>Resources\Icon_4_13.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\Icon_3_973.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -43,12 +43,17 @@
     <Compile Include="AboutBox.Designer.cs">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </Compile>
-    <Compile Include="GCookie.cs" />
-    <Compile Include="GCookieFetchForm.cs">
+    <Compile Include="CookieFetchForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GCookieFetchForm.Designer.cs">
-      <DependentUpon>GCookieFetchForm.cs</DependentUpon>
+    <Compile Include="CookieFetchForm.Designer.cs">
+      <DependentUpon>CookieFetchForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GContentPropertyViewer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GContentPropertyViewer.Designer.cs">
+      <DependentUpon>GContentPropertyViewer.cs</DependentUpon>
     </Compile>
     <Compile Include="PlayerForm.cs">
       <SubType>Form</SubType>
@@ -80,8 +85,11 @@
     <EmbeddedResource Include="AboutBox.resx">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GCookieFetchForm.resx">
-      <DependentUpon>GCookieFetchForm.cs</DependentUpon>
+    <EmbeddedResource Include="CookieFetchForm.resx">
+      <DependentUpon>CookieFetchForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GContentPropertyViewer.resx">
+      <DependentUpon>GContentPropertyViewer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PlayerForm.resx">
       <DependentUpon>PlayerForm.cs</DependentUpon>
@@ -100,6 +108,9 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="UserSettingsToolbox.resx">
+      <DependentUpon>UserSettingsToolbox.cs</DependentUpon>
+    </EmbeddedResource>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
@@ -113,6 +124,13 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="UserSettings.cs" />
+    <Compile Include="UserSettingsToolbox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UserSettingsToolbox.Designer.cs">
+      <DependentUpon>UserSettingsToolbox.cs</DependentUpon>
     </Compile>
     <Compile Include="Utility.cs" />
   </ItemGroup>
@@ -153,6 +171,14 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\Icon_3_973.ico" />
+    <Content Include="Resources\normal16.ico" />
+    <Content Include="Resources\normal16new.ico" />
+    <Content Include="Resources\normal32.ico" />
+    <Content Include="Resources\normal32new.ico" />
+    <Content Include="Resources\special16.ico" />
+    <Content Include="Resources\special16new.ico" />
+    <Content Include="Resources\special32.ico" />
+    <Content Include="Resources\special32new.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -29,8 +29,10 @@ namespace Yusen.GExplorer {
 			this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
 			this.genreViewer1 = new Yusen.GExplorer.GenreViewer();
 			this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-			this.ファイルFToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiFile = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiQuit = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiTool = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiUserSettings = new System.Windows.Forms.ToolStripMenuItem();
 			this.statstripMain.SuspendLayout();
 			this.toolStripContainer1.ContentPanel.SuspendLayout();
 			this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
@@ -91,26 +93,38 @@ namespace Yusen.GExplorer {
 			this.menuStrip1.Dock = System.Windows.Forms.DockStyle.None;
 			this.menuStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Visible;
 			this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.ファイルFToolStripMenuItem});
+            this.tsmiFile,
+            this.tsmiTool});
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
-			this.menuStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
 			this.menuStrip1.Size = new System.Drawing.Size(592, 24);
 			this.menuStrip1.TabIndex = 0;
 			this.menuStrip1.Text = "menuStrip1";
 			// 
-			// ファイルFToolStripMenuItem
+			// tsmiFile
 			// 
-			this.ファイルFToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+			this.tsmiFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiQuit});
-			this.ファイルFToolStripMenuItem.Name = "ファイルFToolStripMenuItem";
-			this.ファイルFToolStripMenuItem.Text = "ファイル (&F)";
+			this.tsmiFile.Name = "tsmiFile";
+			this.tsmiFile.Text = "ファイル (&F)";
 			// 
 			// tsmiQuit
 			// 
 			this.tsmiQuit.Name = "tsmiQuit";
 			this.tsmiQuit.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Q)));
 			this.tsmiQuit.Text = "終了 (&Q)";
+			// 
+			// tsmiTool
+			// 
+			this.tsmiTool.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiUserSettings});
+			this.tsmiTool.Name = "tsmiTool";
+			this.tsmiTool.Text = "ツール (&T)";
+			// 
+			// tsmiUserSettings
+			// 
+			this.tsmiUserSettings.Name = "tsmiUserSettings";
+			this.tsmiUserSettings.Text = "ユーザ設定 (&U)";
 			// 
 			// MainForm
 			// 
@@ -140,10 +154,12 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ToolStripStatusLabel tsslCategoryStat;
 		private System.Windows.Forms.ToolStripContainer toolStripContainer1;
 		private System.Windows.Forms.MenuStrip menuStrip1;
-		private System.Windows.Forms.ToolStripMenuItem ファイルFToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem tsmiFile;
 		private System.Windows.Forms.ToolStripMenuItem tsmiQuit;
 		private System.Windows.Forms.ToolStripProgressBar tspbPackages;
 		private GenreViewer genreViewer1;
+		private System.Windows.Forms.ToolStripMenuItem tsmiTool;
+		private System.Windows.Forms.ToolStripMenuItem tsmiUserSettings;
 	}
 }
 

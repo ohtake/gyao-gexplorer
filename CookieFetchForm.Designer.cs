@@ -1,5 +1,5 @@
 namespace Yusen.GExplorer {
-	partial class GCookieFetchForm {
+	partial class CookieFetchForm {
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
