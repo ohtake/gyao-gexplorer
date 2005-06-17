@@ -56,7 +56,7 @@ namespace Yusen.GExplorer {
 			this.tabContent.Padding = new System.Windows.Forms.Padding(3);
 			this.tabContent.Size = new System.Drawing.Size(244, 259);
 			this.tabContent.TabIndex = 0;
-			this.tabContent.Text = "コンテント";
+			this.tabContent.Text = "コンテンツ";
 			// 
 			// pgContent
 			// 

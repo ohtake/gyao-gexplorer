@@ -19,6 +19,9 @@ namespace Yusen.GExplorer {
 			this.tsmiUserSettings.Click += new EventHandler(delegate(object sender, EventArgs e){
 				UserSettings.Instance.ShowUserSettingsForm();
 			});
+			this.tsmiEditCommands.Click += new EventHandler(delegate(object sender, EventArgs e) {
+				UserCommandsManager.Instance.ShowEditor();
+			});
 			//ステータスバー
 			this.genreViewer1.Refreshed += new GenreListViewRefleshedEventHandler(
 				delegate(GenreListView sender, GGenre genre, int cntCount) {

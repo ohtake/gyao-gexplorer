@@ -6,6 +6,7 @@ using WMPLib;
 
 namespace Yusen.GExplorer {
 	partial class PlayerForm : Form, IUsesUserSettings{
+		private GContent content = null;
 		private PlayerForm() {
 			InitializeComponent();
 			this.Icon = Utility.GetGExplorerIcon();
@@ -13,6 +14,12 @@ namespace Yusen.GExplorer {
 			//ユーザ設定の読み込み
 			this.LoadFromUserSettings();
 			//メニュー選択時の動作
+			this.tsmiProperty.Click += new EventHandler(delegate(object sender, EventArgs e) {
+				new GContentPropertyViewer(this.content).Show();
+			});
+			this.tsmiReload.Click += new EventHandler(delegate(object sender, EventArgs e) {
+				this.wmpMain.URL = this.content.MediaFileUri.AbsoluteUri;
+			});
 			this.tsmiClose.Click += new EventHandler(delegate(object sender, EventArgs e) {
 				this.Close();
 			});
@@ -34,6 +41,7 @@ namespace Yusen.GExplorer {
 		}
 		
 		public PlayerForm(GContent content) :this(){
+			this.content = content;
 			this.Text = content.Package.PackageName + (("" == content.ContentName) ? "" : " / " + content.ContentName);
 			this.wmpMain.URL = content.MediaFileUri.AbsoluteUri;
 			this.ieMain.Navigate(content.DetailPageUri);

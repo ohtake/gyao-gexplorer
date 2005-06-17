@@ -366,9 +366,9 @@ namespace Yusen.GExplorer {
 		}
 		#endregion
 		
-		#region コンテントプロパティビューア
+		#region コンテンツプロパティビューア
 		private Size gcpvSize = new Size(260, 310);
-		[Category("コンテントプロパティビューアの初期設定")]
+		[Category("コンテンツプロパティビューアの初期設定")]
 		[DisplayName("サイズ")]
 		[Description("ウィンドウのサイズ．")]
 		public Size GcpvSize {

@@ -33,6 +33,7 @@ namespace Yusen.GExplorer {
 			this.tsmiQuit = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiTool = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiUserSettings = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiEditCommands = new System.Windows.Forms.ToolStripMenuItem();
 			this.statstripMain.SuspendLayout();
 			this.toolStripContainer1.ContentPanel.SuspendLayout();
 			this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
@@ -117,7 +118,8 @@ namespace Yusen.GExplorer {
 			// tsmiTool
 			// 
 			this.tsmiTool.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiUserSettings});
+            this.tsmiUserSettings,
+            this.tsmiEditCommands});
 			this.tsmiTool.Name = "tsmiTool";
 			this.tsmiTool.Text = "ツール (&T)";
 			// 
@@ -125,6 +127,11 @@ namespace Yusen.GExplorer {
 			// 
 			this.tsmiUserSettings.Name = "tsmiUserSettings";
 			this.tsmiUserSettings.Text = "ユーザ設定 (&U)";
+			// 
+			// tsmiEditCommands
+			// 
+			this.tsmiEditCommands.Name = "tsmiEditCommands";
+			this.tsmiEditCommands.Text = "外部コマンドエディタ (&C)";
 			// 
 			// MainForm
 			// 
@@ -160,6 +167,7 @@ namespace Yusen.GExplorer {
 		private GenreViewer genreViewer1;
 		private System.Windows.Forms.ToolStripMenuItem tsmiTool;
 		private System.Windows.Forms.ToolStripMenuItem tsmiUserSettings;
+		private System.Windows.Forms.ToolStripMenuItem tsmiEditCommands;
 	}
 }
 

@@ -8,7 +8,8 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="Yusen.GExplorer.Properties.Settings.get_Default():Yusen.GExplorer.Properties.Settings")]
+[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="Yusen.GExplorer.Properties.Settings.get_Default():Yusen.GExplorer.Properties.Sett" +
+    "ings")]
 
 namespace Yusen.GExplorer.Properties {
     

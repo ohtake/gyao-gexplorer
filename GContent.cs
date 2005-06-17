@@ -9,7 +9,7 @@ using System.IO;
 /* GyaOのコンテンツDBは以下の木構造になっているはず？
  * ジャンル
  *   └─パッケージ
- *         └─コンテント
+ *         └─コンテンツ
  */
 
 namespace Yusen.GExplorer{
@@ -56,40 +56,35 @@ namespace Yusen.GExplorer{
 		}
 		
 		[Category("付随情報")]
-		[DisplayName("ジャンル名")]
-		[Description("")]
+		[Description("ジャンル名．")]
 		public string GenreName {
 			get {
 				return this.name;
 			}
 		}
 		[Category("キー")]
-		[DisplayName("ディレクトリ名")]
 		[Description("ジャンルに対応するディレクトリ名．")]
 		public string DirectoryName {
 			get {
 				return this.dir;
 			}
 		}
-		[Category("URI")]
-		[DisplayName("ジャンルトップ")]
-		[Description("")]
-		public Uri GenreTopPageUri {
-			get {
-				return new Uri("http://www.gyao.jp/sityou/catetop/genre_id/" + this.GenreId + "/");
-			}
-		}
 		[Category("キー")]
-		[DisplayName("genre_id")]
-		[Description("")]
+		[Description("genre_id")]
 		public string GenreId {
 			get {
 				return "gen" + this.keyNo.ToString("0000000");
 			}
 		}
+		[Category("URI")]
+		[Description("ジャンルトップページのURI．")]
+		public Uri GenreTopPageUri {
+			get {
+				return new Uri("http://www.gyao.jp/sityou/catetop/genre_id/" + this.GenreId + "/");
+			}
+		}
 		[Category("専ブラが付加した情報")]
-		[DisplayName("読み込み済み")]
-		[Description("")]
+		[Description("読み込み済みであるか否か．")]
 		public bool IsLoaded {
 			get {
 				return null != this.children;
@@ -103,8 +98,7 @@ namespace Yusen.GExplorer{
 			}
 		}
 		[Category("専ブラが付加した情報")]
-		[DisplayName("最終読み込み日時")]
-		[Description("カテゴリトップページを専ブラが最後に読み込んだ日時")]
+		[Description("カテゴリトップページを専ブラが最後に読み込んだ日時．")]
 		public DateTime LastFetchTime{
 			get{
 				return this.lastFetch;
@@ -225,15 +219,27 @@ namespace Yusen.GExplorer{
 			}
 		}
 		[Category("付随情報")]
-		[DisplayName("パッケージ名")]
-		[Description("")]
+		[Description("サブジャンル名．")]
+		public string SubgenreName {
+			get {
+				return this.subgenreName;
+			}
+		}
+		[Category("付随情報")]
+		[Description("サブジャンルのキャッチコピー")]
+		public string SubgenreCatch {
+			get {
+				return this.subgenreCatch;
+			}
+		}
+		[Category("付随情報")]
+		[Description("パッケージ名．")]
 		public string PackageName {
 			get {
 				return this.name;
 			}
 		}
 		[Category("URI")]
-		[DisplayName("パッケージページ")]
 		[Description("パッケージ内のコンテンツ一覧を見られるページのURI．")]
 		public Uri PackagePageUri {
 			get {
@@ -241,33 +247,15 @@ namespace Yusen.GExplorer{
 			}
 		}
 		[Category("キー")]
-		[DisplayName("pac_id")]
-		[Description("")]
+		[Description("pac_id")]
 		public string PackageId {
 			get {
 				return "pac" + this.keyNo.ToString("0000000");
 			}
 		}
-		[Category("付随情報")]
-		[DisplayName("サブジャンル名")]
-		[Description("")]
-		public string SubgenreName {
-			get {
-				return this.subgenreName;
-			}
-		}
-		[Category("付随情報")]
-		[DisplayName("サブジャンルのキャッチコピー")]
-		[Description("")]
-		public string SubgenreCatch {
-			get {
-				return this.subgenreCatch;
-			}
-		}
 		[ReadOnly(true)]
 		[Category("付随情報")]
-		[DisplayName("キャッチコピー")]
-		[Description("")]
+		[Description("パッケージのキャッチコピー．")]
 		public string PackageCatch {
 			get {
 				if(null == this.pacCatch) throw new InvalidOperationException();
@@ -281,8 +269,7 @@ namespace Yusen.GExplorer{
 		}
 		[ReadOnly(true)]
 		[Category("付随情報")]
-		[DisplayName("説明文")]
-		[Description("")]
+		[Description("パッケージの説明文．")]
 		public string PackageText {
 			get {
 				if(null == this.pacText) throw new InvalidOperationException();
@@ -296,8 +283,7 @@ namespace Yusen.GExplorer{
 		}
 		[ReadOnly(true)]
 		[Category("URI")]
-		[DisplayName("特集ページ")]
-		[Description("専ブラでは特集ページの解析は行っていないので通常のウェブブラウザで中身を確認する必要あり．")]
+		[Description("特集ページのURI．専ブラでは特集ページの解析は行っていないので通常のウェブブラウザで中身を確認する必要あり．")]
 		public Uri SpecialPageUri {
 			get {
 				if(null == this.specialPage) {
@@ -313,16 +299,14 @@ namespace Yusen.GExplorer{
 			}
 		}
 		[Category("専ブラが付加した情報")]
-		[DisplayName("特集ページの有無")]
-		[Description("")]
+		[Description("特集ページの有無．")]
 		public bool HasSpecialPage {
 			get {
 				return null != this.specialPage;
 			}
 		}
 		[Category("専ブラが付加した情報")]
-		[DisplayName("読み込み済み")]
-		[Description("")]
+		[Description("読み込み済みであるか否か．")]
 		public bool IsLoaded {
 			get {
 				return null != this.children;
@@ -336,16 +320,14 @@ namespace Yusen.GExplorer{
 			}
 		}
 		[Category("専ブラが付加した情報")]
-		[DisplayName("最終取得日時")]
-		[Description("パッケージページを最後に読み込んだ日時")]
+		[Description("パッケージページを最後に読み込んだ日時．")]
 		public DateTime LastFetchTime {
 			get {
 				return this.lastFetch;
 			}
 		}
 		[Category("URI")]
-		[DisplayName("画像 (中)")]
-		[Description("")]
+		[Description("画像 (中) のURI．")]
 		public Uri ImageMiddleUri {
 			get {
 				return new Uri("http://www.gyao.jp/img/info/"
@@ -465,23 +447,20 @@ namespace Yusen.GExplorer{
 			}
 		}
 		[Category("付随情報")]
-		[DisplayName("話")]
-		[Description("")]
+		[Description("コンテンツ名 (話)．")]
 		public string ContentName {
 			get {
 				return this.name;
 			}
 		}
 		[Category("キー")]
-		[DisplayName("contsnts_id")]
-		[Description("")]
+		[Description("contents_id")]
 		public string ContentId {
 			get {
 				return "cnt" + this.keyNo.ToString("0000000");
 			}
 		}
 		[Category("付随情報")]
-		[DisplayName("New")]
 		[Description("Newマークがついているか否か．")]
 		public bool IsNew {
 			get {
@@ -489,32 +468,28 @@ namespace Yusen.GExplorer{
 			}
 		}
 		[Category("付随情報")]
-		[DisplayName("リード")]
-		[Description("もっと長い説明文を読みたければ詳細ページを読むべし．")]
+		[Description("リード．もっと長い説明文を読みたければ詳細ページを読むべし．")]
 		public string Lead {
 			get {
 				return this.lead;
 			}
 		}
 		[Category("付随情報")]
-		[DisplayName("配信終了日")]
-		[Description("")]
+		[Description("配信終了日．")]
 		public string Limit {
 			get {
 				return this.limit;
 			}
 		}
 		[Category("URI")]
-		[DisplayName("詳細ページ")]
-		[Description("catedetail のページのこと．")]
+		[Description("詳細ページのURI．")]
 		public Uri DetailPageUri {
 			get {
 				return new Uri("http://www.gyao.jp/sityou/catedetail/contents_id/" + this.ContentId + "/");
 			}
 		}
 		[Category("URI")]
-		[DisplayName("本来の再生ページ")]
-		[Description("右クリックできねー，全画面に出来ねー，うぜー．のページのこと．")]
+		[Description("正規にIEで再生する場合のページのURI．")]
 		public Uri PlayerPageUri {
 			get {
 				return new Uri("http://www.gyao.jp/sityou/movie/"
@@ -524,8 +499,7 @@ namespace Yusen.GExplorer{
 			}
 		}
 		[Category("URI")]
-		[DisplayName("プレイリスト")]
-		[Description("")]
+		[Description("プレイリストのURI．")]
 		public Uri PlayListUri {
 			get {
 				return new Uri("http://www.gyao.jp/sityou/asx.php?"
@@ -535,8 +509,7 @@ namespace Yusen.GExplorer{
 			}
 		}
 		[Category("URI")]
-		[DisplayName("メディアファイル")]
-		[Description("プレイリストの2項目目？")]
+		[Description("メディアファイルのURI．")]
 		public Uri MediaFileUri {
 			get {
 				return new Uri("rtsp://wms.cd.gyao.jp/gyaovod01?QueryString="
@@ -546,8 +519,7 @@ namespace Yusen.GExplorer{
 			}
 		}
 		[Category("URI")]
-		[DisplayName("画像 (大)")]
-		[Description("")]
+		[Description("画像 (大) のURI．")]
 		public Uri ImageLargeUri {
 			get {
 				return new Uri("http://www.gyao.jp/img/info/"
@@ -556,8 +528,7 @@ namespace Yusen.GExplorer{
 			}
 		}
 		[Category("URI")]
-		[DisplayName("画像 (小)")]
-		[Description("")]
+		[Description("画像 (小) のURI．")]
 		public Uri ImageSmallUri {
 			get {
 				return new Uri("http://www.gyao.jp/img/info/"

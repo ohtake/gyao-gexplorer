@@ -114,7 +114,8 @@ namespace Yusen.GExplorer {
 			this.cmsListView.Location = new System.Drawing.Point(21, 36);
 			this.cmsListView.Name = "contextMenuStrip1";
 			this.cmsListView.RightToLeft = System.Windows.Forms.RightToLeft.No;
-			this.cmsListView.Size = new System.Drawing.Size(247, 254);
+			this.cmsListView.Size = new System.Drawing.Size(247, 273);
+			this.cmsListView.Visible = true;
 			// 
 			// tsmiPlay
 			// 
@@ -129,7 +130,7 @@ namespace Yusen.GExplorer {
 			// tsmiDetail
 			// 
 			this.tsmiDetail.Name = "tsmiDetail";
-			this.tsmiDetail.Text = "解説ページをIEで開く (&D)";
+			this.tsmiDetail.Text = "詳細ページをIEで開く (&D)";
 			// 
 			// toolStripSeparator1
 			// 
@@ -160,9 +161,8 @@ namespace Yusen.GExplorer {
 			// 
 			// tsmiCommands
 			// 
-			this.tsmiCommands.Enabled = false;
 			this.tsmiCommands.Name = "tsmiCommands";
-			this.tsmiCommands.Text = "外部コマンドの予定 (&C)";
+			this.tsmiCommands.Text = "外部コマンド (&C)";
 			// 
 			// toolStripSeparator4
 			// 

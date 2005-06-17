@@ -21,6 +21,7 @@ namespace Yusen.GExplorer {
 		public GenreListView() {
 			InitializeComponent();
 			this.LoadFromUserSettings();
+			this.LoadFromUserCommands();
 			
 			//項目をダブルクリック
 			this.lviewGenre.DoubleClick += new EventHandler(this.Play);
@@ -96,6 +97,11 @@ namespace Yusen.GExplorer {
 			this.Disposed += new EventHandler(delegate(object sender, EventArgs e) {
 				UserSettings.Instance.ChangeCompleted -= this.LoadFromUserSettings;
 			});
+			//外部コマンド
+			UserCommandsManager.Instance.UserCommandsChanged += new UserCommandsChangedEventHandler(this.LoadFromUserCommands);
+			this.Disposed += new EventHandler(delegate(object sender, EventArgs e) {
+				UserCommandsManager.Instance.UserCommandsChanged -= this.LoadFromUserCommands;
+			});
 		}
 		
 		public void Clear() {
@@ -139,6 +145,7 @@ namespace Yusen.GExplorer {
 			this.tsmiProperty.Enabled = isSelected;
 			this.tsmiDetail.Enabled = isSelected;
 			this.tsmiPackage.Enabled = isSelected;
+			this.tsmiCommands.Enabled = isSelected && 0<this.tsmiCommands.DropDownItems.Count;
 			
 			this.tsmiSpecial.Enabled = false;
 			foreach(ListViewItem item in this.lviewGenre.SelectedItems) {
@@ -177,6 +184,23 @@ namespace Yusen.GExplorer {
 			settings.LvColWidthLead = this.chLead.Width;
 			
 			settings.OnChangeCompleted();
+		}
+		private void LoadFromUserCommands() {
+			this.tsmiCommands.DropDownItems.Clear();
+			foreach(UserCommand uc in UserCommandsManager.Instance) {
+				ToolStripMenuItem mi = new ToolStripMenuItem(
+					uc.Title, null,
+					new EventHandler(delegate(object sender, EventArgs e) {
+						List<GContent> contents = new List<GContent>();
+						foreach(ListViewItem lvi in this.lviewGenre.SelectedItems) {
+							contents.Add((GContent)lvi.Tag);
+						}
+						((UserCommand)((ToolStripMenuItem)sender).Tag).Execute(contents);
+					}));
+				mi.Tag = uc;
+				this.tsmiCommands.DropDownItems.Add(mi);
+			}
+			this.tsmiCommands.Enabled = 0 != this.tsmiCommands.DropDownItems.Count;
 		}
 	}
 }
