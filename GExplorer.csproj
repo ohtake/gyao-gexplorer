@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Yusen.GExplorer</RootNamespace>
     <AssemblyName>GExplorer</AssemblyName>
-    <ApplicationIcon>Resources\Icon_3_973.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\GExplorer_32x32_16.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -49,11 +49,11 @@
     <Compile Include="CookieFetchForm.Designer.cs">
       <DependentUpon>CookieFetchForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="GContentPropertyViewer.cs">
+    <Compile Include="ContentPropertyViewer.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GContentPropertyViewer.Designer.cs">
-      <DependentUpon>GContentPropertyViewer.cs</DependentUpon>
+    <Compile Include="ContentPropertyViewer.Designer.cs">
+      <DependentUpon>ContentPropertyViewer.cs</DependentUpon>
     </Compile>
     <Compile Include="PlayerForm.cs">
       <SubType>Form</SubType>
@@ -67,12 +67,6 @@
     </Compile>
     <Compile Include="GenreListView.Designer.cs">
       <DependentUpon>GenreListView.cs</DependentUpon>
-    </Compile>
-    <Compile Include="GenreViewer.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="GenreViewer.Designer.cs">
-      <DependentUpon>GenreViewer.cs</DependentUpon>
     </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
@@ -88,17 +82,14 @@
     <EmbeddedResource Include="CookieFetchForm.resx">
       <DependentUpon>CookieFetchForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GContentPropertyViewer.resx">
-      <DependentUpon>GContentPropertyViewer.cs</DependentUpon>
+    <EmbeddedResource Include="ContentPropertyViewer.resx">
+      <DependentUpon>ContentPropertyViewer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PlayerForm.resx">
       <DependentUpon>PlayerForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GenreListView.resx">
       <DependentUpon>GenreListView.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="GenreViewer.resx">
-      <DependentUpon>GenreViewer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
@@ -180,6 +171,8 @@
     <Content Include="ReadMe.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Resources\GExplorer_16x16_16.ico" />
+    <Content Include="Resources\GExplorer_32x32_16.ico" />
     <Content Include="Resources\Icon_3_973.ico" />
     <Content Include="Resources\normal16.ico" />
     <Content Include="Resources\normal16new.ico" />
@@ -189,7 +182,7 @@
     <Content Include="Resources\special16new.ico" />
     <Content Include="Resources\special32.ico" />
     <Content Include="Resources\special32new.ico" />
-    <Content Include="UserCommands.xml">
+    <Content Include="Samples\UserCommands.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

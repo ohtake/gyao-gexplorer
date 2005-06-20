@@ -48,6 +48,7 @@ namespace Yusen.GExplorer {
 			this.tsmiProperty = new System.Windows.Forms.ToolStripMenuItem();
 			this.ilLarge = new System.Windows.Forms.ImageList(this.components);
 			this.ilSmall = new System.Windows.Forms.ImageList(this.components);
+			this.tsmiFullRowSelect = new System.Windows.Forms.ToolStripMenuItem();
 			this.cmsListView.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -60,6 +61,7 @@ namespace Yusen.GExplorer {
             this.chLead});
 			this.lviewGenre.ContextMenuStrip = this.cmsListView;
 			this.lviewGenre.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.lviewGenre.FullRowSelect = true;
 			this.lviewGenre.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
 			this.lviewGenre.LargeImageList = this.ilLarge;
 			this.lviewGenre.Location = new System.Drawing.Point(0, 0);
@@ -108,13 +110,14 @@ namespace Yusen.GExplorer {
             this.tsmiCommands,
             this.toolStripSeparator4,
             this.tsmiMultipulSelect,
+            this.tsmiFullRowSelect,
             this.tsmiView,
             this.toolStripSeparator5,
             this.tsmiProperty});
 			this.cmsListView.Location = new System.Drawing.Point(21, 36);
 			this.cmsListView.Name = "contextMenuStrip1";
 			this.cmsListView.RightToLeft = System.Windows.Forms.RightToLeft.No;
-			this.cmsListView.Size = new System.Drawing.Size(247, 273);
+			this.cmsListView.Size = new System.Drawing.Size(247, 295);
 			this.cmsListView.Visible = true;
 			// 
 			// tsmiPlay
@@ -204,6 +207,14 @@ namespace Yusen.GExplorer {
 			this.ilSmall.Images.SetKeyName(2, "special16.ico");
 			this.ilSmall.Images.SetKeyName(3, "special16new.ico");
 			// 
+			// tsmiFullRowSelect
+			// 
+			this.tsmiFullRowSelect.Checked = true;
+			this.tsmiFullRowSelect.CheckOnClick = true;
+			this.tsmiFullRowSelect.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.tsmiFullRowSelect.Name = "tsmiFullRowSelect";
+			this.tsmiFullRowSelect.Text = "çsëSëÃÇ≈ëIë (&F)";
+			// 
 			// GenreListView
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -241,5 +252,6 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ToolStripMenuItem tsmiMultipulSelect;
 		private System.Windows.Forms.ToolStripMenuItem tsmiProperty;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
+		private System.Windows.Forms.ToolStripMenuItem tsmiFullRowSelect;
 	}
 }

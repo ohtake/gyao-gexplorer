@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Net;
-using System.Text;
+using WebClient = System.Net.WebClient;
+using Encoding = System.Text.Encoding;
 using System.Text.RegularExpressions;
 using System.IO;
 
@@ -18,8 +18,8 @@ namespace Yusen.GExplorer{
 	/// <summary>GyaOにおける genre．映画，ドラマなど．</summary>
 	class GGenre{
 		public static event LoadingPackagesEventHandler LoadingPackages;
-		
-		private static IEnumerable<GGenre> allGenres =
+
+		private static readonly GGenre[] allGenres =
 			new GGenre[]{
 				new GGenre( 1, "映画", "cinema"),
 				new GGenre( 2, "ドラマ", "dorama"),
@@ -85,7 +85,7 @@ namespace Yusen.GExplorer{
 		}
 		[Category("専ブラが付加した情報")]
 		[Description("読み込み済みであるか否か．")]
-		public bool IsLoaded {
+		public bool HasLoaded {
 			get {
 				return null != this.children;
 			}
@@ -93,7 +93,7 @@ namespace Yusen.GExplorer{
 		[Browsable(false)]
 		public IEnumerable<GPackage> Packages {
 			get {
-				if(! this.IsLoaded) throw new InvalidOperationException();
+				if(! this.HasLoaded) throw new InvalidOperationException();
 				return this.children;
 			}
 		}
@@ -286,7 +286,7 @@ namespace Yusen.GExplorer{
 		[Description("特集ページのURI．専ブラでは特集ページの解析は行っていないので通常のウェブブラウザで中身を確認する必要あり．")]
 		public Uri SpecialPageUri {
 			get {
-				if(null == this.specialPage) {
+				if(null == this.specialPage){
 					//throw new InvalidOperationException();
 					return null;
 				}
@@ -307,7 +307,7 @@ namespace Yusen.GExplorer{
 		}
 		[Category("専ブラが付加した情報")]
 		[Description("読み込み済みであるか否か．")]
-		public bool IsLoaded {
+		public bool HasLoaded {
 			get {
 				return null != this.children;
 			}
@@ -315,7 +315,7 @@ namespace Yusen.GExplorer{
 		[Browsable(false)]
 		public IEnumerable<GContent> Contents {
 			get {
-				if(! this.IsLoaded) throw new InvalidOperationException();
+				if(! this.HasLoaded) throw new InvalidOperationException();
 				return this.children;
 			}
 		}
@@ -346,14 +346,14 @@ namespace Yusen.GExplorer{
 			while(null != (line = reader.ReadLine())){
 				Match match = GPackage.regexPCatch.Match(line);
 				if(match.Success) {
-					this.PackageCatch = match.Groups[1].Value;
+					this.PackageCatch = Utility.UnescapeHtmlEntity(match.Groups[1].Value);
 					break;
 				}
 			}
 			while(null != (line = reader.ReadLine())) {
 				Match match = GPackage.regexPText.Match(line);
 				if(match.Success) {
-					this.PackageText = match.Groups[1].Value;
+					this.PackageText = Utility.UnescapeHtmlEntity(match.Groups[1].Value);
 					break;
 				}
 			}
@@ -365,7 +365,7 @@ namespace Yusen.GExplorer{
 				while(null != (line = reader.ReadLine())) {
 					Match match = GPackage.regexSnum.Match(line);
 					if(match.Success) {
-						snum = match.Groups[1].Value;
+						snum = Utility.UnescapeHtmlEntity(match.Groups[1].Value);
 						break;
 					}
 				}
@@ -387,7 +387,7 @@ namespace Yusen.GExplorer{
 				while(null != (line = reader.ReadLine())) {
 					Match match = GPackage.regexLimit.Match(line);
 					if(match.Success) {
-						limit = match.Groups[1].Value;
+						limit = Utility.UnescapeHtmlEntity(match.Groups[1].Value);
 						break;
 					}
 				}
@@ -395,7 +395,7 @@ namespace Yusen.GExplorer{
 				while(null != (line = reader.ReadLine())) {
 					Match match = GPackage.regexStory.Match(line);
 					if(match.Success) {
-						story = match.Groups[1].Value;
+						story = Utility.UnescapeHtmlEntity(match.Groups[1].Value);
 						break;
 					}
 				}
@@ -410,7 +410,7 @@ namespace Yusen.GExplorer{
 				if(null == line) break;
 				contents.Add(new GContent(this, contId, snum, story, isNew, limit));
 			}
-
+			
 			this.children = contents;
 			this.lastFetch = DateTime.Now;
 			return this.Contents;

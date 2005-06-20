@@ -65,15 +65,9 @@ namespace Yusen.GExplorer.Properties {
             }
         }
         
-        internal static System.Drawing.Icon Icon_3_973 {
+        internal static System.Drawing.Icon GExplorer_16x16_16 {
             get {
-                return ((System.Drawing.Icon)(ResourceManager.GetObject("Icon_3_973", resourceCulture)));
-            }
-        }
-        
-        internal static System.Drawing.Icon Icon_4_13 {
-            get {
-                return ((System.Drawing.Icon)(ResourceManager.GetObject("Icon_4_13", resourceCulture)));
+                return ((System.Drawing.Icon)(ResourceManager.GetObject("GExplorer_16x16_16", resourceCulture)));
             }
         }
     }

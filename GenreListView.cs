@@ -19,10 +19,17 @@ namespace Yusen.GExplorer {
 		private GGenre genre = null;
 		
 		public GenreListView() {
-			InitializeComponent();
-			this.LoadFromUserSettings();
-			this.LoadFromUserCommands();
+			this.InitializeComponent();
+			this.LoadSettings();
+			this.LoadCommands();
 			
+			//項目の選択
+			this.lviewGenre.SelectedIndexChanged += new EventHandler(delegate(object sender, EventArgs e) {
+				if(this.lviewGenre.SelectedItems.Count > 0) {
+					ContentPropertyViewer.Instance.Content = 
+						(GContent)this.lviewGenre.SelectedItems[0].Tag;
+				}
+			});
 			//項目をダブルクリック
 			this.lviewGenre.DoubleClick += new EventHandler(this.Play);
 			//Enterキーでも再生
@@ -32,7 +39,7 @@ namespace Yusen.GExplorer {
 						this.Play(sender, e);
 					}
 				});
-			//コンテキストメニューの有効無効切り替え
+			//コンテキストメニューのアイテム有効無効切り替え
 			this.cmsListView.Opening += new CancelEventHandler(this.cmsListView_Opening);
 			//コンテキストメニューのイベント
 			this.tsmiPlay.Click += new EventHandler(this.Play);
@@ -42,8 +49,10 @@ namespace Yusen.GExplorer {
 				}
 			});
 			this.tsmiProperty.Click += new EventHandler(delegate(object sender, EventArgs e) {
-				foreach(ListViewItem selItem in this.lviewGenre.SelectedItems) {
-					new GContentPropertyViewer((GContent)selItem.Tag).Show();
+				if(this.lviewGenre.SelectedItems.Count > 0) {
+					ContentPropertyViewer.Instance.Show();
+					ContentPropertyViewer.Instance.Content = (GContent)this.lviewGenre.SelectedItems[0].Tag;
+					ContentPropertyViewer.Instance.Focus();
 				}
 			});
 			this.tsmiDetail.Click += new EventHandler(delegate(object sender, EventArgs e) {
@@ -67,11 +76,15 @@ namespace Yusen.GExplorer {
 			this.tsmiGenre.Click += new EventHandler(delegate(object sender, EventArgs e) {
 				Utility.BrowseWithIE(this.genre.GenreTopPageUri);
 			});
+			//表示オプション
 			this.tsmiMultipulSelect.Click += new EventHandler(delegate(object sender, EventArgs e) {
 				this.lviewGenre.MultiSelect = this.tsmiMultipulSelect.Checked;
-				this.SaveToUserSettings();
+				this.SaveSettings();
 			});
-			// 表示形式の選択
+			this.tsmiFullRowSelect.Click += new EventHandler(delegate(object sender, EventArgs e) {
+				this.lviewGenre.FullRowSelect = this.tsmiFullRowSelect.Checked;
+				this.SaveSettings();
+			});
 			foreach(View v in Enum.GetValues(typeof(View))) {
 				ToolStripMenuItem item = new ToolStripMenuItem(v.ToString());
 				item.Tag = v;
@@ -82,7 +95,7 @@ namespace Yusen.GExplorer {
 					}
 					selItem.Checked = true;
 					this.lviewGenre.View = (View)selItem.Tag;
-					this.SaveToUserSettings();
+					this.SaveSettings();
 				});
 				item.Checked = (v == this.lviewGenre.View);
 				this.tsmiView.DropDownItems.Add(item);
@@ -93,14 +106,14 @@ namespace Yusen.GExplorer {
 			this.lviewGenre.ColumnWidthChanged +=
 				new ColumnWidthChangedEventHandler(this.SaveToUserSettings);
 			UserSettings.Instance.ChangeCompleted +=
-				new UserSettingsChangeCompletedEventHandler(this.LoadFromUserSettings);
+				new UserSettingsChangeCompletedEventHandler(this.LoadSettings);
 			this.Disposed += new EventHandler(delegate(object sender, EventArgs e) {
-				UserSettings.Instance.ChangeCompleted -= this.LoadFromUserSettings;
+				UserSettings.Instance.ChangeCompleted -= this.LoadSettings;
 			});
 			//外部コマンド
-			UserCommandsManager.Instance.UserCommandsChanged += new UserCommandsChangedEventHandler(this.LoadFromUserCommands);
+			UserCommandsManager.Instance.UserCommandsChanged += new UserCommandsChangedEventHandler(this.LoadCommands);
 			this.Disposed += new EventHandler(delegate(object sender, EventArgs e) {
-				UserCommandsManager.Instance.UserCommandsChanged -= this.LoadFromUserCommands;
+				UserCommandsManager.Instance.UserCommandsChanged -= this.LoadCommands;
 			});
 		}
 		
@@ -134,10 +147,14 @@ namespace Yusen.GExplorer {
 		
 		private void Play(object sender, EventArgs e) {
 			foreach(ListViewItem selitem in this.lviewGenre.SelectedItems) {
-				new PlayerForm((GContent)selitem.Tag).Show();
+				PlayerForm.Instance.Show();
+				PlayerForm.Instance.Content = (GContent)selitem.Tag;
+				PlayerForm.Instance.Focus();
+				break;//再生ウィンドウを一つのみしか表示しないようにしてみる
+				//new PlayerForm((GContent)selitem.Tag).Show();
 			}
 		}
-
+		
 		private void cmsListView_Opening(object sender, CancelEventArgs e) {
 			bool isSelected = (0 < this.lviewGenre.SelectedItems.Count);
 			this.tsmiPlay.Enabled = isSelected;
@@ -157,9 +174,10 @@ namespace Yusen.GExplorer {
 			this.tsmiGenre.Enabled = (null != this.genre);
 		}
 
-		public void LoadFromUserSettings(){
+		public void LoadSettings(){
 			UserSettings settings = UserSettings.Instance;
 			this.lviewGenre.MultiSelect = settings.LvMultiSelect;
+			this.lviewGenre.FullRowSelect = settings.LvFullRowSelect;
 			this.lviewGenre.View = settings.LvView;
 			if(this.chId.Width != settings.LvColWidthId) this.chId.Width = settings.LvColWidthId;
 			if(this.chLimit.Width != settings.LvColWidthLimit) this.chLimit.Width = settings.LvColWidthLimit;
@@ -167,16 +185,18 @@ namespace Yusen.GExplorer {
 			if(this.chLead.Width != settings.LvColWidthLead) this.chLead.Width = settings.LvColWidthLead;
 			
 			this.tsmiMultipulSelect.Checked = this.lviewGenre.MultiSelect;
+			this.tsmiFullRowSelect.Checked = this.lviewGenre.FullRowSelect;
 			foreach(ToolStripMenuItem mi in this.tsmiView.DropDownItems) {
 				mi.Checked = ((View)mi.Tag == this.lviewGenre.View);
 			}
 		}
 		private void SaveToUserSettings(object sender, EventArgs e) {
-			this.SaveToUserSettings();
+			this.SaveSettings();
 		}
-		public void SaveToUserSettings(){
+		public void SaveSettings(){
 			UserSettings settings = UserSettings.Instance;
 			settings.LvMultiSelect = this.lviewGenre.MultiSelect;
+			settings.LvFullRowSelect = this.lviewGenre.FullRowSelect;
 			settings.LvView = this.lviewGenre.View;
 			settings.LvColWidthId = this.chId.Width;
 			settings.LvColWidthLimit = this.chLimit.Width;
@@ -185,7 +205,7 @@ namespace Yusen.GExplorer {
 			
 			settings.OnChangeCompleted();
 		}
-		private void LoadFromUserCommands() {
+		private void LoadCommands() {
 			this.tsmiCommands.DropDownItems.Clear();
 			foreach(UserCommand uc in UserCommandsManager.Instance) {
 				ToolStripMenuItem mi = new ToolStripMenuItem(

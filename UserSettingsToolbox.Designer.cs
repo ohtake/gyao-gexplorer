@@ -15,7 +15,7 @@ namespace Yusen.GExplorer {
 			}
 			base.Dispose(disposing);
 		}
-
+		
 		#region Windows Form Designer generated code
 
 		/// <summary>
@@ -78,7 +78,7 @@ namespace Yusen.GExplorer {
 		}
 
 		#endregion
-
+		
 		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
 		private System.Windows.Forms.CheckBox chkTopMost;
 		private System.Windows.Forms.PropertyGrid propertyGrid1;

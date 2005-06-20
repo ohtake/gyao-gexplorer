@@ -71,38 +71,37 @@ namespace Yusen.GExplorer {
 				Match match = UserCommand.varientExtractor.Match(args);
 				if(!match.Success) break;
 				Type type = null;
+				GContent[] contArray = new List<GContent>(contents).ToArray();
+				Object[] gArray = null;
 				switch(match.Groups["classPrefix"].Value) {
 					case "g":
 						type = typeof(GGenre);
+						gArray = Array.ConvertAll<GContent, GGenre>(
+							contArray,
+							new Converter<GContent, GGenre>(delegate(GContent input) {
+								return input.Genre;
+							}));
 						break;
 					case "p":
 						type = typeof(GPackage);
+						gArray = Array.ConvertAll<GContent, GPackage>(
+							contArray,
+							new Converter<GContent, GPackage>(delegate(GContent input) {
+								return input.Package;
+							}));
 						break;
 					case "c":
 						type = typeof(GContent);
+						gArray = contArray;
 						break;
 					default:
 						throw new Exception();
 				}
 				PropertyInfo pi = type.GetProperty(match.Groups["property"].Value);
 				StringBuilder sb = new StringBuilder();
-				foreach(GContent c in contents) {
-					Object o = null;
-					switch(match.Groups["classPrefix"].Value) {
-						case "g":
-							o = c.Genre;
-							break;
-						case "p":
-							o = c.Package;
-							break;
-						case "c":
-							o = c;
-							break;
-						default:
-							throw new Exception();
-					}
+				foreach(object g in gArray) {
 					try {
-						sb.Append(pi.GetValue(o, null).ToString() + " ");//スペース区切り
+						sb.Append(pi.GetValue(g, null).ToString() + " ");//スペース区切り
 					} catch(Exception e) {
 						Utility.DisplayException(e);
 						return;
@@ -170,7 +169,6 @@ namespace Yusen.GExplorer {
 		
 		public event UserCommandsChangedEventHandler UserCommandsChanged;
 		private List<UserCommand> commands = new List<UserCommand>();
-		private UserCommandsEditor editor = null;
 		
 		private UserCommandsManager() {
 		}
@@ -223,15 +221,6 @@ namespace Yusen.GExplorer {
 		public void Sort() {
 			this.commands.Sort();
 			this.OnUserCommandsChanged();
-		}
-
-		public void ShowEditor() {
-			if(null == this.editor || !this.editor.Visible) {
-				this.editor = new UserCommandsEditor();
-				this.editor.Show();
-			} else {
-				this.editor.Focus();
-			}
 		}
 	}
 }

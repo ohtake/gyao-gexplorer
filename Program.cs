@@ -27,7 +27,7 @@ namespace Yusen.GExplorer {
 			}
 			
 			UserCommandsManager.LoadCommandsFromFile();
-			Application.Run(new MainForm());
+			Application.Run(MainForm.Instance);
 			UserCommandsManager.SaveCommandsToFile();
 			UserSettings.SaveSettingsToFile();
 		}

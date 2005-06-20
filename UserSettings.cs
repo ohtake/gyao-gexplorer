@@ -9,8 +9,8 @@ using System.Drawing;
 
 namespace Yusen.GExplorer {
 	interface IUsesUserSettings {
-		void LoadFromUserSettings();
-		void SaveToUserSettings();
+		void LoadSettings();
+		void SaveSettings();
 	}
 	
 	delegate void UserSettingsChangeCompletedEventHandler();
@@ -74,16 +74,7 @@ namespace Yusen.GExplorer {
 				this.ChangeCompleted();
 			}
 		}
-		private UserSettingsToolbox toolbox = null;
-		public void ShowUserSettingsForm() {
-			if(null == this.toolbox || !this.toolbox.CanFocus) {
-				this.toolbox = new UserSettingsToolbox();
-				this.toolbox.Show();
-			} else {
-				this.toolbox.Focus();
-			}
-		}
-
+		
 		/// <summary>
 		/// 設定ファイルに userNo が保存されていたら再取得の必要なしなので false が返る．
 		/// </summary>
@@ -138,7 +129,7 @@ namespace Yusen.GExplorer {
 		#region ユーザ設定ツールボックス
 		private FormStartPosition ustStartPosition = FormStartPosition.Manual;
 		private Size ustSize = new Size(240, 400);
-		private Point ustLocation = new Point(150, 150);
+		private Point ustLocation = new Point(50, 150);
 		private bool ustTopMost = false;
 
 		[Category("ユーザ設定ツールボックス")]
@@ -193,8 +184,10 @@ namespace Yusen.GExplorer {
 		private bool playerAutoVolume = true;
 		private bool playerAlwaysOnTop = false;
 		private Size playerSize = new Size(670, 640);
-
-		[Category("専用プレーヤの初期設定")]
+		private Point playerLocation = new Point(0, 0);
+		private FormStartPosition playerStartPosition = FormStartPosition.Manual;
+		
+		[Category("専用プレーヤ")]
 		[DisplayName("自動音量調整")]
 		[Description("CMと思わしき動画の音量を10にし，そうではないのを100にします．")]
 		[DefaultValue(true)]
@@ -206,7 +199,7 @@ namespace Yusen.GExplorer {
 				this.playerAutoVolume = value;
 			}
 		}
-		[Category("専用プレーヤの初期設定")]
+		[Category("専用プレーヤ")]
 		[DisplayName("常に手前に表示")]
 		[Description("最前面で表示するようにします．")]
 		[DefaultValue(false)]
@@ -218,7 +211,7 @@ namespace Yusen.GExplorer {
 				this.playerAlwaysOnTop = value;
 			}
 		}
-		[Category("専用プレーヤの初期設定")]
+		[Category("専用プレーヤ")]
 		[DisplayName("サイズ")]
 		[Description("ウィンドウのサイズ．")]
 		public Size PlayerSize {
@@ -227,6 +220,29 @@ namespace Yusen.GExplorer {
 			}
 			set {
 				this.playerSize = value;
+			}
+		}
+		[Category("専用プレーヤ")]
+		[DisplayName("位置")]
+		[Description("ウィンドウの位置．初期配置をManualにする必要あり．")]
+		public Point PlayerLocation {
+			get {
+				return this.playerLocation;
+			}
+			set {
+				this.playerLocation = value;
+			}
+		}
+		[Category("専用プレーヤ")]
+		[DisplayName("初期配置")]
+		[Description("起動したときに表示される位置の決定方法．")]
+		[DefaultValue(FormStartPosition.Manual)]
+		public FormStartPosition PlayerStartPosition {
+			get {
+				return this.playerStartPosition;
+			}
+			set {
+				this.playerStartPosition = value;
 			}
 		}
 		#endregion
@@ -273,7 +289,7 @@ namespace Yusen.GExplorer {
 		}
 		[Category("メインフォーム")]
 		[DisplayName("位置")]
-		[Description("位置．初期配置をManualにする必要あり．")]
+		[Description("ウィンドウの位置．初期配置をManualにする必要あり．")]
 		public Point MfLocation {
 			get {
 				return this.mfLocation;
@@ -286,6 +302,7 @@ namespace Yusen.GExplorer {
 		
 		#region リストビュー
 		private bool lvMultiSelect = false;
+		private bool lvFullRowSelect = true;
 		private View lvView = View.Details;
 		private int lvColWidthId = 90;
 		private int lvColWidthLimit = 80;
@@ -302,6 +319,18 @@ namespace Yusen.GExplorer {
 			}
 			set {
 				this.lvMultiSelect = value;
+			}
+		}
+		[Category("リストビュー")]
+		[DisplayName("行全体で選択")]
+		[Description("表示形式が Details の時，行全体を選択します．")]
+		[DefaultValue(true)]
+		public bool LvFullRowSelect {
+			get {
+				return this.lvFullRowSelect;
+			}
+			set {
+				this.lvFullRowSelect = value;
 			}
 		}
 		[Category("リストビュー")]
@@ -368,7 +397,11 @@ namespace Yusen.GExplorer {
 		
 		#region コンテンツプロパティビューア
 		private Size gcpvSize = new Size(260, 310);
-		[Category("コンテンツプロパティビューアの初期設定")]
+		private Point gcpvLocation = new Point(500, 50);
+		private FormStartPosition gcpvStartPosition = FormStartPosition.Manual;
+		private bool gcpvTopMost = false;
+		
+		[Category("コンテンツプロパティビューア")]
 		[DisplayName("サイズ")]
 		[Description("ウィンドウのサイズ．")]
 		public Size GcpvSize {
@@ -377,6 +410,81 @@ namespace Yusen.GExplorer {
 			}
 			set {
 				this.gcpvSize = value;
+			}
+		}
+		[Category("コンテンツプロパティビューア")]
+		[DisplayName("位置")]
+		[Description("ウィンドウの位置．初期配置をManualにする必要あり．")]
+		public Point GcpvLocation {
+			get {
+				return this.gcpvLocation;
+			}
+			set {
+				this.gcpvLocation = value;
+			}
+		}
+		[Category("コンテンツプロパティビューア")]
+		[DisplayName("初期配置")]
+		[Description("起動したときに表示される位置の決定方法．")]
+		[DefaultValue(FormStartPosition.Manual)]
+		public FormStartPosition GcpvStartPosition {
+			get {
+				return this.gcpvStartPosition;
+			}
+			set {
+				this.gcpvStartPosition = value;
+			}
+		}
+		[Category("コンテンツプロパティビューア")]
+		[DisplayName("常に手前に表示")]
+		[Description("常に手前に表示します．")]
+		[DefaultValue(false)]
+		public bool GcpvTopMost {
+			get {
+				return this.gcpvTopMost;
+			}
+			set {
+				this.gcpvTopMost = value;
+			}
+		}
+		#endregion
+
+		#region 外部コマンドエディタ
+		private Size uceSize = new Size(360, 340);
+		private Point uceLocation = new Point(200, 50);
+		private FormStartPosition uceStartPosition = FormStartPosition.Manual;
+		[Category("外部コマンドエディタ")]
+		[DisplayName("サイズ")]
+		[Description("ウィンドウのサイズ．")]
+		public Size UceSize {
+			get {
+				return this.uceSize;
+			}
+			set {
+				this.uceSize = value;
+			}
+		}
+		[Category("外部コマンドエディタ")]
+		[DisplayName("位置")]
+		[Description("ウィンドウの位置．初期配置をManualにする必要あり．")]
+		public Point UceLocation {
+			get {
+				return this.uceLocation;
+			}
+			set {
+				this.uceLocation = value;
+			}
+		}
+		[Category("外部コマンドエディタ")]
+		[DisplayName("初期配置")]
+		[Description("起動したときに表示される位置の決定方法．")]
+		[DefaultValue(FormStartPosition.Manual)]
+		public FormStartPosition UceStartPosition {
+			get {
+				return this.uceStartPosition;
+			}
+			set {
+				this.uceStartPosition = value;
 			}
 		}
 		#endregion

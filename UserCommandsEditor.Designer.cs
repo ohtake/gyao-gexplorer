@@ -58,9 +58,9 @@ namespace Yusen.GExplorer {
 			this.grpDetail.Controls.Add(this.btnModify);
 			this.grpDetail.Controls.Add(this.tableLayoutPanel1);
 			this.grpDetail.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.grpDetail.Location = new System.Drawing.Point(3, 169);
+			this.grpDetail.Location = new System.Drawing.Point(3, 172);
 			this.grpDetail.Name = "grpDetail";
-			this.grpDetail.Size = new System.Drawing.Size(345, 139);
+			this.grpDetail.Size = new System.Drawing.Size(346, 139);
 			this.grpDetail.TabIndex = 200;
 			this.grpDetail.TabStop = false;
 			this.grpDetail.Text = "外部コマンドの挿入と変更 (&E)";
@@ -103,7 +103,7 @@ namespace Yusen.GExplorer {
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-			this.tableLayoutPanel1.Size = new System.Drawing.Size(339, 90);
+			this.tableLayoutPanel1.Size = new System.Drawing.Size(340, 90);
 			this.tableLayoutPanel1.TabIndex = 0;
 			// 
 			// lblTitle
@@ -121,7 +121,7 @@ namespace Yusen.GExplorer {
 			this.txtTitle.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.txtTitle.Location = new System.Drawing.Point(93, 3);
 			this.txtTitle.Name = "txtTitle";
-			this.txtTitle.Size = new System.Drawing.Size(163, 19);
+			this.txtTitle.Size = new System.Drawing.Size(164, 19);
 			this.txtTitle.TabIndex = 212;
 			// 
 			// lblFile
@@ -139,13 +139,13 @@ namespace Yusen.GExplorer {
 			this.txtFile.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.txtFile.Location = new System.Drawing.Point(93, 33);
 			this.txtFile.Name = "txtFile";
-			this.txtFile.Size = new System.Drawing.Size(163, 19);
+			this.txtFile.Size = new System.Drawing.Size(164, 19);
 			this.txtFile.TabIndex = 214;
 			// 
 			// btnBrowse
 			// 
 			this.btnBrowse.Anchor = System.Windows.Forms.AnchorStyles.None;
-			this.btnBrowse.Location = new System.Drawing.Point(264, 33);
+			this.btnBrowse.Location = new System.Drawing.Point(265, 33);
 			this.btnBrowse.Name = "btnBrowse";
 			this.btnBrowse.Size = new System.Drawing.Size(69, 23);
 			this.btnBrowse.TabIndex = 215;
@@ -167,7 +167,7 @@ namespace Yusen.GExplorer {
 			this.txtArg.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.txtArg.Location = new System.Drawing.Point(93, 63);
 			this.txtArg.Name = "txtArg";
-			this.txtArg.Size = new System.Drawing.Size(163, 19);
+			this.txtArg.Size = new System.Drawing.Size(164, 19);
 			this.txtArg.TabIndex = 217;
 			// 
 			// btnUp
@@ -204,7 +204,7 @@ namespace Yusen.GExplorer {
 			this.panel1.Controls.Add(this.btnDown);
 			this.panel1.Controls.Add(this.btnDelete);
 			this.panel1.Controls.Add(this.btnSort);
-			this.panel1.Location = new System.Drawing.Point(254, 3);
+			this.panel1.Location = new System.Drawing.Point(255, 4);
 			this.panel1.Name = "panel1";
 			this.panel1.Size = new System.Drawing.Size(82, 136);
 			this.panel1.TabIndex = 6;
@@ -224,7 +224,7 @@ namespace Yusen.GExplorer {
 			this.grpList.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.grpList.Location = new System.Drawing.Point(3, 3);
 			this.grpList.Name = "grpList";
-			this.grpList.Size = new System.Drawing.Size(345, 160);
+			this.grpList.Size = new System.Drawing.Size(346, 163);
 			this.grpList.TabIndex = 100;
 			this.grpList.TabStop = false;
 			this.grpList.Text = "外部コマンド一覧 (&L)";
@@ -241,7 +241,7 @@ namespace Yusen.GExplorer {
 			this.tableLayoutPanel2.Name = "tableLayoutPanel2";
 			this.tableLayoutPanel2.RowCount = 1;
 			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-			this.tableLayoutPanel2.Size = new System.Drawing.Size(339, 142);
+			this.tableLayoutPanel2.Size = new System.Drawing.Size(340, 145);
 			this.tableLayoutPanel2.TabIndex = 7;
 			// 
 			// lboxCommands
@@ -251,7 +251,7 @@ namespace Yusen.GExplorer {
 			this.lboxCommands.ItemHeight = 12;
 			this.lboxCommands.Location = new System.Drawing.Point(3, 3);
 			this.lboxCommands.Name = "lboxCommands";
-			this.lboxCommands.Size = new System.Drawing.Size(245, 136);
+			this.lboxCommands.Size = new System.Drawing.Size(246, 136);
 			this.lboxCommands.TabIndex = 110;
 			this.lboxCommands.SelectedIndexChanged += new System.EventHandler(this.lboxCommands_SelectedIndexChanged);
 			// 
@@ -267,21 +267,23 @@ namespace Yusen.GExplorer {
 			this.tableLayoutPanel3.RowCount = 2;
 			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
 			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
-			this.tableLayoutPanel3.Size = new System.Drawing.Size(351, 311);
+			this.tableLayoutPanel3.Size = new System.Drawing.Size(352, 314);
 			this.tableLayoutPanel3.TabIndex = 8;
 			// 
 			// openFileDialog1
 			// 
 			this.openFileDialog1.FileName = "openFileDialog1";
 			this.openFileDialog1.Filter = "実行ファイル (*.exe)|*.exe|全てのファイル|*.*";
+			this.openFileDialog1.RestoreDirectory = true;
 			// 
 			// UserCommandsEditor
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(351, 311);
+			this.ClientSize = new System.Drawing.Size(352, 314);
 			this.Controls.Add(this.tableLayoutPanel3);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
+			this.MinimumSize = new System.Drawing.Size(360, 340);
 			this.Name = "UserCommandsEditor";
 			this.Text = "UserCommandsEditor";
 			this.grpDetail.ResumeLayout(false);

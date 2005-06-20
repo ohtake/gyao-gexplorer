@@ -3,9 +3,19 @@ using System.Windows.Forms;
 
 namespace Yusen.GExplorer {
 	partial class UserSettingsToolbox : Form, IUsesUserSettings{
-		public UserSettingsToolbox() {
+		private static UserSettingsToolbox instance = null;
+		public static UserSettingsToolbox Instance {
+			get {
+				if(null == UserSettingsToolbox.instance || !UserSettingsToolbox.instance.CanFocus) {
+					UserSettingsToolbox.instance = new UserSettingsToolbox();
+				}
+				return UserSettingsToolbox.instance;
+			}
+		}
+		
+		private UserSettingsToolbox() {
 			InitializeComponent();
-			this.LoadFromUserSettings();
+			this.LoadSettings();
 			this.Icon = Utility.GetGExplorerIcon();
 			this.Text = "ユーザ設定ツールボックス";
 			
@@ -14,12 +24,12 @@ namespace Yusen.GExplorer {
 			//常に手前に表示
 			this.chkTopMost.CheckedChanged += new EventHandler(delegate(object sender, EventArgs e) {
 				this.TopMost = this.chkTopMost.Checked;
-				this.SaveToUserSettings();
+				this.SaveSettings();
 			});
 			
 			//ユーザ設定
 			this.LocationChanged += new EventHandler(this.SaveToUserSettings);
-			this.Resize += new EventHandler(this.SaveToUserSettings);
+			this.SizeChanged += new EventHandler(this.SaveToUserSettings);
 			this.propertyGrid1.PropertyValueChanged += new PropertyValueChangedEventHandler(
 				delegate(object s, PropertyValueChangedEventArgs e) {
 					UserSettings.Instance.OnChangeCompleted();
@@ -33,10 +43,10 @@ namespace Yusen.GExplorer {
 		}
 		
 		private void ListeningUserSettings() {
-			this.LoadFromUserSettings();
+			this.LoadSettings();
 			this.propertyGrid1.Refresh();
 		}
-		public void LoadFromUserSettings(){
+		public void LoadSettings(){
 			UserSettings settings = UserSettings.Instance;
 			this.StartPosition = settings.UstStartPosition;
 			this.Location = settings.UstLocation;
@@ -46,9 +56,9 @@ namespace Yusen.GExplorer {
 			this.chkTopMost.Checked = this.TopMost;
 		}
 		private void SaveToUserSettings(object sender, EventArgs e) {
-			this.SaveToUserSettings();
+			this.SaveSettings();
 		}
-		public void SaveToUserSettings() {
+		public void SaveSettings() {
 			UserSettings settings = UserSettings.Instance;
 			settings.UstStartPosition = this.StartPosition;
 			settings.UstLocation = this.Location;

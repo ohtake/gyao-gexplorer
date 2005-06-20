@@ -27,18 +27,25 @@ namespace Yusen.GExplorer {
 			this.tspbPackages = new System.Windows.Forms.ToolStripProgressBar();
 			this.tsslCategoryStat = new System.Windows.Forms.ToolStripStatusLabel();
 			this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
-			this.genreViewer1 = new Yusen.GExplorer.GenreViewer();
 			this.menuStrip1 = new System.Windows.Forms.MenuStrip();
 			this.tsmiFile = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiQuit = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiTool = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiUserSettings = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiContentProperty = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiEditCommands = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiUserSettings = new System.Windows.Forms.ToolStripMenuItem();
+			this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+			this.tabGenre = new System.Windows.Forms.TabControl();
+			this.tabPage1 = new System.Windows.Forms.TabPage();
+			this.tabPage2 = new System.Windows.Forms.TabPage();
+			this.glvMain = new Yusen.GExplorer.GenreListView();
 			this.statstripMain.SuspendLayout();
 			this.toolStripContainer1.ContentPanel.SuspendLayout();
 			this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
 			this.toolStripContainer1.SuspendLayout();
 			this.menuStrip1.SuspendLayout();
+			this.tableLayoutPanel1.SuspendLayout();
+			this.tabGenre.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// statstripMain
@@ -69,7 +76,7 @@ namespace Yusen.GExplorer {
 			// 
 			// toolStripContainer1.ContentPanel
 			// 
-			this.toolStripContainer1.ContentPanel.Controls.Add(this.genreViewer1);
+			this.toolStripContainer1.ContentPanel.Controls.Add(this.tableLayoutPanel1);
 			this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.toolStripContainer1.Location = new System.Drawing.Point(0, 0);
 			this.toolStripContainer1.Name = "toolStripContainer1";
@@ -80,14 +87,6 @@ namespace Yusen.GExplorer {
 			// toolStripContainer1.TopToolStripPanel
 			// 
 			this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.menuStrip1);
-			// 
-			// genreViewer1
-			// 
-			this.genreViewer1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.genreViewer1.Location = new System.Drawing.Point(0, 0);
-			this.genreViewer1.Name = "genreViewer1";
-			this.genreViewer1.Size = new System.Drawing.Size(592, 369);
-			this.genreViewer1.TabIndex = 0;
 			// 
 			// menuStrip1
 			// 
@@ -118,20 +117,80 @@ namespace Yusen.GExplorer {
 			// tsmiTool
 			// 
 			this.tsmiTool.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiUserSettings,
-            this.tsmiEditCommands});
+            this.tsmiContentProperty,
+            this.tsmiEditCommands,
+            this.tsmiUserSettings});
 			this.tsmiTool.Name = "tsmiTool";
 			this.tsmiTool.Text = "ツール (&T)";
 			// 
-			// tsmiUserSettings
+			// tsmiContentProperty
 			// 
-			this.tsmiUserSettings.Name = "tsmiUserSettings";
-			this.tsmiUserSettings.Text = "ユーザ設定 (&U)";
+			this.tsmiContentProperty.Name = "tsmiContentProperty";
+			this.tsmiContentProperty.Text = "コンテンツプロパティビューア (&P)";
 			// 
 			// tsmiEditCommands
 			// 
 			this.tsmiEditCommands.Name = "tsmiEditCommands";
 			this.tsmiEditCommands.Text = "外部コマンドエディタ (&C)";
+			// 
+			// tsmiUserSettings
+			// 
+			this.tsmiUserSettings.Name = "tsmiUserSettings";
+			this.tsmiUserSettings.Text = "ユーザ設定ツールボックス (&U)";
+			// 
+			// tableLayoutPanel1
+			// 
+			this.tableLayoutPanel1.ColumnCount = 1;
+			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+			this.tableLayoutPanel1.Controls.Add(this.glvMain, 0, 1);
+			this.tableLayoutPanel1.Controls.Add(this.tabGenre, 0, 0);
+			this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+			this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+			this.tableLayoutPanel1.RowCount = 2;
+			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+			this.tableLayoutPanel1.Size = new System.Drawing.Size(592, 369);
+			this.tableLayoutPanel1.TabIndex = 1;
+			// 
+			// tabGenre
+			// 
+			this.tabGenre.Controls.Add(this.tabPage1);
+			this.tabGenre.Controls.Add(this.tabPage2);
+			this.tabGenre.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.tabGenre.Location = new System.Drawing.Point(0, 0);
+			this.tabGenre.Margin = new System.Windows.Forms.Padding(0);
+			this.tabGenre.Name = "tabGenre";
+			this.tabGenre.SelectedIndex = 0;
+			this.tabGenre.Size = new System.Drawing.Size(592, 20);
+			this.tabGenre.TabIndex = 1;
+			// 
+			// tabPage1
+			// 
+			this.tabPage1.Location = new System.Drawing.Point(4, 21);
+			this.tabPage1.Name = "tabPage1";
+			this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+			this.tabPage1.Size = new System.Drawing.Size(584, 0);
+			this.tabPage1.TabIndex = 0;
+			this.tabPage1.Text = "tabPage1";
+			// 
+			// tabPage2
+			// 
+			this.tabPage2.Location = new System.Drawing.Point(4, 21);
+			this.tabPage2.Name = "tabPage2";
+			this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+			this.tabPage2.Size = new System.Drawing.Size(584, 0);
+			this.tabPage2.TabIndex = 1;
+			this.tabPage2.Text = "tabPage2";
+			// 
+			// glvMain
+			// 
+			this.glvMain.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.glvMain.Location = new System.Drawing.Point(0, 20);
+			this.glvMain.Margin = new System.Windows.Forms.Padding(0);
+			this.glvMain.Name = "glvMain";
+			this.glvMain.Size = new System.Drawing.Size(592, 349);
+			this.glvMain.TabIndex = 0;
 			// 
 			// MainForm
 			// 
@@ -150,6 +209,8 @@ namespace Yusen.GExplorer {
 			this.toolStripContainer1.ResumeLayout(false);
 			this.toolStripContainer1.PerformLayout();
 			this.menuStrip1.ResumeLayout(false);
+			this.tableLayoutPanel1.ResumeLayout(false);
+			this.tabGenre.ResumeLayout(false);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -164,10 +225,15 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ToolStripMenuItem tsmiFile;
 		private System.Windows.Forms.ToolStripMenuItem tsmiQuit;
 		private System.Windows.Forms.ToolStripProgressBar tspbPackages;
-		private GenreViewer genreViewer1;
 		private System.Windows.Forms.ToolStripMenuItem tsmiTool;
 		private System.Windows.Forms.ToolStripMenuItem tsmiUserSettings;
 		private System.Windows.Forms.ToolStripMenuItem tsmiEditCommands;
+		private System.Windows.Forms.ToolStripMenuItem tsmiContentProperty;
+		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+		private System.Windows.Forms.TabControl tabGenre;
+		private System.Windows.Forms.TabPage tabPage1;
+		private System.Windows.Forms.TabPage tabPage2;
+		private GenreListView glvMain;
 	}
 }
 

@@ -9,6 +9,7 @@ namespace Yusen.GExplorer {
 	partial class AboutBox : Form {
 		public AboutBox() {
 			InitializeComponent();
+
 			//  Initialize the AboutBox to display the product information from the assembly information.
 			//  Change assembly information settings for your application through either:
 			//  - Project->Properties->Application->Assembly Information
@@ -19,7 +20,7 @@ namespace Yusen.GExplorer {
 			this.labelCopyright.Text = AssemblyCopyright;
 			this.labelCompanyName.Text = AssemblyCompany;
 			this.textBoxDescription.Text = AssemblyDescription;
-			
+
 			this.Icon = Utility.GetGExplorerIcon();
 		}
 

@@ -32,16 +32,19 @@ namespace Yusen.GExplorer {
 			this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
 			this.menuStrip1 = new System.Windows.Forms.MenuStrip();
 			this.tsmiFile = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiOpenGenre = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiProperty = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+			this.tsmiReload = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiClose = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiView = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiAlwaysOnTop = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiFullscreen = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiTool = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiAutoVolume = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiReload = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+			this.tsmiFocusOnWmp = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiCommands = new System.Windows.Forms.ToolStripMenuItem();
 			this.tabControl1.SuspendLayout();
 			this.tabPlayer.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.wmpMain)).BeginInit();
@@ -134,6 +137,7 @@ namespace Yusen.GExplorer {
 			// tsmiFile
 			// 
 			this.tsmiFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiOpenGenre,
             this.tsmiProperty,
             this.toolStripSeparator1,
             this.tsmiReload,
@@ -142,14 +146,29 @@ namespace Yusen.GExplorer {
 			this.tsmiFile.Name = "tsmiFile";
 			this.tsmiFile.Text = "ファイル (&F)";
 			// 
+			// tsmiOpenGenre
+			// 
+			this.tsmiOpenGenre.Name = "tsmiOpenGenre";
+			this.tsmiOpenGenre.Text = "このジャンルを開く (&G)";
+			// 
 			// tsmiProperty
 			// 
 			this.tsmiProperty.Name = "tsmiProperty";
-			this.tsmiProperty.Text = "プロパティ (&P)";
+			this.tsmiProperty.Text = "コンテンツのプロパティ (&P)";
 			// 
 			// toolStripSeparator1
 			// 
 			this.toolStripSeparator1.Name = "toolStripSeparator1";
+			// 
+			// tsmiReload
+			// 
+			this.tsmiReload.Name = "tsmiReload";
+			this.tsmiReload.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.R)));
+			this.tsmiReload.Text = "メディアファイルに再リクエスト (&R)";
+			// 
+			// toolStripSeparator2
+			// 
+			this.toolStripSeparator2.Name = "toolStripSeparator2";
 			// 
 			// tsmiClose
 			// 
@@ -180,7 +199,9 @@ namespace Yusen.GExplorer {
 			// tsmiTool
 			// 
 			this.tsmiTool.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiAutoVolume});
+            this.tsmiAutoVolume,
+            this.tsmiFocusOnWmp,
+            this.tsmiCommands});
 			this.tsmiTool.Name = "tsmiTool";
 			this.tsmiTool.Text = "ツール (&T)";
 			// 
@@ -190,15 +211,16 @@ namespace Yusen.GExplorer {
 			this.tsmiAutoVolume.Name = "tsmiAutoVolume";
 			this.tsmiAutoVolume.Text = "自動音量調整 (&V)";
 			// 
-			// tsmiReload
+			// tsmiFocusOnWmp
 			// 
-			this.tsmiReload.Name = "tsmiReload";
-			this.tsmiReload.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.R)));
-			this.tsmiReload.Text = "メディアファイルに再リクエスト pre-β (&R)";
+			this.tsmiFocusOnWmp.Name = "tsmiFocusOnWmp";
+			this.tsmiFocusOnWmp.ShortcutKeys = System.Windows.Forms.Keys.F6;
+			this.tsmiFocusOnWmp.Text = "WMPにフォーカスを送る (&F)";
 			// 
-			// toolStripSeparator2
+			// tsmiCommands
 			// 
-			this.toolStripSeparator2.Name = "toolStripSeparator2";
+			this.tsmiCommands.Name = "tsmiCommands";
+			this.tsmiCommands.Text = "外部コマンド (&C)";
 			// 
 			// PlayerForm
 			// 
@@ -242,5 +264,8 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
 		private System.Windows.Forms.ToolStripMenuItem tsmiReload;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+		private System.Windows.Forms.ToolStripMenuItem tsmiFocusOnWmp;
+		private System.Windows.Forms.ToolStripMenuItem tsmiOpenGenre;
+		private System.Windows.Forms.ToolStripMenuItem tsmiCommands;
 	}
 }

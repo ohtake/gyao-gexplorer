@@ -3,16 +3,30 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace Yusen.GExplorer {
-	partial class UserCommandsEditor : Form {
+	partial class UserCommandsEditor : Form , IUsesUserSettings{
+		private static UserCommandsEditor instance = null;
+		public static UserCommandsEditor Instance {
+			get {
+				if(null == UserCommandsEditor.instance || !UserCommandsEditor.instance.CanFocus) {
+					UserCommandsEditor.instance = new UserCommandsEditor();
+				}
+				return UserCommandsEditor.instance;
+			}
+		}
+		
 		private Button[] btnsNeedingSelection;
 		
-		public UserCommandsEditor() {
+		private UserCommandsEditor() {
 			InitializeComponent();
+			this.LoadSettings();
 			this.btnsNeedingSelection = new Button[]{
 				this.btnUp, this.btnDown, this.btnDelete, this.btnModify,};
 			this.Icon = Utility.GetGExplorerIcon();
 			this.Text = "外部コマンドエディタ";
 			this.RefleshView();
+			
+			this.LocationChanged += new EventHandler(this.SaveToUserSettings);
+			this.SizeChanged += new EventHandler(this.SaveToUserSettings);
 			
 			UserCommandsManager.Instance.UserCommandsChanged
 				+= new UserCommandsChangedEventHandler(this.RefleshView);
@@ -116,6 +130,24 @@ namespace Yusen.GExplorer {
 				return;
 			}
 			UserCommandsManager.Instance[this.lboxCommands.SelectedIndex] = uc;
+		}
+
+		public void LoadSettings() {
+			UserSettings settings = UserSettings.Instance;
+			this.Size = settings.UceSize;
+			this.Location = settings.UceLocation;
+			this.StartPosition = settings.UceStartPosition;
+		}
+		private void SaveToUserSettings(object sender, EventArgs e) {
+			this.SaveSettings();
+		}
+		public void SaveSettings() {
+			UserSettings settings = UserSettings.Instance;
+			settings.UceSize = this.Size;
+			settings.UceLocation = this.Location;
+			settings.UceStartPosition = this.StartPosition;
+
+			settings.OnChangeCompleted();
 		}
 	}
 }
