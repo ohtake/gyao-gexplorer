@@ -24,9 +24,17 @@ namespace Yusen.GExplorer {
 			this.Icon = Utility.GetGExplorerIcon();
 			this.Text = "外部コマンドエディタ";
 			this.RefleshView();
-			
-			this.LocationChanged += new EventHandler(this.SaveToUserSettings);
-			this.SizeChanged += new EventHandler(this.SaveToUserSettings);
+
+			this.LocationChanged += delegate {
+				this.SaveSettings();
+			};
+			this.SizeChanged += delegate {
+				this.SaveSettings();
+			};
+			UserSettings.Instance.UserCommandsEditor.ChangeCompleted += this.LoadSettings;
+			this.FormClosing += delegate {
+				UserSettings.Instance.UserCommandsEditor.ChangeCompleted -= this.LoadSettings;
+			};
 			
 			UserCommandsManager.Instance.UserCommandsChanged
 				+= new UserCommandsChangedEventHandler(this.RefleshView);
@@ -131,23 +139,13 @@ namespace Yusen.GExplorer {
 			}
 			UserCommandsManager.Instance[this.lboxCommands.SelectedIndex] = uc;
 		}
-
+		
 		public void LoadSettings() {
-			UserSettings settings = UserSettings.Instance;
-			this.Size = settings.UceSize;
-			this.Location = settings.UceLocation;
-			this.StartPosition = settings.UceStartPosition;
-		}
-		private void SaveToUserSettings(object sender, EventArgs e) {
-			this.SaveSettings();
+			UserSettings.Instance.UserCommandsEditor.ApplySettings(this);
 		}
 		public void SaveSettings() {
-			UserSettings settings = UserSettings.Instance;
-			settings.UceSize = this.Size;
-			settings.UceLocation = this.Location;
-			settings.UceStartPosition = this.StartPosition;
-
-			settings.OnChangeCompleted();
+			UserSettings.Instance.UserCommandsEditor.StoreSettings(this);
+			UserSettings.Instance.UserCommandsEditor.OnChangeCompleted();
 		}
 	}
 }

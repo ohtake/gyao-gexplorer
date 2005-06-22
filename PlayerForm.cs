@@ -72,14 +72,16 @@ namespace Yusen.GExplorer {
 					}
 				});
 			//ÉÜÅ[ÉUê›íË
-			this.SizeChanged += new EventHandler(this.SaveToUserSettings);
-			this.LocationChanged += new EventHandler(this.SaveToUserSettings);
-			UserSettings.Instance.ChangeCompleted +=
-				new UserSettingsChangeCompletedEventHandler(this.LoadSettings);
-			this.FormClosing += new FormClosingEventHandler(
-				delegate(object sender, FormClosingEventArgs e) {
-					UserSettings.Instance.ChangeCompleted -= this.LoadSettings;
-				});
+			this.SizeChanged += delegate {
+				this.SaveSettings();
+			};
+			this.LocationChanged += delegate {
+				this.SaveSettings();
+			};
+			UserSettings.Instance.PlayerForm.ChangeCompleted += this.LoadSettings;
+			this.FormClosing += delegate{
+				UserSettings.Instance.PlayerForm.ChangeCompleted -= this.LoadSettings;
+			};
 		}
 		
 		public GContent Content {
@@ -95,29 +97,22 @@ namespace Yusen.GExplorer {
 				this.content = value;
 			}
 		}
-		
-		public void LoadSettings() {
-			UserSettings settings = UserSettings.Instance;
-			this.tsmiAutoVolume.Checked = settings.PlayerAutoVolume;
-			this.tsmiAlwaysOnTop.Checked = settings.PlayerAlwaysOnTop;
-			this.Size = settings.PlayerSize;
-			this.Location = settings.PlayerLocation;
-			this.StartPosition = settings.PlayerStartPosition;
-			
-			this.TopMost = this.tsmiAlwaysOnTop.Checked;
+		public bool AutoVolumeEnabled {
+			get {
+				return this.tsmiAutoVolume.Checked;
+			}
+			set {
+				this.tsmiAutoVolume.Checked = value;
+			}
 		}
-		private void SaveToUserSettings(object sender, EventArgs e) {
-			this.SaveSettings();
+
+		public void LoadSettings() {
+			UserSettings.Instance.PlayerForm.ApplySettings(this);
+			this.tsmiAlwaysOnTop.Checked = this.TopMost;
 		}
 		public void SaveSettings() {
-			UserSettings settings = UserSettings.Instance;
-			settings.PlayerAutoVolume = this.tsmiAutoVolume.Checked;
-			settings.PlayerAlwaysOnTop = this.tsmiAlwaysOnTop.Checked;
-			settings.PlayerSize = this.Size;
-			settings.PlayerLocation = this.Location;
-			settings.PlayerStartPosition = this.StartPosition;
-
-			settings.OnChangeCompleted();
+			UserSettings.Instance.PlayerForm.StoreSettings(this);
+			UserSettings.Instance.PlayerForm.OnChangeCompleted();
 		}
 		
 		private void LoadCommands() {

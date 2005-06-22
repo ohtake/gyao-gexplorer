@@ -2,9 +2,6 @@ using System;
 using System.ComponentModel;
 using System.IO;
 using XmlSerializer = System.Xml.Serialization.XmlSerializer;
-using CultureInfo = System.Globalization.CultureInfo;
-
-using System.Windows.Forms;
 using System.Drawing;
 
 namespace Yusen.GExplorer {
@@ -67,12 +64,25 @@ namespace Yusen.GExplorer {
 		// シングルトンだけどXMLデシリアライズに必要だからしゃあない
 		public UserSettings() {
 		}
-		
+
+		private bool enableChangeCompletedEvent = true;
 		internal event UserSettingsChangeCompletedEventHandler ChangeCompleted;
-		public void OnChangeCompleted() {
-			if(null != this.ChangeCompleted) {
+		internal void OnChangeCompleted() {
+			if(null != this.ChangeCompleted && this.enableChangeCompletedEvent) {
 				this.ChangeCompleted();
 			}
+		}
+		internal void OnChangeCompleted(bool notifyAll) {
+			if(notifyAll) {
+				this.enableChangeCompletedEvent = false;
+				this.MainForm.OnChangeCompleted();
+				this.PlayerForm.OnChangeCompleted();
+				this.ContentPropertyViewer.OnChangeCompleted();
+				this.UserCommandsEditor.OnChangeCompleted();
+				this.UserSettingsToolbox.OnChangeCompleted();
+				this.enableChangeCompletedEvent = true;
+			}
+			this.OnChangeCompleted();
 		}
 		
 		/// <summary>
@@ -85,10 +95,10 @@ namespace Yusen.GExplorer {
 			}
 		}
 		
-		#region GyaO
 		private int gyaoUserId = 0;
 		private GBitRate gyaoBitRate = GBitRate.High;
-		[Category("GyaO")]
+		private bool gyaoEnableConcurrentFetch = true;
+		[Category("GyaOとの通信")]
 		[DisplayName("userNo")]
 		[Description("クッキーに保存されている userNo の値．いちおう変更不可．")]
 		[DefaultValue(0)]
@@ -101,7 +111,7 @@ namespace Yusen.GExplorer {
 				this.gyaoUserId = value;
 			}
 		}
-		[Category("GyaO")]
+		[Category("GyaOとの通信")]
 		[DisplayName("ビットレート")]
 		[Description("再生する動画のビットレート．専用プレーヤだけでなくWMPでの再生もこの設定の影響を受けます．")]
 		[DefaultValue(GBitRate.High)]
@@ -113,9 +123,7 @@ namespace Yusen.GExplorer {
 				this.gyaoBitRate = value;
 			}
 		}
-
-		[Browsable(false)]
-		[Category("GyaO")]
+		[Category("GyaOとの通信")]
 		[DisplayName("rateId")]
 		[Description("GyaOに送信するビットレートのIDの値．")]
 		[DefaultValue("bit0000002")]
@@ -124,398 +132,57 @@ namespace Yusen.GExplorer {
 				return "bit" + ((int)this.gyaoBitRate).ToString("0000000");
 			}
 		}
-		#endregion GyaO
-		
-		#region ユーザ設定ツールボックス
-		private FormStartPosition ustStartPosition = FormStartPosition.Manual;
-		private Size ustSize = new Size(240, 400);
-		private Point ustLocation = new Point(50, 150);
-		private bool ustTopMost = false;
-
-		[Category("ユーザ設定ツールボックス")]
-		[DisplayName("初期配置")]
-		[Description("起動したときに表示される位置の決定方法．")]
-		[DefaultValue(FormStartPosition.Manual)]
-		public FormStartPosition UstStartPosition {
-			get {
-				return this.ustStartPosition;
-			}
-			set {
-				this.ustStartPosition = value;
-			}
-		}
-		[Category("ユーザ設定ツールボックス")]
-		[DisplayName("サイズ")]
-		[Description("ウィンドウのサイズ．")]
-		public Size UstSize {
-			get {
-				return this.ustSize;
-			}
-			set {
-				this.ustSize = value;
-			}
-		}
-		[Category("ユーザ設定ツールボックス")]
-		[DisplayName("位置")]
-		[Description("位置．初期配置をManualにする必要あり．")]
-		public Point UstLocation {
-			get {
-				return this.ustLocation;
-			}
-			set {
-				this.ustLocation = value;
-			}
-		}
-		[Category("ユーザ設定ツールボックス")]
-		[DisplayName("常に手前に表示")]
-		[Description("常に手前に表示します．")]
-		[DefaultValue(false)]
-		public bool UstTopMost {
-			get {
-				return this.ustTopMost;
-			}
-			set {
-				this.ustTopMost = value;
-			}
-		}
-		#endregion
-		
-		#region プレーヤ
-		private bool playerAutoVolume = true;
-		private bool playerAlwaysOnTop = false;
-		private Size playerSize = new Size(670, 640);
-		private Point playerLocation = new Point(0, 0);
-		private FormStartPosition playerStartPosition = FormStartPosition.Manual;
-		
-		[Category("専用プレーヤ")]
-		[DisplayName("自動音量調整")]
-		[Description("CMと思わしき動画の音量を10にし，そうではないのを100にします．")]
+		[Category("GyaOとの通信")]
+		[DisplayName("並列読み込み")]
+		[Description("GyaOのウェブページの取得を並列化して高速化を図る．環境によっては逆に遅くなる場合もあるかも．")]
 		[DefaultValue(true)]
-		public bool PlayerAutoVolume {
+		public bool GyaoEnableConcurrentFetch {
 			get {
-				return this.playerAutoVolume;
+				return this.gyaoEnableConcurrentFetch;
 			}
 			set {
-				this.playerAutoVolume = value;
+				this.gyaoEnableConcurrentFetch = value;
 			}
 		}
-		[Category("専用プレーヤ")]
-		[DisplayName("常に手前に表示")]
-		[Description("最前面で表示するようにします．")]
-		[DefaultValue(false)]
-		public bool PlayerAlwaysOnTop {
-			get {
-				return this.playerAlwaysOnTop;
-			}
-			set {
-				this.playerAlwaysOnTop = value;
-			}
-		}
-		[Category("専用プレーヤ")]
-		[DisplayName("サイズ")]
-		[Description("ウィンドウのサイズ．")]
-		public Size PlayerSize {
-			get {
-				return this.playerSize;
-			}
-			set {
-				this.playerSize = value;
-			}
-		}
-		[Category("専用プレーヤ")]
-		[DisplayName("位置")]
-		[Description("ウィンドウの位置．初期配置をManualにする必要あり．")]
-		public Point PlayerLocation {
-			get {
-				return this.playerLocation;
-			}
-			set {
-				this.playerLocation = value;
-			}
-		}
-		[Category("専用プレーヤ")]
-		[DisplayName("初期配置")]
-		[Description("起動したときに表示される位置の決定方法．")]
-		[DefaultValue(FormStartPosition.Manual)]
-		public FormStartPosition PlayerStartPosition {
-			get {
-				return this.playerStartPosition;
-			}
-			set {
-				this.playerStartPosition = value;
-			}
-		}
-		#endregion
-		
-		#region メインフォーム
-		private FormStartPosition mfStartPosition = FormStartPosition.Manual;
-		private FormWindowState mfWindowState = FormWindowState.Normal;
-		private Size mfSize = new Size(600, 450);
-		private Point mfLocation = new Point(100, 100);
-		[Category("メインフォーム")]
-		[DisplayName("初期配置")]
-		[Description("起動したときに表示される位置の決定方法．")]
-		[DefaultValue(FormStartPosition.Manual)]
-		public FormStartPosition MfStartPosition {
-			get {
-				return this.mfStartPosition;
-			}
-			set {
-				this.mfStartPosition = value;
-			}
-		}
-		[Category("メインフォーム")]
-		[DisplayName("状態")]
-		[Description("最小化，通常，最大化．")]
-		[DefaultValue(FormWindowState.Normal)]
-		public FormWindowState MfWindowState {
-			get {
-				return this.mfWindowState;
-			}
-			set {
-				this.mfWindowState = value;
-			}
-		}
-		[Category("メインフォーム")]
-		[DisplayName("サイズ")]
-		[Description("ウィンドウのサイズ．")]
-		public Size MfSize {
-			get {
-				return this.mfSize;
-			}
-			set {
-				this.mfSize = value;
-			}
-		}
-		[Category("メインフォーム")]
-		[DisplayName("位置")]
-		[Description("ウィンドウの位置．初期配置をManualにする必要あり．")]
-		public Point MfLocation {
-			get {
-				return this.mfLocation;
-			}
-			set {
-				this.mfLocation = value;
-			}
-		}
-		#endregion
-		
-		#region リストビュー
-		private bool lvMultiSelect = false;
-		private bool lvFullRowSelect = true;
-		private View lvView = View.Details;
-		private int lvColWidthId = 90;
-		private int lvColWidthLimit = 80;
-		private int lvColWidthEpisode = 70;
-		private int lvColWidthLead = 320;
 
-		[Category("リストビュー")]
-		[DisplayName("複数選択")]
-		[Description("複数選択を有効にします．誤操作防止のため False 推奨．")]
-		[DefaultValue(false)]
-		public bool LvMultiSelect {
-			get {
-				return this.lvMultiSelect;
-			}
-			set {
-				this.lvMultiSelect = value;
-			}
+		[Category("各ウィンドウごとの設定")]
+		[DisplayName("メインフォーム")]
+		public UscMainForm MainForm {
+			get { return this.mainForm; }
+			set { this.mainForm = value; }
 		}
-		[Category("リストビュー")]
-		[DisplayName("行全体で選択")]
-		[Description("表示形式が Details の時，行全体を選択します．")]
-		[DefaultValue(true)]
-		public bool LvFullRowSelect {
-			get {
-				return this.lvFullRowSelect;
-			}
-			set {
-				this.lvFullRowSelect = value;
-			}
-		}
-		[Category("リストビュー")]
-		[DisplayName("表示形式")]
-		[Description("リストビューの表示形式を変更します．")]
-		[DefaultValue(View.Details)]
-		public View LvView {
-			get {
-				return this.lvView;
-			}
-			set {
-				this.lvView = value;
-			}
-		}
-		[Category("リストビュー")]
-		[DisplayName("カラム幅 (1. contents_id)")]
-		[Description("リストビューのカラムの幅．(1. contents_id)")]
-		[DefaultValue(90)]
-		public int LvColWidthId {
-			get {
-				return this.lvColWidthId;
-			}
-			set {
-				this.lvColWidthId = value;
-			}
-		}
-		[Category("リストビュー")]
-		[DisplayName("カラム幅 (2. 配信終了日)")]
-		[Description("リストビューのカラムの幅．(2. 配信終了日)")]
-		[DefaultValue(80)]
-		public int LvColWidthLimit {
-			get {
-				return this.lvColWidthLimit;
-			}
-			set {
-				this.lvColWidthLimit = value;
-			}
-		}
-		[Category("リストビュー")]
-		[DisplayName("カラム幅 (3. 話)")]
-		[Description("リストビューのカラムの幅．(3. 話)")]
-		[DefaultValue(70)]
-		public int LvColWidthEpisode {
-			get {
-				return this.lvColWidthEpisode;
-			}
-			set {
-				this.lvColWidthEpisode = value;
-			}
-		}
-		[Category("リストビュー")]
-		[DisplayName("カラム幅 (4. リード)")]
-		[Description("リストビューのカラムの幅．(4. リード)")]
-		[DefaultValue(320)]
-		public int LvColWidthLead {
-			get {
-				return this.lvColWidthLead;
-			}
-			set {
-				this.lvColWidthLead = value;
-			}
-		}
-		#endregion
-		
-		#region コンテンツプロパティビューア
-		private Size gcpvSize = new Size(260, 310);
-		private Point gcpvLocation = new Point(500, 50);
-		private FormStartPosition gcpvStartPosition = FormStartPosition.Manual;
-		private bool gcpvTopMost = false;
-		
-		[Category("コンテンツプロパティビューア")]
-		[DisplayName("サイズ")]
-		[Description("ウィンドウのサイズ．")]
-		public Size GcpvSize {
-			get {
-				return this.gcpvSize;
-			}
-			set {
-				this.gcpvSize = value;
-			}
-		}
-		[Category("コンテンツプロパティビューア")]
-		[DisplayName("位置")]
-		[Description("ウィンドウの位置．初期配置をManualにする必要あり．")]
-		public Point GcpvLocation {
-			get {
-				return this.gcpvLocation;
-			}
-			set {
-				this.gcpvLocation = value;
-			}
-		}
-		[Category("コンテンツプロパティビューア")]
-		[DisplayName("初期配置")]
-		[Description("起動したときに表示される位置の決定方法．")]
-		[DefaultValue(FormStartPosition.Manual)]
-		public FormStartPosition GcpvStartPosition {
-			get {
-				return this.gcpvStartPosition;
-			}
-			set {
-				this.gcpvStartPosition = value;
-			}
-		}
-		[Category("コンテンツプロパティビューア")]
-		[DisplayName("常に手前に表示")]
-		[Description("常に手前に表示します．")]
-		[DefaultValue(false)]
-		public bool GcpvTopMost {
-			get {
-				return this.gcpvTopMost;
-			}
-			set {
-				this.gcpvTopMost = value;
-			}
-		}
-		#endregion
+		private UscMainForm mainForm = new UscMainForm(new Size(600, 450), new Point(100, 100));
 
-		#region 外部コマンドエディタ
-		private Size uceSize = new Size(360, 340);
-		private Point uceLocation = new Point(200, 50);
-		private FormStartPosition uceStartPosition = FormStartPosition.Manual;
-		[Category("外部コマンドエディタ")]
-		[DisplayName("サイズ")]
-		[Description("ウィンドウのサイズ．")]
-		public Size UceSize {
-			get {
-				return this.uceSize;
-			}
-			set {
-				this.uceSize = value;
-			}
+		[Category("各ウィンドウごとの設定")]
+		[DisplayName("プレーヤ")]
+		public UscPlayerForm PlayerForm {
+			get { return this.playerForm; }
+			set { this.playerForm = value; }
 		}
-		[Category("外部コマンドエディタ")]
-		[DisplayName("位置")]
-		[Description("ウィンドウの位置．初期配置をManualにする必要あり．")]
-		public Point UceLocation {
-			get {
-				return this.uceLocation;
-			}
-			set {
-				this.uceLocation = value;
-			}
+		private UscPlayerForm playerForm = new UscPlayerForm(new Size(670, 640), new Point(0, 0));
+		
+		[Category("各ウィンドウごとの設定")]
+		[DisplayName("ユーザ設定ツールボックス")]
+		public UscFormTopmostable UserSettingsToolbox {
+			get {return this.userSettingsToolbox;}
+			set {this.userSettingsToolbox = value;}
 		}
-		[Category("外部コマンドエディタ")]
-		[DisplayName("初期配置")]
-		[Description("起動したときに表示される位置の決定方法．")]
-		[DefaultValue(FormStartPosition.Manual)]
-		public FormStartPosition UceStartPosition {
-			get {
-				return this.uceStartPosition;
-			}
-			set {
-				this.uceStartPosition = value;
-			}
-		}
-		#endregion
-	}
+		private UscFormTopmostable userSettingsToolbox = new UscFormTopmostable(new Size(240, 400), new Point(50, 150));
 
-#if false
-	// ユーザ設定の項目が増えて管理に手がおえられなくなったら
-	// グループごとにクラス化して ExpandableObjectConverter を使う
-	
-	interface IUserSettingsMember {
-	}
-	
-	class UserSettingsMemberConverter : ExpandableObjectConverter {
-		public override bool CanConvertTo(
-				ITypeDescriptorContext context, Type destinationType) {
-			if(typeof(IUserSettingsMember) == destinationType) {
-				return true;
-			} else {
-				return base.CanConvertTo(context, destinationType);
-			}
+		[Category("各ウィンドウごとの設定")]
+		[DisplayName("コンテンツプロパティビューア")]
+		public UscFormTopmostable ContentPropertyViewer {
+			get { return this.contentPropertyViewer; }
+			set { this.contentPropertyViewer = value; }
 		}
-		public override object ConvertTo(
-				ITypeDescriptorContext context, CultureInfo culture,
-				object value, Type destinationType) {
-			if(typeof(System.String) == destinationType
-					&& value is IUserSettingsMember) {
-				return "";
-			} else {
-				return base.ConvertTo(context, culture, value, destinationType);
-			}
+		private UscFormTopmostable contentPropertyViewer = new UscFormTopmostable(new Size(260, 310), new Point(500, 50));
+
+		[Category("各ウィンドウごとの設定")]
+		[DisplayName("外部コマンドエディタ")]
+		public UscForm UserCommandsEditor {
+			get { return this.userCommandsEditor; }
+			set { this.userCommandsEditor = value; }
 		}
+		private UscForm userCommandsEditor = new UscForm(new Size(360, 340), new Point(200, 50));
 	}
-#endif
 }

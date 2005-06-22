@@ -5,6 +5,7 @@ using WebClient = System.Net.WebClient;
 using Encoding = System.Text.Encoding;
 using System.Text.RegularExpressions;
 using System.IO;
+using System.Threading;
 
 /* GyaOのコンテンツDBは以下の木構造になっているはず？
  * ジャンル
@@ -163,6 +164,13 @@ namespace Yusen.GExplorer{
 			return this.Packages;
 		}
 		public void FetchAll(){
+			if(UserSettings.Instance.GyaoEnableConcurrentFetch) {
+				this.FetchAllConcurrently();
+			} else {
+				this.FetchAllSequentially();
+			}
+		}
+		private void FetchAllSequentially() {
 			IEnumerable<GPackage> ps = this.FetchPackages();
 			int denom = 1;
 			foreach(GPackage p in ps) denom++;
@@ -170,6 +178,25 @@ namespace Yusen.GExplorer{
 			foreach(GPackage p in this.FetchPackages()) {
 				GGenre.LoadingPackages(this, ++nume, denom);
 				p.FetchContents();
+			}
+			GGenre.LoadingPackages(this, denom, denom);
+		}
+		private void FetchAllConcurrently() {
+			IEnumerable<GPackage> ps = this.FetchPackages();
+			int denom = 1;
+			Queue<Thread> tq = new Queue<Thread>();
+			foreach(GPackage p in ps) {
+				Thread t = new Thread(new ThreadStart(delegate() {
+					p.FetchContents();
+				}));
+				t.Start();
+				denom++;
+				tq.Enqueue(t);
+			}
+			int nume = 0;
+			foreach(Thread t in tq) {
+				GGenre.LoadingPackages(this, ++nume, denom);
+				t.Join();
 			}
 			GGenre.LoadingPackages(this, denom, denom);
 		}
@@ -263,7 +290,7 @@ namespace Yusen.GExplorer{
 			}
 			set {
 				if(null == value) throw new ArgumentNullException();
-				if(null != this.pacCatch) throw new InvalidOperationException();
+				if(null != this.pacCatch) return;
 				this.pacCatch = value;
 			}
 		}

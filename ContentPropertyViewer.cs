@@ -1,5 +1,6 @@
 using System;
 using System.Windows.Forms;
+using System.Collections.Generic;
 
 namespace Yusen.GExplorer {
 	partial class ContentPropertyViewer : Form, IUsesUserSettings {
@@ -22,12 +23,25 @@ namespace Yusen.GExplorer {
 			this.Icon = Utility.GetGExplorerIcon();
 			this.Text = "リストビューでコンテンツを選択してください";
 			
-			this.chkTopMost.CheckedChanged += new EventHandler(delegate(object sender, EventArgs e) {
+			this.chkTopMost.CheckedChanged += delegate{
 				this.TopMost = this.chkTopMost.Checked;
 				this.SaveSettings();
-			});
-			this.LocationChanged += new EventHandler(this.SaveToUserSettings);
-			this.SizeChanged += new EventHandler(this.SaveToUserSettings);
+			};
+			this.LocationChanged += delegate {
+				this.SaveSettings();
+			};
+			this.SizeChanged += delegate {
+				this.SaveSettings();
+			};
+			UserSettings.Instance.ContentPropertyViewer.ChangeCompleted += this.LoadSettings;
+			this.FormClosing += delegate {
+				UserSettings.Instance.ContentPropertyViewer.ChangeCompleted -= this.LoadSettings;
+			};
+			
+			MainForm.Instance.SelectedContentsChanged += this.ListeningToContentsSelection;
+			this.FormClosing += delegate {
+				MainForm.Instance.SelectedContentsChanged -= this.ListeningToContentsSelection;
+			};
 		}
 		
 		public GContent Content {
@@ -44,26 +58,19 @@ namespace Yusen.GExplorer {
 				this.content = value;
 			}
 		}
+		private void ListeningToContentsSelection(GenreListView sender, IEnumerable<GContent> contents) {
+			foreach(GContent content in contents) {
+				this.Content = content;
+				break;
+			}
+		}
 		public void LoadSettings() {
-			UserSettings settings = UserSettings.Instance;
-			this.Size = settings.GcpvSize;
-			this.Location = settings.GcpvLocation;
-			this.StartPosition = settings.GcpvStartPosition;
-			this.TopMost = settings.GcpvTopMost;
-
+			UserSettings.Instance.ContentPropertyViewer.ApplySettings(this);
 			this.chkTopMost.Checked = this.TopMost;
 		}
-		private void SaveToUserSettings(object sender, EventArgs e) {
-			this.SaveSettings();
-		}
 		public void SaveSettings() {
-			UserSettings settings = UserSettings.Instance;
-			settings.GcpvSize = this.Size;
-			settings.GcpvLocation = this.Location;
-			settings.GcpvStartPosition = this.StartPosition;
-			settings.GcpvTopMost = this.TopMost;
-			
-			settings.OnChangeCompleted();
+			UserSettings.Instance.ContentPropertyViewer.StoreSettings(this);
+			UserSettings.Instance.ContentPropertyViewer.OnChangeCompleted();
 		}
 	}
 }

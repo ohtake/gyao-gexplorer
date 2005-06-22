@@ -164,7 +164,7 @@ namespace Yusen.GExplorer {
 			// 
 			this.tsmiReload.Name = "tsmiReload";
 			this.tsmiReload.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.R)));
-			this.tsmiReload.Text = "メディアファイルに再リクエスト (&R)";
+			this.tsmiReload.Text = "動画の再読み込み (&R)";
 			// 
 			// toolStripSeparator2
 			// 

@@ -27,25 +27,29 @@ namespace Yusen.GExplorer {
 			this.tspbPackages = new System.Windows.Forms.ToolStripProgressBar();
 			this.tsslCategoryStat = new System.Windows.Forms.ToolStripStatusLabel();
 			this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
-			this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-			this.tsmiFile = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiQuit = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiTool = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiContentProperty = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiEditCommands = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiUserSettings = new System.Windows.Forms.ToolStripMenuItem();
 			this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
 			this.tabGenre = new System.Windows.Forms.TabControl();
 			this.tabPage1 = new System.Windows.Forms.TabPage();
 			this.tabPage2 = new System.Windows.Forms.TabPage();
+			this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+			this.tsmiFile = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiQuit = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiListView = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiLvView = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiFullRowSelect = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiMultiSelect = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiTool = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiContentProperty = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiEditCommands = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiUserSettings = new System.Windows.Forms.ToolStripMenuItem();
 			this.glvMain = new Yusen.GExplorer.GenreListView();
 			this.statstripMain.SuspendLayout();
 			this.toolStripContainer1.ContentPanel.SuspendLayout();
 			this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
 			this.toolStripContainer1.SuspendLayout();
-			this.menuStrip1.SuspendLayout();
 			this.tableLayoutPanel1.SuspendLayout();
 			this.tabGenre.SuspendLayout();
+			this.menuStrip1.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// statstripMain
@@ -87,56 +91,6 @@ namespace Yusen.GExplorer {
 			// toolStripContainer1.TopToolStripPanel
 			// 
 			this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.menuStrip1);
-			// 
-			// menuStrip1
-			// 
-			this.menuStrip1.Dock = System.Windows.Forms.DockStyle.None;
-			this.menuStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Visible;
-			this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiFile,
-            this.tsmiTool});
-			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
-			this.menuStrip1.Name = "menuStrip1";
-			this.menuStrip1.Size = new System.Drawing.Size(592, 24);
-			this.menuStrip1.TabIndex = 0;
-			this.menuStrip1.Text = "menuStrip1";
-			// 
-			// tsmiFile
-			// 
-			this.tsmiFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiQuit});
-			this.tsmiFile.Name = "tsmiFile";
-			this.tsmiFile.Text = "ファイル (&F)";
-			// 
-			// tsmiQuit
-			// 
-			this.tsmiQuit.Name = "tsmiQuit";
-			this.tsmiQuit.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Q)));
-			this.tsmiQuit.Text = "終了 (&Q)";
-			// 
-			// tsmiTool
-			// 
-			this.tsmiTool.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiContentProperty,
-            this.tsmiEditCommands,
-            this.tsmiUserSettings});
-			this.tsmiTool.Name = "tsmiTool";
-			this.tsmiTool.Text = "ツール (&T)";
-			// 
-			// tsmiContentProperty
-			// 
-			this.tsmiContentProperty.Name = "tsmiContentProperty";
-			this.tsmiContentProperty.Text = "コンテンツプロパティビューア (&P)";
-			// 
-			// tsmiEditCommands
-			// 
-			this.tsmiEditCommands.Name = "tsmiEditCommands";
-			this.tsmiEditCommands.Text = "外部コマンドエディタ (&C)";
-			// 
-			// tsmiUserSettings
-			// 
-			this.tsmiUserSettings.Name = "tsmiUserSettings";
-			this.tsmiUserSettings.Text = "ユーザ設定ツールボックス (&U)";
 			// 
 			// tableLayoutPanel1
 			// 
@@ -183,9 +137,89 @@ namespace Yusen.GExplorer {
 			this.tabPage2.TabIndex = 1;
 			this.tabPage2.Text = "tabPage2";
 			// 
+			// menuStrip1
+			// 
+			this.menuStrip1.Dock = System.Windows.Forms.DockStyle.None;
+			this.menuStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Visible;
+			this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiFile,
+            this.tsmiListView,
+            this.tsmiTool});
+			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+			this.menuStrip1.Name = "menuStrip1";
+			this.menuStrip1.Size = new System.Drawing.Size(592, 24);
+			this.menuStrip1.TabIndex = 0;
+			this.menuStrip1.Text = "menuStrip1";
+			// 
+			// tsmiFile
+			// 
+			this.tsmiFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiQuit});
+			this.tsmiFile.Name = "tsmiFile";
+			this.tsmiFile.Text = "ファイル (&F)";
+			// 
+			// tsmiQuit
+			// 
+			this.tsmiQuit.Name = "tsmiQuit";
+			this.tsmiQuit.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Q)));
+			this.tsmiQuit.Text = "終了 (&Q)";
+			// 
+			// tsmiListView
+			// 
+			this.tsmiListView.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiLvView,
+            this.tsmiFullRowSelect,
+            this.tsmiMultiSelect});
+			this.tsmiListView.Name = "tsmiListView";
+			this.tsmiListView.Text = "リストビュー (&L)";
+			// 
+			// tsmiLvView
+			// 
+			this.tsmiLvView.Name = "tsmiLvView";
+			this.tsmiLvView.Text = "表示形式 (&V)";
+			// 
+			// tsmiFullRowSelect
+			// 
+			this.tsmiFullRowSelect.Checked = true;
+			this.tsmiFullRowSelect.CheckOnClick = true;
+			this.tsmiFullRowSelect.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.tsmiFullRowSelect.Name = "tsmiFullRowSelect";
+			this.tsmiFullRowSelect.Text = "行全体で選択 (&F)";
+			// 
+			// tsmiMultiSelect
+			// 
+			this.tsmiMultiSelect.CheckOnClick = true;
+			this.tsmiMultiSelect.Name = "tsmiMultiSelect";
+			this.tsmiMultiSelect.Text = "複数項目の選択可能 (&M)";
+			// 
+			// tsmiTool
+			// 
+			this.tsmiTool.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiContentProperty,
+            this.tsmiEditCommands,
+            this.tsmiUserSettings});
+			this.tsmiTool.Name = "tsmiTool";
+			this.tsmiTool.Text = "ツール (&T)";
+			// 
+			// tsmiContentProperty
+			// 
+			this.tsmiContentProperty.Name = "tsmiContentProperty";
+			this.tsmiContentProperty.Text = "コンテンツプロパティビューア (&P)";
+			// 
+			// tsmiEditCommands
+			// 
+			this.tsmiEditCommands.Name = "tsmiEditCommands";
+			this.tsmiEditCommands.Text = "外部コマンドエディタ (&C)";
+			// 
+			// tsmiUserSettings
+			// 
+			this.tsmiUserSettings.Name = "tsmiUserSettings";
+			this.tsmiUserSettings.Text = "ユーザ設定ツールボックス (&U)";
+			// 
 			// glvMain
 			// 
 			this.glvMain.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.glvMain.Genre = null;
 			this.glvMain.Location = new System.Drawing.Point(0, 20);
 			this.glvMain.Margin = new System.Windows.Forms.Padding(0);
 			this.glvMain.Name = "glvMain";
@@ -208,9 +242,9 @@ namespace Yusen.GExplorer {
 			this.toolStripContainer1.TopToolStripPanel.PerformLayout();
 			this.toolStripContainer1.ResumeLayout(false);
 			this.toolStripContainer1.PerformLayout();
-			this.menuStrip1.ResumeLayout(false);
 			this.tableLayoutPanel1.ResumeLayout(false);
 			this.tabGenre.ResumeLayout(false);
+			this.menuStrip1.ResumeLayout(false);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -233,6 +267,10 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.TabControl tabGenre;
 		private System.Windows.Forms.TabPage tabPage1;
 		private System.Windows.Forms.TabPage tabPage2;
+		private System.Windows.Forms.ToolStripMenuItem tsmiListView;
+		private System.Windows.Forms.ToolStripMenuItem tsmiLvView;
+		private System.Windows.Forms.ToolStripMenuItem tsmiFullRowSelect;
+		private System.Windows.Forms.ToolStripMenuItem tsmiMultiSelect;
 		private GenreListView glvMain;
 	}
 }

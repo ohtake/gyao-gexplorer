@@ -42,18 +42,15 @@ namespace Yusen.GExplorer {
 			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiCommands = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
-			this.tsmiMultipulSelect = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiView = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiProperty = new System.Windows.Forms.ToolStripMenuItem();
 			this.ilLarge = new System.Windows.Forms.ImageList(this.components);
 			this.ilSmall = new System.Windows.Forms.ImageList(this.components);
-			this.tsmiFullRowSelect = new System.Windows.Forms.ToolStripMenuItem();
 			this.cmsListView.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// lviewGenre
 			// 
+			this.lviewGenre.Activation = System.Windows.Forms.ItemActivation.OneClick;
 			this.lviewGenre.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.chId,
             this.chLimit,
@@ -63,6 +60,7 @@ namespace Yusen.GExplorer {
 			this.lviewGenre.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.lviewGenre.FullRowSelect = true;
 			this.lviewGenre.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+			this.lviewGenre.HideSelection = false;
 			this.lviewGenre.LargeImageList = this.ilLarge;
 			this.lviewGenre.Location = new System.Drawing.Point(0, 0);
 			this.lviewGenre.MultiSelect = false;
@@ -109,16 +107,11 @@ namespace Yusen.GExplorer {
             this.toolStripSeparator3,
             this.tsmiCommands,
             this.toolStripSeparator4,
-            this.tsmiMultipulSelect,
-            this.tsmiFullRowSelect,
-            this.tsmiView,
-            this.toolStripSeparator5,
             this.tsmiProperty});
 			this.cmsListView.Location = new System.Drawing.Point(21, 36);
 			this.cmsListView.Name = "contextMenuStrip1";
 			this.cmsListView.RightToLeft = System.Windows.Forms.RightToLeft.No;
-			this.cmsListView.Size = new System.Drawing.Size(247, 295);
-			this.cmsListView.Visible = true;
+			this.cmsListView.Size = new System.Drawing.Size(247, 204);
 			// 
 			// tsmiPlay
 			// 
@@ -171,21 +164,6 @@ namespace Yusen.GExplorer {
 			// 
 			this.toolStripSeparator4.Name = "toolStripSeparator4";
 			// 
-			// tsmiMultipulSelect
-			// 
-			this.tsmiMultipulSelect.CheckOnClick = true;
-			this.tsmiMultipulSelect.Name = "tsmiMultipulSelect";
-			this.tsmiMultipulSelect.Text = "複数選択を有効 (&M)";
-			// 
-			// tsmiView
-			// 
-			this.tsmiView.Name = "tsmiView";
-			this.tsmiView.Text = "表示形式 (&V)";
-			// 
-			// toolStripSeparator5
-			// 
-			this.toolStripSeparator5.Name = "toolStripSeparator5";
-			// 
 			// tsmiProperty
 			// 
 			this.tsmiProperty.Name = "tsmiProperty";
@@ -206,14 +184,6 @@ namespace Yusen.GExplorer {
 			this.ilSmall.Images.SetKeyName(1, "normal16new.ico");
 			this.ilSmall.Images.SetKeyName(2, "special16.ico");
 			this.ilSmall.Images.SetKeyName(3, "special16new.ico");
-			// 
-			// tsmiFullRowSelect
-			// 
-			this.tsmiFullRowSelect.Checked = true;
-			this.tsmiFullRowSelect.CheckOnClick = true;
-			this.tsmiFullRowSelect.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.tsmiFullRowSelect.Name = "tsmiFullRowSelect";
-			this.tsmiFullRowSelect.Text = "行全体で選択 (&F)";
 			// 
 			// GenreListView
 			// 
@@ -237,7 +207,6 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ContextMenuStrip cmsListView;
 		private System.Windows.Forms.ToolStripMenuItem tsmiPlay;
 		private System.Windows.Forms.ToolStripMenuItem tsmiCommands;
-		private System.Windows.Forms.ToolStripMenuItem tsmiView;
 		private System.Windows.Forms.ToolStripMenuItem tsmiPackage;
 		private System.Windows.Forms.ToolStripMenuItem tsmiGenre;
 		private System.Windows.Forms.ToolStripMenuItem tsmiSpecial;
@@ -249,9 +218,6 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
 		private System.Windows.Forms.ToolStripMenuItem tsmiWMP;
-		private System.Windows.Forms.ToolStripMenuItem tsmiMultipulSelect;
 		private System.Windows.Forms.ToolStripMenuItem tsmiProperty;
-		private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
-		private System.Windows.Forms.ToolStripMenuItem tsmiFullRowSelect;
 	}
 }

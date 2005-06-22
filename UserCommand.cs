@@ -21,7 +21,7 @@ namespace Yusen.GExplorer {
 		private string fileName = null;
 		private string arguments = null;
 		
-		public UserCommand(string title, string filename, string arguments) {
+		public UserCommand(string title, string filename, string arguments):this() {
 			this.Title = title;
 			this.FileName = filename;
 			this.Arguments = arguments;

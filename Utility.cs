@@ -48,6 +48,8 @@ namespace Yusen.GExplorer {
 			input = input.Replace("&nbsp;", " ");
 			input = input.Replace("&lt;", "<");
 			input = input.Replace("&gt;", ">");
+			input = input.Replace("&apos;", "'");
+			input = input.Replace("&quot;", "\"");
 			input = input.Replace("&amp;", "&");
 			return input;
 		}

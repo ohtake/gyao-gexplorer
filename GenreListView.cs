@@ -5,9 +5,11 @@ using System.Windows.Forms;
 using System.Drawing;
 
 namespace Yusen.GExplorer {
-	delegate void GenreListViewRefleshedEventHandler(GenreListView sender, GGenre genre, int cntCount);
+	delegate void GenreListViewGenreChangedEventHandler(GenreListView sender, GGenre genre, int cntCount);
+	delegate void GenreListViewSelectedContentsChangedEventHandler(GenreListView sender, IEnumerable<GContent> contents);
+	delegate void GenreListViewColumnWidthChanged(GenreListView sender);
 	
-	partial class GenreListView : UserControl, IUsesUserSettings{
+	partial class GenreListView : UserControl{
 		private enum ImageIndex : int{
 			IsNew = 1,
 			IsNotNew = 0,
@@ -15,19 +17,24 @@ namespace Yusen.GExplorer {
 			HasNotSpecial = 0,
 		}
 		
-		public event GenreListViewRefleshedEventHandler Refreshed;
+		public event GenreListViewGenreChangedEventHandler GenreChanged;
+		public event GenreListViewSelectedContentsChangedEventHandler SelectedContentsChanged;
+		public event GenreListViewColumnWidthChanged ColumnWidthChanged;
+		
 		private GGenre genre = null;
 		
 		public GenreListView() {
 			this.InitializeComponent();
-			this.LoadSettings();
 			this.LoadCommands();
 			
 			//項目の選択
 			this.lviewGenre.SelectedIndexChanged += new EventHandler(delegate(object sender, EventArgs e) {
-				if(this.lviewGenre.SelectedItems.Count > 0) {
-					ContentPropertyViewer.Instance.Content = 
-						(GContent)this.lviewGenre.SelectedItems[0].Tag;
+				if(null != this.SelectedContentsChanged){
+					List<GContent> contents = new List<GContent>();
+					foreach(ListViewItem item in this.lviewGenre.SelectedItems) {
+						contents.Add(item.Tag as GContent);
+					}
+					this.SelectedContentsChanged(this, contents);
 				}
 			});
 			//項目をダブルクリック
@@ -76,54 +83,27 @@ namespace Yusen.GExplorer {
 			this.tsmiGenre.Click += new EventHandler(delegate(object sender, EventArgs e) {
 				Utility.BrowseWithIE(this.genre.GenreTopPageUri);
 			});
-			//表示オプション
-			this.tsmiMultipulSelect.Click += new EventHandler(delegate(object sender, EventArgs e) {
-				this.lviewGenre.MultiSelect = this.tsmiMultipulSelect.Checked;
-				this.SaveSettings();
-			});
-			this.tsmiFullRowSelect.Click += new EventHandler(delegate(object sender, EventArgs e) {
-				this.lviewGenre.FullRowSelect = this.tsmiFullRowSelect.Checked;
-				this.SaveSettings();
-			});
-			foreach(View v in Enum.GetValues(typeof(View))) {
-				ToolStripMenuItem item = new ToolStripMenuItem(v.ToString());
-				item.Tag = v;
-				item.Click += new EventHandler(delegate(object sender, EventArgs e) {
-					ToolStripMenuItem selItem = (ToolStripMenuItem)sender;
-					foreach(ToolStripMenuItem mi in this.tsmiView.DropDownItems) {
-						mi.Checked = false;
-					}
-					selItem.Checked = true;
-					this.lviewGenre.View = (View)selItem.Tag;
-					this.SaveSettings();
-				});
-				item.Checked = (v == this.lviewGenre.View);
-				this.tsmiView.DropDownItems.Add(item);
-			}
 			//コンテキストメニューの標準項目
 			this.tsmiPlay.Font = new Font(this.tsmiPlay.Font, FontStyle.Bold);
-			//ユーザ設定
-			this.lviewGenre.ColumnWidthChanged +=
-				new ColumnWidthChangedEventHandler(this.SaveToUserSettings);
-			UserSettings.Instance.ChangeCompleted +=
-				new UserSettingsChangeCompletedEventHandler(this.LoadSettings);
-			this.Disposed += new EventHandler(delegate(object sender, EventArgs e) {
-				UserSettings.Instance.ChangeCompleted -= this.LoadSettings;
-			});
 			//外部コマンド
 			UserCommandsManager.Instance.UserCommandsChanged += new UserCommandsChangedEventHandler(this.LoadCommands);
 			this.Disposed += new EventHandler(delegate(object sender, EventArgs e) {
 				UserCommandsManager.Instance.UserCommandsChanged -= this.LoadCommands;
 			});
+			//カラム幅の変更
+			this.lviewGenre.ColumnWidthChanged += delegate {
+				if(null != this.ColumnWidthChanged) {
+					this.ColumnWidthChanged(this);
+				}
+			};
 		}
 		
-		public void Clear() {
+		private void Clear() {
 			this.lviewGenre.Items.Clear();
 			this.lviewGenre.Groups.Clear();
 		}
 		
-		public void Display(GGenre genre) {
-			this.genre = genre;
+		private void Display(GGenre genre) {
 			this.Clear();
 			foreach(GPackage p in genre.Packages) {
 				ListViewGroup group = new ListViewGroup(
@@ -142,7 +122,22 @@ namespace Yusen.GExplorer {
 					this.lviewGenre.Items.Add(item);
 				}
 			}
-			if(null != this.Refreshed) this.Refreshed(this, genre, this.lviewGenre.Items.Count);
+			if(null != this.GenreChanged) this.GenreChanged(this, genre, this.lviewGenre.Items.Count);
+		}
+		
+		public GGenre Genre {
+			get {
+				return this.genre;
+			}
+			set {
+				if(null == value) {
+					this.Clear();
+					this.genre = null;
+				} else {
+					this.Display(value);
+					this.genre = value;
+				}
+			}
 		}
 		
 		private void Play(object sender, EventArgs e) {
@@ -150,8 +145,13 @@ namespace Yusen.GExplorer {
 				PlayerForm.Instance.Show();
 				PlayerForm.Instance.Content = (GContent)selitem.Tag;
 				PlayerForm.Instance.Focus();
-				break;//再生ウィンドウを一つのみしか表示しないようにしてみる
-				//new PlayerForm((GContent)selitem.Tag).Show();
+				break;
+			}
+		}
+		
+		public ListView ListView {
+			get {
+				return this.lviewGenre;
 			}
 		}
 		
@@ -173,38 +173,7 @@ namespace Yusen.GExplorer {
 			}
 			this.tsmiGenre.Enabled = (null != this.genre);
 		}
-
-		public void LoadSettings(){
-			UserSettings settings = UserSettings.Instance;
-			this.lviewGenre.MultiSelect = settings.LvMultiSelect;
-			this.lviewGenre.FullRowSelect = settings.LvFullRowSelect;
-			this.lviewGenre.View = settings.LvView;
-			if(this.chId.Width != settings.LvColWidthId) this.chId.Width = settings.LvColWidthId;
-			if(this.chLimit.Width != settings.LvColWidthLimit) this.chLimit.Width = settings.LvColWidthLimit;
-			if(this.chEpisode.Width != settings.LvColWidthEpisode) this.chEpisode.Width = settings.LvColWidthEpisode;
-			if(this.chLead.Width != settings.LvColWidthLead) this.chLead.Width = settings.LvColWidthLead;
-			
-			this.tsmiMultipulSelect.Checked = this.lviewGenre.MultiSelect;
-			this.tsmiFullRowSelect.Checked = this.lviewGenre.FullRowSelect;
-			foreach(ToolStripMenuItem mi in this.tsmiView.DropDownItems) {
-				mi.Checked = ((View)mi.Tag == this.lviewGenre.View);
-			}
-		}
-		private void SaveToUserSettings(object sender, EventArgs e) {
-			this.SaveSettings();
-		}
-		public void SaveSettings(){
-			UserSettings settings = UserSettings.Instance;
-			settings.LvMultiSelect = this.lviewGenre.MultiSelect;
-			settings.LvFullRowSelect = this.lviewGenre.FullRowSelect;
-			settings.LvView = this.lviewGenre.View;
-			settings.LvColWidthId = this.chId.Width;
-			settings.LvColWidthLimit = this.chLimit.Width;
-			settings.LvColWidthEpisode = this.chEpisode.Width;
-			settings.LvColWidthLead = this.chLead.Width;
-			
-			settings.OnChangeCompleted();
-		}
+		
 		private void LoadCommands() {
 			this.tsmiCommands.DropDownItems.Clear();
 			foreach(UserCommand uc in UserCommandsManager.Instance) {

@@ -28,11 +28,15 @@ namespace Yusen.GExplorer {
 			});
 			
 			//ÉÜÅ[ÉUê›íË
-			this.LocationChanged += new EventHandler(this.SaveToUserSettings);
-			this.SizeChanged += new EventHandler(this.SaveToUserSettings);
+			this.LocationChanged += delegate {
+				this.SaveSettings();
+			};
+			this.SizeChanged += delegate {
+				this.SaveSettings();
+			};
 			this.propertyGrid1.PropertyValueChanged += new PropertyValueChangedEventHandler(
 				delegate(object s, PropertyValueChangedEventArgs e) {
-					UserSettings.Instance.OnChangeCompleted();
+					UserSettings.Instance.OnChangeCompleted(true);
 				});
 			UserSettings.Instance.ChangeCompleted +=
 				new UserSettingsChangeCompletedEventHandler(this.ListeningUserSettings);
@@ -47,24 +51,12 @@ namespace Yusen.GExplorer {
 			this.propertyGrid1.Refresh();
 		}
 		public void LoadSettings(){
-			UserSettings settings = UserSettings.Instance;
-			this.StartPosition = settings.UstStartPosition;
-			this.Location = settings.UstLocation;
-			this.Size = settings.UstSize;
-			this.TopMost = settings.UstTopMost;
-			
+			UserSettings.Instance.UserSettingsToolbox.ApplySettings(this);
 			this.chkTopMost.Checked = this.TopMost;
 		}
-		private void SaveToUserSettings(object sender, EventArgs e) {
-			this.SaveSettings();
-		}
 		public void SaveSettings() {
-			UserSettings settings = UserSettings.Instance;
-			settings.UstStartPosition = this.StartPosition;
-			settings.UstLocation = this.Location;
-			settings.UstSize = this.Size;
-			settings.UstTopMost = this.TopMost;
-			settings.OnChangeCompleted();
+			UserSettings.Instance.UserSettingsToolbox.StoreSettings(this);
+			UserSettings.Instance.UserSettingsToolbox.OnChangeCompleted();
 		}
 	}
 }

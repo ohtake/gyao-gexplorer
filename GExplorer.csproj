@@ -127,6 +127,7 @@
       <DependentUpon>UserCommandsEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="UserSettings.cs" />
+    <Compile Include="UserSettingsDescendant.cs" />
     <Compile Include="UserSettingsToolbox.cs">
       <SubType>Form</SubType>
     </Compile>

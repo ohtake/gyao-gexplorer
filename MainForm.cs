@@ -14,6 +14,8 @@ namespace Yusen.GExplorer {
 			}
 		}
 		
+		public event GenreListViewSelectedContentsChangedEventHandler SelectedContentsChanged;
+		
 		private MainForm() {
 			InitializeComponent();
 			this.LoadSettings();
@@ -33,12 +35,12 @@ namespace Yusen.GExplorer {
 			this.tabGenre.SelectedIndexChanged += new EventHandler(delegate(object sender, EventArgs e) {
 				GGenre genre = (GGenre)this.tabGenre.SelectedTab.Tag;
 				if(!genre.HasLoaded) genre.FetchAll();
-				this.glvMain.Display(genre);
+				this.glvMain.Genre = genre;
 			});
 			this.tabGenre.DoubleClick += new EventHandler(delegate(object sender, EventArgs e) {
 				GGenre genre = (GGenre)this.tabGenre.SelectedTab.Tag;
 				genre.FetchAll();
-				this.glvMain.Display(genre);
+				this.glvMain.Genre = genre;
 			});
 			
 			//メニュー項目
@@ -57,8 +59,28 @@ namespace Yusen.GExplorer {
 				UserSettingsToolbox.Instance.Show();
 				UserSettingsToolbox.Instance.Focus();
 			});
+			//メニュー項目 (リストビュー)
+			foreach(View v in Enum.GetValues(typeof(View))){
+				ToolStripMenuItem mi = new ToolStripMenuItem(
+					v.ToString(), null,
+					delegate(object sender, EventArgs e) {
+						this.ListView.View = (View)(sender as ToolStripMenuItem).Tag;
+						this.RefleshLvViewDropDownItems();
+						this.SaveSettings();
+					});
+				mi.Tag = v;
+				this.tsmiLvView.DropDownItems.Add(mi);
+			};
+			this.tsmiFullRowSelect.Click += delegate {
+				this.ListView.FullRowSelect = this.tsmiFullRowSelect.Checked;
+				this.SaveSettings();
+			};
+			this.tsmiMultiSelect.Click += delegate {
+				this.ListView.MultiSelect = this.tsmiMultiSelect.Checked;
+				this.SaveSettings();
+			};
 			//ステータスバー
-			this.glvMain.Refreshed += new GenreListViewRefleshedEventHandler(
+			this.glvMain.GenreChanged += new GenreListViewGenreChangedEventHandler(
 				delegate(GenreListView sender, GGenre genre, int cntCount) {
 					this.tsslCategoryStat.Text =
 						"[" + genre.GenreName + "]"
@@ -73,14 +95,27 @@ namespace Yusen.GExplorer {
 					this.tsslCategoryStat.Text = "[" + sender.GenreName + "] 読み込み中";
 					Application.DoEvents(); //ステータスバーのラベルを描画させるために必要？
 				});
+			//コンテンツの選択
+			this.glvMain.SelectedContentsChanged += delegate(GenreListView sender, IEnumerable<GContent> contents) {
+				if(null != this.SelectedContentsChanged) {
+					this.SelectedContentsChanged(sender, contents);
+				}
+			};
 			//ユーザ設定
-			this.LocationChanged += new EventHandler(this.SaveToUserSettings);
-			this.SizeChanged += new EventHandler(this.SaveToUserSettings);
-			UserSettings.Instance.ChangeCompleted +=
+			this.LocationChanged += delegate {
+				this.SaveSettings();
+			};
+			this.SizeChanged += delegate {
+				this.SaveSettings();
+			};
+			this.glvMain.ColumnWidthChanged += delegate {
+				this.SaveSettings();
+			};
+			UserSettings.Instance.MainForm.ChangeCompleted +=
 				new UserSettingsChangeCompletedEventHandler(this.LoadSettings);
 			this.FormClosing += new FormClosingEventHandler(
 				delegate(object sender, FormClosingEventArgs e) {
-					UserSettings.Instance.ChangeCompleted -= this.LoadSettings;
+					UserSettings.Instance.MainForm.ChangeCompleted -= this.LoadSettings;
 				});
 		}
 		
@@ -100,23 +135,26 @@ namespace Yusen.GExplorer {
 			}
 		}
 		
-		public void LoadSettings() {
-			UserSettings settings = UserSettings.Instance;
-			this.StartPosition = settings.MfStartPosition;
-			this.WindowState = settings.MfWindowState;
-			this.Location = settings.MfLocation;
-			this.Size = settings.MfSize;
+		private void RefleshLvViewDropDownItems() {
+			foreach(ToolStripMenuItem m in this.tsmiLvView.DropDownItems) {
+				m.Checked = (this.ListView.View == (View)m.Tag);
+			}
 		}
-		private void SaveToUserSettings(object sender, EventArgs e) {
-			this.SaveSettings();
+		public void LoadSettings() {
+			UserSettings.Instance.MainForm.ApplySettings(this);
+			this.RefleshLvViewDropDownItems();
+			this.tsmiMultiSelect.Checked = this.ListView.MultiSelect;
+			this.tsmiFullRowSelect.Checked = this.ListView.FullRowSelect;
 		}
 		public void SaveSettings() {
-			UserSettings settings = UserSettings.Instance;
-			settings.MfStartPosition = this.StartPosition;
-			settings.MfWindowState = this.WindowState;
-			settings.MfLocation = this.Location;
-			settings.MfSize = this.Size;
-			settings.OnChangeCompleted();
+			UserSettings.Instance.MainForm.StoreSettings(this);
+			UserSettings.Instance.MainForm.OnChangeCompleted();
+		}
+		
+		public ListView ListView {
+			get {
+				return this.glvMain.ListView;
+			}
 		}
 	}
 }
