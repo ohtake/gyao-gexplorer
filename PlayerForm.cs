@@ -24,53 +24,58 @@ namespace Yusen.GExplorer {
 			//ユーザ設定の読み込み
 			this.LoadSettings();
 			//メニュー選択時の動作
-			this.tsmiOpenGenre.Click += new EventHandler(delegate(object sender, EventArgs e) {
+			this.tsmiOpenGenre.Click += delegate{
 				MainForm.Instance.Genre = this.Content.Genre;
 				MainForm.Instance.Focus();
-			});
-			this.tsmiProperty.Click += new EventHandler(delegate(object sender, EventArgs e) {
+			};
+			this.tsmiProperty.Click +=delegate {
 				ContentPropertyViewer cpv = ContentPropertyViewer.Instance;
 				cpv.Show();
 				cpv.Content = this.Content;
 				cpv.Focus();
-			});
-			this.tsmiReload.Click += new EventHandler(delegate(object sender, EventArgs e) {
+			};
+			this.tsmiReload.Click += delegate {
 				this.wmpMain.URL = this.content.MediaFileUri.AbsoluteUri;
-			});
-			this.tsmiClose.Click += new EventHandler(delegate(object sender, EventArgs e) {
+			};
+			this.tsmiClose.Click += delegate {
 				this.Close();
-			});
-			this.tsmiAlwaysOnTop.Click += new EventHandler(delegate(object sender, EventArgs e) {
+			};
+			this.tsmiAlwaysOnTop.Click += delegate {
 				this.TopMost = this.tsmiAlwaysOnTop.Checked;
 				this.SaveSettings();
-			});
-			this.tsmiFullscreen.Click += new EventHandler(delegate(object sender, EventArgs e) {
-				this.wmpMain.fullScreen = !this.wmpMain.fullScreen;
+			};
+			this.tsmiFullscreen.Click += delegate{
+				switch(this.wmpMain.playState) {
+					case WMPPlayState.wmppsPlaying:
+					case WMPPlayState.wmppsPaused:
+						this.wmpMain.fullScreen = !this.wmpMain.fullScreen;
+						break;
+				}
+			};
+			this.tsmiAutoVolume.Click +=delegate {
 				this.SaveSettings();
-			});
-			this.tsmiAutoVolume.Click += new EventHandler(delegate(object sender, EventArgs e) {
-				this.SaveSettings();
-			});
-			this.tsmiFocusOnWmp.Click += new EventHandler(delegate(object sender, EventArgs e) {
-				this.tabControl1.SelectedIndex = 0;
+			};
+			this.tsmiFocusOnWmp.Click += delegate {
+				this.tabControl1.SelectedTab = this.tabPlayer;
 				this.wmpMain.Focus();
-			});
+			};
 			//外部コマンド
 			this.LoadCommands();
 			UserCommandsManager.Instance.UserCommandsChanged += new UserCommandsChangedEventHandler(this.LoadCommands);
-			this.FormClosing += new FormClosingEventHandler(
-				delegate(object sender, FormClosingEventArgs e) {
-					UserCommandsManager.Instance.UserCommandsChanged -= new UserCommandsChangedEventHandler(this.LoadCommands);
-				});
+			this.FormClosing += delegate {
+				UserCommandsManager.Instance.UserCommandsChanged -= new UserCommandsChangedEventHandler(this.LoadCommands);
+			};
 			//音量の自動調整
-			this.wmpMain.OpenStateChange += new AxWMPLib._WMPOCXEvents_OpenStateChangeEventHandler(
-				delegate(object sender, _WMPOCXEvents_OpenStateChangeEvent e) {
-					// THANKSTO: http://pc8.2ch.net/test/read.cgi/esite/1116115226/81 の神
-					if(this.tsmiAutoVolume.Checked && WMPOpenState.wmposMediaOpen == this.wmpMain.openState) {
-						this.wmpMain.settings.volume =
-							this.wmpMain.currentMedia.getItemInfo("WMS_CONTENT_DESCRIPTION_PLAYLIST_ENTRY_URL").StartsWith("Adv:") ? 10 : 100;
-					}
-				});
+			this.wmpMain.OpenStateChange += delegate{
+				// THANKSTO: http://pc8.2ch.net/test/read.cgi/esite/1116115226/81 の神
+				if(this.tsmiAutoVolume.Checked && WMPOpenState.wmposMediaOpen == this.wmpMain.openState) {
+					bool isCf = this.wmpMain.currentMedia.getItemInfo("WMS_CONTENT_DESCRIPTION_PLAYLIST_ENTRY_URL").StartsWith("Adv:");
+					this.wmpMain.settings.volume = isCf ? 10 : 100;
+					//謎の対応
+					this.wmpMain.settings.mute = true;
+					this.wmpMain.settings.mute = false;
+				}
+			};
 			//ユーザ設定
 			this.SizeChanged += delegate {
 				this.SaveSettings();
@@ -80,10 +85,13 @@ namespace Yusen.GExplorer {
 			};
 			UserSettings.Instance.PlayerForm.ChangeCompleted += this.LoadSettings;
 			this.FormClosing += delegate{
+				if(FormWindowState.Minimized == this.WindowState) {
+					//最小化したまま終了されるとウィンドウ位置が変になるので元に戻す
+					this.WindowState = FormWindowState.Normal;
+				}
 				UserSettings.Instance.PlayerForm.ChangeCompleted -= this.LoadSettings;
 			};
 		}
-		
 		public GContent Content {
 			get {
 				if(null == this.content) throw new InvalidOperationException();
@@ -121,7 +129,7 @@ namespace Yusen.GExplorer {
 				ToolStripMenuItem mi = new ToolStripMenuItem(
 					uc.Title, null,
 					new EventHandler(delegate(object sender, EventArgs e) {
-					((UserCommand)((ToolStripMenuItem)sender).Tag).Execute(
+					((sender as ToolStripMenuItem).Tag as UserCommand).Execute(
 						new GContent[] { this.Content });
 				}));
 				mi.Tag = uc;

@@ -35,6 +35,10 @@ namespace Yusen.GExplorer {
 			};
 			UserSettings.Instance.ContentPropertyViewer.ChangeCompleted += this.LoadSettings;
 			this.FormClosing += delegate {
+				if(FormWindowState.Minimized == this.WindowState) {
+					//最小化したまま終了されるとウィンドウ位置が変になるので元に戻す
+					this.WindowState = FormWindowState.Normal;
+				}
 				UserSettings.Instance.ContentPropertyViewer.ChangeCompleted -= this.LoadSettings;
 			};
 			

@@ -207,7 +207,9 @@ namespace Yusen.GExplorer {
 			// 
 			// tsmiAutoVolume
 			// 
+			this.tsmiAutoVolume.Checked = true;
 			this.tsmiAutoVolume.CheckOnClick = true;
+			this.tsmiAutoVolume.CheckState = System.Windows.Forms.CheckState.Checked;
 			this.tsmiAutoVolume.Name = "tsmiAutoVolume";
 			this.tsmiAutoVolume.Text = "é©ìÆâπó í≤êÆ (&V)";
 			// 
@@ -229,7 +231,7 @@ namespace Yusen.GExplorer {
 			this.ClientSize = new System.Drawing.Size(662, 606);
 			this.Controls.Add(this.toolStripContainer1);
 			this.Name = "PlayerForm";
-			this.Text = "DetailForm";
+			this.Text = "PlayerForm";
 			this.tabControl1.ResumeLayout(false);
 			this.tabPlayer.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.wmpMain)).EndInit();

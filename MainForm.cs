@@ -32,45 +32,47 @@ namespace Yusen.GExplorer {
 				this.tabGenre.TabPages.Add(tab);
 			}
 			this.tabGenre.SelectedIndex = -1;
-			this.tabGenre.SelectedIndexChanged += new EventHandler(delegate(object sender, EventArgs e) {
+			this.tabGenre.SelectedIndexChanged += delegate {
 				GGenre genre = (GGenre)this.tabGenre.SelectedTab.Tag;
 				if(!genre.HasLoaded) genre.FetchAll();
 				this.glvMain.Genre = genre;
-			});
-			this.tabGenre.DoubleClick += new EventHandler(delegate(object sender, EventArgs e) {
+			};
+			this.tabGenre.DoubleClick += delegate {
 				GGenre genre = (GGenre)this.tabGenre.SelectedTab.Tag;
 				genre.FetchAll();
 				this.glvMain.Genre = genre;
-			});
+			};
 			
 			//メニュー項目
-			this.tsmiQuit.Click += new EventHandler(delegate(object sender, EventArgs e) {
+			this.tsmiGyaoTop.Click += delegate {
+				Utility.BrowseWithIE(new Uri("http://www.gyao.jp/"));
+			};
+			this.tsmiQuit.Click += delegate {
 				this.Close();
-			});
-			this.tsmiContentProperty.Click += new EventHandler(delegate(object sender, EventArgs e) {
+			};
+			this.tsmiContentProperty.Click += delegate {
 				ContentPropertyViewer.Instance.Show();
 				ContentPropertyViewer.Instance.Focus();
-			});
-			this.tsmiEditCommands.Click += new EventHandler(delegate(object sender, EventArgs e) {
+			};
+			this.tsmiEditCommands.Click += delegate{
 				UserCommandsEditor.Instance.Show();
 				UserCommandsEditor.Instance.Focus();
-			});
-			this.tsmiUserSettings.Click += new EventHandler(delegate(object sender, EventArgs e) {
+			};
+			this.tsmiUserSettings.Click += delegate {
 				UserSettingsToolbox.Instance.Show();
 				UserSettingsToolbox.Instance.Focus();
-			});
+			};
 			//メニュー項目 (リストビュー)
 			foreach(View v in Enum.GetValues(typeof(View))){
-				ToolStripMenuItem mi = new ToolStripMenuItem(
-					v.ToString(), null,
-					delegate(object sender, EventArgs e) {
-						this.ListView.View = (View)(sender as ToolStripMenuItem).Tag;
-						this.RefleshLvViewDropDownItems();
-						this.SaveSettings();
-					});
+				ToolStripMenuItem mi = new ToolStripMenuItem(v.ToString());
 				mi.Tag = v;
+				mi.Click += delegate(object sender, EventArgs e) {
+					this.ListView.View = (View)(sender as ToolStripMenuItem).Tag;
+					this.RefleshLvViewDropDownItems();
+					this.SaveSettings();
+				};
 				this.tsmiLvView.DropDownItems.Add(mi);
-			};
+			}
 			this.tsmiFullRowSelect.Click += delegate {
 				this.ListView.FullRowSelect = this.tsmiFullRowSelect.Checked;
 				this.SaveSettings();
@@ -115,6 +117,10 @@ namespace Yusen.GExplorer {
 				new UserSettingsChangeCompletedEventHandler(this.LoadSettings);
 			this.FormClosing += new FormClosingEventHandler(
 				delegate(object sender, FormClosingEventArgs e) {
+					if(FormWindowState.Minimized == this.WindowState) {
+						//最小化したまま終了されるとウィンドウ位置が変になるので元に戻す
+						this.WindowState = FormWindowState.Normal;
+					}
 					UserSettings.Instance.MainForm.ChangeCompleted -= this.LoadSettings;
 				});
 		}

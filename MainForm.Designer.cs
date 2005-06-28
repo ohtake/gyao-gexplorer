@@ -28,6 +28,7 @@ namespace Yusen.GExplorer {
 			this.tsslCategoryStat = new System.Windows.Forms.ToolStripStatusLabel();
 			this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
 			this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+			this.glvMain = new Yusen.GExplorer.GenreListView();
 			this.tabGenre = new System.Windows.Forms.TabControl();
 			this.tabPage1 = new System.Windows.Forms.TabPage();
 			this.tabPage2 = new System.Windows.Forms.TabPage();
@@ -42,7 +43,8 @@ namespace Yusen.GExplorer {
 			this.tsmiContentProperty = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiEditCommands = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiUserSettings = new System.Windows.Forms.ToolStripMenuItem();
-			this.glvMain = new Yusen.GExplorer.GenreListView();
+			this.tsmiGyaoTop = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.statstripMain.SuspendLayout();
 			this.toolStripContainer1.ContentPanel.SuspendLayout();
 			this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
@@ -107,6 +109,16 @@ namespace Yusen.GExplorer {
 			this.tableLayoutPanel1.Size = new System.Drawing.Size(592, 369);
 			this.tableLayoutPanel1.TabIndex = 1;
 			// 
+			// glvMain
+			// 
+			this.glvMain.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.glvMain.Genre = null;
+			this.glvMain.Location = new System.Drawing.Point(0, 20);
+			this.glvMain.Margin = new System.Windows.Forms.Padding(0);
+			this.glvMain.Name = "glvMain";
+			this.glvMain.Size = new System.Drawing.Size(592, 349);
+			this.glvMain.TabIndex = 0;
+			// 
 			// tabGenre
 			// 
 			this.tabGenre.Controls.Add(this.tabPage1);
@@ -154,6 +166,8 @@ namespace Yusen.GExplorer {
 			// tsmiFile
 			// 
 			this.tsmiFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiGyaoTop,
+            this.toolStripSeparator1,
             this.tsmiQuit});
 			this.tsmiFile.Name = "tsmiFile";
 			this.tsmiFile.Text = "ファイル (&F)";
@@ -216,15 +230,14 @@ namespace Yusen.GExplorer {
 			this.tsmiUserSettings.Name = "tsmiUserSettings";
 			this.tsmiUserSettings.Text = "ユーザ設定ツールボックス (&U)";
 			// 
-			// glvMain
+			// tsmiGyaoTop
 			// 
-			this.glvMain.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.glvMain.Genre = null;
-			this.glvMain.Location = new System.Drawing.Point(0, 20);
-			this.glvMain.Margin = new System.Windows.Forms.Padding(0);
-			this.glvMain.Name = "glvMain";
-			this.glvMain.Size = new System.Drawing.Size(592, 349);
-			this.glvMain.TabIndex = 0;
+			this.tsmiGyaoTop.Name = "tsmiGyaoTop";
+			this.tsmiGyaoTop.Text = "GyaO のトップページを IE で開く (&T)";
+			// 
+			// toolStripSeparator1
+			// 
+			this.toolStripSeparator1.Name = "toolStripSeparator1";
 			// 
 			// MainForm
 			// 
@@ -272,6 +285,8 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ToolStripMenuItem tsmiFullRowSelect;
 		private System.Windows.Forms.ToolStripMenuItem tsmiMultiSelect;
 		private GenreListView glvMain;
+		private System.Windows.Forms.ToolStripMenuItem tsmiGyaoTop;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
 	}
 }
 

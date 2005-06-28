@@ -40,6 +40,10 @@ namespace Yusen.GExplorer {
 				+= new UserCommandsChangedEventHandler(this.RefleshView);
 			this.FormClosing += new FormClosingEventHandler(
 				delegate(object sender, FormClosingEventArgs e) {
+					if(FormWindowState.Minimized == this.WindowState) {
+						//最小化したまま終了されるとウィンドウ位置が変になるので元に戻す
+						this.WindowState = FormWindowState.Normal;
+					}
 					UserCommandsManager.Instance.UserCommandsChanged -=
 						new UserCommandsChangedEventHandler(this.RefleshView);
 				});

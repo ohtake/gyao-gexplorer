@@ -2,9 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 
-using System.Xml.Serialization;
-using System.IO;
-
 namespace Yusen.GExplorer {
 	static class Program {
 		/// <summary>The main entry point for the application.</summary>
@@ -13,7 +10,7 @@ namespace Yusen.GExplorer {
 			Application.EnableVisualStyles();
 			
 			UserSettings.LoadSettingsFromFile();
-			if(UserSettings.Instance.RequireCookie){
+			if(UserSettings.Instance.IsCookieRequired){
 				if(DialogResult.Yes !=
 					MessageBox.Show(
 						"IE で www.gyao.jp にアクセスすることでユーザ情報を取得します．\n"

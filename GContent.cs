@@ -1,11 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using WebClient = System.Net.WebClient;
-using Encoding = System.Text.Encoding;
 using System.Text.RegularExpressions;
 using System.IO;
 using System.Threading;
+using System.Windows.Forms;
+using WebClient = System.Net.WebClient;
+using Encoding = System.Text.Encoding;
 
 /* GyaOのコンテンツDBは以下の木構造になっているはず？
  * ジャンル
@@ -37,7 +38,7 @@ namespace Yusen.GExplorer{
 			new Regex(@"^<img src=""/img/info/[^/]+/pac([0-9]+)_m\.jpg""", RegexOptions.Compiled | RegexOptions.Singleline);
 		private static readonly Regex regexSpecial =
 			new Regex(@"<a href=""([^""]+)"".+?alt=""特集ページ""", RegexOptions.Compiled | RegexOptions.Singleline);
-		
+
 		public static IEnumerable<GGenre> AllGenres {
 			get {
 				return GGenre.allGenres;
@@ -117,6 +118,7 @@ namespace Yusen.GExplorer{
 			Queue<string> sgCatch = new Queue<string>();
 			string packName = "";
 			List<string> specialPages = new List<string>();
+			List<bool> comings = new List<bool>();
 			while(null != (line = reader.ReadLine())) {
 				if(!line.StartsWith("<!--")) continue;//下記のswitch文を弄るときに要注意
 				Match match;
@@ -137,19 +139,21 @@ namespace Yusen.GExplorer{
 								this,
 								int.Parse(match.Groups[1].Value),
 								packName,
-								0 == sgName.Count ? "" : sgName.Dequeue(),
-								0 == sgCatch.Count ? "" : sgCatch.Dequeue()));
+								0 == sgName.Count ? "(バグったかも)" : sgName.Dequeue(),
+								0 == sgCatch.Count ? "(バグったかも)" : sgCatch.Dequeue()));
 						} else {
 							throw new Exception();
 						}
 						break;
 					case "<!-- ボタン ↓ -->":
-						match = GGenre.regexSpecial.Match(Utility.ReadNextLineHtml(reader));
+						line = Utility.ReadNextLineHtml(reader);
+						match = GGenre.regexSpecial.Match(line);
 						if(match.Success) {
 							specialPages.Add(match.Groups[1].Value);
 						} else {
 							specialPages.Add(null);
 						}
+						comings.Add(line.Contains("もうすぐ登場"));
 						break;
 				}
 			}
@@ -159,15 +163,26 @@ namespace Yusen.GExplorer{
 					packages[i].SpecialPageUri = new Uri(this.GenreTopPageUri, sp);
 				}
 			}
+			for(int i = 0; i < comings.Count; i++) {
+				if(comings[i]) packages[i].IsComingSoon = true;
+			}
 			this.children = packages;
 			this.lastFetch = DateTime.Now;
 			return this.Packages;
 		}
 		public void FetchAll(){
 			if(UserSettings.Instance.GyaoEnableConcurrentFetch) {
-				this.FetchAllConcurrently();
+				try {
+					this.FetchAllConcurrently();
+				} catch(Exception e) {
+					Utility.DisplayException(e);
+				}
 			} else {
-				this.FetchAllSequentially();
+				try {
+					this.FetchAllSequentially();
+				} catch(Exception e) {
+					Utility.DisplayException(e);
+				}
 			}
 		}
 		private void FetchAllSequentially() {
@@ -176,18 +191,32 @@ namespace Yusen.GExplorer{
 			foreach(GPackage p in ps) denom++;
 			int nume = 0;
 			foreach(GPackage p in this.FetchPackages()) {
-				GGenre.LoadingPackages(this, ++nume, denom);
-				p.FetchContents();
+				nume++;
+				GGenre.LoadingPackages(this, nume, denom);
+				try {
+					p.FetchContents();
+				} catch(Exception e) {
+					Utility.DisplayException(e);
+				}
 			}
 			GGenre.LoadingPackages(this, denom, denom);
 		}
 		private void FetchAllConcurrently() {
+			bool hadError = false;
+			
 			IEnumerable<GPackage> ps = this.FetchPackages();
 			int denom = 1;
 			Queue<Thread> tq = new Queue<Thread>();
 			foreach(GPackage p in ps) {
 				Thread t = new Thread(new ThreadStart(delegate() {
-					p.FetchContents();
+					try {
+						p.FetchContents();
+					} catch(Exception e) {
+						lock(this) {
+							hadError = true;
+						}
+						Utility.DisplayException(e);
+					}
 				}));
 				t.Start();
 				denom++;
@@ -195,10 +224,20 @@ namespace Yusen.GExplorer{
 			}
 			int nume = 0;
 			foreach(Thread t in tq) {
-				GGenre.LoadingPackages(this, ++nume, denom);
+				nume++;
+				GGenre.LoadingPackages(this, nume, denom);
 				t.Join();
 			}
 			GGenre.LoadingPackages(this, denom, denom);
+			
+			if(hadError) {
+				if(DialogResult.Yes == MessageBox.Show(
+						"ページの並行取得でエラーが起きました．``偶発的な''エラーが頻発するようならば従来の逐次取得に切り替えると改善するかもしれません．\n\n"
+						+ "逐次取得に切り替えますか？(手動で切り替えるにはユーザ設定で変更出来ます．)",
+						Application.ProductName, MessageBoxButtons.YesNo, MessageBoxIcon.Question)) {
+					UserSettings.Instance.GyaoEnableConcurrentFetch = false;
+				}
+			}
 		}
 	}
 	
@@ -228,6 +267,7 @@ namespace Yusen.GExplorer{
 		private string pacCatch = null;
 		private string pacText = null;
 		private Uri specialPage = null;
+		private bool comingSoon = false;
 		private IEnumerable<GContent> children = null;
 		private DateTime lastFetch = default(DateTime);
 
@@ -332,6 +372,16 @@ namespace Yusen.GExplorer{
 				return null != this.specialPage;
 			}
 		}
+		[Category("付随情報")]
+		[Description("「もうすぐ登場」の真偽．")]
+		public bool IsComingSoon {
+			get {
+				return this.comingSoon;
+			}
+			set {
+				this.comingSoon = value;
+			}
+		}
 		[Category("専ブラが付加した情報")]
 		[Description("読み込み済みであるか否か．")]
 		public bool HasLoaded {
@@ -367,6 +417,12 @@ namespace Yusen.GExplorer{
 		}
 		
 		public IEnumerable<GContent> FetchContents() {
+			if(this.IsComingSoon) {//「もうすぐ登場」の時は読み込まないどく
+				this.children = new List<GContent>();
+				this.lastFetch = DateTime.MinValue;
+				return this.Contents;
+			}
+			
 			TextReader reader = new StreamReader(new WebClient().OpenRead(this.PackagePageUri), Encoding.GetEncoding("Shift_JIS"));
 			
 			string line;

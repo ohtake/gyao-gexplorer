@@ -13,7 +13,7 @@ namespace Yusen.GExplorer {
 			if(null != this.ChangeCompleted) {
 				this.ChangeCompleted();
 			}
-			UserSettings.Instance.OnChangeCompleted();
+			UserSettings.Instance.OnChangeCompleted(false);
 		}
 	}
 	
