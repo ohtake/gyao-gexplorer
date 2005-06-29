@@ -40,6 +40,24 @@ namespace Yusen.GExplorer {
 			this.tsmiClose.Click += delegate {
 				this.Close();
 			};
+			this.tsmiPlayPause.Click += delegate {
+				this.WmpPlayPause();
+			};
+			this.tsmiStop.Click += delegate {
+				this.WmpStop();
+			};
+			this.tsmiPrevTrack.Click += delegate {
+				this.WmpPrevTrack();
+			};
+			this.tsmiNextTrack.Click += delegate {
+				this.WmpNextTrack();
+			};
+			this.tsmiFastForward.Click += delegate {
+				this.WmpFastForward();
+			};
+			this.tsmiFastReverse.Click += delegate {
+				this.WmpFastReverse();
+			};
 			this.tsmiAlwaysOnTop.Click += delegate {
 				this.TopMost = this.tsmiAlwaysOnTop.Checked;
 				this.SaveSettings();
@@ -53,6 +71,12 @@ namespace Yusen.GExplorer {
 				}
 			};
 			this.tsmiAutoVolume.Click +=delegate {
+				this.SaveSettings();
+			};
+			this.tsmiAutoClose.Click += delegate {
+				this.SaveSettings();
+			};
+			this.tsmiMediaKeys.Click += delegate {
 				this.SaveSettings();
 			};
 			this.tsmiFocusOnWmp.Click += delegate {
@@ -76,6 +100,30 @@ namespace Yusen.GExplorer {
 					this.wmpMain.settings.mute = false;
 				}
 			};
+			//再生終了で自動的に閉じる
+			this.wmpMain.PlayStateChange += delegate {
+				if(this.tsmiAutoClose.Checked && WMPPlayState.wmppsMediaEnded == this.wmpMain.playState) {
+					this.Close();
+				}
+			};
+			//メディアキー
+			this.KeyDown += new KeyEventHandler(delegate(object sender, KeyEventArgs e) {
+				if(!this.tsmiMediaKeys.Checked) return;
+				switch(e.KeyCode) {
+					case Keys.MediaNextTrack:
+						this.WmpNextTrack();
+						break;
+					case Keys.MediaPlayPause:
+						this.WmpPlayPause();
+						break;
+					case Keys.MediaPreviousTrack:
+						this.WmpPrevTrack();
+						break;
+					case Keys.MediaStop:
+						this.WmpStop();
+						break;
+				}
+			});
 			//ユーザ設定
 			this.SizeChanged += delegate {
 				this.SaveSettings();
@@ -112,6 +160,45 @@ namespace Yusen.GExplorer {
 			set {
 				this.tsmiAutoVolume.Checked = value;
 			}
+		}
+		public bool AutoCloseEnabled {
+			get {
+				return this.tsmiAutoClose.Checked;
+			}
+			set {
+				this.tsmiAutoClose.Checked = value;
+			}
+		}
+		public bool MediaKeysEnabled {
+			get {
+				return this.tsmiMediaKeys.Checked;
+			}
+			set {
+				this.tsmiMediaKeys.Checked = value;
+			}
+		}
+		
+		public void WmpPlayPause() {
+			if(WMPPlayState.wmppsPlaying == this.wmpMain.playState) {
+				this.wmpMain.Ctlcontrols.pause();
+			} else {
+				this.wmpMain.Ctlcontrols.play();
+			}
+		}
+		public void WmpStop() {
+			this.wmpMain.Ctlcontrols.stop();
+		}
+		public void WmpNextTrack() {
+			this.wmpMain.Ctlcontrols.next();
+		}
+		public void WmpPrevTrack() {
+			this.wmpMain.Ctlcontrols.previous();
+		}
+		public void WmpFastForward() {
+			this.wmpMain.Ctlcontrols.fastForward();
+		}
+		public void WmpFastReverse() {
+			this.wmpMain.Ctlcontrols.fastReverse();
 		}
 
 		public void LoadSettings() {

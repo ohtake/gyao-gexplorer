@@ -95,7 +95,7 @@ namespace Yusen.GExplorer{
 		[Browsable(false)]
 		public IEnumerable<GPackage> Packages {
 			get {
-				if(! this.HasLoaded) throw new InvalidOperationException();
+				//if(! this.HasLoaded) throw new InvalidOperationException();
 				return this.children;
 			}
 		}
@@ -141,8 +141,6 @@ namespace Yusen.GExplorer{
 								packName,
 								0 == sgName.Count ? "(バグったかも)" : sgName.Dequeue(),
 								0 == sgCatch.Count ? "(バグったかも)" : sgCatch.Dequeue()));
-						} else {
-							throw new Exception();
 						}
 						break;
 					case "<!-- ボタン ↓ -->":
@@ -232,7 +230,7 @@ namespace Yusen.GExplorer{
 			
 			if(hadError) {
 				if(DialogResult.Yes == MessageBox.Show(
-						"ページの並行取得でエラーが起きました．``偶発的な''エラーが頻発するようならば従来の逐次取得に切り替えると改善するかもしれません．\n\n"
+						"ページの並行取得でエラーが起きました．\"偶発的\"なエラーが頻発するようならば従来の逐次取得に切り替えると改善するかもしれません．\n\n"
 						+ "逐次取得に切り替えますか？(手動で切り替えるにはユーザ設定で変更出来ます．)",
 						Application.ProductName, MessageBoxButtons.YesNo, MessageBoxIcon.Question)) {
 					UserSettings.Instance.GyaoEnableConcurrentFetch = false;
@@ -325,12 +323,12 @@ namespace Yusen.GExplorer{
 		[Description("パッケージのキャッチコピー．")]
 		public string PackageCatch {
 			get {
-				if(null == this.pacCatch) throw new InvalidOperationException();
+				//if(null == this.pacCatch) throw new InvalidOperationException();
 				return this.pacCatch;
 			}
 			set {
 				if(null == value) throw new ArgumentNullException();
-				if(null != this.pacCatch) return;
+				//if(null != this.pacCatch) throw new InvalidOperationException();
 				this.pacCatch = value;
 			}
 		}
@@ -339,12 +337,12 @@ namespace Yusen.GExplorer{
 		[Description("パッケージの説明文．")]
 		public string PackageText {
 			get {
-				if(null == this.pacText) throw new InvalidOperationException();
+				//if(null == this.pacText) throw new InvalidOperationException();
 				return this.pacText;
 			}
 			set {
 				if(null == value) throw new ArgumentNullException();
-				if(null != this.pacText) throw new InvalidOperationException();
+				//if(null != this.pacText) throw new InvalidOperationException();
 				this.pacText = value;
 			}
 		}
@@ -361,7 +359,7 @@ namespace Yusen.GExplorer{
 			}
 			set {
 				if(null == value) throw new ArgumentNullException();
-				if(null != this.specialPage) throw new InvalidOperationException();
+				//if(null != this.specialPage) throw new InvalidOperationException();
 				this.specialPage = value;
 			}
 		}
@@ -392,7 +390,7 @@ namespace Yusen.GExplorer{
 		[Browsable(false)]
 		public IEnumerable<GContent> Contents {
 			get {
-				if(! this.HasLoaded) throw new InvalidOperationException();
+				//if(! this.HasLoaded) throw new InvalidOperationException();
 				return this.children;
 			}
 		}
@@ -417,7 +415,7 @@ namespace Yusen.GExplorer{
 		}
 		
 		public IEnumerable<GContent> FetchContents() {
-			if(this.IsComingSoon) {//「もうすぐ登場」の時は読み込まないどく
+			if(this.IsComingSoon) {//「もうすぐ登場」の時は読み込まないどく (仮)
 				this.children = new List<GContent>();
 				this.lastFetch = DateTime.MinValue;
 				return this.Contents;

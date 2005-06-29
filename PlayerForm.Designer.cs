@@ -38,13 +38,25 @@ namespace Yusen.GExplorer {
 			this.tsmiReload = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiClose = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiOperation = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiPlayPause = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiStop = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
+			this.tsmiPrevTrack = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiNextTrack = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiFastReverse = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiFastForward = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiView = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiAlwaysOnTop = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiFullscreen = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiTool = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiAutoVolume = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiFocusOnWmp = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiCommands = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+			this.tsmiAutoVolume = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiAutoClose = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiMediaKeys = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+			this.tsmiFocusOnWmp = new System.Windows.Forms.ToolStripMenuItem();
 			this.tabControl1.SuspendLayout();
 			this.tabPlayer.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.wmpMain)).BeginInit();
@@ -126,6 +138,7 @@ namespace Yusen.GExplorer {
 			this.menuStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Visible;
 			this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiFile,
+            this.tsmiOperation,
             this.tsmiView,
             this.tsmiTool});
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
@@ -176,6 +189,61 @@ namespace Yusen.GExplorer {
 			this.tsmiClose.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.W)));
 			this.tsmiClose.Text = "閉じる (&C)";
 			// 
+			// tsmiOperation
+			// 
+			this.tsmiOperation.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiPlayPause,
+            this.tsmiStop,
+            this.toolStripSeparator5,
+            this.tsmiPrevTrack,
+            this.tsmiNextTrack,
+            this.tsmiFastReverse,
+            this.tsmiFastForward});
+			this.tsmiOperation.Name = "tsmiOperation";
+			this.tsmiOperation.Text = "操作 (&O)";
+			// 
+			// tsmiPlayPause
+			// 
+			this.tsmiPlayPause.Name = "tsmiPlayPause";
+			this.tsmiPlayPause.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P)));
+			this.tsmiPlayPause.Text = "再生/一時停止 (&P)";
+			// 
+			// tsmiStop
+			// 
+			this.tsmiStop.Name = "tsmiStop";
+			this.tsmiStop.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
+			this.tsmiStop.Text = "停止 (&S)";
+			// 
+			// toolStripSeparator5
+			// 
+			this.toolStripSeparator5.Name = "toolStripSeparator5";
+			// 
+			// tsmiPrevTrack
+			// 
+			this.tsmiPrevTrack.Name = "tsmiPrevTrack";
+			this.tsmiPrevTrack.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.B)));
+			this.tsmiPrevTrack.Text = "前へ (&B)";
+			// 
+			// tsmiNextTrack
+			// 
+			this.tsmiNextTrack.Name = "tsmiNextTrack";
+			this.tsmiNextTrack.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
+			this.tsmiNextTrack.Text = "次へ (&F)";
+			// 
+			// tsmiFastReverse
+			// 
+			this.tsmiFastReverse.Name = "tsmiFastReverse";
+			this.tsmiFastReverse.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Shift | System.Windows.Forms.Keys.Control)
+						| System.Windows.Forms.Keys.B)));
+			this.tsmiFastReverse.Text = "巻き戻し (&R)";
+			// 
+			// tsmiFastForward
+			// 
+			this.tsmiFastForward.Name = "tsmiFastForward";
+			this.tsmiFastForward.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Shift | System.Windows.Forms.Keys.Control)
+						| System.Windows.Forms.Keys.F)));
+			this.tsmiFastForward.Text = "早送り (&A)";
+			// 
 			// tsmiView
 			// 
 			this.tsmiView.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -199,11 +267,24 @@ namespace Yusen.GExplorer {
 			// tsmiTool
 			// 
 			this.tsmiTool.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiCommands,
+            this.toolStripSeparator3,
             this.tsmiAutoVolume,
-            this.tsmiFocusOnWmp,
-            this.tsmiCommands});
+            this.tsmiAutoClose,
+            this.tsmiMediaKeys,
+            this.toolStripSeparator4,
+            this.tsmiFocusOnWmp});
 			this.tsmiTool.Name = "tsmiTool";
 			this.tsmiTool.Text = "ツール (&T)";
+			// 
+			// tsmiCommands
+			// 
+			this.tsmiCommands.Name = "tsmiCommands";
+			this.tsmiCommands.Text = "外部コマンド (&C)";
+			// 
+			// toolStripSeparator3
+			// 
+			this.toolStripSeparator3.Name = "toolStripSeparator3";
 			// 
 			// tsmiAutoVolume
 			// 
@@ -213,16 +294,31 @@ namespace Yusen.GExplorer {
 			this.tsmiAutoVolume.Name = "tsmiAutoVolume";
 			this.tsmiAutoVolume.Text = "自動音量調整 (&V)";
 			// 
+			// tsmiAutoClose
+			// 
+			this.tsmiAutoClose.Checked = true;
+			this.tsmiAutoClose.CheckOnClick = true;
+			this.tsmiAutoClose.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.tsmiAutoClose.Name = "tsmiAutoClose";
+			this.tsmiAutoClose.Text = "再生終了で閉じる (&W)";
+			// 
+			// tsmiMediaKeys
+			// 
+			this.tsmiMediaKeys.Checked = true;
+			this.tsmiMediaKeys.CheckOnClick = true;
+			this.tsmiMediaKeys.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.tsmiMediaKeys.Name = "tsmiMediaKeys";
+			this.tsmiMediaKeys.Text = "メディアキーを使う (&M)";
+			// 
+			// toolStripSeparator4
+			// 
+			this.toolStripSeparator4.Name = "toolStripSeparator4";
+			// 
 			// tsmiFocusOnWmp
 			// 
 			this.tsmiFocusOnWmp.Name = "tsmiFocusOnWmp";
 			this.tsmiFocusOnWmp.ShortcutKeys = System.Windows.Forms.Keys.F6;
 			this.tsmiFocusOnWmp.Text = "WMPにフォーカスを送る (&F)";
-			// 
-			// tsmiCommands
-			// 
-			this.tsmiCommands.Name = "tsmiCommands";
-			this.tsmiCommands.Text = "外部コマンド (&C)";
 			// 
 			// PlayerForm
 			// 
@@ -230,6 +326,7 @@ namespace Yusen.GExplorer {
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(662, 606);
 			this.Controls.Add(this.toolStripContainer1);
+			this.KeyPreview = true;
 			this.Name = "PlayerForm";
 			this.Text = "PlayerForm";
 			this.tabControl1.ResumeLayout(false);
@@ -269,5 +366,17 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ToolStripMenuItem tsmiFocusOnWmp;
 		private System.Windows.Forms.ToolStripMenuItem tsmiOpenGenre;
 		private System.Windows.Forms.ToolStripMenuItem tsmiCommands;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
+		private System.Windows.Forms.ToolStripMenuItem tsmiAutoClose;
+		private System.Windows.Forms.ToolStripMenuItem tsmiMediaKeys;
+		private System.Windows.Forms.ToolStripMenuItem tsmiOperation;
+		private System.Windows.Forms.ToolStripMenuItem tsmiPlayPause;
+		private System.Windows.Forms.ToolStripMenuItem tsmiStop;
+		private System.Windows.Forms.ToolStripMenuItem tsmiNextTrack;
+		private System.Windows.Forms.ToolStripMenuItem tsmiPrevTrack;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
+		private System.Windows.Forms.ToolStripMenuItem tsmiFastReverse;
+		private System.Windows.Forms.ToolStripMenuItem tsmiFastForward;
 	}
 }

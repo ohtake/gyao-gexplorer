@@ -10,6 +10,7 @@ namespace Yusen.GExplorer {
 	delegate void GenreListViewColumnWidthChanged(GenreListView sender);
 	
 	partial class GenreListView : UserControl{
+		[Flags]
 		private enum ImageIndex : int{
 			IsNew = 1,
 			IsNotNew = 0,
@@ -111,10 +112,21 @@ namespace Yusen.GExplorer {
 				group.Tag = p;
 				this.lviewGenre.Groups.Add(group);
 				
+				//“Ç‚İ‚İ¸”s‚Ö‚Ì‰¼‘Î‰
+				if(!p.HasLoaded) {
+					ListViewItem item = new ListViewItem(
+						new string[] { "“Ç‚İ‚İ¸”sH“Ç‚İ‚İ‚È‚¨‚·‚Æ’¼‚é‚©‚à", "", "", "“Ç‚İ‚İ¸”sH“Ç‚İ‚İ‚È‚¨‚·‚Æ’¼‚é‚©‚à" },
+						group);
+					item.ForeColor = SystemColors.GrayText;
+					item.Tag = new GContent(p, 0, "", "", false, "");
+					this.lviewGenre.Items.Add(item);
+					continue;
+				}
+				
 				//u‚à‚¤‚·‚®“oêv‚Ö‚Ì‰¼‘Î‰
 				if(p.IsComingSoon) {
 					ListViewItem item = new ListViewItem(
-						new string[] { "‚à‚¤‚·‚®“oê", "‚à‚¤‚·‚®“oê", "‚à‚¤‚·‚®“oê", "‚à‚¤‚·‚®“oê"},
+						new string[] { "‚à‚¤‚·‚®“oê", "", "", "‚à‚¤‚·‚®“oê"},
 						group);
 					item.ForeColor = SystemColors.GrayText;
 					item.Tag = new GContent(p, 0, "", "", false, "");

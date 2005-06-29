@@ -10,6 +10,8 @@
     <RootNamespace>Yusen.GExplorer</RootNamespace>
     <AssemblyName>GExplorer</AssemblyName>
     <ApplicationIcon>Resources\GExplorer_32x32_16.ico</ApplicationIcon>
+    <StartupObject>
+    </StartupObject>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -79,31 +81,16 @@
     <EmbeddedResource Include="AboutBox.resx">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="CookieFetchForm.resx">
-      <DependentUpon>CookieFetchForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ContentPropertyViewer.resx">
-      <DependentUpon>ContentPropertyViewer.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="PlayerForm.resx">
       <DependentUpon>PlayerForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GenreListView.resx">
       <DependentUpon>GenreListView.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MainForm.resx">
-      <DependentUpon>MainForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UserCommandsEditor.resx">
-      <DependentUpon>UserCommandsEditor.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UserSettingsToolbox.resx">
-      <DependentUpon>UserSettingsToolbox.cs</DependentUpon>
     </EmbeddedResource>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>

@@ -1,10 +1,10 @@
-GyaO 専用ブラウザ GExplorer 1.1.2.3
+GyaO 専用ブラウザ GExplorer 1.1.2.4
 
 ◆必要な環境
-.NET Framework 2.0.50215 がインストールされており正常に動作していること
+.NET Framework 2.0.50215 以降がインストールされており正常に動作していること
 
-.NET Framework Version 2.0 Redistributable Package Beta 2 (x86)
-http://www.microsoft.com/downloads/details.aspx?FamilyId=7ABD8C8F-287E-4C7E-9A4A-A4ECFF40FC8E&displaylang=en
+Microsoft .NET Framework 2.0 再頒布可能パッケージ Beta 2 (x86)
+http://www.microsoft.com/downloads/details.aspx?displaylang=ja&FamilyID=7abd8c8f-287e-4c7e-9a4a-a4ecff40fc8e
 
 まだβ製品しかないけれども 2ch でうｐされているプログラムを実行するほどの度胸のある人ならMSのβ製品なんて恐るるに足らんでしょう
 
@@ -43,7 +43,7 @@ http://www.microsoft.com/downloads/details.aspx?FamilyId=7ABD8C8F-287E-4C7E-9A4A
 	[プロパティ名] には [クラスの指定子] に対応するクラスのプロパティの名前を指定します
 	プロパティ名はコンテンツプロパティビューアで確認することが出来ます
 	たとえば {c:MediaFileUri} は rtsp://wms.cd.gyao.jp/gyaovod01?QueryString=contentsId=cntXXXXXXX:userNo=XXXXX:rateId=bit0000002 といった文字列に置換されます
-	複数のコンテンツを選択した状態で外部コマンドを実行した場合，コンテンツのプロパティがスペース区切りになった状態で置換されます
+	複数のコンテンツを選択した状態で外部コマンドを実行した場合，各々のプロパティがスペース区切りになった状態で置換されます
 	参考までにサンプルの UserCommands.xml を付属しておきます
 
 ◆ユーザ設定ファイル

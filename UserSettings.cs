@@ -211,7 +211,7 @@ namespace Yusen.GExplorer {
 		}
 		[Category("GyaOとの通信")]
 		[DisplayName("並列読み込み")]
-		[Description("GyaOのウェブページの取得を並列化して高速化を図る．環境によっては逆に遅くなる場合もあるかも．")]
+		[Description("GyaOのウェブページの取得を並列化して高速化を図る．うまく動作しない環境では無効にすること．")]
 		[DefaultValue(true)]
 		public bool GyaoEnableConcurrentFetch {
 			get {

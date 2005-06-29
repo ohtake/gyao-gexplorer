@@ -233,6 +233,8 @@ namespace Yusen.GExplorer {
 	[TypeConverter(typeof(UserSettingsDescendantConverter))]
 	public sealed class UscPlayerForm : UscFormTopmostable {
 		private bool autoVolume = true;
+		private bool autoClose = true;
+		private bool mediaKeys = true;
 
 		public UscPlayerForm()
 			: this(Size.Empty, Point.Empty) {
@@ -248,13 +250,30 @@ namespace Yusen.GExplorer {
 			get { return this.autoVolume; }
 			set { this.autoVolume = value; }
 		}
+		[DisplayName("再生終了で閉じる")]
+		[Description("再生が終了したらウィンドウを自動的に閉じる．")]
+		[DefaultValue(true)]
+		public bool AutoClose {
+			get { return this.autoClose; }
+			set { this.autoClose = value; }
+		}
+		[DisplayName("メディアキーを使う")]
+		[Description("キーボードの「再生・一時停止」などのキーを有効にする．ただし再生ウィンドウにフォーカスがないと動作しない．")]
+		[DefaultValue(true)]
+		public bool MediaKeys {
+			get { return this.mediaKeys; }
+			set { this.mediaKeys = value; }
+		}
+
 		internal void StoreSettings(PlayerForm pf) {
 			base.StoreSettings(pf);
 			this.AutoVolume = pf.AutoVolumeEnabled;
+			this.autoClose = pf.AutoCloseEnabled;
 		}
 		internal void ApplySettings(PlayerForm pf) {
 			base.ApplySettings(pf);
 			if(pf.AutoVolumeEnabled != this.AutoVolume) pf.AutoVolumeEnabled = this.AutoVolume;
+			if(pf.AutoCloseEnabled != this.autoClose) pf.AutoCloseEnabled = this.autoClose;
 		}
 	}
 }

@@ -1,3 +1,5 @@
+//#define PRINT_EXCEPTION_TO_STDERR
+
 using System;
 using System.Windows.Forms;
 using System.IO;
@@ -12,18 +14,25 @@ namespace Yusen.GExplorer {
 
 		public static string GetPathForIE() {
 			return Path.Combine(
-				Environment.GetEnvironmentVariable("ProgramFiles"),
+				Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles),
 				"Internet Explorer" + Path.DirectorySeparatorChar + "iexplore.exe");
 		}
 		
 		public static string GetPathForWMP() {
 			return Path.Combine(
-				Environment.GetEnvironmentVariable("ProgramFiles"),
+				Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles),
 				"Windows Media Player" + Path.DirectorySeparatorChar + "wmplayer.exe");
 		}
 		
 		public static void DisplayException(Exception e) {
+#if !PRINT_EXCEPTION_TO_STDERR
 			MessageBox.Show(e.Message + "\n\n" + e.StackTrace, e.GetType().ToString(), MessageBoxButtons.OK, MessageBoxIcon.Error);
+#else
+			Console.Error.WriteLine(e.GetType().ToString());
+			Console.Error.WriteLine(e.Message);
+			Console.Error.WriteLine(e.StackTrace);
+			Console.Error.WriteLine();
+#endif
 		}
 		
 		public static Icon GetGExplorerIcon() {
