@@ -1,4 +1,4 @@
-GyaO 専用ブラウザ GExplorer 1.1.2.4
+GyaO 専用ブラウザ GExplorer 1.1.3.0
 
 ◆必要な環境
 .NET Framework 2.0.50215 以降がインストールされており正常に動作していること
@@ -10,7 +10,7 @@ http://www.microsoft.com/downloads/details.aspx?displaylang=ja&FamilyID=7abd8c8f
 
 ◆実行方法
 普通に GExplorer.exe を実行する
-ただし同じディレクトリに AxInterop.WMPLib.dll と Interop.WMPLib.dll などがあること
+同じディレクトリに AxInterop.WMPLib.dll と Interop.WMPLib.dll などがあること
 
 ◆アンインストール方法
 ファイルを丸ごと削除する
@@ -44,20 +44,33 @@ http://www.microsoft.com/downloads/details.aspx?displaylang=ja&FamilyID=7abd8c8f
 	プロパティ名はコンテンツプロパティビューアで確認することが出来ます
 	たとえば {c:MediaFileUri} は rtsp://wms.cd.gyao.jp/gyaovod01?QueryString=contentsId=cntXXXXXXX:userNo=XXXXX:rateId=bit0000002 といった文字列に置換されます
 	複数のコンテンツを選択した状態で外部コマンドを実行した場合，各々のプロパティがスペース区切りになった状態で置換されます
-	参考までにサンプルの UserCommands.xml を付属しておきます
+	参考までにサンプルの UserCommands.xml を Samples ディレクトリに添付しておきます
+・NGパッケージエディタ
+	コメント
+		意味ないです
+		分かりやすい説明でもつけてやってください
+	プロパティ名(主語)
+		パッケージのプロパティ名を選択します
+		指定したプロパティの値に対してNG処理をかけます
+		各プロパティの説明はコンテンツプロパティビューアで確認して下さい
+	比較方法(述語)
+		Equals:     プロパティの値がNGワードと完全一致したらNG
+		Contains:   プロパティの値がNGワードを含んでいたらNG
+		StartsWith: プロパティの値がNGワードで始まったらNG
+		EndsWith:   プロパティの値がNGワードで終わったらNG
+	NGワード(目的語)
+		この語句を含んでいたりするパッケージをNGにします
+	参考までにサンプルの NgPackages.xml を Samples ディレクトリに添付しておきます
 
-◆ユーザ設定ファイル
-UserSettings.xml にユーザ設定を保存しています
+◆各種設定ファイル
+UserSettings.xml, UserCommands.xml, NgPackages.xml に設定を保存しています
 バージョンアップ後に読み込んだら以前の設定が消えることがあるかもしれません
 もしうまく読み込めなくなってしまったら設定ファイルを削除してください
 
-◆外部コマンドファイル
-UserCommands.xml に外部コマンドを保存しています
-バージョンアップ後に読み込んだら以前のコマンドが消えることがあるかもしれません
-もしうまく読み込めなくなってしまったら外部コマンドファイルを削除してください
-
 ◆既知の不具合
+2005-07-01 以降の鯖スクリプトには対応していません
 並行取得がうまくいかない環境があるらしい
+WMPにフォーカスがある状態でのメディアキーの動作
 マルチモニタ環境での動作 (確認する環境がないからどうしようもないような)
 全画面表示時に右上の×を押しても閉じられない
 ユーザ設定ツールボックスの説明文が途中で切れちゃう

@@ -10,7 +10,7 @@ namespace Yusen.GExplorer {
 			Application.EnableVisualStyles();
 			
 			UserSettings.LoadSettingsFromFile();
-			if(UserSettings.Instance.IsCookieRequired){
+			if(UserSettings.Instance.IsCookieRequired) {
 				if(DialogResult.Yes !=
 					MessageBox.Show(
 						"IE で www.gyao.jp にアクセスすることでユーザ情報を取得します．\n"
@@ -23,9 +23,13 @@ namespace Yusen.GExplorer {
 				}
 			}
 			
-			UserCommandsManager.LoadCommandsFromFile();
+			UserCommandsManager.Instance.Deserialize();
+			NgPackagesManager.Instance.Deserialize();
+			
 			Application.Run(MainForm.Instance);
-			UserCommandsManager.SaveCommandsToFile();
+			
+			NgPackagesManager.Instance.Serialize();
+			UserCommandsManager.Instance.Serialize();
 			UserSettings.SaveSettingsToFile();
 		}
 	}

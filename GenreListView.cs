@@ -23,6 +23,7 @@ namespace Yusen.GExplorer {
 		public event GenreListViewColumnWidthChanged ColumnWidthChanged;
 		
 		private GGenre genre = null;
+		private AboneType aboneType = AboneType.Toumei;
 		
 		public GenreListView() {
 			this.InitializeComponent();
@@ -81,6 +82,20 @@ namespace Yusen.GExplorer {
 					}
 				}
 			});
+			this.tsmiNgPackageId.Click += delegate {
+				foreach(ListViewItem selItem in this.lviewGenre.SelectedItems) {
+					GPackage p = (selItem.Tag as GContent).Package;
+					NgPackagesManager.Instance.Add(new NgPackage(
+						p.PackageId, "PackageId", TwoStringsPredicateMethod.Equals, p.PackageId));
+				}
+			};
+			this.tsmiNgPackageSubgenreName.Click += delegate {
+				foreach(ListViewItem selItem in this.lviewGenre.SelectedItems) {
+					GPackage p = (selItem.Tag as GContent).Package;
+					NgPackagesManager.Instance.Add(new NgPackage(
+						p.SubgenreName, "SubgenreName", TwoStringsPredicateMethod.Equals, p.SubgenreName));
+				}
+			};
 			this.tsmiGenre.Click += new EventHandler(delegate(object sender, EventArgs e) {
 				Utility.BrowseWithIE(this.genre.GenreTopPageUri);
 			});
@@ -107,6 +122,20 @@ namespace Yusen.GExplorer {
 		private void Display(GGenre genre) {
 			this.Clear();
 			foreach(GPackage p in genre.Packages) {
+				//NGèàóù
+				switch(this.AboneType) {
+					case AboneType.Sabori:
+						break;
+					case AboneType.Toumei:
+						if(NgPackagesManager.Instance.IsNgPackage(p)) continue;
+						break;
+					case AboneType.Hakidame:
+						if(!NgPackagesManager.Instance.IsNgPackage(p)) continue;
+						break;
+					default:
+						throw new Exception("ïsñæÇ»Ç†Ç⁄Å[ÇÒï˚ñ@: " + this.AboneType.ToString());
+				}
+				
 				ListViewGroup group = new ListViewGroup(
 					"<" + p.PackageId + "> " + p.PackageName + " [" + p.SubgenreName + "]");
 				group.Tag = p;
@@ -178,7 +207,15 @@ namespace Yusen.GExplorer {
 				return this.lviewGenre;
 			}
 		}
-		
+		public AboneType AboneType {
+			get {
+				return this.aboneType;
+			}
+			set {
+				this.aboneType = value;
+				this.Genre = this.Genre;
+			}
+		}
 		private void cmsListView_Opening(object sender, CancelEventArgs e) {
 			bool isSelected = (0 < this.lviewGenre.SelectedItems.Count);
 			this.tsmiPlay.Enabled = isSelected;
@@ -186,6 +223,7 @@ namespace Yusen.GExplorer {
 			this.tsmiProperty.Enabled = isSelected;
 			this.tsmiDetail.Enabled = isSelected;
 			this.tsmiPackage.Enabled = isSelected;
+			this.tsmiNgPackage.Enabled = isSelected;
 			this.tsmiCommands.Enabled = isSelected && 0<this.tsmiCommands.DropDownItems.Count;
 			
 			this.tsmiSpecial.Enabled = false;

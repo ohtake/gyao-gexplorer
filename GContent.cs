@@ -438,7 +438,7 @@ namespace Yusen.GExplorer{
 					break;
 				}
 			}
-			if(null == line) throw new Exception();
+			if(null == line) throw new Exception("おそらくパッケージ<" + this.PackageId + ">の中身が空．");
 			
 			List<GContent> contents = new List<GContent>();
 			while(null != line) {

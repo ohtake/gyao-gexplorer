@@ -17,11 +17,12 @@ namespace Yusen.GExplorer {
 		}
 		
 		private GContent content = null;
+		private ActionOnMediaEnded actionOnEnd = ActionOnMediaEnded.CloseForm;
+		
 		private PlayerForm() {
 			InitializeComponent();
 			this.Icon = Utility.GetGExplorerIcon();
 			Utility.AppendHelpMenu(this.menuStrip1);
-			//ユーザ設定の読み込み
 			this.LoadSettings();
 			//メニュー選択時の動作
 			this.tsmiOpenGenre.Click += delegate{
@@ -41,22 +42,26 @@ namespace Yusen.GExplorer {
 				this.Close();
 			};
 			this.tsmiPlayPause.Click += delegate {
-				this.WmpPlayPause();
+				if(WMPPlayState.wmppsPlaying == this.wmpMain.playState) {
+					this.wmpMain.Ctlcontrols.pause();
+				} else {
+					this.wmpMain.Ctlcontrols.play();
+				}
 			};
 			this.tsmiStop.Click += delegate {
-				this.WmpStop();
+				this.wmpMain.Ctlcontrols.stop();
 			};
 			this.tsmiPrevTrack.Click += delegate {
-				this.WmpPrevTrack();
+				this.wmpMain.Ctlcontrols.previous();
 			};
 			this.tsmiNextTrack.Click += delegate {
-				this.WmpNextTrack();
+				this.wmpMain.Ctlcontrols.next();
 			};
 			this.tsmiFastForward.Click += delegate {
-				this.WmpFastForward();
+				this.wmpMain.Ctlcontrols.fastForward();
 			};
 			this.tsmiFastReverse.Click += delegate {
-				this.WmpFastReverse();
+				this.wmpMain.Ctlcontrols.fastReverse();
 			};
 			this.tsmiAlwaysOnTop.Click += delegate {
 				this.TopMost = this.tsmiAlwaysOnTop.Checked;
@@ -73,7 +78,7 @@ namespace Yusen.GExplorer {
 			this.tsmiAutoVolume.Click +=delegate {
 				this.SaveSettings();
 			};
-			this.tsmiAutoClose.Click += delegate {
+			this.tsmiActionOnMediaEnded.Click += delegate {
 				this.SaveSettings();
 			};
 			this.tsmiMediaKeys.Click += delegate {
@@ -94,35 +99,64 @@ namespace Yusen.GExplorer {
 				// THANKSTO: http://pc8.2ch.net/test/read.cgi/esite/1116115226/81 の神
 				if(this.tsmiAutoVolume.Checked && WMPOpenState.wmposMediaOpen == this.wmpMain.openState) {
 					bool isCf = this.wmpMain.currentMedia.getItemInfo("WMS_CONTENT_DESCRIPTION_PLAYLIST_ENTRY_URL").StartsWith("Adv:");
-					this.wmpMain.settings.volume = isCf ? 10 : 100;
+					this.wmpMain.settings.volume = isCf ? 20 : 100;
 					//謎の対応
 					this.wmpMain.settings.mute = true;
 					this.wmpMain.settings.mute = false;
 				}
 			};
-			//再生終了で自動的に閉じる
+			//再生が終了した時の動作
+			foreach(ActionOnMediaEnded action in Enum.GetValues(typeof(ActionOnMediaEnded))){
+				ToolStripMenuItem mi = new ToolStripMenuItem(action.ToString());
+				mi.Tag = action;
+				mi.Click += new EventHandler(delegate(object sender, EventArgs e) {
+					this.ActionOnEnd = (ActionOnMediaEnded)(sender as ToolStripMenuItem).Tag;
+					this.SaveSettings();
+				});
+				this.tsmiActionOnMediaEnded.DropDownItems.Add(mi);
+			}
+			this.ActionOnEnd = this.ActionOnEnd;//チェックをつけるため
 			this.wmpMain.PlayStateChange += delegate {
-				if(this.tsmiAutoClose.Checked && WMPPlayState.wmppsMediaEnded == this.wmpMain.playState) {
-					this.Close();
+				if(WMPPlayState.wmppsMediaEnded == this.wmpMain.playState) {
+					switch(this.ActionOnEnd) {
+						case ActionOnMediaEnded.DoNothing:
+							break;
+						case ActionOnMediaEnded.CloseForm:
+							this.Close();
+							break;
+						case ActionOnMediaEnded.GoToCampaign:
+							this.ieMain.Navigated += new WebBrowserNavigatedEventHandler(this.NavigateToCampaign);
+							this.ieMain.Navigate(this.Content.PlayerPageUri);
+							break;
+						case ActionOnMediaEnded.RepeatPlaying:
+							this.tsmiReload.PerformClick();
+							break;
+						default:
+							throw new Exception("この設定での終了時の動作は定義されてないよ．");
+					}
 				}
 			};
 			//メディアキー
 			this.KeyDown += new KeyEventHandler(delegate(object sender, KeyEventArgs e) {
+				if(e.Handled) return;
 				if(!this.tsmiMediaKeys.Checked) return;
 				switch(e.KeyCode) {
 					case Keys.MediaNextTrack:
-						this.WmpNextTrack();
+						this.tsmiNextTrack.PerformClick();
 						break;
 					case Keys.MediaPlayPause:
-						this.WmpPlayPause();
+						this.tsmiPlayPause.PerformClick();
 						break;
 					case Keys.MediaPreviousTrack:
-						this.WmpPrevTrack();
+						this.tsmiPrevTrack.PerformClick();
 						break;
 					case Keys.MediaStop:
-						this.WmpStop();
+						this.tsmiStop.PerformClick();
 						break;
+					default:
+						return;
 				}
+				e.Handled = true;
 			});
 			//ユーザ設定
 			this.SizeChanged += delegate {
@@ -139,6 +173,12 @@ namespace Yusen.GExplorer {
 				}
 				UserSettings.Instance.PlayerForm.ChangeCompleted -= this.LoadSettings;
 			};
+		}
+		
+		private void NavigateToCampaign(object sender, WebBrowserNavigatedEventArgs e) {
+			this.ieMain.Navigated -= this.NavigateToCampaign;
+			this.ieMain.Navigate("http://www.gyao.jp/sityou_campaign/top/");
+			this.tabControl1.SelectedTab = this.tabBrowser;
 		}
 		public GContent Content {
 			get {
@@ -161,14 +201,6 @@ namespace Yusen.GExplorer {
 				this.tsmiAutoVolume.Checked = value;
 			}
 		}
-		public bool AutoCloseEnabled {
-			get {
-				return this.tsmiAutoClose.Checked;
-			}
-			set {
-				this.tsmiAutoClose.Checked = value;
-			}
-		}
 		public bool MediaKeysEnabled {
 			get {
 				return this.tsmiMediaKeys.Checked;
@@ -177,30 +209,18 @@ namespace Yusen.GExplorer {
 				this.tsmiMediaKeys.Checked = value;
 			}
 		}
-		
-		public void WmpPlayPause() {
-			if(WMPPlayState.wmppsPlaying == this.wmpMain.playState) {
-				this.wmpMain.Ctlcontrols.pause();
-			} else {
-				this.wmpMain.Ctlcontrols.play();
+		public ActionOnMediaEnded ActionOnEnd {
+			get {
+				return this.actionOnEnd;
+			}
+			set {
+				this.actionOnEnd = value;
+				foreach(ToolStripMenuItem mi in this.tsmiActionOnMediaEnded.DropDownItems) {
+					mi.Checked = (value == (ActionOnMediaEnded)mi.Tag);
+				}
 			}
 		}
-		public void WmpStop() {
-			this.wmpMain.Ctlcontrols.stop();
-		}
-		public void WmpNextTrack() {
-			this.wmpMain.Ctlcontrols.next();
-		}
-		public void WmpPrevTrack() {
-			this.wmpMain.Ctlcontrols.previous();
-		}
-		public void WmpFastForward() {
-			this.wmpMain.Ctlcontrols.fastForward();
-		}
-		public void WmpFastReverse() {
-			this.wmpMain.Ctlcontrols.fastReverse();
-		}
-
+		
 		public void LoadSettings() {
 			UserSettings.Instance.PlayerForm.ApplySettings(this);
 			this.tsmiAlwaysOnTop.Checked = this.TopMost;
@@ -222,7 +242,7 @@ namespace Yusen.GExplorer {
 				mi.Tag = uc;
 				this.tsmiCommands.DropDownItems.Add(mi);
 			}
-			this.tsmiCommands.Enabled = 0 != this.tsmiCommands.DropDownItems.Count;
+			this.tsmiCommands.Enabled = (0 != this.tsmiCommands.DropDownItems.Count);
 		}
 	}
 }

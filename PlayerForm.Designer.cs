@@ -27,7 +27,7 @@ namespace Yusen.GExplorer {
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabPlayer = new System.Windows.Forms.TabPage();
 			this.wmpMain = new AxWMPLib.AxWindowsMediaPlayer();
-			this.tabDetail = new System.Windows.Forms.TabPage();
+			this.tabBrowser = new System.Windows.Forms.TabPage();
 			this.ieMain = new System.Windows.Forms.WebBrowser();
 			this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
 			this.menuStrip1 = new System.Windows.Forms.MenuStrip();
@@ -53,14 +53,14 @@ namespace Yusen.GExplorer {
 			this.tsmiCommands = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiAutoVolume = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiAutoClose = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiActionOnMediaEnded = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiMediaKeys = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiFocusOnWmp = new System.Windows.Forms.ToolStripMenuItem();
 			this.tabControl1.SuspendLayout();
 			this.tabPlayer.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.wmpMain)).BeginInit();
-			this.tabDetail.SuspendLayout();
+			this.tabBrowser.SuspendLayout();
 			this.toolStripContainer1.ContentPanel.SuspendLayout();
 			this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
 			this.toolStripContainer1.SuspendLayout();
@@ -70,7 +70,7 @@ namespace Yusen.GExplorer {
 			// tabControl1
 			// 
 			this.tabControl1.Controls.Add(this.tabPlayer);
-			this.tabControl1.Controls.Add(this.tabDetail);
+			this.tabControl1.Controls.Add(this.tabBrowser);
 			this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.tabControl1.Location = new System.Drawing.Point(0, 0);
 			this.tabControl1.Name = "tabControl1";
@@ -98,15 +98,15 @@ namespace Yusen.GExplorer {
 			this.wmpMain.Size = new System.Drawing.Size(648, 551);
 			this.wmpMain.Text = "axWindowsMediaPlayer1";
 			// 
-			// tabDetail
+			// tabBrowser
 			// 
-			this.tabDetail.Controls.Add(this.ieMain);
-			this.tabDetail.Location = new System.Drawing.Point(4, 21);
-			this.tabDetail.Name = "tabDetail";
-			this.tabDetail.Padding = new System.Windows.Forms.Padding(3);
-			this.tabDetail.Size = new System.Drawing.Size(654, 557);
-			this.tabDetail.TabIndex = 1;
-			this.tabDetail.Text = "詳細ページ";
+			this.tabBrowser.Controls.Add(this.ieMain);
+			this.tabBrowser.Location = new System.Drawing.Point(4, 21);
+			this.tabBrowser.Name = "tabBrowser";
+			this.tabBrowser.Padding = new System.Windows.Forms.Padding(3);
+			this.tabBrowser.Size = new System.Drawing.Size(654, 557);
+			this.tabBrowser.TabIndex = 1;
+			this.tabBrowser.Text = "詳細ページ/懸賞ページ";
 			// 
 			// ieMain
 			// 
@@ -270,8 +270,8 @@ namespace Yusen.GExplorer {
             this.tsmiCommands,
             this.toolStripSeparator3,
             this.tsmiAutoVolume,
-            this.tsmiAutoClose,
             this.tsmiMediaKeys,
+            this.tsmiActionOnMediaEnded,
             this.toolStripSeparator4,
             this.tsmiFocusOnWmp});
 			this.tsmiTool.Name = "tsmiTool";
@@ -294,13 +294,10 @@ namespace Yusen.GExplorer {
 			this.tsmiAutoVolume.Name = "tsmiAutoVolume";
 			this.tsmiAutoVolume.Text = "自動音量調整 (&V)";
 			// 
-			// tsmiAutoClose
+			// tsmiActionOnMediaEnded
 			// 
-			this.tsmiAutoClose.Checked = true;
-			this.tsmiAutoClose.CheckOnClick = true;
-			this.tsmiAutoClose.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.tsmiAutoClose.Name = "tsmiAutoClose";
-			this.tsmiAutoClose.Text = "再生終了で閉じる (&W)";
+			this.tsmiActionOnMediaEnded.Name = "tsmiActionOnMediaEnded";
+			this.tsmiActionOnMediaEnded.Text = "再生終了時の動作 (&E)";
 			// 
 			// tsmiMediaKeys
 			// 
@@ -332,7 +329,7 @@ namespace Yusen.GExplorer {
 			this.tabControl1.ResumeLayout(false);
 			this.tabPlayer.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.wmpMain)).EndInit();
-			this.tabDetail.ResumeLayout(false);
+			this.tabBrowser.ResumeLayout(false);
 			this.toolStripContainer1.ContentPanel.ResumeLayout(false);
 			this.toolStripContainer1.TopToolStripPanel.ResumeLayout(false);
 			this.toolStripContainer1.TopToolStripPanel.PerformLayout();
@@ -347,7 +344,7 @@ namespace Yusen.GExplorer {
 
 		private System.Windows.Forms.TabControl tabControl1;
 		private System.Windows.Forms.TabPage tabPlayer;
-		private System.Windows.Forms.TabPage tabDetail;
+		private System.Windows.Forms.TabPage tabBrowser;
 		private AxWMPLib.AxWindowsMediaPlayer wmpMain;
 		private System.Windows.Forms.WebBrowser ieMain;
 		private System.Windows.Forms.ToolStripContainer toolStripContainer1;
@@ -368,7 +365,7 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ToolStripMenuItem tsmiCommands;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
-		private System.Windows.Forms.ToolStripMenuItem tsmiAutoClose;
+		private System.Windows.Forms.ToolStripMenuItem tsmiActionOnMediaEnded;
 		private System.Windows.Forms.ToolStripMenuItem tsmiMediaKeys;
 		private System.Windows.Forms.ToolStripMenuItem tsmiOperation;
 		private System.Windows.Forms.ToolStripMenuItem tsmiPlayPause;

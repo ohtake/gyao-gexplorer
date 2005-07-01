@@ -45,6 +45,9 @@ namespace Yusen.GExplorer {
 			this.tsmiProperty = new System.Windows.Forms.ToolStripMenuItem();
 			this.ilLarge = new System.Windows.Forms.ImageList(this.components);
 			this.ilSmall = new System.Windows.Forms.ImageList(this.components);
+			this.tsmiNgPackage = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiNgPackageId = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiNgPackageSubgenreName = new System.Windows.Forms.ToolStripMenuItem();
 			this.cmsListView.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -102,6 +105,7 @@ namespace Yusen.GExplorer {
             this.toolStripSeparator1,
             this.tsmiPackage,
             this.tsmiSpecial,
+            this.tsmiNgPackage,
             this.toolStripSeparator2,
             this.tsmiGenre,
             this.toolStripSeparator3,
@@ -111,7 +115,8 @@ namespace Yusen.GExplorer {
 			this.cmsListView.Location = new System.Drawing.Point(21, 36);
 			this.cmsListView.Name = "contextMenuStrip1";
 			this.cmsListView.RightToLeft = System.Windows.Forms.RightToLeft.No;
-			this.cmsListView.Size = new System.Drawing.Size(247, 204);
+			this.cmsListView.Size = new System.Drawing.Size(247, 245);
+			this.cmsListView.Visible = true;
 			// 
 			// tsmiPlay
 			// 
@@ -185,6 +190,24 @@ namespace Yusen.GExplorer {
 			this.ilSmall.Images.SetKeyName(2, "special16.ico");
 			this.ilSmall.Images.SetKeyName(3, "special16new.ico");
 			// 
+			// tsmiNgPackage
+			// 
+			this.tsmiNgPackage.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiNgPackageId,
+            this.tsmiNgPackageSubgenreName});
+			this.tsmiNgPackage.Name = "tsmiNgPackage";
+			this.tsmiNgPackage.Text = "パッケージのNG処理 (&N)";
+			// 
+			// tsmiNgPackageId
+			// 
+			this.tsmiNgPackageId.Name = "tsmiNgPackageId";
+			this.tsmiNgPackageId.Text = "パッケージのIDでNGにする (&I)";
+			// 
+			// tsmiNgPackageSubgenreName
+			// 
+			this.tsmiNgPackageSubgenreName.Name = "tsmiNgPackageSubgenreName";
+			this.tsmiNgPackageSubgenreName.Text = "同一のサブジャンルをNGにする (&S)";
+			// 
 			// GenreListView
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -219,5 +242,8 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
 		private System.Windows.Forms.ToolStripMenuItem tsmiWMP;
 		private System.Windows.Forms.ToolStripMenuItem tsmiProperty;
+		private System.Windows.Forms.ToolStripMenuItem tsmiNgPackage;
+		private System.Windows.Forms.ToolStripMenuItem tsmiNgPackageId;
+		private System.Windows.Forms.ToolStripMenuItem tsmiNgPackageSubgenreName;
 	}
 }

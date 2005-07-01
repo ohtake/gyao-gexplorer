@@ -85,19 +85,19 @@ namespace Yusen.GExplorer {
 				this.txtArg.Text = uc.Arguments;
 			}
 		}
-
+		
 		private void btnBrowse_Click(object sender, EventArgs e) {
 			if(DialogResult.OK == this.openFileDialog1.ShowDialog()) {
 				this.txtFile.Text = this.openFileDialog1.FileName;
 			}
 		}
-
+		
 		private void btnUp_Click(object sender, EventArgs e) {
 			int selIdx = this.lboxCommands.SelectedIndex;
 			UserCommandsManager.Instance.Swap(selIdx, selIdx - 1);
 			this.lboxCommands.SelectedIndex--;
 		}
-
+		
 		private void btnDown_Click(object sender, EventArgs e) {
 			int selIdx = this.lboxCommands.SelectedIndex;
 			UserCommandsManager.Instance.Swap(selIdx, selIdx + 1);
@@ -132,7 +132,7 @@ namespace Yusen.GExplorer {
 				this.lboxCommands.SelectedIndex++;
 			}
 		}
-
+		
 		private void btnModify_Click(object sender, EventArgs e) {
 			UserCommand uc = null;
 			try {

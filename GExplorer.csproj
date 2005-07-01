@@ -57,6 +57,14 @@
     <Compile Include="ContentPropertyViewer.Designer.cs">
       <DependentUpon>ContentPropertyViewer.cs</DependentUpon>
     </Compile>
+    <Compile Include="ItemsManagerBase.cs" />
+    <Compile Include="NgPackage.cs" />
+    <Compile Include="NgPackagesEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="NgPackagesEditor.Designer.cs">
+      <DependentUpon>NgPackagesEditor.cs</DependentUpon>
+    </Compile>
     <Compile Include="PlayerForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -81,6 +89,15 @@
     <EmbeddedResource Include="AboutBox.resx">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ContentPropertyViewer.resx">
+      <DependentUpon>ContentPropertyViewer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NgPackagesEditor.resx">
+      <DependentUpon>NgPackagesEditor.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="PlayerForm.resx">
       <DependentUpon>PlayerForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -91,6 +108,12 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserCommandsEditor.resx">
+      <DependentUpon>UserCommandsEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserSettingsToolbox.resx">
+      <DependentUpon>UserSettingsToolbox.cs</DependentUpon>
     </EmbeddedResource>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -170,6 +193,9 @@
     <Content Include="Resources\special16new.ico" />
     <Content Include="Resources\special32.ico" />
     <Content Include="Resources\special32new.ico" />
+    <Content Include="Samples\NgPackages.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Samples\UserCommands.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

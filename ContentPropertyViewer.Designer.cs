@@ -76,7 +76,7 @@ namespace Yusen.GExplorer {
 			this.tabPackage.Location = new System.Drawing.Point(4, 21);
 			this.tabPackage.Name = "tabPackage";
 			this.tabPackage.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPackage.Size = new System.Drawing.Size(244, 259);
+			this.tabPackage.Size = new System.Drawing.Size(238, 233);
 			this.tabPackage.TabIndex = 1;
 			this.tabPackage.Text = "パッケージ";
 			// 
@@ -85,7 +85,7 @@ namespace Yusen.GExplorer {
 			this.pgPackage.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.pgPackage.Location = new System.Drawing.Point(3, 3);
 			this.pgPackage.Name = "pgPackage";
-			this.pgPackage.Size = new System.Drawing.Size(238, 253);
+			this.pgPackage.Size = new System.Drawing.Size(232, 227);
 			this.pgPackage.TabIndex = 0;
 			this.pgPackage.ToolbarVisible = false;
 			// 
@@ -95,7 +95,7 @@ namespace Yusen.GExplorer {
 			this.tabGenre.Location = new System.Drawing.Point(4, 21);
 			this.tabGenre.Name = "tabGenre";
 			this.tabGenre.Padding = new System.Windows.Forms.Padding(3);
-			this.tabGenre.Size = new System.Drawing.Size(244, 259);
+			this.tabGenre.Size = new System.Drawing.Size(238, 233);
 			this.tabGenre.TabIndex = 2;
 			this.tabGenre.Text = "ジャンル";
 			// 
@@ -104,7 +104,7 @@ namespace Yusen.GExplorer {
 			this.pgGenre.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.pgGenre.Location = new System.Drawing.Point(3, 3);
 			this.pgGenre.Name = "pgGenre";
-			this.pgGenre.Size = new System.Drawing.Size(238, 253);
+			this.pgGenre.Size = new System.Drawing.Size(232, 227);
 			this.pgGenre.TabIndex = 0;
 			this.pgGenre.ToolbarVisible = false;
 			// 
@@ -140,7 +140,7 @@ namespace Yusen.GExplorer {
 			this.Controls.Add(this.tableLayoutPanel1);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
 			this.Name = "ContentPropertyViewer";
-			this.Text = "GContentPropertyViewer";
+			this.Text = "ContentPropertyViewer";
 			this.tabControl1.ResumeLayout(false);
 			this.tabContent.ResumeLayout(false);
 			this.tabPackage.ResumeLayout(false);

@@ -28,6 +28,7 @@ namespace Yusen.GExplorer {
 			this.tsslCategoryStat = new System.Windows.Forms.ToolStripStatusLabel();
 			this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
 			this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+			this.glvMain = new Yusen.GExplorer.GenreListView();
 			this.tabGenre = new System.Windows.Forms.TabControl();
 			this.tabPage1 = new System.Windows.Forms.TabPage();
 			this.tabPage2 = new System.Windows.Forms.TabPage();
@@ -41,10 +42,11 @@ namespace Yusen.GExplorer {
 			this.tsmiFullRowSelect = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiMultiSelect = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiTool = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiUserSettings = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiContentProperty = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiEditCommands = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiUserSettings = new System.Windows.Forms.ToolStripMenuItem();
-			this.glvMain = new Yusen.GExplorer.GenreListView();
+			this.tsmiNgPackageEditor = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiAboneType = new System.Windows.Forms.ToolStripMenuItem();
 			this.statstripMain.SuspendLayout();
 			this.toolStripContainer1.ContentPanel.SuspendLayout();
 			this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
@@ -108,6 +110,16 @@ namespace Yusen.GExplorer {
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
 			this.tableLayoutPanel1.Size = new System.Drawing.Size(592, 369);
 			this.tableLayoutPanel1.TabIndex = 1;
+			// 
+			// glvMain
+			// 
+			this.glvMain.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.glvMain.Genre = null;
+			this.glvMain.Location = new System.Drawing.Point(0, 20);
+			this.glvMain.Margin = new System.Windows.Forms.Padding(0);
+			this.glvMain.Name = "glvMain";
+			this.glvMain.Size = new System.Drawing.Size(592, 349);
+			this.glvMain.TabIndex = 0;
 			// 
 			// tabGenre
 			// 
@@ -180,6 +192,7 @@ namespace Yusen.GExplorer {
 			// tsmiListView
 			// 
 			this.tsmiListView.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiAboneType,
             this.tsmiLvView,
             this.tsmiFullRowSelect,
             this.tsmiMultiSelect});
@@ -208,11 +221,17 @@ namespace Yusen.GExplorer {
 			// tsmiTool
 			// 
 			this.tsmiTool.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiUserSettings,
             this.tsmiContentProperty,
             this.tsmiEditCommands,
-            this.tsmiUserSettings});
+            this.tsmiNgPackageEditor});
 			this.tsmiTool.Name = "tsmiTool";
 			this.tsmiTool.Text = "ツール (&T)";
+			// 
+			// tsmiUserSettings
+			// 
+			this.tsmiUserSettings.Name = "tsmiUserSettings";
+			this.tsmiUserSettings.Text = "ユーザ設定ツールボックス (&U)";
 			// 
 			// tsmiContentProperty
 			// 
@@ -224,20 +243,15 @@ namespace Yusen.GExplorer {
 			this.tsmiEditCommands.Name = "tsmiEditCommands";
 			this.tsmiEditCommands.Text = "外部コマンドエディタ (&C)";
 			// 
-			// tsmiUserSettings
+			// tsmiNgPackageEditor
 			// 
-			this.tsmiUserSettings.Name = "tsmiUserSettings";
-			this.tsmiUserSettings.Text = "ユーザ設定ツールボックス (&U)";
+			this.tsmiNgPackageEditor.Name = "tsmiNgPackageEditor";
+			this.tsmiNgPackageEditor.Text = "NGパッケージエディタ (&N)";
 			// 
-			// glvMain
+			// tsmiAboneType
 			// 
-			this.glvMain.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.glvMain.Genre = null;
-			this.glvMain.Location = new System.Drawing.Point(0, 20);
-			this.glvMain.Margin = new System.Windows.Forms.Padding(0);
-			this.glvMain.Name = "glvMain";
-			this.glvMain.Size = new System.Drawing.Size(592, 349);
-			this.glvMain.TabIndex = 0;
+			this.tsmiAboneType.Name = "tsmiAboneType";
+			this.tsmiAboneType.Text = "あぼーん方法 (&A)";
 			// 
 			// MainForm
 			// 
@@ -287,6 +301,8 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ToolStripMenuItem tsmiGyaoTop;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
 		private GenreListView glvMain;
+		private System.Windows.Forms.ToolStripMenuItem tsmiNgPackageEditor;
+		private System.Windows.Forms.ToolStripMenuItem tsmiAboneType;
 	}
 }
 

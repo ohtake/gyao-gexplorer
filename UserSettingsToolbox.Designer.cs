@@ -49,9 +49,9 @@ namespace Yusen.GExplorer {
 			this.chkTopMost.AutoSize = true;
 			this.chkTopMost.Location = new System.Drawing.Point(3, 3);
 			this.chkTopMost.Name = "chkTopMost";
-			this.chkTopMost.Size = new System.Drawing.Size(100, 14);
+			this.chkTopMost.Size = new System.Drawing.Size(119, 14);
 			this.chkTopMost.TabIndex = 0;
-			this.chkTopMost.Text = "常に手前に表示";
+			this.chkTopMost.Text = "常に手前に表示 (&T)";
 			// 
 			// propertyGrid1
 			// 
@@ -62,15 +62,15 @@ namespace Yusen.GExplorer {
 			this.propertyGrid1.TabIndex = 1;
 			this.propertyGrid1.ToolbarVisible = false;
 			// 
-			// UserSettingsForm
+			// UserSettingsToolbox
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(202, 246);
 			this.Controls.Add(this.tableLayoutPanel1);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
-			this.Name = "UserSettingsForm";
-			this.Text = "UserSettingsForm";
+			this.Name = "UserSettingsToolbox";
+			this.Text = "UserSettingsToolbox";
 			this.tableLayoutPanel1.ResumeLayout(false);
 			this.tableLayoutPanel1.PerformLayout();
 			this.ResumeLayout(false);

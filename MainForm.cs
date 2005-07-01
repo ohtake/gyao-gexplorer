@@ -62,23 +62,37 @@ namespace Yusen.GExplorer {
 				UserSettingsToolbox.Instance.Show();
 				UserSettingsToolbox.Instance.Focus();
 			};
+			this.tsmiNgPackageEditor.Click += delegate {
+				NgPackagesEditor.Instance.Show();
+				NgPackagesEditor.Instance.Focus();
+			};
 			//メニュー項目 (リストビュー)
+			foreach(AboneType at in Enum.GetValues(typeof(AboneType))) {
+				ToolStripMenuItem mi = new ToolStripMenuItem(at.ToString());
+				mi.Tag = at;
+				mi.Click += delegate(object sender, EventArgs e) {
+					this.GenreListView.AboneType = (AboneType)(sender as ToolStripMenuItem).Tag;
+					this.RefleshAboneTypeDropDownItems();
+					this.SaveSettings();
+				};
+				this.tsmiAboneType.DropDownItems.Add(mi);
+			}
 			foreach(View v in Enum.GetValues(typeof(View))){
 				ToolStripMenuItem mi = new ToolStripMenuItem(v.ToString());
 				mi.Tag = v;
 				mi.Click += delegate(object sender, EventArgs e) {
-					this.ListView.View = (View)(sender as ToolStripMenuItem).Tag;
+					this.GenreListView.ListView.View = (View)(sender as ToolStripMenuItem).Tag;
 					this.RefleshLvViewDropDownItems();
 					this.SaveSettings();
 				};
 				this.tsmiLvView.DropDownItems.Add(mi);
 			}
 			this.tsmiFullRowSelect.Click += delegate {
-				this.ListView.FullRowSelect = this.tsmiFullRowSelect.Checked;
+				this.GenreListView.ListView.FullRowSelect = this.tsmiFullRowSelect.Checked;
 				this.SaveSettings();
 			};
 			this.tsmiMultiSelect.Click += delegate {
-				this.ListView.MultiSelect = this.tsmiMultiSelect.Checked;
+				this.GenreListView.ListView.MultiSelect = this.tsmiMultiSelect.Checked;
 				this.SaveSettings();
 			};
 			//ステータスバー
@@ -141,25 +155,32 @@ namespace Yusen.GExplorer {
 			}
 		}
 		
+		private void RefleshAboneTypeDropDownItems() {
+			foreach(ToolStripMenuItem m in this.tsmiAboneType.DropDownItems) {
+				m.Checked = (this.GenreListView.AboneType == (AboneType)m.Tag);
+			}
+		}
+		
 		private void RefleshLvViewDropDownItems() {
 			foreach(ToolStripMenuItem m in this.tsmiLvView.DropDownItems) {
-				m.Checked = (this.ListView.View == (View)m.Tag);
+				m.Checked = (this.GenreListView.ListView.View == (View)m.Tag);
 			}
 		}
 		public void LoadSettings() {
 			UserSettings.Instance.MainForm.ApplySettings(this);
 			this.RefleshLvViewDropDownItems();
-			this.tsmiMultiSelect.Checked = this.ListView.MultiSelect;
-			this.tsmiFullRowSelect.Checked = this.ListView.FullRowSelect;
+			this.RefleshAboneTypeDropDownItems();
+			this.tsmiMultiSelect.Checked = this.GenreListView.ListView.MultiSelect;
+			this.tsmiFullRowSelect.Checked = this.GenreListView.ListView.FullRowSelect;
 		}
 		public void SaveSettings() {
 			UserSettings.Instance.MainForm.StoreSettings(this);
 			UserSettings.Instance.MainForm.OnChangeCompleted();
 		}
 		
-		public ListView ListView {
+		public GenreListView GenreListView {
 			get {
-				return this.glvMain.ListView;
+				return this.glvMain;
 			}
 		}
 	}

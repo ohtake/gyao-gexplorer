@@ -132,7 +132,8 @@ namespace Yusen.GExplorer {
 			private int colWidthLimit = 80;
 			private int colWidthEpisode = 70;
 			private int colWidthLead = 320;
-
+			private AboneType aboneType = AboneType.Toumei;
+			
 			public UsdGenreListView() {
 			}
 
@@ -185,28 +186,37 @@ namespace Yusen.GExplorer {
 				get { return this.colWidthLead; }
 				set { this.colWidthLead = value; }
 			}
-			internal void StoreSettings(ListView lv) {
-				this.MultiSelect = lv.MultiSelect;
-				this.FullRowSelect = lv.FullRowSelect;
-				this.View = lv.View;
-				this.ColWidthId = lv.Columns[0].Width;
-				this.ColWidthLimit = lv.Columns[1].Width;
-				this.WidthEpisode = lv.Columns[2].Width;
-				this.ColWidthLead = lv.Columns[3].Width;
+			[DisplayName("あぼーん方法")]
+			[Description("Toumei: 透明; Sabori: さぼり; Hakidame: 掃き溜め;")]
+			[DefaultValue(AboneType.Toumei)]
+			public AboneType AboneType {
+				get { return this.aboneType; }
+				set { this.aboneType = value; }
 			}
-			internal void ApplySettings(ListView lv) {
-				if(lv.MultiSelect != this.MultiSelect) lv.MultiSelect = this.MultiSelect;
-				if(lv.FullRowSelect != this.FullRowSelect) lv.FullRowSelect = this.FullRowSelect;
-				if(lv.View != this.View) lv.View = this.View;
-				if(lv.Columns[0].Width != this.ColWidthId) lv.Columns[0].Width = this.ColWidthId;
-				if(lv.Columns[1].Width != this.ColWidthLimit) lv.Columns[1].Width = this.ColWidthLimit;
-				if(lv.Columns[2].Width != this.WidthEpisode) lv.Columns[2].Width = this.WidthEpisode;
-				if(lv.Columns[3].Width != this.ColWidthLead) lv.Columns[3].Width = this.ColWidthLead;
+			internal void StoreSettings(GenreListView glv) {
+				this.MultiSelect = glv.ListView.MultiSelect;
+				this.FullRowSelect = glv.ListView.FullRowSelect;
+				this.View = glv.ListView.View;
+				this.ColWidthId = glv.ListView.Columns[0].Width;
+				this.ColWidthLimit = glv.ListView.Columns[1].Width;
+				this.WidthEpisode = glv.ListView.Columns[2].Width;
+				this.ColWidthLead = glv.ListView.Columns[3].Width;
+				this.AboneType = glv.AboneType;
+			}
+			internal void ApplySettings(GenreListView glv) {
+				if(glv.ListView.MultiSelect != this.MultiSelect) glv.ListView.MultiSelect = this.MultiSelect;
+				if(glv.ListView.FullRowSelect != this.FullRowSelect) glv.ListView.FullRowSelect = this.FullRowSelect;
+				if(glv.ListView.View != this.View) glv.ListView.View = this.View;
+				if(glv.ListView.Columns[0].Width != this.ColWidthId) glv.ListView.Columns[0].Width = this.ColWidthId;
+				if(glv.ListView.Columns[1].Width != this.ColWidthLimit) glv.ListView.Columns[1].Width = this.ColWidthLimit;
+				if(glv.ListView.Columns[2].Width != this.WidthEpisode) glv.ListView.Columns[2].Width = this.WidthEpisode;
+				if(glv.ListView.Columns[3].Width != this.ColWidthLead) glv.ListView.Columns[3].Width = this.ColWidthLead;
+				if(glv.AboneType != this.AboneType) glv.AboneType = this.AboneType;
 			}
 		}
-
+		
 		private UsdGenreListView lvSettings = new UsdGenreListView();
-
+		
 		public UscMainForm()
 			: this(Size.Empty, Point.Empty) {
 		}
@@ -223,39 +233,32 @@ namespace Yusen.GExplorer {
 
 		internal void StoreSettings(MainForm mf) {
 			base.StoreSettings(mf);
-			this.LvSettings.StoreSettings(mf.ListView);
+			this.LvSettings.StoreSettings(mf.GenreListView);
 		}
 		internal void ApplySettings(MainForm mf) {
 			base.ApplySettings(mf);
-			this.LvSettings.ApplySettings(mf.ListView);
+			this.LvSettings.ApplySettings(mf.GenreListView);
 		}
 	}
 	[TypeConverter(typeof(UserSettingsDescendantConverter))]
 	public sealed class UscPlayerForm : UscFormTopmostable {
 		private bool autoVolume = true;
-		private bool autoClose = true;
 		private bool mediaKeys = true;
-
+		private ActionOnMediaEnded actionOnEnd = ActionOnMediaEnded.CloseForm;
+		
 		public UscPlayerForm()
 			: this(Size.Empty, Point.Empty) {
 		}
 		public UscPlayerForm(Size size, Point location)
 			: base(size, location) {
 		}
-
+		
 		[DisplayName("自動音量調整")]
-		[Description("CMと思わしき動画の音量を10にし，そうではないのを100にします．")]
+		[Description("CMと思わしき動画の音量を20にし，そうではないのを100にする．")]
 		[DefaultValue(true)]
 		public bool AutoVolume {
 			get { return this.autoVolume; }
 			set { this.autoVolume = value; }
-		}
-		[DisplayName("再生終了で閉じる")]
-		[Description("再生が終了したらウィンドウを自動的に閉じる．")]
-		[DefaultValue(true)]
-		public bool AutoClose {
-			get { return this.autoClose; }
-			set { this.autoClose = value; }
 		}
 		[DisplayName("メディアキーを使う")]
 		[Description("キーボードの「再生・一時停止」などのキーを有効にする．ただし再生ウィンドウにフォーカスがないと動作しない．")]
@@ -264,16 +267,23 @@ namespace Yusen.GExplorer {
 			get { return this.mediaKeys; }
 			set { this.mediaKeys = value; }
 		}
-
+		[DisplayName("再生終了時の動作")]
+		[Description("DoNothing: 何もしない; CloseForm: ウィンドウを閉じる; GoToCampaign: 懸賞画面へ; RepeatPlaying: 動画を最初から再生しなおす;")]
+		[DefaultValue(ActionOnMediaEnded.CloseForm)]
+		public ActionOnMediaEnded ActionOnEnd {
+			get { return this.actionOnEnd; }
+			set { this.actionOnEnd = value; }
+		}
+		
 		internal void StoreSettings(PlayerForm pf) {
 			base.StoreSettings(pf);
 			this.AutoVolume = pf.AutoVolumeEnabled;
-			this.autoClose = pf.AutoCloseEnabled;
+			this.ActionOnEnd = pf.ActionOnEnd;
 		}
 		internal void ApplySettings(PlayerForm pf) {
 			base.ApplySettings(pf);
 			if(pf.AutoVolumeEnabled != this.AutoVolume) pf.AutoVolumeEnabled = this.AutoVolume;
-			if(pf.AutoCloseEnabled != this.autoClose) pf.AutoCloseEnabled = this.autoClose;
+			if(pf.ActionOnEnd != this.ActionOnEnd) pf.ActionOnEnd = this.ActionOnEnd;
 		}
 	}
 }

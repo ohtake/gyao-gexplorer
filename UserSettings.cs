@@ -25,6 +25,18 @@ namespace Yusen.GExplorer {
 		Low = 1,
 	}
 	
+	public enum ActionOnMediaEnded {
+		DoNothing,
+		CloseForm,
+		GoToCampaign,
+		RepeatPlaying,
+	}
+	public enum AboneType {
+		Toumei,
+		Sabori,
+		Hakidame,
+	}
+	
 	public class UserSettings {
 		private static UserSettings instance = new UserSettings();
 		private const string filename = "UserSettings.xml";
@@ -71,7 +83,7 @@ namespace Yusen.GExplorer {
 		// シングルトンだけどXMLデシリアライズに必要だからしゃあない
 		public UserSettings() {
 		}
-
+		
 		private bool enableChangeCompletedEvent = true;
 		internal event UserSettingsChangeCompletedEventHandler ChangeCompleted;
 		internal void OnChangeCompleted() {
@@ -87,6 +99,7 @@ namespace Yusen.GExplorer {
 				this.ContentPropertyViewer.OnChangeCompleted();
 				this.UserCommandsEditor.OnChangeCompleted();
 				this.UserSettingsToolbox.OnChangeCompleted();
+				this.NgPackagesEditor.OnChangeCompleted();
 				this.enableChangeCompletedEvent = true;
 			}
 			this.OnChangeCompleted();
@@ -260,6 +273,14 @@ namespace Yusen.GExplorer {
 			get { return this.userCommandsEditor; }
 			set { this.userCommandsEditor = value; }
 		}
-		private UscForm userCommandsEditor = new UscForm(new Size(360, 340), new Point(200, 50));
+		private UscForm userCommandsEditor = new UscForm(new Size(360, 340), new Point(350, 50));
+		
+		[Category("各ウィンドウごとの設定")]
+		[DisplayName("NGパッケージエディタ")]
+		public UscForm NgPackagesEditor {
+			get { return this.ngPackagesEditor; }
+			set { this.ngPackagesEditor = value; }
+		}
+		private UscForm ngPackagesEditor = new UscForm(new Size(500, 300), new Point(200, 50));
 	}
 }

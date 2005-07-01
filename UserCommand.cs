@@ -127,100 +127,32 @@ namespace Yusen.GExplorer {
 	
 	delegate void UserCommandsChangedEventHandler();
 	
-	class UserCommandsManager : IEnumerable<UserCommand>{
-		private const string fileName = @"UserCommands.xml";
+	class UserCommandsManager : ItemsManagerBase<UserCommand>{
 		private static UserCommandsManager instance = new UserCommandsManager();
 		public static UserCommandsManager Instance {
 			get {
 				return UserCommandsManager.instance;
 			}
 		}
-		public static void SaveCommandsToFile() {
-			TextWriter tw = null;
-			try {
-				XmlSerializer xs = new XmlSerializer(typeof(List<UserCommand>));
-				tw = new StreamWriter(UserCommandsManager.fileName);
-				xs.Serialize(tw, UserCommandsManager.Instance.commands);
-			} catch(Exception e) {
-				Utility.DisplayException(e);
-			} finally {
-				if(null != tw) {
-					tw.Close();
-				}
-			}
-		}
-		public static void LoadCommandsFromFile() {
-			TextReader tr = null;
-			try {
-				XmlSerializer xs = new XmlSerializer(typeof(List<UserCommand>));
-				tr = new StreamReader(UserCommandsManager.fileName);
-				UserCommandsManager.Instance.commands = (List<UserCommand>)xs.Deserialize(tr);
-			} catch(FileNotFoundException) {
-				return;
-			} catch(Exception e) {
-				Utility.DisplayException(e);
-			} finally {
-				if(null != tr) {
-					tr.Close();
-				}
-				UserCommandsManager.Instance.OnUserCommandsChanged();
-			}
-		}
 		
 		public event UserCommandsChangedEventHandler UserCommandsChanged;
-		private List<UserCommand> commands = new List<UserCommand>();
 		
-		private UserCommandsManager() {
+		private UserCommandsManager() : base(){
 		}
 		
-		private void OnUserCommandsChanged() {
+		override protected void OnChanged() {
 			if(null != this.UserCommandsChanged) {
 				this.UserCommandsChanged();
 			}
 		}
 		
-		public UserCommand this[int idx] {
-			get {
-				return this.commands[idx];
-			}
-			set {
-				this.commands[idx] = value;
-				this.OnUserCommandsChanged();
-			}
-		}
-		public int Count {
-			get {
-				return this.commands.Count;
-			}
-		}
-		public IEnumerator<UserCommand> GetEnumerator() {
-			return this.commands.GetEnumerator();
-		}
-		IEnumerator IEnumerable.GetEnumerator() {
-			return this.GetEnumerator();
+		public void Sort() {
+			base.items.Sort();
+			this.OnChanged();
 		}
 		
-		public void RemoveAt(int idx) {
-			this.commands.RemoveAt(idx);
-			this.OnUserCommandsChanged();
-		}
-		public void Add(UserCommand command) {
-			this.commands.Add(command);
-			this.OnUserCommandsChanged();
-		}
-		public void Insert(int idx, UserCommand command) {
-			this.commands.Insert(idx, command);
-			this.OnUserCommandsChanged();
-		}
-		public void Swap(int x, int y) {
-			UserCommand cx = this[x];
-			this[x] = this[y];
-			this[y] = cx;
-			this.OnUserCommandsChanged();
-		}
-		public void Sort() {
-			this.commands.Sort();
-			this.OnUserCommandsChanged();
+		override protected string XmlFileName{
+			get { return @"UserCommands.xml";}
 		}
 	}
 }
