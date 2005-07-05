@@ -18,40 +18,204 @@ namespace Yusen.GExplorer{
 	delegate void LoadingPackagesEventHandler(GGenre sender, int nume, int denom);
 
 	/// <summary>GyaOにおける genre．映画，ドラマなど．</summary>
-	class GGenre{
-		public static event LoadingPackagesEventHandler LoadingPackages;
+	abstract class GGenre{
+		/// <summary>2005-05形式のジャンルページ</summary>
+		class GGenre200505 : GGenre{
+			private static readonly Regex regexPacId =
+				new Regex(@"^<img src=""/img/info/[^/]+/pac([0-9]+)_m\.jpg""", RegexOptions.Compiled | RegexOptions.Singleline);
+			private static readonly Regex regexSpecial =
+				new Regex(@"<a href=""([^""]+)"".+?alt=""特集ページ""", RegexOptions.Compiled | RegexOptions.Singleline);
+			public GGenre200505(int keyNo, string name, string dir)
+				: base(keyNo, name, dir) {
+			}
 
+			public override Uri GenreTopPageUri {
+				get {
+					return new Uri("http://www.gyao.jp/sityou/catetop/genre_id/" + this.GenreId + "/");
+				}
+			}
+			public override bool CanBeExplorerable {
+				get {
+					return true;
+				}
+			}
+
+			public override IEnumerable<GPackage> FetchPackages() {
+				List<GPackage> packages = new List<GPackage>();
+				TextReader reader = new StreamReader(new WebClient().OpenRead(this.GenreTopPageUri), Encoding.GetEncoding("Shift_JIS"));
+
+				string line;
+				Queue<string> sgName = new Queue<string>();
+				Queue<string> sgCatch = new Queue<string>();
+				string packName = "";
+				List<string> specialPages = new List<string>();
+				List<bool> comings = new List<bool>();
+				while(null != (line = reader.ReadLine())) {
+					if(!line.StartsWith("<!--")) continue;//下記のswitch文を弄るときに要注意
+					Match match;
+					switch(line) {
+						case "<!--サブジャンル名 ↓-->":
+							sgName.Enqueue(Utility.ReadNextLineTextBeforeTag(reader));
+							break;
+						case "<!--サブジャンルキャッチコピー ↓-->":
+							sgCatch.Enqueue(Utility.ReadNextLineTextBeforeTag(reader));
+							break;
+						case "<!--パック名 ↓-->":
+							packName = Utility.ReadNextLineTextBeforeTag(reader);
+							break;
+						case "<!--パック画像（中） ↓-->":
+							match = GGenre200505.regexPacId.Match(Utility.ReadNextLineHtml(reader));
+							if(match.Success) {
+								packages.Add(new GPackage(
+									this,
+									int.Parse(match.Groups[1].Value),
+									packName,
+									0 == sgName.Count ? "(バグったかも)" : sgName.Dequeue(),
+									0 == sgCatch.Count ? "(バグったかも)" : sgCatch.Dequeue()));
+							}
+							break;
+						case "<!-- ボタン ↓ -->":
+							line = Utility.ReadNextLineHtml(reader);
+							match = GGenre200505.regexSpecial.Match(line);
+							if(match.Success) {
+								specialPages.Add(match.Groups[1].Value);
+							} else {
+								specialPages.Add(null);
+							}
+							comings.Add(line.Contains("もうすぐ登場"));
+							break;
+					}
+				}
+				for(int i = 0; i < specialPages.Count; i++) {
+					string sp = specialPages[i];
+					if(null != sp) {
+						packages[i].SpecialPageUri = new Uri(this.GenreTopPageUri, sp);
+					}
+				}
+				for(int i = 0; i < comings.Count; i++) {
+					if(comings[i]) packages[i].IsComingSoon = true;
+				}
+				this.children = packages;
+				this.lastFetch = DateTime.Now;
+				return this.Packages;
+			}
+		}
+		/// <summary>2005-07以降での映画，音楽，アニメのジャンル．</summary>
+		class GGenre200507 : GGenre {
+			public GGenre200507(int keyNo, string name, string dir)
+				: base(keyNo, name, dir) {
+			}
+
+			public override Uri GenreTopPageUri {
+				get {
+					return new Uri("http://www.gyao.jp/" + base.DirectoryName + "/");
+				}
+			}
+			public override bool CanBeExplorerable {
+				get {
+					return false;
+				}
+			}
+
+			public override IEnumerable<GPackage> FetchPackages() {
+				throw new Exception("The method or operation is not implemented.");
+			}
+		}
+		/// <summary>2005-07ではあるがアニメはパッケージのIDが取得できるっぽい</summary>
+		sealed class GGenre200507Anime : GGenre200507 {
+			private static readonly Regex regexTtl =
+				new Regex(@"<img src=""images/ttl_([a-z]+)\.gif"" alt=""(.+?)""", RegexOptions.Compiled | RegexOptions.Singleline);
+			private static readonly Regex regexWeeklyPackage = 
+				new Regex(@"<img src=""http://www.gyao.jp/img/info/anime/pac([0-9]+)_m\.jpg"" alt=""(.+?)""", RegexOptions.Compiled | RegexOptions.Singleline);
+			private static readonly Regex regexRePackName =
+				new Regex(@"<td colspan=""2"" bgcolor=""#757575"" class=""font13white"">　<a name=""[^""]+"">(.+?)</a>", RegexOptions.Compiled | RegexOptions.Singleline);
+			private static readonly Regex regexRePackId =
+				new Regex(@"<a href=""http://www.gyao.jp/sityou/catelist/pac_id/pac([0-9]+)/""><img src=""images/btn_series.gif""", RegexOptions.Compiled | RegexOptions.Singleline);
+			
+			public GGenre200507Anime(int keyNo, string name, string dir)
+				: base(keyNo, name, dir) {
+			}
+			public override bool CanBeExplorerable {
+				get {
+					return true;
+				}
+			}
+			public override IEnumerable<GPackage> FetchPackages() {
+				List<GPackage> packages = new List<GPackage>();
+				TextReader reader = new StreamReader(new WebClient().OpenRead(this.GenreTopPageUri), Encoding.GetEncoding("Shift_JIS"));
+				
+				string line;
+				string subgenreName = "";
+				string subgenreCatch = "";
+				string packName = "";
+				string packIdStr = "";
+				while(null != (line = reader.ReadLine())) {
+					Match match;
+					match = GGenre200507Anime.regexTtl.Match(line);
+					if(match.Success) {
+						subgenreName = match.Groups[2].Value;
+						subgenreCatch = match.Groups[1].Value;
+						continue;
+					}
+					match = GGenre200507Anime.regexWeeklyPackage.Match(line);
+					if(match.Success) {
+						packIdStr = match.Groups[1].Value;
+						packName = match.Groups[2].Value;
+						goto AddToPackages;
+					}
+					match = GGenre200507Anime.regexRePackName.Match(line);
+					if(match.Success) {
+						packName = match.Groups[1].Value;
+						continue;
+					}
+					match = GGenre200507Anime.regexRePackId.Match(line);
+					if(match.Success) {
+						packIdStr = match.Groups[1].Value;
+						goto AddToPackages;
+					}
+					continue;
+				AddToPackages:
+					packages.Add(new GPackage(
+						this, int.Parse(packIdStr), packName, subgenreName, subgenreCatch));
+					continue;
+				}
+				this.children = packages;
+				this.lastFetch = DateTime.Now;
+				return this.Packages;
+			}
+		}
+		
+		public static event LoadingPackagesEventHandler LoadingPackages;
+		
 		private static readonly GGenre[] allGenres =
 			new GGenre[]{
-				new GGenre( 1, "映画", "cinema"),
-				new GGenre( 2, "ドラマ", "dorama"),
-				new GGenre( 4, "アイドル・グラビア", "idol"),
-				new GGenre(10, "ドキュメンタリー", "documentary"),
-				new GGenre( 9, "スポーツ", "sports"),
-				new GGenre( 3, "音楽", "music"),
-				new GGenre( 6, "アニメ", "anime"),
-				new GGenre( 5, "バラエティ", "variety"),
-				new GGenre(15, "ライフ", "life"),
-				new GGenre(16, "ビジネス", "business"),
+				new GGenre200507( 1, "映画", "cinema"),
+				new GGenre200507( 3, "音楽", "music"),
+				new GGenre200505( 2, "ドラマ", "dorama"),
+				new GGenre200507Anime( 6, "アニメ", "anime"),
+				new GGenre200505( 4, "アイドル・グラビア", "idol"),
+				new GGenre200505( 5, "バラエティ", "variety"),
+				new GGenre200505(10, "ドキュメンタリー", "documentary"),
+				new GGenre200505(15, "ライフ", "life"),
+				new GGenre200505( 9, "スポーツ", "sports"),
+				new GGenre200505(16, "ビジネス", "business"),
+				new GGenre200505( 7, "ニュース", "news"),
+				new GGenre200505(12, "映像ブログ", "videoblog"),
 			};
-		private static readonly Regex regexPacId = 
-			new Regex(@"^<img src=""/img/info/[^/]+/pac([0-9]+)_m\.jpg""", RegexOptions.Compiled | RegexOptions.Singleline);
-		private static readonly Regex regexSpecial =
-			new Regex(@"<a href=""([^""]+)"".+?alt=""特集ページ""", RegexOptions.Compiled | RegexOptions.Singleline);
-
+		
 		public static IEnumerable<GGenre> AllGenres {
 			get {
 				return GGenre.allGenres;
 			}
 		}
+
+		protected readonly int keyNo;
+		protected readonly string name;
+		protected readonly string dir;
+		protected IEnumerable<GPackage> children = null;
+		protected DateTime lastFetch = default(DateTime);
 		
-		private readonly int keyNo;
-		private readonly string name;
-		private readonly string dir;
-		private IEnumerable<GPackage> children = null;
-		private DateTime lastFetch = default(DateTime);
-		
-		private GGenre(int keyNo, string name, string dir) {
+		protected GGenre(int keyNo, string name, string dir) {
 			this.keyNo = keyNo;
 			this.name = name;
 			this.dir = dir;
@@ -80,10 +244,8 @@ namespace Yusen.GExplorer{
 		}
 		[Category("URI")]
 		[Description("ジャンルトップページのURI．")]
-		public Uri GenreTopPageUri {
-			get {
-				return new Uri("http://www.gyao.jp/sityou/catetop/genre_id/" + this.GenreId + "/");
-			}
+		abstract public Uri GenreTopPageUri {
+			get;
 		}
 		[Category("専ブラが付加した情報")]
 		[Description("読み込み済みであるか否か．")]
@@ -106,68 +268,17 @@ namespace Yusen.GExplorer{
 				return this.lastFetch;
 			}
 		}
+		[Category("専ブラが付加した情報")]
+		[Description("GExplorerで読めるか否か．")]
+		abstract public bool CanBeExplorerable {
+			get;
+		}
 		public override string ToString() {
-			return "<" + this.GenreId + "> " + this.GenreName;
+			return "<" + this.GenreId + "," + this.DirectoryName + "> " + this.GenreName;
 		}
-		public IEnumerable<GPackage> FetchPackages() {
-			List<GPackage> packages = new List<GPackage>();
-			TextReader reader = new StreamReader(new WebClient().OpenRead(this.GenreTopPageUri), Encoding.GetEncoding("Shift_JIS"));
-			
-			string line;
-			Queue<string> sgName = new Queue<string>();
-			Queue<string> sgCatch = new Queue<string>();
-			string packName = "";
-			List<string> specialPages = new List<string>();
-			List<bool> comings = new List<bool>();
-			while(null != (line = reader.ReadLine())) {
-				if(!line.StartsWith("<!--")) continue;//下記のswitch文を弄るときに要注意
-				Match match;
-				switch(line) {
-					case "<!--サブジャンル名 ↓-->":
-						sgName.Enqueue(Utility.ReadNextLineTextBeforeTag(reader));
-						break;
-					case "<!--サブジャンルキャッチコピー ↓-->":
-						sgCatch.Enqueue(Utility.ReadNextLineTextBeforeTag(reader));
-						break;
-					case "<!--パック名 ↓-->":
-						packName = Utility.ReadNextLineTextBeforeTag(reader);
-						break;
-					case "<!--パック画像（中） ↓-->":
-						match = GGenre.regexPacId.Match(Utility.ReadNextLineHtml(reader));
-						if(match.Success) {
-							packages.Add(new GPackage(
-								this,
-								int.Parse(match.Groups[1].Value),
-								packName,
-								0 == sgName.Count ? "(バグったかも)" : sgName.Dequeue(),
-								0 == sgCatch.Count ? "(バグったかも)" : sgCatch.Dequeue()));
-						}
-						break;
-					case "<!-- ボタン ↓ -->":
-						line = Utility.ReadNextLineHtml(reader);
-						match = GGenre.regexSpecial.Match(line);
-						if(match.Success) {
-							specialPages.Add(match.Groups[1].Value);
-						} else {
-							specialPages.Add(null);
-						}
-						comings.Add(line.Contains("もうすぐ登場"));
-						break;
-				}
-			}
-			for(int i = 0; i < specialPages.Count; i++) {
-				string sp = specialPages[i];
-				if(null != sp) {
-					packages[i].SpecialPageUri = new Uri(this.GenreTopPageUri, sp);
-				}
-			}
-			for(int i = 0; i < comings.Count; i++) {
-				if(comings[i]) packages[i].IsComingSoon = true;
-			}
-			this.children = packages;
-			this.lastFetch = DateTime.Now;
-			return this.Packages;
-		}
+		
+		abstract public IEnumerable<GPackage> FetchPackages();
+		
 		public void FetchAll(){
 			if(UserSettings.Instance.GyaoEnableConcurrentFetch) {
 				try {
@@ -256,6 +367,10 @@ namespace Yusen.GExplorer{
 			new Regex("^\t\t\t\t\t\t\t" + @"<td valign=""top"" class=""text10"">(.*?)<!-- ストーリー -->", RegexOptions.Compiled | RegexOptions.Singleline);
 		private static readonly Regex regexCnt =
 			new Regex("^\t\t\t\t\t\t" + @"<td><a href=""javascript:gotoDetail\( 'cnt([0-9]+)' \)""", RegexOptions.Compiled | RegexOptions.Singleline);
+		
+		public static GPackage CreateDummyPackage(int pacId) {
+			return new GPackage(null, pacId, "", "", "");
+		}
 		
 		private readonly GGenre parent;
 		private readonly int keyNo;
@@ -372,6 +487,7 @@ namespace Yusen.GExplorer{
 		}
 		[Category("付随情報")]
 		[Description("「もうすぐ登場」の真偽．")]
+		[ReadOnly(true)]
 		public bool IsComingSoon {
 			get {
 				return this.comingSoon;
@@ -500,6 +616,10 @@ namespace Yusen.GExplorer{
 	
 	/// <summary>GyaOにおける cont．</summary>
 	class GContent {
+		public static GContent CreateDummyContent(int contId) {
+			return new GContent(null, contId, "", "", false, "");
+		}
+		
 		private readonly GPackage parent;
 		private readonly int keyNo;
 		private readonly string name;

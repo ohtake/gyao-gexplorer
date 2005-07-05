@@ -95,6 +95,7 @@ namespace Yusen.GExplorer {
 			if(notifyAll) {
 				this.enableChangeCompletedEvent = false;
 				this.MainForm.OnChangeCompleted();
+				this.BrowserForm.OnChangeCompleted();
 				this.PlayerForm.OnChangeCompleted();
 				this.ContentPropertyViewer.OnChangeCompleted();
 				this.UserCommandsEditor.OnChangeCompleted();
@@ -250,7 +251,15 @@ namespace Yusen.GExplorer {
 			set { this.playerForm = value; }
 		}
 		private UscPlayerForm playerForm = new UscPlayerForm(new Size(670, 640), new Point(0, 0));
-		
+
+		[Category("各ウィンドウごとの設定")]
+		[DisplayName("ブラウザフォーム")]
+		public UscForm BrowserForm {
+			get { return this.browserForm; }
+			set { this.browserForm = value; }
+		}
+		private UscForm browserForm = new UscForm(new Size(850, 600), new Point(0, 0));
+
 		[Category("各ウィンドウごとの設定")]
 		[DisplayName("ユーザ設定ツールボックス")]
 		public UscFormTopmostable UserSettingsToolbox {

@@ -65,7 +65,7 @@ namespace Yusen.GExplorer {
 			this.lvNgPackages.Location = new System.Drawing.Point(3, 15);
 			this.lvNgPackages.Name = "lvNgPackages";
 			this.lvNgPackages.Size = new System.Drawing.Size(580, 128);
-			this.lvNgPackages.TabIndex = 0;
+			this.lvNgPackages.TabIndex = 101;
 			this.lvNgPackages.View = System.Windows.Forms.View.Details;
 			this.lvNgPackages.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lvNgPackages_KeyDown);
 			// 
@@ -121,7 +121,7 @@ namespace Yusen.GExplorer {
 			this.grpAdd.Location = new System.Drawing.Point(3, 155);
 			this.grpAdd.Name = "grpAdd";
 			this.grpAdd.Size = new System.Drawing.Size(586, 66);
-			this.grpAdd.TabIndex = 1;
+			this.grpAdd.TabIndex = 200;
 			this.grpAdd.TabStop = false;
 			this.grpAdd.Text = "NGパッケージの追加";
 			// 
@@ -157,7 +157,7 @@ namespace Yusen.GExplorer {
 			this.txtWord.Location = new System.Drawing.Point(384, 27);
 			this.txtWord.Name = "txtWord";
 			this.txtWord.Size = new System.Drawing.Size(121, 19);
-			this.txtWord.TabIndex = 7;
+			this.txtWord.TabIndex = 241;
 			// 
 			// txtComment
 			// 
@@ -165,25 +165,29 @@ namespace Yusen.GExplorer {
 			this.txtComment.Location = new System.Drawing.Point(3, 27);
 			this.txtComment.Name = "txtComment";
 			this.txtComment.Size = new System.Drawing.Size(121, 19);
-			this.txtComment.TabIndex = 4;
+			this.txtComment.TabIndex = 211;
 			// 
 			// comboMethod
 			// 
+			this.comboMethod.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+			this.comboMethod.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
 			this.comboMethod.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.comboMethod.FormattingEnabled = true;
 			this.comboMethod.Location = new System.Drawing.Point(257, 27);
 			this.comboMethod.Name = "comboMethod";
 			this.comboMethod.Size = new System.Drawing.Size(121, 20);
-			this.comboMethod.TabIndex = 9;
+			this.comboMethod.TabIndex = 231;
 			// 
 			// comboProperty
 			// 
+			this.comboProperty.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+			this.comboProperty.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
 			this.comboProperty.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.comboProperty.FormattingEnabled = true;
 			this.comboProperty.Location = new System.Drawing.Point(130, 27);
 			this.comboProperty.Name = "comboProperty";
 			this.comboProperty.Size = new System.Drawing.Size(121, 20);
-			this.comboProperty.TabIndex = 8;
+			this.comboProperty.TabIndex = 221;
 			// 
 			// lblWord
 			// 
@@ -191,9 +195,9 @@ namespace Yusen.GExplorer {
 			this.lblWord.AutoSize = true;
 			this.lblWord.Location = new System.Drawing.Point(384, 6);
 			this.lblWord.Name = "lblWord";
-			this.lblWord.Size = new System.Drawing.Size(68, 12);
-			this.lblWord.TabIndex = 3;
-			this.lblWord.Text = "NGワード (&W)";
+			this.lblWord.Size = new System.Drawing.Size(110, 12);
+			this.lblWord.TabIndex = 240;
+			this.lblWord.Text = "目的語: NGワード (&W)";
 			// 
 			// lblMethod
 			// 
@@ -201,9 +205,9 @@ namespace Yusen.GExplorer {
 			this.lblMethod.AutoSize = true;
 			this.lblMethod.Location = new System.Drawing.Point(257, 6);
 			this.lblMethod.Name = "lblMethod";
-			this.lblMethod.Size = new System.Drawing.Size(72, 12);
-			this.lblMethod.TabIndex = 2;
-			this.lblMethod.Text = "比較方法 (&M)";
+			this.lblMethod.Size = new System.Drawing.Size(102, 12);
+			this.lblMethod.TabIndex = 230;
+			this.lblMethod.Text = "述語: 比較方法 (&M)";
 			// 
 			// lblProperty
 			// 
@@ -211,9 +215,9 @@ namespace Yusen.GExplorer {
 			this.lblProperty.AutoSize = true;
 			this.lblProperty.Location = new System.Drawing.Point(130, 6);
 			this.lblProperty.Name = "lblProperty";
-			this.lblProperty.Size = new System.Drawing.Size(78, 12);
-			this.lblProperty.TabIndex = 1;
-			this.lblProperty.Text = "プロパティ名 (&P)";
+			this.lblProperty.Size = new System.Drawing.Size(108, 12);
+			this.lblProperty.TabIndex = 220;
+			this.lblProperty.Text = "主語: プロパティ名 (&P)";
 			// 
 			// lblComment
 			// 
@@ -222,7 +226,7 @@ namespace Yusen.GExplorer {
 			this.lblComment.Location = new System.Drawing.Point(3, 6);
 			this.lblComment.Name = "lblComment";
 			this.lblComment.Size = new System.Drawing.Size(56, 12);
-			this.lblComment.TabIndex = 0;
+			this.lblComment.TabIndex = 210;
 			this.lblComment.Text = "コメント (&C)";
 			// 
 			// btnAdd
@@ -232,7 +236,7 @@ namespace Yusen.GExplorer {
 			this.btnAdd.Name = "btnAdd";
 			this.tableLayoutPanel2.SetRowSpan(this.btnAdd, 2);
 			this.btnAdd.Size = new System.Drawing.Size(66, 23);
-			this.btnAdd.TabIndex = 10;
+			this.btnAdd.TabIndex = 250;
 			this.btnAdd.Text = "追加 (&A)";
 			this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
 			// 
@@ -243,7 +247,7 @@ namespace Yusen.GExplorer {
 			this.grpList.Location = new System.Drawing.Point(3, 3);
 			this.grpList.Name = "grpList";
 			this.grpList.Size = new System.Drawing.Size(586, 146);
-			this.grpList.TabIndex = 0;
+			this.grpList.TabIndex = 100;
 			this.grpList.TabStop = false;
 			this.grpList.Text = "NGパッケージ一覧 (Deleteキーで削除)";
 			// 

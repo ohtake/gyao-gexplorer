@@ -24,12 +24,23 @@ namespace Yusen.GExplorer {
 			this.Text = Application.ProductName + " " + Application.ProductVersion;
 			this.tsslCategoryStat.Text = "";
 			
-			//ジャンルタブ
+			//ジャンルの設定
+			this.tsmiUneploeableGenres.DropDownItems.Clear();
 			this.tabGenre.TabPages.Clear();
 			foreach(GGenre g in GGenre.AllGenres) {
-				TabPage tab = new TabPage(g.GenreName);
-				tab.Tag = g;
-				this.tabGenre.TabPages.Add(tab);
+				if(g.CanBeExplorerable) {
+					TabPage tab = new TabPage(g.GenreName);
+					tab.Tag = g;
+					this.tabGenre.TabPages.Add(tab);
+				} else {
+					ToolStripMenuItem mi = new ToolStripMenuItem(g.GenreName);
+					mi.Tag = g;
+					mi.Click += new EventHandler(delegate(object sender, EventArgs e) {
+						GGenre genre = (sender as ToolStripMenuItem).Tag as GGenre;
+						BrowserForm.Browse(genre.GenreTopPageUri);
+					});
+					this.tsmiUneploeableGenres.DropDownItems.Add(mi);
+				}
 			}
 			this.tabGenre.SelectedIndex = -1;
 			this.tabGenre.SelectedIndexChanged += delegate {
@@ -45,7 +56,7 @@ namespace Yusen.GExplorer {
 			
 			//メニュー項目
 			this.tsmiGyaoTop.Click += delegate {
-				Utility.BrowseWithIE(new Uri("http://www.gyao.jp/"));
+				BrowserForm.Browse(new Uri("http://www.gyao.jp/"));
 			};
 			this.tsmiQuit.Click += delegate {
 				this.Close();
@@ -116,6 +127,11 @@ namespace Yusen.GExplorer {
 				if(null != this.SelectedContentsChanged) {
 					this.SelectedContentsChanged(sender, contents);
 				}
+			};
+			//NG更新
+			NgPackagesManager.Instance.NgPackagesChanged += new NgPackagesChangedEventHandler(this.GenreListView.RefleshView);
+			this.FormClosing += delegate {
+				NgPackagesManager.Instance.NgPackagesChanged -= new NgPackagesChangedEventHandler(this.GenreListView.RefleshView);
 			};
 			//ユーザ設定
 			this.LocationChanged += delegate {

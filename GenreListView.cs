@@ -52,36 +52,45 @@ namespace Yusen.GExplorer {
 			this.cmsListView.Opening += new CancelEventHandler(this.cmsListView_Opening);
 			//コンテキストメニューのイベント
 			this.tsmiPlay.Click += new EventHandler(this.Play);
-			this.tsmiWMP.Click += new EventHandler(delegate(object sender, EventArgs e) {
+			this.tsmiWMP.Click += delegate{
 				foreach(ListViewItem selItem in this.lviewGenre.SelectedItems) {
 					Utility.PlayWithWMP(((GContent)selItem.Tag).MediaFileUri);
 				}
-			});
-			this.tsmiProperty.Click += new EventHandler(delegate(object sender, EventArgs e) {
+			};
+			this.tsmiProperty.Click += delegate{
 				if(this.lviewGenre.SelectedItems.Count > 0) {
 					ContentPropertyViewer.Instance.Show();
 					ContentPropertyViewer.Instance.Content = (GContent)this.lviewGenre.SelectedItems[0].Tag;
 					ContentPropertyViewer.Instance.Focus();
 				}
-			});
-			this.tsmiDetail.Click += new EventHandler(delegate(object sender, EventArgs e) {
+			};
+			this.tsmiDetail.Click += delegate{
 				foreach(ListViewItem selItem in this.lviewGenre.SelectedItems) {
-					Utility.BrowseWithIE(((GContent)selItem.Tag).DetailPageUri);
+					BrowserForm.Browse(((GContent)selItem.Tag).DetailPageUri);
+					break;
 				}
-			});
-			this.tsmiPackage.Click += new EventHandler(delegate(object sender, EventArgs e) {
+			};
+			this.tsmiPlayerPage.Click += delegate {
 				foreach(ListViewItem selItem in this.lviewGenre.SelectedItems) {
-					Utility.BrowseWithIE(((GContent)selItem.Tag).Package.PackagePageUri);
+					BrowserForm.Browse(((GContent)selItem.Tag).PlayerPageUri);
+					break;
 				}
-			});
-			this.tsmiSpecial.Click += new EventHandler(delegate(object sender, EventArgs e){
+			};
+			this.tsmiPackage.Click += delegate {
+				foreach(ListViewItem selItem in this.lviewGenre.SelectedItems) {
+					BrowserForm.Browse(((GContent)selItem.Tag).Package.PackagePageUri);
+					break;
+				}
+			};
+			this.tsmiSpecial.Click += delegate{
 				foreach(ListViewItem selItem in this.lviewGenre.SelectedItems) {
 					GContent cont = (GContent)selItem.Tag;
 					if(cont.Package.HasSpecialPage) {
-						Utility.BrowseWithIE(cont.Package.SpecialPageUri);
+						BrowserForm.Browse(cont.Package.SpecialPageUri);
+						break;
 					}
 				}
-			});
+			};
 			this.tsmiNgPackageId.Click += delegate {
 				foreach(ListViewItem selItem in this.lviewGenre.SelectedItems) {
 					GPackage p = (selItem.Tag as GContent).Package;
@@ -97,7 +106,7 @@ namespace Yusen.GExplorer {
 				}
 			};
 			this.tsmiGenre.Click += new EventHandler(delegate(object sender, EventArgs e) {
-				Utility.BrowseWithIE(this.genre.GenreTopPageUri);
+				BrowserForm.Browse(this.genre.GenreTopPageUri);
 			});
 			//コンテキストメニューの標準項目
 			this.tsmiPlay.Font = new Font(this.tsmiPlay.Font, FontStyle.Bold);
@@ -144,7 +153,7 @@ namespace Yusen.GExplorer {
 				//読み込み失敗への仮対応
 				if(!p.HasLoaded) {
 					ListViewItem item = new ListViewItem(
-						new string[] { "読み込み失敗？読み込みなおすと直るかも", "", "", "読み込み失敗？読み込みなおすと直るかも" },
+						new string[] { "読み込み失敗？", "", "", "読み込みなおしたり並列取得を無効にしたら直るかも" },
 						group);
 					item.ForeColor = SystemColors.GrayText;
 					item.Tag = new GContent(p, 0, "", "", false, "");
@@ -192,12 +201,13 @@ namespace Yusen.GExplorer {
 				}
 			}
 		}
+		public void RefleshView() {
+			this.Genre = this.Genre;
+		}
 		
 		private void Play(object sender, EventArgs e) {
 			foreach(ListViewItem selitem in this.lviewGenre.SelectedItems) {
-				PlayerForm.Instance.Show();
-				PlayerForm.Instance.Content = (GContent)selitem.Tag;
-				PlayerForm.Instance.Focus();
+				PlayerForm.Play(selitem.Tag as GContent);
 				break;
 			}
 		}
@@ -213,18 +223,19 @@ namespace Yusen.GExplorer {
 			}
 			set {
 				this.aboneType = value;
-				this.Genre = this.Genre;
+				this.RefleshView();
 			}
 		}
 		private void cmsListView_Opening(object sender, CancelEventArgs e) {
 			bool isSelected = (0 < this.lviewGenre.SelectedItems.Count);
 			this.tsmiPlay.Enabled = isSelected;
 			this.tsmiWMP.Enabled = isSelected;
-			this.tsmiProperty.Enabled = isSelected;
 			this.tsmiDetail.Enabled = isSelected;
+			this.tsmiPlayerPage.Enabled = isSelected;
 			this.tsmiPackage.Enabled = isSelected;
 			this.tsmiNgPackage.Enabled = isSelected;
-			this.tsmiCommands.Enabled = isSelected && 0<this.tsmiCommands.DropDownItems.Count;
+			this.tsmiProperty.Enabled = isSelected;
+			this.tsmiCommands.Enabled = isSelected && 0 < this.tsmiCommands.DropDownItems.Count;
 			
 			this.tsmiSpecial.Enabled = false;
 			foreach(ListViewItem item in this.lviewGenre.SelectedItems) {

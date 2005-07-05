@@ -34,9 +34,13 @@ namespace Yusen.GExplorer {
 			this.tsmiPlay = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiWMP = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiDetail = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiPlayerPage = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiPackage = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiSpecial = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiNgPackage = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiNgPackageId = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiNgPackageSubgenreName = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiGenre = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
@@ -45,9 +49,6 @@ namespace Yusen.GExplorer {
 			this.tsmiProperty = new System.Windows.Forms.ToolStripMenuItem();
 			this.ilLarge = new System.Windows.Forms.ImageList(this.components);
 			this.ilSmall = new System.Windows.Forms.ImageList(this.components);
-			this.tsmiNgPackage = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiNgPackageId = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiNgPackageSubgenreName = new System.Windows.Forms.ToolStripMenuItem();
 			this.cmsListView.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -102,6 +103,7 @@ namespace Yusen.GExplorer {
             this.tsmiPlay,
             this.tsmiWMP,
             this.tsmiDetail,
+            this.tsmiPlayerPage,
             this.toolStripSeparator1,
             this.tsmiPackage,
             this.tsmiSpecial,
@@ -115,7 +117,7 @@ namespace Yusen.GExplorer {
 			this.cmsListView.Location = new System.Drawing.Point(21, 36);
 			this.cmsListView.Name = "contextMenuStrip1";
 			this.cmsListView.RightToLeft = System.Windows.Forms.RightToLeft.No;
-			this.cmsListView.Size = new System.Drawing.Size(247, 245);
+			this.cmsListView.Size = new System.Drawing.Size(273, 267);
 			this.cmsListView.Visible = true;
 			// 
 			// tsmiPlay
@@ -131,7 +133,12 @@ namespace Yusen.GExplorer {
 			// tsmiDetail
 			// 
 			this.tsmiDetail.Name = "tsmiDetail";
-			this.tsmiDetail.Text = "詳細ページをIEで開く (&D)";
+			this.tsmiDetail.Text = "詳細ページをブラウザで開く (&D)";
+			// 
+			// tsmiPlayerPage
+			// 
+			this.tsmiPlayerPage.Name = "tsmiPlayerPage";
+			this.tsmiPlayerPage.Text = "再生ページをブラウザで開く (&L)";
 			// 
 			// toolStripSeparator1
 			// 
@@ -140,12 +147,30 @@ namespace Yusen.GExplorer {
 			// tsmiPackage
 			// 
 			this.tsmiPackage.Name = "tsmiPackage";
-			this.tsmiPackage.Text = "パッケージページをIEで開く (&P)";
+			this.tsmiPackage.Text = "パッケージページをブラウザで開く (&P)";
 			// 
 			// tsmiSpecial
 			// 
 			this.tsmiSpecial.Name = "tsmiSpecial";
-			this.tsmiSpecial.Text = "パッケージの特集ページをIEで開く (&S)";
+			this.tsmiSpecial.Text = "パッケージの特集ページをブラウザで開く (&S)";
+			// 
+			// tsmiNgPackage
+			// 
+			this.tsmiNgPackage.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiNgPackageId,
+            this.tsmiNgPackageSubgenreName});
+			this.tsmiNgPackage.Name = "tsmiNgPackage";
+			this.tsmiNgPackage.Text = "パッケージのNG処理 (&N)";
+			// 
+			// tsmiNgPackageId
+			// 
+			this.tsmiNgPackageId.Name = "tsmiNgPackageId";
+			this.tsmiNgPackageId.Text = "パッケージのIDでNGにする (&I)";
+			// 
+			// tsmiNgPackageSubgenreName
+			// 
+			this.tsmiNgPackageSubgenreName.Name = "tsmiNgPackageSubgenreName";
+			this.tsmiNgPackageSubgenreName.Text = "同一のサブジャンルをNGにする (&S)";
 			// 
 			// toolStripSeparator2
 			// 
@@ -154,7 +179,7 @@ namespace Yusen.GExplorer {
 			// tsmiGenre
 			// 
 			this.tsmiGenre.Name = "tsmiGenre";
-			this.tsmiGenre.Text = "ジャンルページをIEで開く (&G)";
+			this.tsmiGenre.Text = "ジャンルページをブラウザで開く (&G)";
 			// 
 			// toolStripSeparator3
 			// 
@@ -189,24 +214,6 @@ namespace Yusen.GExplorer {
 			this.ilSmall.Images.SetKeyName(1, "normal16new.ico");
 			this.ilSmall.Images.SetKeyName(2, "special16.ico");
 			this.ilSmall.Images.SetKeyName(3, "special16new.ico");
-			// 
-			// tsmiNgPackage
-			// 
-			this.tsmiNgPackage.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiNgPackageId,
-            this.tsmiNgPackageSubgenreName});
-			this.tsmiNgPackage.Name = "tsmiNgPackage";
-			this.tsmiNgPackage.Text = "パッケージのNG処理 (&N)";
-			// 
-			// tsmiNgPackageId
-			// 
-			this.tsmiNgPackageId.Name = "tsmiNgPackageId";
-			this.tsmiNgPackageId.Text = "パッケージのIDでNGにする (&I)";
-			// 
-			// tsmiNgPackageSubgenreName
-			// 
-			this.tsmiNgPackageSubgenreName.Name = "tsmiNgPackageSubgenreName";
-			this.tsmiNgPackageSubgenreName.Text = "同一のサブジャンルをNGにする (&S)";
 			// 
 			// GenreListView
 			// 
@@ -245,5 +252,6 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ToolStripMenuItem tsmiNgPackage;
 		private System.Windows.Forms.ToolStripMenuItem tsmiNgPackageId;
 		private System.Windows.Forms.ToolStripMenuItem tsmiNgPackageSubgenreName;
+		private System.Windows.Forms.ToolStripMenuItem tsmiPlayerPage;
 	}
 }

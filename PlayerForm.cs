@@ -15,6 +15,11 @@ namespace Yusen.GExplorer {
 				return PlayerForm.instance;
 			}
 		}
+		public static void Play(GContent content) {
+			PlayerForm.Instance.Show();
+			PlayerForm.Instance.Focus();
+			PlayerForm.Instance.Content = content;
+		}
 		
 		private GContent content = null;
 		private ActionOnMediaEnded actionOnEnd = ActionOnMediaEnded.CloseForm;
@@ -100,7 +105,10 @@ namespace Yusen.GExplorer {
 				if(this.tsmiAutoVolume.Checked && WMPOpenState.wmposMediaOpen == this.wmpMain.openState) {
 					bool isCf = this.wmpMain.currentMedia.getItemInfo("WMS_CONTENT_DESCRIPTION_PLAYLIST_ENTRY_URL").StartsWith("Adv:");
 					this.wmpMain.settings.volume = isCf ? 20 : 100;
-					//“ä‚Ì‘Î‰ž
+					//“ä‚Ì‘Î‰ž‚»‚Ì2
+					this.wmpMain.settings.volume = isCf ? 19 :  99;
+					this.wmpMain.settings.volume = isCf ? 20 : 100;
+					//“ä‚Ì‘Î‰ž‚»‚Ì1
 					this.wmpMain.settings.mute = true;
 					this.wmpMain.settings.mute = false;
 				}
@@ -140,6 +148,7 @@ namespace Yusen.GExplorer {
 			this.KeyDown += new KeyEventHandler(delegate(object sender, KeyEventArgs e) {
 				if(e.Handled) return;
 				if(!this.tsmiMediaKeys.Checked) return;
+				if(this.wmpMain.Focused) return;
 				switch(e.KeyCode) {
 					case Keys.MediaNextTrack:
 						this.tsmiNextTrack.PerformClick();
@@ -187,7 +196,11 @@ namespace Yusen.GExplorer {
 			}
 			set {
 				if(null == value) throw new ArgumentNullException();
-				Utility.SetTitlebarText(this, value.Package.PackageName + (("" == value.ContentName) ? "" : " / " + value.ContentName));
+				if(null == value.Package) {
+					Utility.SetTitlebarText(this, "<" + value.ContentId + ">");
+				}else{
+					Utility.SetTitlebarText(this, value.Package.PackageName + (("" == value.ContentName) ? "" : " / " + value.ContentName));
+				}
 				this.wmpMain.URL = value.MediaFileUri.AbsoluteUri;
 				this.ieMain.Navigate(value.DetailPageUri);
 				this.content = value;

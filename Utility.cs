@@ -76,7 +76,7 @@ namespace Yusen.GExplorer {
 				}),
 				Keys.Shift | Keys.F1);
 			ToolStripMenuItem about = new ToolStripMenuItem(
-				"バージョン情報 (&A)", null,
+				"バージョン情報 (&A)...", null,
 				new EventHandler(delegate(object sender, EventArgs e) {
 					new AboutBox().ShowDialog();
 				}));

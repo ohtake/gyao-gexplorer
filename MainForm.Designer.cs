@@ -37,7 +37,9 @@ namespace Yusen.GExplorer {
 			this.tsmiGyaoTop = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiQuit = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiUneploeableGenres = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiListView = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiAboneType = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiLvView = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiFullRowSelect = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiMultiSelect = new System.Windows.Forms.ToolStripMenuItem();
@@ -46,7 +48,6 @@ namespace Yusen.GExplorer {
 			this.tsmiContentProperty = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiEditCommands = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiNgPackageEditor = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiAboneType = new System.Windows.Forms.ToolStripMenuItem();
 			this.statstripMain.SuspendLayout();
 			this.toolStripContainer1.ContentPanel.SuspendLayout();
 			this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
@@ -113,6 +114,7 @@ namespace Yusen.GExplorer {
 			// 
 			// glvMain
 			// 
+			this.glvMain.AboneType = Yusen.GExplorer.AboneType.Toumei;
 			this.glvMain.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.glvMain.Genre = null;
 			this.glvMain.Location = new System.Drawing.Point(0, 20);
@@ -157,6 +159,7 @@ namespace Yusen.GExplorer {
 			this.menuStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Visible;
 			this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiFile,
+            this.tsmiUneploeableGenres,
             this.tsmiListView,
             this.tsmiTool});
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
@@ -177,7 +180,7 @@ namespace Yusen.GExplorer {
 			// tsmiGyaoTop
 			// 
 			this.tsmiGyaoTop.Name = "tsmiGyaoTop";
-			this.tsmiGyaoTop.Text = "GyaO のトップページを IE で開く (&T)";
+			this.tsmiGyaoTop.Text = "GyaO のトップページをブラウザで開く (&T)";
 			// 
 			// toolStripSeparator1
 			// 
@@ -189,6 +192,11 @@ namespace Yusen.GExplorer {
 			this.tsmiQuit.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Q)));
 			this.tsmiQuit.Text = "終了 (&Q)";
 			// 
+			// tsmiUneploeableGenres
+			// 
+			this.tsmiUneploeableGenres.Name = "tsmiUneploeableGenres";
+			this.tsmiUneploeableGenres.Text = "未対応ジャンル (&U)";
+			// 
 			// tsmiListView
 			// 
 			this.tsmiListView.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -198,6 +206,11 @@ namespace Yusen.GExplorer {
             this.tsmiMultiSelect});
 			this.tsmiListView.Name = "tsmiListView";
 			this.tsmiListView.Text = "リストビュー (&L)";
+			// 
+			// tsmiAboneType
+			// 
+			this.tsmiAboneType.Name = "tsmiAboneType";
+			this.tsmiAboneType.Text = "あぼーん方法 (&A)";
 			// 
 			// tsmiLvView
 			// 
@@ -247,11 +260,6 @@ namespace Yusen.GExplorer {
 			// 
 			this.tsmiNgPackageEditor.Name = "tsmiNgPackageEditor";
 			this.tsmiNgPackageEditor.Text = "NGパッケージエディタ (&N)";
-			// 
-			// tsmiAboneType
-			// 
-			this.tsmiAboneType.Name = "tsmiAboneType";
-			this.tsmiAboneType.Text = "あぼーん方法 (&A)";
 			// 
 			// MainForm
 			// 
@@ -303,6 +311,7 @@ namespace Yusen.GExplorer {
 		private GenreListView glvMain;
 		private System.Windows.Forms.ToolStripMenuItem tsmiNgPackageEditor;
 		private System.Windows.Forms.ToolStripMenuItem tsmiAboneType;
+		private System.Windows.Forms.ToolStripMenuItem tsmiUneploeableGenres;
 	}
 }
 

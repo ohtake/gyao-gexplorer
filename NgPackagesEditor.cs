@@ -94,7 +94,8 @@ namespace Yusen.GExplorer {
 				NgPackagesManager.Instance.Add(new NgPackage(
 					this.txtComment.Text,
 					this.comboProperty.Text,
-					(TwoStringsPredicateMethod)this.comboMethod.SelectedItem,
+					(TwoStringsPredicateMethod)Enum.Parse(
+						typeof(TwoStringsPredicateMethod), this.comboMethod.Text),
 					this.txtWord.Text));
 			} catch(Exception ex) {
 				Utility.DisplayException(ex);
