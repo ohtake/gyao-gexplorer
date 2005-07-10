@@ -17,6 +17,10 @@ namespace Yusen.GExplorer {
 		void SaveSettings();
 	}
 	
+	/// <summary>
+	/// ユーザ設定が変わった場合に呼び出される．
+	/// <see cref="UserSettings"/>またはその直下ノードの<see cref="UserSettingsChild"/>から発生．
+	/// </summary>
 	delegate void UserSettingsChangeCompletedEventHandler();
 	
 	/// <summary>ビットレート</summary>
@@ -24,22 +28,22 @@ namespace Yusen.GExplorer {
 		High = 2,
 		Low = 1,
 	}
-	
-	public enum ActionOnMediaEnded {
-		DoNothing,
-		CloseForm,
-		GoToCampaign,
-		RepeatPlaying,
-	}
+	/// <summary>あぼーんの方法．各メンバ名の由来はJaneViewより．</summary>
 	public enum AboneType {
+		/// <summary>とうめい</summary>
 		Toumei,
+		/// <summary>さぼり．現状ではNG対象であっても別色で表示したりはしない．</summary>
 		Sabori,
+		/// <summary>はきだめ</summary>
 		Hakidame,
 	}
 	
+	/// <summary>ユーザ設定のシングルトン．</summary>
 	public class UserSettings {
 		private static UserSettings instance = new UserSettings();
 		private const string filename = "UserSettings.xml";
+		/// <summary>クッキーの寿命</summary>
+		private const double CookieExpiresInDays = 7;
 
 		internal static UserSettings Instance {
 			get {
@@ -107,12 +111,15 @@ namespace Yusen.GExplorer {
 		}
 		
 		/// <summary>
-		/// 設定ファイルに userNo が保存されていたら再取得の必要なしなので false が返る．
+		/// 設定ファイルに userNo が保存されてなかったりクッキーが古すぎたら再取得の必要があり
+		/// true が返る．
 		/// </summary>
 		[Browsable(false)]
 		internal bool IsCookieRequired {
 			get {
-				return 0 == this.gyaoUserId;
+				return
+					0 == this.gyaoUserId
+					|| this.gyaoCookieTime.AddDays(UserSettings.CookieExpiresInDays) < DateTime.Now;
 			}
 		}
 #if COOKIE
@@ -133,6 +140,7 @@ namespace Yusen.GExplorer {
 #endif
 
 		private int gyaoUserId = 0;
+		private DateTime gyaoCookieTime = DateTime.MinValue;
 #if COOKIE
 		private int gyaoCookieId = 0;
 		private long gyaoSessionIdHigh = 0;
@@ -202,6 +210,18 @@ namespace Yusen.GExplorer {
 			}
 		}
 #endif
+		[Category("GyaOとの通信")]
+		[DisplayName("クッキーの取得日時")]
+		[Description("クッキーを取得した日時．いちおう変更不可．")]
+		[ReadOnly(true)]
+		public DateTime GyaoCookieTime {
+			get {
+				return this.gyaoCookieTime;
+			}
+			set {
+				this.gyaoCookieTime = value;
+			}
+		}
 		[Category("GyaOとの通信")]
 		[DisplayName("ビットレート")]
 		[Description("再生する動画のビットレート．専用プレーヤだけでなくWMPでの再生もこの設定の影響を受けます．")]
@@ -290,6 +310,6 @@ namespace Yusen.GExplorer {
 			get { return this.ngPackagesEditor; }
 			set { this.ngPackagesEditor = value; }
 		}
-		private UscForm ngPackagesEditor = new UscForm(new Size(500, 300), new Point(200, 50));
+		private UscForm ngPackagesEditor = new UscForm(new Size(600, 250), new Point(200, 50));
 	}
 }

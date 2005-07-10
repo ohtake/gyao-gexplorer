@@ -11,18 +11,18 @@ namespace Yusen.GExplorer {
 		private static readonly Regex regexPackImgSrc =
 			new Regex(@"/pac([0-9]{7})_[sml]\.jpg", RegexOptions.Compiled | RegexOptions.Singleline);
 		private static readonly Regex regexPackAnchorHref =
-			new Regex(@"(?:javascript:gotoList\((?:%20| )'|/pac_id/)pac([0-9]{7})['/]", RegexOptions.Compiled | RegexOptions.Singleline);
-
+			new Regex(@"(?:javascript:gotoList\((?:%20| )?'|/pac_id/)pac([0-9]{7})['/]", RegexOptions.Compiled | RegexOptions.Singleline);
+		
 		private const string styleContent = "border: 4px dotted red !important;";
 		private static readonly Regex regexContImgSrc =
 			new Regex(@"/cnt([0-9]{7})_[sml]\.jpg", RegexOptions.Compiled | RegexOptions.Singleline);
 		private static readonly Regex regexContAnchorHref =
-			new Regex(@"(?:javascript:gotoDetail\((?:%20| )'|/contents_id/)cnt([0-9]{7})['/]", RegexOptions.Compiled | RegexOptions.Singleline);
+			new Regex(@"(?:javascript:gotoDetail\((?:%20| )?'|/contents_id/)cnt([0-9]{7})['/]", RegexOptions.Compiled | RegexOptions.Singleline);
 		
 		private static BrowserForm instance = null;
 		public static BrowserForm Instance {
 			get {
-				if(null == BrowserForm.instance || !BrowserForm.instance.CanFocus) {
+				if(null == BrowserForm.instance || BrowserForm.instance.IsDisposed) {
 					BrowserForm.instance = new BrowserForm();
 				}
 				return BrowserForm.instance;
@@ -44,6 +44,8 @@ namespace Yusen.GExplorer {
 			Utility.AppendHelpMenu(this.menuStrip1);
 			
 			this.tsmiGenres.DropDownItems.Clear();
+			this.tscbAddress.Items.Clear();
+			this.tscbAddress.Items.Add("http://www.gyao.jp/");
 			foreach(GGenre g in GGenre.AllGenres) {
 				ToolStripMenuItem mi = new ToolStripMenuItem(g.GenreName);
 				mi.Tag = g;
@@ -52,6 +54,7 @@ namespace Yusen.GExplorer {
 					this.DocumentUri = genre.GenreTopPageUri;
 				});
 				this.tsmiGenres.DropDownItems.Add(mi);
+				this.tscbAddress.Items.Add(g.GenreTopPageUri.AbsoluteUri);
 			}
 
 			//外部コマンド
@@ -78,12 +81,10 @@ namespace Yusen.GExplorer {
 					}
 					UserSettings.Instance.BrowserForm.ChangeCompleted -= this.LoadSettings;
 				});
+
+			this.tscbAddress.ComboBox.KeyDown += this.tscbAddress_KeyDown;
 		}
-		
-		private void tstbAddress_Enter(object sender, EventArgs e) {
-			(sender as ToolStripTextBox).SelectAll();
-		}
-		
+
 		public Uri DocumentUri {
 			get {
 				return this.wbMain.Url;
@@ -145,7 +146,7 @@ namespace Yusen.GExplorer {
 			this.tsbStop.Enabled = true;
 		}
 		private void wbMain_Navigated(object sender, WebBrowserNavigatedEventArgs e) {
-			this.tstbAddress.Text = this.wbMain.Url.AbsoluteUri;
+			this.tscbAddress.Text = this.wbMain.Url.AbsoluteUri;
 		}
 		private void wbMain_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e) {
 			this.tsbStop.Enabled = false;
@@ -195,18 +196,32 @@ namespace Yusen.GExplorer {
 		private void tsbStop_Click(object sender, EventArgs e) {
 			this.wbMain.Stop();
 		}
-		private void tsbGo_Click(object sender, EventArgs e) {
-			this.DocumentUri = new Uri(this.tstbAddress.Text);
+		private void GoToAddressBarUri(object sender, EventArgs e) {
+			try {
+				this.DocumentUri = new Uri(this.tscbAddress.Text);
+			} catch(Exception ex) {
+				Utility.DisplayException(ex);
+			}
 		}
-		
-		
+		private void tscbAddress_KeyDown(object sender, KeyEventArgs e) {
+			switch(e.KeyCode) {
+				case Keys.Return:
+					this.GoToAddressBarUri(sender, e);
+					break;
+				default:
+					return;
+			}
+			e.Handled = true;
+		}
+
+		#region メニューとコンテキストメニュー
 		private void tsmiOpenTop_Click(object sender, EventArgs e) {
 			this.DocumentUri = new Uri("http://www.gyao.jp/");
 		}
 		private void tsmiSaveAs_Click(object sender, EventArgs e) {
 			this.wbMain.ShowSaveAsDialog();
 		}
-		private void tsmiProperty_Click(object sender, EventArgs e) {
+		private void tsmiPageProperty_Click(object sender, EventArgs e) {
 			this.wbMain.ShowPropertiesDialog();
 		}
 		private void tsmiPageSetup_Click(object sender, EventArgs e) {
@@ -215,13 +230,13 @@ namespace Yusen.GExplorer {
 		private void tsmiPrint_Click(object sender, EventArgs e) {
 			this.wbMain.ShowPrintDialog();
 		}
-		private void tmsiPrintPreview_Click(object sender, EventArgs e) {
+		private void tsmiPrintPreview_Click(object sender, EventArgs e) {
 			this.wbMain.ShowPrintPreviewDialog();
 		}
 		private void tsmiClose_Click(object sender, EventArgs e) {
 			this.Close();
 		}
-		
+
 		private void tsmiPackageOpen_Click(object sender, EventArgs e) {
 			this.DocumentUri = (this.cmsPackage.Tag as GPackage).PackagePageUri;
 		}
@@ -237,9 +252,17 @@ namespace Yusen.GExplorer {
 		private void tsmiContentPlayWmp_Click(object sender, EventArgs e) {
 			Utility.PlayWithWMP((this.cmsContent.Tag as GContent).MediaFileUri);
 		}
-		private void tmsiContentPlayIe_Click(object sender, EventArgs e) {
+		private void tsmiContentPlayIe_Click(object sender, EventArgs e) {
 			Utility.BrowseWithIE((this.cmsContent.Tag as GContent).PlayerPageUri);
 		}
+		private void tsmiContentProperty_Click(object sender, EventArgs e) {
+			try {
+				ContentPropertyViewer.View(this.cmsContent.Tag as GContent);
+			} catch(Exception ex) {
+				Utility.DisplayException(ex);
+			}
+		}
+		#endregion
 
 		public void LoadSettings() {
 			UserSettings.Instance.BrowserForm.ApplySettings(this);
@@ -262,7 +285,7 @@ namespace Yusen.GExplorer {
 			}
 			this.tsmiContentCommands.Enabled = (0 != this.tsmiContentCommands.DropDownItems.Count);
 		}
-		
+		#region 再生ページでのテスト
 		private void tsmiTestBody_Click(object sender, EventArgs e) {
 			HtmlElement body = this.wbMain.Document.Body;
 			body.SetAttribute("onselectstart", "return true;");
@@ -325,5 +348,10 @@ namespace Yusen.GExplorer {
 		private void tsmiTestScrolBars_Click(object sender, EventArgs e) {
 			this.wbMain.ScrollBarsEnabled = !this.wbMain.ScrollBarsEnabled;
 		}
+		private void tsmiTestCampaign_Click(object sender, EventArgs e) {
+			this.wbMain.Document.InvokeScript("gotoCampaign");
+		}
+		#endregion
+
 	}
 }

@@ -8,11 +8,16 @@ namespace Yusen.GExplorer {
 		public static ContentPropertyViewer Instance {
 			get {
 				if(null == ContentPropertyViewer.instance
-					|| !ContentPropertyViewer.instance.CanFocus) {
+					|| ContentPropertyViewer.instance.IsDisposed) {
 					ContentPropertyViewer.instance = new ContentPropertyViewer();
 				}
 				return ContentPropertyViewer.instance;
 			}
+		}
+		public static void View(GContent content) {
+			ContentPropertyViewer.Instance.Show();
+			ContentPropertyViewer.Instance.Content = content;
+			ContentPropertyViewer.Instance.Focus();
 		}
 		
 		private GContent content = null;

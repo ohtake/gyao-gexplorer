@@ -5,8 +5,21 @@ using System.Drawing;
 using CultureInfo = System.Globalization.CultureInfo;
 
 namespace Yusen.GExplorer {
+	/// <summary><see cref="UserSettings"/>をルートとする木構造での子孫ノード．</summary>
+	/// <seealso cref="UserSettings"/>
 	public abstract class UserSettingsDescendant {
 	}
+	/// <summary>
+	/// <see cref="UserSettings"/>をルートとする木構造での子孫ノードであり，
+	/// なおかつ<see cref="UserSettings"/>の直下にあるノード．
+	/// </summary>
+	/// <remarks>
+	/// <see cref="UserSettingsDescendant"/>とは違い，
+	/// 直下のノードは<see cref="UserSettingsChangeCompletedEventHandler"/>のイベントを
+	/// 発生させることが出来る．
+	/// このイベントがおきる時には親ノードでも同様のイベントを発生させる．
+	/// </remarks>
+	/// <seealso cref="UserSettings"/>
 	public abstract class UserSettingsChild : UserSettingsDescendant {
 		internal event UserSettingsChangeCompletedEventHandler ChangeCompleted;
 		internal void OnChangeCompleted() {
@@ -17,7 +30,7 @@ namespace Yusen.GExplorer {
 		}
 	}
 	
-	class UserSettingsDescendantConverter : ExpandableObjectConverter {
+	internal class UserSettingsDescendantConverter : ExpandableObjectConverter {
 		public override bool CanConvertTo(
 				ITypeDescriptorContext context, Type destinationType) {
 			if(typeof(UserSettingsDescendant) == destinationType) {
@@ -37,7 +50,8 @@ namespace Yusen.GExplorer {
 			}
 		}
 	}
-	
+	/// <summary><see cref="Form"/>の設定．</summary>
+	/// <seealso cref="UserSettings"/>
 	[TypeConverter(typeof(UserSettingsDescendantConverter))]
 	public class UscForm : UserSettingsChild {
 		private Size size;
@@ -94,6 +108,8 @@ namespace Yusen.GExplorer {
 			if(f.WindowState != this.WindowState) f.WindowState = this.WindowState;
 		}
 	}
+	/// <summary><see cref="UscForm"/>の機能に加えて<see cref="Form.TopMost"/>も保存する．</summary>
+	/// <seealso cref="UserSettings"/>
 	[TypeConverter(typeof(UserSettingsDescendantConverter))]
 	public class UscFormTopmostable : UscForm {
 		private bool topMost = false;
@@ -121,8 +137,12 @@ namespace Yusen.GExplorer {
 			if(f.TopMost != this.TopMost) f.TopMost = this.TopMost;
 		}
 	}
+	/// <summary><see cref="MainForm"/>の設定．<see cref="GenreListView"/>の設定も含む．</summary>
+	/// <seealso cref="UserSettings"/>
 	[TypeConverter(typeof(UserSettingsDescendantConverter))]
 	public sealed class UscMainForm : UscForm {
+		/// <summary><see cref="GenreListView"/>の設定．</summary>
+		/// <seealso cref="UserSettings"/>
 		[TypeConverter(typeof(UserSettingsDescendantConverter))]
 		public sealed class UsdGenreListView : UserSettingsDescendant {
 			private bool multiSelect = false;
@@ -186,7 +206,7 @@ namespace Yusen.GExplorer {
 				get { return this.colWidthLead; }
 				set { this.colWidthLead = value; }
 			}
-			[DisplayName("あぼーん方法")]
+			[DisplayName("あぼ～ん方法")]
 			[Description("Toumei: 透明; Sabori: さぼり; Hakidame: 掃き溜め;")]
 			[DefaultValue(AboneType.Toumei)]
 			public AboneType AboneType {
@@ -240,11 +260,13 @@ namespace Yusen.GExplorer {
 			this.LvSettings.ApplySettings(mf.GenreListView);
 		}
 	}
+	/// <summary><see cref="PlayerForm"/>の設定．</summary>
+	/// <seealso cref="UserSettings"/>
 	[TypeConverter(typeof(UserSettingsDescendantConverter))]
 	public sealed class UscPlayerForm : UscFormTopmostable {
 		private bool autoVolume = true;
 		private bool mediaKeys = true;
-		private ActionOnMediaEnded actionOnEnd = ActionOnMediaEnded.CloseForm;
+		private bool closeOnEnd = true;
 		
 		public UscPlayerForm()
 			: this(Size.Empty, Point.Empty) {
@@ -267,23 +289,23 @@ namespace Yusen.GExplorer {
 			get { return this.mediaKeys; }
 			set { this.mediaKeys = value; }
 		}
-		[DisplayName("再生終了時の動作")]
-		[Description("DoNothing: 何もしない; CloseForm: ウィンドウを閉じる; GoToCampaign: 懸賞画面へ; RepeatPlaying: 動画を最初から再生しなおす;")]
-		[DefaultValue(ActionOnMediaEnded.CloseForm)]
-		public ActionOnMediaEnded ActionOnEnd {
-			get { return this.actionOnEnd; }
-			set { this.actionOnEnd = value; }
+		[DisplayName("再生終了で閉じる")]
+		[Description("再生が終了したらウィンドウを自動的に閉じる．")]
+		[DefaultValue(true)]
+		public bool CloseOnEnd {
+			get { return this.closeOnEnd; }
+			set { this.closeOnEnd = value; }
 		}
 		
 		internal void StoreSettings(PlayerForm pf) {
 			base.StoreSettings(pf);
 			this.AutoVolume = pf.AutoVolumeEnabled;
-			this.ActionOnEnd = pf.ActionOnEnd;
+			this.CloseOnEnd = pf.CloseOnEnd;
 		}
 		internal void ApplySettings(PlayerForm pf) {
 			base.ApplySettings(pf);
 			if(pf.AutoVolumeEnabled != this.AutoVolume) pf.AutoVolumeEnabled = this.AutoVolume;
-			if(pf.ActionOnEnd != this.ActionOnEnd) pf.ActionOnEnd = this.ActionOnEnd;
+			if(pf.CloseOnEnd != this.CloseOnEnd) pf.CloseOnEnd = this.CloseOnEnd;
 		}
 	}
 }

@@ -7,7 +7,7 @@ namespace Yusen.GExplorer {
 		private static MainForm instance = null;
 		public static MainForm Instance {
 			get{
-				if(null == MainForm.instance || !MainForm.instance.CanFocus) {
+				if(null == MainForm.instance || MainForm.instance.IsDisposed) {
 					MainForm.instance = new MainForm();
 				}
 				return MainForm.instance;
@@ -61,22 +61,6 @@ namespace Yusen.GExplorer {
 			this.tsmiQuit.Click += delegate {
 				this.Close();
 			};
-			this.tsmiContentProperty.Click += delegate {
-				ContentPropertyViewer.Instance.Show();
-				ContentPropertyViewer.Instance.Focus();
-			};
-			this.tsmiEditCommands.Click += delegate{
-				UserCommandsEditor.Instance.Show();
-				UserCommandsEditor.Instance.Focus();
-			};
-			this.tsmiUserSettings.Click += delegate {
-				UserSettingsToolbox.Instance.Show();
-				UserSettingsToolbox.Instance.Focus();
-			};
-			this.tsmiNgPackageEditor.Click += delegate {
-				NgPackagesEditor.Instance.Show();
-				NgPackagesEditor.Instance.Focus();
-			};
 			//メニュー項目 (リストビュー)
 			foreach(AboneType at in Enum.GetValues(typeof(AboneType))) {
 				ToolStripMenuItem mi = new ToolStripMenuItem(at.ToString());
@@ -105,6 +89,25 @@ namespace Yusen.GExplorer {
 			this.tsmiMultiSelect.Click += delegate {
 				this.GenreListView.ListView.MultiSelect = this.tsmiMultiSelect.Checked;
 				this.SaveSettings();
+			};
+			//メニュー項目 (ウィンドウ)
+			this.tsmiPlayer.Click += delegate {
+				this.ShowAndFocus(PlayerForm.Instance);
+			};
+			this.tsmiBrowser.Click += delegate {
+				this.ShowAndFocus(BrowserForm.Instance);
+			};
+			this.tsmiContentProperty.Click += delegate {
+				this.ShowAndFocus(ContentPropertyViewer.Instance);
+			};
+			this.tsmiEditCommands.Click += delegate {
+				this.ShowAndFocus(UserCommandsEditor.Instance);
+			};
+			this.tsmiUserSettings.Click += delegate {
+				this.ShowAndFocus(UserSettingsToolbox.Instance);
+			};
+			this.tsmiNgPackageEditor.Click += delegate {
+				this.ShowAndFocus(NgPackagesEditor.Instance);
 			};
 			//ステータスバー
 			this.glvMain.GenreChanged += new GenreListViewGenreChangedEventHandler(
@@ -154,7 +157,6 @@ namespace Yusen.GExplorer {
 					UserSettings.Instance.MainForm.ChangeCompleted -= this.LoadSettings;
 				});
 		}
-		
 		public GGenre Genre {
 			get {
 				if(null == this.tabGenre.SelectedTab) return null;
@@ -170,7 +172,10 @@ namespace Yusen.GExplorer {
 				}
 			}
 		}
-		
+		private void ShowAndFocus(Form form) {
+			form.Show();
+			form.Focus();
+		}
 		private void RefleshAboneTypeDropDownItems() {
 			foreach(ToolStripMenuItem m in this.tsmiAboneType.DropDownItems) {
 				m.Checked = (this.GenreListView.AboneType == (AboneType)m.Tag);

@@ -117,8 +117,7 @@ namespace Yusen.GExplorer {
 			this.cmsListView.Location = new System.Drawing.Point(21, 36);
 			this.cmsListView.Name = "contextMenuStrip1";
 			this.cmsListView.RightToLeft = System.Windows.Forms.RightToLeft.No;
-			this.cmsListView.Size = new System.Drawing.Size(273, 267);
-			this.cmsListView.Visible = true;
+			this.cmsListView.Size = new System.Drawing.Size(273, 248);
 			// 
 			// tsmiPlay
 			// 

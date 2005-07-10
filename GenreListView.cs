@@ -54,14 +54,13 @@ namespace Yusen.GExplorer {
 			this.tsmiPlay.Click += new EventHandler(this.Play);
 			this.tsmiWMP.Click += delegate{
 				foreach(ListViewItem selItem in this.lviewGenre.SelectedItems) {
-					Utility.PlayWithWMP(((GContent)selItem.Tag).MediaFileUri);
+					Utility.PlayWithWMP((selItem.Tag as GContent).MediaFileUri);
 				}
 			};
 			this.tsmiProperty.Click += delegate{
-				if(this.lviewGenre.SelectedItems.Count > 0) {
-					ContentPropertyViewer.Instance.Show();
-					ContentPropertyViewer.Instance.Content = (GContent)this.lviewGenre.SelectedItems[0].Tag;
-					ContentPropertyViewer.Instance.Focus();
+				foreach(ListViewItem lvi in this.lviewGenre.SelectedItems) {
+					ContentPropertyViewer.View(lvi.Tag as GContent);
+					break;
 				}
 			};
 			this.tsmiDetail.Click += delegate{
@@ -105,16 +104,16 @@ namespace Yusen.GExplorer {
 						p.SubgenreName, "SubgenreName", TwoStringsPredicateMethod.Equals, p.SubgenreName));
 				}
 			};
-			this.tsmiGenre.Click += new EventHandler(delegate(object sender, EventArgs e) {
-				BrowserForm.Browse(this.genre.GenreTopPageUri);
-			});
+			this.tsmiGenre.Click += delegate{
+				BrowserForm.Browse(this.Genre.GenreTopPageUri);
+			};
 			//コンテキストメニューの標準項目
 			this.tsmiPlay.Font = new Font(this.tsmiPlay.Font, FontStyle.Bold);
 			//外部コマンド
 			UserCommandsManager.Instance.UserCommandsChanged += new UserCommandsChangedEventHandler(this.LoadCommands);
-			this.Disposed += new EventHandler(delegate(object sender, EventArgs e) {
+			this.Disposed += delegate {
 				UserCommandsManager.Instance.UserCommandsChanged -= this.LoadCommands;
-			});
+			};
 			//カラム幅の変更
 			this.lviewGenre.ColumnWidthChanged += delegate {
 				if(null != this.ColumnWidthChanged) {
@@ -123,13 +122,15 @@ namespace Yusen.GExplorer {
 			};
 		}
 		
-		private void Clear() {
+		private void ClearItems(GGenre oldGenre) {
+			this.lviewGenre.BeginUpdate();
 			this.lviewGenre.Items.Clear();
 			this.lviewGenre.Groups.Clear();
+			this.lviewGenre.EndUpdate();
 		}
 		
-		private void Display(GGenre genre) {
-			this.Clear();
+		private void AddItems(GGenre genre) {
+			this.lviewGenre.BeginUpdate();
 			foreach(GPackage p in genre.Packages) {
 				//NG処理
 				switch(this.AboneType) {
@@ -142,7 +143,7 @@ namespace Yusen.GExplorer {
 						if(!NgPackagesManager.Instance.IsNgPackage(p)) continue;
 						break;
 					default:
-						throw new Exception("不明なあぼーん方法: " + this.AboneType.ToString());
+						throw new Exception("不明なあぼ～ん方法: " + this.AboneType.ToString());
 				}
 				
 				ListViewGroup group = new ListViewGroup(
@@ -184,6 +185,8 @@ namespace Yusen.GExplorer {
 					this.lviewGenre.Items.Add(item);
 				}
 			}
+			this.lviewGenre.EndUpdate();
+			
 			if(null != this.GenreChanged) this.GenreChanged(this, genre, this.lviewGenre.Items.Count);
 		}
 		
@@ -193,11 +196,12 @@ namespace Yusen.GExplorer {
 			}
 			set {
 				if(null == value) {
-					this.Clear();
+					this.ClearItems(this.Genre);
 					this.genre = null;
 				} else {
-					this.Display(value);
+					this.ClearItems(this.Genre);
 					this.genre = value;
+					this.AddItems(value);
 				}
 			}
 		}
@@ -239,7 +243,7 @@ namespace Yusen.GExplorer {
 			
 			this.tsmiSpecial.Enabled = false;
 			foreach(ListViewItem item in this.lviewGenre.SelectedItems) {
-				if(((GContent)item.Tag).Package.HasSpecialPage) {
+				if((item.Tag as GContent).Package.HasSpecialPage) {
 					this.tsmiSpecial.Enabled = true;
 					break;
 				}
@@ -255,9 +259,9 @@ namespace Yusen.GExplorer {
 					new EventHandler(delegate(object sender, EventArgs e) {
 						List<GContent> contents = new List<GContent>();
 						foreach(ListViewItem lvi in this.lviewGenre.SelectedItems) {
-							contents.Add((GContent)lvi.Tag);
+							contents.Add(lvi.Tag as GContent);
 						}
-						((UserCommand)((ToolStripMenuItem)sender).Tag).Execute(contents);
+						((sender as ToolStripMenuItem).Tag as UserCommand).Execute(contents);
 					}));
 				mi.Tag = uc;
 				this.tsmiCommands.DropDownItems.Add(mi);

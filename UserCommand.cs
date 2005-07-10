@@ -5,11 +5,12 @@ using System.Reflection;
 using Process = System.Diagnostics.Process;
 using StringBuilder = System.Text.StringBuilder;
 
-using System.IO;
-using XmlSerializer = System.Xml.Serialization.XmlSerializer;
-using System.Collections;
-
 namespace Yusen.GExplorer {
+	/// <summary>外部コマンド．</summary>
+	/// <remarks>
+	/// ユーザが独自のコマンドを定義することで
+	/// 簡単にアプリケーションの拡張を行えるようにする．
+	/// </remarks>
 	public class UserCommand : IComparable<UserCommand> {
 		private const string regexVarient = @"(?<classPrefix>[cpg]):(?<property>[_A-Za-z]\w*)";
 		private static readonly Regex argValidator =
@@ -29,6 +30,10 @@ namespace Yusen.GExplorer {
 		public UserCommand() {
 		}
 		
+		/// <summary>
+		/// 外部コマンドの名称．
+		/// メニューの項目名になるので &amp; でアクセスキーの設定ができる．
+		/// </summary>
 		public string Title {
 			get {
 				return this.title;
@@ -41,6 +46,9 @@ namespace Yusen.GExplorer {
 			}
 		}
 		
+		/// <summary>
+		/// 外部コマンドを実行する際の実行ファイル名．
+		/// </summary>
 		public string FileName{
 			get {
 				return this.fileName;
@@ -53,6 +61,12 @@ namespace Yusen.GExplorer {
 			}
 		}
 		
+		/// <summary>
+		/// 外部プログラムを呼び出す時の引数．
+		/// { と } で囲まれている箇所には選択中の<see cref="GContent"/>に応じて
+		/// 別の文字列に置換される．
+		/// 置換の法則については ReadMe.txt 等を参照のこと．
+		/// </summary>
 		public string Arguments {
 			get {
 				return this.arguments;

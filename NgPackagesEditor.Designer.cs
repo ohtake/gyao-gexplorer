@@ -102,7 +102,7 @@ namespace Yusen.GExplorer {
 			// tableLayoutPanel1
 			// 
 			this.tableLayoutPanel1.ColumnCount = 1;
-			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
 			this.tableLayoutPanel1.Controls.Add(this.grpAdd, 0, 1);
 			this.tableLayoutPanel1.Controls.Add(this.grpList, 0, 0);
 			this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -169,7 +169,7 @@ namespace Yusen.GExplorer {
 			// 
 			// comboMethod
 			// 
-			this.comboMethod.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+			this.comboMethod.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
 			this.comboMethod.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
 			this.comboMethod.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.comboMethod.FormattingEnabled = true;
@@ -180,7 +180,7 @@ namespace Yusen.GExplorer {
 			// 
 			// comboProperty
 			// 
-			this.comboProperty.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+			this.comboProperty.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
 			this.comboProperty.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
 			this.comboProperty.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.comboProperty.FormattingEnabled = true;
@@ -258,7 +258,6 @@ namespace Yusen.GExplorer {
 			this.ClientSize = new System.Drawing.Size(592, 224);
 			this.Controls.Add(this.tableLayoutPanel1);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
-			this.MinimumSize = new System.Drawing.Size(600, 250);
 			this.Name = "NgPackagesEditor";
 			this.Text = "NGPackagesEditor";
 			this.tableLayoutPanel1.ResumeLayout(false);

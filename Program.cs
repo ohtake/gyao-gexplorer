@@ -23,13 +23,13 @@ namespace Yusen.GExplorer {
 				}
 			}
 			
-			UserCommandsManager.Instance.Deserialize();
-			NgPackagesManager.Instance.Deserialize();
+			UserCommandsManager.Instance.DeserializeItems();
+			NgPackagesManager.Instance.DeserializeItems();
 			
 			Application.Run(MainForm.Instance);
 			
-			NgPackagesManager.Instance.Serialize();
-			UserCommandsManager.Instance.Serialize();
+			NgPackagesManager.Instance.SerializeItems();
+			UserCommandsManager.Instance.SerializeItems();
 			UserSettings.SaveSettingsToFile();
 		}
 	}

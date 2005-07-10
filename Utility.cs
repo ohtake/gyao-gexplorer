@@ -11,7 +11,7 @@ using Resources = Yusen.GExplorer.Properties.Resources;
 namespace Yusen.GExplorer {
 	static class Utility{
 		private delegate void SetTitlebarTextDelegate(Form form, string title);
-
+		
 		public static string GetPathForIE() {
 			return Path.Combine(
 				Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles),

@@ -9,7 +9,7 @@ namespace Yusen.GExplorer {
 		private static NgPackagesEditor instance = null;
 		public static NgPackagesEditor Instance {
 			get {
-				if(null == NgPackagesEditor.instance || !NgPackagesEditor.instance.CanFocus) {
+				if(null == NgPackagesEditor.instance || NgPackagesEditor.instance.IsDisposed) {
 					NgPackagesEditor.instance = new NgPackagesEditor();
 				}
 				return NgPackagesEditor.instance;
@@ -38,6 +38,10 @@ namespace Yusen.GExplorer {
 			};
 			
 			foreach(PropertyInfo pi in typeof(GPackage).GetProperties()) {
+				object[] attribs = pi.GetCustomAttributes(typeof(BrowsableAttribute), false);
+				if(attribs.Length > 0 && !(attribs[0] as BrowsableAttribute).Browsable) {
+					continue;
+				}
 				this.comboProperty.Items.Add(pi.Name);
 			}
 			foreach(TwoStringsPredicateMethod m in Enum.GetValues(typeof(TwoStringsPredicateMethod))) {
@@ -59,6 +63,7 @@ namespace Yusen.GExplorer {
 		}
 		
 		private void RefleshView() {
+			this.lvNgPackages.BeginUpdate();
 			this.lvNgPackages.Items.Clear();
 			foreach(NgPackage np in NgPackagesManager.Instance) {
 				ListViewItem lvi = new ListViewItem(
@@ -69,6 +74,7 @@ namespace Yusen.GExplorer {
 				lvi.Tag = np;
 				this.lvNgPackages.Items.Add(lvi);
 			}
+			this.lvNgPackages.EndUpdate();
 		}
 		
 		public void LoadSettings() {

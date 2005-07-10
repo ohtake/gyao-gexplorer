@@ -53,8 +53,8 @@ namespace Yusen.GExplorer {
 			this.tsmiCommands = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiAutoVolume = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiActionOnMediaEnded = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiMediaKeys = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiCloseOnEnd = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiFocusOnWmp = new System.Windows.Forms.ToolStripMenuItem();
 			this.tabControl1.SuspendLayout();
@@ -106,7 +106,7 @@ namespace Yusen.GExplorer {
 			this.tabBrowser.Padding = new System.Windows.Forms.Padding(3);
 			this.tabBrowser.Size = new System.Drawing.Size(654, 557);
 			this.tabBrowser.TabIndex = 1;
-			this.tabBrowser.Text = "詳細ページ/懸賞ページ";
+			this.tabBrowser.Text = "詳細ページ";
 			// 
 			// ieMain
 			// 
@@ -271,7 +271,7 @@ namespace Yusen.GExplorer {
             this.toolStripSeparator3,
             this.tsmiAutoVolume,
             this.tsmiMediaKeys,
-            this.tsmiActionOnMediaEnded,
+            this.tsmiCloseOnEnd,
             this.toolStripSeparator4,
             this.tsmiFocusOnWmp});
 			this.tsmiTool.Name = "tsmiTool";
@@ -294,11 +294,6 @@ namespace Yusen.GExplorer {
 			this.tsmiAutoVolume.Name = "tsmiAutoVolume";
 			this.tsmiAutoVolume.Text = "自動音量調整 (&V)";
 			// 
-			// tsmiActionOnMediaEnded
-			// 
-			this.tsmiActionOnMediaEnded.Name = "tsmiActionOnMediaEnded";
-			this.tsmiActionOnMediaEnded.Text = "再生終了時の動作 (&E)";
-			// 
 			// tsmiMediaKeys
 			// 
 			this.tsmiMediaKeys.Checked = true;
@@ -306,6 +301,14 @@ namespace Yusen.GExplorer {
 			this.tsmiMediaKeys.CheckState = System.Windows.Forms.CheckState.Checked;
 			this.tsmiMediaKeys.Name = "tsmiMediaKeys";
 			this.tsmiMediaKeys.Text = "メディアキーを使う (&M)";
+			// 
+			// tsmiCloseOnEnd
+			// 
+			this.tsmiCloseOnEnd.Checked = true;
+			this.tsmiCloseOnEnd.CheckOnClick = true;
+			this.tsmiCloseOnEnd.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.tsmiCloseOnEnd.Name = "tsmiCloseOnEnd";
+			this.tsmiCloseOnEnd.Text = "再生終了で閉じる (&E)";
 			// 
 			// toolStripSeparator4
 			// 
@@ -365,7 +368,7 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ToolStripMenuItem tsmiCommands;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
-		private System.Windows.Forms.ToolStripMenuItem tsmiActionOnMediaEnded;
+		private System.Windows.Forms.ToolStripMenuItem tsmiCloseOnEnd;
 		private System.Windows.Forms.ToolStripMenuItem tsmiMediaKeys;
 		private System.Windows.Forms.ToolStripMenuItem tsmiOperation;
 		private System.Windows.Forms.ToolStripMenuItem tsmiPlayPause;

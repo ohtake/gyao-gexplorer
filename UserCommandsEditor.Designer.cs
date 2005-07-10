@@ -23,6 +23,7 @@ namespace Yusen.GExplorer {
 		/// the contents of this method with the code editor.
 		/// </summary>
 		private void InitializeComponent() {
+			this.components = new System.ComponentModel.Container();
 			this.grpDetail = new System.Windows.Forms.GroupBox();
 			this.btnInsert = new System.Windows.Forms.Button();
 			this.btnModify = new System.Windows.Forms.Button();
@@ -34,6 +35,11 @@ namespace Yusen.GExplorer {
 			this.btnBrowse = new System.Windows.Forms.Button();
 			this.lblArg = new System.Windows.Forms.Label();
 			this.txtArg = new System.Windows.Forms.TextBox();
+			this.btnArg = new System.Windows.Forms.Button();
+			this.cmsArgs = new System.Windows.Forms.ContextMenuStrip(this.components);
+			this.tsmiGenre = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiPackage = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiContent = new System.Windows.Forms.ToolStripMenuItem();
 			this.btnUp = new System.Windows.Forms.Button();
 			this.btnDown = new System.Windows.Forms.Button();
 			this.btnDelete = new System.Windows.Forms.Button();
@@ -46,6 +52,7 @@ namespace Yusen.GExplorer {
 			this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
 			this.grpDetail.SuspendLayout();
 			this.tableLayoutPanel1.SuspendLayout();
+			this.cmsArgs.SuspendLayout();
 			this.panel1.SuspendLayout();
 			this.grpList.SuspendLayout();
 			this.tableLayoutPanel2.SuspendLayout();
@@ -69,16 +76,16 @@ namespace Yusen.GExplorer {
 			// 
 			this.btnInsert.Location = new System.Drawing.Point(6, 110);
 			this.btnInsert.Name = "btnInsert";
-			this.btnInsert.Size = new System.Drawing.Size(75, 23);
+			this.btnInsert.Size = new System.Drawing.Size(90, 23);
 			this.btnInsert.TabIndex = 221;
 			this.btnInsert.Text = "挿入 (&I)";
 			this.btnInsert.Click += new System.EventHandler(this.btnInsert_Click);
 			// 
 			// btnModify
 			// 
-			this.btnModify.Location = new System.Drawing.Point(84, 110);
+			this.btnModify.Location = new System.Drawing.Point(102, 110);
 			this.btnModify.Name = "btnModify";
-			this.btnModify.Size = new System.Drawing.Size(75, 23);
+			this.btnModify.Size = new System.Drawing.Size(90, 23);
 			this.btnModify.TabIndex = 222;
 			this.btnModify.Text = "変更 (&M)";
 			this.btnModify.Click += new System.EventHandler(this.btnModify_Click);
@@ -88,7 +95,7 @@ namespace Yusen.GExplorer {
 			this.tableLayoutPanel1.ColumnCount = 3;
 			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 90F));
 			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
+			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
 			this.tableLayoutPanel1.Controls.Add(this.lblTitle, 0, 0);
 			this.tableLayoutPanel1.Controls.Add(this.txtTitle, 1, 0);
 			this.tableLayoutPanel1.Controls.Add(this.lblFile, 0, 1);
@@ -96,6 +103,7 @@ namespace Yusen.GExplorer {
 			this.tableLayoutPanel1.Controls.Add(this.btnBrowse, 2, 1);
 			this.tableLayoutPanel1.Controls.Add(this.lblArg, 0, 2);
 			this.tableLayoutPanel1.Controls.Add(this.txtArg, 1, 2);
+			this.tableLayoutPanel1.Controls.Add(this.btnArg, 2, 2);
 			this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top;
 			this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 15);
 			this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -121,7 +129,7 @@ namespace Yusen.GExplorer {
 			this.txtTitle.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.txtTitle.Location = new System.Drawing.Point(93, 3);
 			this.txtTitle.Name = "txtTitle";
-			this.txtTitle.Size = new System.Drawing.Size(164, 19);
+			this.txtTitle.Size = new System.Drawing.Size(144, 19);
 			this.txtTitle.TabIndex = 212;
 			// 
 			// lblFile
@@ -136,16 +144,18 @@ namespace Yusen.GExplorer {
 			// 
 			// txtFile
 			// 
+			this.txtFile.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
+			this.txtFile.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.FileSystem;
 			this.txtFile.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.txtFile.Location = new System.Drawing.Point(93, 33);
 			this.txtFile.Name = "txtFile";
-			this.txtFile.Size = new System.Drawing.Size(164, 19);
+			this.txtFile.Size = new System.Drawing.Size(144, 19);
 			this.txtFile.TabIndex = 214;
 			// 
 			// btnBrowse
 			// 
 			this.btnBrowse.Anchor = System.Windows.Forms.AnchorStyles.None;
-			this.btnBrowse.Location = new System.Drawing.Point(265, 33);
+			this.btnBrowse.Location = new System.Drawing.Point(255, 33);
 			this.btnBrowse.Name = "btnBrowse";
 			this.btnBrowse.Size = new System.Drawing.Size(69, 23);
 			this.btnBrowse.TabIndex = 215;
@@ -167,8 +177,46 @@ namespace Yusen.GExplorer {
 			this.txtArg.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.txtArg.Location = new System.Drawing.Point(93, 63);
 			this.txtArg.Name = "txtArg";
-			this.txtArg.Size = new System.Drawing.Size(164, 19);
+			this.txtArg.Size = new System.Drawing.Size(144, 19);
 			this.txtArg.TabIndex = 217;
+			// 
+			// btnArg
+			// 
+			this.btnArg.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.btnArg.Location = new System.Drawing.Point(245, 63);
+			this.btnArg.Name = "btnArg";
+			this.btnArg.Size = new System.Drawing.Size(89, 23);
+			this.btnArg.TabIndex = 218;
+			this.btnArg.Text = "簡易入力 (&U)";
+			this.btnArg.Click += new System.EventHandler(this.btnArg_Click);
+			// 
+			// cmsArgs
+			// 
+			this.cmsArgs.Enabled = true;
+			this.cmsArgs.GripMargin = new System.Windows.Forms.Padding(2);
+			this.cmsArgs.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiGenre,
+            this.tsmiPackage,
+            this.tsmiContent});
+			this.cmsArgs.Location = new System.Drawing.Point(0, 0);
+			this.cmsArgs.Name = "cmsArgs";
+			this.cmsArgs.RightToLeft = System.Windows.Forms.RightToLeft.No;
+			this.cmsArgs.Size = new System.Drawing.Size(164, 70);
+			// 
+			// tsmiGenre
+			// 
+			this.tsmiGenre.Name = "tsmiGenre";
+			this.tsmiGenre.Text = "ジャンルのプロパティ";
+			// 
+			// tsmiPackage
+			// 
+			this.tsmiPackage.Name = "tsmiPackage";
+			this.tsmiPackage.Text = "パッケージのプロパティ";
+			// 
+			// tsmiContent
+			// 
+			this.tsmiContent.Name = "tsmiContent";
+			this.tsmiContent.Text = "コンテンツのプロパティ";
 			// 
 			// btnUp
 			// 
@@ -272,7 +320,6 @@ namespace Yusen.GExplorer {
 			// 
 			// openFileDialog1
 			// 
-			this.openFileDialog1.FileName = "openFileDialog1";
 			this.openFileDialog1.Filter = "実行ファイル (*.exe)|*.exe|全てのファイル|*.*";
 			this.openFileDialog1.RestoreDirectory = true;
 			// 
@@ -289,6 +336,7 @@ namespace Yusen.GExplorer {
 			this.grpDetail.ResumeLayout(false);
 			this.tableLayoutPanel1.ResumeLayout(false);
 			this.tableLayoutPanel1.PerformLayout();
+			this.cmsArgs.ResumeLayout(false);
 			this.panel1.ResumeLayout(false);
 			this.grpList.ResumeLayout(false);
 			this.tableLayoutPanel2.ResumeLayout(false);
@@ -320,5 +368,10 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.Button btnSort;
 		private System.Windows.Forms.ListBox lboxCommands;
 		private System.Windows.Forms.OpenFileDialog openFileDialog1;
+		private System.Windows.Forms.Button btnArg;
+		private System.Windows.Forms.ContextMenuStrip cmsArgs;
+		private System.Windows.Forms.ToolStripMenuItem tsmiGenre;
+		private System.Windows.Forms.ToolStripMenuItem tsmiPackage;
+		private System.Windows.Forms.ToolStripMenuItem tsmiContent;
 	}
 }

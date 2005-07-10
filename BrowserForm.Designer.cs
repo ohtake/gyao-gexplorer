@@ -29,11 +29,11 @@ namespace Yusen.GExplorer {
 			this.tsmiFile = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiOpenTop = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiSaveAs = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiProperty = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiPageProperty = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiPageSetup = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiPrint = new System.Windows.Forms.ToolStripMenuItem();
-			this.tmsiPrintPreview = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiPrintPreview = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiClose = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiGenres = new System.Windows.Forms.ToolStripMenuItem();
@@ -47,6 +47,10 @@ namespace Yusen.GExplorer {
 			this.tsmiTestVolumeDisable = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiTestStrechToFit = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
+			this.tsmiTestScrolBars = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
+			this.tsmiTestCampaign = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
 			this.statusStrip1 = new System.Windows.Forms.StatusStrip();
 			this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
@@ -58,7 +62,7 @@ namespace Yusen.GExplorer {
 			this.tsbStop = new System.Windows.Forms.ToolStripButton();
 			this.tsAddress = new System.Windows.Forms.ToolStrip();
 			this.tslAddress = new System.Windows.Forms.ToolStripLabel();
-			this.tstbAddress = new System.Windows.Forms.ToolStripTextBox();
+			this.tscbAddress = new System.Windows.Forms.ToolStripComboBox();
 			this.tsbGo = new System.Windows.Forms.ToolStripButton();
 			this.cmsContent = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.tsmiContentOpenDetail = new System.Windows.Forms.ToolStripMenuItem();
@@ -66,13 +70,13 @@ namespace Yusen.GExplorer {
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiContentPlayGPlayer = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiContentPlayWmp = new System.Windows.Forms.ToolStripMenuItem();
-			this.tmsiContentPlayIe = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiContentPlayIe = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiContentCommands = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
+			this.tsmiContentProperty = new System.Windows.Forms.ToolStripMenuItem();
 			this.cmsPackage = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.tsmiPackageOpen = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
-			this.tsmiTestScrolBars = new System.Windows.Forms.ToolStripMenuItem();
 			this.menuStrip1.SuspendLayout();
 			this.toolStripContainer1.BottomToolStripPanel.SuspendLayout();
 			this.toolStripContainer1.ContentPanel.SuspendLayout();
@@ -104,11 +108,11 @@ namespace Yusen.GExplorer {
 			this.tsmiFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiOpenTop,
             this.tsmiSaveAs,
-            this.tsmiProperty,
+            this.tsmiPageProperty,
             this.toolStripSeparator3,
             this.tsmiPageSetup,
             this.tsmiPrint,
-            this.tmsiPrintPreview,
+            this.tsmiPrintPreview,
             this.toolStripSeparator4,
             this.tsmiClose});
 			this.tsmiFile.Name = "tsmiFile";
@@ -128,11 +132,11 @@ namespace Yusen.GExplorer {
 			this.tsmiSaveAs.Text = "名前をつけて保存 (&A)...";
 			this.tsmiSaveAs.Click += new System.EventHandler(this.tsmiSaveAs_Click);
 			// 
-			// tsmiProperty
+			// tsmiPageProperty
 			// 
-			this.tsmiProperty.Name = "tsmiProperty";
-			this.tsmiProperty.Text = "プロパティ (&R)...";
-			this.tsmiProperty.Click += new System.EventHandler(this.tsmiProperty_Click);
+			this.tsmiPageProperty.Name = "tsmiPageProperty";
+			this.tsmiPageProperty.Text = "ページのプロパティ (&R)...";
+			this.tsmiPageProperty.Click += new System.EventHandler(this.tsmiPageProperty_Click);
 			// 
 			// toolStripSeparator3
 			// 
@@ -151,11 +155,11 @@ namespace Yusen.GExplorer {
 			this.tsmiPrint.Text = "印刷 (&P)...";
 			this.tsmiPrint.Click += new System.EventHandler(this.tsmiPrint_Click);
 			// 
-			// tmsiPrintPreview
+			// tsmiPrintPreview
 			// 
-			this.tmsiPrintPreview.Name = "tmsiPrintPreview";
-			this.tmsiPrintPreview.Text = "印刷プレビュー (&V)...";
-			this.tmsiPrintPreview.Click += new System.EventHandler(this.tmsiPrintPreview_Click);
+			this.tsmiPrintPreview.Name = "tsmiPrintPreview";
+			this.tsmiPrintPreview.Text = "印刷プレビュー (&V)...";
+			this.tsmiPrintPreview.Click += new System.EventHandler(this.tsmiPrintPreview_Click);
 			// 
 			// toolStripSeparator4
 			// 
@@ -171,7 +175,7 @@ namespace Yusen.GExplorer {
 			// tsmiGenres
 			// 
 			this.tsmiGenres.Name = "tsmiGenres";
-			this.tsmiGenres.Text = "ジャンル (&G)";
+			this.tsmiGenres.Text = "ジャンル (&E)";
 			// 
 			// tsmiTest
 			// 
@@ -186,7 +190,9 @@ namespace Yusen.GExplorer {
             this.toolStripSeparator6,
             this.tsmiTestStrechToFit,
             this.toolStripSeparator7,
-            this.tsmiTestScrolBars});
+            this.tsmiTestScrolBars,
+            this.toolStripSeparator9,
+            this.tsmiTestCampaign});
 			this.tsmiTest.Name = "tsmiTest";
 			this.tsmiTest.Text = "再生ページでのテスト (&P)";
 			// 
@@ -205,7 +211,7 @@ namespace Yusen.GExplorer {
 			// tsmiTestClick
 			// 
 			this.tsmiTestClick.Name = "tsmiTestClick";
-			this.tsmiTestClick.Text = "player の click() を無効にしてみる (&C)";
+			this.tsmiTestClick.Text = "player のクリック禁止を無効にしてみる (&C)";
 			this.tsmiTestClick.Click += new System.EventHandler(this.tsmiTestClick_Click);
 			// 
 			// tsmiTestContextMenu
@@ -237,8 +243,28 @@ namespace Yusen.GExplorer {
 			// tsmiTestStrechToFit
 			// 
 			this.tsmiTestStrechToFit.Name = "tsmiTestStrechToFit";
-			this.tsmiTestStrechToFit.Text = "strechToFit のトグル (&F)";
+			this.tsmiTestStrechToFit.Text = "player の strechToFit をトグル (&F)";
 			this.tsmiTestStrechToFit.Click += new System.EventHandler(this.tsmiTestStrechToFit_Click);
+			// 
+			// toolStripSeparator7
+			// 
+			this.toolStripSeparator7.Name = "toolStripSeparator7";
+			// 
+			// tsmiTestScrolBars
+			// 
+			this.tsmiTestScrolBars.Name = "tsmiTestScrolBars";
+			this.tsmiTestScrolBars.Text = "スクロールバーの表示非表示のトグル (&B)";
+			this.tsmiTestScrolBars.Click += new System.EventHandler(this.tsmiTestScrolBars_Click);
+			// 
+			// toolStripSeparator9
+			// 
+			this.toolStripSeparator9.Name = "toolStripSeparator9";
+			// 
+			// tsmiTestCampaign
+			// 
+			this.tsmiTestCampaign.Name = "tsmiTestCampaign";
+			this.tsmiTestCampaign.Text = "gotoCampaign 関数を無理やり invoke (&G)";
+			this.tsmiTestCampaign.Click += new System.EventHandler(this.tsmiTestCampaign_Click);
 			// 
 			// toolStripContainer1
 			// 
@@ -294,6 +320,7 @@ namespace Yusen.GExplorer {
 			this.wbMain.Location = new System.Drawing.Point(0, 0);
 			this.wbMain.Name = "wbMain";
 			this.wbMain.Size = new System.Drawing.Size(731, 343);
+			this.wbMain.Url = new System.Uri("about:blank", System.UriKind.Absolute);
 			this.wbMain.DocumentTitleChanged += new System.EventHandler(this.wbMain_DocumentTitleChanged);
 			this.wbMain.CanGoForwardChanged += new System.EventHandler(this.wbMain_CanGoForwardChanged);
 			this.wbMain.CanGoBackChanged += new System.EventHandler(this.wbMain_CanGoBackChanged);
@@ -312,7 +339,7 @@ namespace Yusen.GExplorer {
             this.tsbStop});
 			this.tsStandard.Location = new System.Drawing.Point(0, 24);
 			this.tsStandard.Name = "tsStandard";
-			this.tsStandard.Size = new System.Drawing.Size(178, 25);
+			this.tsStandard.Size = new System.Drawing.Size(147, 25);
 			this.tsStandard.TabIndex = 3;
 			this.tsStandard.Text = "標準バー";
 			// 
@@ -348,11 +375,11 @@ namespace Yusen.GExplorer {
 			this.tsAddress.Dock = System.Windows.Forms.DockStyle.None;
 			this.tsAddress.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tslAddress,
-            this.tstbAddress,
+            this.tscbAddress,
             this.tsbGo});
-			this.tsAddress.Location = new System.Drawing.Point(178, 24);
+			this.tsAddress.Location = new System.Drawing.Point(147, 24);
 			this.tsAddress.Name = "tsAddress";
-			this.tsAddress.Size = new System.Drawing.Size(553, 25);
+			this.tsAddress.Size = new System.Drawing.Size(570, 25);
 			this.tsAddress.TabIndex = 1;
 			this.tsAddress.Text = "アドレスバー";
 			// 
@@ -361,13 +388,16 @@ namespace Yusen.GExplorer {
 			this.tslAddress.Name = "tslAddress";
 			this.tslAddress.Text = "アドレス (&D)";
 			// 
-			// tstbAddress
+			// tscbAddress
 			// 
-			this.tstbAddress.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.ImageAndText;
-			this.tstbAddress.Name = "tstbAddress";
-			this.tstbAddress.Size = new System.Drawing.Size(400, 25);
-			this.tstbAddress.Text = "tstbAddress";
-			this.tstbAddress.Enter += new System.EventHandler(this.tstbAddress_Enter);
+			this.tscbAddress.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
+			this.tscbAddress.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.AllUrl;
+			this.tscbAddress.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.ImageAndText;
+			this.tscbAddress.Name = "tscbAddress";
+			this.tscbAddress.Size = new System.Drawing.Size(400, 25);
+			this.tscbAddress.Text = "tscbAddress";
+			this.tscbAddress.SelectedIndexChanged += new System.EventHandler(this.GoToAddressBarUri);
+			this.tscbAddress.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tscbAddress_KeyDown);
 			// 
 			// tsbGo
 			// 
@@ -375,7 +405,7 @@ namespace Yusen.GExplorer {
 			this.tsbGo.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tsbGo.Name = "tsbGo";
 			this.tsbGo.Text = "移動 (&G)";
-			this.tsbGo.Click += new System.EventHandler(this.tsbGo_Click);
+			this.tsbGo.Click += new System.EventHandler(this.GoToAddressBarUri);
 			// 
 			// cmsContent
 			// 
@@ -387,13 +417,15 @@ namespace Yusen.GExplorer {
             this.toolStripSeparator1,
             this.tsmiContentPlayGPlayer,
             this.tsmiContentPlayWmp,
-            this.tmsiContentPlayIe,
+            this.tsmiContentPlayIe,
             this.toolStripSeparator2,
-            this.tsmiContentCommands});
+            this.tsmiContentCommands,
+            this.toolStripSeparator8,
+            this.tsmiContentProperty});
 			this.cmsContent.Location = new System.Drawing.Point(25, 66);
 			this.cmsContent.Name = "cmsContent";
 			this.cmsContent.RightToLeft = System.Windows.Forms.RightToLeft.No;
-			this.cmsContent.Size = new System.Drawing.Size(187, 148);
+			this.cmsContent.Size = new System.Drawing.Size(189, 176);
 			// 
 			// tsmiContentOpenDetail
 			// 
@@ -423,11 +455,11 @@ namespace Yusen.GExplorer {
 			this.tsmiContentPlayWmp.Text = "WMPで再生 (&W)";
 			this.tsmiContentPlayWmp.Click += new System.EventHandler(this.tsmiContentPlayWmp_Click);
 			// 
-			// tmsiContentPlayIe
+			// tsmiContentPlayIe
 			// 
-			this.tmsiContentPlayIe.Name = "tmsiContentPlayIe";
-			this.tmsiContentPlayIe.Text = "IEで再生 (&I)";
-			this.tmsiContentPlayIe.Click += new System.EventHandler(this.tmsiContentPlayIe_Click);
+			this.tsmiContentPlayIe.Name = "tsmiContentPlayIe";
+			this.tsmiContentPlayIe.Text = "IEで再生 (&I)";
+			this.tsmiContentPlayIe.Click += new System.EventHandler(this.tsmiContentPlayIe_Click);
 			// 
 			// toolStripSeparator2
 			// 
@@ -437,6 +469,16 @@ namespace Yusen.GExplorer {
 			// 
 			this.tsmiContentCommands.Name = "tsmiContentCommands";
 			this.tsmiContentCommands.Text = "外部コマンド (&C)";
+			// 
+			// toolStripSeparator8
+			// 
+			this.toolStripSeparator8.Name = "toolStripSeparator8";
+			// 
+			// tsmiContentProperty
+			// 
+			this.tsmiContentProperty.Name = "tsmiContentProperty";
+			this.tsmiContentProperty.Text = "コンテンツのプロパティ (&R)";
+			this.tsmiContentProperty.Click += new System.EventHandler(this.tsmiContentProperty_Click);
 			// 
 			// cmsPackage
 			// 
@@ -454,16 +496,6 @@ namespace Yusen.GExplorer {
 			this.tsmiPackageOpen.Name = "tsmiPackageOpen";
 			this.tsmiPackageOpen.Text = "パッケージページを開く (&O)";
 			this.tsmiPackageOpen.Click += new System.EventHandler(this.tsmiPackageOpen_Click);
-			// 
-			// toolStripSeparator7
-			// 
-			this.toolStripSeparator7.Name = "toolStripSeparator7";
-			// 
-			// tsmiTestScrolBars
-			// 
-			this.tsmiTestScrolBars.Name = "tsmiTestScrolBars";
-			this.tsmiTestScrolBars.Text = "スクロールバーの表示非表示のトグル (&B)";
-			this.tsmiTestScrolBars.Click += new System.EventHandler(this.tsmiTestScrolBars_Click);
 			// 
 			// BrowserForm
 			// 
@@ -485,7 +517,6 @@ namespace Yusen.GExplorer {
 			this.statusStrip1.ResumeLayout(false);
 			this.tsStandard.ResumeLayout(false);
 			this.tsAddress.ResumeLayout(false);
-			this.tsAddress.PerformLayout();
 			this.cmsContent.ResumeLayout(false);
 			this.cmsPackage.ResumeLayout(false);
 			this.ResumeLayout(false);
@@ -499,7 +530,6 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ToolStripContainer toolStripContainer1;
 		private System.Windows.Forms.ToolStrip tsAddress;
 		private System.Windows.Forms.ToolStripLabel tslAddress;
-		private System.Windows.Forms.ToolStripTextBox tstbAddress;
 		private System.Windows.Forms.WebBrowser wbMain;
 		private System.Windows.Forms.ToolStrip tsStandard;
 		private System.Windows.Forms.ToolStripButton tsbBack;
@@ -516,7 +546,7 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ToolStripMenuItem tsmiGenres;
 		private System.Windows.Forms.ToolStripMenuItem tsmiContentPlayGPlayer;
 		private System.Windows.Forms.ToolStripMenuItem tsmiContentPlayWmp;
-		private System.Windows.Forms.ToolStripMenuItem tmsiContentPlayIe;
+		private System.Windows.Forms.ToolStripMenuItem tsmiContentPlayIe;
 		private System.Windows.Forms.ToolStripMenuItem tsmiContentOpenPlayPage;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
@@ -524,10 +554,10 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ToolStripButton tsbStop;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
 		private System.Windows.Forms.ToolStripMenuItem tsmiOpenTop;
-		private System.Windows.Forms.ToolStripMenuItem tsmiProperty;
+		private System.Windows.Forms.ToolStripMenuItem tsmiPageProperty;
 		private System.Windows.Forms.ToolStripMenuItem tsmiPrint;
 		private System.Windows.Forms.ToolStripMenuItem tsmiPageSetup;
-		private System.Windows.Forms.ToolStripMenuItem tmsiPrintPreview;
+		private System.Windows.Forms.ToolStripMenuItem tsmiPrintPreview;
 		private System.Windows.Forms.ToolStripMenuItem tsmiSaveAs;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
 		private System.Windows.Forms.ToolStripMenuItem tsmiTest;
@@ -542,5 +572,10 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ToolStripMenuItem tsmiTestStrechToFit;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
 		private System.Windows.Forms.ToolStripMenuItem tsmiTestScrolBars;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator8;
+		private System.Windows.Forms.ToolStripMenuItem tsmiContentProperty;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator9;
+		private System.Windows.Forms.ToolStripMenuItem tsmiTestCampaign;
+		private System.Windows.Forms.ToolStripComboBox tscbAddress;
 	}
 }

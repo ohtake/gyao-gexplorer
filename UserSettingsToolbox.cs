@@ -6,7 +6,7 @@ namespace Yusen.GExplorer {
 		private static UserSettingsToolbox instance = null;
 		public static UserSettingsToolbox Instance {
 			get {
-				if(null == UserSettingsToolbox.instance || !UserSettingsToolbox.instance.CanFocus) {
+				if(null == UserSettingsToolbox.instance || UserSettingsToolbox.instance.IsDisposed) {
 					UserSettingsToolbox.instance = new UserSettingsToolbox();
 				}
 				return UserSettingsToolbox.instance;

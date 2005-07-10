@@ -43,7 +43,10 @@ namespace Yusen.GExplorer {
 			this.tsmiLvView = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiFullRowSelect = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiMultiSelect = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiTool = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiWindow = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiPlayer = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiBrowser = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiUserSettings = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiContentProperty = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiEditCommands = new System.Windows.Forms.ToolStripMenuItem();
@@ -100,7 +103,7 @@ namespace Yusen.GExplorer {
 			// tableLayoutPanel1
 			// 
 			this.tableLayoutPanel1.ColumnCount = 1;
-			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
 			this.tableLayoutPanel1.Controls.Add(this.glvMain, 0, 1);
 			this.tableLayoutPanel1.Controls.Add(this.tabGenre, 0, 0);
 			this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -161,7 +164,7 @@ namespace Yusen.GExplorer {
             this.tsmiFile,
             this.tsmiUneploeableGenres,
             this.tsmiListView,
-            this.tsmiTool});
+            this.tsmiWindow});
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
 			this.menuStrip1.Size = new System.Drawing.Size(592, 24);
@@ -210,7 +213,7 @@ namespace Yusen.GExplorer {
 			// tsmiAboneType
 			// 
 			this.tsmiAboneType.Name = "tsmiAboneType";
-			this.tsmiAboneType.Text = "あぼーん方法 (&A)";
+			this.tsmiAboneType.Text = "あぼ～ん方法 (&A)";
 			// 
 			// tsmiLvView
 			// 
@@ -231,15 +234,32 @@ namespace Yusen.GExplorer {
 			this.tsmiMultiSelect.Name = "tsmiMultiSelect";
 			this.tsmiMultiSelect.Text = "複数項目の選択可能 (&M)";
 			// 
-			// tsmiTool
+			// tsmiWindow
 			// 
-			this.tsmiTool.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+			this.tsmiWindow.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiPlayer,
+            this.tsmiBrowser,
+            this.toolStripSeparator2,
             this.tsmiUserSettings,
             this.tsmiContentProperty,
             this.tsmiEditCommands,
             this.tsmiNgPackageEditor});
-			this.tsmiTool.Name = "tsmiTool";
-			this.tsmiTool.Text = "ツール (&T)";
+			this.tsmiWindow.Name = "tsmiWindow";
+			this.tsmiWindow.Text = "ウィンドウ (&W)";
+			// 
+			// tsmiPlayer
+			// 
+			this.tsmiPlayer.Name = "tsmiPlayer";
+			this.tsmiPlayer.Text = "プレーヤ (&P)";
+			// 
+			// tsmiBrowser
+			// 
+			this.tsmiBrowser.Name = "tsmiBrowser";
+			this.tsmiBrowser.Text = "ブラウザ (&B)";
+			// 
+			// toolStripSeparator2
+			// 
+			this.toolStripSeparator2.Name = "toolStripSeparator2";
 			// 
 			// tsmiUserSettings
 			// 
@@ -294,7 +314,7 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ToolStripMenuItem tsmiFile;
 		private System.Windows.Forms.ToolStripMenuItem tsmiQuit;
 		private System.Windows.Forms.ToolStripProgressBar tspbPackages;
-		private System.Windows.Forms.ToolStripMenuItem tsmiTool;
+		private System.Windows.Forms.ToolStripMenuItem tsmiWindow;
 		private System.Windows.Forms.ToolStripMenuItem tsmiUserSettings;
 		private System.Windows.Forms.ToolStripMenuItem tsmiEditCommands;
 		private System.Windows.Forms.ToolStripMenuItem tsmiContentProperty;
@@ -312,6 +332,9 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ToolStripMenuItem tsmiNgPackageEditor;
 		private System.Windows.Forms.ToolStripMenuItem tsmiAboneType;
 		private System.Windows.Forms.ToolStripMenuItem tsmiUneploeableGenres;
+		private System.Windows.Forms.ToolStripMenuItem tsmiPlayer;
+		private System.Windows.Forms.ToolStripMenuItem tsmiBrowser;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
 	}
 }
 

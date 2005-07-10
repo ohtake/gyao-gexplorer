@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections;
-using System.Text;
 using System.Xml.Serialization;
 using System.IO;
 
@@ -13,7 +12,7 @@ namespace Yusen.GExplorer {
 			this.items = new List<T>();
 		}
 		
-		public void Deserialize() {
+		public void DeserializeItems() {
 			TextReader tr = null;
 			try {
 				XmlSerializer xs = new XmlSerializer(typeof(List<T>));
@@ -30,7 +29,7 @@ namespace Yusen.GExplorer {
 				this.OnChanged();
 			}
 		}
-		public void Serialize() {
+		public void SerializeItems() {
 			TextWriter tw = null;
 			try {
 				XmlSerializer xs = new XmlSerializer(typeof(List<T>));

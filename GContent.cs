@@ -124,7 +124,7 @@ namespace Yusen.GExplorer{
 		/// <summary>2005-07ではあるがアニメはパッケージのIDが取得できるっぽい</summary>
 		sealed class GGenre200507Anime : GGenre200507 {
 			private static readonly Regex regexTtl =
-				new Regex(@"<img src=""images/ttl_([a-z]+)\.gif"" alt=""(.+?)""", RegexOptions.Compiled | RegexOptions.Singleline);
+				new Regex(@"<img src=""images/ttl_([a-z]+(?:_on)?)\.gif"" alt=""(.+?)""", RegexOptions.Compiled | RegexOptions.Singleline);
 			private static readonly Regex regexWeeklyPackage = 
 				new Regex(@"<img src=""http://www.gyao.jp/img/info/anime/pac([0-9]+)_m\.jpg"" alt=""(.+?)""", RegexOptions.Compiled | RegexOptions.Singleline);
 			private static readonly Regex regexRePackName =
@@ -706,7 +706,7 @@ namespace Yusen.GExplorer{
 				return new Uri("http://www.gyao.jp/sityou/asx.php?"
 					+ "contentsId=" + this.ContentId
 					+ "&userNo=" + UserSettings.Instance.GyaoUserNo.ToString()
-					+ "rateId=" + UserSettings.Instance.GyaoBitRateId);
+					+ "&rateId=" + UserSettings.Instance.GyaoBitRateId);
 			}
 		}
 		[Category("URI")]

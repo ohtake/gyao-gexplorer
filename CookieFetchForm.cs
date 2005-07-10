@@ -4,6 +4,10 @@ using System.Windows.Forms;
 using System.Text.RegularExpressions;
 
 namespace Yusen.GExplorer {
+	/// <summary>
+	/// GyaOでのユーザ情報を取得するためだけに存在するフォーム．
+	/// IE経由で www.gyao.jp にアクセスすることでクッキーを読む．
+	/// </summary>
 	partial class CookieFetchForm : Form {
 		private static readonly Regex regexUserNo = new Regex(@"Cookie_UserId=([0-9]+)", RegexOptions.Singleline);
 #if COOKIE
@@ -32,6 +36,7 @@ namespace Yusen.GExplorer {
 #else
 				if(matchUserNo.Success) {
 #endif
+					UserSettings.Instance.GyaoCookieTime = DateTime.Now;
 					UserSettings.Instance.GyaoUserNo = int.Parse(matchUserNo.Groups[1].Value);
 #if COOKIE
 					UserSettings.Instance.GyaoCookieId = int.Parse(matchCookieId.Groups[1].Value);

@@ -4,6 +4,7 @@ using System.Text;
 using System.Reflection;
 
 namespace Yusen.GExplorer {
+	/// <summary>2つの<see cref="string"/>を比較して真偽値を返すメソッドの名称．</summary>
 	public enum TwoStringsPredicateMethod {
 		Equals,
 		Contains,
@@ -11,6 +12,7 @@ namespace Yusen.GExplorer {
 		EndsWith,
 	}
 	
+	/// <summary>NGパッケージ．<see cref="GPackage"/>に対してNGの判定を行う．</summary>
 	public class NgPackage {
 		private string comment;
 		private string propertyName;
@@ -29,30 +31,39 @@ namespace Yusen.GExplorer {
 			this.created = DateTime.Now;
 			this.lastAbone = DateTime.MinValue;
 		}
+		/// <summary>コメント．意味なし．</summary>
 		public string Comment {
 			get { return this.comment; }
 			set { this.comment = value; }
 		}
+		/// <summary>NG処理で主語となる<see cref="GPackage"/>のプロパティ名．</summary>
 		public string PropertyName {
 			get { return this.propertyName; }
 			set { this.propertyName = value; }
 		}
+		/// <summary>NG処理で述語となる<see cref="string"/>のメソッド名．</summary>
 		public TwoStringsPredicateMethod Method {
 			get { return this.method; }
 			set { this.method = value; }
 		}
+		/// <summary>NG処理で目的語となるNGワード．</summary>
 		public string Word {
 			get { return this.word; }
 			set { this.word = value; }
 		}
+		/// <summary>NGパッケージの作成日時．</summary>
 		public DateTime Created {
 			get { return this.created; }
 			set { this.created = value; }
 		}
+		/// <summary>最終NG日時．</summary>
 		public DateTime LastAbone {
 			get { return this.lastAbone; }
 			set { this.lastAbone = value; }
 		}
+		/// <summary>NGか否かを判定する．NGであった場合には<see cref="LastAbone"/>が更新される．</summary>
+		/// <param name="p">判定対象の<see cref="GPackage"/>．</param>
+		/// <returns>NGであったらtrueが返る．</returns>
 		internal bool IsNgPackage(GPackage p) {
 			try {
 				PropertyInfo pi = typeof(GPackage).GetProperty(this.propertyName);
