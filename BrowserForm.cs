@@ -84,7 +84,6 @@ namespace Yusen.GExplorer {
 
 			this.tscbAddress.ComboBox.KeyDown += this.tscbAddress_KeyDown;
 		}
-
 		public Uri DocumentUri {
 			get {
 				return this.wbMain.Url;
@@ -352,6 +351,5 @@ namespace Yusen.GExplorer {
 			this.wbMain.Document.InvokeScript("gotoCampaign");
 		}
 		#endregion
-
 	}
 }

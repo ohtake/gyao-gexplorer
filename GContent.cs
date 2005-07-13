@@ -105,7 +105,6 @@ namespace Yusen.GExplorer{
 			public GGenre200507(int keyNo, string name, string dir)
 				: base(keyNo, name, dir) {
 			}
-
 			public override Uri GenreTopPageUri {
 				get {
 					return new Uri("http://www.gyao.jp/" + base.DirectoryName + "/");
@@ -116,7 +115,6 @@ namespace Yusen.GExplorer{
 					return false;
 				}
 			}
-
 			public override IEnumerable<GPackage> FetchPackages() {
 				throw new Exception("The method or operation is not implemented.");
 			}
@@ -199,8 +197,8 @@ namespace Yusen.GExplorer{
 				new GGenre200505(15, "ライフ", "life"),
 				new GGenre200505( 9, "スポーツ", "sports"),
 				new GGenre200505(16, "ビジネス", "business"),
-				new GGenre200505( 7, "ニュース", "news"),
-				new GGenre200505(12, "映像ブログ", "videoblog"),
+				new GGenre200507( 7, "ニュース", "news"),
+				new GGenre200507(12, "映像ブログ", "videoblog"),
 			};
 		
 		public static IEnumerable<GGenre> AllGenres {
@@ -693,7 +691,9 @@ namespace Yusen.GExplorer{
 		[Description("正規にIEで再生する場合のページのURI．")]
 		public Uri PlayerPageUri {
 			get {
-				return new Uri("http://www.gyao.jp/sityou/movie/"
+				return new Uri(
+					//"http://www.gyao.jp/sityou/movie/"
+					"http://www.gyao.jp/login/judge_cookie/"
 					+ "contentsId/" + this.ContentId + "/"
 					+ "rateId/" + UserSettings.Instance.GyaoBitRateId + "/"
 					+ "login_from/shityou/");

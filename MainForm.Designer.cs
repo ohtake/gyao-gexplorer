@@ -52,6 +52,7 @@ namespace Yusen.GExplorer {
 			this.tsmiEditCommands = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiNgPackageEditor = new System.Windows.Forms.ToolStripMenuItem();
 			this.statstripMain.SuspendLayout();
+			this.toolStripContainer1.BottomToolStripPanel.SuspendLayout();
 			this.toolStripContainer1.ContentPanel.SuspendLayout();
 			this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
 			this.toolStripContainer1.SuspendLayout();
@@ -62,20 +63,23 @@ namespace Yusen.GExplorer {
 			// 
 			// statstripMain
 			// 
+			this.statstripMain.AllowItemReorder = true;
+			this.statstripMain.Dock = System.Windows.Forms.DockStyle.None;
 			this.statstripMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tspbPackages,
             this.tsslCategoryStat});
 			this.statstripMain.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Table;
-			this.statstripMain.Location = new System.Drawing.Point(0, 393);
+			this.statstripMain.Location = new System.Drawing.Point(0, 0);
 			this.statstripMain.Name = "statstripMain";
-			this.statstripMain.Size = new System.Drawing.Size(592, 23);
+			this.statstripMain.RenderMode = System.Windows.Forms.ToolStripRenderMode.ManagerRenderMode;
+			this.statstripMain.Size = new System.Drawing.Size(588, 22);
 			this.statstripMain.TabIndex = 4;
 			// 
 			// tspbPackages
 			// 
 			this.tspbPackages.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.ImageAndText;
 			this.tspbPackages.Name = "tspbPackages";
-			this.tspbPackages.Size = new System.Drawing.Size(100, 16);
+			this.tspbPackages.Size = new System.Drawing.Size(100, 15);
 			this.tspbPackages.Text = "toolStripProgressBar1";
 			// 
 			// tsslCategoryStat
@@ -86,13 +90,17 @@ namespace Yusen.GExplorer {
 			// toolStripContainer1
 			// 
 			// 
+			// toolStripContainer1.BottomToolStripPanel
+			// 
+			this.toolStripContainer1.BottomToolStripPanel.Controls.Add(this.statstripMain);
+			// 
 			// toolStripContainer1.ContentPanel
 			// 
 			this.toolStripContainer1.ContentPanel.Controls.Add(this.tableLayoutPanel1);
 			this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.toolStripContainer1.Location = new System.Drawing.Point(0, 0);
 			this.toolStripContainer1.Name = "toolStripContainer1";
-			this.toolStripContainer1.Size = new System.Drawing.Size(592, 393);
+			this.toolStripContainer1.Size = new System.Drawing.Size(588, 412);
 			this.toolStripContainer1.TabIndex = 5;
 			this.toolStripContainer1.Text = "toolStripContainer1";
 			// 
@@ -102,6 +110,7 @@ namespace Yusen.GExplorer {
 			// 
 			// tableLayoutPanel1
 			// 
+			this.tableLayoutPanel1.BackColor = System.Drawing.Color.Transparent;
 			this.tableLayoutPanel1.ColumnCount = 1;
 			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
 			this.tableLayoutPanel1.Controls.Add(this.glvMain, 0, 1);
@@ -112,7 +121,7 @@ namespace Yusen.GExplorer {
 			this.tableLayoutPanel1.RowCount = 2;
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-			this.tableLayoutPanel1.Size = new System.Drawing.Size(592, 369);
+			this.tableLayoutPanel1.Size = new System.Drawing.Size(588, 366);
 			this.tableLayoutPanel1.TabIndex = 1;
 			// 
 			// glvMain
@@ -123,7 +132,7 @@ namespace Yusen.GExplorer {
 			this.glvMain.Location = new System.Drawing.Point(0, 20);
 			this.glvMain.Margin = new System.Windows.Forms.Padding(0);
 			this.glvMain.Name = "glvMain";
-			this.glvMain.Size = new System.Drawing.Size(592, 349);
+			this.glvMain.Size = new System.Drawing.Size(588, 346);
 			this.glvMain.TabIndex = 0;
 			// 
 			// tabGenre
@@ -135,7 +144,7 @@ namespace Yusen.GExplorer {
 			this.tabGenre.Margin = new System.Windows.Forms.Padding(0);
 			this.tabGenre.Name = "tabGenre";
 			this.tabGenre.SelectedIndex = 0;
-			this.tabGenre.Size = new System.Drawing.Size(592, 20);
+			this.tabGenre.Size = new System.Drawing.Size(588, 20);
 			this.tabGenre.TabIndex = 1;
 			// 
 			// tabPage1
@@ -143,7 +152,7 @@ namespace Yusen.GExplorer {
 			this.tabPage1.Location = new System.Drawing.Point(4, 21);
 			this.tabPage1.Name = "tabPage1";
 			this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage1.Size = new System.Drawing.Size(584, 0);
+			this.tabPage1.Size = new System.Drawing.Size(580, 0);
 			this.tabPage1.TabIndex = 0;
 			this.tabPage1.Text = "tabPage1";
 			// 
@@ -152,12 +161,13 @@ namespace Yusen.GExplorer {
 			this.tabPage2.Location = new System.Drawing.Point(4, 21);
 			this.tabPage2.Name = "tabPage2";
 			this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage2.Size = new System.Drawing.Size(584, 0);
+			this.tabPage2.Size = new System.Drawing.Size(580, 0);
 			this.tabPage2.TabIndex = 1;
 			this.tabPage2.Text = "tabPage2";
 			// 
 			// menuStrip1
 			// 
+			this.menuStrip1.AllowItemReorder = true;
 			this.menuStrip1.Dock = System.Windows.Forms.DockStyle.None;
 			this.menuStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Visible;
 			this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -167,7 +177,7 @@ namespace Yusen.GExplorer {
             this.tsmiWindow});
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
-			this.menuStrip1.Size = new System.Drawing.Size(592, 24);
+			this.menuStrip1.Size = new System.Drawing.Size(588, 24);
 			this.menuStrip1.TabIndex = 0;
 			this.menuStrip1.Text = "menuStrip1";
 			// 
@@ -285,13 +295,14 @@ namespace Yusen.GExplorer {
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(592, 416);
+			this.ClientSize = new System.Drawing.Size(588, 412);
 			this.Controls.Add(this.toolStripContainer1);
-			this.Controls.Add(this.statstripMain);
 			this.MainMenuStrip = this.menuStrip1;
 			this.Name = "MainForm";
 			this.Text = "MainForm";
 			this.statstripMain.ResumeLayout(false);
+			this.toolStripContainer1.BottomToolStripPanel.ResumeLayout(false);
+			this.toolStripContainer1.BottomToolStripPanel.PerformLayout();
 			this.toolStripContainer1.ContentPanel.ResumeLayout(false);
 			this.toolStripContainer1.TopToolStripPanel.ResumeLayout(false);
 			this.toolStripContainer1.TopToolStripPanel.PerformLayout();
@@ -301,7 +312,6 @@ namespace Yusen.GExplorer {
 			this.tabGenre.ResumeLayout(false);
 			this.menuStrip1.ResumeLayout(false);
 			this.ResumeLayout(false);
-			this.PerformLayout();
 
 		}
 
@@ -328,13 +338,13 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ToolStripMenuItem tsmiMultiSelect;
 		private System.Windows.Forms.ToolStripMenuItem tsmiGyaoTop;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-		private GenreListView glvMain;
 		private System.Windows.Forms.ToolStripMenuItem tsmiNgPackageEditor;
 		private System.Windows.Forms.ToolStripMenuItem tsmiAboneType;
 		private System.Windows.Forms.ToolStripMenuItem tsmiUneploeableGenres;
 		private System.Windows.Forms.ToolStripMenuItem tsmiPlayer;
 		private System.Windows.Forms.ToolStripMenuItem tsmiBrowser;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+		private GenreListView glvMain;
 	}
 }
 

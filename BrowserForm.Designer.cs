@@ -91,6 +91,7 @@ namespace Yusen.GExplorer {
 			// 
 			// menuStrip1
 			// 
+			this.menuStrip1.AllowItemReorder = true;
 			this.menuStrip1.Dock = System.Windows.Forms.DockStyle.None;
 			this.menuStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Visible;
 			this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -99,7 +100,7 @@ namespace Yusen.GExplorer {
             this.tsmiTest});
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
-			this.menuStrip1.Size = new System.Drawing.Size(731, 24);
+			this.menuStrip1.Size = new System.Drawing.Size(777, 24);
 			this.menuStrip1.TabIndex = 0;
 			this.menuStrip1.Text = "menuStrip1";
 			// 
@@ -279,7 +280,7 @@ namespace Yusen.GExplorer {
 			this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.toolStripContainer1.Location = new System.Drawing.Point(0, 0);
 			this.toolStripContainer1.Name = "toolStripContainer1";
-			this.toolStripContainer1.Size = new System.Drawing.Size(731, 415);
+			this.toolStripContainer1.Size = new System.Drawing.Size(777, 415);
 			this.toolStripContainer1.TabIndex = 1;
 			this.toolStripContainer1.Text = "toolStripContainer1";
 			// 
@@ -291,6 +292,7 @@ namespace Yusen.GExplorer {
 			// 
 			// statusStrip1
 			// 
+			this.statusStrip1.AllowItemReorder = true;
 			this.statusStrip1.Dock = System.Windows.Forms.DockStyle.None;
 			this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripProgressBar1,
@@ -298,7 +300,8 @@ namespace Yusen.GExplorer {
 			this.statusStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Table;
 			this.statusStrip1.Location = new System.Drawing.Point(0, 0);
 			this.statusStrip1.Name = "statusStrip1";
-			this.statusStrip1.Size = new System.Drawing.Size(731, 23);
+			this.statusStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.ManagerRenderMode;
+			this.statusStrip1.Size = new System.Drawing.Size(777, 23);
 			this.statusStrip1.TabIndex = 1;
 			this.statusStrip1.Text = "statusStrip1";
 			// 
@@ -319,7 +322,7 @@ namespace Yusen.GExplorer {
 			this.wbMain.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.wbMain.Location = new System.Drawing.Point(0, 0);
 			this.wbMain.Name = "wbMain";
-			this.wbMain.Size = new System.Drawing.Size(731, 343);
+			this.wbMain.Size = new System.Drawing.Size(777, 343);
 			this.wbMain.Url = new System.Uri("about:blank", System.UriKind.Absolute);
 			this.wbMain.DocumentTitleChanged += new System.EventHandler(this.wbMain_DocumentTitleChanged);
 			this.wbMain.CanGoForwardChanged += new System.EventHandler(this.wbMain_CanGoForwardChanged);
@@ -332,6 +335,7 @@ namespace Yusen.GExplorer {
 			// 
 			// tsStandard
 			// 
+			this.tsStandard.AllowItemReorder = true;
 			this.tsStandard.Dock = System.Windows.Forms.DockStyle.None;
 			this.tsStandard.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsbBack,
@@ -372,6 +376,7 @@ namespace Yusen.GExplorer {
 			// 
 			// tsAddress
 			// 
+			this.tsAddress.AllowItemReorder = true;
 			this.tsAddress.Dock = System.Windows.Forms.DockStyle.None;
 			this.tsAddress.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tslAddress,
@@ -379,7 +384,7 @@ namespace Yusen.GExplorer {
             this.tsbGo});
 			this.tsAddress.Location = new System.Drawing.Point(147, 24);
 			this.tsAddress.Name = "tsAddress";
-			this.tsAddress.Size = new System.Drawing.Size(570, 25);
+			this.tsAddress.Size = new System.Drawing.Size(589, 25);
 			this.tsAddress.TabIndex = 1;
 			this.tsAddress.Text = "アドレスバー";
 			// 
@@ -394,7 +399,7 @@ namespace Yusen.GExplorer {
 			this.tscbAddress.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.AllUrl;
 			this.tscbAddress.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.ImageAndText;
 			this.tscbAddress.Name = "tscbAddress";
-			this.tscbAddress.Size = new System.Drawing.Size(400, 25);
+			this.tscbAddress.Size = new System.Drawing.Size(450, 25);
 			this.tscbAddress.Text = "tscbAddress";
 			this.tscbAddress.SelectedIndexChanged += new System.EventHandler(this.GoToAddressBarUri);
 			this.tscbAddress.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tscbAddress_KeyDown);
@@ -501,7 +506,7 @@ namespace Yusen.GExplorer {
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(731, 415);
+			this.ClientSize = new System.Drawing.Size(777, 415);
 			this.Controls.Add(this.toolStripContainer1);
 			this.MainMenuStrip = this.menuStrip1;
 			this.Name = "BrowserForm";

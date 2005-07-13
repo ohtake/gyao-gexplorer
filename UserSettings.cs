@@ -25,8 +25,8 @@ namespace Yusen.GExplorer {
 	
 	/// <summary>ビットレート</summary>
 	public enum GBitRate {
-		High = 2,
-		Low = 1,
+		SuperFine = 2,
+		Standard = 1,
 	}
 	/// <summary>あぼーんの方法．各メンバ名の由来はJaneViewより．</summary>
 	public enum AboneType {
@@ -146,7 +146,7 @@ namespace Yusen.GExplorer {
 		private long gyaoSessionIdHigh = 0;
 		private long gyaoSessionIdLow = 0;
 #endif
-		private GBitRate gyaoBitRate = GBitRate.High;
+		private GBitRate gyaoBitRate = GBitRate.SuperFine;
 		private bool gyaoEnableConcurrentFetch = true;
 		[Category("GyaOとの通信")]
 		[DisplayName("Cookie_UserId")]
@@ -225,7 +225,7 @@ namespace Yusen.GExplorer {
 		[Category("GyaOとの通信")]
 		[DisplayName("ビットレート")]
 		[Description("再生する動画のビットレート．専用プレーヤだけでなくWMPでの再生もこの設定の影響を受けます．")]
-		[DefaultValue(GBitRate.High)]
+		[DefaultValue(GBitRate.SuperFine)]
 		public GBitRate GyaoBitRate {
 			get {
 				return this.gyaoBitRate;
