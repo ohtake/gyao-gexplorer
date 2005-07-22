@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Windows.Forms;
 using System.Drawing;
 using CultureInfo = System.Globalization.CultureInfo;
+using System.Reflection;
 
 namespace Yusen.GExplorer {
 	/// <summary><see cref="UserSettings"/>をルートとする木構造での子孫ノード．</summary>
@@ -214,23 +215,23 @@ namespace Yusen.GExplorer {
 				set { this.aboneType = value; }
 			}
 			internal void StoreSettings(GenreListView glv) {
-				this.MultiSelect = glv.ListView.MultiSelect;
-				this.FullRowSelect = glv.ListView.FullRowSelect;
-				this.View = glv.ListView.View;
-				this.ColWidthId = glv.ListView.Columns[0].Width;
-				this.ColWidthLimit = glv.ListView.Columns[1].Width;
-				this.WidthEpisode = glv.ListView.Columns[2].Width;
-				this.ColWidthLead = glv.ListView.Columns[3].Width;
+				this.MultiSelect = glv.MultiSelect;
+				this.FullRowSelect = glv.FullRowSelect;
+				this.View = glv.View;
+				this.ColWidthId = glv.ColWidthId;
+				this.ColWidthLimit = glv.ColWidthLimit;
+				this.WidthEpisode = glv.ColWidthEpisode;
+				this.ColWidthLead = glv.ColWidthLead;
 				this.AboneType = glv.AboneType;
 			}
 			internal void ApplySettings(GenreListView glv) {
-				if(glv.ListView.MultiSelect != this.MultiSelect) glv.ListView.MultiSelect = this.MultiSelect;
-				if(glv.ListView.FullRowSelect != this.FullRowSelect) glv.ListView.FullRowSelect = this.FullRowSelect;
-				if(glv.ListView.View != this.View) glv.ListView.View = this.View;
-				if(glv.ListView.Columns[0].Width != this.ColWidthId) glv.ListView.Columns[0].Width = this.ColWidthId;
-				if(glv.ListView.Columns[1].Width != this.ColWidthLimit) glv.ListView.Columns[1].Width = this.ColWidthLimit;
-				if(glv.ListView.Columns[2].Width != this.WidthEpisode) glv.ListView.Columns[2].Width = this.WidthEpisode;
-				if(glv.ListView.Columns[3].Width != this.ColWidthLead) glv.ListView.Columns[3].Width = this.ColWidthLead;
+				if(glv.MultiSelect != this.MultiSelect) glv.MultiSelect = this.MultiSelect;
+				if(glv.FullRowSelect != this.FullRowSelect) glv.FullRowSelect = this.FullRowSelect;
+				if(glv.View != this.View) glv.View = this.View;
+				if(glv.ColWidthId != this.ColWidthId) glv.ColWidthId = this.ColWidthId;
+				if(glv.ColWidthLimit!= this.ColWidthLimit) glv.ColWidthLimit = this.ColWidthLimit;
+				if(glv.ColWidthEpisode != this.WidthEpisode) glv.ColWidthEpisode = this.WidthEpisode;
+				if(glv.ColWidthLead != this.ColWidthLead) glv.ColWidthLead = this.ColWidthLead;
 				if(glv.AboneType != this.AboneType) glv.AboneType = this.AboneType;
 			}
 		}

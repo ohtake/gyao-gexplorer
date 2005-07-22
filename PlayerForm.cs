@@ -20,7 +20,7 @@ namespace Yusen.GExplorer {
 			PlayerForm.Instance.Focus();
 			PlayerForm.Instance.Content = content;
 		}
-
+		
 		private GContent content = null;
 		
 		private PlayerForm() {
@@ -156,7 +156,6 @@ namespace Yusen.GExplorer {
 				}
 				UserSettings.Instance.PlayerForm.ChangeCompleted -= this.LoadSettings;
 			};
-			
 		}
 		
 		public GContent Content {

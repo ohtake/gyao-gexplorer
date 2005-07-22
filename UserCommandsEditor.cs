@@ -159,9 +159,9 @@ namespace Yusen.GExplorer {
 		}
 
 		private void GenerateArgumentHelperMenu() {
-			this.GenerateArgumentHelperMenuHelper(this.tsmiGenre, typeof(GGenre), 'g');
-			this.GenerateArgumentHelperMenuHelper(this.tsmiPackage, typeof(GPackage), 'p');
 			this.GenerateArgumentHelperMenuHelper(this.tsmiContent, typeof(GContent), 'c');
+			this.GenerateArgumentHelperMenuHelper(this.tsmiPackage, typeof(GPackage), 'p');
+			this.GenerateArgumentHelperMenuHelper(this.tsmiGenre, typeof(GGenre), 'g');
 		}
 		private void GenerateArgumentHelperMenuHelper(ToolStripMenuItem tsmi, Type type, char prefix) {
 			foreach(PropertyInfo pi in type.GetProperties(BindingFlags.Instance | BindingFlags.GetProperty | BindingFlags.Public)) {
@@ -178,10 +178,11 @@ namespace Yusen.GExplorer {
 		}
 
 		void AppendArgWithMenuItemText(object sender, EventArgs e) {
+			string labelName = (sender as ToolStripMenuItem).Text;
 			if("" == this.txtArg.Text || this.txtArg.Text.EndsWith(" ")) {
-				this.txtArg.Text += (sender as ToolStripMenuItem).Text;
+				this.txtArg.Text += labelName;
 			} else {
-				this.txtArg.Text += " " + (sender as ToolStripMenuItem).Text;
+				this.txtArg.Text += " " + labelName;
 			}
 		}
 		

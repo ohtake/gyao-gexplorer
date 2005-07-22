@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 9.00
-# Visual C# Express 2005
+# Visual Studio 2005
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GExplorer", "GExplorer.csproj", "{6D8EB0CC-BB0F-4A99-94F7-99F426156490}"
 EndProject
 Global

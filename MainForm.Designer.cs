@@ -127,13 +127,19 @@ namespace Yusen.GExplorer {
 			// glvMain
 			// 
 			this.glvMain.AboneType = Yusen.GExplorer.AboneType.Toumei;
+			this.glvMain.ColWidthEpisode = 70;
+			this.glvMain.ColWidthId = 90;
+			this.glvMain.ColWidthLead = 320;
+			this.glvMain.ColWidthLimit = 80;
 			this.glvMain.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.glvMain.FullRowSelect = true;
 			this.glvMain.Genre = null;
 			this.glvMain.Location = new System.Drawing.Point(0, 20);
 			this.glvMain.Margin = new System.Windows.Forms.Padding(0);
 			this.glvMain.Name = "glvMain";
 			this.glvMain.Size = new System.Drawing.Size(588, 346);
 			this.glvMain.TabIndex = 0;
+			this.glvMain.View = System.Windows.Forms.View.Details;
 			// 
 			// tabGenre
 			// 

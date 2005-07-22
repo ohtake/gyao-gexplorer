@@ -126,7 +126,7 @@ namespace Yusen.GExplorer{
 			private static readonly Regex regexWeeklyPackage = 
 				new Regex(@"<img src=""http://www.gyao.jp/img/info/anime/pac([0-9]+)_m\.jpg"" alt=""(.+?)""", RegexOptions.Compiled | RegexOptions.Singleline);
 			private static readonly Regex regexRePackName =
-				new Regex(@"<td colspan=""2"" bgcolor=""#757575"" class=""font13white"">Å@<a name=""[^""]+"">(.+?)</a>", RegexOptions.Compiled | RegexOptions.Singleline);
+				new Regex(@"<td class=""font13white"">Å@<a name=""[^""]*"" id=""[^""]*"">(.*)</a></td>", RegexOptions.Compiled | RegexOptions.Singleline);
 			private static readonly Regex regexRePackId =
 				new Regex(@"<a href=""http://www.gyao.jp/sityou/catelist/pac_id/pac([0-9]+)/""><img src=""images/btn_series.gif""", RegexOptions.Compiled | RegexOptions.Singleline);
 			
@@ -570,7 +570,8 @@ namespace Yusen.GExplorer{
 						case "\t\t\t\t\t\t\t\t\t&nbsp;":
 							isNew = false;
 							break;
-						case "\t\t\t\t\t\t\t\t\t<img src=\"http://www.gyao.jp/sityou/common/images/icon_new.gif\" alt=\"NEW\" width=\"32\" height=\"14\" border=\"0\">":
+						case "\t\t\t\t\t\t\t\t\t<img src=\"http://www.gyao.jp/sityou/common/images/icon_new.gif\" alt=\"NEW\" width=\"32\" height=\"14\" border=\"0\">"://2005-07-18à»ëO
+						case "\t\t\t\t\t\t\t\t\t<img src=\"http://www.gyao.jp/common/images/icon_new.gif\" alt=\"NEW\" width=\"32\" height=\"14\" border=\"0\">"://2005-07-18à»ç~
 							isNew = true;
 							break;
 						default:

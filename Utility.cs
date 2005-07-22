@@ -7,6 +7,8 @@ using Icon = System.Drawing.Icon;
 using ComponentResourceManager = System.ComponentModel.ComponentResourceManager;
 using Process = System.Diagnostics.Process;
 using Resources = Yusen.GExplorer.Properties.Resources;
+using PropertyInfo = System.Reflection.PropertyInfo;
+using System.Reflection;
 
 namespace Yusen.GExplorer {
 	static class Utility{
@@ -103,4 +105,3 @@ namespace Yusen.GExplorer {
 		}
 	}
 }
-

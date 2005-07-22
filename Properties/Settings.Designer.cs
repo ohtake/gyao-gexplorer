@@ -24,5 +24,13 @@ namespace Yusen.GExplorer.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public string setting {
+            get {
+                return ((string)(this["setting"]));
+            }
+        }
     }
 }

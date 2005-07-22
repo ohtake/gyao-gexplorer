@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace Yusen.GExplorer {
-	partial class MainForm : Form, IUsesUserSettings{
+	partial class MainForm : Form, IUsesUserSettings {
 		private static MainForm instance = null;
 		public static MainForm Instance {
 			get{
@@ -14,7 +14,7 @@ namespace Yusen.GExplorer {
 			}
 		}
 		
-		public event GenreListViewSelectedContentsChangedEventHandler SelectedContentsChanged;
+		public event EventHandler<GenreListViewSelectedContentsChangedEventArgs> SelectedContentsChanged;
 		
 		private MainForm() {
 			InitializeComponent();
@@ -76,18 +76,18 @@ namespace Yusen.GExplorer {
 				ToolStripMenuItem mi = new ToolStripMenuItem(v.ToString());
 				mi.Tag = v;
 				mi.Click += delegate(object sender, EventArgs e) {
-					this.GenreListView.ListView.View = (View)(sender as ToolStripMenuItem).Tag;
+					this.GenreListView.View = (View)(sender as ToolStripMenuItem).Tag;
 					this.RefleshLvViewDropDownItems();
 					this.SaveSettings();
 				};
 				this.tsmiLvView.DropDownItems.Add(mi);
 			}
 			this.tsmiFullRowSelect.Click += delegate {
-				this.GenreListView.ListView.FullRowSelect = this.tsmiFullRowSelect.Checked;
+				this.GenreListView.FullRowSelect = this.tsmiFullRowSelect.Checked;
 				this.SaveSettings();
 			};
 			this.tsmiMultiSelect.Click += delegate {
-				this.GenreListView.ListView.MultiSelect = this.tsmiMultiSelect.Checked;
+				this.GenreListView.MultiSelect = this.tsmiMultiSelect.Checked;
 				this.SaveSettings();
 			};
 			//メニュー項目 (ウィンドウ)
@@ -110,14 +110,13 @@ namespace Yusen.GExplorer {
 				this.ShowAndFocus(NgPackagesEditor.Instance);
 			};
 			//ステータスバー
-			this.glvMain.GenreChanged += new GenreListViewGenreChangedEventHandler(
-				delegate(GenreListView sender, GGenre genre, int cntCount) {
+			this.glvMain.GenreChanged += delegate(object sender, GenreListViewGenreChangedEventArgs e) {
 					this.tsslCategoryStat.Text =
-						"[" + genre.GenreName + "]"
-						+ " " + cntCount.ToString() + " 個のオブジェクト"
-						+ " (最終読み込み時刻 " + genre.LastFetchTime.ToShortTimeString() + ")";
+						"[" + e.NewGenre.GenreName + "]"
+						+ " " + e.NumberOfContents.ToString() + " 個のオブジェクト"
+						+ " (最終読み込み時刻 " + e.NewGenre.LastFetchTime.ToShortTimeString() + ")";
 					this.tspbPackages.Value = this.tspbPackages.Minimum;
-				});
+				};
 			GGenre.LoadingPackages += new LoadingPackagesEventHandler(
 				delegate(GGenre sender, int nume, int denom) {
 					this.tspbPackages.Maximum = denom;
@@ -126,9 +125,9 @@ namespace Yusen.GExplorer {
 					Application.DoEvents(); //ステータスバーのラベルを描画させるために必要？
 				});
 			//コンテンツの選択
-			this.glvMain.SelectedContentsChanged += delegate(GenreListView sender, IEnumerable<GContent> contents) {
+			this.glvMain.SelectedContentsChanged += delegate(object sender, GenreListViewSelectedContentsChangedEventArgs e) {
 				if(null != this.SelectedContentsChanged) {
-					this.SelectedContentsChanged(sender, contents);
+					this.SelectedContentsChanged(sender, e);
 				}
 			};
 			//NG更新
@@ -184,15 +183,15 @@ namespace Yusen.GExplorer {
 		
 		private void RefleshLvViewDropDownItems() {
 			foreach(ToolStripMenuItem m in this.tsmiLvView.DropDownItems) {
-				m.Checked = (this.GenreListView.ListView.View == (View)m.Tag);
+				m.Checked = (this.GenreListView.View == (View)m.Tag);
 			}
 		}
 		public void LoadSettings() {
 			UserSettings.Instance.MainForm.ApplySettings(this);
 			this.RefleshLvViewDropDownItems();
 			this.RefleshAboneTypeDropDownItems();
-			this.tsmiMultiSelect.Checked = this.GenreListView.ListView.MultiSelect;
-			this.tsmiFullRowSelect.Checked = this.GenreListView.ListView.FullRowSelect;
+			this.tsmiMultiSelect.Checked = this.GenreListView.MultiSelect;
+			this.tsmiFullRowSelect.Checked = this.GenreListView.FullRowSelect;
 		}
 		public void SaveSettings() {
 			UserSettings.Instance.MainForm.StoreSettings(this);

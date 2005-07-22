@@ -195,10 +195,10 @@ namespace Yusen.GExplorer {
 			this.cmsArgs.Enabled = true;
 			this.cmsArgs.GripMargin = new System.Windows.Forms.Padding(2);
 			this.cmsArgs.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiGenre,
+            this.tsmiContent,
             this.tsmiPackage,
-            this.tsmiContent});
-			this.cmsArgs.Location = new System.Drawing.Point(0, 0);
+            this.tsmiGenre});
+			this.cmsArgs.Location = new System.Drawing.Point(25, 58);
 			this.cmsArgs.Name = "cmsArgs";
 			this.cmsArgs.RightToLeft = System.Windows.Forms.RightToLeft.No;
 			this.cmsArgs.Size = new System.Drawing.Size(164, 70);

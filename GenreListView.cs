@@ -5,10 +5,6 @@ using System.Windows.Forms;
 using System.Drawing;
 
 namespace Yusen.GExplorer {
-	delegate void GenreListViewGenreChangedEventHandler(GenreListView sender, GGenre genre, int cntCount);
-	delegate void GenreListViewSelectedContentsChangedEventHandler(GenreListView sender, IEnumerable<GContent> contents);
-	delegate void GenreListViewColumnWidthChanged(GenreListView sender);
-	
 	partial class GenreListView : UserControl{
 		[Flags]
 		private enum ImageIndex : int{
@@ -18,9 +14,13 @@ namespace Yusen.GExplorer {
 			HasNotSpecial = 0,
 		}
 		
-		public event GenreListViewGenreChangedEventHandler GenreChanged;
-		public event GenreListViewSelectedContentsChangedEventHandler SelectedContentsChanged;
-		public event GenreListViewColumnWidthChanged ColumnWidthChanged;
+		public event EventHandler<GenreListViewGenreChangedEventArgs> GenreChanged;
+		public event EventHandler<GenreListViewSelectedContentsChangedEventArgs> SelectedContentsChanged;
+		public event ColumnWidthChangedEventHandler ColumnWidthChanged;
+		public event EventHandler ViewChanged;
+		public event EventHandler FullRowSelectChanged;
+		public event EventHandler MultiSelectChanged;
+		public event EventHandler AboneTypeChanged;
 		
 		private GGenre genre = null;
 		private AboneType aboneType = AboneType.Toumei;
@@ -36,7 +36,7 @@ namespace Yusen.GExplorer {
 					foreach(ListViewItem item in this.lviewGenre.SelectedItems) {
 						contents.Add(item.Tag as GContent);
 					}
-					this.SelectedContentsChanged(this, contents);
+					this.SelectedContentsChanged(this, new GenreListViewSelectedContentsChangedEventArgs(contents));
 				}
 			});
 			//項目をダブルクリック
@@ -115,9 +115,9 @@ namespace Yusen.GExplorer {
 				UserCommandsManager.Instance.UserCommandsChanged -= this.LoadCommands;
 			};
 			//カラム幅の変更
-			this.lviewGenre.ColumnWidthChanged += delegate {
+			this.lviewGenre.ColumnWidthChanged += delegate(object sender, ColumnWidthChangedEventArgs e) {
 				if(null != this.ColumnWidthChanged) {
-					this.ColumnWidthChanged(this);
+					this.ColumnWidthChanged(this, e);
 				}
 			};
 		}
@@ -186,8 +186,12 @@ namespace Yusen.GExplorer {
 				}
 			}
 			this.lviewGenre.EndUpdate();
-			
-			if(null != this.GenreChanged) this.GenreChanged(this, genre, this.lviewGenre.Items.Count);
+
+			if(null != this.GenreChanged) {
+				this.GenreChanged(
+					this,
+					new GenreListViewGenreChangedEventArgs(genre, this.lviewGenre.Items.Count));
+			}
 		}
 		
 		public GGenre Genre {
@@ -216,20 +220,84 @@ namespace Yusen.GExplorer {
 			}
 		}
 		
-		public ListView ListView {
-			get {
-				return this.lviewGenre;
-			}
-		}
 		public AboneType AboneType {
 			get {
 				return this.aboneType;
 			}
 			set {
-				this.aboneType = value;
-				this.RefleshView();
+				if(value != this.aboneType) {
+					this.aboneType = value;
+					this.RefleshView();
+					if(null != this.AboneTypeChanged) {
+						this.AboneTypeChanged(this, EventArgs.Empty);
+					}
+				}
 			}
 		}
+		[DefaultValue(View.Details)]
+		public View View {
+			get {
+				return this.lviewGenre.View;
+			}
+			set {
+				if(value != this.lviewGenre.View) {
+					this.lviewGenre.View = value;
+					if(null != this.ViewChanged) {
+						this.ViewChanged(this, EventArgs.Empty);
+					}
+				}
+			}
+		}
+		[DefaultValue(true)]
+		public bool FullRowSelect {
+			get { return this.lviewGenre.FullRowSelect; }
+			set {
+				if(value != this.lviewGenre.FullRowSelect) {
+					this.lviewGenre.FullRowSelect = value;
+					if(null != this.FullRowSelectChanged) {
+						this.FullRowSelectChanged(this, EventArgs.Empty);
+					}
+				}
+			}
+		}
+		[DefaultValue(false)]
+		public bool MultiSelect {
+			get { return this.lviewGenre.MultiSelect; }
+			set {
+				if(value != this.lviewGenre.MultiSelect) {
+					this.lviewGenre.MultiSelect = value;
+					if(null != this.MultiSelectChanged) {
+						this.MultiSelectChanged(this, EventArgs.Empty);
+					}
+				}
+			}
+		}
+		
+		public int ColWidthId {
+			get { return this.GetColWidth(0); }
+			set { this.SetColWidthIfDifferent(0, value); }
+		}
+		public int ColWidthLimit {
+			get { return this.GetColWidth(1); }
+			set { this.SetColWidthIfDifferent(1, value); }
+		}
+		public int ColWidthEpisode {
+			get { return this.GetColWidth(2); }
+			set { this.SetColWidthIfDifferent(2, value); }
+		}
+		public int ColWidthLead {
+			get { return this.GetColWidth(3); }
+			set { this.SetColWidthIfDifferent(3, value); }
+		}
+		private int GetColWidth(int colIdx) {
+			return this.lviewGenre.Columns[colIdx].Width;
+		}
+		private void SetColWidthIfDifferent(int colIdx, int width) {
+			if(width != this.lviewGenre.Columns[colIdx].Width) {
+				this.lviewGenre.Columns[colIdx].Width = width;
+			}
+		}
+
 		private void cmsListView_Opening(object sender, CancelEventArgs e) {
 			bool isSelected = (0 < this.lviewGenre.SelectedItems.Count);
 			this.tsmiPlay.Enabled = isSelected;
@@ -267,6 +335,30 @@ namespace Yusen.GExplorer {
 				this.tsmiCommands.DropDownItems.Add(mi);
 			}
 			this.tsmiCommands.Enabled = 0 != this.tsmiCommands.DropDownItems.Count;
+		}
+	}
+	
+	class GenreListViewGenreChangedEventArgs : EventArgs {
+		private readonly GGenre newGenre;
+		private readonly int numberOfContents;
+		public GenreListViewGenreChangedEventArgs(GGenre newGenre, int numberOfContents) {
+			this.newGenre = newGenre;
+			this.numberOfContents = numberOfContents;
+		}
+		public GGenre NewGenre {
+			get { return this.newGenre; }
+		}
+		public int NumberOfContents {
+			get { return this.numberOfContents; }
+		}
+	}
+	class GenreListViewSelectedContentsChangedEventArgs : EventArgs {
+		private readonly IEnumerable<GContent> selectedContents;
+		public GenreListViewSelectedContentsChangedEventArgs(IEnumerable<GContent> selectedContents) {
+			this.selectedContents = selectedContents;
+		}
+		public IEnumerable<GContent> SelectedContents {
+			get { return this.selectedContents; }
 		}
 	}
 }

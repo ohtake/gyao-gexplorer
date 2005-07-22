@@ -3,7 +3,7 @@ using System.Windows.Forms;
 using System.Collections.Generic;
 
 namespace Yusen.GExplorer {
-	partial class ContentPropertyViewer : Form, IUsesUserSettings {
+	partial class ContentPropertyViewer : Form, IUsesUserSettings{
 		private static ContentPropertyViewer instance = null;
 		public static ContentPropertyViewer Instance {
 			get {
@@ -67,8 +67,8 @@ namespace Yusen.GExplorer {
 				this.content = value;
 			}
 		}
-		private void ListeningToContentsSelection(GenreListView sender, IEnumerable<GContent> contents) {
-			foreach(GContent content in contents) {
+		private void ListeningToContentsSelection(object sender, GenreListViewSelectedContentsChangedEventArgs e) {
+			foreach(GContent content in e.SelectedContents) {
 				this.Content = content;
 				break;
 			}
