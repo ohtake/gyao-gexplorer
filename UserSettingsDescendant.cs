@@ -142,100 +142,6 @@ namespace Yusen.GExplorer {
 	/// <seealso cref="UserSettings"/>
 	[TypeConverter(typeof(UserSettingsDescendantConverter))]
 	public sealed class UscMainForm : UscForm {
-		/// <summary><see cref="GenreListView"/>の設定．</summary>
-		/// <seealso cref="UserSettings"/>
-		[TypeConverter(typeof(UserSettingsDescendantConverter))]
-		public sealed class UsdGenreListView : UserSettingsDescendant {
-			private bool multiSelect = false;
-			private bool fullRowSelect = true;
-			private View view = View.Details;
-			private int colWidthId = 90;
-			private int colWidthLimit = 80;
-			private int colWidthEpisode = 70;
-			private int colWidthLead = 320;
-			private AboneType aboneType = AboneType.Toumei;
-			
-			public UsdGenreListView() {
-			}
-
-			[DisplayName("複数選択")]
-			[Description("複数選択を有効にします．誤操作防止のため False 推奨．")]
-			[DefaultValue(false)]
-			public bool MultiSelect {
-				get { return this.multiSelect; }
-				set { this.multiSelect = value; }
-			}
-			[DisplayName("行全体で選択")]
-			[Description("表示形式が Details の時，行全体を選択します．")]
-			[DefaultValue(true)]
-			public bool FullRowSelect {
-				get { return this.fullRowSelect; }
-				set { this.fullRowSelect = value; }
-			}
-			[DisplayName("表示形式")]
-			[Description("リストビューの表示形式を変更します．")]
-			[DefaultValue(View.Details)]
-			public View View {
-				get { return this.view; }
-				set { this.view = value; }
-			}
-			[DisplayName("カラム幅 (1. contents_id)")]
-			[Description("リストビューのカラムの幅．(1. contents_id)")]
-			[DefaultValue(90)]
-			public int ColWidthId {
-				get { return this.colWidthId; }
-				set { this.colWidthId = value; }
-			}
-			[DisplayName("カラム幅 (2. 配信終了日)")]
-			[Description("リストビューのカラムの幅．(2. 配信終了日)")]
-			[DefaultValue(80)]
-			public int ColWidthLimit {
-				get { return this.colWidthLimit; }
-				set { this.colWidthLimit = value; }
-			}
-			[DisplayName("カラム幅 (3. 話)")]
-			[Description("リストビューのカラムの幅．(3. 話)")]
-			[DefaultValue(70)]
-			public int WidthEpisode {
-				get { return this.colWidthEpisode; }
-				set { this.colWidthEpisode = value; }
-			}
-			[DisplayName("カラム幅 (4. リード)")]
-			[Description("リストビューのカラムの幅．(4. リード)")]
-			[DefaultValue(320)]
-			public int ColWidthLead {
-				get { return this.colWidthLead; }
-				set { this.colWidthLead = value; }
-			}
-			[DisplayName("あぼ～ん方法")]
-			[Description("Toumei: 透明; Sabori: さぼり; Hakidame: 掃き溜め;")]
-			[DefaultValue(AboneType.Toumei)]
-			public AboneType AboneType {
-				get { return this.aboneType; }
-				set { this.aboneType = value; }
-			}
-			internal void StoreSettings(GenreListView glv) {
-				this.MultiSelect = glv.MultiSelect;
-				this.FullRowSelect = glv.FullRowSelect;
-				this.View = glv.View;
-				this.ColWidthId = glv.ColWidthId;
-				this.ColWidthLimit = glv.ColWidthLimit;
-				this.WidthEpisode = glv.ColWidthEpisode;
-				this.ColWidthLead = glv.ColWidthLead;
-				this.AboneType = glv.AboneType;
-			}
-			internal void ApplySettings(GenreListView glv) {
-				if(glv.MultiSelect != this.MultiSelect) glv.MultiSelect = this.MultiSelect;
-				if(glv.FullRowSelect != this.FullRowSelect) glv.FullRowSelect = this.FullRowSelect;
-				if(glv.View != this.View) glv.View = this.View;
-				if(glv.ColWidthId != this.ColWidthId) glv.ColWidthId = this.ColWidthId;
-				if(glv.ColWidthLimit!= this.ColWidthLimit) glv.ColWidthLimit = this.ColWidthLimit;
-				if(glv.ColWidthEpisode != this.WidthEpisode) glv.ColWidthEpisode = this.WidthEpisode;
-				if(glv.ColWidthLead != this.ColWidthLead) glv.ColWidthLead = this.ColWidthLead;
-				if(glv.AboneType != this.AboneType) glv.AboneType = this.AboneType;
-			}
-		}
-		
 		private UsdGenreListView lvSettings = new UsdGenreListView();
 		
 		public UscMainForm()
@@ -261,6 +167,100 @@ namespace Yusen.GExplorer {
 			this.LvSettings.ApplySettings(mf.GenreListView);
 		}
 	}
+	/// <summary><see cref="GenreListView"/>の設定．</summary>
+	/// <seealso cref="UserSettings"/>
+	[TypeConverter(typeof(UserSettingsDescendantConverter))]
+	public sealed class UsdGenreListView : UserSettingsDescendant {
+		private bool multiSelect = false;
+		private bool fullRowSelect = true;
+		private View view = View.Details;
+		private int colWidthId = 90;
+		private int colWidthLimit = 80;
+		private int colWidthEpisode = 70;
+		private int colWidthLead = 320;
+		private AboneType aboneType = AboneType.Toumei;
+
+		public UsdGenreListView() {
+		}
+
+		[DisplayName("複数選択")]
+		[Description("複数選択を有効にします．誤操作防止のため False 推奨．")]
+		[DefaultValue(false)]
+		public bool MultiSelect {
+			get { return this.multiSelect; }
+			set { this.multiSelect = value; }
+		}
+		[DisplayName("行全体で選択")]
+		[Description("表示形式が Details の時，行全体を選択します．")]
+		[DefaultValue(true)]
+		public bool FullRowSelect {
+			get { return this.fullRowSelect; }
+			set { this.fullRowSelect = value; }
+		}
+		[DisplayName("表示形式")]
+		[Description("リストビューの表示形式を変更します．")]
+		[DefaultValue(View.Details)]
+		public View View {
+			get { return this.view; }
+			set { this.view = value; }
+		}
+		[DisplayName("カラム幅 (1. contents_id)")]
+		[Description("リストビューのカラムの幅．(1. contents_id)")]
+		[DefaultValue(90)]
+		public int ColWidthId {
+			get { return this.colWidthId; }
+			set { this.colWidthId = value; }
+		}
+		[DisplayName("カラム幅 (2. 配信終了日)")]
+		[Description("リストビューのカラムの幅．(2. 配信終了日)")]
+		[DefaultValue(80)]
+		public int ColWidthLimit {
+			get { return this.colWidthLimit; }
+			set { this.colWidthLimit = value; }
+		}
+		[DisplayName("カラム幅 (3. 話)")]
+		[Description("リストビューのカラムの幅．(3. 話)")]
+		[DefaultValue(70)]
+		public int WidthEpisode {
+			get { return this.colWidthEpisode; }
+			set { this.colWidthEpisode = value; }
+		}
+		[DisplayName("カラム幅 (4. リード)")]
+		[Description("リストビューのカラムの幅．(4. リード)")]
+		[DefaultValue(320)]
+		public int ColWidthLead {
+			get { return this.colWidthLead; }
+			set { this.colWidthLead = value; }
+		}
+		[DisplayName("あぼ～ん方法")]
+		[Description("Toumei: 透明; Sabori: さぼり; Hakidame: 掃き溜め;")]
+		[DefaultValue(AboneType.Toumei)]
+		public AboneType AboneType {
+			get { return this.aboneType; }
+			set { this.aboneType = value; }
+		}
+		internal void StoreSettings(GenreListView glv) {
+			this.MultiSelect = glv.MultiSelect;
+			this.FullRowSelect = glv.FullRowSelect;
+			this.View = glv.View;
+			this.ColWidthId = glv.ColWidthId;
+			this.ColWidthLimit = glv.ColWidthLimit;
+			this.WidthEpisode = glv.ColWidthEpisode;
+			this.ColWidthLead = glv.ColWidthLead;
+			this.AboneType = glv.AboneType;
+		}
+		internal void ApplySettings(GenreListView glv) {
+			if (glv.MultiSelect != this.MultiSelect) glv.MultiSelect = this.MultiSelect;
+			if (glv.FullRowSelect != this.FullRowSelect) glv.FullRowSelect = this.FullRowSelect;
+			if (glv.View != this.View) glv.View = this.View;
+			if (glv.ColWidthId != this.ColWidthId) glv.ColWidthId = this.ColWidthId;
+			if (glv.ColWidthLimit!= this.ColWidthLimit) glv.ColWidthLimit = this.ColWidthLimit;
+			if (glv.ColWidthEpisode != this.WidthEpisode) glv.ColWidthEpisode = this.WidthEpisode;
+			if (glv.ColWidthLead != this.ColWidthLead) glv.ColWidthLead = this.ColWidthLead;
+			if (glv.AboneType != this.AboneType) glv.AboneType = this.AboneType;
+		}
+	}
+	
 	/// <summary><see cref="PlayerForm"/>の設定．</summary>
 	/// <seealso cref="UserSettings"/>
 	[TypeConverter(typeof(UserSettingsDescendantConverter))]

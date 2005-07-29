@@ -27,7 +27,7 @@ namespace Yusen.GExplorer {
 		
 		public GenreListView() {
 			this.InitializeComponent();
-			this.LoadCommands();
+			this.UserCommandsManager_UserCommandsChanged(null, EventArgs.Empty);
 			
 			//項目の選択
 			this.lviewGenre.SelectedIndexChanged += new EventHandler(delegate(object sender, EventArgs e) {
@@ -110,9 +110,9 @@ namespace Yusen.GExplorer {
 			//コンテキストメニューの標準項目
 			this.tsmiPlay.Font = new Font(this.tsmiPlay.Font, FontStyle.Bold);
 			//外部コマンド
-			UserCommandsManager.Instance.UserCommandsChanged += new UserCommandsChangedEventHandler(this.LoadCommands);
+			UserCommandsManager.Instance.UserCommandsChanged += new EventHandler(this.UserCommandsManager_UserCommandsChanged);
 			this.Disposed += delegate {
-				UserCommandsManager.Instance.UserCommandsChanged -= this.LoadCommands;
+				UserCommandsManager.Instance.UserCommandsChanged -= this.UserCommandsManager_UserCommandsChanged;
 			};
 			//カラム幅の変更
 			this.lviewGenre.ColumnWidthChanged += delegate(object sender, ColumnWidthChangedEventArgs e) {
@@ -129,9 +129,9 @@ namespace Yusen.GExplorer {
 			this.lviewGenre.EndUpdate();
 		}
 		
-		private void AddItems(GGenre genre) {
+		private void AddItems(GGenre newGenre) {
 			this.lviewGenre.BeginUpdate();
-			foreach(GPackage p in genre.Packages) {
+			foreach(GPackage p in newGenre.Packages) {
 				//NG処理
 				switch(this.AboneType) {
 					case AboneType.Sabori:
@@ -190,7 +190,7 @@ namespace Yusen.GExplorer {
 			if(null != this.GenreChanged) {
 				this.GenreChanged(
 					this,
-					new GenreListViewGenreChangedEventArgs(genre, this.lviewGenre.Items.Count));
+					new GenreListViewGenreChangedEventArgs(newGenre, this.lviewGenre.Items.Count));
 			}
 		}
 		
@@ -318,18 +318,18 @@ namespace Yusen.GExplorer {
 			}
 			this.tsmiGenre.Enabled = (null != this.genre);
 		}
-		
-		private void LoadCommands() {
+
+		private void UserCommandsManager_UserCommandsChanged(object sender, EventArgs e) {
 			this.tsmiCommands.DropDownItems.Clear();
 			foreach(UserCommand uc in UserCommandsManager.Instance) {
 				ToolStripMenuItem mi = new ToolStripMenuItem(
 					uc.Title, null,
-					new EventHandler(delegate(object sender, EventArgs e) {
+					new EventHandler(delegate(object sender2, EventArgs e2) {
 						List<GContent> contents = new List<GContent>();
 						foreach(ListViewItem lvi in this.lviewGenre.SelectedItems) {
 							contents.Add(lvi.Tag as GContent);
 						}
-						((sender as ToolStripMenuItem).Tag as UserCommand).Execute(contents);
+						((sender2 as ToolStripMenuItem).Tag as UserCommand).Execute(contents);
 					}));
 				mi.Tag = uc;
 				this.tsmiCommands.DropDownItems.Add(mi);

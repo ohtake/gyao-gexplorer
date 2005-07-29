@@ -22,9 +22,9 @@ namespace Yusen.GExplorer {
 		private string fileName = null;
 		private string arguments = null;
 		
-		public UserCommand(string title, string filename, string arguments):this() {
+		public UserCommand(string title, string fileName, string arguments):this() {
 			this.Title = title;
-			this.FileName = filename;
+			this.FileName = fileName;
 			this.Arguments = arguments;
 		}
 		public UserCommand() {
@@ -139,8 +139,6 @@ namespace Yusen.GExplorer {
 		}
 	}
 	
-	delegate void UserCommandsChangedEventHandler();
-	
 	class UserCommandsManager : ItemsManagerBase<UserCommand>{
 		private static UserCommandsManager instance = new UserCommandsManager();
 		public static UserCommandsManager Instance {
@@ -149,14 +147,14 @@ namespace Yusen.GExplorer {
 			}
 		}
 		
-		public event UserCommandsChangedEventHandler UserCommandsChanged;
+		public event EventHandler UserCommandsChanged;
 		
 		private UserCommandsManager() : base(){
 		}
 		
 		override protected void OnChanged() {
 			if(null != this.UserCommandsChanged) {
-				this.UserCommandsChanged();
+				this.UserCommandsChanged(this, EventArgs.Empty);
 			}
 		}
 		

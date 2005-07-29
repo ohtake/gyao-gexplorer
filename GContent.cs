@@ -15,7 +15,26 @@ using Encoding = System.Text.Encoding;
  */
 
 namespace Yusen.GExplorer{
-	delegate void LoadingPackagesEventHandler(GGenre sender, int nume, int denom);
+	class LoadingPackagesEventArgs : EventArgs{
+		private readonly int numerator;
+		private readonly int denominator;
+		private readonly GPackage loadedPackage;
+		
+		public LoadingPackagesEventArgs(int nume, int denom, GPackage pack) {
+			this.numerator = nume;
+			this.denominator = denom;
+			this.loadedPackage = pack;
+		}
+		public int Numerator {
+			get {return this.numerator;}
+		}
+		public int Denominator {
+			get { return this.denominator; }
+		}
+		public GPackage LoadedPackage {
+			get { return this.loadedPackage; }
+		}
+	}
 
 	/// <summary>GyaOにおける genre．映画，ドラマなど．</summary>
 	abstract class GGenre{
@@ -116,7 +135,7 @@ namespace Yusen.GExplorer{
 				}
 			}
 			public override IEnumerable<GPackage> FetchPackages() {
-				throw new Exception("The method or operation is not implemented.");
+				throw new NotImplementedException();
 			}
 		}
 		/// <summary>2005-07ではあるがアニメはパッケージのIDが取得できるっぽい</summary>
@@ -124,12 +143,12 @@ namespace Yusen.GExplorer{
 			private static readonly Regex regexTtl =
 				new Regex(@"<img src=""images/ttl_([a-z]+(?:_on)?)\.gif"" alt=""(.+?)""", RegexOptions.Compiled | RegexOptions.Singleline);
 			private static readonly Regex regexWeeklyPackage = 
-				new Regex(@"<img src=""http://www.gyao.jp/img/info/anime/pac([0-9]+)_m\.jpg"" alt=""(.+?)""", RegexOptions.Compiled | RegexOptions.Singleline);
+				new Regex(@"<img src=""(?:http://www.gyao.jp)?/img/info/anime/pac([0-9]+)_m\.jpg"" alt=""(.+?)""", RegexOptions.Compiled | RegexOptions.Singleline);
 			private static readonly Regex regexRePackName =
 				new Regex(@"<td class=""font13white"">　<a name=""[^""]*"" id=""[^""]*"">(.*)</a></td>", RegexOptions.Compiled | RegexOptions.Singleline);
 			private static readonly Regex regexRePackId =
-				new Regex(@"<a href=""http://www.gyao.jp/sityou/catelist/pac_id/pac([0-9]+)/""><img src=""images/btn_series.gif""", RegexOptions.Compiled | RegexOptions.Singleline);
-			
+				new Regex(@"<a href=""http://www.gyao.jp/sityou/catelist/pac_id/pac([0-9]+)/""><img src=""images/btn_itiran.gif""", RegexOptions.Compiled | RegexOptions.Singleline);
+
 			public GGenre200507Anime(int keyNo, string name, string dir)
 				: base(keyNo, name, dir) {
 			}
@@ -183,7 +202,7 @@ namespace Yusen.GExplorer{
 			}
 		}
 		
-		public static event LoadingPackagesEventHandler LoadingPackages;
+		public static event EventHandler<LoadingPackagesEventArgs> LoadingPackages;
 		
 		private static readonly GGenre[] allGenres =
 			new GGenre[]{
@@ -296,17 +315,17 @@ namespace Yusen.GExplorer{
 			IEnumerable<GPackage> ps = this.FetchPackages();
 			int denom = 1;
 			foreach(GPackage p in ps) denom++;
-			int nume = 0;
+			int nume = 1;
+			this.OnLoadingPackages(nume, denom, null);
 			foreach(GPackage p in this.FetchPackages()) {
-				nume++;
-				GGenre.LoadingPackages(this, nume, denom);
 				try {
 					p.FetchContents();
 				} catch(Exception e) {
 					Utility.DisplayException(e);
 				}
+				nume++;
+				this.OnLoadingPackages(nume, denom, p);
 			}
-			GGenre.LoadingPackages(this, denom, denom);
 		}
 		private void FetchAllConcurrently() {
 			bool hadError = false;
@@ -314,6 +333,7 @@ namespace Yusen.GExplorer{
 			IEnumerable<GPackage> ps = this.FetchPackages();
 			int denom = 1;
 			Queue<Thread> tq = new Queue<Thread>();
+			Dictionary<Thread, GPackage> dicTP = new Dictionary<Thread, GPackage>();
 			foreach(GPackage p in ps) {
 				Thread t = new Thread(new ThreadStart(delegate() {
 					try {
@@ -328,14 +348,15 @@ namespace Yusen.GExplorer{
 				t.Start();
 				denom++;
 				tq.Enqueue(t);
+				dicTP.Add(t, p);
 			}
-			int nume = 0;
+			int nume = 1;
+			this.OnLoadingPackages(nume, denom, null);
 			foreach(Thread t in tq) {
-				nume++;
-				GGenre.LoadingPackages(this, nume, denom);
 				t.Join();
+				nume++;
+				this.OnLoadingPackages(nume, denom, dicTP[t]);
 			}
-			GGenre.LoadingPackages(this, denom, denom);
 			
 			if(hadError) {
 				if(DialogResult.Yes == MessageBox.Show(
@@ -344,6 +365,11 @@ namespace Yusen.GExplorer{
 						Application.ProductName, MessageBoxButtons.YesNo, MessageBoxIcon.Question)) {
 					UserSettings.Instance.GyaoEnableConcurrentFetch = false;
 				}
+			}
+		}
+		private void OnLoadingPackages(int nume, int denom, GPackage pack) {
+			if (null != GGenre.LoadingPackages) {
+				GGenre.LoadingPackages(this, new LoadingPackagesEventArgs(nume, denom, pack));
 			}
 		}
 	}

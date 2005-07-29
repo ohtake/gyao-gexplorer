@@ -26,7 +26,7 @@ namespace Yusen.GExplorer {
 				this.btnUp, this.btnDown, this.btnDelete, this.btnModify,};
 			this.Icon = Utility.GetGExplorerIcon();
 			this.Text = "外部コマンドエディタ";
-			this.RefleshView();
+			this.UserCommandsManager_UserCommandsChanged(null, EventArgs.Empty);
 			
 			//簡易追加機能のメニューを作成
 			this.GenerateArgumentHelperMenu();
@@ -48,15 +48,15 @@ namespace Yusen.GExplorer {
 			};
 			//コマンド
 			UserCommandsManager.Instance.UserCommandsChanged
-				+= new UserCommandsChangedEventHandler(this.RefleshView);
+				+= new EventHandler(this.UserCommandsManager_UserCommandsChanged);
 			this.FormClosing += new FormClosingEventHandler(
 				delegate(object sender, FormClosingEventArgs e) {
 					UserCommandsManager.Instance.UserCommandsChanged -=
-						new UserCommandsChangedEventHandler(this.RefleshView);
+						new EventHandler(this.UserCommandsManager_UserCommandsChanged);
 				});
 		}
-		
-		private void RefleshView() {
+
+		private void UserCommandsManager_UserCommandsChanged(object sender, EventArgs e) {
 			int oldSelIndex = this.lboxCommands.SelectedIndex;
 			
 			this.lboxCommands.BeginUpdate();
@@ -75,7 +75,7 @@ namespace Yusen.GExplorer {
 			foreach(Button b in this.btnsNeedingSelection) {
 				b.Enabled = hasItem;
 			}
-			this.lboxCommands_SelectedIndexChanged(this, null);//無理やり選択しなおしたことにしとく
+			this.lboxCommands_SelectedIndexChanged(this, EventArgs.Empty);//無理やり選択しなおしたことにしとく
 		}
 
 		private void lboxCommands_SelectedIndexChanged(object sender, EventArgs e) {

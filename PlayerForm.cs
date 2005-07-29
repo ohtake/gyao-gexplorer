@@ -90,10 +90,10 @@ namespace Yusen.GExplorer {
 				this.wmpMain.Focus();
 			};
 			//外部コマンド
-			this.LoadCommands();
-			UserCommandsManager.Instance.UserCommandsChanged += new UserCommandsChangedEventHandler(this.LoadCommands);
+			this.UserCommandsManager_UserCommandsChanged(null, EventArgs.Empty);
+			UserCommandsManager.Instance.UserCommandsChanged += new EventHandler(this.UserCommandsManager_UserCommandsChanged);
 			this.FormClosing += delegate {
-				UserCommandsManager.Instance.UserCommandsChanged -= new UserCommandsChangedEventHandler(this.LoadCommands);
+				UserCommandsManager.Instance.UserCommandsChanged -= new EventHandler(this.UserCommandsManager_UserCommandsChanged);
 			};
 			//音量の自動調整
 			this.wmpMain.OpenStateChange += delegate{
@@ -207,14 +207,14 @@ namespace Yusen.GExplorer {
 			UserSettings.Instance.PlayerForm.StoreSettings(this);
 			UserSettings.Instance.PlayerForm.OnChangeCompleted();
 		}
-		
-		private void LoadCommands() {
+
+		private void UserCommandsManager_UserCommandsChanged(object sender, EventArgs e) {
 			this.tsmiCommands.DropDownItems.Clear();
 			foreach(UserCommand uc in UserCommandsManager.Instance) {
 				ToolStripMenuItem mi = new ToolStripMenuItem(
 					uc.Title, null,
-					new EventHandler(delegate(object sender, EventArgs e) {
-					((sender as ToolStripMenuItem).Tag as UserCommand).Execute(
+					new EventHandler(delegate(object sender2, EventArgs e2) {
+					((sender2 as ToolStripMenuItem).Tag as UserCommand).Execute(
 						new GContent[] { this.Content });
 				}));
 				mi.Tag = uc;

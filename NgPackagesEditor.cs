@@ -49,14 +49,14 @@ namespace Yusen.GExplorer {
 			}
 
 			NgPackagesManager.Instance.NgPackagesChanged +=
-				new NgPackagesChangedEventHandler(this.RefleshView);
+				new EventHandler(this.NgPackagesManager_NgPackagesChanged);
 			NgPackagesManager.Instance.LastAboneChanged +=
-				new NgPackagesLastAboneChangedEventHandler(this.RefleshView);
+				new EventHandler(this.NgPackagesManager_LastAboneChanged);
 			this.FormClosing += delegate {
 				NgPackagesManager.Instance.NgPackagesChanged -=
-					new NgPackagesChangedEventHandler(this.RefleshView);
+					new EventHandler(this.NgPackagesManager_NgPackagesChanged);
 				NgPackagesManager.Instance.LastAboneChanged -=
-					new NgPackagesLastAboneChangedEventHandler(this.RefleshView);
+					new EventHandler(this.NgPackagesManager_LastAboneChanged);
 			};
 			
 			this.RefleshView();
@@ -76,7 +76,12 @@ namespace Yusen.GExplorer {
 			}
 			this.lvNgPackages.EndUpdate();
 		}
-		
+		private void NgPackagesManager_NgPackagesChanged(object sender, EventArgs e) {
+			this.RefleshView();
+		}
+		private void NgPackagesManager_LastAboneChanged(object sender, EventArgs e) {
+			this.RefleshView();
+		}
 		public void LoadSettings() {
 			UserSettings.Instance.NgPackagesEditor.ApplySettings(this);
 		}

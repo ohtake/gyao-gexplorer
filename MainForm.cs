@@ -117,11 +117,15 @@ namespace Yusen.GExplorer {
 						+ " (最終読み込み時刻 " + e.NewGenre.LastFetchTime.ToShortTimeString() + ")";
 					this.tspbPackages.Value = this.tspbPackages.Minimum;
 				};
-			GGenre.LoadingPackages += new LoadingPackagesEventHandler(
-				delegate(GGenre sender, int nume, int denom) {
-					this.tspbPackages.Maximum = denom;
-					this.tspbPackages.Value = nume;
-					this.tsslCategoryStat.Text = "[" + sender.GenreName + "] 読み込み中";
+			GGenre.LoadingPackages += new EventHandler<LoadingPackagesEventArgs>(
+				delegate(object sender, LoadingPackagesEventArgs e) {
+					this.tspbPackages.Maximum = e.Denominator;
+					this.tspbPackages.Value = e.Numerator;
+					string statusText = "[" + (sender as GGenre).GenreName + "] 読み込み中";
+					if (null != e.LoadedPackage) {
+						statusText += "(読み込んだパッケージ: <" + e.LoadedPackage.PackageId + ">" + e.LoadedPackage.PackageName + ")";
+					}
+					this.tsslCategoryStat.Text = statusText;
 					Application.DoEvents(); //ステータスバーのラベルを描画させるために必要？
 				});
 			//コンテンツの選択
@@ -131,9 +135,9 @@ namespace Yusen.GExplorer {
 				}
 			};
 			//NG更新
-			NgPackagesManager.Instance.NgPackagesChanged += new NgPackagesChangedEventHandler(this.GenreListView.RefleshView);
+			NgPackagesManager.Instance.NgPackagesChanged += new EventHandler(this.NgPackagesManager_NgPackagesChanged);
 			this.FormClosing += delegate {
-				NgPackagesManager.Instance.NgPackagesChanged -= new NgPackagesChangedEventHandler(this.GenreListView.RefleshView);
+				NgPackagesManager.Instance.NgPackagesChanged -= new EventHandler(this.NgPackagesManager_NgPackagesChanged);
 			};
 			//ユーザ設定
 			this.LocationChanged += delegate {
@@ -159,7 +163,7 @@ namespace Yusen.GExplorer {
 		public GGenre Genre {
 			get {
 				if(null == this.tabGenre.SelectedTab) return null;
-				return (GGenre)this.tabGenre.SelectedTab.Tag;
+				return this.tabGenre.SelectedTab.Tag as GGenre;
 			}
 			set {
 				if(null == value) throw new ArgumentNullException();
@@ -175,12 +179,15 @@ namespace Yusen.GExplorer {
 			form.Show();
 			form.Focus();
 		}
+		private void NgPackagesManager_NgPackagesChanged(object sender, EventArgs e) {
+			this.GenreListView.RefleshView();
+		}
+		
 		private void RefleshAboneTypeDropDownItems() {
 			foreach(ToolStripMenuItem m in this.tsmiAboneType.DropDownItems) {
 				m.Checked = (this.GenreListView.AboneType == (AboneType)m.Tag);
 			}
 		}
-		
 		private void RefleshLvViewDropDownItems() {
 			foreach(ToolStripMenuItem m in this.tsmiLvView.DropDownItems) {
 				m.Checked = (this.GenreListView.View == (View)m.Tag);

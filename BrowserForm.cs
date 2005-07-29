@@ -58,10 +58,10 @@ namespace Yusen.GExplorer {
 			}
 
 			//外部コマンド
-			this.LoadCommands();
-			UserCommandsManager.Instance.UserCommandsChanged += new UserCommandsChangedEventHandler(this.LoadCommands);
+			this.UserCommandsManager_UserCommandsChanged(null, EventArgs.Empty);
+			UserCommandsManager.Instance.UserCommandsChanged += new EventHandler(this.UserCommandsManager_UserCommandsChanged);
 			this.FormClosing += delegate {
-				UserCommandsManager.Instance.UserCommandsChanged -= new UserCommandsChangedEventHandler(this.LoadCommands);
+				UserCommandsManager.Instance.UserCommandsChanged -= new EventHandler(this.UserCommandsManager_UserCommandsChanged);
 			};
 
 			//ユーザ設定
@@ -89,6 +89,7 @@ namespace Yusen.GExplorer {
 				return this.wbMain.Url;
 			}
 			set {
+				if (null == value) throw new ArgumentNullException();
 				this.wbMain.Url = value;
 			}
 		}
@@ -270,13 +271,13 @@ namespace Yusen.GExplorer {
 			UserSettings.Instance.BrowserForm.StoreSettings(this);
 			UserSettings.Instance.BrowserForm.OnChangeCompleted();
 		}
-		private void LoadCommands() {
+		private void UserCommandsManager_UserCommandsChanged(object sender, EventArgs e) {
 			this.tsmiContentCommands.DropDownItems.Clear();
 			foreach(UserCommand uc in UserCommandsManager.Instance) {
 				ToolStripMenuItem mi = new ToolStripMenuItem(
 					uc.Title, null,
-					new EventHandler(delegate(object sender, EventArgs e) {
-						((sender as ToolStripMenuItem).Tag as UserCommand).Execute(
+					new EventHandler(delegate(object sender2, EventArgs e2) {
+						((sender2 as ToolStripMenuItem).Tag as UserCommand).Execute(
 							new GContent[] { this.cmsContent.Tag as GContent });
 					}));
 				mi.Tag = uc;

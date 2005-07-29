@@ -68,8 +68,8 @@ namespace Yusen.GExplorer {
 			}
 		}
 		private void ListeningToContentsSelection(object sender, GenreListViewSelectedContentsChangedEventArgs e) {
-			foreach(GContent content in e.SelectedContents) {
-				this.Content = content;
+			foreach(GContent cont in e.SelectedContents) {
+				this.Content = cont;
 				break;
 			}
 		}

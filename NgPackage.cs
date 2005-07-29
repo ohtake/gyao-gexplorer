@@ -82,8 +82,8 @@ namespace Yusen.GExplorer {
 		}
 	}
 	
-	delegate void NgPackagesChangedEventHandler();
-	delegate void NgPackagesLastAboneChangedEventHandler();
+	//delegate void NgPackagesChangedEventHandler();
+	//delegate void NgPackagesLastAboneChangedEventHandler();
 	
 	class NgPackagesManager : ItemsManagerBase<NgPackage> {
 		private static NgPackagesManager instance = new NgPackagesManager();
@@ -93,15 +93,15 @@ namespace Yusen.GExplorer {
 			}
 		}
 		
-		public event NgPackagesChangedEventHandler NgPackagesChanged;
-		public event NgPackagesLastAboneChangedEventHandler LastAboneChanged;
+		public event EventHandler NgPackagesChanged;
+		public event EventHandler LastAboneChanged;
 		
 		private NgPackagesManager() : base() {
 		}
 		
 		override protected void OnChanged() {
 			if(null != this.NgPackagesChanged) {
-				this.NgPackagesChanged();
+				this.NgPackagesChanged(this, EventArgs.Empty);
 			}
 		}
 		
@@ -113,7 +113,7 @@ namespace Yusen.GExplorer {
 			foreach(NgPackage np in base.items) {
 				if(np.IsNgPackage(p)) {
 					if(null != this.LastAboneChanged) {
-						this.LastAboneChanged();
+						this.LastAboneChanged(this, EventArgs.Empty);
 					}
 					return true;
 				}
