@@ -1,0 +1,138 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" GroupingSetting="Access">
+  <Font Name="MS UI Gothic" Size="9" />
+  <Class Name="Yusen.GExplorer.FormBase">
+    <Position X="11.25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>FormBase.cs</FileName>
+      <HashCode>AAAAAAAAACAAAAAAAACAAAACAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+    <Compartments>
+      <Compartment Name="Protected" Collapsed="true" />
+      <Compartment Name="Private" Collapsed="true" />
+    </Compartments>
+  </Class>
+  <Class Name="Yusen.GExplorer.CookieFetchForm">
+    <Position X="16.5" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>CookieFetchForm.cs</FileName>
+      <HashCode>AACAAAAAACAgAAAAAACAAAACAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+    <Compartments>
+      <Compartment Name="Protected" Collapsed="true" />
+      <Compartment Name="Private" Collapsed="true" />
+    </Compartments>
+  </Class>
+  <Class Name="Yusen.GExplorer.AboutBox">
+    <Position X="18.75" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>AboutBox.cs</FileName>
+      <HashCode>kIAAAAgAACAgCAUAAACAAAADAAAAEIAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+    <Compartments>
+      <Compartment Name="Protected" Collapsed="true" />
+      <Compartment Name="Private" Collapsed="true" />
+    </Compartments>
+  </Class>
+  <Class Name="Yusen.GExplorer.MainForm">
+    <Position X="4" Y="7.25" Width="1.75" />
+    <TypeIdentifier>
+      <FileName>MainForm.cs</FileName>
+      <HashCode>BQDAACkAgTIAQCQgAADAEEADAIiKAQgAIAQAAAAJBiE=</HashCode>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="genreListView1" />
+      <Field Name="contentDetailView1" />
+    </ShowAsAssociation>
+    <Compartments>
+      <Compartment Name="Protected" Collapsed="true" />
+      <Compartment Name="Private" Collapsed="true" />
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Yusen.GExplorer.PlayerForm">
+    <Position X="11.5" Y="7.25" Width="1.75" />
+    <TypeIdentifier>
+      <FileName>PlayerForm.cs</FileName>
+      <HashCode>gQgCDHkCAiZAgCQnIACCgEBiwIDIAUAU4QADAqIQBmI=</HashCode>
+    </TypeIdentifier>
+    <Compartments>
+      <Compartment Name="Protected" Collapsed="true" />
+      <Compartment Name="Private" Collapsed="true" />
+    </Compartments>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Yusen.GExplorer.FormSettingsBase">
+    <Position X="9" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>FormSettingsBase.cs</FileName>
+      <HashCode>AAAAABAAACAAAEAAQACABAACAAAAAAAAoAAAAAAAAgA=</HashCode>
+    </TypeIdentifier>
+    <Compartments>
+      <Compartment Name="Protected" Collapsed="true" />
+      <Compartment Name="Private" Collapsed="true" />
+    </Compartments>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Yusen.GExplorer.UserCommandsEditor">
+    <Position X="14" Y="7.25" Width="1.75" />
+    <TypeIdentifier>
+      <FileName>UserCommandsEditor.cs</FileName>
+      <HashCode>ABAVAAgWQCAAAAgAACiAYEACAAhiBAME5AEFAQCBAyQ=</HashCode>
+    </TypeIdentifier>
+    <Compartments>
+      <Compartment Name="Protected" Collapsed="true" />
+      <Compartment Name="Private" Collapsed="true" />
+    </Compartments>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Yusen.GExplorer.GlobalSettingsEditor">
+    <Position X="9" Y="7.25" Width="1.75" />
+    <TypeIdentifier>
+      <FileName>GlobalSettingsEditor.cs</FileName>
+      <HashCode>ABAAAAAAACAAAAAAAECAAEACAABAAAAQYAAAAAAAAiA=</HashCode>
+    </TypeIdentifier>
+    <Compartments>
+      <Compartment Name="Protected" Collapsed="true" />
+      <Compartment Name="Private" Collapsed="true" />
+    </Compartments>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Yusen.GExplorer.NgContentsEditor">
+    <Position X="6.5" Y="7.25" Width="1.75" />
+    <TypeIdentifier>
+      <FileName>NgContentsEditor.cs</FileName>
+      <HashCode>BgIBERAQACAgIAAAAACQAEQCAgBUkEBAYABEAAAAEmI=</HashCode>
+    </TypeIdentifier>
+    <Compartments>
+      <Compartment Name="Protected" Collapsed="true" />
+      <Compartment Name="Private" Collapsed="true" />
+    </Compartments>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Yusen.GExplorer.GenreListView">
+    <Position X="1" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>GenreListView.cs</FileName>
+      <HashCode>AGAAgO0hACUIQgCAEiKACIBCkggRiUAEqAIACaAAQgY=</HashCode>
+    </TypeIdentifier>
+    <Compartments>
+      <Compartment Name="Protected" Collapsed="true" />
+      <Compartment Name="Private" Collapsed="true" />
+    </Compartments>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Yusen.GExplorer.ContentDetailView">
+    <Position X="1" Y="8.25" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>ContentDetailView.cs</FileName>
+      <HashCode>AAACgoFQM7AAQBAAABigAAEiAIEEASiCJgAAAEAABgA=</HashCode>
+    </TypeIdentifier>
+    <Compartments>
+      <Compartment Name="Protected" Collapsed="true" />
+      <Compartment Name="Private" Collapsed="true" />
+    </Compartments>
+    <Lollipop Position="0.2" />
+  </Class>
+</ClassDiagram>

@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Font Name="MS UI Gothic" Size="9" />
+  <Class Name="Yusen.GCrawler.GGenre">
+    <Position X="0.75" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>GGenre.cs</FileName>
+      <HashCode>AAQASAAEIKAAIIBEAACAQAIAAIQEAACgAAAAAAAAAAI=</HashCode>
+    </TypeIdentifier>
+    <NestedTypes>
+      <Class Name="Yusen.GCrawler.GGenre.GGenre200505" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>GGenre.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Yusen.GCrawler.GGenre.GGenre200507" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>GGenre.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+  </Class>
+  <Class Name="Yusen.GCrawler.GPackage">
+    <Position X="2.5" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>GPackage.cs</FileName>
+      <HashCode>gEDAACAMACAEAAAEAAAQABAIAAAQAAIAAAgAAABAgQA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yusen.GCrawler.GContent">
+    <Position X="4.25" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>GContent.cs</FileName>
+      <HashCode>AJAAAAIMQCQrAMAFgAEAAMAOCDsQAgAgEAiAIAAAgAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+</ClassDiagram>

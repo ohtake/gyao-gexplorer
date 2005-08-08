@@ -1,7 +1,19 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 9.00
 # Visual Studio 2005
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GExplorer", "GExplorer.csproj", "{6D8EB0CC-BB0F-4A99-94F7-99F426156490}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GExplorer", "GExplorer\GExplorer.csproj", "{80512014-643E-4E77-BEDD-FA0D0292DC52}"
+	ProjectSection(ProjectDependencies) = postProject
+		{2169861A-96F9-42F6-8CE9-7819F62BED6E} = {2169861A-96F9-42F6-8CE9-7819F62BED6E}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GCrawler", "GCrawler\GCrawler.csproj", "{2169861A-96F9-42F6-8CE9-7819F62BED6E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Makefiles", "Makefiles", "{E0A335A5-9F56-4508-B40E-A0A5E4091045}"
+	ProjectSection(SolutionItems) = postProject
+		BuildRelease.cmd = BuildRelease.cmd
+		CleanBoth.cmd = CleanBoth.cmd
+		RebuildRelease.cmd = RebuildRelease.cmd
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -9,10 +21,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{6D8EB0CC-BB0F-4A99-94F7-99F426156490}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6D8EB0CC-BB0F-4A99-94F7-99F426156490}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6D8EB0CC-BB0F-4A99-94F7-99F426156490}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6D8EB0CC-BB0F-4A99-94F7-99F426156490}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80512014-643E-4E77-BEDD-FA0D0292DC52}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80512014-643E-4E77-BEDD-FA0D0292DC52}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80512014-643E-4E77-BEDD-FA0D0292DC52}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80512014-643E-4E77-BEDD-FA0D0292DC52}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2169861A-96F9-42F6-8CE9-7819F62BED6E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2169861A-96F9-42F6-8CE9-7819F62BED6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2169861A-96F9-42F6-8CE9-7819F62BED6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2169861A-96F9-42F6-8CE9-7819F62BED6E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Font Name="MS UI Gothic" Size="9" />
+  <Comment CommentText="GenreListViewSettings が表示できないっぽい">
+    <Position X="2.485" Y="1.936" Height="0.75" Width="1.7" />
+  </Comment>
+  <Class Name="Yusen.GExplorer.GlobalSettings">
+    <Position X="16.5" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>GlobalSettings.cs</FileName>
+      <HashCode>AAACAEAEAABIAAQBAAAAAAAAACBAAAYAQAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+  </Class>
+  <Class Name="Yusen.GExplorer.MainFormSettings">
+    <Position X="4.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>MainForm.cs</FileName>
+      <HashCode>QAAAAAAAAAAAAAAggAAAAAAAAAAAAAACAAAAAEAAACA=</HashCode>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ContentDetailViewSettings" />
+    </ShowAsAssociation>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+  </Class>
+  <Class Name="Yusen.GExplorer.FormSettingsBaseSettings">
+    <Position X="9" Y="0.75" Width="2" />
+    <TypeIdentifier>
+      <FileName>FormSettingsBase.cs</FileName>
+      <HashCode>QAAABAAAAAAAAAAAQAAAhAAAAAAACAAAAAgAgAAAAAA=</HashCode>
+    </TypeIdentifier>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+  </Class>
+  <Class Name="Yusen.GExplorer.ContentDetailViewSettings">
+    <Position X="1.25" Y="3.25" Width="2" />
+    <TypeIdentifier>
+      <FileName>ContentDetailView.cs</FileName>
+      <HashCode>AAAAgAAEAAYABAAEAAAAAAAAAAAAAACAAAAAAgAAAAA=</HashCode>
+    </TypeIdentifier>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+  </Class>
+  <Class Name="Yusen.GExplorer.GlobalSettingsEditorSettings">
+    <Position X="9" Y="3.25" Width="2" />
+    <TypeIdentifier>
+      <FileName>GlobalSettingsEditor.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yusen.GExplorer.NgContentsEditorSettings">
+    <Position X="11.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>NgContentsEditor.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Yusen.GExplorer.PlayerFormSettings">
+    <Position X="6.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>PlayerForm.cs</FileName>
+      <HashCode>ABAAAAAEAAAAAAAAAAAAAAAAgAAAAEAAAAIAAAAQAAA=</HashCode>
+    </TypeIdentifier>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+  </Class>
+  <Class Name="Yusen.GExplorer.UserCommandsEditorSettings">
+    <Position X="14" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>UserCommandsEditor.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+</ClassDiagram>
