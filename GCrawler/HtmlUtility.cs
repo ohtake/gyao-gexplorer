@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 
 namespace Yusen.GCrawler {
 	static class HtmlUtility {
-		private static readonly Regex regexWhiteSpaces = new Regex(@"\s{2,}");
+		private static readonly Regex regexWhiteSpaces = new Regex(@"\s+");
 		private static readonly Regex regexTabBreak = new Regex(@"<[Bb][Rr] */? *>");
 		private static readonly Regex regexTab = new Regex(@"<[^>]*>");
 		

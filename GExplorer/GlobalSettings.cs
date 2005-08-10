@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using GBitRate = Yusen.GCrawler.GBitRate;
+using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
 
 namespace Yusen.GExplorer {
 	public class GlobalSettings {
@@ -66,6 +68,19 @@ namespace Yusen.GExplorer {
 				return
 					0 == this.UserNo
 					|| this.cookieTime.AddDays(GlobalSettings.CookieExpiresInDays) < DateTime.Now;
+			}
+		}
+		
+		[Category("GUI")]
+		[DisplayName("ビジュアルスタイル")]
+		[Description("ビジュアルスタイルの適用領域の指定．")]
+		[DefaultValue(VisualStyleState.ClientAndNonClientAreasEnabled)]
+		public VisualStyleState VisualStyle {
+			get {return Application.VisualStyleState;}
+			set {
+				if (value != Application.VisualStyleState) {
+					Application.VisualStyleState = value;
+				}
 			}
 		}
 	}

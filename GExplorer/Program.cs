@@ -28,6 +28,8 @@ namespace Yusen.GExplorer {
 				}
 			}
 			
+			GlobalSettings.Serialize();
+			
 			UserCommandsManager.Instance.DeserializeItems();
 			NgContentsManager.Instance.DeserializeItems();
 			Application.Run(new MainForm());

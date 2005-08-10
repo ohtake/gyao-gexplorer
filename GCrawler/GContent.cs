@@ -18,7 +18,7 @@ namespace Yusen.GCrawler {
 		private static readonly Regex regexImageDir = new Regex(@"<img src=""(/img/info/[a-z0-9]+/{1,2})cnt[0-9]+_[0-9a-z]*\.(?:jpg|gif)""");
 		private static readonly Regex regexEpisodeNum = new Regex(@"<td align=""left""><b>(.*)</b></td>");
 		private static readonly Regex regexDuration = new Regex(@"<td align=""right""><b>正味時間 : (.*)</b></td>");
-		private static readonly Regex regexDescription = new Regex(@"^(?:<td align=""[^""]*"">)?((?:[^<>]|<[Bb][Rr]>|(<[Aa][^>]*>)|</[Aa]>)+)</td>$");
+		private static readonly Regex regexDescription = new Regex(@"^\s*(?:<td align=""[^""]*"">)?((?:[^<>]|<[Bb][Rr]>|(<[Aa][^>]*>)|</[Aa]>)+)</td>$");
 		private const string endOfDescription = @"<table width=""770"" border=""0"" cellspacing=""0"" cellpadding=""0"">";
 		
 		static GContent() {
@@ -76,15 +76,35 @@ namespace Yusen.GCrawler {
 				+ "contentsId=" + contId
 				+ "&rateId=" + "bit" + ((int)bitrate).ToString("0000000")
 				+ "&login_from=shityou"
-				+ "&chapterNo=");
+				+ "&chapterNo="
+				+ "&recommend="
+				+ "&contents_id=");
+		}
+		public static Uri CreatePlayListUri(string contId, int userNo, GBitRate bitrate) {
+			return new Uri(
+				"http://www.gyao.jp/sityou/asx.php?"
+				+ "contentsId=" + contId
+				+ "&userNo=" + userNo
+				+ "&rateId=" + "bit" + ((int)bitrate).ToString("0000000"));
 		}
 		public static Uri CreateMediaFileUri(string contId, int userNo, GBitRate bitrate) {
-			return new Uri("rtsp://wms.cd.gyao.jp/gyaovod01?QueryString="
+			return new Uri(
+				"rtsp://wms.cd.gyao.jp/gyaovod01?QueryString="
 				+ "contentsId=" + contId
 				+ ":userNo=" + userNo.ToString()
 				+ ":rateId=" + "bit" + ((int)bitrate).ToString("0000000"));
 		}
-		public static bool TryDownload(string contId, out GContent cont) {
+		public static Uri CreateRecomendPageUri(string contId, GBitRate bitrate) {
+			return new Uri(
+				"http://www.gyao.jp/sityou/catedetail/?"
+				+ "contentsId=" + contId
+				+ "&rateId=" + "bit" + ((int)bitrate).ToString("0000000")
+				+ "&login_from=shityou"
+				+ "&chapterNo="
+				+ "&recommend=1"
+				+ "&contents_id=" + contId);
+		}
+		internal static bool TryDownload(string contId, out GContent cont) {
 			Uri uri = GContent.CreateDetailPageUri(contId);
 			TextReader reader = null;
 			try {
@@ -136,6 +156,9 @@ namespace Yusen.GCrawler {
 			}
 			group1 = null;
 			return false;
+		}
+		internal static GContent CreateDummyContent(string contId) {
+			return new GContent(contId, "(ダミー)", "(ダミー)", "???", "(ダミー)", "(ダミー)", "(ダミー)");
 		}
 
 		private string contentId;

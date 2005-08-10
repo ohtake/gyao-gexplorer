@@ -40,8 +40,10 @@ namespace Yusen.GExplorer {
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiQuit = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiTools = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiGlobalSettingsEditor = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiIgnoreCrawlErrors = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+			this.tsmiGlobalSettingsEditor = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiUserCommandsEditor = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiNgContentsEditor = new System.Windows.Forms.ToolStripMenuItem();
 			this.statusStrip1.SuspendLayout();
@@ -67,7 +69,7 @@ namespace Yusen.GExplorer {
 			this.statusStrip1.Location = new System.Drawing.Point(0, 0);
 			this.statusStrip1.Name = "statusStrip1";
 			this.statusStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.ManagerRenderMode;
-			this.statusStrip1.Size = new System.Drawing.Size(683, 27);
+			this.statusStrip1.Size = new System.Drawing.Size(683, 22);
 			this.statusStrip1.TabIndex = 0;
 			this.statusStrip1.Text = "statusStrip1";
 			// 
@@ -75,7 +77,7 @@ namespace Yusen.GExplorer {
 			// 
 			this.toolStripProgressBar1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.ImageAndText;
 			this.toolStripProgressBar1.Name = "toolStripProgressBar1";
-			this.toolStripProgressBar1.Size = new System.Drawing.Size(100, 20);
+			this.toolStripProgressBar1.Size = new System.Drawing.Size(100, 15);
 			this.toolStripProgressBar1.Text = "toolStripProgressBar1";
 			// 
 			// toolStripStatusLabel1
@@ -117,7 +119,7 @@ namespace Yusen.GExplorer {
 			this.tableLayoutPanel1.RowCount = 2;
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-			this.tableLayoutPanel1.Size = new System.Drawing.Size(683, 433);
+			this.tableLayoutPanel1.Size = new System.Drawing.Size(683, 438);
 			this.tableLayoutPanel1.TabIndex = 0;
 			// 
 			// genreTabControl1
@@ -167,7 +169,7 @@ namespace Yusen.GExplorer {
 			// splitContainer1.Panel2
 			// 
 			this.splitContainer1.Panel2.Controls.Add(this.contentDetailView1);
-			this.splitContainer1.Size = new System.Drawing.Size(683, 413);
+			this.splitContainer1.Size = new System.Drawing.Size(683, 418);
 			this.splitContainer1.SplitterDistance = 422;
 			this.splitContainer1.TabIndex = 2;
 			this.splitContainer1.Text = "splitContainer1";
@@ -181,9 +183,10 @@ namespace Yusen.GExplorer {
 			this.genreListView1.Margin = new System.Windows.Forms.Padding(0);
 			this.genreListView1.Name = "genreListView1";
 			this.genreListView1.NewColor = System.Drawing.Color.Red;
-			this.genreListView1.Size = new System.Drawing.Size(422, 413);
+			this.genreListView1.Size = new System.Drawing.Size(422, 418);
 			this.genreListView1.TabIndex = 1;
 			this.genreListView1.SelectedContentChanged += new System.EventHandler<Yusen.GExplorer.SelectedContentChangedEventArgs>(this.genreListView1_SelectedContentChanged);
+			this.genreListView1.GenreShowed += new System.EventHandler<Yusen.GExplorer.GenreListViewGenreShowedEventArgs>(this.genreListView1_GenreShowed);
 			// 
 			// contentDetailView1
 			// 
@@ -191,7 +194,7 @@ namespace Yusen.GExplorer {
 			this.contentDetailView1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.contentDetailView1.Location = new System.Drawing.Point(0, 0);
 			this.contentDetailView1.Name = "contentDetailView1";
-			this.contentDetailView1.Size = new System.Drawing.Size(257, 413);
+			this.contentDetailView1.Size = new System.Drawing.Size(257, 418);
 			this.contentDetailView1.TabIndex = 0;
 			// 
 			// menuStrip1
@@ -237,12 +240,24 @@ namespace Yusen.GExplorer {
 			// tsmiTools
 			// 
 			this.tsmiTools.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiGlobalSettingsEditor,
+            this.tsmiIgnoreCrawlErrors,
             this.toolStripSeparator2,
+            this.tsmiGlobalSettingsEditor,
+            this.toolStripSeparator3,
             this.tsmiUserCommandsEditor,
             this.tsmiNgContentsEditor});
 			this.tsmiTools.Name = "tsmiTools";
 			this.tsmiTools.Text = "ツール (&T)";
+			// 
+			// tsmiIgnoreCrawlErrors
+			// 
+			this.tsmiIgnoreCrawlErrors.CheckOnClick = true;
+			this.tsmiIgnoreCrawlErrors.Name = "tsmiIgnoreCrawlErrors";
+			this.tsmiIgnoreCrawlErrors.Text = "クロール時の無視可能エラーを全て無視 (&I)";
+			// 
+			// toolStripSeparator2
+			// 
+			this.toolStripSeparator2.Name = "toolStripSeparator2";
 			// 
 			// tsmiGlobalSettingsEditor
 			// 
@@ -250,9 +265,9 @@ namespace Yusen.GExplorer {
 			this.tsmiGlobalSettingsEditor.Text = "グローバル設定エディタ (&G)";
 			this.tsmiGlobalSettingsEditor.Click += new System.EventHandler(this.tsmiGlobalSettingsEditor_Click);
 			// 
-			// toolStripSeparator2
+			// toolStripSeparator3
 			// 
-			this.toolStripSeparator2.Name = "toolStripSeparator2";
+			this.toolStripSeparator3.Name = "toolStripSeparator3";
 			// 
 			// tsmiUserCommandsEditor
 			// 
@@ -317,6 +332,8 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ToolStripMenuItem tsmiNgContentsEditor;
 		private System.Windows.Forms.ToolStripMenuItem tsmiGlobalSettingsEditor;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+		private System.Windows.Forms.ToolStripMenuItem tsmiIgnoreCrawlErrors;
 
 
 	}

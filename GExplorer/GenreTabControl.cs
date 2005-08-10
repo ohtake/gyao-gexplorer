@@ -47,7 +47,7 @@ namespace Yusen.GExplorer {
 							if (null != gtp) {
 								gtp.ShowContextMenu();
 							}
-							base.SelectedIndex = i;
+							//base.SelectedIndex = i;
 						}
 					}
 					break;

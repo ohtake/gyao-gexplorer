@@ -9,6 +9,7 @@ using System.Xml.Serialization;
 namespace Yusen.GExplorer {
 	partial class GenreListView : UserControl, IHasSettings<GenreListViewSettings>{
 		public event EventHandler<SelectedContentChangedEventArgs> SelectedContentChanged;
+		public event EventHandler<GenreListViewGenreShowedEventArgs> GenreShowed;
 		
 		private GGenre genre;
 		private AboneType aboneType = AboneType.Sabori;
@@ -54,6 +55,9 @@ namespace Yusen.GExplorer {
 					} else {
 						this.ClearContents();
 						this.DisplayContents();
+						if (null != this.GenreShowed) {
+							this.GenreShowed(this, new GenreListViewGenreShowedEventArgs(this.genre, this.listView1.Items.Count));
+						}
 					}
 				}
 			}
@@ -228,7 +232,7 @@ namespace Yusen.GExplorer {
 			Clipboard.SetText(this.SelectedContent.DetailPageUri.AbsoluteUri);
 		}
 		private void tsmiCopyNameAndDetailUri_Click(object sender, EventArgs e) {
-			Clipboard.SetText(this.SelectedContent.DisplayName + "\n" + this.SelectedContent.DetailPageUri.AbsoluteUri);
+			Clipboard.SetText(this.SelectedContent.DisplayName + "\r\n" + this.SelectedContent.DetailPageUri.AbsoluteUri);
 		}
 		private void tsmiAddNgWithId_Click(object sender, EventArgs e) {
 			string contId = this.SelectedContent.ContentId;
@@ -262,6 +266,20 @@ namespace Yusen.GExplorer {
 			get {
 				return null != this.content;
 			}
+		}
+	}
+	class GenreListViewGenreShowedEventArgs : EventArgs {
+		private readonly GGenre genre;
+		private readonly int numCont;
+		public GenreListViewGenreShowedEventArgs(GGenre genre, int numCont) {
+			this.genre = genre;
+			this.numCont = numCont;
+		}
+		public GGenre Genre {
+			get { return this.genre; }
+		}
+		public int NumberOfContents {
+			get { return this.numCont; }
 		}
 	}
 	public enum AboneType {

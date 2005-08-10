@@ -54,7 +54,7 @@ namespace Yusen.GExplorer {
 				this.txtEpisode.Text = value.EpisodeNumber;
 				this.txtSubtitle.Text = value.SubTitle;
 				this.txtDuration.Text = value.Duration;
-				this.txtDescription.Text = value.LongDescription.Replace("\n", "\r\n").Trim();
+				this.txtDescription.Text = value.LongDescription.Replace("\n", "\r\n");
 				this.propgDetail.SelectedObject = value;
 				this.LoadImageAsync();
 			}
@@ -121,7 +121,6 @@ namespace Yusen.GExplorer {
 			this.picboxImage.Image = null;
 		}
 		private void LoadImageAsync() {
-			this.picboxImage.CancelAsync();
 			Uri uri = this.ImageUri;
 			if(null == uri){
 				this.picboxImage.Image = null;
@@ -135,13 +134,13 @@ namespace Yusen.GExplorer {
 		private void tsmiCopyNameAndImageUri_Click(object sender, EventArgs e) {
 			string name = this.Content.DisplayName;
 			string uri = this.ImageUri.AbsoluteUri;
-			Clipboard.SetText(name + "\n"+ uri);
+			Clipboard.SetText(name + "\r\n"+ uri);
 		}
 		private void tsmiCopyNameDetailImageUri_Click(object sender, EventArgs e) {
 			string name = this.Content.DisplayName;
 			string detail = this.Content.DetailPageUri.AbsoluteUri;
 			string uri = this.ImageUri.AbsoluteUri;
-			Clipboard.SetText(name + "\n" + detail + "\n"+ uri);
+			Clipboard.SetText(name + "\r\n" + detail + "\r\n"+ uri);
 		}
 		private void tsmiCopyImage_Click(object sender, EventArgs e) {
 			if (null != this.picboxImage.Image) {

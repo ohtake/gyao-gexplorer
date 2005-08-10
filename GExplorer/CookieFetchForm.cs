@@ -20,10 +20,12 @@ namespace Yusen.GExplorer {
 			this.DialogResult = DialogResult.None;
 			
 			this.webBrowser1.Navigated += delegate{
+				// ルートディレクトリにアクセスした場合
 				//未登録時のcookie
 				//GYAOSID=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 				//登録後のcookie
 				//Cookie_UserId=000000; Cookie_CookieId=0000000000; GYAOSID=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+				//ルート以外だと別のになるっぽい
 				string cookie = this.webBrowser1.Document.Cookie;
 				Match matchUserNo = CookieFetchForm.regexUserNo.Match(cookie);
 #if COOKIE
@@ -64,7 +66,7 @@ namespace Yusen.GExplorer {
 				this.Close();
 			};
 			
-			this.webBrowser1.Navigate("http://www.gyao.jp/");
+			this.webBrowser1.Navigate("http://www.gyao.jp/about/");
 		}
 	}
 }

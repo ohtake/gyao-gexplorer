@@ -9,7 +9,7 @@ using Yusen.GCrawler;
 namespace Yusen.GExplorer {
 	partial class MainForm : FormSettingsBase , IFormWithSettings<MainFormSettings>{
 		private Crawler crawler = new Crawler(new HtmlParserRegex(), new ContentCacheControllerXml("Cache"));
-
+		
 		public MainForm() {
 			InitializeComponent();
 			this.Text = Application.ProductName + " " + Application.ProductVersion;
@@ -20,23 +20,27 @@ namespace Yusen.GExplorer {
 				this.genreTabControl1.AddGenre(genre);
 			}
 			this.genreTabControl1.SelectedIndex = -1;
-			crawler.CrawlProgress += new EventHandler<CrawlProgressEventArgs>(crawler_CrawlProgress);
-
+			
+			this.crawler.CrawlProgress += new EventHandler<CrawlProgressEventArgs>(crawler_CrawlProgress);
+			this.crawler.IgnorableErrorOccured += new EventHandler<IgnorableErrorOccuredEventArgs>(crawler_IgnorableErrorOccured);
+			
 			Utility.LoadSettingsAndEnableSaveOnClosed(this);
 		}
-
+		
 		private void ClearStatusBarInfo() {
 			this.toolStripProgressBar1.Value = 0;
 			this.toolStripStatusLabel1.Text = "";
 		}
 		public void FillSettings(MainFormSettings settings) {
 			base.FillSettings(settings);
+			settings.IgnoreCrawlErrors = this.IgnoreCrawlErrors;
 			settings.ListViewWidth = this.splitContainer1.SplitterDistance;
 			this.genreListView1.FillSettings(settings.GenreListViewSettings);
 			this.contentDetailView1.FillSettings(settings.ContentDetailViewSettings);
 		}
 		public void ApplySettings(MainFormSettings settings) {
 			base.ApplySettings(settings);
+			this.IgnoreCrawlErrors = settings.IgnoreCrawlErrors??this.IgnoreCrawlErrors;
 			this.splitContainer1.SplitterDistance = settings.ListViewWidth ?? this.splitContainer1.SplitterDistance;
 			this.genreListView1.ApplySettings(settings.GenreListViewSettings);
 			this.contentDetailView1.ApplySettings(settings.ContentDetailViewSettings);
@@ -44,6 +48,12 @@ namespace Yusen.GExplorer {
 		public string FilenameForSettings {
 			get { return @"MainFormSettings.xml"; }
 		}
+		
+		public bool IgnoreCrawlErrors {
+			get {return this.tsmiIgnoreCrawlErrors.Checked;}
+			set {this.tsmiIgnoreCrawlErrors.Checked = value;}
+		}
+		
 		private void MainForm_Load(object sender, EventArgs e) {
 			this.ClearStatusBarInfo();
 		}
@@ -54,27 +64,55 @@ namespace Yusen.GExplorer {
 			this.toolStripStatusLabel1.Text = e.Message;
 			Application.DoEvents();
 		}
+		void crawler_IgnorableErrorOccured(object sender, IgnorableErrorOccuredEventArgs e) {
+			if (!this.IgnoreCrawlErrors) {
+				if (DialogResult.No == MessageBox.Show(
+						"クロール時に以下の無視可能エラーが起きました．無視して続行しますか？\n\n"
+						+ e.Message,
+						"クロール時の無視可能エラー",
+						MessageBoxButtons.YesNo, MessageBoxIcon.Question)) {
+					e.Ignore = false;
+				}
+			}
+		}
 
 		private void genreListView1_SelectedContentChanged(object sender, SelectedContentChangedEventArgs e) {
-			this.contentDetailView1.Content = e.Content;
+			if (e.IsSelected) {
+				this.contentDetailView1.Content = e.Content;
+			}
+		}
+		private void genreListView1_GenreShowed(object sender, GenreListViewGenreShowedEventArgs e) {
+			if (null != e.Genre) {
+				this.toolStripProgressBar1.Value = 0;
+				this.toolStripStatusLabel1.Text =
+					"[" + e.Genre.GenreName + "]"
+					+ " " + e.NumberOfContents.ToString() + "個のコンテンツ"
+					+ " (クロール時刻 " + e.Genre.LastCrawlTime.ToShortTimeString() + ")";
+			}
 		}
 
 		private void genreTabControl1_GenreDoubleClick(object sender, GenreTabPageEventArgs e) {
 			GGenre genre = e.Genre;
 			if (null == genre) return;
-			this.crawler.Crawl(genre);
-			this.genreListView1.Genre = genre;
+			CrawlResult result = this.crawler.Crawl(genre);
 			this.ClearStatusBarInfo();
+			if (result.Success) {
+				this.genreListView1.Genre = genre;
+			}
 		}
-
+		
 		private void genreTabControl1_GenreSelected(object sender, GenreTabPageEventArgs e) {
 			GGenre genre = e.Genre;
 			if (null == genre) return;
 			if (!genre.HasCrawled) {
-				this.crawler.Crawl(genre);
+				CrawlResult result = this.crawler.Crawl(genre);
+				this.ClearStatusBarInfo();
+				if (result.Success) {
+					this.genreListView1.Genre = genre;
+				}
+			} else {
+				this.genreListView1.Genre = genre;
 			}
-			this.genreListView1.Genre = genre;
-			this.ClearStatusBarInfo();
 		}
 
 		private void tsmiQuit_Click(object sender, EventArgs e) {
@@ -95,14 +133,18 @@ namespace Yusen.GExplorer {
 			NgContentsEditor.Instance.Show();
 			NgContentsEditor.Instance.Focus();
 		}
-
 	}
 
 	public class MainFormSettings : FormSettingsBaseSettings {
+		private bool? ignoreCrawlErrors;
 		private int? listViewWidth;
 		private GenreListViewSettings genreListViewSettings = new GenreListViewSettings();
 		private ContentDetailViewSettings contentDetailViewSettings = new ContentDetailViewSettings();
-		
+
+		public bool? IgnoreCrawlErrors {
+			get { return this.ignoreCrawlErrors; }
+			set { this.ignoreCrawlErrors = value; }
+		}
 		public int? ListViewWidth {
 			get { return this.listViewWidth; }
 			set { this.listViewWidth = value; }

@@ -18,7 +18,7 @@ namespace Yusen.GExplorer {
 				Clipboard.SetText(this.Genre.TopPageUri.AbsoluteUri);
 			};
 			this.tsmiCopyGenreNameAndUri.Click += delegate{
-				Clipboard.SetText(this.Genre.GenreName + "\n" + this.Genre.TopPageUri.AbsoluteUri);
+				Clipboard.SetText(this.Genre.GenreName + "\r\n" + this.Genre.TopPageUri.AbsoluteUri);
 			};
 			this.tsmiBrowseTopWithIE.Click += delegate {
 				Utility.BrowseWithIE(this.Genre.TopPageUri);
