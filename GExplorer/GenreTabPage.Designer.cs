@@ -48,8 +48,7 @@ namespace Yusen.GExplorer {
 			this.cmsGenre.Location = new System.Drawing.Point(9, 50);
 			this.cmsGenre.Name = "cmsGenre";
 			this.cmsGenre.RightToLeft = System.Windows.Forms.RightToLeft.No;
-			this.cmsGenre.Size = new System.Drawing.Size(203, 139);
-			this.cmsGenre.Visible = true;
+			this.cmsGenre.Size = new System.Drawing.Size(203, 120);
 			// 
 			// tsmiCopyGenreName
 			// 
@@ -79,6 +78,10 @@ namespace Yusen.GExplorer {
 			// 
 			this.tsmiBrowseTimetableWithIe.Name = "tsmiBrowseTimetableWithIe";
 			this.tsmiBrowseTimetableWithIe.Text = "”Ô‘g•\‚ðIE‚ÅŠJ‚­ (&T)";
+			// 
+			// GenreTabPage
+			// 
+			this.ContextMenuStrip = this.cmsGenre;
 			this.cmsGenre.ResumeLayout(false);
 			this.ResumeLayout(false);
 

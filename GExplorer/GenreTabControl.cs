@@ -13,7 +13,7 @@ namespace Yusen.GExplorer {
 		public GenreTabControl() {
 			InitializeComponent();
 		}
-		
+
 		public void AddGenre(GGenre genre) {
 			GenreTabPage gtp = new GenreTabPage(genre);
 			base.TabPages.Add(gtp);
@@ -36,7 +36,7 @@ namespace Yusen.GExplorer {
 				}
 			}
 		}
-
+		
 		private void GenreTabControl_MouseClick(object sender, MouseEventArgs e) {
 			switch (e.Button) {
 				case MouseButtons.Right:
@@ -47,7 +47,14 @@ namespace Yusen.GExplorer {
 							if (null != gtp) {
 								gtp.ShowContextMenu();
 							}
-							//base.SelectedIndex = i;
+						}
+					}
+					break;
+				case MouseButtons.Middle:
+					for (int i=0; i<base.TabCount; i++) {
+						Rectangle tabRect = base.GetTabRect(i);
+						if (tabRect.Contains(e.Location)) {
+							this.TabPages.RemoveAt(i);
 						}
 					}
 					break;
@@ -72,7 +79,7 @@ namespace Yusen.GExplorer {
 			}
 		}
 	}
-	
+
 	class GenreTabPageEventArgs : EventArgs {
 		private readonly GGenre genre;
 		public GenreTabPageEventArgs(GGenre genre) {

@@ -170,7 +170,7 @@ namespace Yusen.GExplorer {
 				};
 				this.tsmiUserCommands.DropDownItems.Add(tsmi);
 			}
-			this.tsmiUserCommands.Enabled = (this.tsmiUserCommands.DropDownItems.Count > 0);
+			this.tsmiUserCommands.Enabled = this.tsmiUserCommands.HasDropDownItems;
 		}
 		private void RefleshView() {
 			this.Genre = this.Genre;
@@ -190,14 +190,14 @@ namespace Yusen.GExplorer {
 		private void listView1_DoubleClick(object sender, EventArgs e) {
 			ContentAdapter cont = this.SelectedContent;
 			if (null != cont) {
-				PlayerForm.Play(cont);
+				PlayerForm.AddToPlayList(cont);
 			}
 		}
 		private void listView1_KeyDown(object sender, KeyEventArgs e) {
 			switch (e.KeyCode) {
 				case Keys.Enter:
 					if (null != this.SelectedContent) {
-						PlayerForm.Play(this.SelectedContent);
+						PlayerForm.AddToPlayList(this.SelectedContent);
 					}
 					break;
 			}
@@ -213,8 +213,8 @@ namespace Yusen.GExplorer {
 			this.tsmiNewColor.Enabled = true;
 		}
 		
-		private void tsmiPlay_Click(object sender, EventArgs e) {
-			PlayerForm.Play(this.SelectedContent);
+		private void tsmiAddToPlaylist_Click(object sender, EventArgs e) {
+			PlayerForm.AddToPlayList(this.SelectedContent);
 		}
 		private void tsmiPlayWithWmp_Click(object sender, EventArgs e) {
 			Utility.PlayWithWMP(this.SelectedContent.MediaFileUri);

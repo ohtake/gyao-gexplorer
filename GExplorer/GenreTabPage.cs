@@ -30,6 +30,7 @@ namespace Yusen.GExplorer {
 		public GenreTabPage(GGenre genre) : this() {
 			this.genre = genre;
 			base.Text = genre.GenreName;
+			//base.ToolTipText = genre.GenreName + "\r\n" + genre.TopPageUri.AbsoluteUri;
 		}
 		
 		public GGenre Genre {

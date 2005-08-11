@@ -20,7 +20,7 @@ namespace Yusen.GExplorer {
 				this.genreTabControl1.AddGenre(genre);
 			}
 			this.genreTabControl1.SelectedIndex = -1;
-			
+
 			this.crawler.CrawlProgress += new EventHandler<CrawlProgressEventArgs>(crawler_CrawlProgress);
 			this.crawler.IgnorableErrorOccured += new EventHandler<IgnorableErrorOccuredEventArgs>(crawler_IgnorableErrorOccured);
 			
@@ -120,6 +120,9 @@ namespace Yusen.GExplorer {
 		}
 		private void tsmiBrowseTop_Click(object sender, EventArgs e) {
 			Utility.BrowseWithIE(new Uri("http://www.gyao.jp/"));
+		}
+		private void tsmiPlayerForm_Click(object sender, EventArgs e) {
+			PlayerForm.ShowAndFocus();
 		}
 		private void tsmiGlobalSettingsEditor_Click(object sender, EventArgs e) {
 			GlobalSettingsEditor.Instance.Show();

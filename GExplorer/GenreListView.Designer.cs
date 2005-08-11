@@ -134,15 +134,14 @@ namespace Yusen.GExplorer {
 			this.cmsContent.Location = new System.Drawing.Point(21, 36);
 			this.cmsContent.Name = "contextMenuStrip1";
 			this.cmsContent.RightToLeft = System.Windows.Forms.RightToLeft.No;
-			this.cmsContent.Size = new System.Drawing.Size(263, 289);
-			this.cmsContent.Visible = true;
+			this.cmsContent.Size = new System.Drawing.Size(263, 270);
 			this.cmsContent.Opening += new System.ComponentModel.CancelEventHandler(this.cmsContent_Opening);
 			// 
 			// tsmiPlay
 			// 
 			this.tsmiPlay.Name = "tsmiPlay";
-			this.tsmiPlay.Text = "専用プレーヤで再生 (&P)";
-			this.tsmiPlay.Click += new System.EventHandler(this.tsmiPlay_Click);
+			this.tsmiPlay.Text = "プレイリストに追加 (&P)";
+			this.tsmiPlay.Click += new System.EventHandler(this.tsmiAddToPlaylist_Click);
 			// 
 			// tsmiPlayWithWmp
 			// 
