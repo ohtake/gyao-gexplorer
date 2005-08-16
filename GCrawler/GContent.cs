@@ -157,8 +157,8 @@ namespace Yusen.GCrawler {
 			group1 = null;
 			return false;
 		}
-		internal static GContent CreateDummyContent(string contId) {
-			return new GContent(contId, "(ダミー)", "(ダミー)", "???", "(ダミー)", "(ダミー)", "(ダミー)");
+		internal static GContent CreateDummyContent(string contId, GGenre genre) {
+			return new GContent(contId, "(ダミー)", "(ダミー)", "/img/info/"+genre.ImageDirName+"/", "(ダミー)", "(ダミー)", "(ダミー)");
 		}
 
 		private string contentId;

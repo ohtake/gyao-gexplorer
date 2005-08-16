@@ -119,6 +119,12 @@
       <DependentUpon>PlayerForm.cs</DependentUpon>
     </Compile>
     <Compile Include="PlayList.cs" />
+    <Compile Include="PlayListView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PlayListView.Designer.cs">
+      <DependentUpon>PlayListView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="AboutBox.resx">
@@ -151,13 +157,16 @@
     <EmbeddedResource Include="PlayerForm.resx">
       <DependentUpon>PlayerForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="PlayListView.resx">
+      <DependentUpon>PlayListView.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="GenreListView.resx">
-      <DependentUpon>GenreListView.cs</DependentUpon>
+    <EmbeddedResource Include="CrawlResultView.resx">
+      <DependentUpon>CrawlResultView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UserCommandsEditor.resx">
       <DependentUpon>UserCommandsEditor.cs</DependentUpon>
@@ -178,11 +187,11 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="GenreListView.cs">
+    <Compile Include="CrawlResultView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="GenreListView.Designer.cs">
-      <DependentUpon>GenreListView.cs</DependentUpon>
+    <Compile Include="CrawlResultView.Designer.cs">
+      <DependentUpon>CrawlResultView.cs</DependentUpon>
     </Compile>
     <Compile Include="UserCommand.cs" />
     <Compile Include="UserCommandsEditor.cs">

@@ -32,9 +32,14 @@ namespace Yusen.GExplorer {
 			
 			UserCommandsManager.Instance.DeserializeItems();
 			NgContentsManager.Instance.DeserializeItems();
+			PlayList.Instance.DeserializeItems();
+			
 			Application.Run(new MainForm());
+			
+			PlayList.Instance.SerializeItems();
 			NgContentsManager.Instance.SerializeItems();
 			UserCommandsManager.Instance.SerializeItems();
+			
 			GlobalSettings.Serialize();
 		}
 		

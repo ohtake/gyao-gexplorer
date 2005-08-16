@@ -75,7 +75,7 @@ namespace Yusen.GCrawler {
 	}
 	
 	public class HtmlParserRegex : IHtmlParser {
-		private static readonly Regex regexAnchorHref = new Regex(@"<a href=""(.+?)""");
+		private static readonly Regex regexAnchorHref = new Regex(@"<(?:a|area) [^>]*href=""(.+?)""");
 		private static readonly Regex regexImgSrc = new Regex(@"<img src=""(.+?)""");
 		private const string beginComment = "<!--";
 		private const string endComment = "-->";

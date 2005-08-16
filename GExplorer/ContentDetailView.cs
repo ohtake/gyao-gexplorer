@@ -44,6 +44,9 @@ namespace Yusen.GExplorer {
 				return this.contAd;
 			}
 			set {
+				if (this.contAd == value) {
+					return;
+				}
 				this.contAd = value;
 				if (null == value) {
 					this.ClearDisplayedInfo();

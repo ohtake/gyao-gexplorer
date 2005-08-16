@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Windows.Forms;
 using System.Drawing;
 using GGenre = Yusen.GCrawler.GGenre;
+using Yusen.GCrawler;
 
 namespace Yusen.GExplorer {
 	partial class GenreTabControl : TabControl {
@@ -82,7 +83,8 @@ namespace Yusen.GExplorer {
 
 	class GenreTabPageEventArgs : EventArgs {
 		private readonly GGenre genre;
-		public GenreTabPageEventArgs(GGenre genre) {
+		
+		public GenreTabPageEventArgs(GGenre genre){
 			this.genre = genre;
 		}
 		public GGenre Genre {

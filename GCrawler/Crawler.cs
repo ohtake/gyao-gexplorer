@@ -163,7 +163,7 @@ namespace Yusen.GCrawler {
 					}
 					//ダウンロード失敗
 					if (this.OnIgnorableErrorOccured("詳細ページの取得ミスまたは解析ミス．" + contId)) {
-						content = GContent.CreateDummyContent(contId);
+						content = GContent.CreateDummyContent(contId, this.genre);
 						this.visitedContents.Add(contId, content);
 						this.contentsCached.Add(contId, false);
 						continue;

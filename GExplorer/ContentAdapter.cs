@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Text;
 using Yusen.GCrawler;
@@ -152,6 +153,20 @@ namespace Yusen.GExplorer {
 		}
 		public override string ToString() {
 			return "<" + this.ContentId + "> " + this.DisplayName;
+		}
+	}
+
+	class SelectedContentsChangedEventArgs : EventArgs {
+		private ReadOnlyCollection<ContentAdapter> contents;
+
+		public SelectedContentsChangedEventArgs() {
+			this.contents = new ReadOnlyCollection<ContentAdapter>(new List<ContentAdapter>());
+		}
+		public SelectedContentsChangedEventArgs(IEnumerable<ContentAdapter> contents) {
+			this.contents = new ReadOnlyCollection<ContentAdapter>(new List<ContentAdapter>(contents));
+		}
+		public ReadOnlyCollection<ContentAdapter> Contents {
+			get { return this.contents; }
 		}
 	}
 }

@@ -5,20 +5,20 @@ using System.Windows.Forms;
 using System.Drawing;
 using Yusen.GCrawler;
 using System.Xml.Serialization;
+using System.Text;
 
 namespace Yusen.GExplorer {
-	partial class GenreListView : UserControl, IHasSettings<GenreListViewSettings>{
-		public event EventHandler<SelectedContentChangedEventArgs> SelectedContentChanged;
-		public event EventHandler<GenreListViewGenreShowedEventArgs> GenreShowed;
+	partial class CrawlResultView : UserControl, IHasSettings<GenreListViewSettings>{
+		public event EventHandler<SelectedContentsChangedEventArgs> SelectedContentsChanged;
 		
-		private GGenre genre;
+		private CrawlResult crawlResult;
 		private AboneType aboneType = AboneType.Sabori;
 		private Color newColor = Color.Red;
 		
-		public GenreListView() {
+		public CrawlResultView() {
 			InitializeComponent();
-			
-			this.tsmiPlay.Font = new Font(this.tsmiPlay.Font, FontStyle.Bold);
+			this.tslTitle.Font = new Font(this.tslTitle.Font, FontStyle.Bold);
+			this.tsmiAdd.Font = new Font(this.tsmiAdd.Font, FontStyle.Bold);
 			
 			this.tsmiAboneType.DropDownItems.Clear();
 			foreach (AboneType atype in Enum.GetValues(typeof(AboneType))) {
@@ -43,34 +43,42 @@ namespace Yusen.GExplorer {
 			};
 
 		}
-		public GGenre Genre {
+		public CrawlResult CrawlResult {
 			get {
-				return this.genre;
+				return this.crawlResult;
 			}
 			set {
 				lock (this) {
-					this.genre = value;
+					this.crawlResult = value;
 					if (null == value) {
 						this.ClearContents();
 					} else {
 						this.ClearContents();
 						this.DisplayContents();
-						if (null != this.GenreShowed) {
-							this.GenreShowed(this, new GenreListViewGenreShowedEventArgs(this.genre, this.listView1.Items.Count));
-						}
 					}
 				}
 			}
 		}
-		public ContentAdapter SelectedContent {
+		public GGenre Genre {
+			get { return this.CrawlResult.Genre; }
+		}
+		public ContentAdapter[] SelectedContents {
 			get {
-				if (1 == this.listView1.SelectedItems.Count) {
-					return this.listView1.SelectedItems[0].Tag as ContentAdapter;
-				} else {
-					return null;
+				List<ContentAdapter> conts = new List<ContentAdapter>();
+				foreach (ListViewItem lvi in this.listView1.SelectedItems) {
+					conts.Add(lvi.Tag as ContentAdapter);
+				}
+				return conts.ToArray();
+			}
+			private set {
+				List<ContentAdapter> conts = new List<ContentAdapter>(value);
+				foreach (ListViewItem lvi in this.listView1.Items) {
+					lvi.Selected = conts.Contains(lvi.Tag as ContentAdapter);
 				}
 			}
 		}
+
+
 		public AboneType AboneType {
 			get { return this.aboneType; }
 			set {
@@ -83,6 +91,29 @@ namespace Yusen.GExplorer {
 				}
 			}
 		}
+		public bool ShowPackages {
+			get { return this.tsmiShowPackages.Checked; }
+			set {
+				this.tsmiShowPackages.Checked = value;
+				this.listView1.ShowGroups = value;
+			}
+		}
+		public bool HoverSelect {
+			get { return this.tsmiHoverSelect.Checked; }
+			set {
+				this.tsmiHoverSelect.Checked = value;
+				this.listView1.HotTracking = value;
+				this.listView1.HoverSelection = value;
+				this.listView1.Activation = value ? ItemActivation.OneClick : ItemActivation.Standard;
+			}
+		}
+		public bool MultiSelect {
+			get { return this.tsmiMultiSelect.Checked; }
+			set {
+				this.tsmiMultiSelect.Checked = value;
+				this.listView1.MultiSelect = value;
+			}
+		}
 		public Color NewColor {
 			get { return this.newColor; }
 			set {
@@ -93,36 +124,46 @@ namespace Yusen.GExplorer {
 			}
 		}
 		public void FillSettings(GenreListViewSettings settings) {
-			settings.ColWidthId = this.listView1.Columns[0].Width;
-			settings.ColWidthTitle = this.listView1.Columns[1].Width;
-			settings.ColWidthEpisode = this.listView1.Columns[2].Width;
-			settings.ColWidthSubtitle = this.listView1.Columns[3].Width;
-			settings.ColWidthDuration = this.listView1.Columns[4].Width;
-			settings.ColWidthLongDesc = this.listView1.Columns[5].Width;
+			settings.ColWidthId = this.chId.Width;
+			settings.ColWidthTitle = this.chTitle.Width;
+			settings.ColWidthEpisode = this.chEpisode.Width;
+			settings.ColWidthSubtitle = this.chSubTitle.Width;
+			settings.ColWidthDuration = this.chDuration.Width;
+			settings.ColWidthLongDesc = this.chDescription.Width;
 			settings.AboneType = this.AboneType;
+			settings.ShowPackages = this.ShowPackages;
+			settings.HoverSelect = this.HoverSelect;
+			settings.MultiSelect = this.MultiSelect;
 			settings.NewColor = this.NewColor;
 		}
 		public void ApplySettings(GenreListViewSettings settings) {
-			this.listView1.Columns[0].Width = settings.ColWidthId ?? this.listView1.Columns[0].Width;
-			this.listView1.Columns[1].Width = settings.ColWidthTitle ?? this.listView1.Columns[1].Width;
-			this.listView1.Columns[2].Width = settings.ColWidthEpisode ?? this.listView1.Columns[2].Width;
-			this.listView1.Columns[3].Width = settings.ColWidthSubtitle ?? this.listView1.Columns[3].Width;
-			this.listView1.Columns[4].Width = settings.ColWidthDuration ?? this.listView1.Columns[4].Width;
-			this.listView1.Columns[5].Width = settings.ColWidthLongDesc ?? this.listView1.Columns[5].Width;
+			this.chId.Width = settings.ColWidthId ?? this.chId.Width;
+			this.chTitle.Width = settings.ColWidthTitle ?? this.chTitle.Width;
+			this.chEpisode.Width = settings.ColWidthEpisode ?? this.chEpisode.Width;
+			this.chSubTitle.Width = settings.ColWidthSubtitle ?? this.chSubTitle.Width;
+			this.chDuration.Width = settings.ColWidthDuration ?? this.chDuration.Width;
+			this.chDescription.Width = settings.ColWidthLongDesc ?? this.chDescription.Width;
 			this.AboneType = settings.AboneType ?? this.AboneType;
+			this.ShowPackages = settings.ShowPackages ?? this.ShowPackages;
+			this.HoverSelect = settings.HoverSelect ?? this.HoverSelect;
+			this.MultiSelect = settings.MultiSelect ?? this.MultiSelect;
 			this.NewColor = settings.NewColor ?? this.NewColor;
 		}
 		private void ClearContents() {
-			if (null != this.SelectedContentChanged) {
-				this.SelectedContentChanged(this, new SelectedContentChangedEventArgs());
+			if (null != this.SelectedContentsChanged) {
+				this.SelectedContentsChanged(this, new SelectedContentsChangedEventArgs());
 			}
 			this.listView1.BeginUpdate();
 			this.listView1.Items.Clear();
 			this.listView1.Groups.Clear();
 			this.listView1.EndUpdate();
+			this.tslMessage.Text = "";
 		}
 		private void DisplayContents(){
 			this.listView1.BeginUpdate();
+			bool showPackages = this.ShowPackages;
+			this.ShowPackages = true;
+			int abones = 0;
 			foreach (GPackage p in this.Genre.Packages) {
 				ListViewGroup group = new ListViewGroup(p.ToString());
 				this.listView1.Groups.Add(group);
@@ -131,10 +172,16 @@ namespace Yusen.GExplorer {
 					bool isNg = NgContentsManager.Instance.IsNgContent(ca);
 					switch (this.AboneType) {
 						case AboneType.Toumei:
-							if (isNg) continue;
+							if (isNg) {
+								abones++;
+								continue;
+							}
 							break;
 						case AboneType.Hakidame:
-							if (!isNg) continue;
+							if (!isNg) {
+								abones++;
+								continue;
+							}
 							break;
 					}
 					
@@ -152,7 +199,12 @@ namespace Yusen.GExplorer {
 					this.listView1.Items.Add(item);
 				}
 			}
+			this.ShowPackages = showPackages;
 			this.listView1.EndUpdate();
+			this.tslMessage.Text =
+							"[" + this.Genre.GenreName + "]"
+							+ " " + this.listView1.Items.Count.ToString() + "+" + abones.ToString() + "個のコンテンツ"
+							+ " (クロール時刻" + this.Genre.LastCrawlTime.ToShortTimeString() + ")";
 		}
 		private void CreateUserCommandsMenuItems() {
 			this.tsmiUserCommands.DropDownItems.Clear();
@@ -164,7 +216,7 @@ namespace Yusen.GExplorer {
 					if (null != tsmi2) {
 						UserCommand uc2 = tsmi2.Tag as UserCommand;
 						if (null != uc2) {
-							uc2.Execute(this.SelectedContent);
+							uc2.Execute(this.SelectedContents);
 						}
 					}
 				};
@@ -173,7 +225,7 @@ namespace Yusen.GExplorer {
 			this.tsmiUserCommands.Enabled = this.tsmiUserCommands.HasDropDownItems;
 		}
 		private void RefleshView() {
-			this.Genre = this.Genre;
+			this.CrawlResult = this.CrawlResult;
 		}
 
 		private void UserCommandsManager_UserCommandsChanged(object sender, EventArgs e) {
@@ -183,64 +235,113 @@ namespace Yusen.GExplorer {
 			this.RefleshView();
 		}
 		private void listView1_SelectedIndexChanged(object sender, EventArgs e) {
-			if (null != this.SelectedContentChanged) {
-				this.SelectedContentChanged(this, new SelectedContentChangedEventArgs(this.SelectedContent));
+			if (null != this.SelectedContentsChanged) {
+				this.SelectedContentsChanged(this, new SelectedContentsChangedEventArgs(this.SelectedContents));
 			}
 		}
 		private void listView1_DoubleClick(object sender, EventArgs e) {
-			ContentAdapter cont = this.SelectedContent;
-			if (null != cont) {
-				PlayerForm.AddToPlayList(cont);
-			}
+			this.tsmiAdd.PerformClick();
 		}
 		private void listView1_KeyDown(object sender, KeyEventArgs e) {
 			switch (e.KeyCode) {
 				case Keys.Enter:
-					if (null != this.SelectedContent) {
-						PlayerForm.AddToPlayList(this.SelectedContent);
-					}
+					this.tsmiAdd.PerformClick();
 					break;
 			}
 		}
 		
 		private void cmsContent_Opening(object sender, CancelEventArgs e) {
-			bool hasContent = (null != this.SelectedContent);
-			foreach (ToolStripItem tsi in this.cmsContent.Items) {
-				tsi.Enabled = hasContent;
+			if (0 == this.SelectedContents.Length) {
+				e.Cancel = true;
 			}
-			this.tsmiUserCommands.Enabled = hasContent && this.tsmiUserCommands.DropDownItems.Count> 0;
-			this.tsmiAboneType.Enabled = true;
-			this.tsmiNewColor.Enabled = true;
 		}
-		
-		private void tsmiAddToPlaylist_Click(object sender, EventArgs e) {
-			PlayerForm.AddToPlayList(this.SelectedContent);
+		#region コンテキストメニューの項目
+		private void tsmiAdd_Click(object sender, EventArgs e) {
+			List<ContentAdapter> conts = new List<ContentAdapter>(this.SelectedContents);
+			PlayList.Instance.BeginUpdate();
+			conts.ForEach(PlayList.Instance.AddIfNotExists);
+			PlayList.Instance.EndUpdate();
+		}
+		private void tsmiPlay_Click(object sender, EventArgs e) {
+			foreach (ContentAdapter cont in this.SelectedContents) {
+				PlayerForm.Play(cont);
+			}
 		}
 		private void tsmiPlayWithWmp_Click(object sender, EventArgs e) {
-			Utility.PlayWithWMP(this.SelectedContent.MediaFileUri);
+			foreach (ContentAdapter cont in this.SelectedContents) {
+				Utility.PlayWithWMP(cont.MediaFileUri);
+			}
 		}
 		private void tsmiPlayWithIe_Click(object sender, EventArgs e) {
-			Utility.BrowseWithIE(this.SelectedContent.PlayerPageUri);
+			foreach (ContentAdapter cont in this.SelectedContents) {
+				Utility.BrowseWithIE(cont.PlayerPageUri);
+			}
 		}
 		private void tsmiBroseDetailWithIe_Click(object sender, EventArgs e) {
-			Utility.BrowseWithIE(this.SelectedContent.DetailPageUri);
+			foreach (ContentAdapter cont in this.SelectedContents) {
+				Utility.BrowseWithIE(cont.DetailPageUri);
+			}
 		}
 		private void tsmiCopyName_Click(object sender, EventArgs e) {
-			Clipboard.SetText(this.SelectedContent.DisplayName);
+			StringBuilder sb = new StringBuilder();
+			foreach (ContentAdapter cont in this.SelectedContents) {
+				if (sb.Length > 0) {
+					sb.Append("\r\n");
+				}
+				sb.Append(cont.DisplayName);
+			}
+			if (sb.Length > 0) {
+				Clipboard.SetText(sb.ToString());
+			}
 		}
 		private void tsmiCopyDetailUri_Click(object sender, EventArgs e) {
-			Clipboard.SetText(this.SelectedContent.DetailPageUri.AbsoluteUri);
+			StringBuilder sb = new StringBuilder();
+			foreach (ContentAdapter cont in this.SelectedContents) {
+				if (sb.Length > 0) {
+					sb.Append("\r\n");
+				}
+				sb.Append(cont.DetailPageUri.AbsoluteUri);
+			}
+			if (sb.Length > 0) {
+				Clipboard.SetText(sb.ToString());
+			}
 		}
 		private void tsmiCopyNameAndDetailUri_Click(object sender, EventArgs e) {
-			Clipboard.SetText(this.SelectedContent.DisplayName + "\r\n" + this.SelectedContent.DetailPageUri.AbsoluteUri);
+			StringBuilder sb = new StringBuilder();
+			foreach (ContentAdapter cont in this.SelectedContents) {
+				if (sb.Length > 0) {
+					sb.Append("\r\n");
+				}
+				sb.Append(cont.DisplayName);
+				sb.Append("\r\n");
+				sb.Append(cont.DetailPageUri.AbsoluteUri);
+			}
+			if (sb.Length > 0) {
+				Clipboard.SetText(sb.ToString());
+			}
 		}
 		private void tsmiAddNgWithId_Click(object sender, EventArgs e) {
-			string contId = this.SelectedContent.ContentId;
-			NgContentsManager.Instance.Add(new NgContent("簡易追加(ID): " + contId, "ContentId", TwoStringsPredicateMethod.Equals, contId));
+			foreach (ContentAdapter cont in this.SelectedContents) {
+				string contId = cont.ContentId;
+				NgContentsManager.Instance.Add(new NgContent("簡易追加(ID): " + contId, "ContentId", TwoStringsPredicateMethod.Equals, contId));
+			}
 		}
 		private void tsmiAddNgWithTitle_Click(object sender, EventArgs e) {
-			string title = this.SelectedContent.Title;
-			NgContentsManager.Instance.Add(new NgContent("簡易追加(タイトル): " + title, "Title", TwoStringsPredicateMethod.Equals, title));
+			foreach (ContentAdapter cont in this.SelectedContents) {
+				string title = cont.Title;
+				NgContentsManager.Instance.Add(new NgContent("簡易追加(タイトル): " + title, "Title", TwoStringsPredicateMethod.Equals, title));
+			}
+		}
+		#endregion
+		#region メニューの項目
+		private void tsmiShowPackages_Click(object sender, EventArgs e) {
+			this.ShowPackages = this.ShowPackages;
+		}
+		private void tsmiHoverSelect_Click(object sender, EventArgs e) {
+			this.HoverSelect = this.HoverSelect;
+		}
+		private void tsmiMultiSelect_Click(object sender, EventArgs e) {
+			this.MultiSelect = this.MultiSelect;
 		}
 		private void tsmiNewColor_Click(object sender, EventArgs e) {
 			this.colorDialog1.Color = this.NewColor;
@@ -248,40 +349,9 @@ namespace Yusen.GExplorer {
 				this.NewColor = this.colorDialog1.Color;
 			}
 		}
+		#endregion
 	}
 
-	class SelectedContentChangedEventArgs : EventArgs {
-		private ContentAdapter content;
-
-		public SelectedContentChangedEventArgs() {
-			this.content = null;
-		}
-		public SelectedContentChangedEventArgs(ContentAdapter content) {
-			this.content = content;
-		}
-		public ContentAdapter Content {
-			get { return this.content; }
-		}
-		public bool IsSelected {
-			get {
-				return null != this.content;
-			}
-		}
-	}
-	class GenreListViewGenreShowedEventArgs : EventArgs {
-		private readonly GGenre genre;
-		private readonly int numCont;
-		public GenreListViewGenreShowedEventArgs(GGenre genre, int numCont) {
-			this.genre = genre;
-			this.numCont = numCont;
-		}
-		public GGenre Genre {
-			get { return this.genre; }
-		}
-		public int NumberOfContents {
-			get { return this.numCont; }
-		}
-	}
 	public enum AboneType {
 		Toumei,
 		Sabori,
@@ -295,8 +365,11 @@ namespace Yusen.GExplorer {
 		private int? colWidthDuration;
 		private int? colWidthLongDesc;
 		private AboneType? aboneType;
+		private bool? showPackages;
+		private bool? hoverSelect;
+		private bool? multiSelect;
 		private Color? newColor;
-
+		
 		public int? ColWidthId {
 			get { return this.colWidthId; }
 			set { this.colWidthId = value; }
@@ -324,6 +397,18 @@ namespace Yusen.GExplorer {
 		public AboneType? AboneType {
 			get { return this.aboneType; }
 			set { this.aboneType = value; }
+		}
+		public bool? ShowPackages {
+			get { return this.showPackages; }
+			set { this.showPackages = value; }
+		}
+		public bool? HoverSelect {
+			get { return this.hoverSelect; }
+			set { this.hoverSelect = value; }
+		}
+		public bool? MultiSelect {
+			get { return this.multiSelect; }
+			set { this.multiSelect = value; }
 		}
 		
 		[XmlIgnore] //ColorはXMLシリアライズできない？

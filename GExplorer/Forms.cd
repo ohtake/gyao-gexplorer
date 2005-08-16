@@ -38,11 +38,12 @@
     <Position X="4" Y="7.25" Width="1.75" />
     <TypeIdentifier>
       <FileName>MainForm.cs</FileName>
-      <HashCode>BQDAACkAgTIAQCQgAADAEEADAIiKAQgAIAQAAAAJBiE=</HashCode>
+      <HashCode>BQDAACUAoTJAQDQAAADAEEADAMiKCAgAYAQAAAANBiE=</HashCode>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Field Name="genreListView1" />
       <Field Name="contentDetailView1" />
+      <Field Name="playListView1" />
     </ShowAsAssociation>
     <Compartments>
       <Compartment Name="Protected" Collapsed="true" />
@@ -55,7 +56,7 @@
     <Position X="11.5" Y="7.25" Width="1.75" />
     <TypeIdentifier>
       <FileName>PlayerForm.cs</FileName>
-      <HashCode>gQgCDHkCAiZAgCQnIACCgEBiwIDIAUAU4QADAqIQBmI=</HashCode>
+      <HashCode>gQwCDHkKASZAgCQnIECCgUBCwIDIAEAG4QATBqIQBmI=</HashCode>
     </TypeIdentifier>
     <Compartments>
       <Compartment Name="Protected" Collapsed="true" />
@@ -115,7 +116,7 @@
     <Position X="1" Y="4.5" Width="1.5" />
     <TypeIdentifier>
       <FileName>GenreListView.cs</FileName>
-      <HashCode>AGAAgO0hACUIQgCAEiKACIBCkggRiUAEqAIACaAAQgY=</HashCode>
+      <HashCode>EGAAgP1hAiUIQgSAEmKgCIBCkggRiUAEqAIBOagAQgY=</HashCode>
     </TypeIdentifier>
     <Compartments>
       <Compartment Name="Protected" Collapsed="true" />
@@ -124,10 +125,22 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="Yusen.GExplorer.ContentDetailView">
-    <Position X="1" Y="8.25" Width="1.5" />
+    <Position X="1" Y="11.25" Width="1.5" />
     <TypeIdentifier>
       <FileName>ContentDetailView.cs</FileName>
       <HashCode>AAACgoFQM7AAQBAAABigAAEiAIEEASiCJgAAAEAABgA=</HashCode>
+    </TypeIdentifier>
+    <Compartments>
+      <Compartment Name="Protected" Collapsed="true" />
+      <Compartment Name="Private" Collapsed="true" />
+    </Compartments>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Yusen.GExplorer.PlayListView">
+    <Position X="1" Y="8.25" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>PlayListView.cs</FileName>
+      <HashCode>FGAgAv0JFjAAQAQIAsCgmBDCm4kRigBBKIQEIICEEjA=</HashCode>
     </TypeIdentifier>
     <Compartments>
       <Compartment Name="Protected" Collapsed="true" />

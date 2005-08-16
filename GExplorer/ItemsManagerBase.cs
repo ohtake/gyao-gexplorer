@@ -61,9 +61,17 @@ namespace Yusen.GExplorer {
 			this.OnChanged();
 		}
 		public void Swap(int x, int y) {
-			T cx = this[x];
-			this[x] = this[y];
-			this[y] = cx;
+			T cx = this.items[x];
+			this.items[x] = this.items[y];
+			this.items[y] = cx;
+			this.OnChanged();
+		}
+		public void Clear() {
+			this.items.Clear();
+			this.OnChanged();
+		}
+		public void Sort(Comparison<T> comparison) {
+			this.items.Sort(comparison);
 			this.OnChanged();
 		}
 		protected abstract string FilenameForSerialization { get;}

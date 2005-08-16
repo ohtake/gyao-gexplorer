@@ -79,14 +79,20 @@ namespace Yusen.GExplorer {
 			}
 		}
 		
-		internal void Execute(ContentAdapter cont) {
+		internal void Execute(IEnumerable<ContentAdapter> conts) {
 			string args = this.arguments;
 			while(true) {
 				Match match = UserCommand.varientExtractor.Match(args);
 				if(!match.Success) break;
-				PropertyInfo pi = cont.GetType().GetProperty(match.Groups[1].Value);
-				string propValue = pi.GetValue(cont, null).ToString();
-				args = args.Replace(match.Value, propValue);
+				PropertyInfo pi = typeof(ContentAdapter).GetProperty(match.Groups[1].Value);
+				StringBuilder sb = new StringBuilder();
+				foreach (ContentAdapter cont in conts) {
+					if (sb.Length > 0) {
+						sb.Append(' ');
+					}
+					sb.Append(pi.GetValue(cont, null).ToString());
+				}
+				args = args.Replace(match.Value, sb.ToString());
 			}
 			Process.Start(this.fileName, args);
 		}

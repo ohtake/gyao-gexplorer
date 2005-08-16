@@ -9,6 +9,7 @@ using Yusen.GCrawler;
 namespace Yusen.GExplorer {
 	partial class MainForm : FormSettingsBase , IFormWithSettings<MainFormSettings>{
 		private Crawler crawler = new Crawler(new HtmlParserRegex(), new ContentCacheControllerXml("Cache"));
+		private Dictionary<GGenre, CrawlResult> results = new Dictionary<GGenre, CrawlResult>();
 		
 		public MainForm() {
 			InitializeComponent();
@@ -34,15 +35,19 @@ namespace Yusen.GExplorer {
 		public void FillSettings(MainFormSettings settings) {
 			base.FillSettings(settings);
 			settings.IgnoreCrawlErrors = this.IgnoreCrawlErrors;
-			settings.ListViewWidth = this.splitContainer1.SplitterDistance;
-			this.genreListView1.FillSettings(settings.GenreListViewSettings);
+			settings.ListViewWidth = this.scListsAndDetail.SplitterDistance;
+			settings.ListViewHeight = this.scLists.SplitterDistance;
+			this.crawlResultView1.FillSettings(settings.GenreListViewSettings);
+			this.playListView1.FillSettings(settings.PlayListViewSettings);
 			this.contentDetailView1.FillSettings(settings.ContentDetailViewSettings);
 		}
 		public void ApplySettings(MainFormSettings settings) {
 			base.ApplySettings(settings);
 			this.IgnoreCrawlErrors = settings.IgnoreCrawlErrors??this.IgnoreCrawlErrors;
-			this.splitContainer1.SplitterDistance = settings.ListViewWidth ?? this.splitContainer1.SplitterDistance;
-			this.genreListView1.ApplySettings(settings.GenreListViewSettings);
+			this.scListsAndDetail.SplitterDistance = settings.ListViewWidth ?? this.scListsAndDetail.SplitterDistance;
+			this.scLists.SplitterDistance = settings.ListViewHeight ?? this.scLists.SplitterDistance;
+			this.crawlResultView1.ApplySettings(settings.GenreListViewSettings);
+			this.playListView1.ApplySettings(settings.PlayListViewSettings);
 			this.contentDetailView1.ApplySettings(settings.ContentDetailViewSettings);
 		}
 		public string FilenameForSettings {
@@ -76,18 +81,14 @@ namespace Yusen.GExplorer {
 			}
 		}
 
-		private void genreListView1_SelectedContentChanged(object sender, SelectedContentChangedEventArgs e) {
-			if (e.IsSelected) {
-				this.contentDetailView1.Content = e.Content;
+		private void crawlResultView1_SelectedContentsChanged(object sender, SelectedContentsChangedEventArgs e) {
+			if (e.Contents.Count > 0) {
+				this.contentDetailView1.Content = e.Contents[0];
 			}
 		}
-		private void genreListView1_GenreShowed(object sender, GenreListViewGenreShowedEventArgs e) {
-			if (null != e.Genre) {
-				this.toolStripProgressBar1.Value = 0;
-				this.toolStripStatusLabel1.Text =
-					"[" + e.Genre.GenreName + "]"
-					+ " " + e.NumberOfContents.ToString() + "個のコンテンツ"
-					+ " (クロール時刻 " + e.Genre.LastCrawlTime.ToShortTimeString() + ")";
+		private void playListView1_SelectedContentsChanged(object sender, SelectedContentsChangedEventArgs e) {
+			if (e.Contents.Count > 0) {
+				this.contentDetailView1.Content = e.Contents[0];
 			}
 		}
 
@@ -97,21 +98,24 @@ namespace Yusen.GExplorer {
 			CrawlResult result = this.crawler.Crawl(genre);
 			this.ClearStatusBarInfo();
 			if (result.Success) {
-				this.genreListView1.Genre = genre;
+				this.results[genre] = result;
+				this.crawlResultView1.CrawlResult = result;
 			}
 		}
 		
 		private void genreTabControl1_GenreSelected(object sender, GenreTabPageEventArgs e) {
 			GGenre genre = e.Genre;
 			if (null == genre) return;
-			if (!genre.HasCrawled) {
-				CrawlResult result = this.crawler.Crawl(genre);
+			CrawlResult result;
+			if (this.results.TryGetValue(genre, out result)) {
+				this.crawlResultView1.CrawlResult = result;
+			} else {
+				result = this.crawler.Crawl(genre);
 				this.ClearStatusBarInfo();
 				if (result.Success) {
-					this.genreListView1.Genre = genre;
+					this.results[genre] = result;
+					this.crawlResultView1.CrawlResult = result;
 				}
-			} else {
-				this.genreListView1.Genre = genre;
 			}
 		}
 
@@ -120,9 +124,6 @@ namespace Yusen.GExplorer {
 		}
 		private void tsmiBrowseTop_Click(object sender, EventArgs e) {
 			Utility.BrowseWithIE(new Uri("http://www.gyao.jp/"));
-		}
-		private void tsmiPlayerForm_Click(object sender, EventArgs e) {
-			PlayerForm.ShowAndFocus();
 		}
 		private void tsmiGlobalSettingsEditor_Click(object sender, EventArgs e) {
 			GlobalSettingsEditor.Instance.Show();
@@ -141,7 +142,9 @@ namespace Yusen.GExplorer {
 	public class MainFormSettings : FormSettingsBaseSettings {
 		private bool? ignoreCrawlErrors;
 		private int? listViewWidth;
+		private int? listViewHeight;
 		private GenreListViewSettings genreListViewSettings = new GenreListViewSettings();
+		private PlayListViewSettings playListViewSettings = new PlayListViewSettings();
 		private ContentDetailViewSettings contentDetailViewSettings = new ContentDetailViewSettings();
 
 		public bool? IgnoreCrawlErrors {
@@ -152,9 +155,17 @@ namespace Yusen.GExplorer {
 			get { return this.listViewWidth; }
 			set { this.listViewWidth = value; }
 		}
+		public int? ListViewHeight {
+			get { return this.listViewHeight; }
+			set { this.listViewHeight = value; }
+		}
 		public GenreListViewSettings GenreListViewSettings {
 			get { return this.genreListViewSettings; }
 			set { this.genreListViewSettings = value; }
+		}
+		public PlayListViewSettings PlayListViewSettings {
+			get { return this.playListViewSettings; }
+			set { this.playListViewSettings = value; }
 		}
 		public ContentDetailViewSettings ContentDetailViewSettings {
 			get { return this.contentDetailViewSettings; }

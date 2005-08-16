@@ -11,7 +11,7 @@ namespace Yusen.GCrawler {
 			GGenre.allGenres = new GGenre[]{
 				new GGenre200507( 1, "cinema", "映画", Color.FromArgb(0x93, 0x2e, 0x2e)),
 				new GGenre200507( 3, "music", "音楽", Color.FromArgb(0xf2, 0xa7, 0xc8)),
-				new GGenre200505( 2, "drama", "ドラマ", Color.FromArgb(0xff, 0x66, 0x00)),
+				new GGenre200505Drama( 2, "drama", "ドラマ", Color.FromArgb(0xff, 0x66, 0x00)),
 				new GGenre200507( 6, "anime", "アニメ", Color.FromArgb(0xe7, 0x39, 0x8e)),
 				new GGenre200505( 4, "idol", "アイドル・グラビア", Color.FromArgb(0xf5, 0xa3, 0x00)),
 				new GGenre200505( 5, "variety", "バラエティ", Color.FromArgb(0x9c, 0x60, 0xa4)),
@@ -48,6 +48,9 @@ namespace Yusen.GCrawler {
 			get { return "gen" + this.keyNo.ToString("0000000"); }
 		}
 		public string DirectryName {
+			get { return this.dir; }
+		}
+		public virtual string ImageDirName {
 			get { return this.dir; }
 		}
 		public string GenreName {
@@ -99,6 +102,13 @@ namespace Yusen.GCrawler {
 				get {
 					return new Uri("http://www.gyao.jp/sityou/catetop/genre_id/" + base.GenreId + "/");
 				}
+			}
+		}
+		private sealed class GGenre200505Drama : GGenre200505 {
+			public GGenre200505Drama(int keyNo, string dir, string name, Color color)
+				: base(keyNo, dir, name, color) { }
+			public override string ImageDirName {
+				get { return "dorama"; }
 			}
 		}
 		private class GGenre200507 : GGenre{
