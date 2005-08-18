@@ -41,13 +41,14 @@ namespace Yusen.GExplorer {
 			this.tsmiBrowseTop = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiQuit = new System.Windows.Forms.ToolStripMenuItem();
-			this.ツールTToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiTools = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiIgnoreCrawlErrors = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiWindow = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiGlobalSettingsEditor = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiUserCommandsEditor = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiNgContentsEditor = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiFocusOnResultAfterTabChanged = new System.Windows.Forms.ToolStripMenuItem();
 			this.statusStrip1.SuspendLayout();
 			this.toolStripContainer1.BottomToolStripPanel.SuspendLayout();
 			this.toolStripContainer1.ContentPanel.SuspendLayout();
@@ -141,7 +142,6 @@ namespace Yusen.GExplorer {
 			this.genreTabControl1.Size = new System.Drawing.Size(675, 20);
 			this.genreTabControl1.TabIndex = 0;
 			this.genreTabControl1.GenreSelected += new System.EventHandler<Yusen.GExplorer.GenreTabPageEventArgs>(this.genreTabControl1_GenreSelected);
-			this.genreTabControl1.GenreDoubleClick += new System.EventHandler<Yusen.GExplorer.GenreTabPageEventArgs>(this.genreTabControl1_GenreDoubleClick);
 			// 
 			// tabPage1
 			// 
@@ -195,7 +195,7 @@ namespace Yusen.GExplorer {
 			// 
 			this.scLists.Panel2.Controls.Add(this.playListView1);
 			this.scLists.Size = new System.Drawing.Size(421, 410);
-			this.scLists.SplitterDistance = 253;
+			this.scLists.SplitterDistance = 277;
 			this.scLists.TabIndex = 2;
 			this.scLists.Text = "splitContainer2";
 			// 
@@ -204,16 +204,16 @@ namespace Yusen.GExplorer {
 			this.crawlResultView1.AboneType = Yusen.GExplorer.AboneType.Toumei;
 			this.crawlResultView1.CrawlResult = null;
 			this.crawlResultView1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.crawlResultView1.HoverSelect = true;
+			this.crawlResultView1.HoverSelect = false;
 			this.crawlResultView1.Location = new System.Drawing.Point(0, 0);
 			this.crawlResultView1.Margin = new System.Windows.Forms.Padding(0);
-			this.crawlResultView1.MultiSelect = false;
+			this.crawlResultView1.MultiSelect = true;
 			this.crawlResultView1.Name = "crawlResultView1";
 			this.crawlResultView1.NewColor = System.Drawing.Color.Red;
 			this.crawlResultView1.ShowPackages = true;
-			this.crawlResultView1.Size = new System.Drawing.Size(421, 253);
+			this.crawlResultView1.Size = new System.Drawing.Size(421, 277);
 			this.crawlResultView1.TabIndex = 1;
-			this.crawlResultView1.SelectedContentsChanged += new System.EventHandler<Yusen.GExplorer.SelectedContentsChangedEventArgs>(this.crawlResultView1_SelectedContentsChanged);
+			this.crawlResultView1.ContentSelectionChanged += new System.EventHandler<Yusen.GExplorer.ContentSelectionChangedEventArgs>(this.crawlResultView1_ContentSelectionChanged);
 			// 
 			// playListView1
 			// 
@@ -221,9 +221,9 @@ namespace Yusen.GExplorer {
 			this.playListView1.Location = new System.Drawing.Point(0, 0);
 			this.playListView1.MultiSelectEnabled = true;
 			this.playListView1.Name = "playListView1";
-			this.playListView1.Size = new System.Drawing.Size(421, 153);
+			this.playListView1.Size = new System.Drawing.Size(421, 129);
 			this.playListView1.TabIndex = 0;
-			this.playListView1.SelectedContentsChanged += new System.EventHandler<Yusen.GExplorer.SelectedContentsChangedEventArgs>(this.playListView1_SelectedContentsChanged);
+			this.playListView1.ContentSelectionChanged += new System.EventHandler<Yusen.GExplorer.ContentSelectionChangedEventArgs>(this.playListView1_ContentSelectionChanged);
 			// 
 			// contentDetailView1
 			// 
@@ -241,7 +241,7 @@ namespace Yusen.GExplorer {
 			this.menuStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Visible;
 			this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiFile,
-            this.ツールTToolStripMenuItem,
+            this.tsmiTools,
             this.tsmiWindow});
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
@@ -275,16 +275,19 @@ namespace Yusen.GExplorer {
 			this.tsmiQuit.Text = "終了 (&Q)";
 			this.tsmiQuit.Click += new System.EventHandler(this.tsmiQuit_Click);
 			// 
-			// ツールTToolStripMenuItem
+			// tsmiTools
 			// 
-			this.ツールTToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+			this.tsmiTools.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiFocusOnResultAfterTabChanged,
             this.tsmiIgnoreCrawlErrors});
-			this.ツールTToolStripMenuItem.Name = "ツールTToolStripMenuItem";
-			this.ツールTToolStripMenuItem.Text = "ツール (&T)";
+			this.tsmiTools.Name = "tsmiTools";
+			this.tsmiTools.Text = "ツール (&T)";
 			// 
 			// tsmiIgnoreCrawlErrors
 			// 
+			this.tsmiIgnoreCrawlErrors.Checked = true;
 			this.tsmiIgnoreCrawlErrors.CheckOnClick = true;
+			this.tsmiIgnoreCrawlErrors.CheckState = System.Windows.Forms.CheckState.Checked;
 			this.tsmiIgnoreCrawlErrors.Name = "tsmiIgnoreCrawlErrors";
 			this.tsmiIgnoreCrawlErrors.Text = "クロール時の無視可能エラーを全て無視 (&I)";
 			// 
@@ -319,6 +322,14 @@ namespace Yusen.GExplorer {
 			this.tsmiNgContentsEditor.Name = "tsmiNgContentsEditor";
 			this.tsmiNgContentsEditor.Text = "NGコンテンツエディタ (&N)";
 			this.tsmiNgContentsEditor.Click += new System.EventHandler(this.tsmiNgContentsEditor_Click);
+			// 
+			// tsmiFocusOnResultAfterTabChanged
+			// 
+			this.tsmiFocusOnResultAfterTabChanged.Checked = true;
+			this.tsmiFocusOnResultAfterTabChanged.CheckOnClick = true;
+			this.tsmiFocusOnResultAfterTabChanged.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.tsmiFocusOnResultAfterTabChanged.Name = "tsmiFocusOnResultAfterTabChanged";
+			this.tsmiFocusOnResultAfterTabChanged.Text = "ジャンルタブ切り替え後にクロール結果ビューにフォーカスを送る (&F)";
 			// 
 			// MainForm
 			// 
@@ -374,10 +385,11 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ToolStripMenuItem tsmiNgContentsEditor;
 		private System.Windows.Forms.ToolStripMenuItem tsmiGlobalSettingsEditor;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
-		private System.Windows.Forms.ToolStripMenuItem ツールTToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem tsmiTools;
 		private System.Windows.Forms.ToolStripMenuItem tsmiIgnoreCrawlErrors;
 		private System.Windows.Forms.SplitContainer scLists;
 		private PlayListView playListView1;
+		private System.Windows.Forms.ToolStripMenuItem tsmiFocusOnResultAfterTabChanged;
 
 
 	}

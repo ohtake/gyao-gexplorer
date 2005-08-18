@@ -19,7 +19,6 @@ namespace Yusen.GExplorer {
 		public GlobalSettingsEditor() {
 			InitializeComponent();
 			this.propertyGrid1.SelectedObject = GlobalSettings.Instance;
-			Utility.LoadSettingsAndEnableSaveOnClosed(this);
 		}
 
 		public void FillSettings(GlobalSettingsEditorSettings settings) {
@@ -32,6 +31,9 @@ namespace Yusen.GExplorer {
 		}
 		public string FilenameForSettings {
 			get { return @"GlobalSettingsEditorSettings.xml"; }
+		}
+		private void GlobalSettingsEditor_Load(object sender, EventArgs e) {
+			Utility.LoadSettingsAndEnableSaveOnClosed(this);
 		}
 		private void chkTopMost_CheckedChanged(object sender, EventArgs e) {
 			this.TopMost = this.chkTopMost.Checked;

@@ -9,7 +9,6 @@ using Yusen.GCrawler;
 namespace Yusen.GExplorer {
 	partial class GenreTabControl : TabControl {
 		public event EventHandler<GenreTabPageEventArgs> GenreSelected;
-		public event EventHandler<GenreTabPageEventArgs> GenreDoubleClick;
 
 		public GenreTabControl() {
 			InitializeComponent();
@@ -63,10 +62,10 @@ namespace Yusen.GExplorer {
 		}
 
 		private void GenreTabControl_DoubleClick(object sender, EventArgs e) {
-			if (null != this.GenreDoubleClick) {
+			if (null != this.GenreSelected) {
 				GGenre genre = this.SelectedGenre;
 				if (null != genre) {
-					this.GenreDoubleClick(this, new GenreTabPageEventArgs(genre));
+					this.GenreSelected(this, new GenreTabPageEventArgs(genre, true));
 				}
 			}
 		}
@@ -75,7 +74,7 @@ namespace Yusen.GExplorer {
 			if (null != this.GenreSelected) {
 				GGenre genre = this.SelectedGenre;
 				if (null != genre) {
-					this.GenreSelected(this, new GenreTabPageEventArgs(genre));
+					this.GenreSelected(this, new GenreTabPageEventArgs(genre, false));
 				}
 			}
 		}
@@ -83,12 +82,17 @@ namespace Yusen.GExplorer {
 
 	class GenreTabPageEventArgs : EventArgs {
 		private readonly GGenre genre;
+		private readonly bool forceReload;
 		
-		public GenreTabPageEventArgs(GGenre genre){
+		public GenreTabPageEventArgs(GGenre genre, bool forceReload){
 			this.genre = genre;
+			this.forceReload = forceReload;
 		}
 		public GGenre Genre {
 			get { return this.genre; }
+		}
+		public bool ForceReload {
+			get { return this.forceReload; }
 		}
 	}
 }

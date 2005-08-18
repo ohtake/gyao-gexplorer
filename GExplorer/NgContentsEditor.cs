@@ -41,10 +41,6 @@ namespace Yusen.GExplorer {
 				NgContentsManager.Instance.LastAboneChanged -=
 					new EventHandler(this.NgContentsManager_LastAboneChanged);
 			};
-			
-			Utility.LoadSettingsAndEnableSaveOnClosed(this);
-			
-			this.RefleshView();
 		}
 		public void FillSettings(NgContentsEditorSettings settings) {
 			base.FillSettings(settings);
@@ -56,7 +52,7 @@ namespace Yusen.GExplorer {
 			get { return @"NgContentsEditorSettings.xml"; }
 		}
 
-		private void RefleshView() {
+		private void UpdateView() {
 			this.lvNgContents.BeginUpdate();
 			this.lvNgContents.Items.Clear();
 			foreach(NgContent nc in NgContentsManager.Instance) {
@@ -70,11 +66,17 @@ namespace Yusen.GExplorer {
 			}
 			this.lvNgContents.EndUpdate();
 		}
+		
+		private void NgContentsEditor_Load(object sender, EventArgs e) {
+			Utility.LoadSettingsAndEnableSaveOnClosed(this);
+			this.UpdateView();
+		}
+
 		private void NgContentsManager_NgContentsChanged(object sender, EventArgs e) {
-			this.RefleshView();
+			this.UpdateView();
 		}
 		private void NgContentsManager_LastAboneChanged(object sender, EventArgs e) {
-			this.RefleshView();
+			this.UpdateView();
 		}
 
 		private void lvNgContents_KeyDown(object sender, KeyEventArgs e) {

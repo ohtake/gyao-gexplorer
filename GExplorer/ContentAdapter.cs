@@ -169,4 +169,19 @@ namespace Yusen.GExplorer {
 			get { return this.contents; }
 		}
 	}
+
+	class ContentSelectionChangedEventArgs : EventArgs {
+		private readonly ContentAdapter content;
+		private readonly bool isSelected;
+		public ContentSelectionChangedEventArgs(ContentAdapter content, bool isSelected) {
+			this.content = content;
+			this.isSelected = isSelected;
+		}
+		public ContentAdapter Content {
+			get { return this.content; }
+		}
+		public bool IsSelected {
+			get { return this.isSelected; }
+		}
+	}
 }

@@ -2,13 +2,22 @@
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Font Name="MS UI Gothic" Size="9" />
   <Class Name="Yusen.GCrawler.GGenre">
-    <Position X="0.75" Y="0.75" Width="1.5" />
+    <Position X="0.5" Y="0.75" Width="1.5" />
     <TypeIdentifier>
       <FileName>GGenre.cs</FileName>
-      <HashCode>AAQASAAEIKAAIIBEAACAQAIAAIQEAACgAAAAAAAAAAI=</HashCode>
+      <HashCode>AAQASAAEIKAAIIBEAACAQAIAAIQEAACgAAAAAAgAAAI=</HashCode>
     </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Packages" />
+      <Property Name="AllGenres" />
+    </ShowAsCollectionAssociation>
     <NestedTypes>
       <Class Name="Yusen.GCrawler.GGenre.GGenre200505" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>GGenre.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Yusen.GCrawler.GGenre.GGenre200505Drama" Collapsed="true">
         <TypeIdentifier>
           <NewMemberFileName>GGenre.cs</NewMemberFileName>
         </TypeIdentifier>
@@ -21,17 +30,20 @@
     </NestedTypes>
   </Class>
   <Class Name="Yusen.GCrawler.GPackage">
-    <Position X="2.5" Y="0.75" Width="1.5" />
+    <Position X="3.25" Y="0.75" Width="1.5" />
     <TypeIdentifier>
       <FileName>GPackage.cs</FileName>
       <HashCode>gEDAACAMACAEAAAEAAAQABAIAAAQAAIAAAgAAABAgQA=</HashCode>
     </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Contents" />
+    </ShowAsCollectionAssociation>
   </Class>
   <Class Name="Yusen.GCrawler.GContent">
-    <Position X="4.25" Y="0.75" Width="1.5" />
+    <Position X="6" Y="0.75" Width="1.5" />
     <TypeIdentifier>
       <FileName>GContent.cs</FileName>
-      <HashCode>AJAAAAIMQCQrAMAFgAEAAMAOCDsQAgAgEAiAIAAAgAA=</HashCode>
+      <HashCode>AJAAAAIMQCQrgMAFgAEAAMAOCDsQAgAgFAiAIAAAgAg=</HashCode>
     </TypeIdentifier>
   </Class>
 </ClassDiagram>

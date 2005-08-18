@@ -8,6 +8,8 @@ using System.Net;
 
 namespace Yusen.GCrawler {
 	public class GContent {
+		private static readonly XmlSerializer serializer = new XmlSerializer(typeof(GContent));
+
 		private static readonly Regex regexAnchorHref = new Regex(@"http://www.gyao.jp/sityou/catedetail/contents_id/(cnt[0-9]+)/");
 		private static readonly Regex regexAnchorJscript = new Regex(@"javascript:gotoDetail\((?:%20| )?'(cnt[0-9]+)'(?:%20| )?\);?");
 		private static readonly Regex regexImageSrc = new Regex(@"http://www.gyao.jp/img/info/[a-z0-9]+/(cnt[0-9]+)_[0-9a-z]*\.(?:jpg|gif)");
@@ -27,16 +29,14 @@ namespace Yusen.GCrawler {
 		}
 		
 		public static void Serialize(string filename, GContent cont){
-			XmlSerializer xs = new XmlSerializer(typeof(GContent));
 			using (TextWriter writer = new StreamWriter(filename)) {
-				xs.Serialize(writer, cont);
+				GContent.serializer.Serialize(writer, cont);
 			}
 		}
 		public static bool TryDeserialize(string filename, out GContent cont) {
-			XmlSerializer xs = new XmlSerializer(typeof(GContent));
 			using (TextReader reader = new StreamReader(filename)) {
 				try {
-					cont = xs.Deserialize(reader) as GContent;
+					cont = GContent.serializer.Deserialize(reader) as GContent;
 					return null != cont;
 				} catch (FileNotFoundException) {
 					cont = null;

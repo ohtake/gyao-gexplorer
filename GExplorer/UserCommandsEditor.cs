@@ -23,11 +23,19 @@ namespace Yusen.GExplorer {
 			InitializeComponent();
 			this.btnsNeedingSelection = new Button[]{
 				this.btnUp, this.btnDown, this.btnDelete, this.btnModify,};
-			this.Text = "外部コマンドエディタ";
 			this.UserCommandsManager_UserCommandsChanged(null, EventArgs.Empty);
 			
 			//簡易追加機能のメニューを作成
-			this.GenerateArgumentHelperMenu();
+			foreach (PropertyInfo pi in typeof(ContentAdapter).GetProperties(BindingFlags.Instance | BindingFlags.GetProperty | BindingFlags.Public)) {
+				object[] attribs = pi.GetCustomAttributes(typeof(BrowsableAttribute), false);
+				if (attribs.Length > 0 && !(attribs[0] as BrowsableAttribute).Browsable) {
+					continue;
+				}
+				ToolStripMenuItem mi = new ToolStripMenuItem();
+				mi.Text = "{" + pi.Name + "}";
+				mi.Click += new EventHandler(this.AppendArgWithMenuItemText);
+				this.cmsArgs.Items.Add(mi);
+			}
 			
 			//コマンド
 			UserCommandsManager.Instance.UserCommandsChanged
@@ -36,8 +44,6 @@ namespace Yusen.GExplorer {
 				UserCommandsManager.Instance.UserCommandsChanged -=
 					new EventHandler(this.UserCommandsManager_UserCommandsChanged);
 			};
-			
-			Utility.LoadSettingsAndEnableSaveOnClosed(this);
 		}
 
 		public void FillSettings(UserCommandsEditorSettings settings) {
@@ -73,6 +79,9 @@ namespace Yusen.GExplorer {
 			this.lboxCommands_SelectedIndexChanged(this, EventArgs.Empty);//無理やり選択しなおしたことにしとく
 		}
 
+		private void UserCommandsEditor_Load(object sender, EventArgs e) {
+			Utility.LoadSettingsAndEnableSaveOnClosed(this);
+		}
 		private void lboxCommands_SelectedIndexChanged(object sender, EventArgs e) {
 			if(this.lboxCommands.SelectedIndex < 0) {
 				foreach(Button b in this.btnsNeedingSelection) {
@@ -143,20 +152,6 @@ namespace Yusen.GExplorer {
 			UserCommandsManager.Instance[this.lboxCommands.SelectedIndex] = uc;
 		}
 
-		private void GenerateArgumentHelperMenu() {
-			foreach (PropertyInfo pi in typeof(ContentAdapter).GetProperties(BindingFlags.Instance | BindingFlags.GetProperty | BindingFlags.Public)) {
-				object[] attribs = pi.GetCustomAttributes(typeof(BrowsableAttribute), false);
-				if (attribs.Length > 0 && !(attribs[0] as BrowsableAttribute).Browsable) {
-					continue;
-				}
-				
-				ToolStripMenuItem mi = new ToolStripMenuItem();
-				mi.Text = "{" + pi.Name + "}";
-				mi.Click += new EventHandler(this.AppendArgWithMenuItemText);
-				this.cmsArgs.Items.Add(mi);
-			}
-		}
-		
 		void AppendArgWithMenuItemText(object sender, EventArgs e) {
 			string labelName = (sender as ToolStripMenuItem).Text;
 			if("" == this.txtArg.Text || this.txtArg.Text.EndsWith(" ")) {

@@ -72,6 +72,7 @@ namespace Yusen.GExplorer {
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
 			this.Name = "GlobalSettingsEditor";
 			this.Text = "グローバル設定エディタ";
+			this.Load += new System.EventHandler(this.GlobalSettingsEditor_Load);
 			this.tableLayoutPanel1.ResumeLayout(false);
 			this.tableLayoutPanel1.PerformLayout();
 			this.ResumeLayout(false);

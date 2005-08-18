@@ -24,8 +24,6 @@ namespace Yusen.GExplorer {
 		/// </summary>
 		private void InitializeComponent() {
 			this.components = new System.ComponentModel.Container();
-			Yusen.GExplorer.FormSettingsBaseSettings formSettingsBaseSettings1 = new Yusen.GExplorer.FormSettingsBaseSettings();
-			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UserCommandsEditor));
 			this.grpDetail = new System.Windows.Forms.GroupBox();
 			this.btnInsert = new System.Windows.Forms.Button();
 			this.btnModify = new System.Windows.Forms.Button();
@@ -312,6 +310,7 @@ namespace Yusen.GExplorer {
 			this.MinimumSize = new System.Drawing.Size(360, 340);
 			this.Name = "UserCommandsEditor";
 			this.Text = "外部コマンドエディタ";
+			this.Load += new System.EventHandler(this.UserCommandsEditor_Load);
 			this.grpDetail.ResumeLayout(false);
 			this.tableLayoutPanel1.ResumeLayout(false);
 			this.tableLayoutPanel1.PerformLayout();

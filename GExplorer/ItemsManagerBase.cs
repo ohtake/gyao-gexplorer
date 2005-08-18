@@ -45,12 +45,19 @@ namespace Yusen.GExplorer {
 			return this.GetEnumerator();
 		}
 		public void Remove(T item) {
-			this.items.Remove(item);
-			this.OnChanged();
+			if (this.items.Remove(item)) {
+				this.OnChanged();
+			}
 		}
 		public void RemoveAt(int idx) {
 			this.items.RemoveAt(idx);
 			this.OnChanged();
+		}
+		public void AddIfNotExists(T item) {
+			if (!this.items.Contains(item)) {
+				this.items.Add(item);
+				this.OnChanged();
+			}
 		}
 		public void Add(T item) {
 			this.items.Add(item);
@@ -73,6 +80,9 @@ namespace Yusen.GExplorer {
 		public void Sort(Comparison<T> comparison) {
 			this.items.Sort(comparison);
 			this.OnChanged();
+		}
+		public bool Contains(T item) {
+			return this.items.Contains(item);
 		}
 		protected abstract string FilenameForSerialization { get;}
 	}

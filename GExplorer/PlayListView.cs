@@ -4,11 +4,11 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
-using System.IO;
 
 namespace Yusen.GExplorer {
 	partial class PlayListView : UserControl, IHasSettings<PlayListViewSettings> {
 		public event EventHandler<SelectedContentsChangedEventArgs> SelectedContentsChanged;
+		public event EventHandler<ContentSelectionChangedEventArgs> ContentSelectionChanged;
 
 		public PlayListView() {
 			InitializeComponent();
@@ -81,9 +81,9 @@ namespace Yusen.GExplorer {
 		}
 		private void UpdateStatusBarText() {
 			if (this.SelectedContents.Length <= 0) {
-				this.tslMessage.Text = this.listView1.Items.Count.ToString() + "個のコンテンツ";
+				this.tslMessage.Text = "全 " + this.listView1.Items.Count.ToString() + " 個";
 			} else {
-				this.tslMessage.Text = this.SelectedContents.Length.ToString() + "個のコンテンツを選択";
+				this.tslMessage.Text = this.SelectedContents.Length.ToString() + " 個を選択中";
 			}
 		}
 		private void UpdateUserCommandsMenu() {
@@ -128,20 +128,16 @@ namespace Yusen.GExplorer {
 				this.SelectedContentsChanged(this, new SelectedContentsChangedEventArgs(this.SelectedContents));
 			}
 		}
+		private void listView1_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e) {
+			if (null != this.ContentSelectionChanged) {
+				this.ContentSelectionChanged(this, new ContentSelectionChangedEventArgs(e.Item.Tag as ContentAdapter, e.IsSelected));
+			}
+		}
 
-		#region メニュー
+		#region メニューの項目
 		private void tsmiExportAsAsx_Click(object sender, EventArgs e) {
 			if (DialogResult.OK == this.saveFileDialog1.ShowDialog()) {
-				string filename = this.saveFileDialog1.FileName;
-				using (TextWriter writer = new StreamWriter(filename)) {
-					writer.WriteLine("<ASX VERSION=\"3.0\">");
-					foreach (ContentAdapter cont in PlayList.Instance) {
-						writer.WriteLine("<Entry>");
-						writer.WriteLine("\t<ref href=\"" + cont.MediaFileUri.AbsoluteUri + "\"/>");
-						writer.WriteLine("</Entry>");
-					}
-					writer.WriteLine("</ASX>");
-				}
+				PlayList.Instance.ExportAsAsx(this.saveFileDialog1.FileName);
 			}
 		}
 		private void tsmiSerializePlayListNow_Click(object sender, EventArgs e) {
@@ -170,7 +166,7 @@ namespace Yusen.GExplorer {
 		}
 		#endregion
 		
-		#region コンテキストメニュー
+		#region コンテキストメニューの項目
 		private void tsmiPlay_Click(object sender, EventArgs e) {
 			ContentAdapter[] conts = this.SelectedContents;
 			if (conts.Length > 0) {

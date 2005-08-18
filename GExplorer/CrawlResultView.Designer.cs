@@ -63,6 +63,7 @@ namespace Yusen.GExplorer {
 			this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiNewColor = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
+			this.tslGenre = new System.Windows.Forms.ToolStripLabel();
 			this.tslMessage = new System.Windows.Forms.ToolStripLabel();
 			this.cmsContent.SuspendLayout();
 			this.toolStripContainer1.ContentPanel.SuspendLayout();
@@ -73,7 +74,6 @@ namespace Yusen.GExplorer {
 			// 
 			// listView1
 			// 
-			this.listView1.Activation = System.Windows.Forms.ItemActivation.OneClick;
 			this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.chId,
             this.chTitle,
@@ -86,10 +86,7 @@ namespace Yusen.GExplorer {
 			this.listView1.FullRowSelect = true;
 			this.listView1.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
 			this.listView1.HideSelection = false;
-			this.listView1.HotTracking = true;
-			this.listView1.HoverSelection = true;
 			this.listView1.Location = new System.Drawing.Point(0, 0);
-			this.listView1.MultiSelect = false;
 			this.listView1.Name = "listView1";
 			this.listView1.ShowItemToolTips = true;
 			this.listView1.Size = new System.Drawing.Size(418, 183);
@@ -97,6 +94,7 @@ namespace Yusen.GExplorer {
 			this.listView1.View = System.Windows.Forms.View.Details;
 			this.listView1.SelectedIndexChanged += new System.EventHandler(this.listView1_SelectedIndexChanged);
 			this.listView1.DoubleClick += new System.EventHandler(this.listView1_DoubleClick);
+			this.listView1.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.listView1_ItemSelectionChanged);
 			this.listView1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.listView1_KeyDown);
 			// 
 			// chId
@@ -150,8 +148,7 @@ namespace Yusen.GExplorer {
 			this.cmsContent.Location = new System.Drawing.Point(21, 36);
 			this.cmsContent.Name = "contextMenuStrip1";
 			this.cmsContent.RightToLeft = System.Windows.Forms.RightToLeft.No;
-			this.cmsContent.Size = new System.Drawing.Size(309, 267);
-			this.cmsContent.Visible = true;
+			this.cmsContent.Size = new System.Drawing.Size(310, 248);
 			this.cmsContent.Opening += new System.ComponentModel.CancelEventHandler(this.cmsContent_Opening);
 			// 
 			// tsmiAdd
@@ -186,7 +183,7 @@ namespace Yusen.GExplorer {
 			// tsmiBroseDetailWithIe
 			// 
 			this.tsmiBroseDetailWithIe.Name = "tsmiBroseDetailWithIe";
-			this.tsmiBroseDetailWithIe.Text = "IEで詳細ページ (&D)";
+			this.tsmiBroseDetailWithIe.Text = "IEで詳細ページ (&E)";
 			this.tsmiBroseDetailWithIe.Click += new System.EventHandler(this.tsmiBroseDetailWithIe_Click);
 			// 
 			// toolStripSeparator1
@@ -198,7 +195,7 @@ namespace Yusen.GExplorer {
 			this.tsmiCopyName.Name = "tsmiCopyName";
 			this.tsmiCopyName.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Shift | System.Windows.Forms.Keys.Control) 
             | System.Windows.Forms.Keys.C)));
-			this.tsmiCopyName.Text = "コンテンツ名をコピー (&C)";
+			this.tsmiCopyName.Text = "コンテンツ名をコピー (&N)";
 			this.tsmiCopyName.Click += new System.EventHandler(this.tsmiCopyName_Click);
 			// 
 			// tsmiCopyDetailUri
@@ -206,14 +203,14 @@ namespace Yusen.GExplorer {
 			this.tsmiCopyDetailUri.Name = "tsmiCopyDetailUri";
 			this.tsmiCopyDetailUri.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.Control) 
             | System.Windows.Forms.Keys.C)));
-			this.tsmiCopyDetailUri.Text = "詳細ページURIをコピー (&O)";
+			this.tsmiCopyDetailUri.Text = "詳細ページURIをコピー (&D)";
 			this.tsmiCopyDetailUri.Click += new System.EventHandler(this.tsmiCopyDetailUri_Click);
 			// 
 			// tsmiCopyNameAndDetailUri
 			// 
 			this.tsmiCopyNameAndDetailUri.Name = "tsmiCopyNameAndDetailUri";
 			this.tsmiCopyNameAndDetailUri.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
-			this.tsmiCopyNameAndDetailUri.Text = "コンテンツ名と詳細ページURIをコピー (&Y)";
+			this.tsmiCopyNameAndDetailUri.Text = "コンテンツ名と詳細ページURIをコピー (&B)";
 			this.tsmiCopyNameAndDetailUri.Click += new System.EventHandler(this.tsmiCopyNameAndDetailUri_Click);
 			// 
 			// toolStripSeparator2
@@ -226,7 +223,7 @@ namespace Yusen.GExplorer {
             this.tsmiAddNgWithId,
             this.tsmiAddNgWithTitle});
 			this.tsmiAddNg.Name = "tsmiAddNg";
-			this.tsmiAddNg.Text = "NGコンテンツに簡易追加 (&N)";
+			this.tsmiAddNg.Text = "NGコンテンツに簡易追加 (&G)";
 			// 
 			// tsmiAddNgWithId
 			// 
@@ -247,7 +244,7 @@ namespace Yusen.GExplorer {
 			// tsmiUserCommands
 			// 
 			this.tsmiUserCommands.Name = "tsmiUserCommands";
-			this.tsmiUserCommands.Text = "外部コマンド (&U)";
+			this.tsmiUserCommands.Text = "外部コマンド (&C)";
 			// 
 			// colorDialog1
 			// 
@@ -281,6 +278,7 @@ namespace Yusen.GExplorer {
             this.toolStripSeparator4,
             this.toolStripDropDownButton1,
             this.toolStripSeparator5,
+            this.tslGenre,
             this.tslMessage});
 			this.toolStrip1.Location = new System.Drawing.Point(0, 0);
 			this.toolStrip1.Name = "toolStrip1";
@@ -312,7 +310,7 @@ namespace Yusen.GExplorer {
 			this.toolStripDropDownButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripDropDownButton1.Image")));
 			this.toolStripDropDownButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.toolStripDropDownButton1.Name = "toolStripDropDownButton1";
-			this.toolStripDropDownButton1.Text = "設定 (&L)";
+			this.toolStripDropDownButton1.Text = "設定 (&C)";
 			// 
 			// tsmiAboneType
 			// 
@@ -334,16 +332,16 @@ namespace Yusen.GExplorer {
 			// 
 			// tsmiHoverSelect
 			// 
-			this.tsmiHoverSelect.Checked = true;
 			this.tsmiHoverSelect.CheckOnClick = true;
-			this.tsmiHoverSelect.CheckState = System.Windows.Forms.CheckState.Checked;
 			this.tsmiHoverSelect.Name = "tsmiHoverSelect";
 			this.tsmiHoverSelect.Text = "マウスホバーで選択 (&H)";
 			this.tsmiHoverSelect.Click += new System.EventHandler(this.tsmiHoverSelect_Click);
 			// 
 			// tsmiMultiSelect
 			// 
+			this.tsmiMultiSelect.Checked = true;
 			this.tsmiMultiSelect.CheckOnClick = true;
+			this.tsmiMultiSelect.CheckState = System.Windows.Forms.CheckState.Checked;
 			this.tsmiMultiSelect.Name = "tsmiMultiSelect";
 			this.tsmiMultiSelect.Text = "複数選択を有効 (&M)";
 			this.tsmiMultiSelect.Click += new System.EventHandler(this.tsmiMultiSelect_Click);
@@ -361,6 +359,11 @@ namespace Yusen.GExplorer {
 			// toolStripSeparator5
 			// 
 			this.toolStripSeparator5.Name = "toolStripSeparator5";
+			// 
+			// tslGenre
+			// 
+			this.tslGenre.Name = "tslGenre";
+			this.tslGenre.Text = "tslGenre";
 			// 
 			// tslMessage
 			// 
@@ -426,5 +429,6 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ToolStripMenuItem tsmiHoverSelect;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator8;
+		private System.Windows.Forms.ToolStripLabel tslGenre;
 	}
 }

@@ -24,8 +24,6 @@ namespace Yusen.GExplorer {
 
 			this.crawler.CrawlProgress += new EventHandler<CrawlProgressEventArgs>(crawler_CrawlProgress);
 			this.crawler.IgnorableErrorOccured += new EventHandler<IgnorableErrorOccuredEventArgs>(crawler_IgnorableErrorOccured);
-			
-			Utility.LoadSettingsAndEnableSaveOnClosed(this);
 		}
 		
 		private void ClearStatusBarInfo() {
@@ -34,6 +32,7 @@ namespace Yusen.GExplorer {
 		}
 		public void FillSettings(MainFormSettings settings) {
 			base.FillSettings(settings);
+			settings.FocusOnResultAfterGenreChanged = this.FocusOnResultAfterGenreChanged;
 			settings.IgnoreCrawlErrors = this.IgnoreCrawlErrors;
 			settings.ListViewWidth = this.scListsAndDetail.SplitterDistance;
 			settings.ListViewHeight = this.scLists.SplitterDistance;
@@ -43,6 +42,7 @@ namespace Yusen.GExplorer {
 		}
 		public void ApplySettings(MainFormSettings settings) {
 			base.ApplySettings(settings);
+			this.FocusOnResultAfterGenreChanged = settings.FocusOnResultAfterGenreChanged ?? this.FocusOnResultAfterGenreChanged;
 			this.IgnoreCrawlErrors = settings.IgnoreCrawlErrors??this.IgnoreCrawlErrors;
 			this.scListsAndDetail.SplitterDistance = settings.ListViewWidth ?? this.scListsAndDetail.SplitterDistance;
 			this.scLists.SplitterDistance = settings.ListViewHeight ?? this.scLists.SplitterDistance;
@@ -53,13 +53,18 @@ namespace Yusen.GExplorer {
 		public string FilenameForSettings {
 			get { return @"MainFormSettings.xml"; }
 		}
-		
+
+		public bool FocusOnResultAfterGenreChanged {
+			get { return this.tsmiFocusOnResultAfterTabChanged.Checked; }
+			set { this.tsmiFocusOnResultAfterTabChanged.Checked = value; }
+		}
 		public bool IgnoreCrawlErrors {
 			get {return this.tsmiIgnoreCrawlErrors.Checked;}
 			set {this.tsmiIgnoreCrawlErrors.Checked = value;}
 		}
 		
 		private void MainForm_Load(object sender, EventArgs e) {
+			Utility.LoadSettingsAndEnableSaveOnClosed(this);
 			this.ClearStatusBarInfo();
 		}
 
@@ -81,43 +86,38 @@ namespace Yusen.GExplorer {
 			}
 		}
 
-		private void crawlResultView1_SelectedContentsChanged(object sender, SelectedContentsChangedEventArgs e) {
-			if (e.Contents.Count > 0) {
-				this.contentDetailView1.Content = e.Contents[0];
-			}
-		}
-		private void playListView1_SelectedContentsChanged(object sender, SelectedContentsChangedEventArgs e) {
-			if (e.Contents.Count > 0) {
-				this.contentDetailView1.Content = e.Contents[0];
-			}
-		}
-
-		private void genreTabControl1_GenreDoubleClick(object sender, GenreTabPageEventArgs e) {
-			GGenre genre = e.Genre;
-			if (null == genre) return;
-			CrawlResult result = this.crawler.Crawl(genre);
-			this.ClearStatusBarInfo();
-			if (result.Success) {
-				this.results[genre] = result;
-				this.crawlResultView1.CrawlResult = result;
-			}
-		}
-		
 		private void genreTabControl1_GenreSelected(object sender, GenreTabPageEventArgs e) {
 			GGenre genre = e.Genre;
 			if (null == genre) return;
 			CrawlResult result;
-			if (this.results.TryGetValue(genre, out result)) {
+			if (!e.ForceReload && this.results.TryGetValue(genre, out result)) {
 				this.crawlResultView1.CrawlResult = result;
 			} else {
 				result = this.crawler.Crawl(genre);
 				this.ClearStatusBarInfo();
 				if (result.Success) {
 					this.results[genre] = result;
-					this.crawlResultView1.CrawlResult = result;
+				} else {
+					return;
 				}
 			}
+			this.crawlResultView1.CrawlResult = result;
+			if (this.FocusOnResultAfterGenreChanged) {
+				this.crawlResultView1.Focus();
+			}
 		}
+
+		private void crawlResultView1_ContentSelectionChanged(object sender, ContentSelectionChangedEventArgs e) {
+			if (e.IsSelected) {
+				this.contentDetailView1.Content = e.Content;
+			}
+		}
+		private void playListView1_ContentSelectionChanged(object sender, ContentSelectionChangedEventArgs e) {
+			if (e.IsSelected) {
+				this.contentDetailView1.Content = e.Content;
+			}
+		}
+
 
 		private void tsmiQuit_Click(object sender, EventArgs e) {
 			this.Close();
@@ -137,9 +137,11 @@ namespace Yusen.GExplorer {
 			NgContentsEditor.Instance.Show();
 			NgContentsEditor.Instance.Focus();
 		}
+
 	}
 
 	public class MainFormSettings : FormSettingsBaseSettings {
+		private bool? focusOnResultAfterGenreChanged;
 		private bool? ignoreCrawlErrors;
 		private int? listViewWidth;
 		private int? listViewHeight;
@@ -147,6 +149,10 @@ namespace Yusen.GExplorer {
 		private PlayListViewSettings playListViewSettings = new PlayListViewSettings();
 		private ContentDetailViewSettings contentDetailViewSettings = new ContentDetailViewSettings();
 
+		public bool? FocusOnResultAfterGenreChanged {
+			get { return this.focusOnResultAfterGenreChanged; }
+			set { this.focusOnResultAfterGenreChanged = value; }
+		}
 		public bool? IgnoreCrawlErrors {
 			get { return this.ignoreCrawlErrors; }
 			set { this.ignoreCrawlErrors = value; }

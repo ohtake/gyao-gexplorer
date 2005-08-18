@@ -37,8 +37,6 @@ namespace Yusen.GExplorer {
 			this.FormClosing += delegate {
 				UserCommandsManager.Instance.UserCommandsChanged -= new EventHandler(UserCommandsManager_UserCommandsChanged);
 			};
-
-			Utility.LoadSettingsAndEnableSaveOnClosed(this);
 		}
 
 		private void CreateUserCommandsMenuItems() {
@@ -123,6 +121,9 @@ namespace Yusen.GExplorer {
 			set { this.tsmiWaitSecondsAfterLastCall.Checked = value; }
 		}
 
+		private void PlayerForm_Load(object sender, EventArgs e) {
+			Utility.LoadSettingsAndEnableSaveOnClosed(this);
+		}
 		private void PlayerForm_FormClosing(object sender, FormClosingEventArgs e) {
 			this.CurrentContent = null;
 		}

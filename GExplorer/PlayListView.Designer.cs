@@ -109,6 +109,7 @@ namespace Yusen.GExplorer {
 			this.listView1.View = System.Windows.Forms.View.Details;
 			this.listView1.SelectedIndexChanged += new System.EventHandler(this.listView1_SelectedIndexChanged);
 			this.listView1.DoubleClick += new System.EventHandler(this.listView1_DoubleClick);
+			this.listView1.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.listView1_ItemSelectionChanged);
 			this.listView1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.listView1_KeyDown);
 			// 
 			// chId
@@ -148,8 +149,7 @@ namespace Yusen.GExplorer {
 			this.cmsPlayListItem.Location = new System.Drawing.Point(21, 36);
 			this.cmsPlayListItem.Name = "cmsPlayListItem";
 			this.cmsPlayListItem.RightToLeft = System.Windows.Forms.RightToLeft.No;
-			this.cmsPlayListItem.Size = new System.Drawing.Size(310, 267);
-			this.cmsPlayListItem.Visible = true;
+			this.cmsPlayListItem.Size = new System.Drawing.Size(310, 248);
 			this.cmsPlayListItem.Opening += new System.ComponentModel.CancelEventHandler(this.cmsPlayListItem_Opening);
 			// 
 			// tsmiPlay
@@ -228,7 +228,7 @@ namespace Yusen.GExplorer {
 			// tsmiBrowseWithIe
 			// 
 			this.tsmiBrowseWithIe.Name = "tsmiBrowseWithIe";
-			this.tsmiBrowseWithIe.Text = "IEで詳細ページ (&D)";
+			this.tsmiBrowseWithIe.Text = "IEで詳細ページ (&E)";
 			this.tsmiBrowseWithIe.Click += new System.EventHandler(this.tsmiBrowseWithIe_Click);
 			// 
 			// toolStripSeparator3
@@ -248,7 +248,7 @@ namespace Yusen.GExplorer {
 			this.tsmiCopyUri.Name = "tsmiCopyUri";
 			this.tsmiCopyUri.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.Control) 
             | System.Windows.Forms.Keys.C)));
-			this.tsmiCopyUri.Text = "詳細ページURIをコピー (&U)";
+			this.tsmiCopyUri.Text = "詳細ページURIをコピー (&D)";
 			this.tsmiCopyUri.Click += new System.EventHandler(this.tsmiCopyUri_Click);
 			// 
 			// tsmiCopyNameAndUri

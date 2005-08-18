@@ -369,6 +369,7 @@ namespace Yusen.GExplorer {
 			this.Name = "PlayerForm";
 			this.Text = "PlayerForm";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.PlayerForm_FormClosing);
+			this.Load += new System.EventHandler(this.PlayerForm_Load);
 			this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.PlayerForm_KeyDown);
 			this.tabControl1.ResumeLayout(false);
 			this.tabPlayer.ResumeLayout(false);

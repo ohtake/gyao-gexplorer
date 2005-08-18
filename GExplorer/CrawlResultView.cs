@@ -10,11 +10,12 @@ using System.Text;
 namespace Yusen.GExplorer {
 	partial class CrawlResultView : UserControl, IHasSettings<GenreListViewSettings>{
 		public event EventHandler<SelectedContentsChangedEventArgs> SelectedContentsChanged;
+		public event EventHandler<ContentSelectionChangedEventArgs> ContentSelectionChanged;
 		
 		private CrawlResult crawlResult;
 		private AboneType aboneType = AboneType.Sabori;
 		private Color newColor = Color.Red;
-		
+
 		public CrawlResultView() {
 			InitializeComponent();
 			this.tslTitle.Font = new Font(this.tslTitle.Font, FontStyle.Bold);
@@ -41,19 +42,17 @@ namespace Yusen.GExplorer {
 			this.Disposed += delegate {
 				NgContentsManager.Instance.NgContentsChanged -= new EventHandler(NgContentsManager_NgContentsChanged);
 			};
-
 		}
+		
 		public CrawlResult CrawlResult {
 			get {
 				return this.crawlResult;
 			}
 			set {
 				lock (this) {
+					this.ClearContents();
 					this.crawlResult = value;
-					if (null == value) {
-						this.ClearContents();
-					} else {
-						this.ClearContents();
+					if (null != value) {
 						this.DisplayContents();
 					}
 				}
@@ -77,8 +76,7 @@ namespace Yusen.GExplorer {
 				}
 			}
 		}
-
-
+		
 		public AboneType AboneType {
 			get { return this.aboneType; }
 			set {
@@ -157,6 +155,7 @@ namespace Yusen.GExplorer {
 			this.listView1.Items.Clear();
 			this.listView1.Groups.Clear();
 			this.listView1.EndUpdate();
+			this.tslGenre.Text = "";
 			this.tslMessage.Text = "";
 		}
 		private void DisplayContents(){
@@ -196,15 +195,18 @@ namespace Yusen.GExplorer {
 					if (isNg && AboneType.Sabori == this.AboneType) {
 						item.ForeColor = SystemColors.GrayText;
 					}
+					
 					this.listView1.Items.Add(item);
 				}
 			}
 			this.ShowPackages = showPackages;
 			this.listView1.EndUpdate();
+			
+			this.tslGenre.ForeColor = this.Genre.GenreColor;
+			this.tslGenre.Text = "[" + this.Genre.GenreName + "]";
 			this.tslMessage.Text =
-							"[" + this.Genre.GenreName + "]"
-							+ " " + this.listView1.Items.Count.ToString() + "+" + abones.ToString() + "個のコンテンツ"
-							+ " (クロール時刻" + this.Genre.LastCrawlTime.ToShortTimeString() + ")";
+							this.listView1.Items.Count.ToString() + " + " + abones.ToString() + " 個"
+							+ " (" + this.Genre.LastCrawlTime.ToShortTimeString() + ")";
 		}
 		private void CreateUserCommandsMenuItems() {
 			this.tsmiUserCommands.DropDownItems.Clear();
@@ -234,9 +236,15 @@ namespace Yusen.GExplorer {
 		void NgContentsManager_NgContentsChanged(object sender, EventArgs e) {
 			this.RefleshView();
 		}
+
 		private void listView1_SelectedIndexChanged(object sender, EventArgs e) {
 			if (null != this.SelectedContentsChanged) {
 				this.SelectedContentsChanged(this, new SelectedContentsChangedEventArgs(this.SelectedContents));
+			}
+		}
+		private void listView1_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e) {
+			if (null != this.ContentSelectionChanged) {
+				this.ContentSelectionChanged(this, new ContentSelectionChangedEventArgs(e.Item.Tag as ContentAdapter, e.IsSelected));
 			}
 		}
 		private void listView1_DoubleClick(object sender, EventArgs e) {
@@ -257,9 +265,10 @@ namespace Yusen.GExplorer {
 		}
 		#region コンテキストメニューの項目
 		private void tsmiAdd_Click(object sender, EventArgs e) {
-			List<ContentAdapter> conts = new List<ContentAdapter>(this.SelectedContents);
 			PlayList.Instance.BeginUpdate();
-			conts.ForEach(PlayList.Instance.AddIfNotExists);
+			foreach (ContentAdapter cont in this.SelectedContents) {
+				PlayList.Instance.AddIfNotExists(cont);
+			}
 			PlayList.Instance.EndUpdate();
 		}
 		private void tsmiPlay_Click(object sender, EventArgs e) {
@@ -323,13 +332,13 @@ namespace Yusen.GExplorer {
 		private void tsmiAddNgWithId_Click(object sender, EventArgs e) {
 			foreach (ContentAdapter cont in this.SelectedContents) {
 				string contId = cont.ContentId;
-				NgContentsManager.Instance.Add(new NgContent("簡易追加(ID): " + contId, "ContentId", TwoStringsPredicateMethod.Equals, contId));
+				NgContentsManager.Instance.Add(new NgContent("簡易追加(ID)", "ContentId", TwoStringsPredicateMethod.Equals, contId));
 			}
 		}
 		private void tsmiAddNgWithTitle_Click(object sender, EventArgs e) {
 			foreach (ContentAdapter cont in this.SelectedContents) {
 				string title = cont.Title;
-				NgContentsManager.Instance.Add(new NgContent("簡易追加(タイトル): " + title, "Title", TwoStringsPredicateMethod.Equals, title));
+				NgContentsManager.Instance.Add(new NgContent("簡易追加(タイトル)", "Title", TwoStringsPredicateMethod.Equals, title));
 			}
 		}
 		#endregion
@@ -350,6 +359,8 @@ namespace Yusen.GExplorer {
 			}
 		}
 		#endregion
+
+
 	}
 
 	public enum AboneType {
