@@ -68,12 +68,11 @@ namespace Yusen.GExplorer {
 			PropertyInfo pi = cont.GetType().GetProperty(this.propertyName);
 			string propValue = pi.GetValue(cont, null).ToString();
 			MethodInfo mi = typeof(string).GetMethod(this.method.ToString(), new Type[] {typeof(string)});
-			if((bool)mi.Invoke(propValue, new object[] { this.word })) {
+			bool isNg = (bool)mi.Invoke(propValue, new object[] { this.word });
+			if(isNg) {
 				this.lastAbone = DateTime.Now;
-				return true;
-			} else {
-				return false;
 			}
+			return isNg;
 		}
 	}
 	

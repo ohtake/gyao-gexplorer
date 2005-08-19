@@ -69,7 +69,7 @@ namespace Yusen.GExplorer {
 				}
 			}
 		}
-
+		
 		private void GenreTabControl_SelectedIndexChanged(object sender, EventArgs e) {
 			if (null != this.GenreSelected) {
 				GGenre genre = this.SelectedGenre;

@@ -43,7 +43,7 @@ namespace Yusen.GExplorer {
 		public void ApplySettings(MainFormSettings settings) {
 			base.ApplySettings(settings);
 			this.FocusOnResultAfterGenreChanged = settings.FocusOnResultAfterGenreChanged ?? this.FocusOnResultAfterGenreChanged;
-			this.IgnoreCrawlErrors = settings.IgnoreCrawlErrors??this.IgnoreCrawlErrors;
+			this.IgnoreCrawlErrors = settings.IgnoreCrawlErrors ?? this.IgnoreCrawlErrors;
 			this.scListsAndDetail.SplitterDistance = settings.ListViewWidth ?? this.scListsAndDetail.SplitterDistance;
 			this.scLists.SplitterDistance = settings.ListViewHeight ?? this.scLists.SplitterDistance;
 			this.crawlResultView1.ApplySettings(settings.GenreListViewSettings);
@@ -62,7 +62,7 @@ namespace Yusen.GExplorer {
 			get {return this.tsmiIgnoreCrawlErrors.Checked;}
 			set {this.tsmiIgnoreCrawlErrors.Checked = value;}
 		}
-		
+
 		private void MainForm_Load(object sender, EventArgs e) {
 			Utility.LoadSettingsAndEnableSaveOnClosed(this);
 			this.ClearStatusBarInfo();
@@ -90,9 +90,7 @@ namespace Yusen.GExplorer {
 			GGenre genre = e.Genre;
 			if (null == genre) return;
 			CrawlResult result;
-			if (!e.ForceReload && this.results.TryGetValue(genre, out result)) {
-				this.crawlResultView1.CrawlResult = result;
-			} else {
+			if (e.ForceReload || ! this.results.TryGetValue(genre, out result)) {
 				result = this.crawler.Crawl(genre);
 				this.ClearStatusBarInfo();
 				if (result.Success) {
@@ -137,7 +135,6 @@ namespace Yusen.GExplorer {
 			NgContentsEditor.Instance.Show();
 			NgContentsEditor.Instance.Focus();
 		}
-
 	}
 
 	public class MainFormSettings : FormSettingsBaseSettings {
@@ -148,7 +145,7 @@ namespace Yusen.GExplorer {
 		private GenreListViewSettings genreListViewSettings = new GenreListViewSettings();
 		private PlayListViewSettings playListViewSettings = new PlayListViewSettings();
 		private ContentDetailViewSettings contentDetailViewSettings = new ContentDetailViewSettings();
-
+		
 		public bool? FocusOnResultAfterGenreChanged {
 			get { return this.focusOnResultAfterGenreChanged; }
 			set { this.focusOnResultAfterGenreChanged = value; }

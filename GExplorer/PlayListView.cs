@@ -9,7 +9,7 @@ namespace Yusen.GExplorer {
 	partial class PlayListView : UserControl, IHasSettings<PlayListViewSettings> {
 		public event EventHandler<SelectedContentsChangedEventArgs> SelectedContentsChanged;
 		public event EventHandler<ContentSelectionChangedEventArgs> ContentSelectionChanged;
-
+		
 		public PlayListView() {
 			InitializeComponent();
 			this.tslTitle.Font = new Font(this.tslTitle.Font, FontStyle.Bold);
@@ -18,13 +18,13 @@ namespace Yusen.GExplorer {
 			PlayList.Instance.PlayListChanged += new EventHandler(PlayList_PlayListChanged);
 			PlayList.Instance.CurrentContentChanged += new EventHandler(PlayList_CurrentContentChanged);
 			UserCommandsManager.Instance.UserCommandsChanged += new EventHandler(UserCommandsManager_UserCommandsChanged);
-
+			
 			this.Disposed += delegate {
 				PlayList.Instance.PlayListChanged -= new EventHandler(PlayList_PlayListChanged);
 				PlayList.Instance.CurrentContentChanged -= new EventHandler(PlayList_CurrentContentChanged);
 				UserCommandsManager.Instance.UserCommandsChanged -= new EventHandler(UserCommandsManager_UserCommandsChanged);
 			};
-
+			
 			this.UpdatePlayListView();
 			this.UpdateStatusBarText();
 			this.UpdateUserCommandsMenu();
@@ -214,19 +214,16 @@ namespace Yusen.GExplorer {
 				Utility.PlayWithWMP(cont.MediaFileUri);
 			}
 		}
-
 		private void tsmiPlayWithIe_Click(object sender, EventArgs e) {
 			foreach (ContentAdapter cont in this.SelectedContents) {
 				Utility.BrowseWithIE(cont.PlayerPageUri);
 			}
 		}
-
 		private void tsmiBrowseWithIe_Click(object sender, EventArgs e) {
 			foreach (ContentAdapter cont in this.SelectedContents) {
 				Utility.BrowseWithIE(cont.DetailPageUri);
 			}
 		}
-
 		private void tsmiCopyName_Click(object sender, EventArgs e) {
 			StringBuilder sb = new StringBuilder();
 			foreach (ContentAdapter cont in this.SelectedContents) {

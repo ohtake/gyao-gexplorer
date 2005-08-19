@@ -42,13 +42,13 @@ namespace Yusen.GExplorer {
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiQuit = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiTools = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiFocusOnResultAfterTabChanged = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiIgnoreCrawlErrors = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiWindow = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiGlobalSettingsEditor = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiUserCommandsEditor = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiNgContentsEditor = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiFocusOnResultAfterTabChanged = new System.Windows.Forms.ToolStripMenuItem();
 			this.statusStrip1.SuspendLayout();
 			this.toolStripContainer1.BottomToolStripPanel.SuspendLayout();
 			this.toolStripContainer1.ContentPanel.SuspendLayout();
@@ -283,6 +283,14 @@ namespace Yusen.GExplorer {
 			this.tsmiTools.Name = "tsmiTools";
 			this.tsmiTools.Text = "ツール (&T)";
 			// 
+			// tsmiFocusOnResultAfterTabChanged
+			// 
+			this.tsmiFocusOnResultAfterTabChanged.Checked = true;
+			this.tsmiFocusOnResultAfterTabChanged.CheckOnClick = true;
+			this.tsmiFocusOnResultAfterTabChanged.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.tsmiFocusOnResultAfterTabChanged.Name = "tsmiFocusOnResultAfterTabChanged";
+			this.tsmiFocusOnResultAfterTabChanged.Text = "ジャンルタブ切り替え後にクロール結果ビューにフォーカスを送る (&F)";
+			// 
 			// tsmiIgnoreCrawlErrors
 			// 
 			this.tsmiIgnoreCrawlErrors.Checked = true;
@@ -322,14 +330,6 @@ namespace Yusen.GExplorer {
 			this.tsmiNgContentsEditor.Name = "tsmiNgContentsEditor";
 			this.tsmiNgContentsEditor.Text = "NGコンテンツエディタ (&N)";
 			this.tsmiNgContentsEditor.Click += new System.EventHandler(this.tsmiNgContentsEditor_Click);
-			// 
-			// tsmiFocusOnResultAfterTabChanged
-			// 
-			this.tsmiFocusOnResultAfterTabChanged.Checked = true;
-			this.tsmiFocusOnResultAfterTabChanged.CheckOnClick = true;
-			this.tsmiFocusOnResultAfterTabChanged.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.tsmiFocusOnResultAfterTabChanged.Name = "tsmiFocusOnResultAfterTabChanged";
-			this.tsmiFocusOnResultAfterTabChanged.Text = "ジャンルタブ切り替え後にクロール結果ビューにフォーカスを送る (&F)";
 			// 
 			// MainForm
 			// 

@@ -50,11 +50,14 @@ namespace Yusen.GExplorer {
 			}
 			set {
 				lock (this) {
-					this.ClearContents();
 					this.crawlResult = value;
+					
+					this.listView1.BeginUpdate();
+					this.ClearContents();
 					if (null != value) {
 						this.DisplayContents();
 					}
+					this.listView1.EndUpdate();
 				}
 			}
 		}
@@ -151,15 +154,12 @@ namespace Yusen.GExplorer {
 			if (null != this.SelectedContentsChanged) {
 				this.SelectedContentsChanged(this, new SelectedContentsChangedEventArgs());
 			}
-			this.listView1.BeginUpdate();
 			this.listView1.Items.Clear();
 			this.listView1.Groups.Clear();
-			this.listView1.EndUpdate();
 			this.tslGenre.Text = "";
 			this.tslMessage.Text = "";
 		}
 		private void DisplayContents(){
-			this.listView1.BeginUpdate();
 			bool showPackages = this.ShowPackages;
 			this.ShowPackages = true;
 			int abones = 0;
@@ -170,14 +170,11 @@ namespace Yusen.GExplorer {
 					ContentAdapter ca = new ContentAdapter(c, this.Genre);
 					bool isNg = NgContentsManager.Instance.IsNgContent(ca);
 					switch (this.AboneType) {
+						case AboneType.Hakidame:
+							isNg = !isNg;
+							goto case AboneType.Toumei;
 						case AboneType.Toumei:
 							if (isNg) {
-								abones++;
-								continue;
-							}
-							break;
-						case AboneType.Hakidame:
-							if (!isNg) {
 								abones++;
 								continue;
 							}
@@ -200,7 +197,6 @@ namespace Yusen.GExplorer {
 				}
 			}
 			this.ShowPackages = showPackages;
-			this.listView1.EndUpdate();
 			
 			this.tslGenre.ForeColor = this.Genre.GenreColor;
 			this.tslGenre.Text = "[" + this.Genre.GenreName + "]";
@@ -233,7 +229,7 @@ namespace Yusen.GExplorer {
 		private void UserCommandsManager_UserCommandsChanged(object sender, EventArgs e) {
 			this.CreateUserCommandsMenuItems();
 		}
-		void NgContentsManager_NgContentsChanged(object sender, EventArgs e) {
+		private void NgContentsManager_NgContentsChanged(object sender, EventArgs e) {
 			this.RefleshView();
 		}
 
@@ -359,8 +355,6 @@ namespace Yusen.GExplorer {
 			}
 		}
 		#endregion
-
-
 	}
 
 	public enum AboneType {
