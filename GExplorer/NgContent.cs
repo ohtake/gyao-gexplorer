@@ -20,16 +20,19 @@ namespace Yusen.GExplorer {
 		private string word;
 		private DateTime created;
 		private DateTime lastAbone;
+
+		private PropertyInfo objInfo;
+		private MethodInfo predInfo;
 		
 		public NgContent(){
 		}
 		internal NgContent(string comment, string propertyName, TwoStringsPredicateMethod method, string word) {
-			this.comment = comment;
-			this.propertyName = propertyName;
-			this.method = method;
-			this.word = word;
-			this.created = DateTime.Now;
-			this.lastAbone = DateTime.MinValue;
+			this.Comment = comment;
+			this.PropertyName = propertyName;
+			this.Method = method;
+			this.Word = word;
+			this.Created = DateTime.Now;
+			this.LastAbone = DateTime.MinValue;
 		}
 		/// <summary>コメント．意味なし．</summary>
 		public string Comment {
@@ -39,12 +42,24 @@ namespace Yusen.GExplorer {
 		/// <summary>NG処理で主語となる<see cref="ContentAdapter"/>のプロパティ名．</summary>
 		public string PropertyName {
 			get { return this.propertyName; }
-			set { this.propertyName = value; }
+			set {
+				this.propertyName = value;
+				this.objInfo = typeof(ContentAdapter).GetProperty(value);
+				if (null == this.objInfo) {
+					throw new ArgumentException("存在しないプロパティ名: " + value);
+				}
+			}
 		}
 		/// <summary>NG処理で述語となる<see cref="string"/>のメソッド名．</summary>
 		public TwoStringsPredicateMethod Method {
 			get { return this.method; }
-			set { this.method = value; }
+			set {
+				this.method = value;
+				this.predInfo = typeof(string).GetMethod(value.ToString(), new Type[] { typeof(string)});
+				if (null == this.predInfo) {
+					throw new ArgumentException("存在しないメソッド名: " + value.ToString());
+				}
+			}
 		}
 		/// <summary>NG処理で目的語となるNGワード．</summary>
 		public string Word {
@@ -65,10 +80,8 @@ namespace Yusen.GExplorer {
 		/// <param name="p">判定対象の<see cref="GPackage"/>．</param>
 		/// <returns>NGであったらtrueが返る．</returns>
 		internal bool IsNgContent(ContentAdapter cont) {
-			PropertyInfo pi = cont.GetType().GetProperty(this.propertyName);
-			string propValue = pi.GetValue(cont, null).ToString();
-			MethodInfo mi = typeof(string).GetMethod(this.method.ToString(), new Type[] {typeof(string)});
-			bool isNg = (bool)mi.Invoke(propValue, new object[] { this.word });
+			string propValue = this.objInfo.GetValue(cont, null).ToString();
+			bool isNg = (bool)this.predInfo.Invoke(propValue, new object[] { this.word });
 			if(isNg) {
 				this.lastAbone = DateTime.Now;
 			}

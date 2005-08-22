@@ -51,9 +51,10 @@ namespace Yusen.GExplorer {
 			this.tsmiUserCommands = new System.Windows.Forms.ToolStripMenuItem();
 			this.colorDialog1 = new System.Windows.Forms.ColorDialog();
 			this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
-			this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+			this.tsMain = new System.Windows.Forms.ToolStrip();
 			this.tslTitle = new System.Windows.Forms.ToolStripLabel();
 			this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+			this.tsbShowFilter = new System.Windows.Forms.ToolStripButton();
 			this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
 			this.tsmiAboneType = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
@@ -65,11 +66,17 @@ namespace Yusen.GExplorer {
 			this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
 			this.tslGenre = new System.Windows.Forms.ToolStripLabel();
 			this.tslMessage = new System.Windows.Forms.ToolStripLabel();
+			this.tsFilter = new System.Windows.Forms.ToolStrip();
+			this.tslFilter = new System.Windows.Forms.ToolStripLabel();
+			this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
+			this.tstbFilter = new System.Windows.Forms.ToolStripTextBox();
+			this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
 			this.cmsContent.SuspendLayout();
 			this.toolStripContainer1.ContentPanel.SuspendLayout();
 			this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
 			this.toolStripContainer1.SuspendLayout();
-			this.toolStrip1.SuspendLayout();
+			this.tsMain.SuspendLayout();
+			this.tsFilter.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// listView1
@@ -89,7 +96,7 @@ namespace Yusen.GExplorer {
 			this.listView1.Location = new System.Drawing.Point(0, 0);
 			this.listView1.Name = "listView1";
 			this.listView1.ShowItemToolTips = true;
-			this.listView1.Size = new System.Drawing.Size(418, 183);
+			this.listView1.Size = new System.Drawing.Size(418, 158);
 			this.listView1.TabIndex = 0;
 			this.listView1.View = System.Windows.Forms.View.Details;
 			this.listView1.SelectedIndexChanged += new System.EventHandler(this.listView1_SelectedIndexChanged);
@@ -266,26 +273,28 @@ namespace Yusen.GExplorer {
 			// 
 			// toolStripContainer1.TopToolStripPanel
 			// 
-			this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.toolStrip1);
+			this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.tsMain);
+			this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.tsFilter);
 			// 
-			// toolStrip1
+			// tsMain
 			// 
-			this.toolStrip1.AllowItemReorder = true;
-			this.toolStrip1.Dock = System.Windows.Forms.DockStyle.None;
-			this.toolStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
-			this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+			this.tsMain.AllowItemReorder = true;
+			this.tsMain.Dock = System.Windows.Forms.DockStyle.None;
+			this.tsMain.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+			this.tsMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tslTitle,
             this.toolStripSeparator4,
+            this.tsbShowFilter,
             this.toolStripDropDownButton1,
             this.toolStripSeparator5,
             this.tslGenre,
             this.tslMessage});
-			this.toolStrip1.Location = new System.Drawing.Point(0, 0);
-			this.toolStrip1.Name = "toolStrip1";
-			this.toolStrip1.Size = new System.Drawing.Size(418, 25);
-			this.toolStrip1.Stretch = true;
-			this.toolStrip1.TabIndex = 2;
-			this.toolStrip1.Text = "toolStrip1";
+			this.tsMain.Location = new System.Drawing.Point(0, 0);
+			this.tsMain.Name = "tsMain";
+			this.tsMain.Size = new System.Drawing.Size(418, 25);
+			this.tsMain.Stretch = true;
+			this.tsMain.TabIndex = 2;
+			this.tsMain.Text = "toolStrip1";
 			// 
 			// tslTitle
 			// 
@@ -295,6 +304,15 @@ namespace Yusen.GExplorer {
 			// toolStripSeparator4
 			// 
 			this.toolStripSeparator4.Name = "toolStripSeparator4";
+			// 
+			// tsbShowFilter
+			// 
+			this.tsbShowFilter.CheckOnClick = true;
+			this.tsbShowFilter.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+			this.tsbShowFilter.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.tsbShowFilter.Name = "tsbShowFilter";
+			this.tsbShowFilter.Text = "フィルタ (&I)";
+			this.tsbShowFilter.Click += new System.EventHandler(this.tsbShowFilter_Click);
 			// 
 			// toolStripDropDownButton1
 			// 
@@ -370,6 +388,43 @@ namespace Yusen.GExplorer {
 			this.tslMessage.Name = "tslMessage";
 			this.tslMessage.Text = "tslMessage";
 			// 
+			// tsFilter
+			// 
+			this.tsFilter.Dock = System.Windows.Forms.DockStyle.None;
+			this.tsFilter.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+			this.tsFilter.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tslFilter,
+            this.toolStripSeparator9,
+            this.tstbFilter,
+            this.toolStripLabel1});
+			this.tsFilter.Location = new System.Drawing.Point(0, 25);
+			this.tsFilter.Name = "tsFilter";
+			this.tsFilter.Size = new System.Drawing.Size(418, 25);
+			this.tsFilter.Stretch = true;
+			this.tsFilter.TabIndex = 3;
+			this.tsFilter.Text = "tsFilter";
+			// 
+			// tslFilter
+			// 
+			this.tslFilter.Name = "tslFilter";
+			this.tslFilter.Text = "フィルタ";
+			// 
+			// toolStripSeparator9
+			// 
+			this.toolStripSeparator9.Name = "toolStripSeparator9";
+			// 
+			// tstbFilter
+			// 
+			this.tstbFilter.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.ImageAndText;
+			this.tstbFilter.Name = "tstbFilter";
+			this.tstbFilter.Size = new System.Drawing.Size(150, 25);
+			this.tstbFilter.TextChanged += new System.EventHandler(this.tstbFilter_TextChanged);
+			// 
+			// toolStripLabel1
+			// 
+			this.toolStripLabel1.Name = "toolStripLabel1";
+			this.toolStripLabel1.Text = "を含むもののみ表示";
+			// 
 			// CrawlResultView
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -383,7 +438,9 @@ namespace Yusen.GExplorer {
 			this.toolStripContainer1.TopToolStripPanel.PerformLayout();
 			this.toolStripContainer1.ResumeLayout(false);
 			this.toolStripContainer1.PerformLayout();
-			this.toolStrip1.ResumeLayout(false);
+			this.tsMain.ResumeLayout(false);
+			this.tsFilter.ResumeLayout(false);
+			this.tsFilter.PerformLayout();
 			this.ResumeLayout(false);
 
 		}
@@ -414,7 +471,7 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ToolStripMenuItem tsmiAddNgWithTitle;
 		private System.Windows.Forms.ColorDialog colorDialog1;
 		private System.Windows.Forms.ToolStripContainer toolStripContainer1;
-		private System.Windows.Forms.ToolStrip toolStrip1;
+		private System.Windows.Forms.ToolStrip tsMain;
 		private System.Windows.Forms.ToolStripLabel tslTitle;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
 		private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownButton1;
@@ -430,5 +487,11 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator8;
 		private System.Windows.Forms.ToolStripLabel tslGenre;
+		private System.Windows.Forms.ToolStrip tsFilter;
+		private System.Windows.Forms.ToolStripLabel tslFilter;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator9;
+		private System.Windows.Forms.ToolStripTextBox tstbFilter;
+		private System.Windows.Forms.ToolStripButton tsbShowFilter;
+		private System.Windows.Forms.ToolStripLabel toolStripLabel1;
 	}
 }

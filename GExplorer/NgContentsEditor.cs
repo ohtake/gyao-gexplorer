@@ -90,12 +90,18 @@ namespace Yusen.GExplorer {
 		}
 
 		private void btnAdd_Click(object sender, EventArgs e) {
-			NgContentsManager.Instance.Add(new NgContent(
-				this.txtComment.Text,
-				this.comboProperty.Text,
-				(TwoStringsPredicateMethod)Enum.Parse(
-					typeof(TwoStringsPredicateMethod), this.comboMethod.Text),
-				this.txtWord.Text));
+			NgContent ng = null;
+			try{
+				ng = new NgContent(
+					this.txtComment.Text,
+					this.comboProperty.Text,
+					(TwoStringsPredicateMethod)Enum.Parse(
+						typeof(TwoStringsPredicateMethod), this.comboMethod.Text),
+					this.txtWord.Text);
+			}catch{
+				throw;
+			}
+			NgContentsManager.Instance.Add(ng);
 		}
 	}
 

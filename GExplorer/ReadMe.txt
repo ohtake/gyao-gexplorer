@@ -1,4 +1,4 @@
-GyaO 専用ブラウザ GExplorer 1.2.1.3
+GyaO 専用ブラウザ GExplorer 1.2.2.0
 
 ◆必要な環境
 .NET Framework 2.0.50215 以降がインストールされており正常に動作していること

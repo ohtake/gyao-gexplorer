@@ -16,6 +16,8 @@ namespace Yusen.GExplorer {
 		private AboneType aboneType = AboneType.Sabori;
 		private Color newColor = Color.Red;
 
+		private List<ListViewItem> allLvis = new List<ListViewItem>();
+
 		public CrawlResultView() {
 			InitializeComponent();
 			this.tslTitle.Font = new Font(this.tslTitle.Font, FontStyle.Bold);
@@ -115,6 +117,17 @@ namespace Yusen.GExplorer {
 				this.listView1.MultiSelect = value;
 			}
 		}
+		public bool FilterEnabled {
+			get { return this.tsbShowFilter.Checked; }
+			set {
+				this.tsbShowFilter.Checked = value;
+				this.tsFilter.Visible = value;
+			}
+		}
+		public string FilterString {
+			get { return this.tstbFilter.Text; }
+			set { this.tstbFilter.Text = value; }
+		}
 		public Color NewColor {
 			get { return this.newColor; }
 			set {
@@ -135,6 +148,7 @@ namespace Yusen.GExplorer {
 			settings.ShowPackages = this.ShowPackages;
 			settings.HoverSelect = this.HoverSelect;
 			settings.MultiSelect = this.MultiSelect;
+			settings.FilterEnabled = this.FilterEnabled;
 			settings.NewColor = this.NewColor;
 		}
 		public void ApplySettings(GenreListViewSettings settings) {
@@ -148,6 +162,7 @@ namespace Yusen.GExplorer {
 			this.ShowPackages = settings.ShowPackages ?? this.ShowPackages;
 			this.HoverSelect = settings.HoverSelect ?? this.HoverSelect;
 			this.MultiSelect = settings.MultiSelect ?? this.MultiSelect;
+			this.FilterEnabled = settings.FilterEnabled ?? this.FilterEnabled;
 			this.NewColor = settings.NewColor ?? this.NewColor;
 		}
 		private void ClearContents() {
@@ -162,23 +177,38 @@ namespace Yusen.GExplorer {
 		private void DisplayContents(){
 			bool showPackages = this.ShowPackages;
 			this.ShowPackages = true;
-			int abones = 0;
+			int aboned = 0;
+			int filtered = 0;
 			foreach (GPackage p in this.Genre.Packages) {
 				ListViewGroup group = new ListViewGroup(p.ToString());
 				this.listView1.Groups.Add(group);
 				foreach (GContent c in p.Contents) {
 					ContentAdapter ca = new ContentAdapter(c, this.Genre);
 					bool isNg = NgContentsManager.Instance.IsNgContent(ca);
+					//NG処理
 					switch (this.AboneType) {
 						case AboneType.Hakidame:
 							isNg = !isNg;
 							goto case AboneType.Toumei;
 						case AboneType.Toumei:
 							if (isNg) {
-								abones++;
+								aboned++;
 								continue;
 							}
 							break;
+					}
+					//フィルタ処理
+					if (this.FilterEnabled && "" != this.FilterString) {
+						string fstr = this.FilterString;
+						if (!ca.ContentId.Contains(fstr)
+							&& !ca.Title.Contains(fstr)
+							&& !ca.EpisodeNumber.Contains(fstr)
+							&& !ca.SubTitle.Contains(fstr)
+							&& !ca.Duration.Contains(fstr)
+							&& !ca.LongDescription.Contains(fstr)) {
+							filtered++;
+							continue;
+						}
 					}
 					
 					ListViewItem item = new ListViewItem(
@@ -201,7 +231,7 @@ namespace Yusen.GExplorer {
 			this.tslGenre.ForeColor = this.Genre.GenreColor;
 			this.tslGenre.Text = "[" + this.Genre.GenreName + "]";
 			this.tslMessage.Text =
-							this.listView1.Items.Count.ToString() + " + " + abones.ToString() + " 個"
+							this.listView1.Items.Count.ToString() + " + " + filtered.ToString() + " + " + aboned.ToString() + " 個"
 							+ " (" + this.Genre.LastCrawlTime.ToShortTimeString() + ")";
 		}
 		private void CreateUserCommandsMenuItems() {
@@ -355,6 +385,16 @@ namespace Yusen.GExplorer {
 			}
 		}
 		#endregion
+
+		#region フィルタ関連
+		private void tsbShowFilter_Click(object sender, EventArgs e) {
+			this.FilterEnabled = this.FilterEnabled;
+			this.RefleshView();
+		}
+		private void tstbFilter_TextChanged(object sender, EventArgs e) {
+			this.RefleshView();
+		}
+		#endregion
 	}
 
 	public enum AboneType {
@@ -373,6 +413,7 @@ namespace Yusen.GExplorer {
 		private bool? showPackages;
 		private bool? hoverSelect;
 		private bool? multiSelect;
+		private bool? filterEnabled;
 		private Color? newColor;
 		
 		public int? ColWidthId {
@@ -414,6 +455,10 @@ namespace Yusen.GExplorer {
 		public bool? MultiSelect {
 			get { return this.multiSelect; }
 			set { this.multiSelect = value; }
+		}
+		public bool? FilterEnabled {
+			get { return this.filterEnabled; }
+			set { this.filterEnabled = value; }
 		}
 		
 		[XmlIgnore] //ColorはXMLシリアライズできない？
