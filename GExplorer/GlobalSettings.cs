@@ -83,5 +83,15 @@ namespace Yusen.GExplorer {
 				}
 			}
 		}
+		
+		private string migemoDictionaryFilename = @"dict\migemo-dict";
+		[Category("migemo")]
+		[DisplayName("辞書ファイル")]
+		[Description("migemoの辞書ファイル．再起動後に有効．")]
+		[DefaultValue(@"dict\migemo-dict")]
+		public string MigemoDictionaryFilename {
+			get { return this.migemoDictionaryFilename; }
+			set { this.migemoDictionaryFilename = value; }
+		}
 	}
 }

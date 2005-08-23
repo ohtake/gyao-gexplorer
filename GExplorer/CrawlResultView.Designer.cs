@@ -70,7 +70,7 @@ namespace Yusen.GExplorer {
 			this.tslFilter = new System.Windows.Forms.ToolStripLabel();
 			this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
 			this.tstbFilter = new System.Windows.Forms.ToolStripTextBox();
-			this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
+			this.tstbMigemoAnswer = new System.Windows.Forms.ToolStripTextBox();
 			this.cmsContent.SuspendLayout();
 			this.toolStripContainer1.ContentPanel.SuspendLayout();
 			this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
@@ -311,7 +311,7 @@ namespace Yusen.GExplorer {
 			this.tsbShowFilter.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
 			this.tsbShowFilter.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tsbShowFilter.Name = "tsbShowFilter";
-			this.tsbShowFilter.Text = "フィルタ (&I)";
+			this.tsbShowFilter.Text = "Migemoフィルタ (&M)";
 			this.tsbShowFilter.Click += new System.EventHandler(this.tsbShowFilter_Click);
 			// 
 			// toolStripDropDownButton1
@@ -396,7 +396,7 @@ namespace Yusen.GExplorer {
             this.tslFilter,
             this.toolStripSeparator9,
             this.tstbFilter,
-            this.toolStripLabel1});
+            this.tstbMigemoAnswer});
 			this.tsFilter.Location = new System.Drawing.Point(0, 25);
 			this.tsFilter.Name = "tsFilter";
 			this.tsFilter.Size = new System.Drawing.Size(418, 25);
@@ -407,7 +407,7 @@ namespace Yusen.GExplorer {
 			// tslFilter
 			// 
 			this.tslFilter.Name = "tslFilter";
-			this.tslFilter.Text = "フィルタ";
+			this.tslFilter.Text = "Migemoフィルタ";
 			// 
 			// toolStripSeparator9
 			// 
@@ -420,10 +420,12 @@ namespace Yusen.GExplorer {
 			this.tstbFilter.Size = new System.Drawing.Size(150, 25);
 			this.tstbFilter.TextChanged += new System.EventHandler(this.tstbFilter_TextChanged);
 			// 
-			// toolStripLabel1
+			// tstbMigemoAnswer
 			// 
-			this.toolStripLabel1.Name = "toolStripLabel1";
-			this.toolStripLabel1.Text = "を含むもののみ表示";
+			this.tstbMigemoAnswer.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.ImageAndText;
+			this.tstbMigemoAnswer.Name = "tstbMigemoAnswer";
+			this.tstbMigemoAnswer.ReadOnly = true;
+			this.tstbMigemoAnswer.Size = new System.Drawing.Size(150, 25);
 			// 
 			// CrawlResultView
 			// 
@@ -492,6 +494,6 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator9;
 		private System.Windows.Forms.ToolStripTextBox tstbFilter;
 		private System.Windows.Forms.ToolStripButton tsbShowFilter;
-		private System.Windows.Forms.ToolStripLabel toolStripLabel1;
+		private System.Windows.Forms.ToolStripTextBox tstbMigemoAnswer;
 	}
 }

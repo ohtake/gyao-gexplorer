@@ -1,4 +1,4 @@
-GyaO 専用ブラウザ GExplorer 1.2.2.0
+GyaO 専用ブラウザ GExplorer 1.2.2.1
 
 ◆必要な環境
 .NET Framework 2.0.50215 以降がインストールされており正常に動作していること
@@ -7,6 +7,17 @@ Microsoft .NET Framework 2.0 再頒布可能パッケージ Beta 2 (x86)
 http://www.microsoft.com/downloads/details.aspx?displaylang=ja&FamilyID=7abd8c8f-287e-4c7e-9a4a-a4ecff40fc8e
 
 まだβ製品しかないけれども 2ch でうｐされているプログラムを実行するほどの度胸のある人ならMSのβ製品なんて恐るるに足らんでしょう
+
+◆C/Migemo
+クロール結果のフィルタ処理を行うために C/Migemo を利用します
+C/Migemo がなくても GExplorer は動作しますがあると便利です
+
+KaoriYa.net
+http://www.kaoriya.net/#CMIGEMO
+
+上記のサイトから「バイナリ(DLL)リリース版 for Windows」をダウンロード
+必須ファイルは migemo.dll と dict ディレクトリ内の全辞書ファイル
+migemo.dll と dict を GExplorer.exe と同じディレクトリにおいてください
 
 ◆使用期限
 ライセンスの都合により
@@ -36,7 +47,8 @@ http://lab.msdn.microsoft.com/vs2005/golive/license/default.aspx
 ・クロール結果ビュー (メイン画面の左中)
 	ダブルクリックやEnterキーによりプレイリストに追加する
 	右クリックすれば他の操作も行えたりする
-	今回のクロールで初めて発見したコンテンツは赤く表示される
+	今回のクロールで初めて発見したコンテンツは別色で表示される
+	Migemoフィルタが赤い時はC/Migemoの初期化エラー，黄色い時は変換エラー (タイムアウトまたは複雑すぎる正規表現)
 ・プレイリストビュー (メイン画面の左下)
 	ダブルクリックやEnterキーにより専用プレーヤで再生する
 	右クリックすれば他の操作も行えたりする
@@ -45,6 +57,10 @@ http://lab.msdn.microsoft.com/vs2005/golive/license/default.aspx
 	画像部分は右クリック可能
 ・専用プレーヤ
 	特に説明は要らないかと
+・グローバル設定エディタ
+	設定項目を選択すると下部に説明が出ます
+	説明文が途中で切れちゃうことがあるのでウィンドウを大きめにするとよいです
+	一部の設定項目はGExplorerの再起動が必要になります
 ・外部コマンドエディタ
 	表示名とファイル名は普通に入力してください
 	引数で指定する文字列では { と } で囲まれる箇所に置換が起きます

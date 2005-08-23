@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Forms;
 using System.Drawing;
-using Yusen.GCrawler;
 using System.Xml.Serialization;
 using System.Text;
+using System.Text.RegularExpressions;
+using Yusen.GCrawler;
 
 namespace Yusen.GExplorer {
 	partial class CrawlResultView : UserControl, IHasSettings<GenreListViewSettings>{
@@ -17,6 +18,7 @@ namespace Yusen.GExplorer {
 		private Color newColor = Color.Red;
 
 		private List<ListViewItem> allLvis = new List<ListViewItem>();
+		private Migemo migemo = null;
 
 		public CrawlResultView() {
 			InitializeComponent();
@@ -44,6 +46,18 @@ namespace Yusen.GExplorer {
 			this.Disposed += delegate {
 				NgContentsManager.Instance.NgContentsChanged -= new EventHandler(NgContentsManager_NgContentsChanged);
 			};
+			
+			try {
+				this.migemo = new Migemo(GlobalSettings.Instance.MigemoDictionaryFilename);
+				this.Disposed += delegate {
+					this.migemo.Dispose();
+				};
+			} catch(Exception e){
+				this.migemo = null;
+				this.tstbFilter.ReadOnly = true;
+				this.tstbFilter.BackColor = Color.Pink;
+				this.tstbFilter.Text = e.Message;
+			}
 		}
 		
 		public CrawlResult CrawlResult {
@@ -55,9 +69,10 @@ namespace Yusen.GExplorer {
 					this.crawlResult = value;
 					
 					this.listView1.BeginUpdate();
-					this.ClearContents();
+					this.ClearAll();
 					if (null != value) {
-						this.DisplayContents();
+						this.CreateItems();
+						this.DisplayItems();
 					}
 					this.listView1.EndUpdate();
 				}
@@ -81,13 +96,51 @@ namespace Yusen.GExplorer {
 				}
 			}
 		}
+
+		public string FilterString {
+			get { return this.tstbFilter.Text; }
+			set { this.tstbFilter.Text = value; }
+		}
+		private Regex FilterRegex {
+			get {
+				Regex rval = null;
+				if (null != this.migemo) {
+					if ("" == this.FilterString) {
+						goto success;
+					}
+					string ans = null;
+					try {
+						ans = this.migemo.Query(this.FilterString);
+					} catch {
+						goto failed;
+					}
+					if (string.IsNullOrEmpty(ans)) {
+						goto failed;
+					}
+					try {
+						rval = new Regex(ans, RegexOptions.IgnoreCase);
+					} catch {
+						goto failed;
+					}
+					goto success;
+				} else {
+					return null;
+				}
+			failed:
+				this.tstbFilter.BackColor= Color.Yellow;
+				return null;
+			success:
+				this.tstbFilter.BackColor = SystemColors.Window;
+				return rval;
+			}
+		}
 		
 		public AboneType AboneType {
 			get { return this.aboneType; }
 			set {
 				if (value != this.aboneType) {
 					this.aboneType = value;
-					this.RefleshView();
+					this.UpdateView();
 				}
 				foreach (ToolStripMenuItem tsmi in this.tsmiAboneType.DropDownItems) {
 					tsmi.Checked = value == (AboneType)tsmi.Tag;
@@ -118,22 +171,18 @@ namespace Yusen.GExplorer {
 			}
 		}
 		public bool FilterEnabled {
-			get { return this.tsbShowFilter.Checked; }
+			get {return this.tsbShowFilter.Checked; }
 			set {
 				this.tsbShowFilter.Checked = value;
 				this.tsFilter.Visible = value;
 			}
-		}
-		public string FilterString {
-			get { return this.tstbFilter.Text; }
-			set { this.tstbFilter.Text = value; }
 		}
 		public Color NewColor {
 			get { return this.newColor; }
 			set {
 				if (value != this.newColor) {
 					this.newColor = value;
-					this.RefleshView();
+					this.UpdateView();
 				}
 			}
 		}
@@ -165,74 +214,91 @@ namespace Yusen.GExplorer {
 			this.FilterEnabled = settings.FilterEnabled ?? this.FilterEnabled;
 			this.NewColor = settings.NewColor ?? this.NewColor;
 		}
-		private void ClearContents() {
+		private void ClearAll() {
 			if (null != this.SelectedContentsChanged) {
 				this.SelectedContentsChanged(this, new SelectedContentsChangedEventArgs());
 			}
+			this.allLvis.Clear();
 			this.listView1.Items.Clear();
 			this.listView1.Groups.Clear();
 			this.tslGenre.Text = "";
 			this.tslMessage.Text = "";
 		}
-		private void DisplayContents(){
+		private void CreateItems() {
 			bool showPackages = this.ShowPackages;
 			this.ShowPackages = true;
-			int aboned = 0;
-			int filtered = 0;
 			foreach (GPackage p in this.Genre.Packages) {
 				ListViewGroup group = new ListViewGroup(p.ToString());
 				this.listView1.Groups.Add(group);
 				foreach (GContent c in p.Contents) {
 					ContentAdapter ca = new ContentAdapter(c, this.Genre);
-					bool isNg = NgContentsManager.Instance.IsNgContent(ca);
-					//NG処理
-					switch (this.AboneType) {
-						case AboneType.Hakidame:
-							isNg = !isNg;
-							goto case AboneType.Toumei;
-						case AboneType.Toumei:
-							if (isNg) {
-								aboned++;
-								continue;
-							}
-							break;
-					}
-					//フィルタ処理
-					if (this.FilterEnabled && "" != this.FilterString) {
-						string fstr = this.FilterString;
-						if (!ca.ContentId.Contains(fstr)
-							&& !ca.Title.Contains(fstr)
-							&& !ca.EpisodeNumber.Contains(fstr)
-							&& !ca.SubTitle.Contains(fstr)
-							&& !ca.Duration.Contains(fstr)
-							&& !ca.LongDescription.Contains(fstr)) {
-							filtered++;
-							continue;
-						}
-					}
-					
 					ListViewItem item = new ListViewItem(
 						new string[]{
 							ca.ContentId, ca.Title, ca.EpisodeNumber, ca.SubTitle, ca.Duration, ca.LongDescription},
 						group);
 					item.Tag = ca;
-					if (! ca.FromCache) {
-						item.ForeColor = this.NewColor;
-					}
-					if (isNg && AboneType.Sabori == this.AboneType) {
-						item.ForeColor = SystemColors.GrayText;
-					}
-					
-					this.listView1.Items.Add(item);
+					this.allLvis.Add(item);
 				}
 			}
 			this.ShowPackages = showPackages;
 			
 			this.tslGenre.ForeColor = this.Genre.GenreColor;
 			this.tslGenre.Text = "[" + this.Genre.GenreName + "]";
+		}
+		private void DisplayItems(){
+			if (null == this.CrawlResult) return;
+			this.listView1.Items.Clear();
+			int aboned = 0;
+			int filtered = 0;
+			Regex filter = this.FilterEnabled ? this.FilterRegex : null;
+			foreach (ListViewItem lvi in this.allLvis) {
+				ContentAdapter cont = lvi.Tag as ContentAdapter;
+				bool isNg = NgContentsManager.Instance.IsNgContent(cont);
+				//NG処理
+				switch (this.AboneType) {
+					case AboneType.Hakidame:
+						isNg = !isNg;
+						goto case AboneType.Toumei;
+					case AboneType.Toumei:
+						if (isNg) {
+							aboned++;
+							continue;
+						}
+						break;
+				}
+				//フィルタ処理
+				if (null != filter) {
+					Match match;
+					match = filter.Match(lvi.Text);
+					if (match.Success) goto unfiltered;
+					foreach (ListViewItem.ListViewSubItem si in lvi.SubItems) {
+						match = filter.Match(si.Text);
+						if (match.Success) goto unfiltered;
+					}
+					filtered++;
+					continue;
+				}
+			unfiltered:
+				
+				//色づけ
+				if (! cont.FromCache) {
+					lvi.ForeColor = this.NewColor;
+				}
+				if (isNg && AboneType.Sabori == this.AboneType) {
+					lvi.ForeColor = SystemColors.GrayText;
+				}
+				
+				this.listView1.Items.Add(lvi);
+			}
+			
 			this.tslMessage.Text =
 							this.listView1.Items.Count.ToString() + " + " + filtered.ToString() + " + " + aboned.ToString() + " 個"
 							+ " (" + this.Genre.LastCrawlTime.ToShortTimeString() + ")";
+			if (null != filter) {
+				this.tstbMigemoAnswer.Text = filter.ToString();
+			} else {
+				this.tstbMigemoAnswer.Text = string.Empty;
+			}
 		}
 		private void CreateUserCommandsMenuItems() {
 			this.tsmiUserCommands.DropDownItems.Clear();
@@ -252,15 +318,17 @@ namespace Yusen.GExplorer {
 			}
 			this.tsmiUserCommands.Enabled = this.tsmiUserCommands.HasDropDownItems;
 		}
-		private void RefleshView() {
-			this.CrawlResult = this.CrawlResult;
+		private void UpdateView() {
+			this.listView1.BeginUpdate();
+			this.DisplayItems();
+			this.listView1.EndUpdate();
 		}
 
 		private void UserCommandsManager_UserCommandsChanged(object sender, EventArgs e) {
 			this.CreateUserCommandsMenuItems();
 		}
 		private void NgContentsManager_NgContentsChanged(object sender, EventArgs e) {
-			this.RefleshView();
+			this.UpdateView();
 		}
 
 		private void listView1_SelectedIndexChanged(object sender, EventArgs e) {
@@ -389,10 +457,10 @@ namespace Yusen.GExplorer {
 		#region フィルタ関連
 		private void tsbShowFilter_Click(object sender, EventArgs e) {
 			this.FilterEnabled = this.FilterEnabled;
-			this.RefleshView();
+			this.UpdateView();
 		}
 		private void tstbFilter_TextChanged(object sender, EventArgs e) {
-			this.RefleshView();
+			this.UpdateView();
 		}
 		#endregion
 	}
