@@ -4,9 +4,6 @@ using System.Windows.Forms;
 using System.Threading;
 using AxWMPLib;
 using WMPLib;
-using System.ComponentModel;
-using System.Drawing;
-using System.IO;
 
 namespace Yusen.GExplorer {
 	partial class PlayerForm : FormSettingsBase, IFormWithSettings<PlayerFormSettings>{
@@ -30,13 +27,6 @@ namespace Yusen.GExplorer {
 		
 		private PlayerForm() {
 			InitializeComponent();
-			Utility.AppendHelpMenu(this.menuStrip1);
-			
-			this.CreateUserCommandsMenuItems();
-			UserCommandsManager.Instance.UserCommandsChanged += new EventHandler(UserCommandsManager_UserCommandsChanged);
-			this.FormClosing += delegate {
-				UserCommandsManager.Instance.UserCommandsChanged -= new EventHandler(UserCommandsManager_UserCommandsChanged);
-			};
 		}
 
 		private void CreateUserCommandsMenuItems() {
@@ -63,7 +53,6 @@ namespace Yusen.GExplorer {
 			settings.AutoVolumeEnabled = this.AutoVolumeEnabled;
 			settings.MediaKeysEnabled = this.MediaKeysEnabled;
 			settings.RemovePlayedContentEnabled = this.RemovePlayedContentEnabled;
-			settings.WaitSecondsAfterLastCallEnabled = this.WaitSecondsAfterLastCallEnabled;
 			settings.MainTabIndex = this.tabControl1.SelectedIndex;
 		}
 
@@ -72,7 +61,7 @@ namespace Yusen.GExplorer {
 			this.AutoVolumeEnabled = settings.AutoVolumeEnabled ?? this.AutoVolumeEnabled;
 			this.MediaKeysEnabled = settings.MediaKeysEnabled ?? this.MediaKeysEnabled;
 			this.RemovePlayedContentEnabled = settings.RemovePlayedContentEnabled ?? this.RemovePlayedContentEnabled;
-			this.WaitSecondsAfterLastCallEnabled = settings.WaitSecondsAfterLastCallEnabled ?? this.WaitSecondsAfterLastCallEnabled;
+			this.tabControl1.SelectedIndex = settings.MainTabIndex ?? this.tabControl1.SelectedIndex;
 			
 			this.tsmiAlwaysOnTop.Checked = this.TopMost;
 		}
@@ -116,12 +105,16 @@ namespace Yusen.GExplorer {
 			get { return this.tsmiRemovePlayedContent.Checked; }
 			set { this.tsmiRemovePlayedContent.Checked = value; }
 		}
-		public bool WaitSecondsAfterLastCallEnabled {
-			get { return this.tsmiWaitSecondsAfterLastCall.Checked; }
-			set { this.tsmiWaitSecondsAfterLastCall.Checked = value; }
-		}
 
 		private void PlayerForm_Load(object sender, EventArgs e) {
+			Utility.AppendHelpMenu(this.menuStrip1);
+			
+			this.CreateUserCommandsMenuItems();
+			UserCommandsManager.Instance.UserCommandsChanged += new EventHandler(UserCommandsManager_UserCommandsChanged);
+			this.FormClosing += delegate {
+				UserCommandsManager.Instance.UserCommandsChanged -= new EventHandler(UserCommandsManager_UserCommandsChanged);
+			};
+			
 			Utility.LoadSettingsAndEnableSaveOnClosed(this);
 		}
 		private void PlayerForm_FormClosing(object sender, FormClosingEventArgs e) {
@@ -192,25 +185,21 @@ namespace Yusen.GExplorer {
 				//“ä‚Ì‘Î‰ž‚»‚Ì3
 				Thread t = new Thread(new ThreadStart(delegate {
 					Thread.Sleep(100);
-					this.wmpMain.settings.volume = isCf ? 19 :  99;
-					this.wmpMain.settings.volume = isCf ? 20 : 100;
+					if (!this.IsDisposed && !this.wmpMain.IsDisposed) {
+						this.wmpMain.settings.volume = isCf ? 19 :  99;
+						this.wmpMain.settings.volume = isCf ? 20 : 100;
+					}
 				}));
 				t.Start();
 			}
 		}
 		private void wmpMain_PlayStateChange(object sender, _WMPOCXEvents_PlayStateChangeEvent e) {
 			if (WMPPlayState.wmppsMediaEnded == this.wmpMain.playState) {
-				Thread t = new Thread(new ThreadStart(delegate{
-					if (this.WaitSecondsAfterLastCallEnabled) {
-						Thread.Sleep(3000);
-					}
-					if (this.RemovePlayedContentEnabled) {
-						this.tsmiNextContentWithDelete.PerformClick();
-					} else {
-						this.tsmiNextContent.PerformClick();
-					}
-				}));
-				t.Start();
+				if (this.RemovePlayedContentEnabled) {
+					this.tsmiNextContentWithDelete.PerformClick();
+				} else {
+					this.tsmiNextContent.PerformClick();
+				}
 			}
 		}
 
@@ -242,7 +231,6 @@ namespace Yusen.GExplorer {
 		private bool? autoVolumeEnabled;
 		private bool? mediaKeysEnabled;
 		private bool? removePlayedContentEnabled;
-		private bool? waitSecondsAfterLastCallEnabled;
 		private int? mainTabIndex;
 		
 		public bool? AutoVolumeEnabled {
@@ -256,10 +244,6 @@ namespace Yusen.GExplorer {
 		public bool? RemovePlayedContentEnabled {
 			get { return this.removePlayedContentEnabled; }
 			set { this.removePlayedContentEnabled = value; }
-		}
-		public bool? WaitSecondsAfterLastCallEnabled {
-			get { return this.waitSecondsAfterLastCallEnabled; }
-			set { this.waitSecondsAfterLastCallEnabled = value; }
 		}
 		public int? MainTabIndex {
 			get { return this.mainTabIndex; }

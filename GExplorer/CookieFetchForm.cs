@@ -6,14 +6,9 @@ using System.Text.RegularExpressions;
 namespace Yusen.GExplorer {
 	/// <summary>
 	/// GyaOでのユーザ情報を取得するためだけに存在するフォーム．
-	/// IE経由で www.gyao.jp にアクセスすることでクッキーを読む．
 	/// </summary>
-	partial class CookieFetchForm : FormBase {
+	sealed partial class CookieFetchForm : FormBase {
 		private static readonly Regex regexUserNo = new Regex(@"Cookie_UserId=([0-9]+)", RegexOptions.Singleline);
-#if COOKIE
-		private static readonly Regex regexCookieId = new Regex(@"Cookie_CookieId=([0-9]+)", RegexOptions.Singleline);
-		private static readonly Regex regexSid = new Regex(@"GYAOSID=([0-9a-f]{32})", RegexOptions.Singleline);
-#endif
 		public CookieFetchForm() {
 			InitializeComponent();
 			this.Text = "www.gyao.jp からクッキーを取得しています．．．";
@@ -28,41 +23,14 @@ namespace Yusen.GExplorer {
 				//ルート以外だと別のになるっぽい
 				string cookie = this.webBrowser1.Document.Cookie;
 				Match matchUserNo = CookieFetchForm.regexUserNo.Match(cookie);
-#if COOKIE
-				Match matchCookieId = CookieFetchForm.regexCookieId.Match(cookie);
-				Match matchSid = CookieFetchForm.regexSid.Match(cookie);
-#endif
-#if COOKIE
-				if(matchUserNo.Success && matchCookieId.Success && matchSid.Success) {
-#else
 				if(matchUserNo.Success) {
-#endif
-					GlobalSettings.Instance.CookieTime = DateTime.Now;
 					GlobalSettings.Instance.UserNo = int.Parse(matchUserNo.Groups[1].Value);
-#if COOKIE
-					UserSettings.Instance.GyaoCookieId = int.Parse(matchCookieId.Groups[1].Value);
-					UserSettings.Instance.GyaoSessionId = matchSid.Groups[1].Value;
-#endif
-					MessageBox.Show(
-						"ユーザ情報の取得に成功しました．\n"
-						+ "このウィンドウを閉じてメインフォームを表示します．\n\n"
-						+ "クッキーの内容\n"
-						+ cookie,
-						Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
 					this.DialogResult = DialogResult.OK;
 				} else {
-					MessageBox.Show(
-						"ユーザ情報を取得できなかったためプログラムを終了します．\n\n"
-						+ "考えられる原因\n"
-						+ "    - ユーザ登録をまだ行っていない．\n"
-						+ "    - GExplorer のバグ．\n"
-						+ "    - ネットワーク関連の不具合．\n"
-						+ "    - GyaO の仕様が変わった．\n\n"
-						+ "クッキーの内容\n"
-						+ cookie,
-						Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
 					this.DialogResult = DialogResult.Abort;
 				}
+				MessageBox.Show("クッキーの内容:\n\n" + cookie,
+					Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
 				this.Close();
 			};
 			

@@ -7,8 +7,6 @@ using System.Windows.Forms.VisualStyles;
 
 namespace Yusen.GExplorer {
 	public class GlobalSettings {
-		/// <summary>クッキーの寿命</summary>
-		private const double CookieExpiresInDays = 7;
 		private const string SettingsFilename = "GlobalSettings.xml";
 
 		private static GlobalSettings instance = new GlobalSettings();
@@ -38,16 +36,6 @@ namespace Yusen.GExplorer {
 			set { this.userNo = value; }
 		}
 		
-		private DateTime cookieTime = DateTime.MinValue;
-		[Category("GyaO")]
-		[DisplayName("クッキーの取得日時")]
-		[Description("クッキーを取得した日時．いちおう変更不可．")]
-		[ReadOnly(true)]
-		public DateTime CookieTime {
-			get { return this.cookieTime; }
-			set { this.cookieTime = value; }
-		}
-
 		private GBitRate bitRate = GBitRate.SuperFine;
 		[Category("GyaO")]
 		[DisplayName("ビットレート")]
@@ -59,15 +47,12 @@ namespace Yusen.GExplorer {
 		}
 
 		/// <summary>
-		/// 設定ファイルに userNo が保存されてなかったりクッキーが古すぎたら再取得の必要があり
-		/// true が返る．
+		/// 設定ファイルに userNo が保存されてなかったら取得の必要があり true が返る．
 		/// </summary>
 		[Browsable(false)]
 		internal bool IsCookieRequired {
 			get {
-				return
-					0 == this.UserNo
-					|| this.cookieTime.AddDays(GlobalSettings.CookieExpiresInDays) < DateTime.Now;
+				return 0 == this.UserNo;
 			}
 		}
 		

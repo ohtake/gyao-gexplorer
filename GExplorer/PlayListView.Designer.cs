@@ -397,6 +397,7 @@ namespace Yusen.GExplorer {
 			this.Controls.Add(this.toolStripContainer1);
 			this.Name = "PlayListView";
 			this.Size = new System.Drawing.Size(430, 234);
+			this.Load += new System.EventHandler(this.PlayListView_Load);
 			this.toolStripContainer1.ContentPanel.ResumeLayout(false);
 			this.toolStripContainer1.TopToolStripPanel.ResumeLayout(false);
 			this.toolStripContainer1.TopToolStripPanel.PerformLayout();

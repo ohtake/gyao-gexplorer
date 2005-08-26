@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Web;
 
 namespace Yusen.GCrawler {
 	static class HtmlUtility {
@@ -12,14 +13,8 @@ namespace Yusen.GCrawler {
 		public static string HtmlToText(string input) {
 			input = HtmlUtility.regexWhiteSpaces.Replace(input, " ");
 			input = HtmlUtility.regexTabBreak.Replace(input, "\n");
-			input = HtmlUtility.regexTab.Replace(input, "");
-			if (input.Contains("&")) {
-				input = input.Replace("&lt;", "<");
-				input = input.Replace("&gt;", ">");
-				input = input.Replace("&quot;", @"""");
-				input = input.Replace("&apos;", "'");
-				input = input.Replace("&amp;", "&");
-			}
+			input = HtmlUtility.regexTab.Replace(input, "");//System.Web.RegularExpression ÇÕÇ§Ç‹Ç≠Ç¢Ç©Ç»Ç¢ÅH
+			input = HttpUtility.HtmlDecode(input);
 			return input;
 		}
 	}

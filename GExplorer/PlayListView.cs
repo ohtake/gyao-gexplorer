@@ -12,6 +12,8 @@ namespace Yusen.GExplorer {
 		
 		public PlayListView() {
 			InitializeComponent();
+		}
+		private void PlayListView_Load(object sender, EventArgs e) {
 			this.tslTitle.Font = new Font(this.tslTitle.Font, FontStyle.Bold);
 			this.tsmiPlay.Font = new Font(this.tsmiPlay.Font, FontStyle.Bold);
 			
@@ -26,6 +28,7 @@ namespace Yusen.GExplorer {
 			};
 			
 			this.UpdatePlayListView();
+			this.UpdateBoldness();
 			this.UpdateStatusBarText();
 			this.UpdateUserCommandsMenu();
 		}
@@ -72,10 +75,18 @@ namespace Yusen.GExplorer {
 			foreach (ContentAdapter cont in PlayList.Instance) {
 				ListViewItem lvi = new ListViewItem(new string[] { cont.ContentId, cont.DisplayName, cont.Duration });
 				lvi.Tag = cont;
-				if (PlayList.Instance.IsCurrentContent(cont)) {
-					lvi.Font = new Font(lvi.Font, FontStyle.Bold);
-				}
 				this.listView1.Items.Add(lvi);
+			}
+			this.listView1.EndUpdate();
+		}
+		private void UpdateBoldness() {
+			this.listView1.BeginUpdate();
+			foreach (ListViewItem lvi in this.listView1.Items) {
+				FontStyle oldStyle = lvi.Font.Style;
+				FontStyle newStyle = PlayList.Instance.IsCurrentContent(lvi.Tag as ContentAdapter) ? FontStyle.Bold : FontStyle.Regular;
+				if(oldStyle != newStyle){
+					lvi.Font = new Font(lvi.Font, newStyle);
+				}
 			}
 			this.listView1.EndUpdate();
 		}
@@ -105,8 +116,7 @@ namespace Yusen.GExplorer {
 			this.UpdateStatusBarText();
 		}
 		private void PlayList_CurrentContentChanged(object sender, EventArgs e) {
-			this.UpdatePlayListView();
-			this.UpdateStatusBarText();
+			this.UpdateBoldness();
 		}
 		private void UserCommandsManager_UserCommandsChanged(object sender, EventArgs e) {
 			this.UpdateUserCommandsMenu();
@@ -228,7 +238,7 @@ namespace Yusen.GExplorer {
 			StringBuilder sb = new StringBuilder();
 			foreach (ContentAdapter cont in this.SelectedContents) {
 				if (sb.Length > 0) {
-					sb.Append("\r\n");
+					sb.Append(Environment.NewLine);
 				}
 				sb.Append(cont.DisplayName);
 			}
@@ -240,7 +250,7 @@ namespace Yusen.GExplorer {
 			StringBuilder sb = new StringBuilder();
 			foreach (ContentAdapter cont in this.SelectedContents) {
 				if (sb.Length > 0) {
-					sb.Append("\r\n");
+					sb.Append(Environment.NewLine);
 				}
 				sb.Append(cont.DetailPageUri.AbsoluteUri);
 			}
@@ -252,10 +262,10 @@ namespace Yusen.GExplorer {
 			StringBuilder sb = new StringBuilder();
 			foreach (ContentAdapter cont in this.SelectedContents) {
 				if (sb.Length > 0) {
-					sb.Append("\r\n");
+					sb.Append(Environment.NewLine);
 				}
 				sb.Append(cont.DisplayName);
-				sb.Append("\r\n");
+				sb.Append(Environment.NewLine);
 				sb.Append(cont.DetailPageUri.AbsoluteUri);
 			}
 			if (sb.Length > 0) {

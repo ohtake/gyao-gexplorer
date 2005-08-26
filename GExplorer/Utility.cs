@@ -3,6 +3,7 @@ using System.Windows.Forms;
 using System.IO;
 using Process = System.Diagnostics.Process;
 using System.Xml.Serialization;
+using Microsoft.Win32;
 
 namespace Yusen.GExplorer {
 	static class Utility{

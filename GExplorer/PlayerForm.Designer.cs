@@ -54,7 +54,6 @@ namespace Yusen.GExplorer {
 			this.tsmiAutoVolume = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiMediaKeys = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiRemovePlayedContent = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiWaitSecondsAfterLastCall = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiFocusOnWmp = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
@@ -299,7 +298,6 @@ namespace Yusen.GExplorer {
             this.tsmiAutoVolume,
             this.tsmiMediaKeys,
             this.tsmiRemovePlayedContent,
-            this.tsmiWaitSecondsAfterLastCall,
             this.toolStripSeparator4,
             this.tsmiFocusOnWmp,
             this.toolStripSeparator1,
@@ -330,14 +328,6 @@ namespace Yusen.GExplorer {
 			this.tsmiRemovePlayedContent.CheckState = System.Windows.Forms.CheckState.Checked;
 			this.tsmiRemovePlayedContent.Name = "tsmiRemovePlayedContent";
 			this.tsmiRemovePlayedContent.Text = "再生の終了したコンテンツをリストから削除 (D)";
-			// 
-			// tsmiWaitSecondsAfterLastCall
-			// 
-			this.tsmiWaitSecondsAfterLastCall.Checked = true;
-			this.tsmiWaitSecondsAfterLastCall.CheckOnClick = true;
-			this.tsmiWaitSecondsAfterLastCall.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.tsmiWaitSecondsAfterLastCall.Name = "tsmiWaitSecondsAfterLastCall";
-			this.tsmiWaitSecondsAfterLastCall.Text = "ラストコール後に3秒待つ (&W)";
 			// 
 			// toolStripSeparator4
 			// 
@@ -421,6 +411,5 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ToolStripMenuItem tsmiNextContent;
 		private System.Windows.Forms.ToolStripMenuItem tsmiPrevContent;
 		private System.Windows.Forms.ToolStripMenuItem tsmiNextContentWithDelete;
-		private System.Windows.Forms.ToolStripMenuItem tsmiWaitSecondsAfterLastCall;
 	}
 }

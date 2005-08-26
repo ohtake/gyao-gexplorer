@@ -31,16 +31,16 @@ namespace Yusen.GExplorer {
 			this.webBrowser1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.webBrowser1.Location = new System.Drawing.Point(0, 0);
 			this.webBrowser1.Name = "webBrowser1";
-			this.webBrowser1.Size = new System.Drawing.Size(392, 266);
+			this.webBrowser1.Size = new System.Drawing.Size(292, 166);
 			// 
-			// GCookieFetchForm
+			// CookieFetchForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(392, 266);
+			this.ClientSize = new System.Drawing.Size(292, 166);
 			this.Controls.Add(this.webBrowser1);
-			this.Name = "GCookieFetchForm";
-			this.Text = "GCookieFetchForm";
+			this.Name = "CookieFetchForm";
+			this.Text = "CookieFetchForm";
 			this.ResumeLayout(false);
 
 		}

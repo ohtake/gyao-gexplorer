@@ -434,6 +434,7 @@ namespace Yusen.GExplorer {
 			this.Controls.Add(this.toolStripContainer1);
 			this.Name = "CrawlResultView";
 			this.Size = new System.Drawing.Size(418, 208);
+			this.Load += new System.EventHandler(this.CrawlResultView_Load);
 			this.cmsContent.ResumeLayout(false);
 			this.toolStripContainer1.ContentPanel.ResumeLayout(false);
 			this.toolStripContainer1.TopToolStripPanel.ResumeLayout(false);

@@ -44,11 +44,10 @@ namespace Yusen.GExplorer {
 			this.tsmiTools = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiFocusOnResultAfterTabChanged = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiIgnoreCrawlErrors = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiWindow = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiGlobalSettingsEditor = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-			this.tsmiUserCommandsEditor = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiNgContentsEditor = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiUserCommandsEditor = new System.Windows.Forms.ToolStripMenuItem();
 			this.statusStrip1.SuspendLayout();
 			this.toolStripContainer1.BottomToolStripPanel.SuspendLayout();
 			this.toolStripContainer1.ContentPanel.SuspendLayout();
@@ -204,6 +203,7 @@ namespace Yusen.GExplorer {
 			this.crawlResultView1.AboneType = Yusen.GExplorer.AboneType.Toumei;
 			this.crawlResultView1.CrawlResult = null;
 			this.crawlResultView1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.crawlResultView1.FilterEnabled = false;
 			this.crawlResultView1.HoverSelect = false;
 			this.crawlResultView1.Location = new System.Drawing.Point(0, 0);
 			this.crawlResultView1.Margin = new System.Windows.Forms.Padding(0);
@@ -241,8 +241,7 @@ namespace Yusen.GExplorer {
 			this.menuStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Visible;
 			this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiFile,
-            this.tsmiTools,
-            this.tsmiWindow});
+            this.tsmiTools});
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
 			this.menuStrip1.Size = new System.Drawing.Size(675, 24);
@@ -279,7 +278,11 @@ namespace Yusen.GExplorer {
 			// 
 			this.tsmiTools.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiFocusOnResultAfterTabChanged,
-            this.tsmiIgnoreCrawlErrors});
+            this.tsmiIgnoreCrawlErrors,
+            this.toolStripSeparator2,
+            this.tsmiGlobalSettingsEditor,
+            this.tsmiUserCommandsEditor,
+            this.tsmiNgContentsEditor});
 			this.tsmiTools.Name = "tsmiTools";
 			this.tsmiTools.Text = "ツール (&T)";
 			// 
@@ -299,15 +302,9 @@ namespace Yusen.GExplorer {
 			this.tsmiIgnoreCrawlErrors.Name = "tsmiIgnoreCrawlErrors";
 			this.tsmiIgnoreCrawlErrors.Text = "クロール時の無視可能エラーを全て無視 (&I)";
 			// 
-			// tsmiWindow
+			// toolStripSeparator2
 			// 
-			this.tsmiWindow.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiGlobalSettingsEditor,
-            this.toolStripSeparator3,
-            this.tsmiUserCommandsEditor,
-            this.tsmiNgContentsEditor});
-			this.tsmiWindow.Name = "tsmiWindow";
-			this.tsmiWindow.Text = "ウィンドウ (&W)";
+			this.toolStripSeparator2.Name = "toolStripSeparator2";
 			// 
 			// tsmiGlobalSettingsEditor
 			// 
@@ -315,21 +312,17 @@ namespace Yusen.GExplorer {
 			this.tsmiGlobalSettingsEditor.Text = "グローバル設定エディタ (&G)";
 			this.tsmiGlobalSettingsEditor.Click += new System.EventHandler(this.tsmiGlobalSettingsEditor_Click);
 			// 
-			// toolStripSeparator3
+			// tsmiNgContentsEditor
 			// 
-			this.toolStripSeparator3.Name = "toolStripSeparator3";
+			this.tsmiNgContentsEditor.Name = "tsmiNgContentsEditor";
+			this.tsmiNgContentsEditor.Text = "NGコンテンツエディタ (&N)";
+			this.tsmiNgContentsEditor.Click += new System.EventHandler(this.tsmiNgContentsEditor_Click);
 			// 
 			// tsmiUserCommandsEditor
 			// 
 			this.tsmiUserCommandsEditor.Name = "tsmiUserCommandsEditor";
 			this.tsmiUserCommandsEditor.Text = "外部コマンドエディタ (&C)";
 			this.tsmiUserCommandsEditor.Click += new System.EventHandler(this.tsmiUserCommandsEditor_Click);
-			// 
-			// tsmiNgContentsEditor
-			// 
-			this.tsmiNgContentsEditor.Name = "tsmiNgContentsEditor";
-			this.tsmiNgContentsEditor.Text = "NGコンテンツエディタ (&N)";
-			this.tsmiNgContentsEditor.Click += new System.EventHandler(this.tsmiNgContentsEditor_Click);
 			// 
 			// MainForm
 			// 
@@ -378,18 +371,17 @@ namespace Yusen.GExplorer {
 		private CrawlResultView crawlResultView1;
 		private ContentDetailView contentDetailView1;
 		private System.Windows.Forms.ToolStripMenuItem tsmiQuit;
-		private System.Windows.Forms.ToolStripMenuItem tsmiWindow;
-		private System.Windows.Forms.ToolStripMenuItem tsmiUserCommandsEditor;
 		private System.Windows.Forms.ToolStripMenuItem tsmiBrowseTop;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-		private System.Windows.Forms.ToolStripMenuItem tsmiNgContentsEditor;
-		private System.Windows.Forms.ToolStripMenuItem tsmiGlobalSettingsEditor;
-		private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
 		private System.Windows.Forms.ToolStripMenuItem tsmiTools;
 		private System.Windows.Forms.ToolStripMenuItem tsmiIgnoreCrawlErrors;
 		private System.Windows.Forms.SplitContainer scLists;
 		private PlayListView playListView1;
 		private System.Windows.Forms.ToolStripMenuItem tsmiFocusOnResultAfterTabChanged;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+		private System.Windows.Forms.ToolStripMenuItem tsmiGlobalSettingsEditor;
+		private System.Windows.Forms.ToolStripMenuItem tsmiNgContentsEditor;
+		private System.Windows.Forms.ToolStripMenuItem tsmiUserCommandsEditor;
 
 
 	}

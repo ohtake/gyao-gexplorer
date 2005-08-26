@@ -137,13 +137,13 @@ namespace Yusen.GExplorer {
 		private void tsmiCopyNameAndImageUri_Click(object sender, EventArgs e) {
 			string name = this.Content.DisplayName;
 			string uri = this.ImageUri.AbsoluteUri;
-			Clipboard.SetText(name + "\r\n"+ uri);
+			Clipboard.SetText(name + Environment.NewLine + uri);
 		}
 		private void tsmiCopyNameDetailImageUri_Click(object sender, EventArgs e) {
 			string name = this.Content.DisplayName;
 			string detail = this.Content.DetailPageUri.AbsoluteUri;
 			string uri = this.ImageUri.AbsoluteUri;
-			Clipboard.SetText(name + "\r\n" + detail + "\r\n"+ uri);
+			Clipboard.SetText(name + Environment.NewLine + detail + Environment.NewLine + uri);
 		}
 		private void tsmiCopyImage_Click(object sender, EventArgs e) {
 			if (null != this.picboxImage.Image) {

@@ -13,17 +13,16 @@ namespace Yusen.GExplorer{
 		private static extern void MigemoClose(IntPtr migemoObj);
 		
 		[DllImport("migemo.dll", EntryPoint="migemo_query")]
-		private static extern string MigemoQuery(IntPtr migemoObj, string query);
+		private static extern StringBuilder MigemoQuery(IntPtr migemoObj, byte[] query);
 		
 		[DllImport("migemo.dll", EntryPoint="migemo_release")]
-		private static extern void MigemoRelease(IntPtr migemoObj, string answer);
+		private static extern void MigemoRelease(IntPtr migemoObj, StringBuilder answer);
 		
 		[DllImport("migemo.dll", EntryPoint="migemo_is_enable")]
 		private static extern bool MigemoIsEnable(IntPtr migemoObj);
 
 		private IntPtr migemoObj;
-		private bool hasLastAns = false;
-		private string lastAns = null;
+		private StringBuilder lastAns = null;
 
 		public Migemo(string dicFileName) {
 			try {
@@ -42,14 +41,12 @@ namespace Yusen.GExplorer{
 
 		public string Query(string query) {
 			lock (this) {
-				if (this.hasLastAns) {
-					Migemo.MigemoRelease(this.migemoObj, this.lastAns);
-					this.hasLastAns = false;
-				}
-				this.lastAns = Migemo.MigemoQuery(this.migemoObj, query);
 				if (null != this.lastAns) {
-					this.hasLastAns = true;
-					return this.lastAns.Clone() as string;
+					Migemo.MigemoRelease(this.migemoObj, this.lastAns);
+				}
+				this.lastAns = Migemo.MigemoQuery(this.migemoObj, Encoding.GetEncoding("Shift_JIS").GetBytes(query));
+				if (null != this.lastAns) {
+					return this.lastAns.ToString();
 				}
 				return string.Empty;
 			}
@@ -57,7 +54,7 @@ namespace Yusen.GExplorer{
 		
 		public void Dispose() {
 			if (Migemo.MigemoIsEnable(this.migemoObj)) {
-				if (this.hasLastAns) {
+				if(null != this.lastAns){
 					Migemo.MigemoRelease(this.migemoObj, this.lastAns);
 				}
 				Migemo.MigemoClose(this.migemoObj);

@@ -22,20 +22,22 @@ namespace Yusen.GExplorer {
 
 		public CrawlResultView() {
 			InitializeComponent();
+		}
+		private void CrawlResultView_Load(object sender, EventArgs e) {
 			this.tslTitle.Font = new Font(this.tslTitle.Font, FontStyle.Bold);
 			this.tsmiAdd.Font = new Font(this.tsmiAdd.Font, FontStyle.Bold);
-			
+
 			this.tsmiAboneType.DropDownItems.Clear();
 			foreach (AboneType atype in Enum.GetValues(typeof(AboneType))) {
 				ToolStripMenuItem tsmi = new ToolStripMenuItem(atype.ToString());
 				tsmi.Tag = atype;
-				tsmi.Click += delegate(object sender, EventArgs e) {
-					this.AboneType = (AboneType)(sender as ToolStripMenuItem).Tag;
+				tsmi.Click += delegate(object sender2, EventArgs e2) {
+					this.AboneType = (AboneType)(sender2 as ToolStripMenuItem).Tag;
 				};
 				this.tsmiAboneType.DropDownItems.Add(tsmi);
 			}
 			this.AboneType = this.AboneType;
-			
+
 			this.CreateUserCommandsMenuItems();
 			UserCommandsManager.Instance.UserCommandsChanged += new EventHandler(UserCommandsManager_UserCommandsChanged);
 			this.Disposed += delegate {
@@ -52,11 +54,11 @@ namespace Yusen.GExplorer {
 				this.Disposed += delegate {
 					this.migemo.Dispose();
 				};
-			} catch(Exception e){
+			} catch (Exception ex) {
 				this.migemo = null;
 				this.tstbFilter.ReadOnly = true;
 				this.tstbFilter.BackColor = Color.Pink;
-				this.tstbFilter.Text = e.Message;
+				this.tstbFilter.Text = ex.Message;
 			}
 		}
 		
@@ -96,7 +98,7 @@ namespace Yusen.GExplorer {
 				}
 			}
 		}
-
+		
 		public string FilterString {
 			get { return this.tstbFilter.Text; }
 			set { this.tstbFilter.Text = value; }
@@ -111,7 +113,7 @@ namespace Yusen.GExplorer {
 					string ans = null;
 					try {
 						ans = this.migemo.Query(this.FilterString);
-					} catch {
+					} catch{
 						goto failed;
 					}
 					if (string.IsNullOrEmpty(ans)) {
@@ -389,7 +391,7 @@ namespace Yusen.GExplorer {
 			StringBuilder sb = new StringBuilder();
 			foreach (ContentAdapter cont in this.SelectedContents) {
 				if (sb.Length > 0) {
-					sb.Append("\r\n");
+					sb.Append(Environment.NewLine);
 				}
 				sb.Append(cont.DisplayName);
 			}
@@ -401,7 +403,7 @@ namespace Yusen.GExplorer {
 			StringBuilder sb = new StringBuilder();
 			foreach (ContentAdapter cont in this.SelectedContents) {
 				if (sb.Length > 0) {
-					sb.Append("\r\n");
+					sb.Append(Environment.NewLine);
 				}
 				sb.Append(cont.DetailPageUri.AbsoluteUri);
 			}
@@ -413,10 +415,10 @@ namespace Yusen.GExplorer {
 			StringBuilder sb = new StringBuilder();
 			foreach (ContentAdapter cont in this.SelectedContents) {
 				if (sb.Length > 0) {
-					sb.Append("\r\n");
+					sb.Append(Environment.NewLine);
 				}
 				sb.Append(cont.DisplayName);
-				sb.Append("\r\n");
+				sb.Append(Environment.NewLine);
 				sb.Append(cont.DetailPageUri.AbsoluteUri);
 			}
 			if (sb.Length > 0) {
@@ -457,6 +459,7 @@ namespace Yusen.GExplorer {
 		#region フィルタ関連
 		private void tsbShowFilter_Click(object sender, EventArgs e) {
 			this.FilterEnabled = this.FilterEnabled;
+			Application.DoEvents();
 			this.UpdateView();
 		}
 		private void tstbFilter_TextChanged(object sender, EventArgs e) {

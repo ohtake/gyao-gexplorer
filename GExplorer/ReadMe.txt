@@ -1,7 +1,7 @@
-GyaO 専用ブラウザ GExplorer 1.2.2.1
+GyaO 専用ブラウザ GExplorer 1.2.2.2
 
 ◆必要な環境
-.NET Framework 2.0.50215 以降がインストールされており正常に動作していること
+.NET Framework 2.0.50215 がインストールされており正常に動作していること
 
 Microsoft .NET Framework 2.0 再頒布可能パッケージ Beta 2 (x86)
 http://www.microsoft.com/downloads/details.aspx?displaylang=ja&FamilyID=7abd8c8f-287e-4c7e-9a4a-a4ecff40fc8e
@@ -10,14 +10,16 @@ http://www.microsoft.com/downloads/details.aspx?displaylang=ja&FamilyID=7abd8c8f
 
 ◆C/Migemo
 クロール結果のフィルタ処理を行うために C/Migemo を利用します
-C/Migemo がなくても GExplorer は動作しますがあると便利です
+C/Migemo がなくても GExplorer は動作しますが，あると便利です
 
 KaoriYa.net
 http://www.kaoriya.net/#CMIGEMO
 
-上記のサイトから「バイナリ(DLL)リリース版 for Windows」をダウンロード
+上記サイトから「バイナリ(DLL)リリース版 for Windows」をダウンロード
 必須ファイルは migemo.dll と dict ディレクトリ内の全辞書ファイル
 migemo.dll と dict を GExplorer.exe と同じディレクトリにおいてください
+
+C/Migemoの初期化に失敗するとMigemoフィルタの背景色が赤くなりエラーメッセージが表示されます
 
 ◆使用期限
 ライセンスの都合により
@@ -33,12 +35,16 @@ http://lab.msdn.microsoft.com/vs2005/golive/license/default.aspx
 同じディレクトリに同梱されている dll などがあること
 
 ◆アンインストール方法
-ファイルを丸ごと削除する
-.NET Framework 2.0 も必要なければこれもアンインストールする
+ディレクトリごと削除すればOKです
+GExplorer自身はレジストリに書き込みを行いません
 
 ◆操作方法
 ・ユーザIDの自動取得
-	GExplorer 起動前に IE で GyaO のユーザ登録を済ませておくこと
+	GExplorer 起動前に IE で GyaO のユーザ登録を済ませておいてください
+	以下の順序で取得を試みます
+		ActiveX の GyaOTool が利用しているレジストリを読む
+		ファイルシステムからクッキーを読む
+		IE 経由で www.gyao.jp にアクセスしてクッキーを読む
 	ユーザIDの自動取得に失敗したら GExplorer は起動できません
 ・ジャンルタブ (メイン画面の上部)
 	読み込んでいないジャンルのタブを選択すると読み込む
@@ -48,7 +54,7 @@ http://lab.msdn.microsoft.com/vs2005/golive/license/default.aspx
 	ダブルクリックやEnterキーによりプレイリストに追加する
 	右クリックすれば他の操作も行えたりする
 	今回のクロールで初めて発見したコンテンツは別色で表示される
-	Migemoフィルタが赤い時はC/Migemoの初期化エラー，黄色い時は変換エラー (タイムアウトまたは複雑すぎる正規表現)
+	Migemoフィルタが赤い時はC/Migemoの初期化エラー，黄色い時は変換エラー (複雑すぎる正規表現など)
 ・プレイリストビュー (メイン画面の左下)
 	ダブルクリックやEnterキーにより専用プレーヤで再生する
 	右クリックすれば他の操作も行えたりする

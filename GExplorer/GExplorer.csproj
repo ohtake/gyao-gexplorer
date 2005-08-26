@@ -136,6 +136,9 @@
     <EmbeddedResource Include="ContentDetailView.resx">
       <DependentUpon>ContentDetailView.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="CookieFetchForm.resx">
+      <DependentUpon>CookieFetchForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormBase.resx">
       <DependentUpon>FormBase.cs</DependentUpon>
     </EmbeddedResource>

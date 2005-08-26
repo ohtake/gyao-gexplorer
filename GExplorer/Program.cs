@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Threading;
+using System.IO;
+using Microsoft.Win32;
 
 namespace Yusen.GExplorer {
 	static class Program {
@@ -10,25 +12,59 @@ namespace Yusen.GExplorer {
 		/// </summary>
 		[STAThread]
 		static void Main() {
+			Application.EnableVisualStyles();
 			Application.ThreadException += new ThreadExceptionEventHandler(Application_ThreadException);
 			AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
-			
-			Application.EnableVisualStyles();
+
 			GlobalSettings.TryDeserialize();
+			//レジストリからユーザIDの取得
 			if (GlobalSettings.Instance.IsCookieRequired) {
-				if (DialogResult.Yes !=
-					MessageBox.Show(
-						"IE で www.gyao.jp にアクセスすることでユーザ情報を取得します．\n"
-						+ "よろしいですか？",
-						Application.ProductName, MessageBoxButtons.YesNo, MessageBoxIcon.Question)) {
-					return;
+				try {
+					using (RegistryKey cu = Registry.CurrentUser)
+					using (RegistryKey software = cu.OpenSubKey("SOFTWARE"))
+					using (RegistryKey usen = software.OpenSubKey("USEN"))
+					using (RegistryKey gyaoTool = usen.OpenSubKey("GyaOTool")) {
+						GlobalSettings.Instance.UserNo = int.Parse(gyaoTool.GetValue("Cookie_UserId") as string);
+					}
+				} catch {
 				}
-				if (DialogResult.OK != new CookieFetchForm().ShowDialog()) {
-					return;
+			}
+			//ファイルシステム上のクッキーからユーザIDの取得
+			if (GlobalSettings.Instance.IsCookieRequired) {
+				try {
+					DirectoryInfo cookieDir = new DirectoryInfo(Environment.GetFolderPath(Environment.SpecialFolder.Cookies));
+					if (cookieDir.Exists) {
+						FileInfo[] fis = cookieDir.GetFiles("*@gyao*.txt");
+						foreach (FileInfo fi in fis) {
+							using (TextReader reader = new StreamReader(fi.FullName)) {
+								string line;
+								while (null != (line=reader.ReadLine())) {
+									if ("Cookie_UserId" == line) {
+										GlobalSettings.Instance.UserNo = int.Parse(reader.ReadLine());
+										break;
+									}
+								}
+								if (! GlobalSettings.Instance.IsCookieRequired) {
+									break;
+								}
+							}
+						}
+					}
+				} catch {
 				}
+			}
+			//IE経由でgyaoにアクセスしてクッキーを取得
+			if (GlobalSettings.Instance.IsCookieRequired) {
+				new CookieFetchForm().ShowDialog();
 			}
 			
 			GlobalSettings.Serialize();
+			if (GlobalSettings.Instance.IsCookieRequired) {
+				MessageBox.Show(
+					"ユーザIDの取得に失敗したため " + Application.ProductName + " を終了します．",
+					Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+				return;
+			}
 			
 			UserCommandsManager.Instance.DeserializeItems();
 			NgContentsManager.Instance.DeserializeItems();

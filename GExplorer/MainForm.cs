@@ -13,17 +13,6 @@ namespace Yusen.GExplorer {
 		
 		public MainForm() {
 			InitializeComponent();
-			this.Text = Application.ProductName + " " + Application.ProductVersion;
-			Utility.AppendHelpMenu(this.menuStrip1);
-			
-			this.genreTabControl1.TabPages.Clear();
-			foreach (GGenre genre in GGenre.AllGenres) {
-				this.genreTabControl1.AddGenre(genre);
-			}
-			this.genreTabControl1.SelectedIndex = -1;
-
-			this.crawler.CrawlProgress += new EventHandler<CrawlProgressEventArgs>(crawler_CrawlProgress);
-			this.crawler.IgnorableErrorOccured += new EventHandler<IgnorableErrorOccuredEventArgs>(crawler_IgnorableErrorOccured);
 		}
 		
 		private void ClearStatusBarInfo() {
@@ -64,6 +53,18 @@ namespace Yusen.GExplorer {
 		}
 
 		private void MainForm_Load(object sender, EventArgs e) {
+			this.Text = Application.ProductName + " " + Application.ProductVersion;
+			Utility.AppendHelpMenu(this.menuStrip1);
+			
+			this.genreTabControl1.TabPages.Clear();
+			foreach (GGenre genre in GGenre.AllGenres) {
+				this.genreTabControl1.AddGenre(genre);
+			}
+			this.genreTabControl1.SelectedIndex = -1;
+			
+			this.crawler.CrawlProgress += new EventHandler<CrawlProgressEventArgs>(crawler_CrawlProgress);
+			this.crawler.IgnorableErrorOccured += new EventHandler<IgnorableErrorOccuredEventArgs>(crawler_IgnorableErrorOccured);
+			
 			Utility.LoadSettingsAndEnableSaveOnClosed(this);
 			this.ClearStatusBarInfo();
 		}

@@ -39,16 +39,17 @@ namespace Yusen.GExplorer {
 			this.cmsGenre.Enabled = true;
 			this.cmsGenre.GripMargin = new System.Windows.Forms.Padding(2);
 			this.cmsGenre.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiBrowseTopWithIE,
+            this.tsmiBrowseTimetableWithIe,
+            this.toolStripSeparator1,
             this.tsmiCopyGenreName,
             this.tsmiCopyUri,
-            this.tsmiCopyGenreNameAndUri,
-            this.toolStripSeparator1,
-            this.tsmiBrowseTopWithIE,
-            this.tsmiBrowseTimetableWithIe});
+            this.tsmiCopyGenreNameAndUri});
 			this.cmsGenre.Location = new System.Drawing.Point(9, 50);
 			this.cmsGenre.Name = "cmsGenre";
 			this.cmsGenre.RightToLeft = System.Windows.Forms.RightToLeft.No;
-			this.cmsGenre.Size = new System.Drawing.Size(203, 120);
+			this.cmsGenre.Size = new System.Drawing.Size(203, 139);
+			this.cmsGenre.Visible = true;
 			// 
 			// tsmiCopyGenreName
 			// 

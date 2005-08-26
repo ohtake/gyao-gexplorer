@@ -11,6 +11,12 @@ namespace Yusen.GExplorer {
 		
 		public GenreTabPage() {
 			InitializeComponent();
+			this.tsmiBrowseTopWithIE.Click += delegate {
+				Utility.BrowseWithIE(this.Genre.TopPageUri);
+			};
+			this.tsmiBrowseTimetableWithIe.Click += delegate {
+				Utility.BrowseWithIE(this.Genre.TimetableUri);
+			};
 			this.tsmiCopyGenreName.Click += delegate {
 				Clipboard.SetText(this.Genre.GenreName);
 			};
@@ -18,19 +24,13 @@ namespace Yusen.GExplorer {
 				Clipboard.SetText(this.Genre.TopPageUri.AbsoluteUri);
 			};
 			this.tsmiCopyGenreNameAndUri.Click += delegate{
-				Clipboard.SetText(this.Genre.GenreName + "\r\n" + this.Genre.TopPageUri.AbsoluteUri);
-			};
-			this.tsmiBrowseTopWithIE.Click += delegate {
-				Utility.BrowseWithIE(this.Genre.TopPageUri);
-			};
-			this.tsmiBrowseTimetableWithIe.Click += delegate {
-				Utility.BrowseWithIE(this.Genre.TimetableUri);
+				Clipboard.SetText(this.Genre.GenreName + Environment.NewLine + this.Genre.TopPageUri.AbsoluteUri);
 			};
 		}
 		public GenreTabPage(GGenre genre) : this() {
 			this.genre = genre;
 			base.Text = genre.GenreName;
-			//base.ToolTipText = genre.GenreName + "\r\n" + genre.TopPageUri.AbsoluteUri;
+			//base.ToolTipText = genre.GenreName + Environment.NewLine + genre.TopPageUri.AbsoluteUri;
 		}
 		
 		public GGenre Genre {
