@@ -38,13 +38,13 @@
     <Position X="4" Y="7.25" Width="1.75" />
     <TypeIdentifier>
       <FileName>MainForm.cs</FileName>
-      <HashCode>BQDAACUAITJAQDQgIADAEEADAMiKCAggYAQAAAAJBiM=</HashCode>
+      <HashCode>BQDAACkAITBAQDQwAADAEEADAMiKCAggsAQAAAAJFiE=</HashCode>
     </TypeIdentifier>
     <ShowAsAssociation>
+      <Field Name="genreTabControl1" />
+      <Field Name="crawlResultView1" />
       <Field Name="contentDetailView1" />
       <Field Name="playListView1" />
-      <Field Name="crawlResultView1" />
-      <Field Name="genreTabControl1" />
     </ShowAsAssociation>
     <Compartments>
       <Compartment Name="Protected" Collapsed="true" />
@@ -65,7 +65,7 @@
     <Position X="11.5" Y="7.25" Width="1.75" />
     <TypeIdentifier>
       <FileName>PlayerForm.cs</FileName>
-      <HashCode>gQwCDHkKASZAgCQnIECCgUBCwIDIAEAG4QATBqIQBmI=</HashCode>
+      <HashCode>gQwCDPkKASZAgCQnIECCgUBCwIDIAEAG4QADBqIQBmI=</HashCode>
     </TypeIdentifier>
     <Compartments>
       <Compartment Name="Protected" Collapsed="true" />
@@ -89,7 +89,7 @@
     <Position X="14" Y="7.25" Width="1.75" />
     <TypeIdentifier>
       <FileName>UserCommandsEditor.cs</FileName>
-      <HashCode>ABAVAAgWQCAAAAgAACiAYEACAAhiBAME5AEFAQCBAyQ=</HashCode>
+      <HashCode>ABAVAAgWQCAAAAgAACiAYEACgAhiBAME5AEFAQCBAyQ=</HashCode>
     </TypeIdentifier>
     <Compartments>
       <Compartment Name="Protected" Collapsed="true" />
@@ -101,7 +101,7 @@
     <Position X="9" Y="7.25" Width="1.75" />
     <TypeIdentifier>
       <FileName>GlobalSettingsEditor.cs</FileName>
-      <HashCode>ABAAAAAAACAAAAAAAECAAEACAABAAAAQYAAAAAAAAiA=</HashCode>
+      <HashCode>ABAAAAAAACAAAAAAAECAAEACAABAQAAQYAAAAAAAAiA=</HashCode>
     </TypeIdentifier>
     <Compartments>
       <Compartment Name="Protected" Collapsed="true" />
@@ -113,7 +113,7 @@
     <Position X="6.5" Y="7.25" Width="1.75" />
     <TypeIdentifier>
       <FileName>NgContentsEditor.cs</FileName>
-      <HashCode>BgIBERAQACAgIAAAAACQAEQCAgBUkEBAYABEAAAAEmI=</HashCode>
+      <HashCode>BgIBERAQACIgIAAAAACQAEQCAgBUkABAYABEAAAAEmI=</HashCode>
     </TypeIdentifier>
     <Compartments>
       <Compartment Name="Protected" Collapsed="true" />
@@ -145,7 +145,7 @@
     <Position X="1" Y="8.25" Width="1.5" />
     <TypeIdentifier>
       <FileName>PlayListView.cs</FileName>
-      <HashCode>FOIgAv0JFjAAQAQIBsCgmBDCm4kRioBFKIQEIICFEjA=</HashCode>
+      <HashCode>FOIgAv0LFjAAQAQIBMCguBDCm4kRisBFKAA0IIiFEjA=</HashCode>
     </TypeIdentifier>
     <Compartments>
       <Compartment Name="Protected" Collapsed="true" />
@@ -157,7 +157,7 @@
     <Position X="1" Y="4" Width="1.5" />
     <TypeIdentifier>
       <FileName>CrawlResultView.cs</FileName>
-      <HashCode>EmCAgv1hAiUQQgQAEmKgCIBCkggRiUIEqAIBOaAAQgY=</HashCode>
+      <HashCode>EqCAg/1rIrWUQARQIiKkCIJCkggRixIMqAYhOagAQgY=</HashCode>
     </TypeIdentifier>
     <Compartments>
       <Compartment Name="Protected" Collapsed="true" />
@@ -169,11 +169,34 @@
     <Position X="3.75" Y="3.75" Width="1.5" />
     <TypeIdentifier>
       <FileName>GenreTabControl.cs</FileName>
-      <HashCode>AAAgIAgEACAAAAAAAACAAAECAIAAAAAAAAQAAAAAAAA=</HashCode>
+      <HashCode>AAAgIAgEACAAAAAAAACAAAACAIAAAAAAAAQAAAAAAAA=</HashCode>
     </TypeIdentifier>
     <Compartments>
       <Compartment Name="Protected" Collapsed="true" />
       <Compartment Name="Private" Collapsed="true" />
     </Compartments>
+  </Class>
+  <Class Name="Yusen.GExplorer.InputBoxDialog">
+    <Position X="20.75" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>InputBoxDialog.cs</FileName>
+      <HashCode>AAAAAAAAACAAAAEAAACAAAACEYAABAAAAAAAIAAAAAA=</HashCode>
+    </TypeIdentifier>
+    <Compartments>
+      <Compartment Name="Protected" Collapsed="true" />
+      <Compartment Name="Private" Collapsed="true" />
+    </Compartments>
+  </Class>
+  <Class Name="Yusen.GExplorer.BrowserForm">
+    <Position X="16.75" Y="7.25" Width="1.75" />
+    <TypeIdentifier>
+      <FileName>BrowserForm.cs</FileName>
+      <HashCode>MSASQj0AQDCQQCYAAICEysAaikDLAmgHeVIMAgNMIxE=</HashCode>
+    </TypeIdentifier>
+    <Compartments>
+      <Compartment Name="Protected" Collapsed="true" />
+      <Compartment Name="Private" Collapsed="true" />
+    </Compartments>
+    <Lollipop Position="0.2" />
   </Class>
 </ClassDiagram>

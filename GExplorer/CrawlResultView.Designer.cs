@@ -37,8 +37,8 @@ namespace Yusen.GExplorer {
 			this.tsmiPlay = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiPlayWithWmp = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiPlayWithIe = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiBroseDetailWithIe = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiPlayWithBrowser = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiBroseDetail = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiCopyName = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiCopyDetailUri = new System.Windows.Forms.ToolStripMenuItem();
@@ -55,7 +55,7 @@ namespace Yusen.GExplorer {
 			this.tslTitle = new System.Windows.Forms.ToolStripLabel();
 			this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsbShowFilter = new System.Windows.Forms.ToolStripButton();
-			this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
+			this.tsddbSettings = new System.Windows.Forms.ToolStripDropDownButton();
 			this.tsmiAboneType = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiShowPackages = new System.Windows.Forms.ToolStripMenuItem();
@@ -71,6 +71,7 @@ namespace Yusen.GExplorer {
 			this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
 			this.tstbFilter = new System.Windows.Forms.ToolStripTextBox();
 			this.tstbMigemoAnswer = new System.Windows.Forms.ToolStripTextBox();
+			this.tsddbNormalPages = new System.Windows.Forms.ToolStripDropDownButton();
 			this.cmsContent.SuspendLayout();
 			this.toolStripContainer1.ContentPanel.SuspendLayout();
 			this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
@@ -142,8 +143,8 @@ namespace Yusen.GExplorer {
             this.tsmiPlay,
             this.toolStripSeparator6,
             this.tsmiPlayWithWmp,
-            this.tsmiPlayWithIe,
-            this.tsmiBroseDetailWithIe,
+            this.tsmiPlayWithBrowser,
+            this.tsmiBroseDetail,
             this.toolStripSeparator1,
             this.tsmiCopyName,
             this.tsmiCopyDetailUri,
@@ -181,17 +182,17 @@ namespace Yusen.GExplorer {
 			this.tsmiPlayWithWmp.Text = "WMPで再生 (&W)";
 			this.tsmiPlayWithWmp.Click += new System.EventHandler(this.tsmiPlayWithWmp_Click);
 			// 
-			// tsmiPlayWithIe
+			// tsmiPlayWithBrowser
 			// 
-			this.tsmiPlayWithIe.Name = "tsmiPlayWithIe";
-			this.tsmiPlayWithIe.Text = "IEで再生 (&I)";
-			this.tsmiPlayWithIe.Click += new System.EventHandler(this.tsmiPlayWithIe_Click);
+			this.tsmiPlayWithBrowser.Name = "tsmiPlayWithBrowser";
+			this.tsmiPlayWithBrowser.Text = "ウェブブラウザで再生 (&I)";
+			this.tsmiPlayWithBrowser.Click += new System.EventHandler(this.tsmiPlayWithBrowser_Click);
 			// 
-			// tsmiBroseDetailWithIe
+			// tsmiBroseDetail
 			// 
-			this.tsmiBroseDetailWithIe.Name = "tsmiBroseDetailWithIe";
-			this.tsmiBroseDetailWithIe.Text = "IEで詳細ページ (&E)";
-			this.tsmiBroseDetailWithIe.Click += new System.EventHandler(this.tsmiBroseDetailWithIe_Click);
+			this.tsmiBroseDetail.Name = "tsmiBroseDetail";
+			this.tsmiBroseDetail.Text = "ウェブブラウザで詳細ページ (&E)";
+			this.tsmiBroseDetail.Click += new System.EventHandler(this.tsmiBroseDetail_Click);
 			// 
 			// toolStripSeparator1
 			// 
@@ -285,7 +286,8 @@ namespace Yusen.GExplorer {
             this.tslTitle,
             this.toolStripSeparator4,
             this.tsbShowFilter,
-            this.toolStripDropDownButton1,
+            this.tsddbNormalPages,
+            this.tsddbSettings,
             this.toolStripSeparator5,
             this.tslGenre,
             this.tslMessage});
@@ -311,13 +313,13 @@ namespace Yusen.GExplorer {
 			this.tsbShowFilter.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
 			this.tsbShowFilter.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tsbShowFilter.Name = "tsbShowFilter";
-			this.tsbShowFilter.Text = "Migemoフィルタ (&M)";
+			this.tsbShowFilter.Text = "フィルタ (&M)";
 			this.tsbShowFilter.Click += new System.EventHandler(this.tsbShowFilter_Click);
 			// 
-			// toolStripDropDownButton1
+			// tsddbSettings
 			// 
-			this.toolStripDropDownButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-			this.toolStripDropDownButton1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+			this.tsddbSettings.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+			this.tsddbSettings.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiAboneType,
             this.toolStripSeparator8,
             this.tsmiShowPackages,
@@ -325,10 +327,10 @@ namespace Yusen.GExplorer {
             this.tsmiMultiSelect,
             this.toolStripSeparator7,
             this.tsmiNewColor});
-			this.toolStripDropDownButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripDropDownButton1.Image")));
-			this.toolStripDropDownButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.toolStripDropDownButton1.Name = "toolStripDropDownButton1";
-			this.toolStripDropDownButton1.Text = "設定 (&C)";
+			this.tsddbSettings.Image = ((System.Drawing.Image)(resources.GetObject("tsddbSettings.Image")));
+			this.tsddbSettings.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.tsddbSettings.Name = "tsddbSettings";
+			this.tsddbSettings.Text = "設定 (&C)";
 			// 
 			// tsmiAboneType
 			// 
@@ -427,6 +429,13 @@ namespace Yusen.GExplorer {
 			this.tstbMigemoAnswer.ReadOnly = true;
 			this.tstbMigemoAnswer.Size = new System.Drawing.Size(150, 25);
 			// 
+			// tsddbNormalPages
+			// 
+			this.tsddbNormalPages.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+			this.tsddbNormalPages.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.tsddbNormalPages.Name = "tsddbNormalPages";
+			this.tsddbNormalPages.Text = "ページ (&P)";
+			// 
 			// CrawlResultView
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -460,8 +469,8 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ContextMenuStrip cmsContent;
 		private System.Windows.Forms.ToolStripMenuItem tsmiAdd;
 		private System.Windows.Forms.ToolStripMenuItem tsmiPlayWithWmp;
-		private System.Windows.Forms.ToolStripMenuItem tsmiPlayWithIe;
-		private System.Windows.Forms.ToolStripMenuItem tsmiBroseDetailWithIe;
+		private System.Windows.Forms.ToolStripMenuItem tsmiPlayWithBrowser;
+		private System.Windows.Forms.ToolStripMenuItem tsmiBroseDetail;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
 		private System.Windows.Forms.ToolStripMenuItem tsmiCopyDetailUri;
 		private System.Windows.Forms.ToolStripMenuItem tsmiCopyName;
@@ -477,7 +486,7 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ToolStrip tsMain;
 		private System.Windows.Forms.ToolStripLabel tslTitle;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
-		private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownButton1;
+		private System.Windows.Forms.ToolStripDropDownButton tsddbSettings;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
 		private System.Windows.Forms.ToolStripLabel tslMessage;
 		private System.Windows.Forms.ToolStripMenuItem tsmiAboneType;
@@ -496,5 +505,6 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ToolStripTextBox tstbFilter;
 		private System.Windows.Forms.ToolStripButton tsbShowFilter;
 		private System.Windows.Forms.ToolStripTextBox tstbMigemoAnswer;
+		private System.Windows.Forms.ToolStripDropDownButton tsddbNormalPages;
 	}
 }

@@ -38,8 +38,7 @@ namespace Yusen.GCrawler {
 			
 			public CrawlResult StartCrawling() {
 				if (this.TryCrawlPages() && this.TryFetchPackages() && this.TryFetchContents()){
-					this.BuildGpcTree();
-					return this.CreateCrawlResult();
+					return this.CreateCrawlResult(this.BuildGpcTree());
 				}
 				return new CrawlResult(this.genre);
 			}
@@ -176,7 +175,7 @@ namespace Yusen.GCrawler {
 			/// <summary>
 			/// クロール結果からジャンル，パッケージ，コンテンツの木構造を作る．
 			/// </summary>
-			private void BuildGpcTree() {
+			private ReadOnlyCollection<GPackage> BuildGpcTree() {
 				this.OnCrawlProgress("データ構造の解析中");
 				//パッケージに含まれるコンテンツ
 				List<GPackage> packages = new List<GPackage>();
@@ -202,9 +201,9 @@ namespace Yusen.GCrawler {
 					dummyPackage.Contents = contentsWithoutPack.AsReadOnly();
 					packages.Add(dummyPackage);
 				}
-				this.genre.Packages = packages.AsReadOnly();
+				return packages.AsReadOnly();
 			}
-			private CrawlResult CreateCrawlResult() {
+			private CrawlResult CreateCrawlResult(ReadOnlyCollection<GPackage> packages) {
 				int cDown = 0;
 				int cCache = 0;
 				foreach (KeyValuePair<string, bool> pair in this.contentsCached) {
@@ -214,7 +213,7 @@ namespace Yusen.GCrawler {
 						cDown++;
 					}
 				}
-				return new CrawlResult(this.genre, this.visitedPages.AsReadOnly(), cDown, cCache);
+				return new CrawlResult(this.genre, packages, this.visitedPages.AsReadOnly(), cDown, cCache);
 			}
 			private bool IsInRestriction(Uri uri) {
 				return uri.AbsoluteUri.StartsWith(this.genre.RootUri.AbsoluteUri);
@@ -235,6 +234,10 @@ namespace Yusen.GCrawler {
 		}
 		
 		public CrawlResult Crawl(GGenre genre) {
+			if (!genre.IsCrawlable) {
+				throw new ArgumentException("ジャンル「" + genre.GenreName + "」はクロールできない．");
+			}
+
 			CrawlerHelper helper = new CrawlerHelper(genre, this.parser, this.cacheController);
 			helper.CrawlProgress += delegate(object sender, CrawlProgressEventArgs e) {
 				if (null != this.CrawlProgress) {
@@ -287,23 +290,28 @@ namespace Yusen.GCrawler {
 	public class CrawlResult {
 		private readonly bool success;
 		private readonly GGenre genre;
+		private readonly ReadOnlyCollection<GPackage> packages;
 		private readonly ReadOnlyCollection<Uri> visitedPages;
 		private readonly int contentsDownloaded;
 		private readonly int contentsCached;
+		private readonly DateTime time;
 		
 		/// <summary>
 		/// クロール成功時のクロール結果
 		/// </summary>
 		/// <param name="genre"></param>
+		/// <param name="packages"></param>
 		/// <param name="vPages"></param>
 		/// <param name="cDown"></param>
 		/// <param name="cCache"></param>
-		internal CrawlResult(GGenre genre, ReadOnlyCollection<Uri> vPages, int cDown, int cCache) {
+		internal CrawlResult(GGenre genre, ReadOnlyCollection<GPackage> packages, ReadOnlyCollection<Uri> vPages, int cDown, int cCache) {
 			this.success = true;
 			this.genre = genre;
+			this.packages = packages;
 			this.visitedPages = vPages;
 			this.contentsDownloaded = cDown;
 			this.contentsCached = cCache;
+			this.time = DateTime.Now;
 		}
 		/// <summary>
 		/// クロール失敗時のクロール結果
@@ -312,13 +320,18 @@ namespace Yusen.GCrawler {
 		internal CrawlResult(GGenre genre) {
 			this.success = false;
 			this.genre = genre;
+			this.packages = new ReadOnlyCollection<GPackage>(new List<GPackage>());
 			this.visitedPages = new ReadOnlyCollection<Uri>(new List<Uri>());
 			this.contentsDownloaded = 0;
 			this.contentsCached = 0;
+			this.time = DateTime.Now;
 		}
 		
 		public GGenre Genre {
 			get { return this.genre; }
+		}
+		public ReadOnlyCollection<GPackage> Packages {
+			get { return this.packages; }
 		}
 		public ReadOnlyCollection<Uri> VisitedPages {
 			get {return this.visitedPages;}
@@ -331,6 +344,9 @@ namespace Yusen.GCrawler {
 		}
 		public bool Success {
 			get { return this.success; }
+		}
+		public DateTime Time {
+			get { return this.time; }
 		}
 	}
 }

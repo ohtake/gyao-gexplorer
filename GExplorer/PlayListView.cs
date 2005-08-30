@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using Yusen.GCrawler;
 
 namespace Yusen.GExplorer {
 	partial class PlayListView : UserControl, IHasSettings<PlayListViewSettings> {
@@ -26,9 +27,12 @@ namespace Yusen.GExplorer {
 				PlayList.Instance.CurrentContentChanged -= new EventHandler(PlayList_CurrentContentChanged);
 				UserCommandsManager.Instance.UserCommandsChanged -= new EventHandler(UserCommandsManager_UserCommandsChanged);
 			};
-			
+
+			this.listView1.BeginUpdate();
 			this.UpdatePlayListView();
 			this.UpdateBoldness();
+			this.listView1.EndUpdate();
+
 			this.UpdateStatusBarText();
 			this.UpdateUserCommandsMenu();
 		}
@@ -70,17 +74,14 @@ namespace Yusen.GExplorer {
 		}
 		
 		private void UpdatePlayListView() {
-			this.listView1.BeginUpdate();
 			this.listView1.Items.Clear();
 			foreach (ContentAdapter cont in PlayList.Instance) {
 				ListViewItem lvi = new ListViewItem(new string[] { cont.ContentId, cont.DisplayName, cont.Duration });
 				lvi.Tag = cont;
 				this.listView1.Items.Add(lvi);
 			}
-			this.listView1.EndUpdate();
 		}
 		private void UpdateBoldness() {
-			this.listView1.BeginUpdate();
 			foreach (ListViewItem lvi in this.listView1.Items) {
 				FontStyle oldStyle = lvi.Font.Style;
 				FontStyle newStyle = PlayList.Instance.IsCurrentContent(lvi.Tag as ContentAdapter) ? FontStyle.Bold : FontStyle.Regular;
@@ -88,7 +89,6 @@ namespace Yusen.GExplorer {
 					lvi.Font = new Font(lvi.Font, newStyle);
 				}
 			}
-			this.listView1.EndUpdate();
 		}
 		private void UpdateStatusBarText() {
 			if (this.SelectedContents.Length <= 0) {
@@ -112,11 +112,16 @@ namespace Yusen.GExplorer {
 		}
 
 		private void PlayList_PlayListChanged(object sender, EventArgs e) {
+			this.listView1.BeginUpdate();
 			this.UpdatePlayListView();
+			this.UpdateBoldness();
+			this.listView1.EndUpdate();
 			this.UpdateStatusBarText();
 		}
 		private void PlayList_CurrentContentChanged(object sender, EventArgs e) {
+			this.listView1.BeginUpdate();
 			this.UpdateBoldness();
+			this.listView1.EndUpdate();
 		}
 		private void UserCommandsManager_UserCommandsChanged(object sender, EventArgs e) {
 			this.UpdateUserCommandsMenu();
@@ -145,6 +150,26 @@ namespace Yusen.GExplorer {
 		}
 
 		#region メニューの項目
+		private void tsmiAddById_Click(object sender, EventArgs e) {
+			string title = "コンテンツIDを指定してプレイリストに追加";
+			InputBoxDialog inputBox = new InputBoxDialog(title, "追加するコンテンツのIDを入力してください．", "cnt0000000");
+			if (DialogResult.OK == inputBox.ShowDialog()) {
+				GContent cont;
+				if (GContent.TryDownload(inputBox.Input, out cont)) {
+					ContentAdapter ca = new ContentAdapter(cont);
+					if (PlayList.Instance.Contains(ca)) {
+						MessageBox.Show("指定したIDはすでにプレイリストに存在します．",
+							title, MessageBoxButtons.OK, MessageBoxIcon.Error);
+					} else {
+						PlayList.Instance.AddIfNotExists(ca);
+					}
+				} else {
+					MessageBox.Show(
+						"指定されたIDに関する情報が取得できませんでした．",
+						title, MessageBoxButtons.OK, MessageBoxIcon.Error);
+				}
+			}
+		}
 		private void tsmiExportAsAsx_Click(object sender, EventArgs e) {
 			if (DialogResult.OK == this.saveFileDialog1.ShowDialog()) {
 				PlayList.Instance.ExportAsAsx(this.saveFileDialog1.FileName);
@@ -224,14 +249,14 @@ namespace Yusen.GExplorer {
 				Utility.PlayWithWMP(cont.MediaFileUri);
 			}
 		}
-		private void tsmiPlayWithIe_Click(object sender, EventArgs e) {
+		private void tsmiPlayWithBrowser_Click(object sender, EventArgs e) {
 			foreach (ContentAdapter cont in this.SelectedContents) {
-				Utility.BrowseWithIE(cont.PlayerPageUri);
+				Utility.Browse(cont.PlayerPageUri);
 			}
 		}
-		private void tsmiBrowseWithIe_Click(object sender, EventArgs e) {
+		private void tsmiBrowseDetail_Click(object sender, EventArgs e) {
 			foreach (ContentAdapter cont in this.SelectedContents) {
-				Utility.BrowseWithIE(cont.DetailPageUri);
+				Utility.Browse(cont.DetailPageUri);
 			}
 		}
 		private void tsmiCopyName_Click(object sender, EventArgs e) {

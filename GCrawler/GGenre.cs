@@ -19,8 +19,8 @@ namespace Yusen.GCrawler {
 				new GGenre200505(15, "life", "ファッション・カルチャー", Color.FromArgb(0x53, 0x47, 0x9a)),
 				new GGenre200505( 9, "sports", "スポーツ", Color.FromArgb(0xab, 0xce, 0x30)),
 				new GGenre200505(16, "business", "ビジネス", Color.FromArgb(0x38, 0x72, 0xb9)),
-				//new GGenre200507( 7, "news", "ニュース", Color.FromArgb(0x00, 0xa5, 0x3c)),
-				//new GGenre200507(12, "videoblog", "映像ブログ", Color.FromArgb(0xb6, 0x24, 0xd4)),
+				new GGenre200507( 7, "news", "ニュース", Color.FromArgb(0x00, 0xa5, 0x3c)),
+				new GGenre200507VideoBlog(12, "videoblog", "映像ブログ", Color.FromArgb(0xb6, 0x24, 0xd4)),
 			};
 		}
 		public static IEnumerable<GGenre> AllGenres {
@@ -33,9 +33,6 @@ namespace Yusen.GCrawler {
 		private readonly string dir;
 		private readonly string name;
 		private readonly Color color;
-		private ReadOnlyCollection<GPackage> packages;
-		private bool hasCrawled = false;
-		private DateTime lastCrawlTime = DateTime.MinValue;
 		
 		protected GGenre(int keyNo, string dir, string name, Color color) {
 			this.keyNo = keyNo;
@@ -59,7 +56,9 @@ namespace Yusen.GCrawler {
 		public Color GenreColor {
 			get { return this.color; }
 		}
-		
+		public virtual bool IsCrawlable {
+			get { return true; }
+		}
 		public abstract Uri TopPageUri {
 			get;
 		}
@@ -73,22 +72,6 @@ namespace Yusen.GCrawler {
 				return new Uri("http://www.gyao.jp/timetable/index.php?genre_id=" + this.GenreId);
 			}
 		}
-
-		public ReadOnlyCollection<GPackage> Packages {
-			get { return this.packages; }
-			internal set {
-				this.packages = value;
-				this.hasCrawled = true;
-				this.lastCrawlTime = DateTime.Now;
-			}
-		}
-		public bool HasCrawled {
-			get { return this.hasCrawled; }
-		}
-		public DateTime LastCrawlTime {
-			get { return this.lastCrawlTime; }
-		}
-
 		
 		public override string ToString() {
 			return "<" + this.GenreId + "> " + this.GenreName;
@@ -118,6 +101,13 @@ namespace Yusen.GCrawler {
 				get {
 					return new Uri("http://www.gyao.jp/" + base.DirectryName + "/");
 				}
+			}
+		}
+		private class GGenre200507VideoBlog : GGenre200507 {
+			public GGenre200507VideoBlog(int keyNo, string dir, string name, Color color)
+				: base(keyNo, dir, name, color) { }
+			public override bool IsCrawlable {
+				get { return false; }
 			}
 		}
 	}

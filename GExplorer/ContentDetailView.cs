@@ -152,10 +152,11 @@ namespace Yusen.GExplorer {
 		}
 		private void cmsImage_Opening(object sender, CancelEventArgs e) {
 			bool hasContent = (null != this.Content);
-			this.tsmiCopyImageUri.Enabled = hasContent;
-			this.tsmiCopyNameAndImageUri.Enabled = hasContent;
-			this.tsmiCopyNameDetailImageUri.Enabled = hasContent;
-			this.tsmiCopyImage.Enabled = hasContent;
+			bool showImage = (null != this.picboxImage.Image);
+			this.tsmiCopyImageUri.Enabled = hasContent & showImage;
+			this.tsmiCopyNameAndImageUri.Enabled = hasContent & showImage;
+			this.tsmiCopyNameDetailImageUri.Enabled = hasContent  & showImage;
+			this.tsmiCopyImage.Enabled = hasContent & showImage;
 		}
 	}
 	

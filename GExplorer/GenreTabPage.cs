@@ -11,11 +11,11 @@ namespace Yusen.GExplorer {
 		
 		public GenreTabPage() {
 			InitializeComponent();
-			this.tsmiBrowseTopWithIE.Click += delegate {
-				Utility.BrowseWithIE(this.Genre.TopPageUri);
+			this.tsmiBrowseTop.Click += delegate {
+				Utility.Browse(this.Genre.TopPageUri);
 			};
-			this.tsmiBrowseTimetableWithIe.Click += delegate {
-				Utility.BrowseWithIE(this.Genre.TimetableUri);
+			this.tsmiBrowseTimetable.Click += delegate {
+				Utility.Browse(this.Genre.TimetableUri);
 			};
 			this.tsmiCopyGenreName.Click += delegate {
 				Clipboard.SetText(this.Genre.GenreName);

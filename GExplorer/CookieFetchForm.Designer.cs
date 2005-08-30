@@ -32,6 +32,7 @@ namespace Yusen.GExplorer {
 			this.webBrowser1.Location = new System.Drawing.Point(0, 0);
 			this.webBrowser1.Name = "webBrowser1";
 			this.webBrowser1.Size = new System.Drawing.Size(292, 166);
+			this.webBrowser1.Navigated += new System.Windows.Forms.WebBrowserNavigatedEventHandler(this.webBrowser1_Navigated);
 			// 
 			// CookieFetchForm
 			// 
@@ -41,6 +42,7 @@ namespace Yusen.GExplorer {
 			this.Controls.Add(this.webBrowser1);
 			this.Name = "CookieFetchForm";
 			this.Text = "CookieFetchForm";
+			this.Load += new System.EventHandler(this.CookieFetchForm_Load);
 			this.ResumeLayout(false);
 
 		}

@@ -9,12 +9,13 @@ using System.Net;
 namespace Yusen.GCrawler {
 	public class GContent {
 		private static readonly XmlSerializer serializer = new XmlSerializer(typeof(GContent));
-
+		
 		private static readonly Regex regexAnchorHref = new Regex(@"http://www.gyao.jp/sityou/catedetail/contents_id/(cnt[0-9]+)/");
 		private static readonly Regex regexAnchorJscript = new Regex(@"javascript:gotoDetail\((?:%20| )?'(cnt[0-9]+)'(?:%20| )?\);?");
 		private static readonly Regex regexImageSrc = new Regex(@"http://www.gyao.jp/img/info/[a-z0-9]+/(cnt[0-9]+)_[0-9a-z]*\.(?:jpg|gif)");
 		private static readonly IEnumerable<Regex> regexesExtractor;
-
+		
+		private static readonly Regex regexBreadGenre = new Regex(@"^<a href=""[^""]*"">(.*)</a> &gt; $");
 		private static readonly Regex regexTitle = new Regex(@"<td class=""title12b"">(.*)</td>");
 		private static readonly Regex regexSubtitle = new Regex(@"<td class=""title12"">(.*)</td><!--サブタイトル-->");
 		private static readonly Regex regexImageDir = new Regex(@"<img src=""(/img/info/[a-z0-9]+/{1,2})cnt[0-9]+_[0-9a-z]*\.(?:jpg|gif)""");
@@ -44,7 +45,7 @@ namespace Yusen.GCrawler {
 				}
 			}
 		}
-		internal static bool TryExtractContentId(Uri uri, out string id) {
+		public static bool TryExtractContentId(Uri uri, out string id) {
 			foreach (Regex regex in GContent.regexesExtractor) {
 				Match match = regex.Match(uri.AbsoluteUri);
 				if (match.Success) {
@@ -55,7 +56,7 @@ namespace Yusen.GCrawler {
 			id = null;
 			return false;
 		}
-		internal static string ExtractContentId(Uri uri) {
+		public static string ExtractContentId(Uri uri) {
 			string id;
 			if (GContent.TryExtractContentId(uri, out id)) {
 				return id;
@@ -63,7 +64,7 @@ namespace Yusen.GCrawler {
 				throw new ArgumentException("引数のURIからコンテンツのIDを取得できなかった．\n引数のURI: " + uri.AbsoluteUri);
 			}
 		}
-		internal static bool CanExtractContentId(Uri uri) {
+		public static bool CanExtractContentId(Uri uri) {
 			string dummy;
 			return GContent.TryExtractContentId(uri, out dummy);
 		}
@@ -104,11 +105,12 @@ namespace Yusen.GCrawler {
 				+ "&recommend=1"
 				+ "&contents_id=" + contId);
 		}
-		internal static bool TryDownload(string contId, out GContent cont) {
+		public static bool TryDownload(string contId, out GContent cont) {
 			Uri uri = GContent.CreateDetailPageUri(contId);
 			TextReader reader = null;
 			try {
 				reader = new StreamReader(new WebClient().OpenRead(uri), Encoding.GetEncoding("Shift_JIS"));
+				string genre;
 				string title;
 				string subtitle;
 				string imageDir;
@@ -116,6 +118,7 @@ namespace Yusen.GCrawler {
 				string duration;
 				StringBuilder description = new StringBuilder();
 
+				if (!GContent.TryRegexForEachLine(reader, GContent.regexBreadGenre, out genre)) goto error;
 				if (!GContent.TryRegexForEachLine(reader, GContent.regexTitle, out title)) goto error;
 				if (!GContent.TryRegexForEachLine(reader, GContent.regexSubtitle, out subtitle)) goto error;
 				if (!GContent.TryRegexForEachLine(reader, GContent.regexImageDir, out imageDir)) goto error;
@@ -133,7 +136,7 @@ namespace Yusen.GCrawler {
 						description.Append(HtmlUtility.HtmlToText(desc));
 					}
 				}
-				cont = new GContent(contId, title, subtitle, imageDir, episodeNum, duration, description.ToString().Trim());
+				cont = new GContent(contId, genre, title, subtitle, imageDir, episodeNum, duration, description.ToString().Trim());
 				return true;
 			error:
 				cont = null;
@@ -158,10 +161,11 @@ namespace Yusen.GCrawler {
 			return false;
 		}
 		internal static GContent CreateDummyContent(string contId, GGenre genre) {
-			return new GContent(contId, "(ダミー)", "(ダミー)", "/img/info/"+genre.ImageDirName+"/", "(ダミー)", "(ダミー)", "(ダミー)");
+			return new GContent(contId, "(ダミー)", "(ダミー)", "(ダミー)", "/img/info/"+genre.ImageDirName+"/", "(ダミー)", "(ダミー)", "(ダミー)");
 		}
 
 		private string contentId;
+		private string genre;
 		private string title;
 		private string subtitle;
 		private string imageDir;
@@ -173,8 +177,9 @@ namespace Yusen.GCrawler {
 		public GContent() {
 			this.fromCache = true;
 		}
-		private GContent(string contentId, string title, string subtitle, string imageDir, string episodeNumber, string duration, string longDescription) {
+		private GContent(string contentId, string genre, string title, string subtitle, string imageDir, string episodeNumber, string duration, string longDescription) {
 			this.contentId = contentId;
+			this.genre = genre;
 			this.title = title;
 			this.contentId = contentId;
 			this.subtitle = subtitle;
@@ -187,6 +192,10 @@ namespace Yusen.GCrawler {
 		public string ContentId {
 			get { return this.contentId; }
 			set { this.contentId = value; }
+		}
+		public string GenreName {
+			get { return this.genre; }
+			set { this.genre = value; }
 		}
 		public string Title {
 			get { return this.title; }

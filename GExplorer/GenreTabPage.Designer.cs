@@ -29,8 +29,8 @@ namespace Yusen.GExplorer {
 			this.tsmiCopyUri = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiCopyGenreNameAndUri = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-			this.tsmiBrowseTopWithIE = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiBrowseTimetableWithIe = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiBrowseTop = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiBrowseTimetable = new System.Windows.Forms.ToolStripMenuItem();
 			this.cmsGenre.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -39,8 +39,8 @@ namespace Yusen.GExplorer {
 			this.cmsGenre.Enabled = true;
 			this.cmsGenre.GripMargin = new System.Windows.Forms.Padding(2);
 			this.cmsGenre.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiBrowseTopWithIE,
-            this.tsmiBrowseTimetableWithIe,
+            this.tsmiBrowseTop,
+            this.tsmiBrowseTimetable,
             this.toolStripSeparator1,
             this.tsmiCopyGenreName,
             this.tsmiCopyUri,
@@ -70,15 +70,15 @@ namespace Yusen.GExplorer {
 			// 
 			this.toolStripSeparator1.Name = "toolStripSeparator1";
 			// 
-			// tsmiBrowseTopWithIE
+			// tsmiBrowseTop
 			// 
-			this.tsmiBrowseTopWithIE.Name = "tsmiBrowseTopWithIE";
-			this.tsmiBrowseTopWithIE.Text = "ジャンルトップをIEで開く (&T)";
+			this.tsmiBrowseTop.Name = "tsmiBrowseTop";
+			this.tsmiBrowseTop.Text = "ジャンルトップをウェブブラウザで開く (&T)";
 			// 
-			// tsmiBrowseTimetableWithIe
+			// tsmiBrowseTimetable
 			// 
-			this.tsmiBrowseTimetableWithIe.Name = "tsmiBrowseTimetableWithIe";
-			this.tsmiBrowseTimetableWithIe.Text = "番組表をIEで開く (&T)";
+			this.tsmiBrowseTimetable.Name = "tsmiBrowseTimetable";
+			this.tsmiBrowseTimetable.Text = "番組表をウェブブラウザで開く (&T)";
 			// 
 			// GenreTabPage
 			// 
@@ -95,7 +95,7 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ToolStripMenuItem tsmiCopyUri;
 		private System.Windows.Forms.ToolStripMenuItem tsmiCopyGenreNameAndUri;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-		private System.Windows.Forms.ToolStripMenuItem tsmiBrowseTopWithIE;
-		private System.Windows.Forms.ToolStripMenuItem tsmiBrowseTimetableWithIe;
+		private System.Windows.Forms.ToolStripMenuItem tsmiBrowseTop;
+		private System.Windows.Forms.ToolStripMenuItem tsmiBrowseTimetable;
 	}
 }

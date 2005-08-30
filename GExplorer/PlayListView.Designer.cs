@@ -40,8 +40,8 @@ namespace Yusen.GExplorer {
 			this.tsmiRemoveItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiPlayWithWmp = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiPlayWithIe = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiBrowseWithIe = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiPlayWithBrowser = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiBrowseDetail = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiCopyName = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiCopyUri = new System.Windows.Forms.ToolStripMenuItem();
@@ -65,6 +65,7 @@ namespace Yusen.GExplorer {
 			this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
 			this.tslMessage = new System.Windows.Forms.ToolStripLabel();
 			this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+			this.tsmiAddById = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripContainer1.ContentPanel.SuspendLayout();
 			this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
 			this.toolStripContainer1.SuspendLayout();
@@ -138,8 +139,8 @@ namespace Yusen.GExplorer {
             this.tsmiRemoveItem,
             this.toolStripSeparator2,
             this.tsmiPlayWithWmp,
-            this.tsmiPlayWithIe,
-            this.tsmiBrowseWithIe,
+            this.tsmiPlayWithBrowser,
+            this.tsmiBrowseDetail,
             this.toolStripSeparator3,
             this.tsmiCopyName,
             this.tsmiCopyUri,
@@ -219,17 +220,17 @@ namespace Yusen.GExplorer {
 			this.tsmiPlayWithWmp.Text = "WMPで再生 (&W)";
 			this.tsmiPlayWithWmp.Click += new System.EventHandler(this.tsmiPlayWithWmp_Click);
 			// 
-			// tsmiPlayWithIe
+			// tsmiPlayWithBrowser
 			// 
-			this.tsmiPlayWithIe.Name = "tsmiPlayWithIe";
-			this.tsmiPlayWithIe.Text = "IEで再生 (&I)";
-			this.tsmiPlayWithIe.Click += new System.EventHandler(this.tsmiPlayWithIe_Click);
+			this.tsmiPlayWithBrowser.Name = "tsmiPlayWithBrowser";
+			this.tsmiPlayWithBrowser.Text = "ウェブブラウザで再生 (&I)";
+			this.tsmiPlayWithBrowser.Click += new System.EventHandler(this.tsmiPlayWithBrowser_Click);
 			// 
-			// tsmiBrowseWithIe
+			// tsmiBrowseDetail
 			// 
-			this.tsmiBrowseWithIe.Name = "tsmiBrowseWithIe";
-			this.tsmiBrowseWithIe.Text = "IEで詳細ページ (&E)";
-			this.tsmiBrowseWithIe.Click += new System.EventHandler(this.tsmiBrowseWithIe_Click);
+			this.tsmiBrowseDetail.Name = "tsmiBrowseDetail";
+			this.tsmiBrowseDetail.Text = "ウェブブラウザで詳細ページ (&E)";
+			this.tsmiBrowseDetail.Click += new System.EventHandler(this.tsmiBrowseDetail_Click);
 			// 
 			// toolStripSeparator3
 			// 
@@ -299,6 +300,7 @@ namespace Yusen.GExplorer {
 			// 
 			this.tsddbOperation.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
 			this.tsddbOperation.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiAddById,
             this.tsmiExportAsAsx,
             this.tsmiSerializePlayListNow,
             this.toolStripSeparator5,
@@ -390,6 +392,12 @@ namespace Yusen.GExplorer {
 			this.saveFileDialog1.Filter = "ASX files|*.asx|All files|*.*";
 			this.saveFileDialog1.RestoreDirectory = true;
 			// 
+			// tsmiAddById
+			// 
+			this.tsmiAddById.Name = "tsmiAddById";
+			this.tsmiAddById.Text = "ID指定で手動追加 (&A) ...";
+			this.tsmiAddById.Click += new System.EventHandler(this.tsmiAddById_Click);
+			// 
 			// PlayListView
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -427,8 +435,8 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ToolStripMenuItem tsmiRemoveItem;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
 		private System.Windows.Forms.ToolStripMenuItem tsmiPlayWithWmp;
-		private System.Windows.Forms.ToolStripMenuItem tsmiPlayWithIe;
-		private System.Windows.Forms.ToolStripMenuItem tsmiBrowseWithIe;
+		private System.Windows.Forms.ToolStripMenuItem tsmiPlayWithBrowser;
+		private System.Windows.Forms.ToolStripMenuItem tsmiBrowseDetail;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
 		private System.Windows.Forms.ToolStripMenuItem tsmiCopyName;
 		private System.Windows.Forms.ToolStripMenuItem tsmiCopyUri;
@@ -452,5 +460,6 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ToolStripLabel tslMessage;
 		private System.Windows.Forms.SaveFileDialog saveFileDialog1;
 		private System.Windows.Forms.ToolStripMenuItem tsmiMultiSelectEnabled;
+		private System.Windows.Forms.ToolStripMenuItem tsmiAddById;
 	}
 }

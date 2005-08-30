@@ -57,6 +57,12 @@
     <Compile Include="AboutBox.Designer.cs">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </Compile>
+    <Compile Include="BrowserForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BrowserForm.designer.cs">
+      <DependentUpon>BrowserForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="ContentDetailView.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -93,6 +99,12 @@
     </Compile>
     <Compile Include="GlobalSettingsEditor.Designer.cs">
       <DependentUpon>GlobalSettingsEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="InputBoxDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="InputBoxDialog.Designer.cs">
+      <DependentUpon>InputBoxDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="ItemsManagerBase.cs" />
     <Compile Include="MainForm.cs">
@@ -133,6 +145,9 @@
     <EmbeddedResource Include="AboutBox.resx">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="BrowserForm.resx">
+      <DependentUpon>BrowserForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ContentDetailView.resx">
       <DependentUpon>ContentDetailView.cs</DependentUpon>
     </EmbeddedResource>
@@ -153,6 +168,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GlobalSettingsEditor.resx">
       <DependentUpon>GlobalSettingsEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InputBoxDialog.resx">
+      <DependentUpon>InputBoxDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>

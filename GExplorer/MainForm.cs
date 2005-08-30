@@ -7,17 +7,45 @@ using System.Threading;
 using Yusen.GCrawler;
 
 namespace Yusen.GExplorer {
-	partial class MainForm : FormSettingsBase , IFormWithSettings<MainFormSettings>{
+	partial class MainForm : FormSettingsBase, IFormWithSettings<MainFormSettings> {
+		private delegate void ViewCrawlResultDelegate(CrawlResult result);
+
 		private Crawler crawler = new Crawler(new HtmlParserRegex(), new ContentCacheControllerXml("Cache"));
 		private Dictionary<GGenre, CrawlResult> results = new Dictionary<GGenre, CrawlResult>();
-		
+		private Thread threadCrawler = null;
+
 		public MainForm() {
 			InitializeComponent();
 		}
-		
+
 		private void ClearStatusBarInfo() {
-			this.toolStripProgressBar1.Value = 0;
-			this.toolStripStatusLabel1.Text = "";
+			if (this.InvokeRequired) {
+				this.Invoke(new ThreadStart(delegate {
+					this.ClearStatusBarInfo();
+				}));
+			} else {
+				this.tspbCrawl.Value = 0;
+				this.tsslCrawl.Text = "";
+			}
+		}
+		private void DisableTsmiAbortCrawling() {
+			if (this.InvokeRequired) {
+				this.Invoke(new ThreadStart(delegate {
+					this.DisableTsmiAbortCrawling();
+				}));
+			} else {
+				this.tsmiAbortCrawling.Enabled = false;
+			}
+		}
+		private void ViewCrawlResult(CrawlResult result) {
+			if (this.InvokeRequired) {
+				this.Invoke(new ViewCrawlResultDelegate(this.ViewCrawlResult), result);
+			} else {
+				this.crawlResultView1.CrawlResult = result;
+				if (this.FocusOnResultAfterGenreChanged) {
+					this.crawlResultView1.Focus();
+				}
+			}
 		}
 		public void FillSettings(MainFormSettings settings) {
 			base.FillSettings(settings);
@@ -48,31 +76,49 @@ namespace Yusen.GExplorer {
 			set { this.tsmiFocusOnResultAfterTabChanged.Checked = value; }
 		}
 		public bool IgnoreCrawlErrors {
-			get {return this.tsmiIgnoreCrawlErrors.Checked;}
-			set {this.tsmiIgnoreCrawlErrors.Checked = value;}
+			get { return this.tsmiIgnoreCrawlErrors.Checked; }
+			set { this.tsmiIgnoreCrawlErrors.Checked = value; }
 		}
 
 		private void MainForm_Load(object sender, EventArgs e) {
 			this.Text = Application.ProductName + " " + Application.ProductVersion;
 			Utility.AppendHelpMenu(this.menuStrip1);
-			
+
 			this.genreTabControl1.TabPages.Clear();
+			this.tsmiUncrawableGenres.DropDownItems.Clear();
 			foreach (GGenre genre in GGenre.AllGenres) {
-				this.genreTabControl1.AddGenre(genre);
+				if (genre.IsCrawlable) {
+					this.genreTabControl1.AddGenre(genre);
+				} else {
+					ToolStripMenuItem tsmi = new ToolStripMenuItem(genre.GenreName);
+					tsmi.Tag = genre;
+					tsmi.Click += delegate(object sender2, EventArgs e2) {
+						Utility.Browse(((sender2 as ToolStripMenuItem).Tag as GGenre).TopPageUri);
+					};
+					this.tsmiUncrawableGenres.DropDownItems.Add(tsmi);
+				}
 			}
 			this.genreTabControl1.SelectedIndex = -1;
-			
+
 			this.crawler.CrawlProgress += new EventHandler<CrawlProgressEventArgs>(crawler_CrawlProgress);
 			this.crawler.IgnorableErrorOccured += new EventHandler<IgnorableErrorOccuredEventArgs>(crawler_IgnorableErrorOccured);
-			
+
 			Utility.LoadSettingsAndEnableSaveOnClosed(this);
 			this.ClearStatusBarInfo();
 		}
 
 		private void crawler_CrawlProgress(object sender, CrawlProgressEventArgs e) {
-			this.toolStripProgressBar1.Maximum = e.Visited+e.Waiting;
-			this.toolStripProgressBar1.Value = e.Visited;
-			this.toolStripStatusLabel1.Text = e.Message;
+			if (this.InvokeRequired) {
+			this.Invoke(new EventHandler<CrawlProgressEventArgs>(
+				delegate(object sender2, CrawlProgressEventArgs e2) {
+					this.crawler_CrawlProgress(sender2, e2);
+				}),
+				sender, e);
+			} else {
+				this.tspbCrawl.Maximum = e.Visited+e.Waiting;
+				this.tspbCrawl.Value = e.Visited;
+				this.tsslCrawl.Text = e.Message;
+			}
 			Application.DoEvents();
 		}
 		void crawler_IgnorableErrorOccured(object sender, IgnorableErrorOccuredEventArgs e) {
@@ -91,18 +137,31 @@ namespace Yusen.GExplorer {
 			GGenre genre = e.Genre;
 			if (null == genre) return;
 			CrawlResult result;
-			if (e.ForceReload || ! this.results.TryGetValue(genre, out result)) {
-				result = this.crawler.Crawl(genre);
-				this.ClearStatusBarInfo();
-				if (result.Success) {
-					this.results[genre] = result;
-				} else {
-					return;
+			if (e.ForceReload || !this.results.TryGetValue(genre, out result)) {
+				Thread t;
+				lock (this.crawler) {
+					if (null != this.threadCrawler) {
+						MessageBox.Show("多重クロールは禁止．", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Stop);
+						return;
+					}
+					t = new Thread(new ThreadStart(delegate {
+						result = this.crawler.Crawl(genre);
+						lock (this.crawler) {
+							this.threadCrawler = null;
+							this.DisableTsmiAbortCrawling();
+						}
+						if (result.Success) {
+							this.ClearStatusBarInfo();
+							this.results[genre] = result;
+							this.ViewCrawlResult(result);
+						}
+					}));
+					this.threadCrawler = t;
+					this.tsmiAbortCrawling.Enabled = true;
+					t.Start();
 				}
-			}
-			this.crawlResultView1.CrawlResult = result;
-			if (this.FocusOnResultAfterGenreChanged) {
-				this.crawlResultView1.Focus();
+			} else {
+				this.ViewCrawlResult(result);
 			}
 		}
 
@@ -122,7 +181,7 @@ namespace Yusen.GExplorer {
 			this.Close();
 		}
 		private void tsmiBrowseTop_Click(object sender, EventArgs e) {
-			Utility.BrowseWithIE(new Uri("http://www.gyao.jp/"));
+			Utility.Browse(new Uri("http://www.gyao.jp/"));
 		}
 		private void tsmiGlobalSettingsEditor_Click(object sender, EventArgs e) {
 			GlobalSettingsEditor.Instance.Show();
@@ -136,6 +195,18 @@ namespace Yusen.GExplorer {
 			NgContentsEditor.Instance.Show();
 			NgContentsEditor.Instance.Focus();
 		}
+		private void tsmiAbortCrawling_Click(object sender, EventArgs e) {
+			lock (this.crawler) {
+				if (null != this.threadCrawler) {
+					this.threadCrawler.Abort();
+					this.tsmiAbortCrawling.Enabled = false;
+					this.threadCrawler = null;
+
+					this.ClearStatusBarInfo();
+					this.tsslCrawl.Text = "クロールを中止しました．";
+				}
+			}
+		}
 	}
 
 	public class MainFormSettings : FormSettingsBaseSettings {
@@ -146,7 +217,7 @@ namespace Yusen.GExplorer {
 		private GenreListViewSettings genreListViewSettings = new GenreListViewSettings();
 		private PlayListViewSettings playListViewSettings = new PlayListViewSettings();
 		private ContentDetailViewSettings contentDetailViewSettings = new ContentDetailViewSettings();
-		
+
 		public bool? FocusOnResultAfterGenreChanged {
 			get { return this.focusOnResultAfterGenreChanged; }
 			set { this.focusOnResultAfterGenreChanged = value; }

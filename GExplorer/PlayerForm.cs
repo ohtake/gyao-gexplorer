@@ -7,6 +7,9 @@ using WMPLib;
 
 namespace Yusen.GExplorer {
 	partial class PlayerForm : FormSettingsBase, IFormWithSettings<PlayerFormSettings>{
+		private const int volumeNormal = 100;
+		private const int volumeCf = 20;
+		
 		private static PlayerForm instance = null;
 		public static PlayerForm Instance {
 			get {
@@ -30,7 +33,6 @@ namespace Yusen.GExplorer {
 		}
 
 		private void CreateUserCommandsMenuItems() {
-			//メインメニュー
 			this.tsmiUserCommands.DropDownItems.Clear();
 			foreach (UserCommand uc in UserCommandsManager.Instance) {
 				ToolStripMenuItem tsmi = new ToolStripMenuItem(uc.Title);
@@ -149,17 +151,17 @@ namespace Yusen.GExplorer {
 			this.wmpMain.Ctlcontrols.fastReverse();
 		}
 		private void tsmiNextContent_Click(object sender, EventArgs e) {
-			ContentAdapter cont = PlayList.Instance.NextContentOf(this.CurrentContent);
-			this.CurrentContent = cont;
+			ContentAdapter nextCont = PlayList.Instance.NextContentOf(this.CurrentContent);
+			this.CurrentContent = nextCont;
 		}
 		private void tsmiNextContentWithDelete_Click(object sender, EventArgs e) {
-			ContentAdapter cont = PlayList.Instance.NextContentOf(this.CurrentContent);
+			ContentAdapter nextCont = PlayList.Instance.NextContentOf(this.CurrentContent);
 			PlayList.Instance.Remove(this.CurrentContent);
-			this.CurrentContent = cont;
+			this.CurrentContent = nextCont;
 		}
 		private void tsmiPrevContent_Click(object sender, EventArgs e) {
-			ContentAdapter cont = PlayList.Instance.PrevContentOf(this.CurrentContent);
-			this.CurrentContent = cont;
+			ContentAdapter prevCont = PlayList.Instance.PrevContentOf(this.CurrentContent);
+			this.CurrentContent = prevCont;
 		}
 		private void tsmiAlwaysOnTop_Click(object sender, EventArgs e) {
 			this.TopMost = this.tsmiAlwaysOnTop.Checked;
@@ -178,28 +180,41 @@ namespace Yusen.GExplorer {
 		}
 		
 		private void wmpMain_OpenStateChange(object sender, _WMPOCXEvents_OpenStateChangeEvent e) {
-			// THANKSTO: http://pc8.2ch.net/test/read.cgi/esite/1116115226/81 の神
-			if (this.tsmiAutoVolume.Checked && WMPOpenState.wmposMediaOpen == this.wmpMain.openState) {
-				bool isCf = this.wmpMain.currentMedia.getItemInfo("WMS_CONTENT_DESCRIPTION_PLAYLIST_ENTRY_URL").StartsWith("Adv:");
-				this.wmpMain.settings.volume = isCf ? 20 : 100;
-				//謎の対応その3
-				Thread t = new Thread(new ThreadStart(delegate {
-					Thread.Sleep(100);
-					if (!this.IsDisposed && !this.wmpMain.IsDisposed) {
-						this.wmpMain.settings.volume = isCf ? 19 :  99;
-						this.wmpMain.settings.volume = isCf ? 20 : 100;
+			Console.WriteLine("o " + DateTime.Now.ToLongTimeString() + " " + ((WMPOpenState)e.newState).ToString());
+			switch ((WMPOpenState)e.newState) {
+				case WMPOpenState.wmposMediaOpen:
+					// THANKSTO: http://pc8.2ch.net/test/read.cgi/esite/1116115226/81 の神
+					if (this.tsmiAutoVolume.Checked) {
+						bool isCf = this.wmpMain.currentMedia.getItemInfo("WMS_CONTENT_DESCRIPTION_PLAYLIST_ENTRY_URL").StartsWith("Adv:");
+						this.wmpMain.settings.volume = isCf ? PlayerForm.volumeCf : PlayerForm.volumeNormal;
+						//謎の対応その3
+						Thread t = new Thread(new ThreadStart(delegate {
+							Thread.Sleep(100);
+							if (!this.IsDisposed && !this.wmpMain.IsDisposed) {
+								this.wmpMain.settings.volume = isCf ?  PlayerForm.volumeCf : PlayerForm.volumeNormal;
+							}
+						}));
+						t.Start();
 					}
-				}));
-				t.Start();
+					break;
 			}
 		}
 		private void wmpMain_PlayStateChange(object sender, _WMPOCXEvents_PlayStateChangeEvent e) {
-			if (WMPPlayState.wmppsMediaEnded == this.wmpMain.playState) {
-				if (this.RemovePlayedContentEnabled) {
-					this.tsmiNextContentWithDelete.PerformClick();
-				} else {
-					this.tsmiNextContent.PerformClick();
-				}
+			Console.WriteLine("p " + DateTime.Now.ToLongTimeString() + " " + ((WMPPlayState)e.newState).ToString());
+			switch((WMPPlayState)e.newState){
+				case WMPPlayState.wmppsMediaEnded:
+					Thread t = new Thread(new ThreadStart(delegate {
+						Thread.Sleep(100);//適当すぎ
+						if (!this.IsDisposed && !this.wmpMain.IsDisposed) {
+							if (this.RemovePlayedContentEnabled) {
+								this.tsmiNextContentWithDelete.PerformClick();
+							} else {
+								this.tsmiNextContent.PerformClick();
+							}
+						}
+					}));
+					t.Start();
+					break;
 			}
 		}
 

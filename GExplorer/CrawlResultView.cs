@@ -77,6 +77,8 @@ namespace Yusen.GExplorer {
 						this.DisplayItems();
 					}
 					this.listView1.EndUpdate();
+
+					this.CreateNormalPagesMenuItems();
 				}
 			}
 		}
@@ -98,15 +100,28 @@ namespace Yusen.GExplorer {
 				}
 			}
 		}
-		
+
+		public bool CanUseMigemo {
+			get {
+				return null != this.migemo;
+			}
+		}
+
+		[DefaultValue("")]
 		public string FilterString {
-			get { return this.tstbFilter.Text; }
+			get {
+				if (this.tstbFilter.ReadOnly) {
+					return string.Empty;
+				} else {
+					return this.tstbFilter.Text;
+				}
+			}
 			set { this.tstbFilter.Text = value; }
 		}
 		private Regex FilterRegex {
 			get {
 				Regex rval = null;
-				if (null != this.migemo) {
+				if (null != this.CanUseMigemo) {
 					if ("" == this.FilterString) {
 						goto success;
 					}
@@ -229,11 +244,11 @@ namespace Yusen.GExplorer {
 		private void CreateItems() {
 			bool showPackages = this.ShowPackages;
 			this.ShowPackages = true;
-			foreach (GPackage p in this.Genre.Packages) {
+			foreach (GPackage p in this.CrawlResult.Packages) {
 				ListViewGroup group = new ListViewGroup(p.ToString());
 				this.listView1.Groups.Add(group);
 				foreach (GContent c in p.Contents) {
-					ContentAdapter ca = new ContentAdapter(c, this.Genre);
+					ContentAdapter ca = new ContentAdapter(c);
 					ListViewItem item = new ListViewItem(
 						new string[]{
 							ca.ContentId, ca.Title, ca.EpisodeNumber, ca.SubTitle, ca.Duration, ca.LongDescription},
@@ -250,6 +265,10 @@ namespace Yusen.GExplorer {
 		private void DisplayItems(){
 			if (null == this.CrawlResult) return;
 			this.listView1.Items.Clear();
+			
+			bool showPackages = this.ShowPackages;
+			this.ShowPackages = true;
+			
 			int aboned = 0;
 			int filtered = 0;
 			Regex filter = this.FilterEnabled ? this.FilterRegex : null;
@@ -289,19 +308,36 @@ namespace Yusen.GExplorer {
 				if (isNg && AboneType.Sabori == this.AboneType) {
 					lvi.ForeColor = SystemColors.GrayText;
 				}
-				
+
 				this.listView1.Items.Add(lvi);
 			}
 			
+			this.ShowPackages = showPackages;
+			
 			this.tslMessage.Text =
-							this.listView1.Items.Count.ToString() + " + " + filtered.ToString() + " + " + aboned.ToString() + " ŒÂ"
-							+ " (" + this.Genre.LastCrawlTime.ToShortTimeString() + ")";
+							this.listView1.Items.Count.ToString() + "+" + filtered.ToString() + "+" + aboned.ToString() + "ŒÂ"
+							+ " (" + this.CrawlResult.Time.ToShortTimeString() + ")";
 			if (null != filter) {
 				this.tstbMigemoAnswer.Text = filter.ToString();
 			} else {
 				this.tstbMigemoAnswer.Text = string.Empty;
 			}
 		}
+		private void CreateNormalPagesMenuItems() {
+			this.tsddbNormalPages.DropDownItems.Clear();
+			if (null != this.CrawlResult) {
+				foreach (Uri page in this.CrawlResult.VisitedPages) {
+					ToolStripMenuItem tsmi = new ToolStripMenuItem(page.AbsolutePath);
+					tsmi.Tag = page;
+					tsmi.Click += delegate(object sender, EventArgs e) {
+						Utility.Browse((sender as ToolStripMenuItem).Tag as Uri);
+					};
+					this.tsddbNormalPages.DropDownItems.Add(tsmi);
+				}
+			}
+			this.tsddbNormalPages.Enabled = this.tsddbNormalPages.HasDropDownItems;
+		}
+
 		private void CreateUserCommandsMenuItems() {
 			this.tsmiUserCommands.DropDownItems.Clear();
 			foreach (UserCommand uc in UserCommandsManager.Instance) {
@@ -377,14 +413,14 @@ namespace Yusen.GExplorer {
 				Utility.PlayWithWMP(cont.MediaFileUri);
 			}
 		}
-		private void tsmiPlayWithIe_Click(object sender, EventArgs e) {
+		private void tsmiPlayWithBrowser_Click(object sender, EventArgs e) {
 			foreach (ContentAdapter cont in this.SelectedContents) {
-				Utility.BrowseWithIE(cont.PlayerPageUri);
+				Utility.Browse(cont.PlayerPageUri);
 			}
 		}
-		private void tsmiBroseDetailWithIe_Click(object sender, EventArgs e) {
+		private void tsmiBroseDetail_Click(object sender, EventArgs e) {
 			foreach (ContentAdapter cont in this.SelectedContents) {
-				Utility.BrowseWithIE(cont.DetailPageUri);
+				Utility.Browse(cont.DetailPageUri);
 			}
 		}
 		private void tsmiCopyName_Click(object sender, EventArgs e) {

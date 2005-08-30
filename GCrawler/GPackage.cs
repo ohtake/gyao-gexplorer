@@ -21,7 +21,7 @@ namespace Yusen.GCrawler {
 				GPackage.regexAnchorHref, GPackage.regexAnchorJscript, GPackage.regexImageSrc,};
 		}
 		
-		internal static bool TryExtractPackageId(Uri uri, out string id) {
+		public static bool TryExtractPackageId(Uri uri, out string id) {
 			foreach (Regex regex in GPackage.regexesExtractor) {
 				Match match = regex.Match(uri.AbsoluteUri);
 				if (match.Success) {
@@ -32,7 +32,7 @@ namespace Yusen.GCrawler {
 			id = null;
 			return false;
 		}
-		internal static string ExtractPackageId(Uri uri) {
+		public static string ExtractPackageId(Uri uri) {
 			string id;
 			if (GPackage.TryExtractPackageId(uri, out id)) {
 				return id;
@@ -40,7 +40,7 @@ namespace Yusen.GCrawler {
 				throw new ArgumentException("引数のURIからパッケージのIDを取得できなかった．\n引数のURI: " + uri.AbsoluteUri);
 			}
 		}
-		internal static bool CanExtractPackageId(Uri uri) {
+		public static bool CanExtractPackageId(Uri uri) {
 			string dummy;
 			return GPackage.TryExtractPackageId(uri, out dummy);
 		}
@@ -49,7 +49,7 @@ namespace Yusen.GCrawler {
 			return new Uri("http://www.gyao.jp/sityou/catelist/pac_id/" + packageId + "/");
 		}
 
-		internal static bool TryDownload(string packId, out GPackage package, out List<string> childContIds) {
+		public static bool TryDownload(string packId, out GPackage package, out List<string> childContIds) {
 			Uri uri = GPackage.CreatePackagePageUri(packId);
 			TextReader reader = new StreamReader(new WebClient().OpenRead(uri), Encoding.GetEncoding("Shift_JIS"));
 			

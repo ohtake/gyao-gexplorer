@@ -22,7 +22,14 @@ namespace Yusen.GExplorer {
 				Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles),
 				"Windows Media Player" + Path.DirectorySeparatorChar + "wmplayer.exe");
 		}
-		
+
+		public static void Browse(Uri uri) {
+			if (string.IsNullOrEmpty(GlobalSettings.Instance.BrowserPath)) {
+				BrowserForm.Browse(uri);
+			} else {
+				Process.Start(GlobalSettings.Instance.BrowserPath, uri.AbsoluteUri);
+			}
+		}
 		public static void BrowseWithIE(Uri uri) {
 			Process.Start(Utility.GetPathForIE(), uri.AbsoluteUri);
 		}

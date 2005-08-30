@@ -9,13 +9,11 @@ using System.Xml.Serialization;
 namespace Yusen.GExplorer {
 	public class ContentAdapter {
 		private GContent innerCont;
-		private string genreName;
-
+		
 		public ContentAdapter() {
 		}
-		public ContentAdapter(GContent innerCont, GGenre genre) {
+		public ContentAdapter(GContent innerCont) {
 			this.innerCont = innerCont;
-			this.genreName = genre.GenreName;
 		}
 		
 		[Browsable(false)]
@@ -23,17 +21,18 @@ namespace Yusen.GExplorer {
 			get { return this.innerCont; }
 			set { this.innerCont = value; }
 		}
-		[Browsable(false)]
-		public string GenreName {
-			get { return this.genreName; }
-			set { this.genreName = value; }
-		}
 		
 		[XmlIgnore]
 		[Category("キー")]
 		[Description("コンテンツのID．")]
 		public string ContentId {
 			get { return this.innerCont.ContentId; }
+		}
+		[XmlIgnore]
+		[Category("付随情報")]
+		[Description("ジャンル名．")]
+		public string GenreName {
+			get { return this.innerCont.GenreName; }
 		}
 		[XmlIgnore]
 		[Category("付随情報")]
@@ -77,7 +76,7 @@ namespace Yusen.GExplorer {
 		public string DisplayName{
 			get {
 				StringBuilder sb = new StringBuilder();
-				sb.Append("[" + this.genreName + "]");
+				sb.Append("[" + this.GenreName + "]");
 				sb.Append(" " + this.Title);
 				if ("" != this.EpisodeNumber) {
 					sb.Append(" / " + this.EpisodeNumber);
