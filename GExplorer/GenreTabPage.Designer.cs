@@ -73,7 +73,7 @@ namespace Yusen.GExplorer {
 			// tsmiBrowseTop
 			// 
 			this.tsmiBrowseTop.Name = "tsmiBrowseTop";
-			this.tsmiBrowseTop.Text = "ジャンルトップをウェブブラウザで開く (&T)";
+			this.tsmiBrowseTop.Text = "ジャンルトップをウェブブラウザで開く (&H)";
 			// 
 			// tsmiBrowseTimetable
 			// 

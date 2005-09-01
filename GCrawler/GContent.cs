@@ -95,7 +95,7 @@ namespace Yusen.GCrawler {
 				+ ":userNo=" + userNo.ToString()
 				+ ":rateId=" + "bit" + ((int)bitrate).ToString("0000000"));
 		}
-		public static Uri CreateRecomendPageUri(string contId, GBitRate bitrate) {
+		public static Uri CreateRecommendPageUri(string contId, GBitRate bitrate) {
 			return new Uri(
 				"http://www.gyao.jp/sityou/catedetail/?"
 				+ "contentsId=" + contId
@@ -133,10 +133,10 @@ namespace Yusen.GCrawler {
 						if (description.Length > 0) {
 							description.Append("\n\n");
 						}
-						description.Append(HtmlUtility.HtmlToText(desc));
+						description.Append(HtmlUtility.HtmlToText(desc).Trim());
 					}
 				}
-				cont = new GContent(contId, genre, title, subtitle, imageDir, episodeNum, duration, description.ToString().Trim());
+				cont = new GContent(contId, genre.Trim(), title.Trim(), subtitle.Trim(), imageDir, episodeNum.Trim(), duration.Trim(), description.ToString().Trim());
 				return true;
 			error:
 				cont = null;

@@ -85,11 +85,14 @@ namespace Yusen.GExplorer {
 				if (null == value) {
 					Utility.SetTitlebarText(this, "PlayerForm");
 					this.wmpMain.close();
-					this.ieMain.Url = new Uri("about:blank");
+					Uri blankUri = new Uri("about:blank");
+					this.gwbDetail.Url = blankUri;
+					this.gwbRecommend.Url = blankUri;
 				} else {
 					Utility.SetTitlebarText(this, value.DisplayName);
 					this.wmpMain.URL = value.MediaFileUri.AbsoluteUri;
-					this.ieMain.Navigate(value.DetailPageUri);
+					this.gwbDetail.Navigate(value.DetailPageUri);
+					this.gwbRecommend.Navigate(value.RecommendPageUri);
 				}
 				PlayList.Instance.CurrentContent = value;
 			}
@@ -166,14 +169,6 @@ namespace Yusen.GExplorer {
 		private void tsmiAlwaysOnTop_Click(object sender, EventArgs e) {
 			this.TopMost = this.tsmiAlwaysOnTop.Checked;
 		}
-		private void tsmiFullscreen_Click(object sender, EventArgs e) {
-			switch (this.wmpMain.playState) {
-				case WMPPlayState.wmppsPlaying:
-				case WMPPlayState.wmppsPaused:
-					this.wmpMain.fullScreen = !this.wmpMain.fullScreen;
-					break;
-			}
-		}
 		private void tsmiFocusOnWmp_Click(object sender, EventArgs e) {
 			this.tabControl1.SelectedTab = this.tabPlayer;
 			this.wmpMain.Focus();
@@ -239,6 +234,33 @@ namespace Yusen.GExplorer {
 					return;
 			}
 			e.Handled = true;
+		}
+		
+		private void gwbDetail_Navigating(object sender, WebBrowserNavigatingEventArgs e) {
+			switch (e.Url.Scheme) {
+				case "javascript":
+				case "mailto":
+					break;
+				default:
+					if (!e.Url.Equals(this.CurrentContent.DetailPageUri)) {
+						e.Cancel = true;
+						Utility.Browse(e.Url);
+					}
+					break;
+			}
+		}
+		private void gwbRecommend_Navigating(object sender, WebBrowserNavigatingEventArgs e) {
+			switch (e.Url.Scheme) {
+				case "javascript":
+				case "mailto":
+					break;
+				default:
+					if (!e.Url.Equals(this.CurrentContent.RecommendPageUri)) {
+						e.Cancel = true;
+						Utility.Browse(e.Url);
+					}
+					break;
+			}
 		}
 	}
 	

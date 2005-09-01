@@ -24,10 +24,12 @@ namespace Yusen.GExplorer {
 		}
 
 		public static void Browse(Uri uri) {
-			if (string.IsNullOrEmpty(GlobalSettings.Instance.BrowserPath)) {
+			if (GlobalSettings.Instance.UseGBrowser) {
 				BrowserForm.Browse(uri);
-			} else {
+			} else if (!string.IsNullOrEmpty(GlobalSettings.Instance.BrowserPath)) {
 				Process.Start(GlobalSettings.Instance.BrowserPath, uri.AbsoluteUri);
+			} else {
+				Process.Start(uri.AbsoluteUri);
 			}
 		}
 		public static void BrowseWithIE(Uri uri) {

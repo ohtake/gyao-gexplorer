@@ -2,20 +2,22 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Forms;
-using System.Drawing;
 using System.Threading;
 using Yusen.GCrawler;
 
 namespace Yusen.GExplorer {
 	partial class MainForm : FormSettingsBase, IFormWithSettings<MainFormSettings> {
 		private delegate void ViewCrawlResultDelegate(CrawlResult result);
-
-		private Crawler crawler = new Crawler(new HtmlParserRegex(), new ContentCacheControllerXml("Cache"));
+		
+		private IContentCacheController cacheController;
+		private Crawler crawler;
 		private Dictionary<GGenre, CrawlResult> results = new Dictionary<GGenre, CrawlResult>();
 		private Thread threadCrawler = null;
 
 		public MainForm() {
 			InitializeComponent();
+			this.cacheController = new ContentCacheControllerXml("Cache");
+			this.crawler = new Crawler(new HtmlParserRegex(), this.cacheController);
 		}
 
 		private void ClearStatusBarInfo() {
@@ -194,6 +196,56 @@ namespace Yusen.GExplorer {
 		private void tsmiNgContentsEditor_Click(object sender, EventArgs e) {
 			NgContentsEditor.Instance.Show();
 			NgContentsEditor.Instance.Focus();
+		}
+		private void tsmiRemoveCachesUnreachable_Click(object sender, EventArgs e) {
+			IEnumerable<string> keys = this.cacheController.ListAllCacheKeys();
+			string title = "現在のクロール結果で到達不可能なキャッシュを削除";
+			switch (MessageBox.Show("クロール結果に表示されていないキャッシュを削除します．\n起動してからクロールを行っていないジャンルのキャッシュも消されます．\nよろしいですか？", title, MessageBoxButtons.YesNo, MessageBoxIcon.Question)) {
+				case DialogResult.Yes:
+					List<string> reachable = new List<string>();
+					foreach(CrawlResult result in this.results.Values){
+						foreach (GPackage package in result.Packages) {
+							foreach (GContent content in package.Contents) {
+								reachable.Add(content.ContentId);
+							}
+						}
+					}
+					reachable.Sort();
+					
+					int success = 0;
+					int failed = 0;
+					int ignored = 0;
+					foreach (string key in this.cacheController.ListAllCacheKeys()) {
+						if (reachable.BinarySearch(key) >= 0) {
+							ignored++;
+						} else {
+							if (this.cacheController.RemoveCache(key)) {
+								success++;
+							} else {
+								failed++;
+							}
+						}
+					}
+					MessageBox.Show(ignored.ToString() + " 個のキャッシュは到達可能により削除しませんでした．\n" + success.ToString() + " 個のキャッシュを削除しました．\n" + failed.ToString() + " 個のキャッシュの削除に失敗しました．", title, MessageBoxButtons.OK, MessageBoxIcon.Information);
+					break;
+			}
+		}
+		private void tsmiRemoveCachesAll_Click(object sender, EventArgs e) {
+			string title = "全てのキャッシュを削除";
+			switch (MessageBox.Show("全てのキャッシュを削除します．\nよろしいですか？", title, MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation)) {
+				case DialogResult.Yes:
+					int success = 0;
+					int failed = 0;
+					foreach (string key in this.cacheController.ListAllCacheKeys()) {
+						if (this.cacheController.RemoveCache(key)) {
+							success++;
+						} else {
+							failed++;
+						}
+					}
+					MessageBox.Show(success.ToString() + " 個のキャッシュを削除しました．\n" + failed.ToString() + " 個のキャッシュの削除に失敗しました．", title, MessageBoxButtons.OK, MessageBoxIcon.Information);
+					break;
+			}
 		}
 		private void tsmiAbortCrawling_Click(object sender, EventArgs e) {
 			lock (this.crawler) {

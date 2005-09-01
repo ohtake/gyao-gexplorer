@@ -27,8 +27,10 @@ namespace Yusen.GExplorer {
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabPlayer = new System.Windows.Forms.TabPage();
 			this.wmpMain = new AxWMPLib.AxWindowsMediaPlayer();
-			this.tabBrowser = new System.Windows.Forms.TabPage();
-			this.ieMain = new System.Windows.Forms.WebBrowser();
+			this.tabDetail = new System.Windows.Forms.TabPage();
+			this.gwbDetail = new Yusen.GExplorer.GWebBrowser();
+			this.tabRecommend = new System.Windows.Forms.TabPage();
+			this.gwbRecommend = new Yusen.GExplorer.GWebBrowser();
 			this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
 			this.menuStrip1 = new System.Windows.Forms.MenuStrip();
 			this.tsmiFile = new System.Windows.Forms.ToolStripMenuItem();
@@ -47,21 +49,21 @@ namespace Yusen.GExplorer {
 			this.tsmiNextContent = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiNextContentWithDelete = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiPrevContent = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiView = new System.Windows.Forms.ToolStripMenuItem();
+			this.設定SToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiAlwaysOnTop = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiFullscreen = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiTool = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiAutoVolume = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiMediaKeys = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiRemovePlayedContent = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+			this.tsmiTool = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiFocusOnWmp = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiUserCommands = new System.Windows.Forms.ToolStripMenuItem();
 			this.tabControl1.SuspendLayout();
 			this.tabPlayer.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.wmpMain)).BeginInit();
-			this.tabBrowser.SuspendLayout();
+			this.tabDetail.SuspendLayout();
+			this.tabRecommend.SuspendLayout();
 			this.toolStripContainer1.ContentPanel.SuspendLayout();
 			this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
 			this.toolStripContainer1.SuspendLayout();
@@ -71,7 +73,8 @@ namespace Yusen.GExplorer {
 			// tabControl1
 			// 
 			this.tabControl1.Controls.Add(this.tabPlayer);
-			this.tabControl1.Controls.Add(this.tabBrowser);
+			this.tabControl1.Controls.Add(this.tabDetail);
+			this.tabControl1.Controls.Add(this.tabRecommend);
 			this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.tabControl1.Location = new System.Drawing.Point(0, 0);
 			this.tabControl1.Name = "tabControl1";
@@ -100,21 +103,40 @@ namespace Yusen.GExplorer {
 			this.wmpMain.OpenStateChange += new AxWMPLib._WMPOCXEvents_OpenStateChangeEventHandler(this.wmpMain_OpenStateChange);
 			this.wmpMain.PlayStateChange += new AxWMPLib._WMPOCXEvents_PlayStateChangeEventHandler(this.wmpMain_PlayStateChange);
 			// 
-			// tabBrowser
+			// tabDetail
 			// 
-			this.tabBrowser.Controls.Add(this.ieMain);
-			this.tabBrowser.Location = new System.Drawing.Point(4, 21);
-			this.tabBrowser.Name = "tabBrowser";
-			this.tabBrowser.Size = new System.Drawing.Size(649, 552);
-			this.tabBrowser.TabIndex = 1;
-			this.tabBrowser.Text = "詳細ページ";
+			this.tabDetail.Controls.Add(this.gwbDetail);
+			this.tabDetail.Location = new System.Drawing.Point(4, 21);
+			this.tabDetail.Name = "tabDetail";
+			this.tabDetail.Size = new System.Drawing.Size(649, 552);
+			this.tabDetail.TabIndex = 1;
+			this.tabDetail.Text = "詳細ページ";
 			// 
-			// ieMain
+			// gwbDetail
 			// 
-			this.ieMain.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.ieMain.Location = new System.Drawing.Point(0, 0);
-			this.ieMain.Name = "ieMain";
-			this.ieMain.Size = new System.Drawing.Size(649, 552);
+			this.gwbDetail.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.gwbDetail.Location = new System.Drawing.Point(0, 0);
+			this.gwbDetail.Name = "gwbDetail";
+			this.gwbDetail.Size = new System.Drawing.Size(649, 552);
+			this.gwbDetail.Navigating += new System.Windows.Forms.WebBrowserNavigatingEventHandler(this.gwbDetail_Navigating);
+			// 
+			// tabRecommend
+			// 
+			this.tabRecommend.Controls.Add(this.gwbRecommend);
+			this.tabRecommend.Location = new System.Drawing.Point(4, 21);
+			this.tabRecommend.Name = "tabRecommend";
+			this.tabRecommend.Padding = new System.Windows.Forms.Padding(3);
+			this.tabRecommend.Size = new System.Drawing.Size(649, 552);
+			this.tabRecommend.TabIndex = 2;
+			this.tabRecommend.Text = "おすすめページ";
+			// 
+			// gwbRecommend
+			// 
+			this.gwbRecommend.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.gwbRecommend.Location = new System.Drawing.Point(3, 3);
+			this.gwbRecommend.Name = "gwbRecommend";
+			this.gwbRecommend.Size = new System.Drawing.Size(643, 546);
+			this.gwbRecommend.Navigating += new System.Windows.Forms.WebBrowserNavigatingEventHandler(this.gwbRecommend_Navigating);
 			// 
 			// toolStripContainer1
 			// 
@@ -141,7 +163,7 @@ namespace Yusen.GExplorer {
 			this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiFile,
             this.tsmiOperation,
-            this.tsmiView,
+            this.設定SToolStripMenuItem,
             this.tsmiTool});
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
@@ -269,13 +291,16 @@ namespace Yusen.GExplorer {
 			this.tsmiPrevContent.Text = "前のコンテンツ (E)";
 			this.tsmiPrevContent.Click += new System.EventHandler(this.tsmiPrevContent_Click);
 			// 
-			// tsmiView
+			// 設定SToolStripMenuItem
 			// 
-			this.tsmiView.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+			this.設定SToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiAlwaysOnTop,
-            this.tsmiFullscreen});
-			this.tsmiView.Name = "tsmiView";
-			this.tsmiView.Text = "表示 (&V)";
+            this.toolStripSeparator3,
+            this.tsmiAutoVolume,
+            this.tsmiMediaKeys,
+            this.tsmiRemovePlayedContent});
+			this.設定SToolStripMenuItem.Name = "設定SToolStripMenuItem";
+			this.設定SToolStripMenuItem.Text = "設定 (&S)";
 			// 
 			// tsmiAlwaysOnTop
 			// 
@@ -285,25 +310,9 @@ namespace Yusen.GExplorer {
 			this.tsmiAlwaysOnTop.Text = "常に手前に表示 (&T)";
 			this.tsmiAlwaysOnTop.Click += new System.EventHandler(this.tsmiAlwaysOnTop_Click);
 			// 
-			// tsmiFullscreen
+			// toolStripSeparator3
 			// 
-			this.tsmiFullscreen.Name = "tsmiFullscreen";
-			this.tsmiFullscreen.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.Return)));
-			this.tsmiFullscreen.Text = "全画面 (&F)";
-			this.tsmiFullscreen.Click += new System.EventHandler(this.tsmiFullscreen_Click);
-			// 
-			// tsmiTool
-			// 
-			this.tsmiTool.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiAutoVolume,
-            this.tsmiMediaKeys,
-            this.tsmiRemovePlayedContent,
-            this.toolStripSeparator4,
-            this.tsmiFocusOnWmp,
-            this.toolStripSeparator1,
-            this.tsmiUserCommands});
-			this.tsmiTool.Name = "tsmiTool";
-			this.tsmiTool.Text = "ツール (&T)";
+			this.toolStripSeparator3.Name = "toolStripSeparator3";
 			// 
 			// tsmiAutoVolume
 			// 
@@ -329,9 +338,14 @@ namespace Yusen.GExplorer {
 			this.tsmiRemovePlayedContent.Name = "tsmiRemovePlayedContent";
 			this.tsmiRemovePlayedContent.Text = "再生の終了したコンテンツをリストから削除 (D)";
 			// 
-			// toolStripSeparator4
+			// tsmiTool
 			// 
-			this.toolStripSeparator4.Name = "toolStripSeparator4";
+			this.tsmiTool.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiFocusOnWmp,
+            this.toolStripSeparator1,
+            this.tsmiUserCommands});
+			this.tsmiTool.Name = "tsmiTool";
+			this.tsmiTool.Text = "ツール (&T)";
 			// 
 			// tsmiFocusOnWmp
 			// 
@@ -364,7 +378,8 @@ namespace Yusen.GExplorer {
 			this.tabControl1.ResumeLayout(false);
 			this.tabPlayer.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.wmpMain)).EndInit();
-			this.tabBrowser.ResumeLayout(false);
+			this.tabDetail.ResumeLayout(false);
+			this.tabRecommend.ResumeLayout(false);
 			this.toolStripContainer1.ContentPanel.ResumeLayout(false);
 			this.toolStripContainer1.TopToolStripPanel.ResumeLayout(false);
 			this.toolStripContainer1.TopToolStripPanel.PerformLayout();
@@ -379,23 +394,16 @@ namespace Yusen.GExplorer {
 
 		private System.Windows.Forms.TabControl tabControl1;
 		private System.Windows.Forms.TabPage tabPlayer;
-		private System.Windows.Forms.TabPage tabBrowser;
+		private System.Windows.Forms.TabPage tabDetail;
 		private AxWMPLib.AxWindowsMediaPlayer wmpMain;
-		private System.Windows.Forms.WebBrowser ieMain;
 		private System.Windows.Forms.ToolStripContainer toolStripContainer1;
 		private System.Windows.Forms.MenuStrip menuStrip1;
 		private System.Windows.Forms.ToolStripMenuItem tsmiFile;
 		private System.Windows.Forms.ToolStripMenuItem tsmiClose;
-		private System.Windows.Forms.ToolStripMenuItem tsmiView;
-		private System.Windows.Forms.ToolStripMenuItem tsmiAlwaysOnTop;
-		private System.Windows.Forms.ToolStripMenuItem tsmiFullscreen;
 		private System.Windows.Forms.ToolStripMenuItem tsmiTool;
-		private System.Windows.Forms.ToolStripMenuItem tsmiAutoVolume;
 		private System.Windows.Forms.ToolStripMenuItem tsmiReload;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
 		private System.Windows.Forms.ToolStripMenuItem tsmiFocusOnWmp;
-		private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
-		private System.Windows.Forms.ToolStripMenuItem tsmiMediaKeys;
 		private System.Windows.Forms.ToolStripMenuItem tsmiOperation;
 		private System.Windows.Forms.ToolStripMenuItem tsmiPlayPause;
 		private System.Windows.Forms.ToolStripMenuItem tsmiStop;
@@ -406,10 +414,18 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ToolStripMenuItem tsmiFastForward;
 		private System.Windows.Forms.ToolStripMenuItem tsmiUserCommands;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-		private System.Windows.Forms.ToolStripMenuItem tsmiRemovePlayedContent;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
 		private System.Windows.Forms.ToolStripMenuItem tsmiNextContent;
 		private System.Windows.Forms.ToolStripMenuItem tsmiPrevContent;
 		private System.Windows.Forms.ToolStripMenuItem tsmiNextContentWithDelete;
+		private System.Windows.Forms.TabPage tabRecommend;
+		private GWebBrowser gwbDetail;
+		private GWebBrowser gwbRecommend;
+		private System.Windows.Forms.ToolStripMenuItem 設定SToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem tsmiAlwaysOnTop;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+		private System.Windows.Forms.ToolStripMenuItem tsmiAutoVolume;
+		private System.Windows.Forms.ToolStripMenuItem tsmiMediaKeys;
+		private System.Windows.Forms.ToolStripMenuItem tsmiRemovePlayedContent;
 	}
 }

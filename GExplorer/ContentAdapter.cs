@@ -78,10 +78,10 @@ namespace Yusen.GExplorer {
 				StringBuilder sb = new StringBuilder();
 				sb.Append("[" + this.GenreName + "]");
 				sb.Append(" " + this.Title);
-				if ("" != this.EpisodeNumber) {
+				if (! string.IsNullOrEmpty(this.EpisodeNumber)) {
 					sb.Append(" / " + this.EpisodeNumber);
 				}
-				if ("" != this.SubTitle && this.Title != this.SubTitle) {
+				if (! string.IsNullOrEmpty(this.SubTitle) && this.Title != this.SubTitle) {
 					sb.Append(" / " + this.SubTitle);
 				}
 				return sb.ToString();
@@ -132,9 +132,9 @@ namespace Yusen.GExplorer {
 		[XmlIgnore]
 		[Category("URI")]
 		[Description("お勧め番組の案内ページのURI． (グローバル設定のビットレートの影響を受ける．)")]
-		public Uri RecomendPageUri {
+		public Uri RecommendPageUri {
 			get {
-				return GContent.CreateRecomendPageUri(this.ContentId, GlobalSettings.Instance.BitRate);
+				return GContent.CreateRecommendPageUri(this.ContentId, GlobalSettings.Instance.BitRate);
 			}
 		}
 

@@ -78,11 +78,21 @@ namespace Yusen.GExplorer {
 			get { return this.migemoDictionaryFilename; }
 			set { this.migemoDictionaryFilename = value; }
 		}
-
+		
+		private bool useGBrowser = true;
+		[Category("ウェブブラウザ")]
+		[DisplayName("内蔵ブラウザを使う")]
+		[Description("GExplorer内蔵のブラウザを使用する場合には True にする．")]
+		[DefaultValue(true)]
+		public bool UseGBrowser {
+			get { return this.useGBrowser; }
+			set { this.useGBrowser = value; }
+		}
+		
 		private string browserPath = "";
 		[Category("ウェブブラウザ")]
 		[DisplayName("パス")]
-		[Description("使用するウェブブラウザのパスを指定する．未指定の場合はGExplorer内蔵のブラウザを用いる．")]
+		[Description("内蔵のブラウザを用いない場合に使用するウェブブラウザのパスを指定する．未指定の場合はデフォルトのウェブブラウザを用いる．")]
 		[DefaultValue("")]
 		public string BrowserPath {
 			get { return this.browserPath; }

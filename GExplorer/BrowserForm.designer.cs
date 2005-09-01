@@ -23,7 +23,6 @@ namespace Yusen.GExplorer {
 		/// the contents of this method with the code editor.
 		/// </summary>
 		private void InitializeComponent() {
-			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BrowserForm));
 			this.menuStrip1 = new System.Windows.Forms.MenuStrip();
 			this.tsmiFile = new System.Windows.Forms.ToolStripMenuItem();
@@ -37,12 +36,12 @@ namespace Yusen.GExplorer {
 			this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiClose = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiGenres = new System.Windows.Forms.ToolStripMenuItem();
-			this.番組表IToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiTimeTables = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
 			this.statusStrip1 = new System.Windows.Forms.StatusStrip();
 			this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
 			this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
-			this.wbMain = new System.Windows.Forms.WebBrowser();
+			this.gwbMain = new Yusen.GExplorer.GWebBrowser();
 			this.tsStandard = new System.Windows.Forms.ToolStrip();
 			this.tsbBack = new System.Windows.Forms.ToolStripButton();
 			this.tsbForward = new System.Windows.Forms.ToolStripButton();
@@ -51,22 +50,6 @@ namespace Yusen.GExplorer {
 			this.tslAddress = new System.Windows.Forms.ToolStripLabel();
 			this.tscbAddress = new System.Windows.Forms.ToolStripComboBox();
 			this.tsbGo = new System.Windows.Forms.ToolStripButton();
-			this.cmsContent = new System.Windows.Forms.ContextMenuStrip(this.components);
-			this.tsmiContentOpenDetail = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-			this.tsmiContentAddToPlayList = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiContentPlayWithoutAdding = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-			this.tsmiContentPlayWmp = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiContentPlayIe = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
-			this.tsmiContentCommands = new System.Windows.Forms.ToolStripMenuItem();
-			this.cmsPackage = new System.Windows.Forms.ContextMenuStrip(this.components);
-			this.tsmiPackageOpen = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
-			this.tsmiPackageCancel = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
-			this.tsmiContentCancel = new System.Windows.Forms.ToolStripMenuItem();
 			this.menuStrip1.SuspendLayout();
 			this.toolStripContainer1.BottomToolStripPanel.SuspendLayout();
 			this.toolStripContainer1.ContentPanel.SuspendLayout();
@@ -75,8 +58,6 @@ namespace Yusen.GExplorer {
 			this.statusStrip1.SuspendLayout();
 			this.tsStandard.SuspendLayout();
 			this.tsAddress.SuspendLayout();
-			this.cmsContent.SuspendLayout();
-			this.cmsPackage.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// menuStrip1
@@ -87,7 +68,7 @@ namespace Yusen.GExplorer {
 			this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiFile,
             this.tsmiGenres,
-            this.番組表IToolStripMenuItem});
+            this.tsmiTimeTables});
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
 			this.menuStrip1.Size = new System.Drawing.Size(772, 24);
@@ -168,10 +149,10 @@ namespace Yusen.GExplorer {
 			this.tsmiGenres.Name = "tsmiGenres";
 			this.tsmiGenres.Text = "ジャンルトップ (&T)";
 			// 
-			// 番組表IToolStripMenuItem
+			// tsmiTimeTables
 			// 
-			this.番組表IToolStripMenuItem.Name = "番組表IToolStripMenuItem";
-			this.番組表IToolStripMenuItem.Text = "番組表 (&I)";
+			this.tsmiTimeTables.Name = "tsmiTimeTables";
+			this.tsmiTimeTables.Text = "番組表 (&I)";
 			// 
 			// toolStripContainer1
 			// 
@@ -182,7 +163,7 @@ namespace Yusen.GExplorer {
 			// 
 			// toolStripContainer1.ContentPanel
 			// 
-			this.toolStripContainer1.ContentPanel.Controls.Add(this.wbMain);
+			this.toolStripContainer1.ContentPanel.Controls.Add(this.gwbMain);
 			this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.toolStripContainer1.Location = new System.Drawing.Point(0, 0);
 			this.toolStripContainer1.Name = "toolStripContainer1";
@@ -223,21 +204,20 @@ namespace Yusen.GExplorer {
 			this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
 			this.toolStripStatusLabel1.Text = "toolStripStatusLabel1";
 			// 
-			// wbMain
+			// gwbMain
 			// 
-			this.wbMain.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.wbMain.Location = new System.Drawing.Point(0, 0);
-			this.wbMain.Name = "wbMain";
-			this.wbMain.Size = new System.Drawing.Size(772, 444);
-			this.wbMain.Url = new System.Uri("about:blank", System.UriKind.Absolute);
-			this.wbMain.DocumentTitleChanged += new System.EventHandler(this.wbMain_DocumentTitleChanged);
-			this.wbMain.CanGoForwardChanged += new System.EventHandler(this.wbMain_CanGoForwardChanged);
-			this.wbMain.CanGoBackChanged += new System.EventHandler(this.wbMain_CanGoBackChanged);
-			this.wbMain.ProgressChanged += new System.Windows.Forms.WebBrowserProgressChangedEventHandler(this.wbMain_ProgressChanged);
-			this.wbMain.Navigating += new System.Windows.Forms.WebBrowserNavigatingEventHandler(this.wbMain_Navigating);
-			this.wbMain.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.wbMain_DocumentCompleted);
-			this.wbMain.StatusTextChanged += new System.EventHandler(this.wbMain_StatusTextChanged);
-			this.wbMain.Navigated += new System.Windows.Forms.WebBrowserNavigatedEventHandler(this.wbMain_Navigated);
+			this.gwbMain.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.gwbMain.Location = new System.Drawing.Point(0, 0);
+			this.gwbMain.Name = "gwbMain";
+			this.gwbMain.Size = new System.Drawing.Size(772, 444);
+			this.gwbMain.StatusTextChanged += new System.EventHandler(this.gwbMain_StatusTextChanged);
+			this.gwbMain.CanGoForwardChanged += new System.EventHandler(this.gwbMain_CanGoForwardChanged);
+			this.gwbMain.ProgressChanged += new System.Windows.Forms.WebBrowserProgressChangedEventHandler(this.gwbMain_ProgressChanged);
+			this.gwbMain.Navigating += new System.Windows.Forms.WebBrowserNavigatingEventHandler(this.gwbMain_Navigating);
+			this.gwbMain.CanGoBackChanged += new System.EventHandler(this.gwbMain_CanGoBackChanged);
+			this.gwbMain.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.gwbMain_DocumentCompleted);
+			this.gwbMain.Navigated += new System.Windows.Forms.WebBrowserNavigatedEventHandler(this.gwbMain_Navigated);
+			this.gwbMain.DocumentTitleChanged += new System.EventHandler(this.gwbMain_DocumentTitleChanged);
 			// 
 			// tsStandard
 			// 
@@ -318,114 +298,6 @@ namespace Yusen.GExplorer {
 			this.tsbGo.Text = "移動 (&G)";
 			this.tsbGo.Click += new System.EventHandler(this.GoToAddressBarUri);
 			// 
-			// cmsContent
-			// 
-			this.cmsContent.Enabled = true;
-			this.cmsContent.GripMargin = new System.Windows.Forms.Padding(2);
-			this.cmsContent.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiContentOpenDetail,
-            this.toolStripSeparator1,
-            this.tsmiContentAddToPlayList,
-            this.tsmiContentPlayWithoutAdding,
-            this.toolStripSeparator2,
-            this.tsmiContentPlayWmp,
-            this.tsmiContentPlayIe,
-            this.toolStripSeparator8,
-            this.tsmiContentCommands,
-            this.toolStripSeparator6,
-            this.tsmiContentCancel});
-			this.cmsContent.Location = new System.Drawing.Point(-24, -120);
-			this.cmsContent.Name = "cmsContent";
-			this.cmsContent.RightToLeft = System.Windows.Forms.RightToLeft.No;
-			this.cmsContent.Size = new System.Drawing.Size(249, 182);
-			// 
-			// tsmiContentOpenDetail
-			// 
-			this.tsmiContentOpenDetail.Name = "tsmiContentOpenDetail";
-			this.tsmiContentOpenDetail.Text = "詳細ページを開く (&D)";
-			this.tsmiContentOpenDetail.Click += new System.EventHandler(this.tsmiContentOpenDetail_Click);
-			// 
-			// toolStripSeparator1
-			// 
-			this.toolStripSeparator1.Name = "toolStripSeparator1";
-			// 
-			// tsmiContentAddToPlayList
-			// 
-			this.tsmiContentAddToPlayList.Name = "tsmiContentAddToPlayList";
-			this.tsmiContentAddToPlayList.Text = "プレイリストに追加 (&A)";
-			this.tsmiContentAddToPlayList.Click += new System.EventHandler(this.tsmiContentAddToPlayList_Click);
-			// 
-			// tsmiContentPlayWithoutAdding
-			// 
-			this.tsmiContentPlayWithoutAdding.Name = "tsmiContentPlayWithoutAdding";
-			this.tsmiContentPlayWithoutAdding.Text = "プレイリストに追加せずに再生 (&P)";
-			this.tsmiContentPlayWithoutAdding.Click += new System.EventHandler(this.tsmiContentPlayWithoutAdding_Click);
-			// 
-			// toolStripSeparator2
-			// 
-			this.toolStripSeparator2.Name = "toolStripSeparator2";
-			// 
-			// tsmiContentPlayWmp
-			// 
-			this.tsmiContentPlayWmp.Name = "tsmiContentPlayWmp";
-			this.tsmiContentPlayWmp.Text = "WMPで再生 (&W)";
-			this.tsmiContentPlayWmp.Click += new System.EventHandler(this.tsmiContentPlayWmp_Click);
-			// 
-			// tsmiContentPlayIe
-			// 
-			this.tsmiContentPlayIe.Name = "tsmiContentPlayIe";
-			this.tsmiContentPlayIe.Text = "IEで再生 (&I)";
-			this.tsmiContentPlayIe.Click += new System.EventHandler(this.tsmiContentPlayIe_Click);
-			// 
-			// toolStripSeparator8
-			// 
-			this.toolStripSeparator8.Name = "toolStripSeparator8";
-			// 
-			// tsmiContentCommands
-			// 
-			this.tsmiContentCommands.Name = "tsmiContentCommands";
-			this.tsmiContentCommands.Text = "外部コマンド (&C)";
-			// 
-			// cmsPackage
-			// 
-			this.cmsPackage.Enabled = true;
-			this.cmsPackage.GripMargin = new System.Windows.Forms.Padding(2);
-			this.cmsPackage.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiPackageOpen,
-            this.toolStripSeparator5,
-            this.tsmiPackageCancel});
-			this.cmsPackage.Location = new System.Drawing.Point(25, 66);
-			this.cmsPackage.Name = "cmsPackage";
-			this.cmsPackage.RightToLeft = System.Windows.Forms.RightToLeft.No;
-			this.cmsPackage.Size = new System.Drawing.Size(249, 73);
-			this.cmsPackage.Visible = true;
-			// 
-			// tsmiPackageOpen
-			// 
-			this.tsmiPackageOpen.Name = "tsmiPackageOpen";
-			this.tsmiPackageOpen.Text = "パッケージページを開く (&O)";
-			this.tsmiPackageOpen.Click += new System.EventHandler(this.tsmiPackageOpen_Click);
-			// 
-			// toolStripSeparator5
-			// 
-			this.toolStripSeparator5.Name = "toolStripSeparator5";
-			// 
-			// tsmiPackageCancel
-			// 
-			this.tsmiPackageCancel.Name = "tsmiPackageCancel";
-			this.tsmiPackageCancel.Text = "変なメニューが出てきて邪魔だよ (&A) ...";
-			this.tsmiPackageCancel.Click += new System.EventHandler(this.tsmiPackageCancel_Click);
-			// 
-			// toolStripSeparator6
-			// 
-			this.toolStripSeparator6.Name = "toolStripSeparator6";
-			// 
-			// tsmiContentCancel
-			// 
-			this.tsmiContentCancel.Name = "tsmiContentCancel";
-			this.tsmiContentCancel.Text = "変なメニューが出てきて邪魔だよ (&A) ...";
-			this.tsmiContentCancel.Click += new System.EventHandler(this.tsmiContentCancel_Click);
-			// 
 			// BrowserForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -447,8 +319,6 @@ namespace Yusen.GExplorer {
 			this.statusStrip1.ResumeLayout(false);
 			this.tsStandard.ResumeLayout(false);
 			this.tsAddress.ResumeLayout(false);
-			this.cmsContent.ResumeLayout(false);
-			this.cmsPackage.ResumeLayout(false);
 			this.ResumeLayout(false);
 
 		}
@@ -460,7 +330,6 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ToolStripContainer toolStripContainer1;
 		private System.Windows.Forms.ToolStrip tsAddress;
 		private System.Windows.Forms.ToolStripLabel tslAddress;
-		private System.Windows.Forms.WebBrowser wbMain;
 		private System.Windows.Forms.ToolStrip tsStandard;
 		private System.Windows.Forms.ToolStripButton tsbBack;
 		private System.Windows.Forms.ToolStripButton tsbForward;
@@ -468,17 +337,8 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.StatusStrip statusStrip1;
 		private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
 		private System.Windows.Forms.ToolStripProgressBar toolStripProgressBar1;
-		private System.Windows.Forms.ContextMenuStrip cmsPackage;
-		private System.Windows.Forms.ContextMenuStrip cmsContent;
-		private System.Windows.Forms.ToolStripMenuItem tsmiPackageOpen;
-		private System.Windows.Forms.ToolStripMenuItem tsmiContentOpenDetail;
 		private System.Windows.Forms.ToolStripMenuItem tsmiClose;
 		private System.Windows.Forms.ToolStripMenuItem tsmiGenres;
-		private System.Windows.Forms.ToolStripMenuItem tsmiContentPlayWmp;
-		private System.Windows.Forms.ToolStripMenuItem tsmiContentPlayIe;
-		private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
-		private System.Windows.Forms.ToolStripMenuItem tsmiContentCommands;
 		private System.Windows.Forms.ToolStripButton tsbStop;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
 		private System.Windows.Forms.ToolStripMenuItem tsmiOpenTop;
@@ -488,14 +348,8 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ToolStripMenuItem tsmiPrintPreview;
 		private System.Windows.Forms.ToolStripMenuItem tsmiSaveAs;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
-		private System.Windows.Forms.ToolStripSeparator toolStripSeparator8;
 		private System.Windows.Forms.ToolStripComboBox tscbAddress;
-		private System.Windows.Forms.ToolStripMenuItem tsmiContentAddToPlayList;
-		private System.Windows.Forms.ToolStripMenuItem tsmiContentPlayWithoutAdding;
-		private System.Windows.Forms.ToolStripMenuItem 番組表IToolStripMenuItem;
-		private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
-		private System.Windows.Forms.ToolStripMenuItem tsmiPackageCancel;
-		private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
-		private System.Windows.Forms.ToolStripMenuItem tsmiContentCancel;
+		private System.Windows.Forms.ToolStripMenuItem tsmiTimeTables;
+		private GWebBrowser gwbMain;
 	}
 }

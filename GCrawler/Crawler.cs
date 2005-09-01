@@ -145,8 +145,10 @@ namespace Yusen.GCrawler {
 			private bool TryFetchContents() {
 				while(this.waitingContents.Count > 0){
 					string contId = this.waitingContents.Dequeue();
+					ContentCache cache;
 					GContent content;
-					if (this.cacheController.TryGetCache(contId, out content)) {
+					if (this.cacheController.TryGetCache(contId, out cache)) {
+						content = cache.Content;
 						this.OnCrawlProgress("キャッシュにヒット " + contId);
 						this.visitedContents.Add(contId, content);
 						this.contentsCached.Add(contId, true);

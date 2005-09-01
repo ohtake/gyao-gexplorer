@@ -54,7 +54,7 @@ namespace Yusen.GExplorer {
 				this.Disposed += delegate {
 					this.migemo.Dispose();
 				};
-			} catch (Exception ex) {
+			} catch (MigemoException ex) {
 				this.migemo = null;
 				this.tstbFilter.ReadOnly = true;
 				this.tstbFilter.BackColor = Color.Pink;
@@ -121,7 +121,7 @@ namespace Yusen.GExplorer {
 		private Regex FilterRegex {
 			get {
 				Regex rval = null;
-				if (null != this.CanUseMigemo) {
+				if (this.CanUseMigemo) {
 					if ("" == this.FilterString) {
 						goto success;
 					}

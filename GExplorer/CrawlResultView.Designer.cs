@@ -24,7 +24,6 @@ namespace Yusen.GExplorer {
 		/// </summary>
 		private void InitializeComponent() {
 			this.components = new System.ComponentModel.Container();
-			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CrawlResultView));
 			this.listView1 = new System.Windows.Forms.ListView();
 			this.chId = new System.Windows.Forms.ColumnHeader();
 			this.chTitle = new System.Windows.Forms.ColumnHeader();
@@ -55,6 +54,7 @@ namespace Yusen.GExplorer {
 			this.tslTitle = new System.Windows.Forms.ToolStripLabel();
 			this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsbShowFilter = new System.Windows.Forms.ToolStripButton();
+			this.tsddbNormalPages = new System.Windows.Forms.ToolStripDropDownButton();
 			this.tsddbSettings = new System.Windows.Forms.ToolStripDropDownButton();
 			this.tsmiAboneType = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
@@ -71,7 +71,6 @@ namespace Yusen.GExplorer {
 			this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
 			this.tstbFilter = new System.Windows.Forms.ToolStripTextBox();
 			this.tstbMigemoAnswer = new System.Windows.Forms.ToolStripTextBox();
-			this.tsddbNormalPages = new System.Windows.Forms.ToolStripDropDownButton();
 			this.cmsContent.SuspendLayout();
 			this.toolStripContainer1.ContentPanel.SuspendLayout();
 			this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
@@ -316,6 +315,13 @@ namespace Yusen.GExplorer {
 			this.tsbShowFilter.Text = "フィルタ (&M)";
 			this.tsbShowFilter.Click += new System.EventHandler(this.tsbShowFilter_Click);
 			// 
+			// tsddbNormalPages
+			// 
+			this.tsddbNormalPages.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+			this.tsddbNormalPages.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.tsddbNormalPages.Name = "tsddbNormalPages";
+			this.tsddbNormalPages.Text = "ページ (&P)";
+			// 
 			// tsddbSettings
 			// 
 			this.tsddbSettings.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
@@ -327,7 +333,6 @@ namespace Yusen.GExplorer {
             this.tsmiMultiSelect,
             this.toolStripSeparator7,
             this.tsmiNewColor});
-			this.tsddbSettings.Image = ((System.Drawing.Image)(resources.GetObject("tsddbSettings.Image")));
 			this.tsddbSettings.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tsddbSettings.Name = "tsddbSettings";
 			this.tsddbSettings.Text = "設定 (&C)";
@@ -428,13 +433,6 @@ namespace Yusen.GExplorer {
 			this.tstbMigemoAnswer.Name = "tstbMigemoAnswer";
 			this.tstbMigemoAnswer.ReadOnly = true;
 			this.tstbMigemoAnswer.Size = new System.Drawing.Size(150, 25);
-			// 
-			// tsddbNormalPages
-			// 
-			this.tsddbNormalPages.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-			this.tsddbNormalPages.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.tsddbNormalPages.Name = "tsddbNormalPages";
-			this.tsddbNormalPages.Text = "ページ (&P)";
 			// 
 			// CrawlResultView
 			// 

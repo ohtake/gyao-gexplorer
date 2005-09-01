@@ -42,13 +42,17 @@ namespace Yusen.GExplorer {
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiQuit = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiUncrawableGenres = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiTools = new System.Windows.Forms.ToolStripMenuItem();
+			this.設定SToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiFocusOnResultAfterTabChanged = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiIgnoreCrawlErrors = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+			this.tsmiTools = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiGlobalSettingsEditor = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiUserCommandsEditor = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiNgContentsEditor = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+			this.tsmiRemoveCaches = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiRemoveCachesUnreachable = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiRemoveCachesAll = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiAbortCrawling = new System.Windows.Forms.ToolStripMenuItem();
 			this.statusStrip1.SuspendLayout();
 			this.toolStripContainer1.BottomToolStripPanel.SuspendLayout();
@@ -244,6 +248,7 @@ namespace Yusen.GExplorer {
 			this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiFile,
             this.tsmiUncrawableGenres,
+            this.設定SToolStripMenuItem,
             this.tsmiTools,
             this.tsmiAbortCrawling});
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
@@ -264,7 +269,7 @@ namespace Yusen.GExplorer {
 			// tsmiBrowseTop
 			// 
 			this.tsmiBrowseTop.Name = "tsmiBrowseTop";
-			this.tsmiBrowseTop.Text = "トップページをウェブブラウザで開く";
+			this.tsmiBrowseTop.Text = "トップページをウェブブラウザで開く (&T)";
 			this.tsmiBrowseTop.Click += new System.EventHandler(this.tsmiBrowseTop_Click);
 			// 
 			// toolStripSeparator1
@@ -283,17 +288,13 @@ namespace Yusen.GExplorer {
 			this.tsmiUncrawableGenres.Name = "tsmiUncrawableGenres";
 			this.tsmiUncrawableGenres.Text = "未対応ジャンル (&U)";
 			// 
-			// tsmiTools
+			// 設定SToolStripMenuItem
 			// 
-			this.tsmiTools.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+			this.設定SToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiFocusOnResultAfterTabChanged,
-            this.tsmiIgnoreCrawlErrors,
-            this.toolStripSeparator2,
-            this.tsmiGlobalSettingsEditor,
-            this.tsmiUserCommandsEditor,
-            this.tsmiNgContentsEditor});
-			this.tsmiTools.Name = "tsmiTools";
-			this.tsmiTools.Text = "ツール (&T)";
+            this.tsmiIgnoreCrawlErrors});
+			this.設定SToolStripMenuItem.Name = "設定SToolStripMenuItem";
+			this.設定SToolStripMenuItem.Text = "設定 (&S)";
 			// 
 			// tsmiFocusOnResultAfterTabChanged
 			// 
@@ -301,7 +302,7 @@ namespace Yusen.GExplorer {
 			this.tsmiFocusOnResultAfterTabChanged.CheckOnClick = true;
 			this.tsmiFocusOnResultAfterTabChanged.CheckState = System.Windows.Forms.CheckState.Checked;
 			this.tsmiFocusOnResultAfterTabChanged.Name = "tsmiFocusOnResultAfterTabChanged";
-			this.tsmiFocusOnResultAfterTabChanged.Text = "ジャンルタブ切り替え後にクロール結果ビューにフォーカスを送る (&F)";
+			this.tsmiFocusOnResultAfterTabChanged.Text = "ジャンルタブ切り替え後にクロール結果ビューにフォーカス (&F)";
 			// 
 			// tsmiIgnoreCrawlErrors
 			// 
@@ -311,9 +312,16 @@ namespace Yusen.GExplorer {
 			this.tsmiIgnoreCrawlErrors.Name = "tsmiIgnoreCrawlErrors";
 			this.tsmiIgnoreCrawlErrors.Text = "クロール時の無視可能エラーを全て無視 (&I)";
 			// 
-			// toolStripSeparator2
+			// tsmiTools
 			// 
-			this.toolStripSeparator2.Name = "toolStripSeparator2";
+			this.tsmiTools.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiGlobalSettingsEditor,
+            this.tsmiUserCommandsEditor,
+            this.tsmiNgContentsEditor,
+            this.toolStripSeparator3,
+            this.tsmiRemoveCaches});
+			this.tsmiTools.Name = "tsmiTools";
+			this.tsmiTools.Text = "ツール (&T)";
 			// 
 			// tsmiGlobalSettingsEditor
 			// 
@@ -332,6 +340,30 @@ namespace Yusen.GExplorer {
 			this.tsmiNgContentsEditor.Name = "tsmiNgContentsEditor";
 			this.tsmiNgContentsEditor.Text = "NGコンテンツエディタ (&N)";
 			this.tsmiNgContentsEditor.Click += new System.EventHandler(this.tsmiNgContentsEditor_Click);
+			// 
+			// toolStripSeparator3
+			// 
+			this.toolStripSeparator3.Name = "toolStripSeparator3";
+			// 
+			// tsmiRemoveCaches
+			// 
+			this.tsmiRemoveCaches.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiRemoveCachesUnreachable,
+            this.tsmiRemoveCachesAll});
+			this.tsmiRemoveCaches.Name = "tsmiRemoveCaches";
+			this.tsmiRemoveCaches.Text = "キャッシュの削除 (&R)";
+			// 
+			// tsmiRemoveCachesUnreachable
+			// 
+			this.tsmiRemoveCachesUnreachable.Name = "tsmiRemoveCachesUnreachable";
+			this.tsmiRemoveCachesUnreachable.Text = "現在のクロール結果で到達不可能なキャッシュを削除 (&U) ...";
+			this.tsmiRemoveCachesUnreachable.Click += new System.EventHandler(this.tsmiRemoveCachesUnreachable_Click);
+			// 
+			// tsmiRemoveCachesAll
+			// 
+			this.tsmiRemoveCachesAll.Name = "tsmiRemoveCachesAll";
+			this.tsmiRemoveCachesAll.Text = "全て削除 (&A) ...";
+			this.tsmiRemoveCachesAll.Click += new System.EventHandler(this.tsmiRemoveCachesAll_Click);
 			// 
 			// tsmiAbortCrawling
 			// 
@@ -390,16 +422,20 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ToolStripMenuItem tsmiBrowseTop;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
 		private System.Windows.Forms.ToolStripMenuItem tsmiTools;
-		private System.Windows.Forms.ToolStripMenuItem tsmiIgnoreCrawlErrors;
 		private System.Windows.Forms.SplitContainer scLists;
 		private PlayListView playListView1;
-		private System.Windows.Forms.ToolStripMenuItem tsmiFocusOnResultAfterTabChanged;
-		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
 		private System.Windows.Forms.ToolStripMenuItem tsmiGlobalSettingsEditor;
 		private System.Windows.Forms.ToolStripMenuItem tsmiNgContentsEditor;
 		private System.Windows.Forms.ToolStripMenuItem tsmiUserCommandsEditor;
 		private System.Windows.Forms.ToolStripMenuItem tsmiUncrawableGenres;
 		private System.Windows.Forms.ToolStripMenuItem tsmiAbortCrawling;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+		private System.Windows.Forms.ToolStripMenuItem tsmiRemoveCaches;
+		private System.Windows.Forms.ToolStripMenuItem tsmiRemoveCachesUnreachable;
+		private System.Windows.Forms.ToolStripMenuItem 設定SToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem tsmiFocusOnResultAfterTabChanged;
+		private System.Windows.Forms.ToolStripMenuItem tsmiIgnoreCrawlErrors;
+		private System.Windows.Forms.ToolStripMenuItem tsmiRemoveCachesAll;
 
 
 	}

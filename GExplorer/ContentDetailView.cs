@@ -83,6 +83,7 @@ namespace Yusen.GExplorer {
 				}
 			}
 		}
+
 		public void FillSettings(ContentDetailViewSettings settings) {
 			settings.ContentImageSize = this.ImageSize;
 			settings.ResizeMode = this.ResizeMode;
