@@ -28,6 +28,7 @@ namespace Yusen.GCrawler {
 			private Dictionary<string, GContent> visitedContents = new Dictionary<string, GContent>();
 			private Dictionary<string, bool> contentsCached = new Dictionary<string, bool>();
 			private Dictionary<string, string> contPackRelations = new Dictionary<string, string>();
+			private List<IgnorableErrorOccuredEventArgs> ignorableErrors = new List<IgnorableErrorOccuredEventArgs>();
 
 			public CrawlerHelper(GGenre genre, IHtmlParser parser, IContentCacheController cacheController) {
 				this.genre = genre;
@@ -51,8 +52,9 @@ namespace Yusen.GCrawler {
 				}
 			}
 			private bool OnIgnorableErrorOccured(string message) {
+				IgnorableErrorOccuredEventArgs args = new IgnorableErrorOccuredEventArgs(message);
+				this.ignorableErrors.Add(args);
 				if (null != this.IgnorableErroeOcured) {
-					IgnorableErrorOccuredEventArgs args = new IgnorableErrorOccuredEventArgs(message);
 					this.IgnorableErroeOcured(this, args);
 					return args.Ignore;
 				}
@@ -215,7 +217,7 @@ namespace Yusen.GCrawler {
 						cDown++;
 					}
 				}
-				return new CrawlResult(this.genre, packages, this.visitedPages.AsReadOnly(), cDown, cCache);
+				return new CrawlResult(this.genre, packages, this.visitedPages.AsReadOnly(), this.ignorableErrors.AsReadOnly(), cDown, cCache);
 			}
 			private bool IsInRestriction(Uri uri) {
 				return uri.AbsoluteUri.StartsWith(this.genre.RootUri.AbsoluteUri);
@@ -275,6 +277,7 @@ namespace Yusen.GCrawler {
 			get { return this.waiting; }
 		}
 	}
+	[Serializable]
 	public class IgnorableErrorOccuredEventArgs : EventArgs {
 		private bool ignore = true;
 		private string message;
@@ -289,11 +292,14 @@ namespace Yusen.GCrawler {
 			set { this.ignore = value; }
 		}
 	}
+	
+	[Serializable]
 	public class CrawlResult {
 		private readonly bool success;
 		private readonly GGenre genre;
 		private readonly ReadOnlyCollection<GPackage> packages;
 		private readonly ReadOnlyCollection<Uri> visitedPages;
+		private readonly ReadOnlyCollection<IgnorableErrorOccuredEventArgs> ignorableErrors;
 		private readonly int contentsDownloaded;
 		private readonly int contentsCached;
 		private readonly DateTime time;
@@ -306,11 +312,16 @@ namespace Yusen.GCrawler {
 		/// <param name="vPages"></param>
 		/// <param name="cDown"></param>
 		/// <param name="cCache"></param>
-		internal CrawlResult(GGenre genre, ReadOnlyCollection<GPackage> packages, ReadOnlyCollection<Uri> vPages, int cDown, int cCache) {
+		internal CrawlResult(
+				GGenre genre,
+				ReadOnlyCollection<GPackage> packages, ReadOnlyCollection<Uri> vPages,
+				ReadOnlyCollection<IgnorableErrorOccuredEventArgs> ignorableErrors,
+				int cDown, int cCache) {
 			this.success = true;
 			this.genre = genre;
 			this.packages = packages;
 			this.visitedPages = vPages;
+			this.ignorableErrors = ignorableErrors;
 			this.contentsDownloaded = cDown;
 			this.contentsCached = cCache;
 			this.time = DateTime.Now;
@@ -337,6 +348,9 @@ namespace Yusen.GCrawler {
 		}
 		public ReadOnlyCollection<Uri> VisitedPages {
 			get {return this.visitedPages;}
+		}
+		public ReadOnlyCollection<IgnorableErrorOccuredEventArgs> IgnorableErrors {
+			get { return this.ignorableErrors; }
 		}
 		public int ContentsDownloaded {
 			get { return this.contentsDownloaded; }

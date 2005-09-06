@@ -52,6 +52,7 @@ namespace Yusen.GExplorer {
 			this.tslTitle = new System.Windows.Forms.ToolStripLabel();
 			this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsddbOperation = new System.Windows.Forms.ToolStripDropDownButton();
+			this.tsmiAddById = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiExportAsAsx = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiSerializePlayListNow = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
@@ -65,7 +66,6 @@ namespace Yusen.GExplorer {
 			this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
 			this.tslMessage = new System.Windows.Forms.ToolStripLabel();
 			this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
-			this.tsmiAddById = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripContainer1.ContentPanel.SuspendLayout();
 			this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
 			this.toolStripContainer1.SuspendLayout();
@@ -82,7 +82,7 @@ namespace Yusen.GExplorer {
 			this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.toolStripContainer1.Location = new System.Drawing.Point(0, 0);
 			this.toolStripContainer1.Name = "toolStripContainer1";
-			this.toolStripContainer1.Size = new System.Drawing.Size(430, 234);
+			this.toolStripContainer1.Size = new System.Drawing.Size(500, 234);
 			this.toolStripContainer1.TabIndex = 1;
 			this.toolStripContainer1.Text = "toolStripContainer1";
 			// 
@@ -105,7 +105,7 @@ namespace Yusen.GExplorer {
 			this.listView1.Name = "listView1";
 			this.listView1.ShowGroups = false;
 			this.listView1.ShowItemToolTips = true;
-			this.listView1.Size = new System.Drawing.Size(430, 209);
+			this.listView1.Size = new System.Drawing.Size(500, 209);
 			this.listView1.TabIndex = 0;
 			this.listView1.View = System.Windows.Forms.View.Details;
 			this.listView1.SelectedIndexChanged += new System.EventHandler(this.listView1_SelectedIndexChanged);
@@ -121,12 +121,12 @@ namespace Yusen.GExplorer {
 			// chName
 			// 
 			this.chName.Text = "コンテンツ名";
-			this.chName.Width = 233;
+			this.chName.Width = 294;
 			// 
 			// chDuration
 			// 
 			this.chDuration.Text = "正味時間";
-			this.chDuration.Width = 82;
+			this.chDuration.Width = 94;
 			// 
 			// cmsPlayListItem
 			// 
@@ -282,7 +282,7 @@ namespace Yusen.GExplorer {
             this.tslMessage});
 			this.toolStrip1.Location = new System.Drawing.Point(0, 0);
 			this.toolStrip1.Name = "toolStrip1";
-			this.toolStrip1.Size = new System.Drawing.Size(430, 25);
+			this.toolStrip1.Size = new System.Drawing.Size(500, 25);
 			this.toolStrip1.Stretch = true;
 			this.toolStrip1.TabIndex = 1;
 			this.toolStrip1.Text = "toolStrip1";
@@ -309,6 +309,12 @@ namespace Yusen.GExplorer {
 			this.tsddbOperation.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tsddbOperation.Name = "tsddbOperation";
 			this.tsddbOperation.Text = "操作 (&O)";
+			// 
+			// tsmiAddById
+			// 
+			this.tsmiAddById.Name = "tsmiAddById";
+			this.tsmiAddById.Text = "ID指定で手動追加 (&A) ...";
+			this.tsmiAddById.Click += new System.EventHandler(this.tsmiAddById_Click);
 			// 
 			// tsmiExportAsAsx
 			// 
@@ -392,19 +398,13 @@ namespace Yusen.GExplorer {
 			this.saveFileDialog1.Filter = "ASX files|*.asx|All files|*.*";
 			this.saveFileDialog1.RestoreDirectory = true;
 			// 
-			// tsmiAddById
-			// 
-			this.tsmiAddById.Name = "tsmiAddById";
-			this.tsmiAddById.Text = "ID指定で手動追加 (&A) ...";
-			this.tsmiAddById.Click += new System.EventHandler(this.tsmiAddById_Click);
-			// 
 			// PlayListView
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.Controls.Add(this.toolStripContainer1);
 			this.Name = "PlayListView";
-			this.Size = new System.Drawing.Size(430, 234);
+			this.Size = new System.Drawing.Size(500, 234);
 			this.Load += new System.EventHandler(this.PlayListView_Load);
 			this.toolStripContainer1.ContentPanel.ResumeLayout(false);
 			this.toolStripContainer1.TopToolStripPanel.ResumeLayout(false);

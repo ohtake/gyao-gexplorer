@@ -7,6 +7,7 @@ using System.Text;
 using System.Net;
 
 namespace Yusen.GCrawler {
+	[Serializable]
 	public class GContent {
 		private static readonly XmlSerializer serializer = new XmlSerializer(typeof(GContent));
 		
@@ -129,11 +130,13 @@ namespace Yusen.GCrawler {
 					if (GContent.endOfDescription == line) break;
 					Match match = GContent.regexDescription.Match(line);
 					if (match.Success) {
-						string desc = match.Groups[1].Value;
-						if (description.Length > 0) {
-							description.Append("\n\n");
+						string desc = HtmlUtility.HtmlToText(match.Groups[1].Value).Trim();
+						if (!string.IsNullOrEmpty(desc)) {
+							if (description.Length > 0) {
+								description.Append("\n\n");
+							}
+							description.Append(desc);
 						}
-						description.Append(HtmlUtility.HtmlToText(desc).Trim());
 					}
 				}
 				cont = new GContent(contId, genre.Trim(), title.Trim(), subtitle.Trim(), imageDir, episodeNum.Trim(), duration.Trim(), description.ToString().Trim());
@@ -173,7 +176,7 @@ namespace Yusen.GCrawler {
 		private string duration;
 		private string longDescription;
 		private bool fromCache;
-		
+
 		public GContent() {
 			this.fromCache = true;
 		}

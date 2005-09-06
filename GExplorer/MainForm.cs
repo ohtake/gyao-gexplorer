@@ -4,10 +4,15 @@ using System.ComponentModel;
 using System.Windows.Forms;
 using System.Threading;
 using Yusen.GCrawler;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Runtime.Serialization;
+using System.IO;
 
 namespace Yusen.GExplorer {
 	partial class MainForm : FormSettingsBase, IFormWithSettings<MainFormSettings> {
 		private delegate void ViewCrawlResultDelegate(CrawlResult result);
+		private const string cacheDir = @"Cache";
+		private const string cacheResults = @"CrawlResults.bin";
 		
 		private IContentCacheController cacheController;
 		private Crawler crawler;
@@ -16,7 +21,7 @@ namespace Yusen.GExplorer {
 
 		public MainForm() {
 			InitializeComponent();
-			this.cacheController = new ContentCacheControllerXml("Cache");
+			this.cacheController = new ContentCacheControllerXml(MainForm.cacheDir);
 			this.crawler = new Crawler(new HtmlParserRegex(), this.cacheController);
 		}
 
@@ -82,7 +87,45 @@ namespace Yusen.GExplorer {
 			set { this.tsmiIgnoreCrawlErrors.Checked = value; }
 		}
 
+		private void SerializeCrawlResults() {
+			using (Stream stream = new FileStream(Path.Combine(MainForm.cacheDir, MainForm.cacheResults), FileMode.Create)) {
+				IFormatter formatter = new BinaryFormatter();
+				formatter.Serialize(stream, this.results);
+			}
+		}
+		private bool TryDeserializeCrawlResults() {
+			try {
+				using (Stream stream = new FileStream(Path.Combine(MainForm.cacheDir, MainForm.cacheResults), FileMode.Open)) {
+					IFormatter formatter = new BinaryFormatter();
+					this.results = (Dictionary<GGenre, CrawlResult>)formatter.Deserialize(stream);
+				}
+				
+				//かつてのバージョンではあったが新しいバージョンではなくなったジャンルを削除
+				List<GGenre> newGenres = new List<GGenre>();
+				foreach (GGenre genre in GGenre.AllGenres) {
+					if (genre.IsCrawlable) {
+						newGenres.Add(genre);
+					}
+				}
+				List<GGenre> oldGenres = new List<GGenre>();
+				foreach (GGenre genre in this.results.Keys) {
+					if (!newGenres.Contains(genre)) {
+						oldGenres.Add(genre);
+					}
+				}
+				foreach (GGenre genre in oldGenres) {
+					this.results.Remove(genre);
+				}
+				
+				return true;
+			} catch {
+				return false;
+			}
+		}
+
 		private void MainForm_Load(object sender, EventArgs e) {
+			this.TryDeserializeCrawlResults();
+
 			this.Text = Application.ProductName + " " + Application.ProductVersion;
 			Utility.AppendHelpMenu(this.menuStrip1);
 
@@ -107,6 +150,9 @@ namespace Yusen.GExplorer {
 
 			Utility.LoadSettingsAndEnableSaveOnClosed(this);
 			this.ClearStatusBarInfo();
+		}
+		private void MainForm_FormClosed(object sender, FormClosedEventArgs e) {
+			this.SerializeCrawlResults();
 		}
 
 		private void crawler_CrawlProgress(object sender, CrawlProgressEventArgs e) {
@@ -143,7 +189,9 @@ namespace Yusen.GExplorer {
 				Thread t;
 				lock (this.crawler) {
 					if (null != this.threadCrawler) {
-						MessageBox.Show("多重クロールは禁止．", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Stop);
+						MessageBox.Show(
+							"多重クロールは禁止．", Application.ProductName,
+							MessageBoxButtons.OK, MessageBoxIcon.Stop);
 						return;
 					}
 					t = new Thread(new ThreadStart(delegate {
@@ -198,9 +246,10 @@ namespace Yusen.GExplorer {
 			NgContentsEditor.Instance.Focus();
 		}
 		private void tsmiRemoveCachesUnreachable_Click(object sender, EventArgs e) {
-			IEnumerable<string> keys = this.cacheController.ListAllCacheKeys();
-			string title = "現在のクロール結果で到達不可能なキャッシュを削除";
-			switch (MessageBox.Show("クロール結果に表示されていないキャッシュを削除します．\n起動してからクロールを行っていないジャンルのキャッシュも消されます．\nよろしいですか？", title, MessageBoxButtons.YesNo, MessageBoxIcon.Question)) {
+			string title = "クロール結果で到達不可能なキャッシュを削除";
+			switch (MessageBox.Show(
+					"各ジャンルのクロール結果に表示されていないキャッシュを削除します．\nよろしいですか？",
+					title, MessageBoxButtons.YesNo, MessageBoxIcon.Question)) {
 				case DialogResult.Yes:
 					List<string> reachable = new List<string>();
 					foreach(CrawlResult result in this.results.Values){
@@ -226,13 +275,19 @@ namespace Yusen.GExplorer {
 							}
 						}
 					}
-					MessageBox.Show(ignored.ToString() + " 個のキャッシュは到達可能により削除しませんでした．\n" + success.ToString() + " 個のキャッシュを削除しました．\n" + failed.ToString() + " 個のキャッシュの削除に失敗しました．", title, MessageBoxButtons.OK, MessageBoxIcon.Information);
+					MessageBox.Show(
+						ignored.ToString() + " 個のキャッシュは到達可能により削除しませんでした．\n"
+						+ success.ToString() + " 個のキャッシュを削除しました．\n"
+						+ failed.ToString() + " 個のキャッシュの削除に失敗しました．",
+						title, MessageBoxButtons.OK, MessageBoxIcon.Information);
 					break;
 			}
 		}
 		private void tsmiRemoveCachesAll_Click(object sender, EventArgs e) {
 			string title = "全てのキャッシュを削除";
-			switch (MessageBox.Show("全てのキャッシュを削除します．\nよろしいですか？", title, MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation)) {
+			switch (MessageBox.Show(
+					"全てのキャッシュを削除します．\nよろしいですか？",
+					title, MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation)) {
 				case DialogResult.Yes:
 					int success = 0;
 					int failed = 0;
@@ -243,7 +298,24 @@ namespace Yusen.GExplorer {
 							failed++;
 						}
 					}
-					MessageBox.Show(success.ToString() + " 個のキャッシュを削除しました．\n" + failed.ToString() + " 個のキャッシュの削除に失敗しました．", title, MessageBoxButtons.OK, MessageBoxIcon.Information);
+					MessageBox.Show(
+						success.ToString() + " 個のキャッシュを削除しました．\n"
+						+ failed.ToString() + " 個のキャッシュの削除に失敗しました．",
+						title, MessageBoxButtons.OK, MessageBoxIcon.Information);
+					break;
+			}
+		}
+		private void tsmiClearCrawlResults_Click(object sender, EventArgs e) {
+			string title = "クロール結果の破棄";
+			switch (MessageBox.Show(
+					"全ジャンルのクロール結果を破棄します．よろしいですか？",
+					title, MessageBoxButtons.YesNo, MessageBoxIcon.Question)) {
+				case DialogResult.Yes:
+					int numResults = this.results.Count;
+					this.results.Clear();
+					MessageBox.Show(
+						numResults.ToString() + " 個のクロール結果を破棄しました．",
+						title, MessageBoxButtons.OK, MessageBoxIcon.Information);
 					break;
 			}
 		}
@@ -259,6 +331,7 @@ namespace Yusen.GExplorer {
 				}
 			}
 		}
+
 	}
 
 	public class MainFormSettings : FormSettingsBaseSettings {

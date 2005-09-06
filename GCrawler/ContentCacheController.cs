@@ -73,10 +73,10 @@ namespace Yusen.GCrawler {
 		public ReadOnlyCollection<string> ListAllCacheKeys() {
 			lock (this) {
 				DirectoryInfo di = new DirectoryInfo(this.cacheDir);
-				FileInfo[] fis = di.GetFiles("*.xml", SearchOption.TopDirectoryOnly);
+				FileInfo[] fis = di.GetFiles("cnt*.xml", SearchOption.TopDirectoryOnly);
 				List<string> ids = new List<string>();
 				foreach (FileInfo fi in fis) {
-					ids.Add(fi.Name.Replace(".xml", ""));
+					ids.Add(Path.GetFileNameWithoutExtension(fi.Name));
 				}
 				return ids.AsReadOnly();
 			}

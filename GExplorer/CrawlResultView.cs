@@ -316,7 +316,7 @@ namespace Yusen.GExplorer {
 			
 			this.tslMessage.Text =
 							this.listView1.Items.Count.ToString() + "+" + filtered.ToString() + "+" + aboned.ToString() + "ŒÂ"
-							+ " (" + this.CrawlResult.Time.ToShortTimeString() + ")";
+							+ " (" + this.CrawlResult.Time.ToShortDateString() + " "+ this.CrawlResult.Time.ToShortTimeString() + ")";
 			if (null != filter) {
 				this.tstbMigemoAnswer.Text = filter.ToString();
 			} else {

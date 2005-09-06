@@ -7,6 +7,7 @@ using System.IO;
 using System.Collections.ObjectModel;
 
 namespace Yusen.GCrawler {
+	[Serializable]
 	public class GPackage {
 		private readonly static Regex regexAnchorHref = new Regex(@"http://www.gyao.jp/sityou/catelist/pac_id/(pac[0-9]+)/");
 		private readonly static Regex regexAnchorJscript = new Regex(@"javascript:gotoList\((?:%20| )?'(pac[0-9]+)(?:%20| )?'\);");

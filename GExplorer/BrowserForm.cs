@@ -93,7 +93,8 @@ namespace Yusen.GExplorer {
 			this.tsbStop.Enabled = true;
 		}
 		private void gwbMain_Navigated(object sender, WebBrowserNavigatedEventArgs e) {
-			this.tscbAddress.Text = e.Url.AbsoluteUri;
+			//this.tscbAddress.Text = e.Url.AbsoluteUri; //フレームページでもイベントが起きるっぽい
+			this.tscbAddress.Text = this.gwbMain.Url.AbsoluteUri;
 		}
 		private void gwbMain_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e) {
 			this.tsbStop.Enabled = false;

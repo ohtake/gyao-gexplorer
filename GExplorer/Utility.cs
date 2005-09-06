@@ -51,23 +51,27 @@ namespace Yusen.GExplorer {
 			ToolStripMenuItem read = new ToolStripMenuItem(
 				"&ReadMe.txt", null,
 				new EventHandler(delegate(object sender, EventArgs e) {
-				Process.Start("ReadMe.txt");
-			}),
+					Process.Start("ReadMe.txt");
+				}),
 				Keys.F1);
 			ToolStripMenuItem change = new ToolStripMenuItem(
 				"&ChangeLog.txt", null,
 				new EventHandler(delegate(object sender, EventArgs e) {
-				Process.Start("ChangeLog.txt");
-			}),
+					Process.Start("ChangeLog.txt");
+				}),
 				Keys.Shift | Keys.F1);
 			ToolStripMenuItem about = new ToolStripMenuItem(
-				"バージョン情報 (&A)...", null,
+				"バージョン情報 (&A) ...", null,
 				new EventHandler(delegate(object sender, EventArgs e) {
-				new AboutBox().ShowDialog();
-			}));
+					AboutBox abox = new AboutBox();
+					abox.ShowDialog((sender as ToolStripMenuItem).Tag as Form);
+				}));
+			about.Tag = menuStrip.FindForm();
+			
 			ToolStripMenuItem help = new ToolStripMenuItem(
 				"ヘルプ (&H)", null,
 				read, change, new ToolStripSeparator(), about);
+			
 			menuStrip.Items.Add(help);
 		}
 		

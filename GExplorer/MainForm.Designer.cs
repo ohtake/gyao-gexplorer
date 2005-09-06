@@ -54,6 +54,7 @@ namespace Yusen.GExplorer {
 			this.tsmiRemoveCachesUnreachable = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiRemoveCachesAll = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiAbortCrawling = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiClearCrawlResults = new System.Windows.Forms.ToolStripMenuItem();
 			this.statusStrip1.SuspendLayout();
 			this.toolStripContainer1.BottomToolStripPanel.SuspendLayout();
 			this.toolStripContainer1.ContentPanel.SuspendLayout();
@@ -80,7 +81,7 @@ namespace Yusen.GExplorer {
 			this.statusStrip1.Location = new System.Drawing.Point(0, 0);
 			this.statusStrip1.Name = "statusStrip1";
 			this.statusStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.ManagerRenderMode;
-			this.statusStrip1.Size = new System.Drawing.Size(675, 22);
+			this.statusStrip1.Size = new System.Drawing.Size(742, 22);
 			this.statusStrip1.TabIndex = 0;
 			this.statusStrip1.Text = "statusStrip1";
 			// 
@@ -109,7 +110,7 @@ namespace Yusen.GExplorer {
 			this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.toolStripContainer1.Location = new System.Drawing.Point(0, 0);
 			this.toolStripContainer1.Name = "toolStripContainer1";
-			this.toolStripContainer1.Size = new System.Drawing.Size(675, 476);
+			this.toolStripContainer1.Size = new System.Drawing.Size(742, 496);
 			this.toolStripContainer1.TabIndex = 1;
 			this.toolStripContainer1.Text = "toolStripContainer1";
 			// 
@@ -130,7 +131,7 @@ namespace Yusen.GExplorer {
 			this.tableLayoutPanel1.RowCount = 2;
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-			this.tableLayoutPanel1.Size = new System.Drawing.Size(675, 430);
+			this.tableLayoutPanel1.Size = new System.Drawing.Size(742, 450);
 			this.tableLayoutPanel1.TabIndex = 0;
 			// 
 			// genreTabControl1
@@ -144,7 +145,7 @@ namespace Yusen.GExplorer {
 			this.genreTabControl1.Name = "genreTabControl1";
 			this.genreTabControl1.SelectedGenre = null;
 			this.genreTabControl1.SelectedIndex = 0;
-			this.genreTabControl1.Size = new System.Drawing.Size(675, 20);
+			this.genreTabControl1.Size = new System.Drawing.Size(742, 20);
 			this.genreTabControl1.TabIndex = 0;
 			this.genreTabControl1.GenreSelected += new System.EventHandler<Yusen.GExplorer.GenreTabPageEventArgs>(this.genreTabControl1_GenreSelected);
 			// 
@@ -153,7 +154,7 @@ namespace Yusen.GExplorer {
 			this.tabPage1.Location = new System.Drawing.Point(4, 21);
 			this.tabPage1.Name = "tabPage1";
 			this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage1.Size = new System.Drawing.Size(667, 0);
+			this.tabPage1.Size = new System.Drawing.Size(734, 0);
 			this.tabPage1.TabIndex = 0;
 			this.tabPage1.Text = "tabPage1";
 			// 
@@ -162,7 +163,7 @@ namespace Yusen.GExplorer {
 			this.tabPage2.Location = new System.Drawing.Point(4, 21);
 			this.tabPage2.Name = "tabPage2";
 			this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage2.Size = new System.Drawing.Size(667, 0);
+			this.tabPage2.Size = new System.Drawing.Size(734, 0);
 			this.tabPage2.TabIndex = 1;
 			this.tabPage2.Text = "tabPage2";
 			// 
@@ -180,8 +181,8 @@ namespace Yusen.GExplorer {
 			// scListsAndDetail.Panel2
 			// 
 			this.scListsAndDetail.Panel2.Controls.Add(this.contentDetailView1);
-			this.scListsAndDetail.Size = new System.Drawing.Size(675, 410);
-			this.scListsAndDetail.SplitterDistance = 421;
+			this.scListsAndDetail.Size = new System.Drawing.Size(742, 430);
+			this.scListsAndDetail.SplitterDistance = 494;
 			this.scListsAndDetail.TabIndex = 2;
 			this.scListsAndDetail.Text = "splitContainer1";
 			// 
@@ -199,8 +200,8 @@ namespace Yusen.GExplorer {
 			// scLists.Panel2
 			// 
 			this.scLists.Panel2.Controls.Add(this.playListView1);
-			this.scLists.Size = new System.Drawing.Size(421, 410);
-			this.scLists.SplitterDistance = 277;
+			this.scLists.Size = new System.Drawing.Size(494, 430);
+			this.scLists.SplitterDistance = 291;
 			this.scLists.TabIndex = 2;
 			this.scLists.Text = "splitContainer2";
 			// 
@@ -217,7 +218,7 @@ namespace Yusen.GExplorer {
 			this.crawlResultView1.Name = "crawlResultView1";
 			this.crawlResultView1.NewColor = System.Drawing.Color.Red;
 			this.crawlResultView1.ShowPackages = true;
-			this.crawlResultView1.Size = new System.Drawing.Size(421, 277);
+			this.crawlResultView1.Size = new System.Drawing.Size(494, 291);
 			this.crawlResultView1.TabIndex = 1;
 			this.crawlResultView1.ContentSelectionChanged += new System.EventHandler<Yusen.GExplorer.ContentSelectionChangedEventArgs>(this.crawlResultView1_ContentSelectionChanged);
 			// 
@@ -227,7 +228,7 @@ namespace Yusen.GExplorer {
 			this.playListView1.Location = new System.Drawing.Point(0, 0);
 			this.playListView1.MultiSelectEnabled = true;
 			this.playListView1.Name = "playListView1";
-			this.playListView1.Size = new System.Drawing.Size(421, 129);
+			this.playListView1.Size = new System.Drawing.Size(494, 135);
 			this.playListView1.TabIndex = 0;
 			this.playListView1.ContentSelectionChanged += new System.EventHandler<Yusen.GExplorer.ContentSelectionChangedEventArgs>(this.playListView1_ContentSelectionChanged);
 			// 
@@ -237,7 +238,7 @@ namespace Yusen.GExplorer {
 			this.contentDetailView1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.contentDetailView1.Location = new System.Drawing.Point(0, 0);
 			this.contentDetailView1.Name = "contentDetailView1";
-			this.contentDetailView1.Size = new System.Drawing.Size(250, 410);
+			this.contentDetailView1.Size = new System.Drawing.Size(244, 430);
 			this.contentDetailView1.TabIndex = 0;
 			// 
 			// menuStrip1
@@ -253,7 +254,7 @@ namespace Yusen.GExplorer {
             this.tsmiAbortCrawling});
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
-			this.menuStrip1.Size = new System.Drawing.Size(675, 24);
+			this.menuStrip1.Size = new System.Drawing.Size(742, 24);
 			this.menuStrip1.TabIndex = 0;
 			this.menuStrip1.Text = "menuStrip1";
 			// 
@@ -319,7 +320,8 @@ namespace Yusen.GExplorer {
             this.tsmiUserCommandsEditor,
             this.tsmiNgContentsEditor,
             this.toolStripSeparator3,
-            this.tsmiRemoveCaches});
+            this.tsmiRemoveCaches,
+            this.tsmiClearCrawlResults});
 			this.tsmiTools.Name = "tsmiTools";
 			this.tsmiTools.Text = "ツール (&T)";
 			// 
@@ -356,7 +358,7 @@ namespace Yusen.GExplorer {
 			// tsmiRemoveCachesUnreachable
 			// 
 			this.tsmiRemoveCachesUnreachable.Name = "tsmiRemoveCachesUnreachable";
-			this.tsmiRemoveCachesUnreachable.Text = "現在のクロール結果で到達不可能なキャッシュを削除 (&U) ...";
+			this.tsmiRemoveCachesUnreachable.Text = "クロール結果で到達不可能なキャッシュを削除 (&U) ...";
 			this.tsmiRemoveCachesUnreachable.Click += new System.EventHandler(this.tsmiRemoveCachesUnreachable_Click);
 			// 
 			// tsmiRemoveCachesAll
@@ -372,15 +374,22 @@ namespace Yusen.GExplorer {
 			this.tsmiAbortCrawling.Text = "<<クロール中止 (&A)>>";
 			this.tsmiAbortCrawling.Click += new System.EventHandler(this.tsmiAbortCrawling_Click);
 			// 
+			// tsmiClearCrawlResults
+			// 
+			this.tsmiClearCrawlResults.Name = "tsmiClearCrawlResults";
+			this.tsmiClearCrawlResults.Text = "クロール結果の破棄 (&D) ...";
+			this.tsmiClearCrawlResults.Click += new System.EventHandler(this.tsmiClearCrawlResults_Click);
+			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(675, 476);
+			this.ClientSize = new System.Drawing.Size(742, 496);
 			this.Controls.Add(this.toolStripContainer1);
 			this.MainMenuStrip = this.menuStrip1;
 			this.Name = "MainForm";
 			this.Text = "MainForm";
+			this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
 			this.Load += new System.EventHandler(this.MainForm_Load);
 			this.statusStrip1.ResumeLayout(false);
 			this.toolStripContainer1.BottomToolStripPanel.ResumeLayout(false);
@@ -436,6 +445,7 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ToolStripMenuItem tsmiFocusOnResultAfterTabChanged;
 		private System.Windows.Forms.ToolStripMenuItem tsmiIgnoreCrawlErrors;
 		private System.Windows.Forms.ToolStripMenuItem tsmiRemoveCachesAll;
+		private System.Windows.Forms.ToolStripMenuItem tsmiClearCrawlResults;
 
 
 	}

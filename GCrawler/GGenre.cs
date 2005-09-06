@@ -5,6 +5,7 @@ using Color = System.Drawing.Color;
 using System.Collections.ObjectModel;
 
 namespace Yusen.GCrawler {
+	[Serializable]
 	public abstract class GGenre {
 		private static readonly GGenre[] allGenres;
 		static GGenre() {
@@ -72,11 +73,22 @@ namespace Yusen.GCrawler {
 				return new Uri("http://www.gyao.jp/timetable/index.php?genre_id=" + this.GenreId);
 			}
 		}
-		
+		public override bool Equals(object obj) {
+			if (null == obj) {
+				return false;
+			}
+			if (!(obj is GGenre)) {
+				return base.Equals(obj);
+			}
+			return this.GenreId.Equals((obj as GGenre).GenreId);
+		}
+		public override int GetHashCode() {
+			return this.GenreId.GetHashCode();
+		}
 		public override string ToString() {
 			return "<" + this.GenreId + "> " + this.GenreName;
 		}
-		
+		[Serializable]
 		private class GGenre200505 : GGenre {
 			public GGenre200505(int keyNo, string dir, string name, Color color)
 				: base(keyNo, dir, name, color) { }
@@ -87,6 +99,7 @@ namespace Yusen.GCrawler {
 				}
 			}
 		}
+		[Serializable]
 		private sealed class GGenre200505Drama : GGenre200505 {
 			public GGenre200505Drama(int keyNo, string dir, string name, Color color)
 				: base(keyNo, dir, name, color) { }
@@ -94,6 +107,7 @@ namespace Yusen.GCrawler {
 				get { return "dorama"; }
 			}
 		}
+		[Serializable]
 		private class GGenre200507 : GGenre{
 			public GGenre200507(int keyNo, string dir, string name, Color color)
 				: base(keyNo, dir, name, color) { }
@@ -103,6 +117,7 @@ namespace Yusen.GCrawler {
 				}
 			}
 		}
+		[Serializable]
 		private class GGenre200507VideoBlog : GGenre200507 {
 			public GGenre200507VideoBlog(int keyNo, string dir, string name, Color color)
 				: base(keyNo, dir, name, color) { }
