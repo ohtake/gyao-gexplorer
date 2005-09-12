@@ -65,12 +65,13 @@ namespace Yusen.GExplorer {
 			this.tsmiNewColor = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
 			this.tslGenre = new System.Windows.Forms.ToolStripLabel();
-			this.tslMessage = new System.Windows.Forms.ToolStripLabel();
 			this.tsFilter = new System.Windows.Forms.ToolStrip();
 			this.tslFilter = new System.Windows.Forms.ToolStripLabel();
 			this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
 			this.tstbFilter = new System.Windows.Forms.ToolStripTextBox();
 			this.tstbMigemoAnswer = new System.Windows.Forms.ToolStripTextBox();
+			this.tslNumber = new System.Windows.Forms.ToolStripLabel();
+			this.tslTime = new System.Windows.Forms.ToolStripLabel();
 			this.cmsContent.SuspendLayout();
 			this.toolStripContainer1.ContentPanel.SuspendLayout();
 			this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
@@ -127,11 +128,12 @@ namespace Yusen.GExplorer {
 			// chDuration
 			// 
 			this.chDuration.Text = "ê≥ñ°éûä‘";
+			this.chDuration.Width = 56;
 			// 
 			// chDescription
 			// 
 			this.chDescription.Text = "ê‡ñæ";
-			this.chDescription.Width = 153;
+			this.chDescription.Width = 156;
 			// 
 			// cmsContent
 			// 
@@ -289,7 +291,8 @@ namespace Yusen.GExplorer {
             this.tsddbSettings,
             this.toolStripSeparator5,
             this.tslGenre,
-            this.tslMessage});
+            this.tslNumber,
+            this.tslTime});
 			this.tsMain.Location = new System.Drawing.Point(0, 0);
 			this.tsMain.Name = "tsMain";
 			this.tsMain.Size = new System.Drawing.Size(509, 25);
@@ -390,11 +393,6 @@ namespace Yusen.GExplorer {
 			this.tslGenre.Name = "tslGenre";
 			this.tslGenre.Text = "tslGenre";
 			// 
-			// tslMessage
-			// 
-			this.tslMessage.Name = "tslMessage";
-			this.tslMessage.Text = "tslMessage";
-			// 
 			// tsFilter
 			// 
 			this.tsFilter.Dock = System.Windows.Forms.DockStyle.None;
@@ -432,7 +430,17 @@ namespace Yusen.GExplorer {
 			this.tstbMigemoAnswer.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.ImageAndText;
 			this.tstbMigemoAnswer.Name = "tstbMigemoAnswer";
 			this.tstbMigemoAnswer.ReadOnly = true;
-			this.tstbMigemoAnswer.Size = new System.Drawing.Size(150, 25);
+			this.tstbMigemoAnswer.Size = new System.Drawing.Size(250, 25);
+			// 
+			// tslNumber
+			// 
+			this.tslNumber.Name = "tslNumber";
+			this.tslNumber.Text = "tslNumber";
+			// 
+			// tslTime
+			// 
+			this.tslTime.Name = "tslTime";
+			this.tslTime.Text = "tslTime";
 			// 
 			// CrawlResultView
 			// 
@@ -486,7 +494,6 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
 		private System.Windows.Forms.ToolStripDropDownButton tsddbSettings;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
-		private System.Windows.Forms.ToolStripLabel tslMessage;
 		private System.Windows.Forms.ToolStripMenuItem tsmiAboneType;
 		private System.Windows.Forms.ToolStripMenuItem tsmiNewColor;
 		private System.Windows.Forms.ToolStripMenuItem tsmiPlay;
@@ -504,5 +511,7 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ToolStripButton tsbShowFilter;
 		private System.Windows.Forms.ToolStripTextBox tstbMigemoAnswer;
 		private System.Windows.Forms.ToolStripDropDownButton tsddbNormalPages;
+		private System.Windows.Forms.ToolStripLabel tslNumber;
+		private System.Windows.Forms.ToolStripLabel tslTime;
 	}
 }

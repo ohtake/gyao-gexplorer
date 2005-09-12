@@ -21,29 +21,6 @@ namespace Yusen.GExplorer {
 		
 		private UserCommandsEditor() {
 			InitializeComponent();
-			this.btnsNeedingSelection = new Button[]{
-				this.btnUp, this.btnDown, this.btnDelete, this.btnModify,};
-			this.UserCommandsManager_UserCommandsChanged(null, EventArgs.Empty);
-			
-			//簡易追加機能のメニューを作成
-			foreach (PropertyInfo pi in typeof(ContentAdapter).GetProperties(BindingFlags.Instance | BindingFlags.GetProperty | BindingFlags.Public)) {
-				object[] attribs = pi.GetCustomAttributes(typeof(BrowsableAttribute), false);
-				if (attribs.Length > 0 && !(attribs[0] as BrowsableAttribute).Browsable) {
-					continue;
-				}
-				ToolStripMenuItem mi = new ToolStripMenuItem();
-				mi.Text = "{" + pi.Name + "}";
-				mi.Click += new EventHandler(this.AppendArgWithMenuItemText);
-				this.cmsArgs.Items.Add(mi);
-			}
-			
-			//コマンド
-			UserCommandsManager.Instance.UserCommandsChanged
-				+= new EventHandler(this.UserCommandsManager_UserCommandsChanged);
-			this.FormClosing += delegate{
-				UserCommandsManager.Instance.UserCommandsChanged -=
-					new EventHandler(this.UserCommandsManager_UserCommandsChanged);
-			};
 		}
 
 		public void FillSettings(UserCommandsEditorSettings settings) {
@@ -80,6 +57,46 @@ namespace Yusen.GExplorer {
 		}
 
 		private void UserCommandsEditor_Load(object sender, EventArgs e) {
+			this.btnsNeedingSelection = new Button[]{
+				this.btnUp, this.btnDown, this.btnDelete, this.btnModify,};
+			
+			//簡易追加機能のメニューを作成
+			Dictionary<string, ToolStripMenuItem> menus = new Dictionary<string, ToolStripMenuItem>();
+			foreach (PropertyInfo pi in typeof(ContentAdapter).GetProperties(BindingFlags.Instance | BindingFlags.GetProperty | BindingFlags.Public)) {
+				//Browsableのもののみ
+				object[] bAttribs = pi.GetCustomAttributes(typeof(BrowsableAttribute), false);
+				if (bAttribs.Length > 0 && !(bAttribs[0] as BrowsableAttribute).Browsable) {
+					continue;
+				}
+				//カテゴリごとにサブメニュー化
+				string category = string.Empty;
+				object[] cAttribs = pi.GetCustomAttributes(typeof(CategoryAttribute), false);
+				if(cAttribs.Length > 0){
+					category = (cAttribs[0] as CategoryAttribute).Category;
+				}
+				if (! menus.ContainsKey(category)) {
+					menus.Add(category, new ToolStripMenuItem(category));
+				}
+				//メニューの作成と追加
+				ToolStripMenuItem mi = new ToolStripMenuItem();
+				mi.Text = pi.Name;
+				mi.Tag = "{" + pi.Name + "}";
+				mi.Click += new EventHandler(this.AppendArgWithMenuItemTagText);
+				menus[category].DropDownItems.Add(mi);
+			}
+			foreach(ToolStripMenuItem tsmi in menus.Values){
+				this.cmsArgs.Items.Add(tsmi);
+			}
+			
+			//コマンド
+			UserCommandsManager.Instance.UserCommandsChanged
+				+= new EventHandler(this.UserCommandsManager_UserCommandsChanged);
+			this.FormClosing += delegate {
+				UserCommandsManager.Instance.UserCommandsChanged -=
+					new EventHandler(this.UserCommandsManager_UserCommandsChanged);
+			};
+			this.UserCommandsManager_UserCommandsChanged(null, EventArgs.Empty);
+			
 			Utility.LoadSettingsAndEnableSaveOnClosed(this);
 		}
 		private void lboxCommands_SelectedIndexChanged(object sender, EventArgs e) {
@@ -152,12 +169,12 @@ namespace Yusen.GExplorer {
 			UserCommandsManager.Instance[this.lboxCommands.SelectedIndex] = uc;
 		}
 
-		void AppendArgWithMenuItemText(object sender, EventArgs e) {
-			string labelName = (sender as ToolStripMenuItem).Text;
+		void AppendArgWithMenuItemTagText(object sender, EventArgs e) {
+			string tagText = (sender as ToolStripMenuItem).Tag as string;
 			if("" == this.txtArg.Text || this.txtArg.Text.EndsWith(" ")) {
-				this.txtArg.Text += labelName;
+				this.txtArg.Text += tagText;
 			} else {
-				this.txtArg.Text += " " + labelName;
+				this.txtArg.Text += " " + tagText;
 			}
 		}
 	}

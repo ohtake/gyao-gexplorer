@@ -16,6 +16,7 @@ namespace Yusen.GExplorer {
 
 		public void AddGenre(GGenre genre) {
 			GenreTabPage gtp = new GenreTabPage(genre);
+			gtp.ReloadRequested += new EventHandler<GenreReloadRequestedEventArgs>(gtp_ReloadRequested);
 			base.TabPages.Add(gtp);
 		}
 		
@@ -45,7 +46,7 @@ namespace Yusen.GExplorer {
 						if (tabRect.Contains(e.Location)) {
 							GenreTabPage gtp = base.TabPages[i] as GenreTabPage;
 							if (null != gtp) {
-								gtp.ShowContextMenu();
+								gtp.ShowContextMenu(this.PointToScreen(e.Location));
 							}
 						}
 					}
@@ -75,6 +76,16 @@ namespace Yusen.GExplorer {
 				GGenre genre = this.SelectedGenre;
 				if (null != genre) {
 					this.GenreSelected(this, new GenreTabPageEventArgs(genre, false));
+				}
+			}
+		}
+		
+		private void gtp_ReloadRequested(object sender, GenreReloadRequestedEventArgs e) {
+			this.SelectedGenre = e.Genre;
+			if (null != this.GenreSelected) {
+				GGenre genre = this.SelectedGenre;
+				if (null != genre) {
+					this.GenreSelected(this, new GenreTabPageEventArgs(genre, true));
 				}
 			}
 		}

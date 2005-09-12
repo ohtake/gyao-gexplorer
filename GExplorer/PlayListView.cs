@@ -76,7 +76,7 @@ namespace Yusen.GExplorer {
 		private void UpdatePlayListView() {
 			this.listView1.Items.Clear();
 			foreach (ContentAdapter cont in PlayList.Instance) {
-				ListViewItem lvi = new ListViewItem(new string[] { cont.ContentId, cont.DisplayName, cont.Duration });
+				ListViewItem lvi = new ListViewItem(new string[] { cont.ContentId, cont.DisplayName, cont.GTimeSpan.ToString() });
 				lvi.Tag = cont;
 				this.listView1.Items.Add(lvi);
 			}
@@ -91,11 +91,31 @@ namespace Yusen.GExplorer {
 			}
 		}
 		private void UpdateStatusBarText() {
-			if (this.SelectedContents.Length <= 0) {
-				this.tslMessage.Text = "‘S " + this.listView1.Items.Count.ToString() + " ŒÂ";
-			} else {
-				this.tslMessage.Text = this.SelectedContents.Length.ToString() + " ŒÂ‚ð‘I‘ð’†";
+			string num = "”: " + this.SelectedContents.Length.ToString() + "/" + this.listView1.Items.Count.ToString();
+			TimeSpan totalTimeSpan = new TimeSpan();
+			bool hasExactTotalTimeSpan = true;
+			foreach (ListViewItem lvi in this.listView1.Items) {
+				ContentAdapter ca = lvi.Tag as ContentAdapter;
+				if (ca.GTimeSpan.CanParse) {
+					totalTimeSpan += ca.GTimeSpan.TimeSpan;
+				} else {
+					hasExactTotalTimeSpan = false;
+				}
 			}
+			TimeSpan selectedTimeSpan = new TimeSpan();
+			bool hasExactSelectedTimeSpan = true;
+			foreach (ContentAdapter ca in this.SelectedContents) {
+				if (ca.GTimeSpan.CanParse) {
+					selectedTimeSpan += ca.GTimeSpan.TimeSpan;
+				} else {
+					hasExactSelectedTimeSpan = false;
+				}
+			}
+			string time = "ŽžŠÔ: "
+				+ selectedTimeSpan.ToString() + (hasExactSelectedTimeSpan ? "" : "+?")
+				+ "/"
+				+ totalTimeSpan.ToString() + (hasExactTotalTimeSpan ? "" : "+?");
+			this.tslMessage.Text = num + "   " + time;
 		}
 		private void UpdateUserCommandsMenu() {
 			this.tsmiCommands.DropDownItems.Clear();

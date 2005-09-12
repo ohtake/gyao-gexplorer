@@ -25,12 +25,14 @@ namespace Yusen.GExplorer {
 		private void InitializeComponent() {
 			this.components = new System.ComponentModel.Container();
 			this.cmsGenre = new System.Windows.Forms.ContextMenuStrip(this.components);
+			this.tsmiBrowseTop = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiBrowseTimetable = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiCopyGenreName = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiCopyUri = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiCopyGenreNameAndUri = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-			this.tsmiBrowseTop = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiBrowseTimetable = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiReload = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this.cmsGenre.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -39,17 +41,32 @@ namespace Yusen.GExplorer {
 			this.cmsGenre.Enabled = true;
 			this.cmsGenre.GripMargin = new System.Windows.Forms.Padding(2);
 			this.cmsGenre.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiReload,
+            this.toolStripSeparator1,
             this.tsmiBrowseTop,
             this.tsmiBrowseTimetable,
-            this.toolStripSeparator1,
+            this.toolStripSeparator2,
             this.tsmiCopyGenreName,
             this.tsmiCopyUri,
             this.tsmiCopyGenreNameAndUri});
 			this.cmsGenre.Location = new System.Drawing.Point(9, 50);
 			this.cmsGenre.Name = "cmsGenre";
 			this.cmsGenre.RightToLeft = System.Windows.Forms.RightToLeft.No;
-			this.cmsGenre.Size = new System.Drawing.Size(203, 139);
-			this.cmsGenre.Visible = true;
+			this.cmsGenre.Size = new System.Drawing.Size(250, 148);
+			// 
+			// tsmiBrowseTop
+			// 
+			this.tsmiBrowseTop.Name = "tsmiBrowseTop";
+			this.tsmiBrowseTop.Text = "ジャンルトップをウェブブラウザで開く (&H)";
+			// 
+			// tsmiBrowseTimetable
+			// 
+			this.tsmiBrowseTimetable.Name = "tsmiBrowseTimetable";
+			this.tsmiBrowseTimetable.Text = "番組表をウェブブラウザで開く (&T)";
+			// 
+			// toolStripSeparator1
+			// 
+			this.toolStripSeparator1.Name = "toolStripSeparator1";
 			// 
 			// tsmiCopyGenreName
 			// 
@@ -66,19 +83,14 @@ namespace Yusen.GExplorer {
 			this.tsmiCopyGenreNameAndUri.Name = "tsmiCopyGenreNameAndUri";
 			this.tsmiCopyGenreNameAndUri.Text = "ジャンル名とURIをコピー (&B)";
 			// 
-			// toolStripSeparator1
+			// tsmiReload
 			// 
-			this.toolStripSeparator1.Name = "toolStripSeparator1";
+			this.tsmiReload.Name = "tsmiReload";
+			this.tsmiReload.Text = "再読み込み (&R)";
 			// 
-			// tsmiBrowseTop
+			// toolStripSeparator2
 			// 
-			this.tsmiBrowseTop.Name = "tsmiBrowseTop";
-			this.tsmiBrowseTop.Text = "ジャンルトップをウェブブラウザで開く (&H)";
-			// 
-			// tsmiBrowseTimetable
-			// 
-			this.tsmiBrowseTimetable.Name = "tsmiBrowseTimetable";
-			this.tsmiBrowseTimetable.Text = "番組表をウェブブラウザで開く (&T)";
+			this.toolStripSeparator2.Name = "toolStripSeparator2";
 			// 
 			// GenreTabPage
 			// 
@@ -97,5 +109,7 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
 		private System.Windows.Forms.ToolStripMenuItem tsmiBrowseTop;
 		private System.Windows.Forms.ToolStripMenuItem tsmiBrowseTimetable;
+		private System.Windows.Forms.ToolStripMenuItem tsmiReload;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
 	}
 }

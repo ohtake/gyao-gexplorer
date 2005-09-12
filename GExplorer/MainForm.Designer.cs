@@ -53,8 +53,12 @@ namespace Yusen.GExplorer {
 			this.tsmiRemoveCaches = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiRemoveCachesUnreachable = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiRemoveCachesAll = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiAbortCrawling = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiClearCrawlResults = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+			this.tsmiUserCommands = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiAbortCrawling = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiBrowsePackage = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiBrowseContent = new System.Windows.Forms.ToolStripMenuItem();
 			this.statusStrip1.SuspendLayout();
 			this.toolStripContainer1.BottomToolStripPanel.SuspendLayout();
 			this.toolStripContainer1.ContentPanel.SuspendLayout();
@@ -262,6 +266,8 @@ namespace Yusen.GExplorer {
 			// 
 			this.tsmiFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiBrowseTop,
+            this.tsmiBrowsePackage,
+            this.tsmiBrowseContent,
             this.toolStripSeparator1,
             this.tsmiQuit});
 			this.tsmiFile.Name = "tsmiFile";
@@ -321,7 +327,9 @@ namespace Yusen.GExplorer {
             this.tsmiNgContentsEditor,
             this.toolStripSeparator3,
             this.tsmiRemoveCaches,
-            this.tsmiClearCrawlResults});
+            this.tsmiClearCrawlResults,
+            this.toolStripSeparator2,
+            this.tsmiUserCommands});
 			this.tsmiTools.Name = "tsmiTools";
 			this.tsmiTools.Text = "ツール (&T)";
 			// 
@@ -367,6 +375,21 @@ namespace Yusen.GExplorer {
 			this.tsmiRemoveCachesAll.Text = "全て削除 (&A) ...";
 			this.tsmiRemoveCachesAll.Click += new System.EventHandler(this.tsmiRemoveCachesAll_Click);
 			// 
+			// tsmiClearCrawlResults
+			// 
+			this.tsmiClearCrawlResults.Name = "tsmiClearCrawlResults";
+			this.tsmiClearCrawlResults.Text = "クロール結果の破棄 (&D) ...";
+			this.tsmiClearCrawlResults.Click += new System.EventHandler(this.tsmiClearCrawlResults_Click);
+			// 
+			// toolStripSeparator2
+			// 
+			this.toolStripSeparator2.Name = "toolStripSeparator2";
+			// 
+			// tsmiUserCommands
+			// 
+			this.tsmiUserCommands.Name = "tsmiUserCommands";
+			this.tsmiUserCommands.Text = "外部コマンド (&U)";
+			// 
 			// tsmiAbortCrawling
 			// 
 			this.tsmiAbortCrawling.Enabled = false;
@@ -374,11 +397,17 @@ namespace Yusen.GExplorer {
 			this.tsmiAbortCrawling.Text = "<<クロール中止 (&A)>>";
 			this.tsmiAbortCrawling.Click += new System.EventHandler(this.tsmiAbortCrawling_Click);
 			// 
-			// tsmiClearCrawlResults
+			// tsmiBrowsePackage
 			// 
-			this.tsmiClearCrawlResults.Name = "tsmiClearCrawlResults";
-			this.tsmiClearCrawlResults.Text = "クロール結果の破棄 (&D) ...";
-			this.tsmiClearCrawlResults.Click += new System.EventHandler(this.tsmiClearCrawlResults_Click);
+			this.tsmiBrowsePackage.Name = "tsmiBrowsePackage";
+			this.tsmiBrowsePackage.Text = "パッケージIDを指定してウェブブラウザで開く (&P) ...";
+			this.tsmiBrowsePackage.Click += new System.EventHandler(this.tsmiBrowsePackage_Click);
+			// 
+			// tsmiBrowseContent
+			// 
+			this.tsmiBrowseContent.Name = "tsmiBrowseContent";
+			this.tsmiBrowseContent.Text = "コンテンツIDを指定してウェブブラウザで開く (&C) ...";
+			this.tsmiBrowseContent.Click += new System.EventHandler(this.tsmiBrowseContent_Click);
 			// 
 			// MainForm
 			// 
@@ -446,6 +475,10 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ToolStripMenuItem tsmiIgnoreCrawlErrors;
 		private System.Windows.Forms.ToolStripMenuItem tsmiRemoveCachesAll;
 		private System.Windows.Forms.ToolStripMenuItem tsmiClearCrawlResults;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+		private System.Windows.Forms.ToolStripMenuItem tsmiUserCommands;
+		private System.Windows.Forms.ToolStripMenuItem tsmiBrowsePackage;
+		private System.Windows.Forms.ToolStripMenuItem tsmiBrowseContent;
 
 
 	}

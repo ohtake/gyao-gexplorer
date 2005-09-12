@@ -21,8 +21,6 @@ namespace Yusen.GExplorer {
 
 		public MainForm() {
 			InitializeComponent();
-			this.cacheController = new ContentCacheControllerXml(MainForm.cacheDir);
-			this.crawler = new Crawler(new HtmlParserRegex(), this.cacheController);
 		}
 
 		private void ClearStatusBarInfo() {
@@ -122,8 +120,29 @@ namespace Yusen.GExplorer {
 				return false;
 			}
 		}
+		private void CreateUserCommandsMenuItems() {
+			this.tsmiUserCommands.DropDownItems.Clear();
+			foreach (UserCommand uc in UserCommandsManager.Instance) {
+				ToolStripMenuItem tsmi = new ToolStripMenuItem(uc.Title);
+				tsmi.Tag = uc;
+				tsmi.Click += delegate(object sender, EventArgs e) {
+					ToolStripMenuItem tsmi2 = sender as ToolStripMenuItem;
+					if (null != tsmi2) {
+						UserCommand uc2 = tsmi2.Tag as UserCommand;
+						if (null != uc2) {
+							uc2.Execute(new ContentAdapter[] { });
+						}
+					}
+				};
+				this.tsmiUserCommands.DropDownItems.Add(tsmi);
+			}
+			this.tsmiUserCommands.Enabled = this.tsmiUserCommands.HasDropDownItems;
+		}
 
 		private void MainForm_Load(object sender, EventArgs e) {
+			this.cacheController = new ContentCacheControllerXml(MainForm.cacheDir);
+			this.crawler = new Crawler(new HtmlParserRegex(), this.cacheController);
+			
 			this.TryDeserializeCrawlResults();
 
 			this.Text = Application.ProductName + " " + Application.ProductVersion;
@@ -147,14 +166,20 @@ namespace Yusen.GExplorer {
 
 			this.crawler.CrawlProgress += new EventHandler<CrawlProgressEventArgs>(crawler_CrawlProgress);
 			this.crawler.IgnorableErrorOccured += new EventHandler<IgnorableErrorOccuredEventArgs>(crawler_IgnorableErrorOccured);
-
+			
+			UserCommandsManager.Instance.UserCommandsChanged += new EventHandler(UserCommandsManager_UserCommandsChanged);
+			this.CreateUserCommandsMenuItems();
+			
 			Utility.LoadSettingsAndEnableSaveOnClosed(this);
 			this.ClearStatusBarInfo();
 		}
 		private void MainForm_FormClosed(object sender, FormClosedEventArgs e) {
+			UserCommandsManager.Instance.UserCommandsChanged -= new EventHandler(UserCommandsManager_UserCommandsChanged);
 			this.SerializeCrawlResults();
 		}
-
+		private void UserCommandsManager_UserCommandsChanged(object sender, EventArgs e) {
+			this.CreateUserCommandsMenuItems();
+		}
 		private void crawler_CrawlProgress(object sender, CrawlProgressEventArgs e) {
 			if (this.InvokeRequired) {
 			this.Invoke(new EventHandler<CrawlProgressEventArgs>(
@@ -227,11 +252,27 @@ namespace Yusen.GExplorer {
 		}
 
 
-		private void tsmiQuit_Click(object sender, EventArgs e) {
-			this.Close();
-		}
 		private void tsmiBrowseTop_Click(object sender, EventArgs e) {
 			Utility.Browse(new Uri("http://www.gyao.jp/"));
+		}
+		private void tsmiBrowsePackage_Click(object sender, EventArgs e) {
+			InputBoxDialog ibd = new InputBoxDialog("パッケージIDを指定してウェブブラウザで開く", "パッケージIDを入力してください．", "pac0000000");
+			switch (ibd.ShowDialog()) {
+				case DialogResult.OK:
+					Utility.Browse(GPackage.CreatePackagePageUri(ibd.Input));
+					break;
+			}
+		}
+		private void tsmiBrowseContent_Click(object sender, EventArgs e) {
+			InputBoxDialog ibd = new InputBoxDialog("コンテンツIDを指定してウェブブラウザで開く", "コンテンツIDを入力してください．", "cnt0000000");
+			switch (ibd.ShowDialog()) {
+				case DialogResult.OK:
+					Utility.Browse(GContent.CreateDetailPageUri(ibd.Input));
+					break;
+			}
+		}
+		private void tsmiQuit_Click(object sender, EventArgs e) {
+			this.Close();
 		}
 		private void tsmiGlobalSettingsEditor_Click(object sender, EventArgs e) {
 			GlobalSettingsEditor.Instance.Show();
@@ -331,7 +372,6 @@ namespace Yusen.GExplorer {
 				}
 			}
 		}
-
 	}
 
 	public class MainFormSettings : FormSettingsBaseSettings {

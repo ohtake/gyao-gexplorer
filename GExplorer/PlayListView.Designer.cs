@@ -121,12 +121,12 @@ namespace Yusen.GExplorer {
 			// chName
 			// 
 			this.chName.Text = "ÉRÉìÉeÉìÉcñº";
-			this.chName.Width = 294;
+			this.chName.Width = 319;
 			// 
 			// chDuration
 			// 
 			this.chDuration.Text = "ê≥ñ°éûä‘";
-			this.chDuration.Width = 94;
+			this.chDuration.Width = 66;
 			// 
 			// cmsPlayListItem
 			// 
@@ -372,7 +372,7 @@ namespace Yusen.GExplorer {
             this.tsmiMultiSelectEnabled});
 			this.tsddbSettings.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tsddbSettings.Name = "tsddbSettings";
-			this.tsddbSettings.Text = "ê›íË (&P)";
+			this.tsddbSettings.Text = "ê›íË (&L)";
 			// 
 			// tsmiMultiSelectEnabled
 			// 

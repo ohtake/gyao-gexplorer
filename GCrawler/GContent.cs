@@ -19,7 +19,7 @@ namespace Yusen.GCrawler {
 		private static readonly Regex regexBreadGenre = new Regex(@"^<a href=""[^""]*"">(.*)</a> &gt; $");
 		private static readonly Regex regexTitle = new Regex(@"<td class=""title12b"">(.*)</td>");
 		private static readonly Regex regexSubtitle = new Regex(@"<td class=""title12"">(.*)</td><!--サブタイトル-->");
-		private static readonly Regex regexImageDir = new Regex(@"<img src=""(/img/info/[a-z0-9]+/{1,2})cnt[0-9]+_[0-9a-z]*\.(?:jpg|gif)""");
+		private static readonly Regex regexImageDir = new Regex(@"<img src=""(/img/info/[a-z0-9]+/{1,2})(?:cnt[0-9]+|dummy)_[0-9a-z]*\.(?:jpg|gif)""");
 		private static readonly Regex regexEpisodeNum = new Regex(@"<td align=""left""><b>(.*)</b></td>");
 		private static readonly Regex regexDuration = new Regex(@"<td align=""right""><b>正味時間 : (.*)</b></td>");
 		private static readonly Regex regexDescription = new Regex(@"^\s*(?:<td align=""[^""]*"">)?((?:[^<>]|<[Bb][Rr]>|(<[Aa][^>]*>)|</[Aa]>)+)</td>$");
@@ -95,6 +95,14 @@ namespace Yusen.GCrawler {
 				+ "contentsId=" + contId
 				+ ":userNo=" + userNo.ToString()
 				+ ":rateId=" + "bit" + ((int)bitrate).ToString("0000000"));
+		}
+		public static Uri CreateMediaFileUri(string contId, int userNo, GBitRate bitrate, int chapterNo) {
+			return new Uri(
+				"rtsp://wms.cd.gyao.jp/gyaovod01?QueryString="
+				+ "contentsId=" + contId
+				+ ":userNo=" + userNo.ToString()
+				+ ":rateId=" + "bit" + ((int)bitrate).ToString("0000000")
+				+ ":chapterNo=" + chapterNo.ToString());
 		}
 		public static Uri CreateRecommendPageUri(string contId, GBitRate bitrate) {
 			return new Uri(

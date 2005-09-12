@@ -238,8 +238,9 @@ namespace Yusen.GExplorer {
 			this.allLvis.Clear();
 			this.listView1.Items.Clear();
 			this.listView1.Groups.Clear();
-			this.tslGenre.Text = "";
-			this.tslMessage.Text = "";
+			this.tslGenre.Text = string.Empty;
+			this.tslNumber.Text = string.Empty;
+			this.tslTime.Text = string.Empty;
 		}
 		private void CreateItems() {
 			bool showPackages = this.ShowPackages;
@@ -251,7 +252,7 @@ namespace Yusen.GExplorer {
 					ContentAdapter ca = new ContentAdapter(c);
 					ListViewItem item = new ListViewItem(
 						new string[]{
-							ca.ContentId, ca.Title, ca.EpisodeNumber, ca.SubTitle, ca.Duration, ca.LongDescription},
+							ca.ContentId, ca.Title, ca.EpisodeNumber, ca.SubTitle, ca.GTimeSpan.ToString(), ca.LongDescription},
 						group);
 					item.Tag = ca;
 					this.allLvis.Add(item);
@@ -313,10 +314,9 @@ namespace Yusen.GExplorer {
 			}
 			
 			this.ShowPackages = showPackages;
-			
-			this.tslMessage.Text =
-							this.listView1.Items.Count.ToString() + "+" + filtered.ToString() + "+" + aboned.ToString() + "ŒÂ"
-							+ " (" + this.CrawlResult.Time.ToShortDateString() + " "+ this.CrawlResult.Time.ToShortTimeString() + ")";
+
+			this.tslNumber.Text = this.listView1.Items.Count.ToString() + "+" + filtered.ToString() + "+" + aboned.ToString();
+			this.tslTime.Text = "(" + this.CrawlResult.Time.ToShortDateString() + " "+ this.CrawlResult.Time.ToShortTimeString() + ")";
 			if (null != filter) {
 				this.tstbMigemoAnswer.Text = filter.ToString();
 			} else {

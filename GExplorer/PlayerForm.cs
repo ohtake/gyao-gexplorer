@@ -27,6 +27,7 @@ namespace Yusen.GExplorer {
 		}
 
 		private ContentAdapter currentContent = null;
+		private int? currentChapter = null;
 		
 		private PlayerForm() {
 			InitializeComponent();
@@ -82,6 +83,8 @@ namespace Yusen.GExplorer {
 			}
 			private set {
 				this.currentContent = value;
+				this.currentChapter = null;
+				
 				if (null == value) {
 					Utility.SetTitlebarText(this, "PlayerForm");
 					this.wmpMain.close();
@@ -95,6 +98,21 @@ namespace Yusen.GExplorer {
 					this.gwbRecommend.Navigate(value.RecommendPageUri);
 				}
 				PlayList.Instance.CurrentContent = value;
+			}
+		}
+		public int? CurrentChapter {
+			get {
+				return this.currentChapter;
+			}
+			private set {
+				if (! value.Equals(this.currentChapter)) {
+					this.currentChapter = value;
+					if (value.HasValue) {
+						this.wmpMain.URL = this.CurrentContent.ChapterMediaFileUriOf(value.Value).AbsoluteUri;
+					} else {
+						this.wmpMain.URL = this.CurrentContent.MediaFileUri.AbsoluteUri;
+					}
+				}
 			}
 		}
 		
@@ -125,8 +143,24 @@ namespace Yusen.GExplorer {
 		private void PlayerForm_FormClosing(object sender, FormClosingEventArgs e) {
 			this.CurrentContent = null;
 		}
+		private void tsmiPlayOneChapter_Click(object sender, EventArgs e) {
+			InputBoxDialog ibd = new InputBoxDialog("特定のチャプターのみ再生", "チャプター番号の入力．空白の場合は通常再生．", this.CurrentChapter.HasValue ? this.CurrentChapter.Value.ToString() : string.Empty);
+			switch (ibd.ShowDialog()) {
+				case DialogResult.OK:
+					int? chapter = null;
+					if (! string.IsNullOrEmpty(ibd.Input)) {
+						chapter = int.Parse(ibd.Input);
+					}
+					this.CurrentChapter = chapter;
+					break;
+			}
+		}
 		private void tsmiReload_Click(object sender, EventArgs e) {
-			this.wmpMain.URL = this.currentContent.MediaFileUri.AbsoluteUri;
+			if (this.CurrentChapter.HasValue) {
+				this.wmpMain.URL = this.CurrentContent.ChapterMediaFileUriOf(this.CurrentChapter.Value).AbsoluteUri;
+			} else {
+				this.wmpMain.URL = this.CurrentContent.MediaFileUri.AbsoluteUri;
+			}
 		}
 		private void tsmiClose_Click(object sender, EventArgs e) {
 			this.Close();

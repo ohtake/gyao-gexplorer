@@ -7,10 +7,17 @@ using GGenre = Yusen.GCrawler.GGenre;
 
 namespace Yusen.GExplorer {
 	partial class GenreTabPage : TabPage {
+		public event EventHandler<GenreReloadRequestedEventArgs> ReloadRequested;
 		private GGenre genre = null;
 		
 		public GenreTabPage() {
 			InitializeComponent();
+			this.tsmiReload.Font = new Font(this.tsmiReload.Font, FontStyle.Bold);
+			this.tsmiReload.Click += delegate {
+				if (null != this.ReloadRequested) {
+					this.ReloadRequested(this, new GenreReloadRequestedEventArgs(this.genre));
+				}
+			};
 			this.tsmiBrowseTop.Click += delegate {
 				Utility.Browse(this.Genre.TopPageUri);
 			};
@@ -44,6 +51,16 @@ namespace Yusen.GExplorer {
 				this.cmsGenre.Location = location;
 				this.cmsGenre.Show();
 			}
+		}
+	}
+
+	class GenreReloadRequestedEventArgs : EventArgs {
+		private readonly GGenre genre;
+		public GenreReloadRequestedEventArgs(GGenre genre) {
+			this.genre = genre;
+		}
+		public GGenre Genre {
+			get { return this.genre; }
 		}
 	}
 }

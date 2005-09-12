@@ -9,17 +9,23 @@ using System.Xml.Serialization;
 namespace Yusen.GExplorer {
 	public class ContentAdapter {
 		private GContent innerCont;
+		private GTimeSpan gTimeSpan;
 		
 		public ContentAdapter() {
 		}
 		public ContentAdapter(GContent innerCont) {
-			this.innerCont = innerCont;
+			this.InnerContent = innerCont;
 		}
 		
 		[Browsable(false)]
 		public GContent InnerContent {
-			get { return this.innerCont; }
-			set { this.innerCont = value; }
+			get {
+				return this.innerCont;
+			}
+			set {
+				this.innerCont = value;
+				this.gTimeSpan = new GTimeSpan(this.innerCont.Duration);
+			}
 		}
 		
 		[XmlIgnore]
@@ -88,6 +94,15 @@ namespace Yusen.GExplorer {
 			}
 		}
 		[XmlIgnore]
+		[Category("専ブラが付加した情報")]
+		[Description("正味時間のパーズ結果．")]
+		public GTimeSpan GTimeSpan {
+			get {
+				return this.gTimeSpan;
+			}
+		}
+
+		[XmlIgnore]
 		[Category("URI")]
 		[Description("詳細ページのURI．")]
 		public Uri DetailPageUri {
@@ -136,6 +151,11 @@ namespace Yusen.GExplorer {
 			get {
 				return GContent.CreateRecommendPageUri(this.ContentId, GlobalSettings.Instance.BitRate);
 			}
+		}
+		
+		
+		public Uri ChapterMediaFileUriOf(int chapterNo) {
+			return GContent.CreateMediaFileUri(this.ContentId, GlobalSettings.Instance.UserNo, GlobalSettings.Instance.BitRate, chapterNo);
 		}
 
 		public override bool Equals(object obj) {

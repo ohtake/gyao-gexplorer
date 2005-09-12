@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("GExplorer")]
 [assembly: AssemblyDescription("GyaO 専用ブラウザ")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Yusen")]
+[assembly: AssemblyCompany("YUSEN")]
 [assembly: AssemblyProduct("GExplorer")]
 [assembly: AssemblyCopyright("Copyright (c) 2005")]
 [assembly: AssemblyTrademark("")]
@@ -29,6 +29,6 @@ using System.Runtime.InteropServices;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("1.2.3.2")]
-[assembly: AssemblyFileVersion("1.2.3.2")]
+[assembly: AssemblyVersion("1.2.3.3")]
+[assembly: AssemblyFileVersion("1.2.3.3")]
 

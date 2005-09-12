@@ -59,6 +59,7 @@ namespace Yusen.GExplorer {
 			this.tsmiFocusOnWmp = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiUserCommands = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiPlayOneChapter = new System.Windows.Forms.ToolStripMenuItem();
 			this.tabControl1.SuspendLayout();
 			this.tabPlayer.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.wmpMain)).BeginInit();
@@ -125,7 +126,6 @@ namespace Yusen.GExplorer {
 			this.tabRecommend.Controls.Add(this.gwbRecommend);
 			this.tabRecommend.Location = new System.Drawing.Point(4, 21);
 			this.tabRecommend.Name = "tabRecommend";
-			this.tabRecommend.Padding = new System.Windows.Forms.Padding(3);
 			this.tabRecommend.Size = new System.Drawing.Size(649, 552);
 			this.tabRecommend.TabIndex = 2;
 			this.tabRecommend.Text = "おすすめページ";
@@ -133,9 +133,9 @@ namespace Yusen.GExplorer {
 			// gwbRecommend
 			// 
 			this.gwbRecommend.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.gwbRecommend.Location = new System.Drawing.Point(3, 3);
+			this.gwbRecommend.Location = new System.Drawing.Point(0, 0);
 			this.gwbRecommend.Name = "gwbRecommend";
-			this.gwbRecommend.Size = new System.Drawing.Size(643, 546);
+			this.gwbRecommend.Size = new System.Drawing.Size(649, 552);
 			this.gwbRecommend.Navigating += new System.Windows.Forms.WebBrowserNavigatingEventHandler(this.gwbRecommend_Navigating);
 			// 
 			// toolStripContainer1
@@ -174,6 +174,7 @@ namespace Yusen.GExplorer {
 			// tsmiFile
 			// 
 			this.tsmiFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiPlayOneChapter,
             this.tsmiReload,
             this.toolStripSeparator2,
             this.tsmiClose});
@@ -195,7 +196,7 @@ namespace Yusen.GExplorer {
 			// 
 			this.tsmiClose.Name = "tsmiClose";
 			this.tsmiClose.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.W)));
-			this.tsmiClose.Text = "閉じる (&C)";
+			this.tsmiClose.Text = "閉じる (&W)";
 			this.tsmiClose.Click += new System.EventHandler(this.tsmiClose_Click);
 			// 
 			// tsmiOperation
@@ -363,6 +364,12 @@ namespace Yusen.GExplorer {
 			this.tsmiUserCommands.Name = "tsmiUserCommands";
 			this.tsmiUserCommands.Text = "外部コマンド (&C)";
 			// 
+			// tsmiPlayOneChapter
+			// 
+			this.tsmiPlayOneChapter.Name = "tsmiPlayOneChapter";
+			this.tsmiPlayOneChapter.Text = "特定のチャプターのみ再生 (&C) ...";
+			this.tsmiPlayOneChapter.Click += new System.EventHandler(this.tsmiPlayOneChapter_Click);
+			// 
 			// PlayerForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -427,5 +434,6 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ToolStripMenuItem tsmiAutoVolume;
 		private System.Windows.Forms.ToolStripMenuItem tsmiMediaKeys;
 		private System.Windows.Forms.ToolStripMenuItem tsmiRemovePlayedContent;
+		private System.Windows.Forms.ToolStripMenuItem tsmiPlayOneChapter;
 	}
 }
