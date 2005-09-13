@@ -60,13 +60,13 @@ namespace Yusen.GExplorer {
             this.chLastAbone});
 			this.lvNgContents.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.lvNgContents.FullRowSelect = true;
-			this.lvNgContents.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
 			this.lvNgContents.HideSelection = false;
 			this.lvNgContents.Location = new System.Drawing.Point(3, 15);
 			this.lvNgContents.Name = "lvNgContents";
 			this.lvNgContents.Size = new System.Drawing.Size(580, 128);
 			this.lvNgContents.TabIndex = 101;
 			this.lvNgContents.View = System.Windows.Forms.View.Details;
+			this.lvNgContents.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.lvNgContents_ColumnClick);
 			this.lvNgContents.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lvNgContents_KeyDown);
 			// 
 			// chComment
@@ -258,6 +258,7 @@ namespace Yusen.GExplorer {
 			this.ClientSize = new System.Drawing.Size(592, 224);
 			this.Controls.Add(this.tableLayoutPanel1);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
+			this.MinimumSize = new System.Drawing.Size(500, 150);
 			this.Name = "NgContentsEditor";
 			this.Text = "NgContentsEditor";
 			this.Load += new System.EventHandler(this.NgContentsEditor_Load);

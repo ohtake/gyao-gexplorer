@@ -23,6 +23,7 @@ namespace Yusen.GExplorer {
 		public CrawlResultView() {
 			InitializeComponent();
 		}
+		
 		private void CrawlResultView_Load(object sender, EventArgs e) {
 			this.tslTitle.Font = new Font(this.tslTitle.Font, FontStyle.Bold);
 			this.tsmiAdd.Font = new Font(this.tsmiAdd.Font, FontStyle.Bold);
@@ -71,7 +72,8 @@ namespace Yusen.GExplorer {
 					this.crawlResult = value;
 					
 					this.listView1.BeginUpdate();
-					this.ClearAll();
+					this.listView1.ListViewItemSorter = null;
+					this.ClearAllItems();
 					if (null != value) {
 						this.CreateItems();
 						this.DisplayItems();
@@ -169,6 +171,9 @@ namespace Yusen.GExplorer {
 			set {
 				this.tsmiShowPackages.Checked = value;
 				this.listView1.ShowGroups = value;
+				if (value) {
+					this.UpdateView();
+				}
 			}
 		}
 		public bool HoverSelect {
@@ -231,7 +236,7 @@ namespace Yusen.GExplorer {
 			this.FilterEnabled = settings.FilterEnabled ?? this.FilterEnabled;
 			this.NewColor = settings.NewColor ?? this.NewColor;
 		}
-		private void ClearAll() {
+		private void ClearAllItems() {
 			if (null != this.SelectedContentsChanged) {
 				this.SelectedContentsChanged(this, new SelectedContentsChangedEventArgs());
 			}
@@ -243,8 +248,10 @@ namespace Yusen.GExplorer {
 			this.tslTime.Text = string.Empty;
 		}
 		private void CreateItems() {
-			bool showPackages = this.ShowPackages;
-			this.ShowPackages = true;
+			bool showg = this.listView1.ShowGroups;
+			if (!showg) {
+				this.listView1.ShowGroups = true;
+			}
 			foreach (GPackage p in this.CrawlResult.Packages) {
 				ListViewGroup group = new ListViewGroup(p.ToString());
 				this.listView1.Groups.Add(group);
@@ -258,7 +265,10 @@ namespace Yusen.GExplorer {
 					this.allLvis.Add(item);
 				}
 			}
-			this.ShowPackages = showPackages;
+
+			if (!showg) {
+				this.listView1.ShowGroups = false;
+			}
 			
 			this.tslGenre.ForeColor = this.Genre.GenreColor;
 			this.tslGenre.Text = "[" + this.Genre.GenreName + "]";
@@ -266,10 +276,12 @@ namespace Yusen.GExplorer {
 		private void DisplayItems(){
 			if (null == this.CrawlResult) return;
 			this.listView1.Items.Clear();
-			
-			bool showPackages = this.ShowPackages;
-			this.ShowPackages = true;
-			
+
+			bool showg = this.listView1.ShowGroups;
+			if (!showg) {
+				this.listView1.ShowGroups = true;
+			}
+
 			int aboned = 0;
 			int filtered = 0;
 			Regex filter = this.FilterEnabled ? this.FilterRegex : null;
@@ -312,9 +324,11 @@ namespace Yusen.GExplorer {
 
 				this.listView1.Items.Add(lvi);
 			}
-			
-			this.ShowPackages = showPackages;
 
+			if (!showg) {
+				this.listView1.ShowGroups = false;
+			}
+			
 			this.tslNumber.Text = this.listView1.Items.Count.ToString() + "+" + filtered.ToString() + "+" + aboned.ToString();
 			this.tslTime.Text = "(" + this.CrawlResult.Time.ToShortDateString() + " "+ this.CrawlResult.Time.ToShortTimeString() + ")";
 			if (null != filter) {
@@ -388,6 +402,21 @@ namespace Yusen.GExplorer {
 					this.tsmiAdd.PerformClick();
 					break;
 			}
+		}
+		private void listView1_ColumnClick(object sender, ColumnClickEventArgs e) {
+			bool showpackages = this.ShowPackages;
+			this.ShowPackages = false;
+
+			ListViewItemComparer comparer = new ListViewItemComparer(e.Column);
+			if (comparer.SameIndexAs(this.listView1.ListViewItemSorter as ListViewItemComparer)) {
+				comparer = (this.listView1.ListViewItemSorter as ListViewItemComparer).Clone() as ListViewItemComparer;
+				comparer.Toggle();
+				this.listView1.ListViewItemSorter = comparer;
+			} else {
+				this.listView1.ListViewItemSorter = comparer;
+			}
+			
+			this.ShowPackages = showpackages;
 		}
 		
 		private void cmsContent_Opening(object sender, CancelEventArgs e) {
@@ -491,7 +520,6 @@ namespace Yusen.GExplorer {
 			}
 		}
 		#endregion
-
 		#region フィルタ関連
 		private void tsbShowFilter_Click(object sender, EventArgs e) {
 			this.FilterEnabled = this.FilterEnabled;

@@ -4,6 +4,7 @@ using System.IO;
 using Process = System.Diagnostics.Process;
 using System.Xml.Serialization;
 using Microsoft.Win32;
+using System.Collections.Generic;
 
 namespace Yusen.GExplorer {
 	static class Utility{
@@ -114,6 +115,14 @@ namespace Yusen.GExplorer {
 				form.FillSettings(settings2);
 				Utility.SerializeSettings(form.FilenameForSettings, settings2);
 			};
+		}
+
+		public static bool IsSorted<T>(IList<T> list, IComparer<T> comp) {
+			if (list.Count <= 1) return true;
+			for (int i=0; i<list.Count -1; i++) {
+				if (comp.Compare(list[i], list[i+1]) > 0) return false;
+			}
+			return true;
 		}
 	}
 	interface IHasSettings<TSettings> where TSettings : new() {

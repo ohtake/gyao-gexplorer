@@ -114,6 +114,7 @@
       <DependentUpon>InputBoxDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="ItemsManagerBase.cs" />
+    <Compile Include="ListViewItemComparer.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>

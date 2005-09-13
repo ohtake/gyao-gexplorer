@@ -30,11 +30,12 @@ namespace Yusen.GExplorer {
 				foreach (TabPage tp in base.TabPages) {
 					GenreTabPage gtp = tp as GenreTabPage;
 					if (null == gtp) continue;
-					if(value == gtp.Genre){
+					if(gtp.Genre.Equals(value)){
 						base.SelectedTab = tp;
-						break;
+						return;
 					}
 				}
+				this.SelectedTab = null;
 			}
 		}
 		

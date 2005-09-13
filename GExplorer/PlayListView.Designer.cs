@@ -56,10 +56,6 @@ namespace Yusen.GExplorer {
 			this.tsmiExportAsAsx = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiSerializePlayListNow = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
-			this.tsmiSort = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiSortId = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiSortNameDescending = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiSortNameAscending = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiClearPlayList = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsddbSettings = new System.Windows.Forms.ToolStripDropDownButton();
 			this.tsmiMultiSelectEnabled = new System.Windows.Forms.ToolStripMenuItem();
@@ -99,7 +95,6 @@ namespace Yusen.GExplorer {
 			this.listView1.ContextMenuStrip = this.cmsPlayListItem;
 			this.listView1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.listView1.FullRowSelect = true;
-			this.listView1.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
 			this.listView1.HideSelection = false;
 			this.listView1.Location = new System.Drawing.Point(0, 0);
 			this.listView1.Name = "listView1";
@@ -110,6 +105,7 @@ namespace Yusen.GExplorer {
 			this.listView1.View = System.Windows.Forms.View.Details;
 			this.listView1.SelectedIndexChanged += new System.EventHandler(this.listView1_SelectedIndexChanged);
 			this.listView1.DoubleClick += new System.EventHandler(this.listView1_DoubleClick);
+			this.listView1.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.listView1_ColumnClick);
 			this.listView1.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.listView1_ItemSelectionChanged);
 			this.listView1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.listView1_KeyDown);
 			// 
@@ -304,7 +300,6 @@ namespace Yusen.GExplorer {
             this.tsmiExportAsAsx,
             this.tsmiSerializePlayListNow,
             this.toolStripSeparator5,
-            this.tsmiSort,
             this.tsmiClearPlayList});
 			this.tsddbOperation.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tsddbOperation.Name = "tsddbOperation";
@@ -331,33 +326,6 @@ namespace Yusen.GExplorer {
 			// toolStripSeparator5
 			// 
 			this.toolStripSeparator5.Name = "toolStripSeparator5";
-			// 
-			// tsmiSort
-			// 
-			this.tsmiSort.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiSortId,
-            this.tsmiSortNameDescending,
-            this.tsmiSortNameAscending});
-			this.tsmiSort.Name = "tsmiSort";
-			this.tsmiSort.Text = "ソート (&S)";
-			// 
-			// tsmiSortId
-			// 
-			this.tsmiSortId.Name = "tsmiSortId";
-			this.tsmiSortId.Text = "IDで降順 (&I)";
-			this.tsmiSortId.Click += new System.EventHandler(this.tsmiSortId_Click);
-			// 
-			// tsmiSortNameDescending
-			// 
-			this.tsmiSortNameDescending.Name = "tsmiSortNameDescending";
-			this.tsmiSortNameDescending.Text = "コンテンツ名で降順 (&D)";
-			this.tsmiSortNameDescending.Click += new System.EventHandler(this.tsmiSortNameDescending_Click);
-			// 
-			// tsmiSortNameAscending
-			// 
-			this.tsmiSortNameAscending.Name = "tsmiSortNameAscending";
-			this.tsmiSortNameAscending.Text = "コンテンツ名で昇順 (&A)";
-			this.tsmiSortNameAscending.Click += new System.EventHandler(this.tsmiSortNameAscending_Click);
 			// 
 			// tsmiClearPlayList
 			// 
@@ -450,10 +418,6 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ToolStripMenuItem tsmiExportAsAsx;
 		private System.Windows.Forms.ToolStripMenuItem tsmiSerializePlayListNow;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
-		private System.Windows.Forms.ToolStripMenuItem tsmiSort;
-		private System.Windows.Forms.ToolStripMenuItem tsmiSortId;
-		private System.Windows.Forms.ToolStripMenuItem tsmiSortNameDescending;
-		private System.Windows.Forms.ToolStripMenuItem tsmiSortNameAscending;
 		private System.Windows.Forms.ToolStripMenuItem tsmiClearPlayList;
 		private System.Windows.Forms.ToolStripDropDownButton tsddbSettings;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;

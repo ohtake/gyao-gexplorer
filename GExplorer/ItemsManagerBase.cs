@@ -84,6 +84,10 @@ namespace Yusen.GExplorer {
 		public bool Contains(T item) {
 			return this.items.Contains(item);
 		}
+		public void SetAll(IEnumerable<T> items) {
+			this.items = new List<T>(items);
+			this.OnChanged();
+		}
 		protected abstract string FilenameForSerialization { get;}
 	}
 }

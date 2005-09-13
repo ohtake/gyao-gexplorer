@@ -295,6 +295,37 @@ namespace Yusen.GCrawler {
 	
 	[Serializable]
 	public class CrawlResult {
+		public static CrawlResult Merge(GGenre genre, CrawlResult x, CrawlResult y) {
+			if (!x.Success ||  !y.Success) {
+				throw new ArgumentException("Successがfalseのはマージ不可．");
+			}
+			List<GPackage> packages = new List<GPackage>();
+			packages.AddRange(x.Packages);
+			packages.AddRange(y.Packages);
+			List<Uri> pages = new List<Uri>();
+			pages.AddRange(x.VisitedPages);
+			pages.AddRange(y.VisitedPages);
+			List<IgnorableErrorOccuredEventArgs> errors = new List<IgnorableErrorOccuredEventArgs>();
+			errors.AddRange(x.IgnorableErrors);
+			errors.AddRange(y.IgnorableErrors);
+
+			return new CrawlResult(
+				genre, packages.AsReadOnly(), pages.AsReadOnly(), errors.AsReadOnly(),
+				x.ContentsDownloaded + y.ContentsDownloaded, x.ContentsCached + y.ContentsCached);
+		}
+		public static CrawlResult Merge(GGenre genre, IEnumerable<CrawlResult> results) {
+			CrawlResult seed = new CrawlResult(
+				genre,
+				new ReadOnlyCollection<GPackage>(new List<GPackage>()),
+				new ReadOnlyCollection<Uri>(new List<Uri>()),
+				new ReadOnlyCollection<IgnorableErrorOccuredEventArgs>(new List<IgnorableErrorOccuredEventArgs>()),
+				0, 0);
+			foreach (CrawlResult result in results) {
+				seed = CrawlResult.Merge(genre, seed, result);
+			}
+			return seed;
+		}
+
 		private readonly bool success;
 		private readonly GGenre genre;
 		private readonly ReadOnlyCollection<GPackage> packages;

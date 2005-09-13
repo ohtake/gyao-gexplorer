@@ -7,10 +7,23 @@ using Yusen.GCrawler;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Runtime.Serialization;
 using System.IO;
+using System.Drawing;
 
 namespace Yusen.GExplorer {
 	partial class MainForm : FormSettingsBase, IFormWithSettings<MainFormSettings> {
+		private sealed class MergedGenre : GGenre {
+			public MergedGenre() : base(0, "dummy", "(マージ)", Color.White){
+			}
+			public override Uri TopPageUri {
+				get {return new Uri("about:blank");}
+			}
+			public override bool IsCrawlable {
+				get { return false;}
+			}
+		}
 		private delegate void ViewCrawlResultDelegate(CrawlResult result);
+
+
 		private const string cacheDir = @"Cache";
 		private const string cacheResults = @"CrawlResults.bin";
 		
@@ -50,6 +63,7 @@ namespace Yusen.GExplorer {
 				if (this.FocusOnResultAfterGenreChanged) {
 					this.crawlResultView1.Focus();
 				}
+				this.genreTabControl1.SelectedGenre = result.Genre;
 			}
 		}
 		public void FillSettings(MainFormSettings settings) {
@@ -324,6 +338,25 @@ namespace Yusen.GExplorer {
 					break;
 			}
 		}
+		private void tsmiMergeResults_Click(object sender, EventArgs e) {
+			GGenre mergedGenre = new MergedGenre();
+			CrawlResult mergedResult = CrawlResult.Merge(mergedGenre, this.results.Values);
+			this.ViewCrawlResult(mergedResult);
+		}
+		private void tsmiClearCrawlResults_Click(object sender, EventArgs e) {
+			string title = "クロール結果の破棄";
+			switch (MessageBox.Show(
+					"全ジャンルのクロール結果を破棄します．よろしいですか？",
+					title, MessageBoxButtons.YesNo, MessageBoxIcon.Question)) {
+				case DialogResult.Yes:
+					int numResults = this.results.Count;
+					this.results.Clear();
+					MessageBox.Show(
+						numResults.ToString() + " 個のクロール結果を破棄しました．",
+						title, MessageBoxButtons.OK, MessageBoxIcon.Information);
+					break;
+			}
+		}
 		private void tsmiRemoveCachesAll_Click(object sender, EventArgs e) {
 			string title = "全てのキャッシュを削除";
 			switch (MessageBox.Show(
@@ -342,20 +375,6 @@ namespace Yusen.GExplorer {
 					MessageBox.Show(
 						success.ToString() + " 個のキャッシュを削除しました．\n"
 						+ failed.ToString() + " 個のキャッシュの削除に失敗しました．",
-						title, MessageBoxButtons.OK, MessageBoxIcon.Information);
-					break;
-			}
-		}
-		private void tsmiClearCrawlResults_Click(object sender, EventArgs e) {
-			string title = "クロール結果の破棄";
-			switch (MessageBox.Show(
-					"全ジャンルのクロール結果を破棄します．よろしいですか？",
-					title, MessageBoxButtons.YesNo, MessageBoxIcon.Question)) {
-				case DialogResult.Yes:
-					int numResults = this.results.Count;
-					this.results.Clear();
-					MessageBox.Show(
-						numResults.ToString() + " 個のクロール結果を破棄しました．",
 						title, MessageBoxButtons.OK, MessageBoxIcon.Information);
 					break;
 			}

@@ -88,6 +88,23 @@ namespace Yusen.GExplorer {
 					break;
 			}
 		}
+		private void lvNgContents_ColumnClick(object sender, ColumnClickEventArgs e) {
+			ListViewItemComparer comparer = new ListViewItemComparer(e.Column);
+			List<ListViewItem> lvis = new List<ListViewItem>();
+			foreach (ListViewItem lvi in this.lvNgContents.Items) {
+				lvis.Add(lvi);
+			}
+
+			if (Utility.IsSorted(lvis, comparer)) {
+				lvis.Reverse();
+			} else {
+				lvis.Sort(comparer);
+			}
+			NgContentsManager.Instance.SetAll(
+				lvis.ConvertAll<NgContent>(delegate(ListViewItem lvi) {
+					return lvi.Tag as NgContent;
+			}));
+		}
 
 		private void btnAdd_Click(object sender, EventArgs e) {
 			NgContent ng = null;

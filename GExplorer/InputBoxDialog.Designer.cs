@@ -80,6 +80,7 @@ namespace Yusen.GExplorer {
 			this.MinimizeBox = false;
 			this.Name = "InputBoxDialog";
 			this.ShowInTaskbar = false;
+			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "InputBoxDialog";
 			this.ResumeLayout(false);
 			this.PerformLayout();

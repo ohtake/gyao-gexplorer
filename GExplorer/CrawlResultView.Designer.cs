@@ -65,13 +65,13 @@ namespace Yusen.GExplorer {
 			this.tsmiNewColor = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
 			this.tslGenre = new System.Windows.Forms.ToolStripLabel();
+			this.tslNumber = new System.Windows.Forms.ToolStripLabel();
+			this.tslTime = new System.Windows.Forms.ToolStripLabel();
 			this.tsFilter = new System.Windows.Forms.ToolStrip();
 			this.tslFilter = new System.Windows.Forms.ToolStripLabel();
 			this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
 			this.tstbFilter = new System.Windows.Forms.ToolStripTextBox();
 			this.tstbMigemoAnswer = new System.Windows.Forms.ToolStripTextBox();
-			this.tslNumber = new System.Windows.Forms.ToolStripLabel();
-			this.tslTime = new System.Windows.Forms.ToolStripLabel();
 			this.cmsContent.SuspendLayout();
 			this.toolStripContainer1.ContentPanel.SuspendLayout();
 			this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
@@ -92,7 +92,6 @@ namespace Yusen.GExplorer {
 			this.listView1.ContextMenuStrip = this.cmsContent;
 			this.listView1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.listView1.FullRowSelect = true;
-			this.listView1.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
 			this.listView1.HideSelection = false;
 			this.listView1.Location = new System.Drawing.Point(0, 0);
 			this.listView1.Name = "listView1";
@@ -102,6 +101,7 @@ namespace Yusen.GExplorer {
 			this.listView1.View = System.Windows.Forms.View.Details;
 			this.listView1.SelectedIndexChanged += new System.EventHandler(this.listView1_SelectedIndexChanged);
 			this.listView1.DoubleClick += new System.EventHandler(this.listView1_DoubleClick);
+			this.listView1.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.listView1_ColumnClick);
 			this.listView1.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.listView1_ItemSelectionChanged);
 			this.listView1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.listView1_KeyDown);
 			// 
@@ -393,6 +393,16 @@ namespace Yusen.GExplorer {
 			this.tslGenre.Name = "tslGenre";
 			this.tslGenre.Text = "tslGenre";
 			// 
+			// tslNumber
+			// 
+			this.tslNumber.Name = "tslNumber";
+			this.tslNumber.Text = "tslNumber";
+			// 
+			// tslTime
+			// 
+			this.tslTime.Name = "tslTime";
+			this.tslTime.Text = "tslTime";
+			// 
 			// tsFilter
 			// 
 			this.tsFilter.Dock = System.Windows.Forms.DockStyle.None;
@@ -431,16 +441,6 @@ namespace Yusen.GExplorer {
 			this.tstbMigemoAnswer.Name = "tstbMigemoAnswer";
 			this.tstbMigemoAnswer.ReadOnly = true;
 			this.tstbMigemoAnswer.Size = new System.Drawing.Size(250, 25);
-			// 
-			// tslNumber
-			// 
-			this.tslNumber.Name = "tslNumber";
-			this.tslNumber.Text = "tslNumber";
-			// 
-			// tslTime
-			// 
-			this.tslTime.Name = "tslTime";
-			this.tslTime.Text = "tslTime";
 			// 
 			// CrawlResultView
 			// 

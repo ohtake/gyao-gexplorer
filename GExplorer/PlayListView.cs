@@ -35,6 +35,8 @@ namespace Yusen.GExplorer {
 
 			this.UpdateStatusBarText();
 			this.UpdateUserCommandsMenu();
+
+			
 		}
 
 		public void FillSettings(PlayListViewSettings settings) {
@@ -168,6 +170,23 @@ namespace Yusen.GExplorer {
 				this.ContentSelectionChanged(this, new ContentSelectionChangedEventArgs(e.Item.Tag as ContentAdapter, e.IsSelected));
 			}
 		}
+		private void listView1_ColumnClick(object sender, ColumnClickEventArgs e) {
+			ListViewItemComparer comparer = new ListViewItemComparer(e.Column);
+			List<ListViewItem> lvis = new List<ListViewItem>();
+			foreach (ListViewItem lvi in this.listView1.Items) {
+				lvis.Add(lvi);
+			}
+
+			if (Utility.IsSorted(lvis, comparer)) {
+				lvis.Reverse();
+			} else {
+				lvis.Sort(comparer);
+			}
+			PlayList.Instance.SetAll(
+				lvis.ConvertAll<ContentAdapter>(delegate(ListViewItem lvi){
+					return lvi.Tag as ContentAdapter;
+				}));
+		}
 
 		#region ÉÅÉjÉÖÅ[ÇÃçÄñ⁄
 		private void tsmiAddById_Click(object sender, EventArgs e) {
@@ -197,21 +216,6 @@ namespace Yusen.GExplorer {
 		}
 		private void tsmiSerializePlayListNow_Click(object sender, EventArgs e) {
 			PlayList.Instance.SerializeItems();
-		}
-		private void tsmiSortId_Click(object sender, EventArgs e) {
-			PlayList.Instance.Sort(new Comparison<ContentAdapter>(delegate(ContentAdapter a, ContentAdapter b) {
-				return a.ContentId.CompareTo(b.ContentId);
-			}));
-		}
-		private void tsmiSortNameDescending_Click(object sender, EventArgs e) {
-			PlayList.Instance.Sort(new Comparison<ContentAdapter>(delegate(ContentAdapter a, ContentAdapter b) {
-				return a.DisplayName.CompareTo(b.DisplayName);
-			}));
-		}
-		private void tsmiSortNameAscending_Click(object sender, EventArgs e) {
-			PlayList.Instance.Sort(new Comparison<ContentAdapter>(delegate(ContentAdapter a, ContentAdapter b) {
-				return b.DisplayName.CompareTo(a.DisplayName);
-			}));
 		}
 		private void tsmiClearPlayList_Click(object sender, EventArgs e) {
 			PlayList.Instance.Clear();
