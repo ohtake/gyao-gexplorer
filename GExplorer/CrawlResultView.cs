@@ -341,7 +341,7 @@ namespace Yusen.GExplorer {
 			this.tsddbNormalPages.DropDownItems.Clear();
 			if (null != this.CrawlResult) {
 				foreach (Uri page in this.CrawlResult.VisitedPages) {
-					ToolStripMenuItem tsmi = new ToolStripMenuItem(page.AbsolutePath);
+					ToolStripMenuItem tsmi = new ToolStripMenuItem(page.PathAndQuery);
 					tsmi.Tag = page;
 					tsmi.Click += delegate(object sender, EventArgs e) {
 						Utility.Browse((sender as ToolStripMenuItem).Tag as Uri);

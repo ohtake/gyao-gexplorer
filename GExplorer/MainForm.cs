@@ -32,6 +32,10 @@ namespace Yusen.GExplorer {
 		private Dictionary<GGenre, CrawlResult> results = new Dictionary<GGenre, CrawlResult>();
 		private Thread threadCrawler = null;
 
+		private DateTime lastDetailTime = DateTime.MinValue;
+		private object monitorLastDetailTime = new object();
+		private readonly double marginDetailSec = 0.1;
+
 		public MainForm() {
 			InitializeComponent();
 		}
@@ -163,20 +167,12 @@ namespace Yusen.GExplorer {
 			Utility.AppendHelpMenu(this.menuStrip1);
 
 			this.genreTabControl1.TabPages.Clear();
-			this.tsmiUncrawableGenres.DropDownItems.Clear();
 			foreach (GGenre genre in GGenre.AllGenres) {
 				if (genre.IsCrawlable) {
 					this.genreTabControl1.AddGenre(genre);
-				} else {
-					ToolStripMenuItem tsmi = new ToolStripMenuItem(genre.GenreName);
-					tsmi.Tag = genre;
-					tsmi.Click += delegate(object sender2, EventArgs e2) {
-						Utility.Browse(((sender2 as ToolStripMenuItem).Tag as GGenre).TopPageUri);
-					};
-					this.tsmiUncrawableGenres.DropDownItems.Add(tsmi);
 				}
 			}
-			this.genreTabControl1.SelectedIndex = -1;
+			this.genreTabControl1.SelectedGenre = null;
 
 			this.crawler.CrawlProgress += new EventHandler<CrawlProgressEventArgs>(crawler_CrawlProgress);
 			this.crawler.IgnorableErrorOccured += new EventHandler<IgnorableErrorOccuredEventArgs>(crawler_IgnorableErrorOccured);
@@ -256,12 +252,22 @@ namespace Yusen.GExplorer {
 
 		private void crawlResultView1_ContentSelectionChanged(object sender, ContentSelectionChangedEventArgs e) {
 			if (e.IsSelected) {
-				this.contentDetailView1.Content = e.Content;
+				lock (this.monitorLastDetailTime) {
+					if (this.lastDetailTime.AddSeconds(this.marginDetailSec) < DateTime.Now) {
+						this.lastDetailTime = DateTime.Now;
+						this.contentDetailView1.Content = e.Content;
+					}
+				}
 			}
 		}
 		private void playListView1_ContentSelectionChanged(object sender, ContentSelectionChangedEventArgs e) {
 			if (e.IsSelected) {
-				this.contentDetailView1.Content = e.Content;
+				lock (this.monitorLastDetailTime) {
+					if (this.lastDetailTime.AddSeconds(this.marginDetailSec) < DateTime.Now) {
+						this.lastDetailTime = DateTime.Now;
+						this.contentDetailView1.Content = e.Content;
+					}
+				}
 			}
 		}
 

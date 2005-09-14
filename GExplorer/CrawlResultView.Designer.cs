@@ -96,7 +96,7 @@ namespace Yusen.GExplorer {
 			this.listView1.Location = new System.Drawing.Point(0, 0);
 			this.listView1.Name = "listView1";
 			this.listView1.ShowItemToolTips = true;
-			this.listView1.Size = new System.Drawing.Size(509, 158);
+			this.listView1.Size = new System.Drawing.Size(550, 158);
 			this.listView1.TabIndex = 0;
 			this.listView1.View = System.Windows.Forms.View.Details;
 			this.listView1.SelectedIndexChanged += new System.EventHandler(this.listView1_SelectedIndexChanged);
@@ -133,7 +133,7 @@ namespace Yusen.GExplorer {
 			// chDescription
 			// 
 			this.chDescription.Text = "ê‡ñæ";
-			this.chDescription.Width = 156;
+			this.chDescription.Width = 203;
 			// 
 			// cmsContent
 			// 
@@ -269,7 +269,7 @@ namespace Yusen.GExplorer {
 			this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.toolStripContainer1.Location = new System.Drawing.Point(0, 0);
 			this.toolStripContainer1.Name = "toolStripContainer1";
-			this.toolStripContainer1.Size = new System.Drawing.Size(509, 208);
+			this.toolStripContainer1.Size = new System.Drawing.Size(550, 208);
 			this.toolStripContainer1.TabIndex = 2;
 			this.toolStripContainer1.Text = "toolStripContainer1";
 			// 
@@ -295,7 +295,7 @@ namespace Yusen.GExplorer {
             this.tslTime});
 			this.tsMain.Location = new System.Drawing.Point(0, 0);
 			this.tsMain.Name = "tsMain";
-			this.tsMain.Size = new System.Drawing.Size(509, 25);
+			this.tsMain.Size = new System.Drawing.Size(550, 25);
 			this.tsMain.Stretch = true;
 			this.tsMain.TabIndex = 2;
 			this.tsMain.Text = "toolStrip1";
@@ -414,7 +414,7 @@ namespace Yusen.GExplorer {
             this.tstbMigemoAnswer});
 			this.tsFilter.Location = new System.Drawing.Point(0, 25);
 			this.tsFilter.Name = "tsFilter";
-			this.tsFilter.Size = new System.Drawing.Size(509, 25);
+			this.tsFilter.Size = new System.Drawing.Size(550, 25);
 			this.tsFilter.Stretch = true;
 			this.tsFilter.TabIndex = 3;
 			this.tsFilter.Text = "tsFilter";
@@ -448,7 +448,7 @@ namespace Yusen.GExplorer {
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.Controls.Add(this.toolStripContainer1);
 			this.Name = "CrawlResultView";
-			this.Size = new System.Drawing.Size(509, 208);
+			this.Size = new System.Drawing.Size(550, 208);
 			this.Load += new System.EventHandler(this.CrawlResultView_Load);
 			this.cmsContent.ResumeLayout(false);
 			this.toolStripContainer1.ContentPanel.ResumeLayout(false);

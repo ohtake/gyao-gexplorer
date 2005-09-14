@@ -21,7 +21,7 @@ namespace Yusen.GCrawler {
 				new GGenre200505( 9, "sports", "スポーツ", Color.FromArgb(0xab, 0xce, 0x30)),
 				new GGenre200505(16, "business", "ビジネス", Color.FromArgb(0x38, 0x72, 0xb9)),
 				new GGenre200507( 7, "news", "ニュース", Color.FromArgb(0x00, 0xa5, 0x3c)),
-				new GGenre200507VideoBlog(12, "videoblog", "映像ブログ", Color.FromArgb(0xb6, 0x24, 0xd4)),
+				new GGenre200507(12, "videoblog", "映像ブログ", Color.FromArgb(0xb6, 0x24, 0xd4)),
 				new GGenre200505(18, "cinema", "シネマGyaO ?", Color.FromArgb(0x00, 0x00, 0x00)),
 			};
 		}
@@ -118,6 +118,7 @@ namespace Yusen.GCrawler {
 				}
 			}
 		}
+		[Obsolete("ビデオブログは番組表からパッケージIDが取得可能")]
 		[Serializable]
 		private class GGenre200507VideoBlog : GGenre200507 {
 			public GGenre200507VideoBlog(int keyNo, string dir, string name, Color color)

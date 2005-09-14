@@ -34,7 +34,10 @@ namespace Yusen.GCrawler {
 				this.genre = genre;
 				this.parser = parser;
 				this.cacheController = cacheController;
-				this.waitingPages.Push(this.StartPageUri);
+				
+				//トップ，番組表の順でクロール
+				this.waitingPages.Push(this.genre.TimetableUri);
+				this.waitingPages.Push(this.genre.TopPageUri);
 			}
 			
 			public CrawlResult StartCrawling() {
@@ -66,7 +69,7 @@ namespace Yusen.GCrawler {
 			/// </summary>
 			private bool TryCrawlPages() {
 				while (this.waitingPages.Count > 0) {
-					this.OnCrawlProgress("一般ページを取得中 " + this.waitingPages.Peek().AbsolutePath);
+					this.OnCrawlProgress("一般ページを取得中 " + this.waitingPages.Peek().PathAndQuery);
 					
 					Uri uri = this.waitingPages.Pop();
 					this.visitedPages.Add(uri);

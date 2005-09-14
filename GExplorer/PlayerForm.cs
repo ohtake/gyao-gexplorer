@@ -7,8 +7,8 @@ using WMPLib;
 
 namespace Yusen.GExplorer {
 	partial class PlayerForm : FormSettingsBase, IFormWithSettings<PlayerFormSettings>{
-		private const int volumeNormal = 100;
-		private const int volumeCf = 20;
+		private const int VolumeMax = 100;
+		private const int VolumeMin = 0;
 		
 		private static PlayerForm instance = null;
 		public static PlayerForm Instance {
@@ -28,6 +28,9 @@ namespace Yusen.GExplorer {
 
 		private ContentAdapter currentContent = null;
 		private int? currentChapter = null;
+		
+		private int volumeNormal = 100;
+		private int volumeCf = 20;
 		
 		private PlayerForm() {
 			InitializeComponent();
@@ -57,6 +60,8 @@ namespace Yusen.GExplorer {
 			settings.MediaKeysEnabled = this.MediaKeysEnabled;
 			settings.RemovePlayedContentEnabled = this.RemovePlayedContentEnabled;
 			settings.MainTabIndex = this.tabControl1.SelectedIndex;
+			settings.VolumeNormal = this.VolumeNormal;
+			settings.VolumeCf = this.VolumeCf;
 		}
 
 		public void ApplySettings(PlayerFormSettings settings) {
@@ -65,6 +70,8 @@ namespace Yusen.GExplorer {
 			this.MediaKeysEnabled = settings.MediaKeysEnabled ?? this.MediaKeysEnabled;
 			this.RemovePlayedContentEnabled = settings.RemovePlayedContentEnabled ?? this.RemovePlayedContentEnabled;
 			this.tabControl1.SelectedIndex = settings.MainTabIndex ?? this.tabControl1.SelectedIndex;
+			this.VolumeNormal = settings.VolumeNormal ?? this.VolumeNormal;
+			this.VolumeCf = settings.VolumeCf ?? this.VolumeCf;
 			
 			this.tsmiAlwaysOnTop.Checked = this.TopMost;
 		}
@@ -127,6 +134,26 @@ namespace Yusen.GExplorer {
 		public bool RemovePlayedContentEnabled {
 			get { return this.tsmiRemovePlayedContent.Checked; }
 			set { this.tsmiRemovePlayedContent.Checked = value; }
+		}
+		public int VolumeNormal {
+			get { return this.volumeNormal; }
+			set {
+				if (PlayerForm.VolumeMin <= value && value <= PlayerForm.VolumeMax) {
+					this.volumeNormal = value;
+				} else {
+					throw new ArgumentOutOfRangeException("VolumeNormal");
+				}
+			}
+		}
+		public int VolumeCf {
+			get { return this.volumeCf; }
+			set {
+				if (PlayerForm.VolumeMin <= value && value <= PlayerForm.VolumeMax) {
+					this.volumeCf = value;
+				} else {
+					throw new ArgumentOutOfRangeException("VolumeCf");
+				}
+			}
 		}
 
 		private void PlayerForm_Load(object sender, EventArgs e) {
@@ -203,24 +230,39 @@ namespace Yusen.GExplorer {
 		private void tsmiAlwaysOnTop_Click(object sender, EventArgs e) {
 			this.TopMost = this.tsmiAlwaysOnTop.Checked;
 		}
+		private void tsmiVolumeNormal_Click(object sender, EventArgs e) {
+			InputBoxDialog ibd = new InputBoxDialog("自動音量調整における本編の音量", "本編の音量を入力してください．" + "[" + PlayerForm.VolumeMin.ToString() + "-" + PlayerForm.VolumeMax.ToString() + "]", this.VolumeNormal.ToString());
+			switch (ibd.ShowDialog()) {
+				case DialogResult.OK:
+					this.VolumeNormal = int.Parse(ibd.Input);
+					break;
+			}
+		}
+		private void tsmiVolumeCf_Click(object sender, EventArgs e) {
+			InputBoxDialog ibd = new InputBoxDialog("自動音量調整におけるCFの音量", "CFの音量を入力してください．" + "[" + PlayerForm.VolumeMin.ToString() + "-" + PlayerForm.VolumeMax.ToString() + "]", this.VolumeCf.ToString());
+			switch (ibd.ShowDialog()) {
+				case DialogResult.OK:
+					this.VolumeCf = int.Parse(ibd.Input);
+					break;
+			}
+		}
 		private void tsmiFocusOnWmp_Click(object sender, EventArgs e) {
 			this.tabControl1.SelectedTab = this.tabPlayer;
 			this.wmpMain.Focus();
 		}
 		
 		private void wmpMain_OpenStateChange(object sender, _WMPOCXEvents_OpenStateChangeEvent e) {
-			Console.WriteLine("o " + DateTime.Now.ToLongTimeString() + " " + ((WMPOpenState)e.newState).ToString());
 			switch ((WMPOpenState)e.newState) {
 				case WMPOpenState.wmposMediaOpen:
 					// THANKSTO: http://pc8.2ch.net/test/read.cgi/esite/1116115226/81 の神
 					if (this.tsmiAutoVolume.Checked) {
 						bool isCf = this.wmpMain.currentMedia.getItemInfo("WMS_CONTENT_DESCRIPTION_PLAYLIST_ENTRY_URL").StartsWith("Adv:");
-						this.wmpMain.settings.volume = isCf ? PlayerForm.volumeCf : PlayerForm.volumeNormal;
+						this.wmpMain.settings.volume = isCf ? this.VolumeCf : this.VolumeNormal;
 						//謎の対応その3
 						Thread t = new Thread(new ThreadStart(delegate {
 							Thread.Sleep(100);
 							if (!this.IsDisposed && !this.wmpMain.IsDisposed) {
-								this.wmpMain.settings.volume = isCf ?  PlayerForm.volumeCf : PlayerForm.volumeNormal;
+								this.wmpMain.settings.volume = isCf ?  this.VolumeCf : this.VolumeNormal;
 							}
 						}));
 						t.Start();
@@ -229,7 +271,6 @@ namespace Yusen.GExplorer {
 			}
 		}
 		private void wmpMain_PlayStateChange(object sender, _WMPOCXEvents_PlayStateChangeEvent e) {
-			Console.WriteLine("p " + DateTime.Now.ToLongTimeString() + " " + ((WMPPlayState)e.newState).ToString());
 			switch((WMPPlayState)e.newState){
 				case WMPPlayState.wmppsMediaEnded:
 					Thread t = new Thread(new ThreadStart(delegate {
@@ -303,6 +344,8 @@ namespace Yusen.GExplorer {
 		private bool? mediaKeysEnabled;
 		private bool? removePlayedContentEnabled;
 		private int? mainTabIndex;
+		private int? volumeNormal;
+		private int? volumeCf;
 		
 		public bool? AutoVolumeEnabled {
 			get { return this.autoVolumeEnabled; }
@@ -319,6 +362,14 @@ namespace Yusen.GExplorer {
 		public int? MainTabIndex {
 			get { return this.mainTabIndex; }
 			set { this.mainTabIndex = value; }
+		}
+		public int? VolumeNormal {
+			get { return this.volumeNormal; }
+			set { this.volumeNormal = value; }
+		}
+		public int? VolumeCf {
+			get { return this.volumeCf; }
+			set { this.volumeCf = value; }
 		}
 	}
 }

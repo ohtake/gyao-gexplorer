@@ -10,7 +10,7 @@ namespace Yusen.GExplorer {
 	partial class PlayListView : UserControl, IHasSettings<PlayListViewSettings> {
 		public event EventHandler<SelectedContentsChangedEventArgs> SelectedContentsChanged;
 		public event EventHandler<ContentSelectionChangedEventArgs> ContentSelectionChanged;
-		
+
 		public PlayListView() {
 			InitializeComponent();
 		}
@@ -35,8 +35,6 @@ namespace Yusen.GExplorer {
 
 			this.UpdateStatusBarText();
 			this.UpdateUserCommandsMenu();
-
-			
 		}
 
 		public void FillSettings(PlayListViewSettings settings) {
@@ -93,7 +91,7 @@ namespace Yusen.GExplorer {
 			}
 		}
 		private void UpdateStatusBarText() {
-			string num = "êî: " + this.SelectedContents.Length.ToString() + "/" + this.listView1.Items.Count.ToString();
+			string num = "êî: " + this.listView1.Items.Count.ToString();
 			TimeSpan totalTimeSpan = new TimeSpan();
 			bool hasExactTotalTimeSpan = true;
 			foreach (ListViewItem lvi in this.listView1.Items) {
@@ -104,19 +102,7 @@ namespace Yusen.GExplorer {
 					hasExactTotalTimeSpan = false;
 				}
 			}
-			TimeSpan selectedTimeSpan = new TimeSpan();
-			bool hasExactSelectedTimeSpan = true;
-			foreach (ContentAdapter ca in this.SelectedContents) {
-				if (ca.GTimeSpan.CanParse) {
-					selectedTimeSpan += ca.GTimeSpan.TimeSpan;
-				} else {
-					hasExactSelectedTimeSpan = false;
-				}
-			}
-			string time = "éûä‘: "
-				+ selectedTimeSpan.ToString() + (hasExactSelectedTimeSpan ? "" : "+?")
-				+ "/"
-				+ totalTimeSpan.ToString() + (hasExactTotalTimeSpan ? "" : "+?");
+			string time = "éûä‘: " + totalTimeSpan.ToString() + (hasExactTotalTimeSpan ? "" : "+?");
 			this.tslMessage.Text = num + "   " + time;
 		}
 		private void UpdateUserCommandsMenu() {
@@ -160,7 +146,6 @@ namespace Yusen.GExplorer {
 			}
 		}
 		private void listView1_SelectedIndexChanged(object sender, EventArgs e) {
-			this.UpdateStatusBarText();
 			if (null != this.SelectedContentsChanged) {
 				this.SelectedContentsChanged(this, new SelectedContentsChangedEventArgs(this.SelectedContents));
 			}

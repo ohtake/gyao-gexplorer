@@ -34,6 +34,7 @@ namespace Yusen.GExplorer {
 			this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
 			this.menuStrip1 = new System.Windows.Forms.MenuStrip();
 			this.tsmiFile = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiPlayOneChapter = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiReload = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiClose = new System.Windows.Forms.ToolStripMenuItem();
@@ -55,11 +56,13 @@ namespace Yusen.GExplorer {
 			this.tsmiAutoVolume = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiMediaKeys = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiRemovePlayedContent = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+			this.tsmiVolumeNormal = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiVolumeCf = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiTool = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiFocusOnWmp = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiUserCommands = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiPlayOneChapter = new System.Windows.Forms.ToolStripMenuItem();
 			this.tabControl1.SuspendLayout();
 			this.tabPlayer.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.wmpMain)).BeginInit();
@@ -181,6 +184,12 @@ namespace Yusen.GExplorer {
 			this.tsmiFile.Name = "tsmiFile";
 			this.tsmiFile.Text = "ファイル (&F)";
 			// 
+			// tsmiPlayOneChapter
+			// 
+			this.tsmiPlayOneChapter.Name = "tsmiPlayOneChapter";
+			this.tsmiPlayOneChapter.Text = "特定のチャプターのみ再生 (&C) ...";
+			this.tsmiPlayOneChapter.Click += new System.EventHandler(this.tsmiPlayOneChapter_Click);
+			// 
 			// tsmiReload
 			// 
 			this.tsmiReload.Name = "tsmiReload";
@@ -299,7 +308,10 @@ namespace Yusen.GExplorer {
             this.toolStripSeparator3,
             this.tsmiAutoVolume,
             this.tsmiMediaKeys,
-            this.tsmiRemovePlayedContent});
+            this.tsmiRemovePlayedContent,
+            this.toolStripSeparator4,
+            this.tsmiVolumeNormal,
+            this.tsmiVolumeCf});
 			this.設定SToolStripMenuItem.Name = "設定SToolStripMenuItem";
 			this.設定SToolStripMenuItem.Text = "設定 (&S)";
 			// 
@@ -339,6 +351,22 @@ namespace Yusen.GExplorer {
 			this.tsmiRemovePlayedContent.Name = "tsmiRemovePlayedContent";
 			this.tsmiRemovePlayedContent.Text = "再生の終了したコンテンツをリストから削除 (D)";
 			// 
+			// toolStripSeparator4
+			// 
+			this.toolStripSeparator4.Name = "toolStripSeparator4";
+			// 
+			// tsmiVolumeNormal
+			// 
+			this.tsmiVolumeNormal.Name = "tsmiVolumeNormal";
+			this.tsmiVolumeNormal.Text = "自動音量調整における本編の音量 (&M) ...";
+			this.tsmiVolumeNormal.Click += new System.EventHandler(this.tsmiVolumeNormal_Click);
+			// 
+			// tsmiVolumeCf
+			// 
+			this.tsmiVolumeCf.Name = "tsmiVolumeCf";
+			this.tsmiVolumeCf.Text = "自動音量調整におけるCFの音量 (&C) ...";
+			this.tsmiVolumeCf.Click += new System.EventHandler(this.tsmiVolumeCf_Click);
+			// 
 			// tsmiTool
 			// 
 			this.tsmiTool.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -363,12 +391,6 @@ namespace Yusen.GExplorer {
 			// 
 			this.tsmiUserCommands.Name = "tsmiUserCommands";
 			this.tsmiUserCommands.Text = "外部コマンド (&C)";
-			// 
-			// tsmiPlayOneChapter
-			// 
-			this.tsmiPlayOneChapter.Name = "tsmiPlayOneChapter";
-			this.tsmiPlayOneChapter.Text = "特定のチャプターのみ再生 (&C) ...";
-			this.tsmiPlayOneChapter.Click += new System.EventHandler(this.tsmiPlayOneChapter_Click);
 			// 
 			// PlayerForm
 			// 
@@ -435,5 +457,8 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ToolStripMenuItem tsmiMediaKeys;
 		private System.Windows.Forms.ToolStripMenuItem tsmiRemovePlayedContent;
 		private System.Windows.Forms.ToolStripMenuItem tsmiPlayOneChapter;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
+		private System.Windows.Forms.ToolStripMenuItem tsmiVolumeNormal;
+		private System.Windows.Forms.ToolStripMenuItem tsmiVolumeCf;
 	}
 }
