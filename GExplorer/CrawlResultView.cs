@@ -192,6 +192,10 @@ namespace Yusen.GExplorer {
 				this.listView1.MultiSelect = value;
 			}
 		}
+		public bool ClearFilterStringOnHideEnabled {
+			get { return this.tsmiClearFilterStringOnHide.Checked; }
+			set { this.tsmiClearFilterStringOnHide.Checked = value; }
+		}
 		public bool FilterEnabled {
 			get {return this.tsbShowFilter.Checked; }
 			set {
@@ -523,6 +527,9 @@ namespace Yusen.GExplorer {
 		#region フィルタ関連
 		private void tsbShowFilter_Click(object sender, EventArgs e) {
 			this.FilterEnabled = this.FilterEnabled;
+			if (this.CanUseMigemo && this.ClearFilterStringOnHideEnabled && !this.FilterEnabled) {
+				this.FilterString = string.Empty;
+			}
 			Application.DoEvents();
 			this.UpdateView();
 		}
@@ -548,6 +555,7 @@ namespace Yusen.GExplorer {
 		private bool? showPackages;
 		private bool? hoverSelect;
 		private bool? multiSelect;
+		private bool? clearFilterStringOnHideEnabled;
 		private bool? filterEnabled;
 		private Color? newColor;
 		
@@ -590,6 +598,10 @@ namespace Yusen.GExplorer {
 		public bool? MultiSelect {
 			get { return this.multiSelect; }
 			set { this.multiSelect = value; }
+		}
+		public bool? ClearFilterStringOnHideEnabled {
+			get { return this.clearFilterStringOnHideEnabled; }
+			set { this.clearFilterStringOnHideEnabled = value; }
 		}
 		public bool? FilterEnabled {
 			get { return this.filterEnabled; }

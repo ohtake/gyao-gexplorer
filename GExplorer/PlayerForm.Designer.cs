@@ -52,6 +52,7 @@ namespace Yusen.GExplorer {
 			this.tsmiPrevContent = new System.Windows.Forms.ToolStripMenuItem();
 			this.設定SToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiAlwaysOnTop = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiKeepFullScreen = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiAutoVolume = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiMediaKeys = new System.Windows.Forms.ToolStripMenuItem();
@@ -305,6 +306,7 @@ namespace Yusen.GExplorer {
 			// 
 			this.設定SToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiAlwaysOnTop,
+            this.tsmiKeepFullScreen,
             this.toolStripSeparator3,
             this.tsmiAutoVolume,
             this.tsmiMediaKeys,
@@ -322,6 +324,14 @@ namespace Yusen.GExplorer {
 			this.tsmiAlwaysOnTop.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.T)));
 			this.tsmiAlwaysOnTop.Text = "常に手前に表示 (&T)";
 			this.tsmiAlwaysOnTop.Click += new System.EventHandler(this.tsmiAlwaysOnTop_Click);
+			// 
+			// tsmiKeepFullScreen
+			// 
+			this.tsmiKeepFullScreen.Checked = true;
+			this.tsmiKeepFullScreen.CheckOnClick = true;
+			this.tsmiKeepFullScreen.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.tsmiKeepFullScreen.Name = "tsmiKeepFullScreen";
+			this.tsmiKeepFullScreen.Text = "プレイリスト内で全画面状態を維持 (&F)";
 			// 
 			// toolStripSeparator3
 			// 
@@ -345,9 +355,7 @@ namespace Yusen.GExplorer {
 			// 
 			// tsmiRemovePlayedContent
 			// 
-			this.tsmiRemovePlayedContent.Checked = true;
 			this.tsmiRemovePlayedContent.CheckOnClick = true;
-			this.tsmiRemovePlayedContent.CheckState = System.Windows.Forms.CheckState.Checked;
 			this.tsmiRemovePlayedContent.Name = "tsmiRemovePlayedContent";
 			this.tsmiRemovePlayedContent.Text = "再生の終了したコンテンツをリストから削除 (D)";
 			// 
@@ -398,7 +406,6 @@ namespace Yusen.GExplorer {
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(657, 601);
 			this.Controls.Add(this.toolStripContainer1);
-			this.KeyPreview = true;
 			this.Name = "PlayerForm";
 			this.Text = "PlayerForm";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.PlayerForm_FormClosing);
@@ -460,5 +467,6 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
 		private System.Windows.Forms.ToolStripMenuItem tsmiVolumeNormal;
 		private System.Windows.Forms.ToolStripMenuItem tsmiVolumeCf;
+		private System.Windows.Forms.ToolStripMenuItem tsmiKeepFullScreen;
 	}
 }

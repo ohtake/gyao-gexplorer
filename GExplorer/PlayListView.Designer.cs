@@ -61,7 +61,12 @@ namespace Yusen.GExplorer {
 			this.tsmiMultiSelectEnabled = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
 			this.tslMessage = new System.Windows.Forms.ToolStripLabel();
-			this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+			this.sfdAsx = new System.Windows.Forms.SaveFileDialog();
+			this.tsmiExport = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiImport = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
+			this.ofdXml = new System.Windows.Forms.OpenFileDialog();
+			this.sfdXml = new System.Windows.Forms.SaveFileDialog();
 			this.toolStripContainer1.ContentPanel.SuspendLayout();
 			this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
 			this.toolStripContainer1.SuspendLayout();
@@ -297,9 +302,12 @@ namespace Yusen.GExplorer {
 			this.tsddbOperation.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
 			this.tsddbOperation.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiAddById,
-            this.tsmiExportAsAsx,
+            this.tsmiExport,
+            this.tsmiImport,
             this.tsmiSerializePlayListNow,
             this.toolStripSeparator5,
+            this.tsmiExportAsAsx,
+            this.toolStripSeparator8,
             this.tsmiClearPlayList});
 			this.tsddbOperation.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tsddbOperation.Name = "tsddbOperation";
@@ -314,13 +322,13 @@ namespace Yusen.GExplorer {
 			// tsmiExportAsAsx
 			// 
 			this.tsmiExportAsAsx.Name = "tsmiExportAsAsx";
-			this.tsmiExportAsAsx.Text = "プレイリストをASXとしてイクスポート (&E) ...";
+			this.tsmiExportAsAsx.Text = "プレイリストをASXとしてイクスポート (&A) ...";
 			this.tsmiExportAsAsx.Click += new System.EventHandler(this.tsmiExportAsAsx_Click);
 			// 
 			// tsmiSerializePlayListNow
 			// 
 			this.tsmiSerializePlayListNow.Name = "tsmiSerializePlayListNow";
-			this.tsmiSerializePlayListNow.Text = "プレイリストを今すぐシリアライズ (&N)";
+			this.tsmiSerializePlayListNow.Text = "プレイリストを今すぐシリアライズ (&S)";
 			this.tsmiSerializePlayListNow.Click += new System.EventHandler(this.tsmiSerializePlayListNow_Click);
 			// 
 			// toolStripSeparator5
@@ -360,11 +368,37 @@ namespace Yusen.GExplorer {
 			this.tslMessage.Name = "tslMessage";
 			this.tslMessage.Text = "tslMessage";
 			// 
-			// saveFileDialog1
+			// sfdAsx
 			// 
-			this.saveFileDialog1.DefaultExt = "asx";
-			this.saveFileDialog1.Filter = "ASX files|*.asx|All files|*.*";
-			this.saveFileDialog1.RestoreDirectory = true;
+			this.sfdAsx.DefaultExt = "asx";
+			this.sfdAsx.Filter = "ASX files (*.asx)|*.asx|All files (*.*)|*.*";
+			this.sfdAsx.RestoreDirectory = true;
+			// 
+			// tsmiExport
+			// 
+			this.tsmiExport.Name = "tsmiExport";
+			this.tsmiExport.Text = "プレイリストをイクスポート (&E) ...";
+			this.tsmiExport.Click += new System.EventHandler(this.tsmiExport_Click);
+			// 
+			// tsmiImport
+			// 
+			this.tsmiImport.Name = "tsmiImport";
+			this.tsmiImport.Text = "プレイリストをインポート (&I) ...";
+			this.tsmiImport.Click += new System.EventHandler(this.tsmiImport_Click);
+			// 
+			// toolStripSeparator8
+			// 
+			this.toolStripSeparator8.Name = "toolStripSeparator8";
+			// 
+			// ofdXml
+			// 
+			this.ofdXml.Filter = "XML files (*.xml)|*.xml|All files (*.*)|*.*";
+			this.ofdXml.RestoreDirectory = true;
+			// 
+			// sfdXml
+			// 
+			this.sfdXml.Filter = "XML files (*.xml)|*.xml|All files (*.*)|*.*";
+			this.sfdXml.RestoreDirectory = true;
 			// 
 			// PlayListView
 			// 
@@ -422,8 +456,13 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ToolStripDropDownButton tsddbSettings;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
 		private System.Windows.Forms.ToolStripLabel tslMessage;
-		private System.Windows.Forms.SaveFileDialog saveFileDialog1;
+		private System.Windows.Forms.SaveFileDialog sfdAsx;
 		private System.Windows.Forms.ToolStripMenuItem tsmiMultiSelectEnabled;
 		private System.Windows.Forms.ToolStripMenuItem tsmiAddById;
+		private System.Windows.Forms.ToolStripMenuItem tsmiExport;
+		private System.Windows.Forms.ToolStripMenuItem tsmiImport;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator8;
+		private System.Windows.Forms.OpenFileDialog ofdXml;
+		private System.Windows.Forms.SaveFileDialog sfdXml;
 	}
 }

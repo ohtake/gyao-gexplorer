@@ -12,7 +12,7 @@ using System.Drawing;
 namespace Yusen.GExplorer {
 	partial class MainForm : FormSettingsBase, IFormWithSettings<MainFormSettings> {
 		private sealed class MergedGenre : GGenre {
-			public MergedGenre() : base(0, "dummy", "(マージ)", Color.White){
+			public MergedGenre() : base(0, "dummy", "(マージ)", Color.Black){
 			}
 			public override Uri TopPageUri {
 				get {return new Uri("about:blank");}
@@ -111,28 +111,22 @@ namespace Yusen.GExplorer {
 		}
 		private bool TryDeserializeCrawlResults() {
 			try {
+				Dictionary<GGenre, CrawlResult> oldResults = null;
 				using (Stream stream = new FileStream(Path.Combine(MainForm.cacheDir, MainForm.cacheResults), FileMode.Open)) {
 					IFormatter formatter = new BinaryFormatter();
 					this.results = (Dictionary<GGenre, CrawlResult>)formatter.Deserialize(stream);
 				}
 				
 				//かつてのバージョンではあったが新しいバージョンではなくなったジャンルを削除
-				List<GGenre> newGenres = new List<GGenre>();
+				Dictionary<GGenre, CrawlResult> newResults = new Dictionary<GGenre, CrawlResult>();
 				foreach (GGenre genre in GGenre.AllGenres) {
-					if (genre.IsCrawlable) {
-						newGenres.Add(genre);
+					CrawlResult result;
+					if (genre.IsCrawlable && oldResults.TryGetValue(genre, out result)) {
+						newResults.Add(genre, result);
 					}
-				}
-				List<GGenre> oldGenres = new List<GGenre>();
-				foreach (GGenre genre in this.results.Keys) {
-					if (!newGenres.Contains(genre)) {
-						oldGenres.Add(genre);
-					}
-				}
-				foreach (GGenre genre in oldGenres) {
-					this.results.Remove(genre);
 				}
 				
+				this.results = newResults;
 				return true;
 			} catch {
 				return false;
@@ -167,12 +161,21 @@ namespace Yusen.GExplorer {
 			Utility.AppendHelpMenu(this.menuStrip1);
 
 			this.genreTabControl1.TabPages.Clear();
+			this.tsmiUncrawlableGenres.DropDownItems.Clear();
 			foreach (GGenre genre in GGenre.AllGenres) {
 				if (genre.IsCrawlable) {
 					this.genreTabControl1.AddGenre(genre);
+				} else {
+					ToolStripMenuItem tsmi = new ToolStripMenuItem(genre.GenreName);
+					tsmi.Tag = genre;
+					tsmi.Click += delegate(object sender2, EventArgs e2) {
+						Utility.Browse(((sender2 as ToolStripMenuItem).Tag as GGenre).TopPageUri);
+					};
+					this.tsmiUncrawlableGenres.DropDownItems.Add(tsmi);
 				}
 			}
 			this.genreTabControl1.SelectedGenre = null;
+			this.tsmiUncrawlableGenres.Enabled = this.tsmiUncrawlableGenres.HasDropDownItems;
 
 			this.crawler.CrawlProgress += new EventHandler<CrawlProgressEventArgs>(crawler_CrawlProgress);
 			this.crawler.IgnorableErrorOccured += new EventHandler<IgnorableErrorOccuredEventArgs>(crawler_IgnorableErrorOccured);

@@ -31,7 +31,9 @@ namespace Yusen.GExplorer {
 		
 		private int volumeNormal = 100;
 		private int volumeCf = 20;
-		
+
+		private bool fullScreenAtPrev = false;
+
 		private PlayerForm() {
 			InitializeComponent();
 		}
@@ -56,6 +58,7 @@ namespace Yusen.GExplorer {
 		}
 		public void FillSettings(PlayerFormSettings settings) {
 			base.FillSettings(settings);
+			settings.KeepFullScreenEnabled = this.KeepFullScreenEnabled;
 			settings.AutoVolumeEnabled = this.AutoVolumeEnabled;
 			settings.MediaKeysEnabled = this.MediaKeysEnabled;
 			settings.RemovePlayedContentEnabled = this.RemovePlayedContentEnabled;
@@ -66,6 +69,7 @@ namespace Yusen.GExplorer {
 
 		public void ApplySettings(PlayerFormSettings settings) {
 			base.ApplySettings(settings);
+			this.KeepFullScreenEnabled = settings.KeepFullScreenEnabled ?? this.KeepFullScreenEnabled;
 			this.AutoVolumeEnabled = settings.AutoVolumeEnabled ?? this.AutoVolumeEnabled;
 			this.MediaKeysEnabled = settings.MediaKeysEnabled ?? this.MediaKeysEnabled;
 			this.RemovePlayedContentEnabled = settings.RemovePlayedContentEnabled ?? this.RemovePlayedContentEnabled;
@@ -122,7 +126,11 @@ namespace Yusen.GExplorer {
 				}
 			}
 		}
-		
+
+		public bool KeepFullScreenEnabled {
+			get { return this.tsmiKeepFullScreen.Checked; }
+			set { this.tsmiKeepFullScreen.Checked = value; }
+		}
 		public bool AutoVolumeEnabled {
 			get {return this.tsmiAutoVolume.Checked;}
 			set {this.tsmiAutoVolume.Checked = value;}
@@ -221,7 +229,11 @@ namespace Yusen.GExplorer {
 		private void tsmiNextContentWithDelete_Click(object sender, EventArgs e) {
 			ContentAdapter nextCont = PlayList.Instance.NextContentOf(this.CurrentContent);
 			PlayList.Instance.Remove(this.CurrentContent);
-			this.CurrentContent = nextCont;
+			if (PlayList.Instance.Contains(nextCont)) {
+				this.CurrentContent = nextCont;
+			} else {
+				this.CurrentContent = null;
+			}
 		}
 		private void tsmiPrevContent_Click(object sender, EventArgs e) {
 			ContentAdapter prevCont = PlayList.Instance.PrevContentOf(this.CurrentContent);
@@ -273,6 +285,7 @@ namespace Yusen.GExplorer {
 		private void wmpMain_PlayStateChange(object sender, _WMPOCXEvents_PlayStateChangeEvent e) {
 			switch((WMPPlayState)e.newState){
 				case WMPPlayState.wmppsMediaEnded:
+					this.fullScreenAtPrev = this.wmpMain.fullScreen;
 					Thread t = new Thread(new ThreadStart(delegate {
 						Thread.Sleep(100);//“K“–‚·‚¬
 						if (!this.IsDisposed && !this.wmpMain.IsDisposed) {
@@ -284,6 +297,12 @@ namespace Yusen.GExplorer {
 						}
 					}));
 					t.Start();
+					break;
+				case WMPPlayState.wmppsPlaying:
+					if (this.KeepFullScreenEnabled && this.fullScreenAtPrev) {
+						this.wmpMain.fullScreen = true;
+						this.fullScreenAtPrev = false;
+					}
 					break;
 			}
 		}
@@ -340,13 +359,18 @@ namespace Yusen.GExplorer {
 	}
 	
 	public class PlayerFormSettings : FormSettingsBaseSettings {
+		private bool? keepFullScreenEnabled;
 		private bool? autoVolumeEnabled;
 		private bool? mediaKeysEnabled;
 		private bool? removePlayedContentEnabled;
 		private int? mainTabIndex;
 		private int? volumeNormal;
 		private int? volumeCf;
-		
+
+		public bool? KeepFullScreenEnabled {
+			get { return this.keepFullScreenEnabled; }
+			set { this.keepFullScreenEnabled = value; }
+		}
 		public bool? AutoVolumeEnabled {
 			get { return this.autoVolumeEnabled; }
 			set { this.autoVolumeEnabled = value; }

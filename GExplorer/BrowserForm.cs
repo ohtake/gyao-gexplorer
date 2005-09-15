@@ -30,6 +30,7 @@ namespace Yusen.GExplorer {
 			
 			this.tsmiGenres.DropDownItems.Clear();
 			this.tsmiTimeTables.DropDownItems.Clear();
+			this.tscbAddress.Items.Clear();
 			foreach (GGenre g in GGenre.AllGenres) {
 				ToolStripMenuItem mi;
 				
@@ -48,6 +49,9 @@ namespace Yusen.GExplorer {
 					this.DocumentUri = genre.TimetableUri;
 				});
 				this.tsmiTimeTables.DropDownItems.Add(mi);
+
+				this.tscbAddress.Items.Add(g.TopPageUri);
+				this.tscbAddress.Items.Add(g.TimetableUri);
 			}
 			
 			Utility.LoadSettingsAndEnableSaveOnClosed(this);
@@ -146,7 +150,6 @@ namespace Yusen.GExplorer {
 			this.Close();
 		}
 		#endregion
-
 	}
 
 	public class BrowserFormSettings : FormSettingsBaseSettings {

@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 using Color = System.Drawing.Color;
-using System.Collections.ObjectModel;
 
 namespace Yusen.GCrawler {
 	[Serializable]
@@ -10,19 +8,18 @@ namespace Yusen.GCrawler {
 		private static readonly GGenre[] allGenres;
 		static GGenre() {
 			GGenre.allGenres = new GGenre[]{
-				new GGenre200507( 1, "cinema", "映画", Color.FromArgb(0x93, 0x2e, 0x2e)),
-				new GGenre200507( 3, "music", "音楽", Color.FromArgb(0xf2, 0xa7, 0xc8)),
-				new GGenre200505Drama( 2, "drama", "ドラマ", Color.FromArgb(0xff, 0x66, 0x00)),
-				new GGenre200507( 6, "anime", "アニメ", Color.FromArgb(0xe7, 0x39, 0x8e)),
-				new GGenre200505( 4, "idol", "アイドル・グラビア", Color.FromArgb(0xf5, 0xa3, 0x00)),
-				new GGenre200505( 5, "variety", "バラエティ", Color.FromArgb(0x9c, 0x60, 0xa4)),
-				new GGenre200505(10, "documentary", "ドキュメンタリー", Color.FromArgb(0xfa, 0xef, 0x45)),
-				new GGenre200505(15, "life", "ファッション・カルチャー", Color.FromArgb(0x53, 0x47, 0x9a)),
-				new GGenre200505( 9, "sports", "スポーツ", Color.FromArgb(0xab, 0xce, 0x30)),
-				new GGenre200505(16, "business", "ビジネス", Color.FromArgb(0x38, 0x72, 0xb9)),
-				new GGenre200507( 7, "news", "ニュース", Color.FromArgb(0x00, 0xa5, 0x3c)),
-				new GGenre200507(12, "videoblog", "映像ブログ", Color.FromArgb(0xb6, 0x24, 0xd4)),
-				new GGenre200505(18, "cinema", "シネマGyaO ?", Color.FromArgb(0x00, 0x00, 0x00)),
+				new GGenre200509(22, "news", "ニュース・ビジネス", Color.FromArgb(0xCC, 0x00, 0xFF)),
+				new GGenre200509( 1, "cinema", "映画", Color.FromArgb(0x99, 0x00, 0xFF)),
+				new GGenre200509( 3, "music", "音楽", Color.FromArgb(0x66, 0x00, 0xFF)),
+				new GGenre200509Drama( 2, "drama", "ドラマ", Color.FromArgb(0x33, 0x00, 0xFF)),
+				new GGenre200509( 9, "sports", "スポーツ", Color.FromArgb(0x00, 0x66, 0xFF)),
+				new GGenre200509(10, "documentary", "ドキュメンタリー", Color.FromArgb(0x00, 0xCC, 0xFF)),
+				new GGenre200509(21, "beauty", "ビューティー＆ヘルス", Color.FromArgb(0x00, 0xFF, 0xFF)),
+				new GGenre200509(20, "life", "ライフ＆カルチャー", Color.FromArgb(0x00, 0xFF, 0x99)),
+				new GGenre200509( 6, "anime", "アニメ", Color.FromArgb(0x00, 0xFF, 0x33)),
+				new GGenre200509( 5, "variety", "バラエティ", Color.FromArgb(0x99, 0xFF, 0x00)),
+				new GGenre200509( 4, "idol", "アイドル・グラビア", Color.FromArgb(0xFF, 0xFF, 0x00)),
+				new GGenre200509VideoBlog(12, "blog", "映像ブログ", Color.FromArgb(0xFF, 0x99, 0x00)),
 			};
 		}
 		public static IEnumerable<GGenre> AllGenres {
@@ -64,7 +61,7 @@ namespace Yusen.GCrawler {
 		public abstract Uri TopPageUri {
 			get;
 		}
-		public Uri RootUri {
+		public virtual Uri RootUri {
 			get {
 				return new Uri("http://www.gyao.jp/" + this.DirectryName + "/");
 			}
@@ -89,7 +86,9 @@ namespace Yusen.GCrawler {
 		public override string ToString() {
 			return "<" + this.GenreId + "> " + this.GenreName;
 		}
+		#region 2005-05/2005-07
 		[Serializable]
+		[Obsolete]
 		private class GGenre200505 : GGenre {
 			public GGenre200505(int keyNo, string dir, string name, Color color)
 				: base(keyNo, dir, name, color) { }
@@ -101,6 +100,7 @@ namespace Yusen.GCrawler {
 			}
 		}
 		[Serializable]
+		[Obsolete]
 		private sealed class GGenre200505Drama : GGenre200505 {
 			public GGenre200505Drama(int keyNo, string dir, string name, Color color)
 				: base(keyNo, dir, name, color) { }
@@ -109,6 +109,7 @@ namespace Yusen.GCrawler {
 			}
 		}
 		[Serializable]
+		[Obsolete]
 		private class GGenre200507 : GGenre{
 			public GGenre200507(int keyNo, string dir, string name, Color color)
 				: base(keyNo, dir, name, color) { }
@@ -125,6 +126,36 @@ namespace Yusen.GCrawler {
 				: base(keyNo, dir, name, color) { }
 			public override bool IsCrawlable {
 				get { return false; }
+			}
+		}
+		#endregion
+		[Serializable]
+		private class GGenre200509 : GGenre {
+			public GGenre200509(int keyNo, string dir, string name, Color color)
+				: base(keyNo, dir, name, color) { }
+			public override Uri TopPageUri {
+				get {
+					return new Uri("http://www.gyao.jp/" + this.DirectryName + "/");
+				}
+			}
+		}
+		[Serializable]
+		private sealed class GGenre200509Drama : GGenre200509 {
+			public GGenre200509Drama(int keyNo, string dir, string name, Color color)
+				: base(keyNo, dir, name, color) { }
+			// GyaO 側のスペルミスへの対応
+			public override string ImageDirName {
+				get { return "dorama"; }
+			}
+		}
+		[Serializable]
+		private sealed class GGenre200509VideoBlog : GGenre200509 {
+			public GGenre200509VideoBlog(int keyNo, string dir, string name, Color color)
+				: base(keyNo, dir, name, color) { }
+			public override Uri RootUri {
+				// blog の動的なページによりトラップにはまるので
+				// トップと番組表のみしか読まないようにする
+				get { return new Uri("http://www.gyao.jp/dummy/"); }
 			}
 		}
 	}

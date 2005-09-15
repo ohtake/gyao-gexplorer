@@ -194,9 +194,19 @@ namespace Yusen.GExplorer {
 				}
 			}
 		}
+		private void tsmiExport_Click(object sender, EventArgs e) {
+			if (DialogResult.OK == this.sfdXml.ShowDialog()) {
+				PlayList.Instance.SerializeItems(this.sfdXml.FileName);
+			}
+		}
+		private void tsmiImport_Click(object sender, EventArgs e) {
+			if (DialogResult.OK == this.ofdXml.ShowDialog()) {
+				PlayList.Instance.DeserializeItems(this.ofdXml.FileName);
+			}
+		}
 		private void tsmiExportAsAsx_Click(object sender, EventArgs e) {
-			if (DialogResult.OK == this.saveFileDialog1.ShowDialog()) {
-				PlayList.Instance.ExportAsAsx(this.saveFileDialog1.FileName);
+			if (DialogResult.OK == this.sfdAsx.ShowDialog()) {
+				PlayList.Instance.ExportAsAsx(this.sfdAsx.FileName);
 			}
 		}
 		private void tsmiSerializePlayListNow_Click(object sender, EventArgs e) {

@@ -12,14 +12,15 @@ namespace Yusen.GCrawler {
 		private static readonly XmlSerializer serializer = new XmlSerializer(typeof(GContent));
 		
 		private static readonly Regex regexAnchorHref = new Regex(@"http://www.gyao.jp/sityou/catedetail/contents_id/(cnt[0-9]+)/");
-		private static readonly Regex regexAnchorJscript = new Regex(@"javascript:gotoDetail\((?:%20| )?'(cnt[0-9]+)'(?:%20| )?\);?");
+		private static readonly Regex regexAnchorJscriptGd = new Regex(@"javascript:gotoDetail\((?:%20| )?'(cnt[0-9]+)'(?:%20| )?\);?");
+		private static readonly Regex regexAnchorJscriptDs = new Regex(@"javascript:directScreen\('(cnt[0-9]+)','bit[0-9]+'\);");
 		private static readonly Regex regexImageSrc = new Regex(@"http://www.gyao.jp/img/info/[a-z0-9]+/(cnt[0-9]+)_[0-9a-z]*\.(?:jpg|gif)");
 		private static readonly IEnumerable<Regex> regexesExtractor;
 		
 		private static readonly Regex regexBreadGenre = new Regex(@"^<a href=""[^""]*"">(.*)</a> &gt; $");
 		private static readonly Regex regexTitle = new Regex(@"<td class=""title12b"">(.*)</td>");
 		private static readonly Regex regexSubtitle = new Regex(@"<td class=""title12"">(.*)</td><!--サブタイトル-->");
-		private static readonly Regex regexImageDir = new Regex(@"<img src=""(/img/info/[a-z0-9]+/{1,2})(?:cnt[0-9]+|dummy)_[0-9a-z]*\.(?:jpg|gif)""");
+		private static readonly Regex regexImageDir = new Regex(@"<img src=""(/img/info/[a-z0-9]+/{1,2})cnt[0-9]+_[0-9a-z]*\.(?:jpg|gif)"""); // 村上さんはなぜか / が2つ
 		private static readonly Regex regexEpisodeNum = new Regex(@"<td align=""left""><b>(.*)</b></td>");
 		private static readonly Regex regexDuration = new Regex(@"<td align=""right""><b>正味時間 : (.*)</b></td>");
 		private static readonly Regex regexDescription = new Regex(@"^\s*(?:<td align=""[^""]*"">)?((?:[^<>]|<[Bb][Rr]>|(<[Aa][^>]*>)|</[Aa]>)+)</td>$");
@@ -27,7 +28,7 @@ namespace Yusen.GCrawler {
 		
 		static GContent() {
 			GContent.regexesExtractor = new Regex[]{
-				GContent.regexAnchorHref, GContent.regexAnchorJscript, GContent.regexImageSrc,};
+				GContent.regexAnchorHref, GContent.regexAnchorJscriptGd, GContent.regexAnchorJscriptDs, GContent.regexImageSrc,};
 		}
 		
 		public static void Serialize(string filename, GContent cont){

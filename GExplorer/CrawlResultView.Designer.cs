@@ -63,6 +63,8 @@ namespace Yusen.GExplorer {
 			this.tsmiMultiSelect = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiNewColor = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiClearFilterStringOnHide = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
 			this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
 			this.tslGenre = new System.Windows.Forms.ToolStripLabel();
 			this.tslNumber = new System.Windows.Forms.ToolStripLabel();
@@ -335,6 +337,8 @@ namespace Yusen.GExplorer {
             this.tsmiHoverSelect,
             this.tsmiMultiSelect,
             this.toolStripSeparator7,
+            this.tsmiClearFilterStringOnHide,
+            this.toolStripSeparator10,
             this.tsmiNewColor});
 			this.tsddbSettings.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tsddbSettings.Name = "tsddbSettings";
@@ -383,6 +387,18 @@ namespace Yusen.GExplorer {
 			this.tsmiNewColor.Name = "tsmiNewColor";
 			this.tsmiNewColor.Text = "新着の色 (&N) ...";
 			this.tsmiNewColor.Click += new System.EventHandler(this.tsmiNewColor_Click);
+			// 
+			// tsmiClearFilterStringOnHide
+			// 
+			this.tsmiClearFilterStringOnHide.Checked = true;
+			this.tsmiClearFilterStringOnHide.CheckOnClick = true;
+			this.tsmiClearFilterStringOnHide.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.tsmiClearFilterStringOnHide.Name = "tsmiClearFilterStringOnHide";
+			this.tsmiClearFilterStringOnHide.Text = "フィルタ解除時にフィルタ文字列をクリア (&C)";
+			// 
+			// toolStripSeparator10
+			// 
+			this.toolStripSeparator10.Name = "toolStripSeparator10";
 			// 
 			// toolStripSeparator5
 			// 
@@ -513,5 +529,7 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ToolStripDropDownButton tsddbNormalPages;
 		private System.Windows.Forms.ToolStripLabel tslNumber;
 		private System.Windows.Forms.ToolStripLabel tslTime;
+		private System.Windows.Forms.ToolStripMenuItem tsmiClearFilterStringOnHide;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator10;
 	}
 }

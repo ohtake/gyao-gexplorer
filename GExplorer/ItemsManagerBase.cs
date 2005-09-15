@@ -13,13 +13,20 @@ namespace Yusen.GExplorer {
 		}
 		
 		public void DeserializeItems() {
+			this.DeserializeItems(this.FilenameForSerialization);
+		}
+		public void DeserializeItems(string filename) {
 			List<T> items;
-			if (Utility.TryDeserializeSettings(this.FilenameForSerialization, out items)) {
+			if (Utility.TryDeserializeSettings(filename, out items)) {
 				this.items = items;
+				this.OnChanged();
 			}
 		}
 		public void SerializeItems() {
-			Utility.SerializeSettings(this.FilenameForSerialization, this.items);
+			this.SerializeItems(this.FilenameForSerialization);
+		}
+		public void SerializeItems(string filename) {
+			Utility.SerializeSettings(filename, this.items);
 		}
 		
 		abstract protected void OnChanged();
