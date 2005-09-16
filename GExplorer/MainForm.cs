@@ -23,14 +23,15 @@ namespace Yusen.GExplorer {
 		}
 		private delegate void ViewCrawlResultDelegate(CrawlResult result);
 
-
 		private const string cacheDir = @"Cache";
-		private const string cacheResults = @"CrawlResults.bin";
+		private const string cacheResultsFilename = @"CrawlResults.bin";
+		private const string cacheDeadlineFilename = @"DeadLines.bin";
 		
 		private IContentCacheController cacheController;
 		private Crawler crawler;
-		private Dictionary<GGenre, CrawlResult> results = new Dictionary<GGenre, CrawlResult>();
+		private Dictionary<GGenre, CrawlResult> crawlResults = new Dictionary<GGenre, CrawlResult>();
 		private Thread threadCrawler = null;
+		private IDeadLineDictionary deadLineDictionary;
 
 		private DateTime lastDetailTime = DateTime.MinValue;
 		private object monitorLastDetailTime = new object();
@@ -104,17 +105,17 @@ namespace Yusen.GExplorer {
 		}
 
 		private void SerializeCrawlResults() {
-			using (Stream stream = new FileStream(Path.Combine(MainForm.cacheDir, MainForm.cacheResults), FileMode.Create)) {
+			using (Stream stream = new FileStream(Path.Combine(MainForm.cacheDir, MainForm.cacheResultsFilename), FileMode.Create)) {
 				IFormatter formatter = new BinaryFormatter();
-				formatter.Serialize(stream, this.results);
+				formatter.Serialize(stream, this.crawlResults);
 			}
 		}
 		private bool TryDeserializeCrawlResults() {
 			try {
 				Dictionary<GGenre, CrawlResult> oldResults = null;
-				using (Stream stream = new FileStream(Path.Combine(MainForm.cacheDir, MainForm.cacheResults), FileMode.Open)) {
+				using (Stream stream = new FileStream(Path.Combine(MainForm.cacheDir, MainForm.cacheResultsFilename), FileMode.Open)) {
 					IFormatter formatter = new BinaryFormatter();
-					this.results = (Dictionary<GGenre, CrawlResult>)formatter.Deserialize(stream);
+					this.crawlResults = (Dictionary<GGenre, CrawlResult>)formatter.Deserialize(stream);
 				}
 				
 				//かつてのバージョンではあったが新しいバージョンではなくなったジャンルを削除
@@ -126,8 +127,25 @@ namespace Yusen.GExplorer {
 					}
 				}
 				
-				this.results = newResults;
+				this.crawlResults = newResults;
 				return true;
+			} catch {
+				return false;
+			}
+		}
+		private void SerializeDeadlineDictionary() {
+			using (Stream stream = new FileStream(Path.Combine(MainForm.cacheDir, MainForm.cacheDeadlineFilename), FileMode.Create)) {
+				IFormatter formatter = new BinaryFormatter();
+				formatter.Serialize(stream, this.deadLineDictionary);
+			}
+		}
+		private bool TryDeserializeDeadlineDictionary() {
+			try {
+				using (Stream stream = new FileStream(Path.Combine(MainForm.cacheDir, MainForm.cacheDeadlineFilename), FileMode.Open)) {
+					IFormatter formatter = new BinaryFormatter();
+					this.deadLineDictionary = (IDeadLineDictionary)formatter.Deserialize(stream);
+					return true;
+				}
 			} catch {
 				return false;
 			}
@@ -150,12 +168,17 @@ namespace Yusen.GExplorer {
 			}
 			this.tsmiUserCommands.Enabled = this.tsmiUserCommands.HasDropDownItems;
 		}
-
+		
 		private void MainForm_Load(object sender, EventArgs e) {
 			this.cacheController = new ContentCacheControllerXml(MainForm.cacheDir);
-			this.crawler = new Crawler(new HtmlParserRegex(), this.cacheController);
+			this.deadLineDictionary = new DeadLineDictionarySorted();
 			
 			this.TryDeserializeCrawlResults();
+			this.TryDeserializeDeadlineDictionary();
+			
+			GlobalVariables.DeadLineDictionaryReadonly = this.deadLineDictionary;
+			
+			this.crawler = new Crawler(new HtmlParserRegex(), this.cacheController, this.deadLineDictionary);
 
 			this.Text = Application.ProductName + " " + Application.ProductVersion;
 			Utility.AppendHelpMenu(this.menuStrip1);
@@ -176,7 +199,8 @@ namespace Yusen.GExplorer {
 			}
 			this.genreTabControl1.SelectedGenre = null;
 			this.tsmiUncrawlableGenres.Enabled = this.tsmiUncrawlableGenres.HasDropDownItems;
-
+			this.tsmiUncrawlableGenres.Visible = this.tsmiUncrawlableGenres.HasDropDownItems;
+			
 			this.crawler.CrawlProgress += new EventHandler<CrawlProgressEventArgs>(crawler_CrawlProgress);
 			this.crawler.IgnorableErrorOccured += new EventHandler<IgnorableErrorOccuredEventArgs>(crawler_IgnorableErrorOccured);
 			
@@ -189,6 +213,7 @@ namespace Yusen.GExplorer {
 		private void MainForm_FormClosed(object sender, FormClosedEventArgs e) {
 			UserCommandsManager.Instance.UserCommandsChanged -= new EventHandler(UserCommandsManager_UserCommandsChanged);
 			this.SerializeCrawlResults();
+			this.SerializeDeadlineDictionary();
 		}
 		private void UserCommandsManager_UserCommandsChanged(object sender, EventArgs e) {
 			this.CreateUserCommandsMenuItems();
@@ -223,7 +248,7 @@ namespace Yusen.GExplorer {
 			GGenre genre = e.Genre;
 			if (null == genre) return;
 			CrawlResult result;
-			if (e.ForceReload || !this.results.TryGetValue(genre, out result)) {
+			if (e.ForceReload || !this.crawlResults.TryGetValue(genre, out result)) {
 				Thread t;
 				lock (this.crawler) {
 					if (null != this.threadCrawler) {
@@ -240,7 +265,7 @@ namespace Yusen.GExplorer {
 						}
 						if (result.Success) {
 							this.ClearStatusBarInfo();
-							this.results[genre] = result;
+							this.crawlResults[genre] = result;
 							this.ViewCrawlResult(result);
 						}
 					}));
@@ -280,7 +305,7 @@ namespace Yusen.GExplorer {
 		}
 		private void tsmiBrowsePackage_Click(object sender, EventArgs e) {
 			InputBoxDialog ibd = new InputBoxDialog("パッケージIDを指定してウェブブラウザで開く", "パッケージIDを入力してください．", "pac0000000");
-			switch (ibd.ShowDialog()) {
+			switch (ibd.ShowDialog(this)) {
 				case DialogResult.OK:
 					Utility.Browse(GPackage.CreatePackagePageUri(ibd.Input));
 					break;
@@ -288,7 +313,7 @@ namespace Yusen.GExplorer {
 		}
 		private void tsmiBrowseContent_Click(object sender, EventArgs e) {
 			InputBoxDialog ibd = new InputBoxDialog("コンテンツIDを指定してウェブブラウザで開く", "コンテンツIDを入力してください．", "cnt0000000");
-			switch (ibd.ShowDialog()) {
+			switch (ibd.ShowDialog(this)) {
 				case DialogResult.OK:
 					Utility.Browse(GContent.CreateDetailPageUri(ibd.Input));
 					break;
@@ -309,6 +334,25 @@ namespace Yusen.GExplorer {
 			NgContentsEditor.Instance.Show();
 			NgContentsEditor.Instance.Focus();
 		}
+		private void tsmiMergeResults_Click(object sender, EventArgs e) {
+			GGenre mergedGenre = new MergedGenre();
+			CrawlResult mergedResult = CrawlResult.Merge(mergedGenre, this.crawlResults.Values);
+			this.ViewCrawlResult(mergedResult);
+		}
+		private void tsmiClearCrawlResults_Click(object sender, EventArgs e) {
+			string title = "クロール結果の破棄";
+			switch (MessageBox.Show(
+					"全ジャンルのクロール結果を破棄します．よろしいですか？",
+					title, MessageBoxButtons.YesNo, MessageBoxIcon.Question)) {
+				case DialogResult.Yes:
+					int numResults = this.crawlResults.Count;
+					this.crawlResults.Clear();
+					MessageBox.Show(
+						numResults.ToString() + " 個のクロール結果を破棄しました．",
+						title, MessageBoxButtons.OK, MessageBoxIcon.Information);
+					break;
+			}
+		}
 		private void tsmiRemoveCachesUnreachable_Click(object sender, EventArgs e) {
 			string title = "クロール結果で到達不可能なキャッシュを削除";
 			switch (MessageBox.Show(
@@ -316,7 +360,7 @@ namespace Yusen.GExplorer {
 					title, MessageBoxButtons.YesNo, MessageBoxIcon.Question)) {
 				case DialogResult.Yes:
 					List<string> reachable = new List<string>();
-					foreach(CrawlResult result in this.results.Values){
+					foreach(CrawlResult result in this.crawlResults.Values){
 						foreach (GPackage package in result.Packages) {
 							foreach (GContent content in package.Contents) {
 								reachable.Add(content.ContentId);
@@ -347,25 +391,6 @@ namespace Yusen.GExplorer {
 					break;
 			}
 		}
-		private void tsmiMergeResults_Click(object sender, EventArgs e) {
-			GGenre mergedGenre = new MergedGenre();
-			CrawlResult mergedResult = CrawlResult.Merge(mergedGenre, this.results.Values);
-			this.ViewCrawlResult(mergedResult);
-		}
-		private void tsmiClearCrawlResults_Click(object sender, EventArgs e) {
-			string title = "クロール結果の破棄";
-			switch (MessageBox.Show(
-					"全ジャンルのクロール結果を破棄します．よろしいですか？",
-					title, MessageBoxButtons.YesNo, MessageBoxIcon.Question)) {
-				case DialogResult.Yes:
-					int numResults = this.results.Count;
-					this.results.Clear();
-					MessageBox.Show(
-						numResults.ToString() + " 個のクロール結果を破棄しました．",
-						title, MessageBoxButtons.OK, MessageBoxIcon.Information);
-					break;
-			}
-		}
 		private void tsmiRemoveCachesAll_Click(object sender, EventArgs e) {
 			string title = "全てのキャッシュを削除";
 			switch (MessageBox.Show(
@@ -384,6 +409,58 @@ namespace Yusen.GExplorer {
 					MessageBox.Show(
 						success.ToString() + " 個のキャッシュを削除しました．\n"
 						+ failed.ToString() + " 個のキャッシュの削除に失敗しました．",
+						title, MessageBoxButtons.OK, MessageBoxIcon.Information);
+					break;
+			}
+		}
+		private void tsmiRemoveDeadlineEntriesUnreacheable_Click(object sender, EventArgs e) {
+			string title = "クロール結果で到達不可能なエントリーを削除";
+			switch (MessageBox.Show(
+					"各ジャンルのクロール結果に表示されていない配信期限を削除します．\nよろしいですか？",
+					title, MessageBoxButtons.YesNo, MessageBoxIcon.Question)) {
+				case DialogResult.Yes:
+					List<string> reachable = new List<string>();
+					foreach (CrawlResult result in this.crawlResults.Values) {
+						foreach (GPackage package in result.Packages) {
+							foreach (GContent content in package.Contents) {
+								reachable.Add(content.ContentId);
+							}
+						}
+					}
+					reachable.Sort();
+
+					int success = 0;
+					int failed = 0;
+					int ignored = 0;
+					foreach (string key in new List<string>(this.deadLineDictionary.ListContentIds())){
+						if (reachable.BinarySearch(key) >= 0) {
+							ignored++;
+						} else {
+							if (this.deadLineDictionary.RemoveDeadLineOf(key)) {
+								success++;
+							} else {
+								failed++;
+							}
+						}
+					}
+					MessageBox.Show(
+						ignored.ToString() + " 個のエントリーは到達可能により削除しませんでした．\n"
+						+ success.ToString() + " 個のエントリーを削除しました．\n"
+						+ failed.ToString() + " 個のエントリーの削除に失敗しました．",
+						title, MessageBoxButtons.OK, MessageBoxIcon.Information);
+					break;
+			}
+		}
+		private void tsmiRemoveDeadlineEntriesAll_Click(object sender, EventArgs e) {
+			string title = "全てのエントリーを削除";
+			switch (MessageBox.Show(
+					"全てのエントリーを削除します．\nよろしいですか？",
+					title, MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation)) {
+				case DialogResult.Yes:
+					int count = this.deadLineDictionary.Count;
+					this.deadLineDictionary.ClearDeadLines();
+					MessageBox.Show(
+						count.ToString() + " 個のエントリーを削除しました．",
 						title, MessageBoxButtons.OK, MessageBoxIcon.Information);
 					break;
 			}

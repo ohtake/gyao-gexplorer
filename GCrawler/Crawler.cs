@@ -18,8 +18,9 @@ namespace Yusen.GCrawler {
 			public event EventHandler<IgnorableErrorOccuredEventArgs> IgnorableErroeOcured;
 			
 			private GGenre genre;
-			private IContentCacheController cacheController;
 			private IHtmlParser parser;
+			private IContentCacheController cacheController;
+			private IDeadLineDictionary deadLineDic;
 			private Stack<Uri> waitingPages = new Stack<Uri>();
 			private Queue<string> waitingPackages = new Queue<string>();
 			private Queue<string> waitingContents = new Queue<string>();
@@ -30,10 +31,11 @@ namespace Yusen.GCrawler {
 			private Dictionary<string, string> contPackRelations = new Dictionary<string, string>();
 			private List<IgnorableErrorOccuredEventArgs> ignorableErrors = new List<IgnorableErrorOccuredEventArgs>();
 
-			public CrawlerHelper(GGenre genre, IHtmlParser parser, IContentCacheController cacheController) {
+			public CrawlerHelper(GGenre genre, IHtmlParser parser, IContentCacheController cacheController, IDeadLineDictionary deadLineDic) {
 				this.genre = genre;
 				this.parser = parser;
 				this.cacheController = cacheController;
+				this.deadLineDic = deadLineDic;
 				
 				//トップ，番組表の順でクロール
 				this.waitingPages.Push(this.genre.TimetableUri);
@@ -125,7 +127,7 @@ namespace Yusen.GCrawler {
 					this.OnCrawlProgress("パッケージページを取得中 " + packId);
 					GPackage package;
 					List<string> childContIds;
-					if (!GPackage.TryDownload(packId, out package, out childContIds)) {
+					if (!GPackage.TryDownload(packId, this.deadLineDic, out package, out childContIds)) {
 						if (this.OnIgnorableErrorOccured("パッケージページの取得ミスもしくは解析ミス．" + packId)) {
 							continue;
 						} else {
@@ -234,10 +236,12 @@ namespace Yusen.GCrawler {
 		public event EventHandler<IgnorableErrorOccuredEventArgs> IgnorableErrorOccured;
 		private readonly IHtmlParser parser;
 		private readonly IContentCacheController cacheController;
+		private readonly IDeadLineDictionary deadLineDic;
 
-		public Crawler(IHtmlParser parser, IContentCacheController cacheController) {
+		public Crawler(IHtmlParser parser, IContentCacheController cacheController, IDeadLineDictionary deadLineDic) {
 			this.parser = parser;
 			this.cacheController = cacheController;
+			this.deadLineDic = deadLineDic;
 		}
 		
 		public CrawlResult Crawl(GGenre genre) {
@@ -245,7 +249,7 @@ namespace Yusen.GCrawler {
 				throw new ArgumentException("ジャンル「" + genre.GenreName + "」はクロールできない．");
 			}
 
-			CrawlerHelper helper = new CrawlerHelper(genre, this.parser, this.cacheController);
+			CrawlerHelper helper = new CrawlerHelper(genre, this.parser, this.cacheController, this.deadLineDic);
 			helper.CrawlProgress += delegate(object sender, CrawlProgressEventArgs e) {
 				if (null != this.CrawlProgress) {
 					this.CrawlProgress(sender, e);

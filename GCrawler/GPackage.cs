@@ -15,6 +15,7 @@ namespace Yusen.GCrawler {
 		private readonly static IEnumerable<Regex> regexesExtractor;
 		
 		private readonly static Regex regexPackageName = new Regex(@"<td class=""title12b"">(.+)</td>");
+		private const string strTitleDate = "<td class=\"titledate10\">";
 		private readonly static Regex regexAnchorHref2 = new Regex(@"<a href=""(.+?)""");
 		
 		static GPackage() {
@@ -50,7 +51,7 @@ namespace Yusen.GCrawler {
 			return new Uri("http://www.gyao.jp/sityou/catelist/pac_id/" + packageId + "/");
 		}
 
-		public static bool TryDownload(string packId, out GPackage package, out List<string> childContIds) {
+		public static bool TryDownload(string packId, IDeadLineDictionary deadLineDic, out GPackage package, out List<string> childContIds) {
 			Uri uri = GPackage.CreatePackagePageUri(packId);
 			TextReader reader = new StreamReader(new WebClient().OpenRead(uri), Encoding.GetEncoding("Shift_JIS"));
 			
@@ -69,14 +70,23 @@ namespace Yusen.GCrawler {
 				childContIds = null;
 				return false;
 			}
-			//コンテンツIDの抽出
+			//コンテンツIDと期限の抽出
 			List<string> contentIds = new List<string>();
+			string deadLine = null;
 			while (null != (line = reader.ReadLine())) {
+				if (null == deadLine) {
+					if (line.EndsWith(GPackage.strTitleDate)) {
+						deadLine = reader.ReadLine().Trim();
+					}
+					continue;
+				}
 				Match match = GPackage.regexAnchorHref2.Match(line);
 				if (match.Success) {
 					string contId;
 					if (GContent.TryExtractContentId(new Uri(uri, match.Groups[1].Value), out contId)) {
 						contentIds.Add(contId);
+						deadLineDic.SetDeadLine(contId, deadLine);
+						deadLine = null;
 					}
 				}
 			}
@@ -86,7 +96,7 @@ namespace Yusen.GCrawler {
 			return true;
 		}
 		internal static GPackage CreateDummyPackage() {
-			return new GPackage("pacXXXXXXX", "不明なパッケージ");
+			return new GPackage("pac???????", "(不明なパッケージ)");
 		}
 
 		private readonly string packageId;

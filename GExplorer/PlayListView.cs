@@ -42,12 +42,16 @@ namespace Yusen.GExplorer {
 			settings.ColWidthId = this.chId.Width;
 			settings.ColWidthName = this.chName.Width;
 			settings.ColWidthDuration = this.chDuration.Width;
+			settings.ColWidthDeadline = this.chDeadLine.Width;
+			settings.ColWidthComment = this.chComment.Width;
 		}
 		public void ApplySettings(PlayListViewSettings settings) {
 			this.MultiSelectEnabled = settings.MultiSelectEnabled ?? this.MultiSelectEnabled;
 			this.chId.Width = settings.ColWidthId ?? this.chId.Width;
 			this.chName.Width = settings.ColWidthName ?? this.chName.Width;
 			this.chDuration.Width = settings.ColWidthDuration ?? this.chDuration.Width;
+			this.chDeadLine.Width = settings.ColWidthDeadline ?? this.chDeadLine.Width;
+			this.chComment.Width = settings.ColWidthComment ?? this.chComment.Width;
 		}
 
 		public ContentAdapter[] SelectedContents {
@@ -76,7 +80,7 @@ namespace Yusen.GExplorer {
 		private void UpdatePlayListView() {
 			this.listView1.Items.Clear();
 			foreach (ContentAdapter cont in PlayList.Instance) {
-				ListViewItem lvi = new ListViewItem(new string[] { cont.ContentId, cont.DisplayName, cont.GTimeSpan.ToString() });
+				ListViewItem lvi = new ListViewItem(new string[] { cont.ContentId, cont.DisplayName, cont.GTimeSpan.ToString(), cont.DeadLine, cont.Comment });
 				lvi.Tag = cont;
 				this.listView1.Items.Add(lvi);
 			}
@@ -177,7 +181,7 @@ namespace Yusen.GExplorer {
 		private void tsmiAddById_Click(object sender, EventArgs e) {
 			string title = "コンテンツIDを指定してプレイリストに追加";
 			InputBoxDialog inputBox = new InputBoxDialog(title, "追加するコンテンツのIDを入力してください．", "cnt0000000");
-			if (DialogResult.OK == inputBox.ShowDialog()) {
+			if (DialogResult.OK == inputBox.ShowDialog(this.FindForm())) {
 				GContent cont;
 				if (GContent.TryDownload(inputBox.Input, out cont)) {
 					ContentAdapter ca = new ContentAdapter(cont);
@@ -193,6 +197,15 @@ namespace Yusen.GExplorer {
 						title, MessageBoxButtons.OK, MessageBoxIcon.Error);
 				}
 			}
+		}
+		private void tsmiSetDeadlines_Click(object sender, EventArgs e) {
+			foreach (ContentAdapter cont in PlayList.Instance) {
+				cont.TryResetDeadline();
+			}
+			this.UpdatePlayListView();
+		}
+		private void tsmiRefleshView_Click(object sender, EventArgs e) {
+			this.UpdatePlayListView();
 		}
 		private void tsmiExport_Click(object sender, EventArgs e) {
 			if (DialogResult.OK == this.sfdXml.ShowDialog()) {
@@ -225,6 +238,21 @@ namespace Yusen.GExplorer {
 			ContentAdapter[] conts = this.SelectedContents;
 			if (conts.Length > 0) {
 				PlayerForm.Play(conts[0]);
+			}
+		}
+		private void tsmiSetComment_Click(object sender, EventArgs e) {
+			ContentAdapter[] conts = this.SelectedContents;
+			if (conts.Length > 0) {
+				InputBoxDialog ibd = new InputBoxDialog("コメントを入力．", "コメントを入力してください．", conts[0].Comment);
+				switch (ibd.ShowDialog(this.FindForm())) {
+					case DialogResult.OK:
+						string comment = ibd.Input;
+						foreach (ContentAdapter cont in conts) {
+							cont.Comment = comment;
+						}
+						this.UpdatePlayListView();
+						break;
+				}
 			}
 		}
 		private void tsmiMoveToTop_Click(object sender, EventArgs e) {
@@ -330,6 +358,8 @@ namespace Yusen.GExplorer {
 		private int? colWidthId;
 		private int? colWidthName;
 		private int? colWidthDuration;
+		private int? colWidthDeadline;
+		private int? colWidthComment;
 
 		public bool? MultiSelectEnabled {
 			get { return this.multiSelectEnabled; }
@@ -346,6 +376,14 @@ namespace Yusen.GExplorer {
 		public int? ColWidthDuration {
 			get { return this.colWidthDuration; }
 			set { this.colWidthDuration = value; }
+		}
+		public int? ColWidthDeadline {
+			get { return this.colWidthDeadline; }
+			set { this.colWidthDeadline = value; }
+		}
+		public int? ColWidthComment {
+			get { return this.colWidthComment; }
+			set { this.colWidthComment = value; }
 		}
 	}
 }

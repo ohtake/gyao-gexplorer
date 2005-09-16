@@ -61,6 +61,9 @@ namespace Yusen.GExplorer {
 			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiUserCommands = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiAbortCrawling = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiRemoveDeadlineEntries = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiRemoveDeadlineEntriesUnreacheable = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiRemoveDeadlineEntriesAll = new System.Windows.Forms.ToolStripMenuItem();
 			this.statusStrip1.SuspendLayout();
 			this.toolStripContainer1.BottomToolStripPanel.SuspendLayout();
 			this.toolStripContainer1.ContentPanel.SuspendLayout();
@@ -169,7 +172,7 @@ namespace Yusen.GExplorer {
 			this.tabPage2.Location = new System.Drawing.Point(4, 21);
 			this.tabPage2.Name = "tabPage2";
 			this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage2.Size = new System.Drawing.Size(787, 0);
+			this.tabPage2.Size = new System.Drawing.Size(799, 0);
 			this.tabPage2.TabIndex = 1;
 			this.tabPage2.Text = "tabPage2";
 			// 
@@ -214,6 +217,7 @@ namespace Yusen.GExplorer {
 			// crawlResultView1
 			// 
 			this.crawlResultView1.AboneType = Yusen.GExplorer.AboneType.Toumei;
+			this.crawlResultView1.ClearFilterStringOnHideEnabled = true;
 			this.crawlResultView1.CrawlResult = null;
 			this.crawlResultView1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.crawlResultView1.FilterEnabled = false;
@@ -344,6 +348,7 @@ namespace Yusen.GExplorer {
             this.toolStripSeparator4,
             this.tsmiClearCrawlResults,
             this.tsmiRemoveCaches,
+            this.tsmiRemoveDeadlineEntries,
             this.toolStripSeparator2,
             this.tsmiUserCommands});
 			this.tsmiTools.Name = "tsmiTools";
@@ -404,7 +409,7 @@ namespace Yusen.GExplorer {
 			// tsmiRemoveCachesAll
 			// 
 			this.tsmiRemoveCachesAll.Name = "tsmiRemoveCachesAll";
-			this.tsmiRemoveCachesAll.Text = "全て削除 (&A) ...";
+			this.tsmiRemoveCachesAll.Text = "全てのキャッシュを削除 (&A) ...";
 			this.tsmiRemoveCachesAll.Click += new System.EventHandler(this.tsmiRemoveCachesAll_Click);
 			// 
 			// toolStripSeparator2
@@ -422,6 +427,26 @@ namespace Yusen.GExplorer {
 			this.tsmiAbortCrawling.Name = "tsmiAbortCrawling";
 			this.tsmiAbortCrawling.Text = "<<クロール中止 (&A)>>";
 			this.tsmiAbortCrawling.Click += new System.EventHandler(this.tsmiAbortCrawling_Click);
+			// 
+			// tsmiRemoveDeadlineEntries
+			// 
+			this.tsmiRemoveDeadlineEntries.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiRemoveDeadlineEntriesUnreacheable,
+            this.tsmiRemoveDeadlineEntriesAll});
+			this.tsmiRemoveDeadlineEntries.Name = "tsmiRemoveDeadlineEntries";
+			this.tsmiRemoveDeadlineEntries.Text = "配信期限辞書の整理 (&L)";
+			// 
+			// tsmiRemoveDeadlineEntriesUnreacheable
+			// 
+			this.tsmiRemoveDeadlineEntriesUnreacheable.Name = "tsmiRemoveDeadlineEntriesUnreacheable";
+			this.tsmiRemoveDeadlineEntriesUnreacheable.Text = "クロール結果で到達不可なエントリーを削除 (&U) ...";
+			this.tsmiRemoveDeadlineEntriesUnreacheable.Click += new System.EventHandler(this.tsmiRemoveDeadlineEntriesUnreacheable_Click);
+			// 
+			// tsmiRemoveDeadlineEntriesAll
+			// 
+			this.tsmiRemoveDeadlineEntriesAll.Name = "tsmiRemoveDeadlineEntriesAll";
+			this.tsmiRemoveDeadlineEntriesAll.Text = "全てのエントリーを削除 (&A) ...";
+			this.tsmiRemoveDeadlineEntriesAll.Click += new System.EventHandler(this.tsmiRemoveDeadlineEntriesAll_Click);
 			// 
 			// MainForm
 			// 
@@ -495,6 +520,9 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ToolStripMenuItem tsmiMergeResults;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
 		private System.Windows.Forms.ToolStripMenuItem tsmiUncrawlableGenres;
+		private System.Windows.Forms.ToolStripMenuItem tsmiRemoveDeadlineEntries;
+		private System.Windows.Forms.ToolStripMenuItem tsmiRemoveDeadlineEntriesUnreacheable;
+		private System.Windows.Forms.ToolStripMenuItem tsmiRemoveDeadlineEntriesAll;
 
 
 	}

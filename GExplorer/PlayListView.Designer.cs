@@ -29,9 +29,12 @@ namespace Yusen.GExplorer {
 			this.chId = new System.Windows.Forms.ColumnHeader();
 			this.chName = new System.Windows.Forms.ColumnHeader();
 			this.chDuration = new System.Windows.Forms.ColumnHeader();
+			this.chDeadLine = new System.Windows.Forms.ColumnHeader();
+			this.chComment = new System.Windows.Forms.ColumnHeader();
 			this.cmsPlayListItem = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.tsmiPlay = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+			this.tsmiSetComment = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiMove = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiMoveToTop = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiMoveUp = new System.Windows.Forms.ToolStripMenuItem();
@@ -53,20 +56,23 @@ namespace Yusen.GExplorer {
 			this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsddbOperation = new System.Windows.Forms.ToolStripDropDownButton();
 			this.tsmiAddById = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiExportAsAsx = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiExport = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiImport = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiSerializePlayListNow = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
+			this.tsmiExportAsAsx = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiClearPlayList = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsddbSettings = new System.Windows.Forms.ToolStripDropDownButton();
 			this.tsmiMultiSelectEnabled = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
 			this.tslMessage = new System.Windows.Forms.ToolStripLabel();
 			this.sfdAsx = new System.Windows.Forms.SaveFileDialog();
-			this.tsmiExport = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiImport = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
 			this.ofdXml = new System.Windows.Forms.OpenFileDialog();
 			this.sfdXml = new System.Windows.Forms.SaveFileDialog();
+			this.tsmiSetDeadlines = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
+			this.tsmiRefleshView = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripContainer1.ContentPanel.SuspendLayout();
 			this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
 			this.toolStripContainer1.SuspendLayout();
@@ -83,7 +89,7 @@ namespace Yusen.GExplorer {
 			this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.toolStripContainer1.Location = new System.Drawing.Point(0, 0);
 			this.toolStripContainer1.Name = "toolStripContainer1";
-			this.toolStripContainer1.Size = new System.Drawing.Size(532, 161);
+			this.toolStripContainer1.Size = new System.Drawing.Size(544, 161);
 			this.toolStripContainer1.TabIndex = 1;
 			this.toolStripContainer1.Text = "toolStripContainer1";
 			// 
@@ -96,7 +102,9 @@ namespace Yusen.GExplorer {
 			this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.chId,
             this.chName,
-            this.chDuration});
+            this.chDuration,
+            this.chDeadLine,
+            this.chComment});
 			this.listView1.ContextMenuStrip = this.cmsPlayListItem;
 			this.listView1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.listView1.FullRowSelect = true;
@@ -105,7 +113,7 @@ namespace Yusen.GExplorer {
 			this.listView1.Name = "listView1";
 			this.listView1.ShowGroups = false;
 			this.listView1.ShowItemToolTips = true;
-			this.listView1.Size = new System.Drawing.Size(532, 136);
+			this.listView1.Size = new System.Drawing.Size(544, 136);
 			this.listView1.TabIndex = 0;
 			this.listView1.View = System.Windows.Forms.View.Details;
 			this.listView1.SelectedIndexChanged += new System.EventHandler(this.listView1_SelectedIndexChanged);
@@ -122,12 +130,22 @@ namespace Yusen.GExplorer {
 			// chName
 			// 
 			this.chName.Text = "コンテンツ名";
-			this.chName.Width = 366;
+			this.chName.Width = 240;
 			// 
 			// chDuration
 			// 
 			this.chDuration.Text = "正味時間";
 			this.chDuration.Width = 66;
+			// 
+			// chDeadLine
+			// 
+			this.chDeadLine.Text = "配信期限";
+			this.chDeadLine.Width = 66;
+			// 
+			// chComment
+			// 
+			this.chComment.Text = "コメント";
+			this.chComment.Width = 66;
 			// 
 			// cmsPlayListItem
 			// 
@@ -136,6 +154,7 @@ namespace Yusen.GExplorer {
 			this.cmsPlayListItem.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiPlay,
             this.toolStripSeparator1,
+            this.tsmiSetComment,
             this.tsmiMove,
             this.tsmiRemoveItem,
             this.toolStripSeparator2,
@@ -151,7 +170,7 @@ namespace Yusen.GExplorer {
 			this.cmsPlayListItem.Location = new System.Drawing.Point(21, 36);
 			this.cmsPlayListItem.Name = "cmsPlayListItem";
 			this.cmsPlayListItem.RightToLeft = System.Windows.Forms.RightToLeft.No;
-			this.cmsPlayListItem.Size = new System.Drawing.Size(310, 248);
+			this.cmsPlayListItem.Size = new System.Drawing.Size(310, 270);
 			this.cmsPlayListItem.Opening += new System.ComponentModel.CancelEventHandler(this.cmsPlayListItem_Opening);
 			// 
 			// tsmiPlay
@@ -163,6 +182,13 @@ namespace Yusen.GExplorer {
 			// toolStripSeparator1
 			// 
 			this.toolStripSeparator1.Name = "toolStripSeparator1";
+			// 
+			// tsmiSetComment
+			// 
+			this.tsmiSetComment.Name = "tsmiSetComment";
+			this.tsmiSetComment.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.L)));
+			this.tsmiSetComment.Text = "コメントを入力 (&L) ...";
+			this.tsmiSetComment.Click += new System.EventHandler(this.tsmiSetComment_Click);
 			// 
 			// tsmiMove
 			// 
@@ -283,7 +309,7 @@ namespace Yusen.GExplorer {
             this.tslMessage});
 			this.toolStrip1.Location = new System.Drawing.Point(0, 0);
 			this.toolStrip1.Name = "toolStrip1";
-			this.toolStrip1.Size = new System.Drawing.Size(532, 25);
+			this.toolStrip1.Size = new System.Drawing.Size(544, 25);
 			this.toolStrip1.Stretch = true;
 			this.toolStrip1.TabIndex = 1;
 			this.toolStrip1.Text = "toolStrip1";
@@ -302,6 +328,9 @@ namespace Yusen.GExplorer {
 			this.tsddbOperation.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
 			this.tsddbOperation.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiAddById,
+            this.tsmiSetDeadlines,
+            this.tsmiRefleshView,
+            this.toolStripSeparator9,
             this.tsmiExport,
             this.tsmiImport,
             this.tsmiSerializePlayListNow,
@@ -319,11 +348,17 @@ namespace Yusen.GExplorer {
 			this.tsmiAddById.Text = "ID指定で手動追加 (&A) ...";
 			this.tsmiAddById.Click += new System.EventHandler(this.tsmiAddById_Click);
 			// 
-			// tsmiExportAsAsx
+			// tsmiExport
 			// 
-			this.tsmiExportAsAsx.Name = "tsmiExportAsAsx";
-			this.tsmiExportAsAsx.Text = "プレイリストをASXとしてイクスポート (&A) ...";
-			this.tsmiExportAsAsx.Click += new System.EventHandler(this.tsmiExportAsAsx_Click);
+			this.tsmiExport.Name = "tsmiExport";
+			this.tsmiExport.Text = "プレイリストをイクスポート (&E) ...";
+			this.tsmiExport.Click += new System.EventHandler(this.tsmiExport_Click);
+			// 
+			// tsmiImport
+			// 
+			this.tsmiImport.Name = "tsmiImport";
+			this.tsmiImport.Text = "プレイリストをインポート (&I) ...";
+			this.tsmiImport.Click += new System.EventHandler(this.tsmiImport_Click);
 			// 
 			// tsmiSerializePlayListNow
 			// 
@@ -335,10 +370,20 @@ namespace Yusen.GExplorer {
 			// 
 			this.toolStripSeparator5.Name = "toolStripSeparator5";
 			// 
+			// tsmiExportAsAsx
+			// 
+			this.tsmiExportAsAsx.Name = "tsmiExportAsAsx";
+			this.tsmiExportAsAsx.Text = "プレイリストをASXとしてイクスポート (&A) ...";
+			this.tsmiExportAsAsx.Click += new System.EventHandler(this.tsmiExportAsAsx_Click);
+			// 
+			// toolStripSeparator8
+			// 
+			this.toolStripSeparator8.Name = "toolStripSeparator8";
+			// 
 			// tsmiClearPlayList
 			// 
 			this.tsmiClearPlayList.Name = "tsmiClearPlayList";
-			this.tsmiClearPlayList.Text = "プレイリストの項目を全て削除 (&C)";
+			this.tsmiClearPlayList.Text = "プレイリストの全項目を削除 (&C)";
 			this.tsmiClearPlayList.Click += new System.EventHandler(this.tsmiClearPlayList_Click);
 			// 
 			// tsddbSettings
@@ -374,31 +419,33 @@ namespace Yusen.GExplorer {
 			this.sfdAsx.Filter = "ASX files (*.asx)|*.asx|All files (*.*)|*.*";
 			this.sfdAsx.RestoreDirectory = true;
 			// 
-			// tsmiExport
-			// 
-			this.tsmiExport.Name = "tsmiExport";
-			this.tsmiExport.Text = "プレイリストをイクスポート (&E) ...";
-			this.tsmiExport.Click += new System.EventHandler(this.tsmiExport_Click);
-			// 
-			// tsmiImport
-			// 
-			this.tsmiImport.Name = "tsmiImport";
-			this.tsmiImport.Text = "プレイリストをインポート (&I) ...";
-			this.tsmiImport.Click += new System.EventHandler(this.tsmiImport_Click);
-			// 
-			// toolStripSeparator8
-			// 
-			this.toolStripSeparator8.Name = "toolStripSeparator8";
-			// 
 			// ofdXml
 			// 
+			this.ofdXml.DefaultExt = "xml";
 			this.ofdXml.Filter = "XML files (*.xml)|*.xml|All files (*.*)|*.*";
 			this.ofdXml.RestoreDirectory = true;
 			// 
 			// sfdXml
 			// 
+			this.sfdXml.DefaultExt = "xml";
 			this.sfdXml.Filter = "XML files (*.xml)|*.xml|All files (*.*)|*.*";
 			this.sfdXml.RestoreDirectory = true;
+			// 
+			// tsmiSetDeadlines
+			// 
+			this.tsmiSetDeadlines.Name = "tsmiSetDeadlines";
+			this.tsmiSetDeadlines.Text = "全項目の配信期限を設定しなおす (&D)";
+			this.tsmiSetDeadlines.Click += new System.EventHandler(this.tsmiSetDeadlines_Click);
+			// 
+			// toolStripSeparator9
+			// 
+			this.toolStripSeparator9.Name = "toolStripSeparator9";
+			// 
+			// tsmiRefleshView
+			// 
+			this.tsmiRefleshView.Name = "tsmiRefleshView";
+			this.tsmiRefleshView.Text = "表示内容を強制的にリフレッシュ (&R)";
+			this.tsmiRefleshView.Click += new System.EventHandler(this.tsmiRefleshView_Click);
 			// 
 			// PlayListView
 			// 
@@ -406,7 +453,7 @@ namespace Yusen.GExplorer {
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.Controls.Add(this.toolStripContainer1);
 			this.Name = "PlayListView";
-			this.Size = new System.Drawing.Size(532, 161);
+			this.Size = new System.Drawing.Size(544, 161);
 			this.Load += new System.EventHandler(this.PlayListView_Load);
 			this.toolStripContainer1.ContentPanel.ResumeLayout(false);
 			this.toolStripContainer1.TopToolStripPanel.ResumeLayout(false);
@@ -464,5 +511,11 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator8;
 		private System.Windows.Forms.OpenFileDialog ofdXml;
 		private System.Windows.Forms.SaveFileDialog sfdXml;
+		private System.Windows.Forms.ColumnHeader chDeadLine;
+		private System.Windows.Forms.ColumnHeader chComment;
+		private System.Windows.Forms.ToolStripMenuItem tsmiSetComment;
+		private System.Windows.Forms.ToolStripMenuItem tsmiSetDeadlines;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator9;
+		private System.Windows.Forms.ToolStripMenuItem tsmiRefleshView;
 	}
 }

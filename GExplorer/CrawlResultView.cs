@@ -218,6 +218,7 @@ namespace Yusen.GExplorer {
 			settings.ColWidthEpisode = this.chEpisode.Width;
 			settings.ColWidthSubtitle = this.chSubTitle.Width;
 			settings.ColWidthDuration = this.chDuration.Width;
+			settings.ColWidthDeadline = this.chDeadline.Width;
 			settings.ColWidthLongDesc = this.chDescription.Width;
 			settings.AboneType = this.AboneType;
 			settings.ShowPackages = this.ShowPackages;
@@ -232,6 +233,7 @@ namespace Yusen.GExplorer {
 			this.chEpisode.Width = settings.ColWidthEpisode ?? this.chEpisode.Width;
 			this.chSubTitle.Width = settings.ColWidthSubtitle ?? this.chSubTitle.Width;
 			this.chDuration.Width = settings.ColWidthDuration ?? this.chDuration.Width;
+			this.chDeadline.Width = settings.ColWidthDeadline ?? this.chDeadline.Width;
 			this.chDescription.Width = settings.ColWidthLongDesc ?? this.chDescription.Width;
 			this.AboneType = settings.AboneType ?? this.AboneType;
 			this.ShowPackages = settings.ShowPackages ?? this.ShowPackages;
@@ -263,7 +265,7 @@ namespace Yusen.GExplorer {
 					ContentAdapter ca = new ContentAdapter(c);
 					ListViewItem item = new ListViewItem(
 						new string[]{
-							ca.ContentId, ca.Title, ca.EpisodeNumber, ca.SubTitle, ca.GTimeSpan.ToString(), ca.LongDescription},
+							ca.ContentId, ca.Title, ca.EpisodeNumber, ca.SubTitle, ca.GTimeSpan.ToString(), ca.DeadLine, ca.LongDescription},
 						group);
 					item.Tag = ca;
 					this.allLvis.Add(item);
@@ -436,6 +438,20 @@ namespace Yusen.GExplorer {
 			}
 			PlayList.Instance.EndUpdate();
 		}
+		private void tsmiAddWithComment_Click(object sender, EventArgs e) {
+			InputBoxDialog ibd = new InputBoxDialog("コメントを付けてプレイリストに追加", "付加するコメントを入力してください．", string.Empty);
+			switch (ibd.ShowDialog(this.FindForm())) {
+				case DialogResult.OK:
+					string comment = ibd.Input;
+					PlayList.Instance.BeginUpdate();
+					foreach (ContentAdapter cont in this.SelectedContents) {
+						cont.Comment = comment;
+						PlayList.Instance.AddIfNotExists(cont);
+					}
+					PlayList.Instance.EndUpdate();
+					break;
+			}
+		}
 		private void tsmiPlay_Click(object sender, EventArgs e) {
 			foreach (ContentAdapter cont in this.SelectedContents) {
 				PlayerForm.Play(cont);
@@ -537,6 +553,7 @@ namespace Yusen.GExplorer {
 			this.UpdateView();
 		}
 		#endregion
+
 	}
 
 	public enum AboneType {
@@ -550,6 +567,7 @@ namespace Yusen.GExplorer {
 		private int? colWidthEpisode;
 		private int? colWidthSubtitle;
 		private int? colWidthDuration;
+		private int? colWidthDeadline;
 		private int? colWidthLongDesc;
 		private AboneType? aboneType;
 		private bool? showPackages;
@@ -578,6 +596,10 @@ namespace Yusen.GExplorer {
 		public int? ColWidthDuration {
 			get { return this.colWidthDuration; }
 			set { this.colWidthDuration = value; }
+		}
+		public int? ColWidthDeadline {
+			get { return this.colWidthDeadline; }
+			set { this.colWidthDeadline = value; }
 		}
 		public int? ColWidthLongDesc {
 			get { return this.colWidthLongDesc; }

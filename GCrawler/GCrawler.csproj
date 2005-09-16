@@ -37,6 +37,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ContentCacheController.cs" />
+    <Compile Include="DeadLineDictionary.cs" />
     <Compile Include="GBitRate.cs" />
     <Compile Include="GContent.cs" />
     <Compile Include="Crawler.cs" />

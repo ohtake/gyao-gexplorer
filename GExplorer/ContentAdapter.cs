@@ -10,11 +10,14 @@ namespace Yusen.GExplorer {
 	public class ContentAdapter {
 		private GContent innerCont;
 		private GTimeSpan gTimeSpan;
-		
+		private string deadLine = string.Empty;
+		private string comment = string.Empty;
+
 		public ContentAdapter() {
 		}
 		public ContentAdapter(GContent innerCont) {
 			this.InnerContent = innerCont;
+			this.TryResetDeadline();
 		}
 		
 		[Browsable(false)]
@@ -27,6 +30,20 @@ namespace Yusen.GExplorer {
 				this.gTimeSpan = new GTimeSpan(this.innerCont.Duration);
 			}
 		}
+		[ReadOnly(true)]
+		[Category("専ブラが付加した情報")]
+		[Description("配信期限．かなり適当なので必ずしも信用できるわけじゃない．")]
+		public string DeadLine {
+			get { return this.deadLine; }
+			set { this.deadLine = value; }
+		}
+		[Category("ユーザが入力する情報")]
+		[Description("コメント．ユーザが自由に入力できる．ただしプレイリストに入っているものに対して入力しないとほとんど意味ない．")]
+		public string Comment {
+			get { return this.comment; }
+			set { this.comment = value; }
+		}
+		
 		
 		[XmlIgnore]
 		[Category("キー")]
@@ -101,7 +118,7 @@ namespace Yusen.GExplorer {
 				return this.gTimeSpan;
 			}
 		}
-
+		
 		[XmlIgnore]
 		[Category("URI")]
 		[Description("詳細ページのURI．")]
@@ -156,6 +173,14 @@ namespace Yusen.GExplorer {
 		
 		public Uri ChapterMediaFileUriOf(int chapterNo) {
 			return GContent.CreateMediaFileUri(this.ContentId, GlobalSettings.Instance.UserNo, GlobalSettings.Instance.BitRate, chapterNo);
+		}
+		public bool TryResetDeadline() {
+			if (GlobalVariables.DeadLineDictionaryReadonly.TryGetDeadLine(this.ContentId, out this.deadLine)) {
+				return true;
+			} else {
+				this.deadLine = string.Empty;
+				return false;
+			}
 		}
 
 		public override bool Equals(object obj) {

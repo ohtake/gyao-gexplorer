@@ -30,6 +30,7 @@ namespace Yusen.GExplorer {
 			this.chEpisode = new System.Windows.Forms.ColumnHeader();
 			this.chSubTitle = new System.Windows.Forms.ColumnHeader();
 			this.chDuration = new System.Windows.Forms.ColumnHeader();
+			this.chDeadline = new System.Windows.Forms.ColumnHeader();
 			this.chDescription = new System.Windows.Forms.ColumnHeader();
 			this.cmsContent = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.tsmiAdd = new System.Windows.Forms.ToolStripMenuItem();
@@ -62,9 +63,9 @@ namespace Yusen.GExplorer {
 			this.tsmiHoverSelect = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiMultiSelect = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
-			this.tsmiNewColor = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiClearFilterStringOnHide = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
+			this.tsmiNewColor = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
 			this.tslGenre = new System.Windows.Forms.ToolStripLabel();
 			this.tslNumber = new System.Windows.Forms.ToolStripLabel();
@@ -74,6 +75,7 @@ namespace Yusen.GExplorer {
 			this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
 			this.tstbFilter = new System.Windows.Forms.ToolStripTextBox();
 			this.tstbMigemoAnswer = new System.Windows.Forms.ToolStripTextBox();
+			this.tsmiAddWithComment = new System.Windows.Forms.ToolStripMenuItem();
 			this.cmsContent.SuspendLayout();
 			this.toolStripContainer1.ContentPanel.SuspendLayout();
 			this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
@@ -90,6 +92,7 @@ namespace Yusen.GExplorer {
             this.chEpisode,
             this.chSubTitle,
             this.chDuration,
+            this.chDeadline,
             this.chDescription});
 			this.listView1.ContextMenuStrip = this.cmsContent;
 			this.listView1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -132,10 +135,15 @@ namespace Yusen.GExplorer {
 			this.chDuration.Text = "正味時間";
 			this.chDuration.Width = 56;
 			// 
+			// chDeadline
+			// 
+			this.chDeadline.Text = "配信期限";
+			this.chDeadline.Width = 50;
+			// 
 			// chDescription
 			// 
 			this.chDescription.Text = "説明";
-			this.chDescription.Width = 203;
+			this.chDescription.Width = 153;
 			// 
 			// cmsContent
 			// 
@@ -143,6 +151,7 @@ namespace Yusen.GExplorer {
 			this.cmsContent.GripMargin = new System.Windows.Forms.Padding(2);
 			this.cmsContent.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiAdd,
+            this.tsmiAddWithComment,
             this.tsmiPlay,
             this.toolStripSeparator6,
             this.tsmiPlayWithWmp,
@@ -159,7 +168,8 @@ namespace Yusen.GExplorer {
 			this.cmsContent.Location = new System.Drawing.Point(21, 36);
 			this.cmsContent.Name = "contextMenuStrip1";
 			this.cmsContent.RightToLeft = System.Windows.Forms.RightToLeft.No;
-			this.cmsContent.Size = new System.Drawing.Size(310, 248);
+			this.cmsContent.Size = new System.Drawing.Size(310, 289);
+			this.cmsContent.Visible = true;
 			this.cmsContent.Opening += new System.ComponentModel.CancelEventHandler(this.cmsContent_Opening);
 			// 
 			// tsmiAdd
@@ -382,12 +392,6 @@ namespace Yusen.GExplorer {
 			// 
 			this.toolStripSeparator7.Name = "toolStripSeparator7";
 			// 
-			// tsmiNewColor
-			// 
-			this.tsmiNewColor.Name = "tsmiNewColor";
-			this.tsmiNewColor.Text = "新着の色 (&N) ...";
-			this.tsmiNewColor.Click += new System.EventHandler(this.tsmiNewColor_Click);
-			// 
 			// tsmiClearFilterStringOnHide
 			// 
 			this.tsmiClearFilterStringOnHide.Checked = true;
@@ -399,6 +403,12 @@ namespace Yusen.GExplorer {
 			// toolStripSeparator10
 			// 
 			this.toolStripSeparator10.Name = "toolStripSeparator10";
+			// 
+			// tsmiNewColor
+			// 
+			this.tsmiNewColor.Name = "tsmiNewColor";
+			this.tsmiNewColor.Text = "新着の色 (&N) ...";
+			this.tsmiNewColor.Click += new System.EventHandler(this.tsmiNewColor_Click);
 			// 
 			// toolStripSeparator5
 			// 
@@ -457,6 +467,13 @@ namespace Yusen.GExplorer {
 			this.tstbMigemoAnswer.Name = "tstbMigemoAnswer";
 			this.tstbMigemoAnswer.ReadOnly = true;
 			this.tstbMigemoAnswer.Size = new System.Drawing.Size(250, 25);
+			// 
+			// tsmiAddWithComment
+			// 
+			this.tsmiAddWithComment.Name = "tsmiAddWithComment";
+			this.tsmiAddWithComment.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.L)));
+			this.tsmiAddWithComment.Text = "コメントを付けてプレイリストに追加 (&L) ...";
+			this.tsmiAddWithComment.Click += new System.EventHandler(this.tsmiAddWithComment_Click);
 			// 
 			// CrawlResultView
 			// 
@@ -531,5 +548,7 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ToolStripLabel tslTime;
 		private System.Windows.Forms.ToolStripMenuItem tsmiClearFilterStringOnHide;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator10;
+		private System.Windows.Forms.ColumnHeader chDeadline;
+		private System.Windows.Forms.ToolStripMenuItem tsmiAddWithComment;
 	}
 }

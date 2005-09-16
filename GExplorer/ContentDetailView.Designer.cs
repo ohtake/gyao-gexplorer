@@ -46,8 +46,10 @@ namespace Yusen.GExplorer {
 			this.txtEpisode = new System.Windows.Forms.TextBox();
 			this.txtSubtitle = new System.Windows.Forms.TextBox();
 			this.label5 = new System.Windows.Forms.Label();
-			this.txtDescription = new System.Windows.Forms.TextBox();
 			this.txtDuration = new System.Windows.Forms.TextBox();
+			this.txtDescription = new System.Windows.Forms.TextBox();
+			this.label6 = new System.Windows.Forms.Label();
+			this.txtDeadline = new System.Windows.Forms.TextBox();
 			this.tabpDetail = new System.Windows.Forms.TabPage();
 			this.propgDetail = new System.Windows.Forms.PropertyGrid();
 			this.splitContainer1.Panel1.SuspendLayout();
@@ -181,12 +183,15 @@ namespace Yusen.GExplorer {
 			this.tableLayoutPanel2.Controls.Add(this.txtEpisode, 1, 2);
 			this.tableLayoutPanel2.Controls.Add(this.txtSubtitle, 1, 3);
 			this.tableLayoutPanel2.Controls.Add(this.label5, 0, 4);
-			this.tableLayoutPanel2.Controls.Add(this.txtDescription, 0, 5);
 			this.tableLayoutPanel2.Controls.Add(this.txtDuration, 1, 4);
+			this.tableLayoutPanel2.Controls.Add(this.txtDescription, 1, 5);
+			this.tableLayoutPanel2.Controls.Add(this.label6, 0, 5);
+			this.tableLayoutPanel2.Controls.Add(this.txtDeadline, 1, 5);
 			this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 0);
 			this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-			this.tableLayoutPanel2.RowCount = 6;
+			this.tableLayoutPanel2.RowCount = 7;
+			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 24F));
 			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 24F));
 			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 24F));
 			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 24F));
@@ -243,7 +248,7 @@ namespace Yusen.GExplorer {
 			this.txtId.Name = "txtId";
 			this.txtId.ReadOnly = true;
 			this.txtId.Size = new System.Drawing.Size(165, 19);
-			this.txtId.TabIndex = 5;
+			this.txtId.TabIndex = 6;
 			// 
 			// txtTitle
 			// 
@@ -252,7 +257,7 @@ namespace Yusen.GExplorer {
 			this.txtTitle.Name = "txtTitle";
 			this.txtTitle.ReadOnly = true;
 			this.txtTitle.Size = new System.Drawing.Size(165, 19);
-			this.txtTitle.TabIndex = 6;
+			this.txtTitle.TabIndex = 7;
 			// 
 			// txtEpisode
 			// 
@@ -261,7 +266,7 @@ namespace Yusen.GExplorer {
 			this.txtEpisode.Name = "txtEpisode";
 			this.txtEpisode.ReadOnly = true;
 			this.txtEpisode.Size = new System.Drawing.Size(165, 19);
-			this.txtEpisode.TabIndex = 7;
+			this.txtEpisode.TabIndex = 8;
 			// 
 			// txtSubtitle
 			// 
@@ -270,7 +275,7 @@ namespace Yusen.GExplorer {
 			this.txtSubtitle.Name = "txtSubtitle";
 			this.txtSubtitle.ReadOnly = true;
 			this.txtSubtitle.Size = new System.Drawing.Size(165, 19);
-			this.txtSubtitle.TabIndex = 8;
+			this.txtSubtitle.TabIndex = 9;
 			// 
 			// label5
 			// 
@@ -282,18 +287,6 @@ namespace Yusen.GExplorer {
 			this.label5.TabIndex = 4;
 			this.label5.Text = "ŽžŠÔ";
 			// 
-			// txtDescription
-			// 
-			this.tableLayoutPanel2.SetColumnSpan(this.txtDescription, 2);
-			this.txtDescription.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.txtDescription.Location = new System.Drawing.Point(3, 123);
-			this.txtDescription.Multiline = true;
-			this.txtDescription.Name = "txtDescription";
-			this.txtDescription.ReadOnly = true;
-			this.txtDescription.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-			this.txtDescription.Size = new System.Drawing.Size(210, 75);
-			this.txtDescription.TabIndex = 10;
-			// 
 			// txtDuration
 			// 
 			this.txtDuration.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -301,7 +294,38 @@ namespace Yusen.GExplorer {
 			this.txtDuration.Name = "txtDuration";
 			this.txtDuration.ReadOnly = true;
 			this.txtDuration.Size = new System.Drawing.Size(165, 19);
-			this.txtDuration.TabIndex = 9;
+			this.txtDuration.TabIndex = 10;
+			// 
+			// txtDescription
+			// 
+			this.tableLayoutPanel2.SetColumnSpan(this.txtDescription, 2);
+			this.txtDescription.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.txtDescription.Location = new System.Drawing.Point(3, 147);
+			this.txtDescription.Multiline = true;
+			this.txtDescription.Name = "txtDescription";
+			this.txtDescription.ReadOnly = true;
+			this.txtDescription.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+			this.txtDescription.Size = new System.Drawing.Size(210, 51);
+			this.txtDescription.TabIndex = 12;
+			// 
+			// label6
+			// 
+			this.label6.Anchor = System.Windows.Forms.AnchorStyles.Right;
+			this.label6.AutoSize = true;
+			this.label6.Location = new System.Drawing.Point(15, 126);
+			this.label6.Name = "label6";
+			this.label6.Size = new System.Drawing.Size(27, 12);
+			this.label6.TabIndex = 5;
+			this.label6.Text = "ŠúŒÀ";
+			// 
+			// txtDeadline
+			// 
+			this.txtDeadline.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.txtDeadline.Location = new System.Drawing.Point(48, 123);
+			this.txtDeadline.Name = "txtDeadline";
+			this.txtDeadline.ReadOnly = true;
+			this.txtDeadline.Size = new System.Drawing.Size(165, 19);
+			this.txtDeadline.TabIndex = 11;
 			// 
 			// tabpDetail
 			// 
@@ -369,5 +393,7 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ToolStripMenuItem tsmiCopyNameAndImageUri;
 		private System.Windows.Forms.ToolStripMenuItem tsmiCopyNameDetailImageUri;
 		private System.Windows.Forms.ToolStripMenuItem tsmiCopyImage;
+		private System.Windows.Forms.Label label6;
+		private System.Windows.Forms.TextBox txtDeadline;
 	}
 }
