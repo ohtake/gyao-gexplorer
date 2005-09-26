@@ -29,7 +29,7 @@ namespace Yusen.GExplorer {
 			};
 
 			this.listView1.BeginUpdate();
-			this.UpdatePlayListView();
+			this.UpdateItems();
 			this.UpdateBoldness();
 			this.listView1.EndUpdate();
 
@@ -77,7 +77,7 @@ namespace Yusen.GExplorer {
 			}
 		}
 		
-		private void UpdatePlayListView() {
+		private void UpdateItems() {
 			this.listView1.Items.Clear();
 			foreach (ContentAdapter cont in PlayList.Instance) {
 				ListViewItem lvi = new ListViewItem(new string[] { cont.ContentId, cont.DisplayName, cont.GTimeSpan.ToString(), cont.DeadLine, cont.Comment });
@@ -125,7 +125,7 @@ namespace Yusen.GExplorer {
 
 		private void PlayList_PlayListChanged(object sender, EventArgs e) {
 			this.listView1.BeginUpdate();
-			this.UpdatePlayListView();
+			this.UpdateItems();
 			this.UpdateBoldness();
 			this.listView1.EndUpdate();
 			this.UpdateStatusBarText();
@@ -202,17 +202,42 @@ namespace Yusen.GExplorer {
 			foreach (ContentAdapter cont in PlayList.Instance) {
 				cont.TryResetDeadline();
 			}
-			this.UpdatePlayListView();
+			this.listView1.BeginUpdate();
+			this.UpdateItems();
+			this.UpdateBoldness();
+			this.listView1.EndUpdate();
 		}
 		private void tsmiRefleshView_Click(object sender, EventArgs e) {
-			this.UpdatePlayListView();
+			this.listView1.BeginUpdate();
+			this.UpdateItems();
+			this.UpdateBoldness();
+			this.listView1.EndUpdate();
 		}
 		private void tsmiExport_Click(object sender, EventArgs e) {
 			if (DialogResult.OK == this.sfdXml.ShowDialog()) {
 				PlayList.Instance.SerializeItems(this.sfdXml.FileName);
 			}
 		}
-		private void tsmiImport_Click(object sender, EventArgs e) {
+		private void tsmiImportAppend_Click(object sender, EventArgs e) {
+			if (DialogResult.OK == this.ofdXml.ShowDialog()) {
+				List<ContentAdapter> oldList = new List<ContentAdapter>(PlayList.Instance.Count);
+				foreach (ContentAdapter cont in PlayList.Instance) {
+					oldList.Add(cont);
+				}
+				PlayList.Instance.DeserializeItems(this.ofdXml.FileName);
+				List<ContentAdapter> newList = new List<ContentAdapter>(PlayList.Instance.Count);
+				foreach (ContentAdapter cont in PlayList.Instance) {
+					newList.Add(cont);
+				}
+				PlayList.Instance.BeginUpdate();
+				PlayList.Instance.SetAll(oldList);
+				foreach (ContentAdapter cont in newList) {
+					PlayList.Instance.AddIfNotExists(cont);
+				}
+				PlayList.Instance.EndUpdate();
+			}
+		}
+		private void tsmiImportOverwrite_Click(object sender, EventArgs e) {
 			if (DialogResult.OK == this.ofdXml.ShowDialog()) {
 				PlayList.Instance.DeserializeItems(this.ofdXml.FileName);
 			}
@@ -226,7 +251,12 @@ namespace Yusen.GExplorer {
 			PlayList.Instance.SerializeItems();
 		}
 		private void tsmiClearPlayList_Click(object sender, EventArgs e) {
-			PlayList.Instance.Clear();
+			switch (MessageBox.Show("プレイリスト内の全項目を削除します．よろしいですか？", "プレイリスト内の全項目を削除", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2)) {
+				case DialogResult.Yes:
+					PlayList.Instance.Clear();
+					break;
+			}
+			
 		}
 		private void tsmiMultiSelectEnabled_Click(object sender, EventArgs e) {
 			this.listView1.MultiSelect = this.tsmiMultiSelectEnabled.Checked;
@@ -250,7 +280,10 @@ namespace Yusen.GExplorer {
 						foreach (ContentAdapter cont in conts) {
 							cont.Comment = comment;
 						}
-						this.UpdatePlayListView();
+						this.listView1.BeginUpdate();
+						this.UpdateItems();
+						this.UpdateBoldness();
+						this.listView1.EndUpdate();
 						break;
 				}
 			}

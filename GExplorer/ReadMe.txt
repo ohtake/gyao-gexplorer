@@ -1,4 +1,4 @@
-GyaO 専用ブラウザ GExplorer 1.2.4.0
+GyaO 専用ブラウザ GExplorer 1.2.4.1
 
 ◆必要な環境
 .NET Framework 2.0.50215 がインストールされており正常に動作していること
@@ -33,6 +33,7 @@ http://lab.msdn.microsoft.com/vs2005/golive/license/default.aspx
 ◆インストールと実行
 GExplorer-x_x_x_x.zip をまるごと展開してください
 同じディレクトリに同梱されている dll などは必須です
+実行ファイルのあるディレクトリに設定ファイル等を保存するため，書き込む権限があることも必要です
 展開後に普通に GExplorer.exe を実行すれば起動できます
 
 ◆アンインストール
@@ -138,3 +139,4 @@ CMか否かの判定を行うのに下記の神のソースを参考にしました
 http://pc8.2ch.net/test/read.cgi/esite/1116115226/81
 アイコン提供
 http://pc8.2ch.net/test/read.cgi/esite/1118420039/13
+http://pc8.2ch.net/test/read.cgi/esite/1126011881/756

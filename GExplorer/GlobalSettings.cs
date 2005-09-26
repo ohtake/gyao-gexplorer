@@ -68,6 +68,15 @@ namespace Yusen.GExplorer {
 				}
 			}
 		}
+		private string iconFile = "";
+		[Category("GUI")]
+		[DisplayName("アイコンのファイル名")]
+		[Description("アイコンのファイル名を指定．無指定の場合は実行ファイル名と同名のアイコンファイルが指定されているものとする．再起動後に有効．")]
+		[DefaultValue("")]
+		public string IconFile {
+			get { return this.iconFile; }
+			set { this.iconFile = value; }
+		}
 		
 		private string migemoDictionaryFilename = @"dict\migemo-dict";
 		[Category("migemo")]

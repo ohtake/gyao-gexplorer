@@ -197,6 +197,10 @@ namespace Yusen.GExplorer {
 				this.wmpMain.URL = this.CurrentContent.MediaFileUri.AbsoluteUri;
 			}
 		}
+		private void tsmiRemoveAndClose_Click(object sender, EventArgs e) {
+			PlayList.Instance.Remove(this.CurrentContent);
+			this.Close();
+		}
 		private void tsmiClose_Click(object sender, EventArgs e) {
 			this.Close();
 		}
@@ -266,6 +270,10 @@ namespace Yusen.GExplorer {
 		private void wmpMain_OpenStateChange(object sender, _WMPOCXEvents_OpenStateChangeEvent e) {
 			switch ((WMPOpenState)e.newState) {
 				case WMPOpenState.wmposMediaOpen:
+					//ミュートの時には音量を変更しない
+					if (this.wmpMain.settings.mute) {
+						break;
+					}
 					// THANKSTO: http://pc8.2ch.net/test/read.cgi/esite/1116115226/81 の神
 					if (this.tsmiAutoVolume.Checked) {
 						bool isCf = this.wmpMain.currentMedia.getItemInfo("WMS_CONTENT_DESCRIPTION_PLAYLIST_ENTRY_URL").StartsWith("Adv:");

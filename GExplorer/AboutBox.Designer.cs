@@ -157,6 +157,7 @@ namespace Yusen.GExplorer {
 			this.Name = "AboutBox";
 			this.Padding = new System.Windows.Forms.Padding(9, 8, 9, 8);
 			this.ShowIcon = false;
+			this.ShowInTaskbar = false;
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "AboutBox";
 			this.tableLayoutPanel.ResumeLayout(false);

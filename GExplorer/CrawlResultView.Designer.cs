@@ -34,6 +34,7 @@ namespace Yusen.GExplorer {
 			this.chDescription = new System.Windows.Forms.ColumnHeader();
 			this.cmsContent = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.tsmiAdd = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiAddWithComment = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiPlay = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiPlayWithWmp = new System.Windows.Forms.ToolStripMenuItem();
@@ -75,7 +76,6 @@ namespace Yusen.GExplorer {
 			this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
 			this.tstbFilter = new System.Windows.Forms.ToolStripTextBox();
 			this.tstbMigemoAnswer = new System.Windows.Forms.ToolStripTextBox();
-			this.tsmiAddWithComment = new System.Windows.Forms.ToolStripMenuItem();
 			this.cmsContent.SuspendLayout();
 			this.toolStripContainer1.ContentPanel.SuspendLayout();
 			this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
@@ -138,12 +138,12 @@ namespace Yusen.GExplorer {
 			// chDeadline
 			// 
 			this.chDeadline.Text = "配信期限";
-			this.chDeadline.Width = 50;
+			this.chDeadline.Width = 70;
 			// 
 			// chDescription
 			// 
 			this.chDescription.Text = "説明";
-			this.chDescription.Width = 153;
+			this.chDescription.Width = 134;
 			// 
 			// cmsContent
 			// 
@@ -168,8 +168,7 @@ namespace Yusen.GExplorer {
 			this.cmsContent.Location = new System.Drawing.Point(21, 36);
 			this.cmsContent.Name = "contextMenuStrip1";
 			this.cmsContent.RightToLeft = System.Windows.Forms.RightToLeft.No;
-			this.cmsContent.Size = new System.Drawing.Size(310, 289);
-			this.cmsContent.Visible = true;
+			this.cmsContent.Size = new System.Drawing.Size(310, 270);
 			this.cmsContent.Opening += new System.ComponentModel.CancelEventHandler(this.cmsContent_Opening);
 			// 
 			// tsmiAdd
@@ -177,6 +176,13 @@ namespace Yusen.GExplorer {
 			this.tsmiAdd.Name = "tsmiAdd";
 			this.tsmiAdd.Text = "プレイリストに追加 (&A)";
 			this.tsmiAdd.Click += new System.EventHandler(this.tsmiAdd_Click);
+			// 
+			// tsmiAddWithComment
+			// 
+			this.tsmiAddWithComment.Name = "tsmiAddWithComment";
+			this.tsmiAddWithComment.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.L)));
+			this.tsmiAddWithComment.Text = "コメントを付けてプレイリストに追加 (&L) ...";
+			this.tsmiAddWithComment.Click += new System.EventHandler(this.tsmiAddWithComment_Click);
 			// 
 			// tsmiPlay
 			// 
@@ -467,13 +473,6 @@ namespace Yusen.GExplorer {
 			this.tstbMigemoAnswer.Name = "tstbMigemoAnswer";
 			this.tstbMigemoAnswer.ReadOnly = true;
 			this.tstbMigemoAnswer.Size = new System.Drawing.Size(250, 25);
-			// 
-			// tsmiAddWithComment
-			// 
-			this.tsmiAddWithComment.Name = "tsmiAddWithComment";
-			this.tsmiAddWithComment.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.L)));
-			this.tsmiAddWithComment.Text = "コメントを付けてプレイリストに追加 (&L) ...";
-			this.tsmiAddWithComment.Click += new System.EventHandler(this.tsmiAddWithComment_Click);
 			// 
 			// CrawlResultView
 			// 

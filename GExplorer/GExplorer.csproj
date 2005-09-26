@@ -245,6 +245,7 @@
     </Content>
     <Content Include="Icons\GExplorer_32x32_16.ico" />
     <Content Include="Icons\GExplorer_16x16_16.ico" />
+    <Content Include="Icons\Icon_13_756.ico" />
     <Content Include="Icons\Icon_3_973.ico" />
     <Content Include="Icons\Icon_4_13.ico" />
     <Content Include="ReadMe.txt">

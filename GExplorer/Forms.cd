@@ -38,7 +38,7 @@
     <Position X="4" Y="7.25" Width="1.75" />
     <TypeIdentifier>
       <FileName>MainForm.cs</FileName>
-      <HashCode>BQDAACUAITBAQDRwAAHQEEADAMmZCgogsAQABAANFiE=</HashCode>
+      <HashCode>BQDAVi0AITRRQLR0AAHQMVATAMjbSgImsAQBBSAtNqE=</HashCode>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Field Name="genreTabControl1" />
@@ -52,6 +52,11 @@
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <NestedTypes>
+      <Class Name="Yusen.GExplorer.MainForm.MergedGenre" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>MainForm.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
       <Delegate Name="Yusen.GExplorer.MainForm.ViewCrawlResultDelegate" Collapsed="true">
         <TypeIdentifier>
           <NewMemberFileName>MainForm.cs</NewMemberFileName>
@@ -72,7 +77,7 @@
     <Position X="14.25" Y="7.25" Width="1.75" />
     <TypeIdentifier>
       <FileName>PlayerForm.cs</FileName>
-      <HashCode>kUQCDN0KASZAgCQnIECCkUBiwIDMAEAG4QACJqI0BmI=</HashCode>
+      <HashCode>kUQCDf0KASdCgOUnIECCkUhiwIDMAEAG5wgCJqI0BmM=</HashCode>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Field Name="gwbDetail" />
@@ -82,20 +87,6 @@
       <Compartment Name="Protected" Collapsed="true" />
       <Compartment Name="Private" Collapsed="true" />
     </Compartments>
-    <AssociationLine Name="gwbDetail" Type="Yusen.GExplorer.GWebBrowser" FixedFromPoint="true" FixedToPoint="true">
-      <Path>
-        <Point X="15.25" Y="10.386" />
-        <Point X="15.25" Y="11.188" />
-        <Point X="19.5" Y="11.188" />
-      </Path>
-    </AssociationLine>
-    <AssociationLine Name="gwbRecommend" Type="Yusen.GExplorer.GWebBrowser" FixedFromPoint="true" FixedToPoint="true">
-      <Path>
-        <Point X="15.5" Y="10.386" />
-        <Point X="15.5" Y="10.968" />
-        <Point X="19.5" Y="10.968" />
-      </Path>
-    </AssociationLine>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="Yusen.GExplorer.FormSettingsBase">
@@ -114,7 +105,7 @@
     <Position X="11.75" Y="7.25" Width="1.75" />
     <TypeIdentifier>
       <FileName>UserCommandsEditor.cs</FileName>
-      <HashCode>ABAVAAgWQCAAAAgAACiAYEACgAhiBAME5AEFAQCBAyQ=</HashCode>
+      <HashCode>ABAVAAAWQCAAAAgAACiAYEBCgAhiBAME5AEFAQCBAyQ=</HashCode>
     </TypeIdentifier>
     <Compartments>
       <Compartment Name="Protected" Collapsed="true" />
@@ -138,7 +129,7 @@
     <Position X="6.5" Y="7.25" Width="1.75" />
     <TypeIdentifier>
       <FileName>NgContentsEditor.cs</FileName>
-      <HashCode>BgIBERAQACIgIAAAAACQAEQCAgBUkABAYABEAAAAEmI=</HashCode>
+      <HashCode>BgIBERAQACIgIAAAAAGQAEQCAgBUkABAYABEAAAAEmI=</HashCode>
     </TypeIdentifier>
     <Compartments>
       <Compartment Name="Protected" Collapsed="true" />
@@ -158,7 +149,7 @@
     <Position X="1" Y="12" Width="1.5" />
     <TypeIdentifier>
       <FileName>ContentDetailView.cs</FileName>
-      <HashCode>AAACgoFQM7AAQBAAABigAAEiAIEEASiCJgAAAEAABgA=</HashCode>
+      <HashCode>AAACgoFQM7AAQBAAABiwAAEiAIEEASiCJgAAAEAABgA=</HashCode>
     </TypeIdentifier>
     <Compartments>
       <Compartment Name="Protected" Collapsed="true" />
@@ -170,7 +161,7 @@
     <Position X="1" Y="8.75" Width="1.5" />
     <TypeIdentifier>
       <FileName>PlayListView.cs</FileName>
-      <HashCode>FOIgAv0LFjAAQAQIBMCguBDCm4kRisBFKAA0IIiFEjA=</HashCode>
+      <HashCode>kKYgI/0LBjACQBQABNCouhDCmysRyMBFKAA0IIgtEhA=</HashCode>
     </TypeIdentifier>
     <Compartments>
       <Compartment Name="Protected" Collapsed="true" />
@@ -179,10 +170,10 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="Yusen.GExplorer.CrawlResultView">
-    <Position X="1" Y="4" Width="1.5" />
+    <Position X="1" Y="3.75" Width="1.5" />
     <TypeIdentifier>
       <FileName>CrawlResultView.cs</FileName>
-      <HashCode>FqCAg/1rIrWUQERQIiKkDIJCkwgRixIMqAYgOagAQgY=</HashCode>
+      <HashCode>JqCgg/1rIrWUQEQQYiKkDIJCkwgRjxIMqAYhO6ggQgY=</HashCode>
     </TypeIdentifier>
     <Compartments>
       <Compartment Name="Protected" Collapsed="true" />
@@ -194,7 +185,7 @@
     <Position X="3.75" Y="3.75" Width="1.5" />
     <TypeIdentifier>
       <FileName>GenreTabControl.cs</FileName>
-      <HashCode>AAAgIAgEACAAAAAAAACAAAACAIAAAAAAAAQAAAAAAAA=</HashCode>
+      <HashCode>AAAkIAgEACAAAAAAAACAAAACAIAAAAAAAAQAAAAAAAA=</HashCode>
     </TypeIdentifier>
     <Compartments>
       <Compartment Name="Protected" Collapsed="true" />
@@ -245,17 +236,5 @@
       <Compartment Name="Protected" Collapsed="true" />
       <Compartment Name="Private" Collapsed="true" />
     </Compartments>
-  </Class>
-  <Class Name="System.Windows.Forms.WebBrowser" Collapsed="true">
-    <Position X="19.5" Y="9" Width="1.5" />
-    <TypeIdentifier />
-    <Compartments>
-      <Compartment Name="Protected" Collapsed="true" />
-    </Compartments>
-    <NestedTypes>
-      <Class Name="System.Windows.Forms.WebBrowser.WebBrowserSite" Collapsed="true">
-        <TypeIdentifier />
-      </Class>
-    </NestedTypes>
   </Class>
 </ClassDiagram>

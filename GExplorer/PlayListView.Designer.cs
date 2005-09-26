@@ -56,8 +56,12 @@ namespace Yusen.GExplorer {
 			this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsddbOperation = new System.Windows.Forms.ToolStripDropDownButton();
 			this.tsmiAddById = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiSetDeadlines = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiRefleshView = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiExport = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiImport = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiImportAppend = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiImportOverwrite = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiSerializePlayListNow = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiExportAsAsx = new System.Windows.Forms.ToolStripMenuItem();
@@ -70,9 +74,6 @@ namespace Yusen.GExplorer {
 			this.sfdAsx = new System.Windows.Forms.SaveFileDialog();
 			this.ofdXml = new System.Windows.Forms.OpenFileDialog();
 			this.sfdXml = new System.Windows.Forms.SaveFileDialog();
-			this.tsmiSetDeadlines = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
-			this.tsmiRefleshView = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripContainer1.ContentPanel.SuspendLayout();
 			this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
 			this.toolStripContainer1.SuspendLayout();
@@ -130,17 +131,17 @@ namespace Yusen.GExplorer {
 			// chName
 			// 
 			this.chName.Text = "コンテンツ名";
-			this.chName.Width = 240;
+			this.chName.Width = 231;
 			// 
 			// chDuration
 			// 
 			this.chDuration.Text = "正味時間";
-			this.chDuration.Width = 66;
+			this.chDuration.Width = 62;
 			// 
 			// chDeadLine
 			// 
 			this.chDeadLine.Text = "配信期限";
-			this.chDeadLine.Width = 66;
+			this.chDeadLine.Width = 76;
 			// 
 			// chComment
 			// 
@@ -332,7 +333,8 @@ namespace Yusen.GExplorer {
             this.tsmiRefleshView,
             this.toolStripSeparator9,
             this.tsmiExport,
-            this.tsmiImport,
+            this.tsmiImportAppend,
+            this.tsmiImportOverwrite,
             this.tsmiSerializePlayListNow,
             this.toolStripSeparator5,
             this.tsmiExportAsAsx,
@@ -348,17 +350,39 @@ namespace Yusen.GExplorer {
 			this.tsmiAddById.Text = "ID指定で手動追加 (&A) ...";
 			this.tsmiAddById.Click += new System.EventHandler(this.tsmiAddById_Click);
 			// 
+			// tsmiSetDeadlines
+			// 
+			this.tsmiSetDeadlines.Name = "tsmiSetDeadlines";
+			this.tsmiSetDeadlines.Text = "全項目の配信期限を設定しなおす (&D)";
+			this.tsmiSetDeadlines.Click += new System.EventHandler(this.tsmiSetDeadlines_Click);
+			// 
+			// tsmiRefleshView
+			// 
+			this.tsmiRefleshView.Name = "tsmiRefleshView";
+			this.tsmiRefleshView.Text = "表示内容を強制的にリフレッシュ (&R)";
+			this.tsmiRefleshView.Click += new System.EventHandler(this.tsmiRefleshView_Click);
+			// 
+			// toolStripSeparator9
+			// 
+			this.toolStripSeparator9.Name = "toolStripSeparator9";
+			// 
 			// tsmiExport
 			// 
 			this.tsmiExport.Name = "tsmiExport";
 			this.tsmiExport.Text = "プレイリストをイクスポート (&E) ...";
 			this.tsmiExport.Click += new System.EventHandler(this.tsmiExport_Click);
 			// 
-			// tsmiImport
+			// tsmiImportAppend
 			// 
-			this.tsmiImport.Name = "tsmiImport";
-			this.tsmiImport.Text = "プレイリストをインポート (&I) ...";
-			this.tsmiImport.Click += new System.EventHandler(this.tsmiImport_Click);
+			this.tsmiImportAppend.Name = "tsmiImportAppend";
+			this.tsmiImportAppend.Text = "プレイリストをインポートして追加 (&I) ...";
+			this.tsmiImportAppend.Click += new System.EventHandler(this.tsmiImportAppend_Click);
+			// 
+			// tsmiImportOverwrite
+			// 
+			this.tsmiImportOverwrite.Name = "tsmiImportOverwrite";
+			this.tsmiImportOverwrite.Text = "プレイリストをインポートして上書き (&M) ...";
+			this.tsmiImportOverwrite.Click += new System.EventHandler(this.tsmiImportOverwrite_Click);
 			// 
 			// tsmiSerializePlayListNow
 			// 
@@ -383,7 +407,7 @@ namespace Yusen.GExplorer {
 			// tsmiClearPlayList
 			// 
 			this.tsmiClearPlayList.Name = "tsmiClearPlayList";
-			this.tsmiClearPlayList.Text = "プレイリストの全項目を削除 (&C)";
+			this.tsmiClearPlayList.Text = "プレイリストの全項目を削除 (&C) ...";
 			this.tsmiClearPlayList.Click += new System.EventHandler(this.tsmiClearPlayList_Click);
 			// 
 			// tsddbSettings
@@ -430,22 +454,6 @@ namespace Yusen.GExplorer {
 			this.sfdXml.DefaultExt = "xml";
 			this.sfdXml.Filter = "XML files (*.xml)|*.xml|All files (*.*)|*.*";
 			this.sfdXml.RestoreDirectory = true;
-			// 
-			// tsmiSetDeadlines
-			// 
-			this.tsmiSetDeadlines.Name = "tsmiSetDeadlines";
-			this.tsmiSetDeadlines.Text = "全項目の配信期限を設定しなおす (&D)";
-			this.tsmiSetDeadlines.Click += new System.EventHandler(this.tsmiSetDeadlines_Click);
-			// 
-			// toolStripSeparator9
-			// 
-			this.toolStripSeparator9.Name = "toolStripSeparator9";
-			// 
-			// tsmiRefleshView
-			// 
-			this.tsmiRefleshView.Name = "tsmiRefleshView";
-			this.tsmiRefleshView.Text = "表示内容を強制的にリフレッシュ (&R)";
-			this.tsmiRefleshView.Click += new System.EventHandler(this.tsmiRefleshView_Click);
 			// 
 			// PlayListView
 			// 
@@ -507,7 +515,7 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ToolStripMenuItem tsmiMultiSelectEnabled;
 		private System.Windows.Forms.ToolStripMenuItem tsmiAddById;
 		private System.Windows.Forms.ToolStripMenuItem tsmiExport;
-		private System.Windows.Forms.ToolStripMenuItem tsmiImport;
+		private System.Windows.Forms.ToolStripMenuItem tsmiImportOverwrite;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator8;
 		private System.Windows.Forms.OpenFileDialog ofdXml;
 		private System.Windows.Forms.SaveFileDialog sfdXml;
@@ -517,5 +525,6 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ToolStripMenuItem tsmiSetDeadlines;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator9;
 		private System.Windows.Forms.ToolStripMenuItem tsmiRefleshView;
+		private System.Windows.Forms.ToolStripMenuItem tsmiImportAppend;
 	}
 }

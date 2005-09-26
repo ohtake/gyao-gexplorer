@@ -8,6 +8,9 @@ namespace Yusen.GExplorer {
 	partial class FormBase : Form {
 		public FormBase() {
 			InitializeComponent();
+			if (null != GlobalVariables.ApplicationIcon) {
+				this.Icon = GlobalVariables.ApplicationIcon;
+			}
 		}
 	}
 }

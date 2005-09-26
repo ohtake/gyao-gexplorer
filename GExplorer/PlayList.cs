@@ -110,6 +110,11 @@ namespace Yusen.GExplorer {
 				}
 			}
 		}
+		public bool HasCurrentContent {
+			get {
+				return null != this.currentContent;
+			}
+		}
 		public bool IsCurrentContent(ContentAdapter cont) {
 			return cont.Equals(this.currentContent);
 		}

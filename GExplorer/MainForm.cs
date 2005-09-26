@@ -210,6 +210,19 @@ namespace Yusen.GExplorer {
 			Utility.LoadSettingsAndEnableSaveOnClosed(this);
 			this.ClearStatusBarInfo();
 		}
+		private void MainForm_FormClosing(object sender, FormClosingEventArgs e) {
+			switch (e.CloseReason) {
+				case CloseReason.UserClosing:
+					if (PlayList.Instance.HasCurrentContent) {
+						switch (MessageBox.Show("再生中ですがアプリケーションを終了しますか？", Application.ProductName, MessageBoxButtons.YesNo, MessageBoxIcon.Question)) {
+							case DialogResult.No:
+								e.Cancel = true;
+								break;
+						}
+					}
+					break;
+			}
+		}
 		private void MainForm_FormClosed(object sender, FormClosedEventArgs e) {
 			UserCommandsManager.Instance.UserCommandsChanged -= new EventHandler(UserCommandsManager_UserCommandsChanged);
 			this.SerializeCrawlResults();
@@ -343,7 +356,7 @@ namespace Yusen.GExplorer {
 			string title = "クロール結果の破棄";
 			switch (MessageBox.Show(
 					"全ジャンルのクロール結果を破棄します．よろしいですか？",
-					title, MessageBoxButtons.YesNo, MessageBoxIcon.Question)) {
+					title, MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2)) {
 				case DialogResult.Yes:
 					int numResults = this.crawlResults.Count;
 					this.crawlResults.Clear();
@@ -354,48 +367,42 @@ namespace Yusen.GExplorer {
 			}
 		}
 		private void tsmiRemoveCachesUnreachable_Click(object sender, EventArgs e) {
-			string title = "クロール結果で到達不可能なキャッシュを削除";
-			switch (MessageBox.Show(
-					"各ジャンルのクロール結果に表示されていないキャッシュを削除します．\nよろしいですか？",
-					title, MessageBoxButtons.YesNo, MessageBoxIcon.Question)) {
-				case DialogResult.Yes:
-					List<string> reachable = new List<string>();
-					foreach(CrawlResult result in this.crawlResults.Values){
-						foreach (GPackage package in result.Packages) {
-							foreach (GContent content in package.Contents) {
-								reachable.Add(content.ContentId);
-							}
-						}
+			List<string> reachable = new List<string>();
+			foreach(CrawlResult result in this.crawlResults.Values){
+				foreach (GPackage package in result.Packages) {
+					foreach (GContent content in package.Contents) {
+						reachable.Add(content.ContentId);
 					}
-					reachable.Sort();
-					
-					int success = 0;
-					int failed = 0;
-					int ignored = 0;
-					foreach (string key in this.cacheController.ListAllCacheKeys()) {
-						if (reachable.BinarySearch(key) >= 0) {
-							ignored++;
-						} else {
-							if (this.cacheController.RemoveCache(key)) {
-								success++;
-							} else {
-								failed++;
-							}
-						}
-					}
-					MessageBox.Show(
-						ignored.ToString() + " 個のキャッシュは到達可能により削除しませんでした．\n"
-						+ success.ToString() + " 個のキャッシュを削除しました．\n"
-						+ failed.ToString() + " 個のキャッシュの削除に失敗しました．",
-						title, MessageBoxButtons.OK, MessageBoxIcon.Information);
-					break;
+				}
 			}
+			reachable.Sort();
+			
+			int success = 0;
+			int failed = 0;
+			int ignored = 0;
+			foreach (string key in this.cacheController.ListAllCacheKeys()) {
+				if (reachable.BinarySearch(key) >= 0) {
+					ignored++;
+				} else {
+					if (this.cacheController.RemoveCache(key)) {
+						success++;
+					} else {
+						failed++;
+					}
+				}
+			}
+			MessageBox.Show(
+				ignored.ToString() + " 個のキャッシュは到達可能により削除しませんでした．\n"
+				+ success.ToString() + " 個のキャッシュを削除しました．\n"
+				+ failed.ToString() + " 個のキャッシュの削除に失敗しました．",
+				"クロール結果で到達不可能なキャッシュを削除",
+				MessageBoxButtons.OK, MessageBoxIcon.Information);
 		}
 		private void tsmiRemoveCachesAll_Click(object sender, EventArgs e) {
 			string title = "全てのキャッシュを削除";
 			switch (MessageBox.Show(
 					"全てのキャッシュを削除します．\nよろしいですか？",
-					title, MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation)) {
+					title, MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2)) {
 				case DialogResult.Yes:
 					int success = 0;
 					int failed = 0;
@@ -415,47 +422,41 @@ namespace Yusen.GExplorer {
 		}
 		private void tsmiRemoveDeadlineEntriesUnreacheable_Click(object sender, EventArgs e) {
 			string title = "クロール結果で到達不可能なエントリーを削除";
-			switch (MessageBox.Show(
-					"各ジャンルのクロール結果に表示されていない配信期限を削除します．\nよろしいですか？",
-					title, MessageBoxButtons.YesNo, MessageBoxIcon.Question)) {
-				case DialogResult.Yes:
-					List<string> reachable = new List<string>();
-					foreach (CrawlResult result in this.crawlResults.Values) {
-						foreach (GPackage package in result.Packages) {
-							foreach (GContent content in package.Contents) {
-								reachable.Add(content.ContentId);
-							}
-						}
+			List<string> reachable = new List<string>();
+			foreach (CrawlResult result in this.crawlResults.Values) {
+				foreach (GPackage package in result.Packages) {
+					foreach (GContent content in package.Contents) {
+						reachable.Add(content.ContentId);
 					}
-					reachable.Sort();
-
-					int success = 0;
-					int failed = 0;
-					int ignored = 0;
-					foreach (string key in new List<string>(this.deadLineDictionary.ListContentIds())){
-						if (reachable.BinarySearch(key) >= 0) {
-							ignored++;
-						} else {
-							if (this.deadLineDictionary.RemoveDeadLineOf(key)) {
-								success++;
-							} else {
-								failed++;
-							}
-						}
-					}
-					MessageBox.Show(
-						ignored.ToString() + " 個のエントリーは到達可能により削除しませんでした．\n"
-						+ success.ToString() + " 個のエントリーを削除しました．\n"
-						+ failed.ToString() + " 個のエントリーの削除に失敗しました．",
-						title, MessageBoxButtons.OK, MessageBoxIcon.Information);
-					break;
+				}
 			}
+			reachable.Sort();
+
+			int success = 0;
+			int failed = 0;
+			int ignored = 0;
+			foreach (string key in new List<string>(this.deadLineDictionary.ListContentIds())){
+				if (reachable.BinarySearch(key) >= 0) {
+					ignored++;
+				} else {
+					if (this.deadLineDictionary.RemoveDeadLineOf(key)) {
+						success++;
+					} else {
+						failed++;
+					}
+				}
+			}
+			MessageBox.Show(
+				ignored.ToString() + " 個のエントリーは到達可能により削除しませんでした．\n"
+				+ success.ToString() + " 個のエントリーを削除しました．\n"
+				+ failed.ToString() + " 個のエントリーの削除に失敗しました．",
+				title, MessageBoxButtons.OK, MessageBoxIcon.Information);
 		}
 		private void tsmiRemoveDeadlineEntriesAll_Click(object sender, EventArgs e) {
 			string title = "全てのエントリーを削除";
 			switch (MessageBox.Show(
 					"全てのエントリーを削除します．\nよろしいですか？",
-					title, MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation)) {
+					title, MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2)) {
 				case DialogResult.Yes:
 					int count = this.deadLineDictionary.Count;
 					this.deadLineDictionary.ClearDeadLines();

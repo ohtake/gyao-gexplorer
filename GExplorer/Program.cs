@@ -4,54 +4,25 @@ using System.Windows.Forms;
 using System.Threading;
 using System.IO;
 using Microsoft.Win32;
+using System.Drawing;
 
 namespace Yusen.GExplorer {
 	static class Program {
-		/// <summary>
-		/// The main entry point for the application.
-		/// </summary>
+		/// <summary>The main entry point for the application.</summary>
 		[STAThread]
 		static void Main() {
 			Application.EnableVisualStyles();
 			Application.ThreadException += new ThreadExceptionEventHandler(Application_ThreadException);
 			AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
-
+			
 			GlobalSettings.TryDeserialize();
 			//レジストリからユーザIDの取得
 			if (GlobalSettings.Instance.IsCookieRequired) {
-				try {
-					using (RegistryKey cu = Registry.CurrentUser)
-					using (RegistryKey software = cu.OpenSubKey("SOFTWARE"))
-					using (RegistryKey usen = software.OpenSubKey("USEN"))
-					using (RegistryKey gyaoTool = usen.OpenSubKey("GyaOTool")) {
-						GlobalSettings.Instance.UserNo = int.Parse(gyaoTool.GetValue("Cookie_UserId") as string);
-					}
-				} catch {
-				}
+				ReadUserIdFromRegistry();
 			}
 			//ファイルシステム上のクッキーからユーザIDの取得
 			if (GlobalSettings.Instance.IsCookieRequired) {
-				try {
-					DirectoryInfo cookieDir = new DirectoryInfo(Environment.GetFolderPath(Environment.SpecialFolder.Cookies));
-					if (cookieDir.Exists) {
-						FileInfo[] fis = cookieDir.GetFiles("*@gyao*.txt");
-						foreach (FileInfo fi in fis) {
-							using (TextReader reader = new StreamReader(fi.FullName)) {
-								string line;
-								while (null != (line=reader.ReadLine())) {
-									if ("Cookie_UserId" == line) {
-										GlobalSettings.Instance.UserNo = int.Parse(reader.ReadLine());
-										break;
-									}
-								}
-								if (! GlobalSettings.Instance.IsCookieRequired) {
-									break;
-								}
-							}
-						}
-					}
-				} catch {
-				}
+				ReadUserIdFromCookieOnFileSystem();
 			}
 			//IE経由でgyaoにアクセスしてクッキーを取得
 			if (GlobalSettings.Instance.IsCookieRequired) {
@@ -66,6 +37,18 @@ namespace Yusen.GExplorer {
 				return;
 			}
 			
+			//アイコンの読み込み
+			try {
+				string iconFileName;
+				if (string.IsNullOrEmpty(GlobalSettings.Instance.IconFile)) {
+					iconFileName = Path.GetFileNameWithoutExtension(Environment.GetCommandLineArgs()[0]) + ".ico";
+				} else {
+					iconFileName = GlobalSettings.Instance.IconFile;
+				}
+				GlobalVariables.ApplicationIcon = new Icon(iconFileName);
+			} catch {
+			}
+			
 			UserCommandsManager.Instance.DeserializeItems();
 			NgContentsManager.Instance.DeserializeItems();
 			PlayList.Instance.DeserializeItems();
@@ -78,7 +61,42 @@ namespace Yusen.GExplorer {
 			
 			GlobalSettings.Serialize();
 		}
-		
+
+		private static void ReadUserIdFromRegistry() {
+			try {
+				using (RegistryKey cu = Registry.CurrentUser)
+				using (RegistryKey software = cu.OpenSubKey("SOFTWARE"))
+				using (RegistryKey usen = software.OpenSubKey("USEN"))
+				using (RegistryKey gyaoTool = usen.OpenSubKey("GyaOTool")) {
+					GlobalSettings.Instance.UserNo = int.Parse(gyaoTool.GetValue("Cookie_UserId") as string);
+				}
+			} catch {
+			}
+		}
+		private static void ReadUserIdFromCookieOnFileSystem() {
+			try {
+				DirectoryInfo cookieDir = new DirectoryInfo(Environment.GetFolderPath(Environment.SpecialFolder.Cookies));
+				if (cookieDir.Exists) {
+					FileInfo[] fis = cookieDir.GetFiles("*@gyao*.txt");
+					foreach (FileInfo fi in fis) {
+						using (TextReader reader = new StreamReader(fi.FullName)) {
+							string line;
+							while (null != (line=reader.ReadLine())) {
+								if ("Cookie_UserId" == line) {
+									GlobalSettings.Instance.UserNo = int.Parse(reader.ReadLine());
+									break;
+								}
+							}
+							if (!GlobalSettings.Instance.IsCookieRequired) {
+								break;
+							}
+						}
+					}
+				}
+			} catch {
+			}
+		}
+
 		private static void Application_ThreadException(object sender, ThreadExceptionEventArgs e) {
 			Program.DisplayException(e.Exception);
 		}
