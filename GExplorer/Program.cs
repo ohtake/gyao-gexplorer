@@ -39,11 +39,9 @@ namespace Yusen.GExplorer {
 			
 			//ÉAÉCÉRÉìÇÃì«Ç›çûÇ›
 			try {
-				string iconFileName;
-				if (string.IsNullOrEmpty(GlobalSettings.Instance.IconFile)) {
+				string iconFileName = GlobalSettings.Instance.IconFile;
+				if (string.IsNullOrEmpty(iconFileName)) {
 					iconFileName = Path.GetFileNameWithoutExtension(Environment.GetCommandLineArgs()[0]) + ".ico";
-				} else {
-					iconFileName = GlobalSettings.Instance.IconFile;
 				}
 				GlobalVariables.ApplicationIcon = new Icon(iconFileName);
 			} catch {

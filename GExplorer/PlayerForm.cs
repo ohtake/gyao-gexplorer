@@ -166,7 +166,8 @@ namespace Yusen.GExplorer {
 
 		private void PlayerForm_Load(object sender, EventArgs e) {
 			Utility.AppendHelpMenu(this.menuStrip1);
-			
+			this.tsmiSettings.DropDown.Closing += Utility.ToolStripDropDown_CancelClosingOnClick;
+
 			this.CreateUserCommandsMenuItems();
 			UserCommandsManager.Instance.UserCommandsChanged += new EventHandler(UserCommandsManager_UserCommandsChanged);
 			this.FormClosing += delegate {
@@ -179,12 +180,15 @@ namespace Yusen.GExplorer {
 			this.CurrentContent = null;
 		}
 		private void tsmiPlayOneChapter_Click(object sender, EventArgs e) {
-			InputBoxDialog ibd = new InputBoxDialog("特定のチャプターのみ再生", "チャプター番号の入力．空白の場合は通常再生．", this.CurrentChapter.HasValue ? this.CurrentChapter.Value.ToString() : string.Empty);
-			switch (ibd.ShowDialog(this)) {
+			this.inputBoxDialog1.Title = "特定のチャプターのみ再生";
+			this.inputBoxDialog1.Message = "チャプター番号の入力．空白の場合は通常再生．";
+			this.inputBoxDialog1.Input = this.CurrentChapter.HasValue ? this.CurrentChapter.Value.ToString() : string.Empty;
+			switch (this.inputBoxDialog1.ShowDialog()) {
 				case DialogResult.OK:
 					int? chapter = null;
-					if (! string.IsNullOrEmpty(ibd.Input)) {
-						chapter = int.Parse(ibd.Input);
+					string input = this.inputBoxDialog1.Input;
+					if (! string.IsNullOrEmpty(input)) {
+						chapter = int.Parse(input);
 					}
 					this.CurrentChapter = chapter;
 					break;
@@ -247,18 +251,22 @@ namespace Yusen.GExplorer {
 			this.TopMost = this.tsmiAlwaysOnTop.Checked;
 		}
 		private void tsmiVolumeNormal_Click(object sender, EventArgs e) {
-			InputBoxDialog ibd = new InputBoxDialog("自動音量調整における本編の音量", "本編の音量を入力してください．" + "[" + PlayerForm.VolumeMin.ToString() + "-" + PlayerForm.VolumeMax.ToString() + "]", this.VolumeNormal.ToString());
-			switch (ibd.ShowDialog(this)) {
+			this.inputBoxDialog1.Title = "自動音量調整における本編の音量";
+			this.inputBoxDialog1.Message = "本編の音量を入力してください．" + "[" + PlayerForm.VolumeMin.ToString() + "-" + PlayerForm.VolumeMax.ToString() + "]";
+			this.inputBoxDialog1.Input = this.VolumeNormal.ToString();
+			switch (this.inputBoxDialog1.ShowDialog()) {
 				case DialogResult.OK:
-					this.VolumeNormal = int.Parse(ibd.Input);
+					this.VolumeNormal = int.Parse(this.inputBoxDialog1.Input);
 					break;
 			}
 		}
 		private void tsmiVolumeCf_Click(object sender, EventArgs e) {
-			InputBoxDialog ibd = new InputBoxDialog("自動音量調整におけるCFの音量", "CFの音量を入力してください．" + "[" + PlayerForm.VolumeMin.ToString() + "-" + PlayerForm.VolumeMax.ToString() + "]", this.VolumeCf.ToString());
-			switch (ibd.ShowDialog(this)) {
+			this.inputBoxDialog1.Title = "自動音量調整におけるCFの音量";
+			this.inputBoxDialog1.Message = "CFの音量を入力してください．" + "[" + PlayerForm.VolumeMin.ToString() + "-" + PlayerForm.VolumeMax.ToString() + "]";
+			this.inputBoxDialog1.Input = this.VolumeCf.ToString();
+			switch (this.inputBoxDialog1.ShowDialog()) {
 				case DialogResult.OK:
-					this.VolumeCf = int.Parse(ibd.Input);
+					this.VolumeCf = int.Parse(this.inputBoxDialog1.Input);
 					break;
 			}
 		}
@@ -274,9 +282,10 @@ namespace Yusen.GExplorer {
 					if (this.wmpMain.settings.mute) {
 						break;
 					}
-					// THANKSTO: http://pc8.2ch.net/test/read.cgi/esite/1116115226/81 の神
 					if (this.tsmiAutoVolume.Checked) {
+						// THANKSTO: http://pc8.2ch.net/test/read.cgi/esite/1116115226/81 の神
 						bool isCf = this.wmpMain.currentMedia.getItemInfo("WMS_CONTENT_DESCRIPTION_PLAYLIST_ENTRY_URL").StartsWith("Adv:");
+						
 						this.wmpMain.settings.volume = isCf ? this.VolumeCf : this.VolumeNormal;
 						//謎の対応その3
 						Thread t = new Thread(new ThreadStart(delegate {

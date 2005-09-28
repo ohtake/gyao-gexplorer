@@ -37,6 +37,7 @@ namespace Yusen.GExplorer {
 			this.tsmiPlayOneChapter = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiReload = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+			this.tsmiRemoveAndClose = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiClose = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiOperation = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiPlayPause = new System.Windows.Forms.ToolStripMenuItem();
@@ -64,7 +65,7 @@ namespace Yusen.GExplorer {
 			this.tsmiFocusOnWmp = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiUserCommands = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiRemoveAndClose = new System.Windows.Forms.ToolStripMenuItem();
+			this.inputBoxDialog1 = new Yusen.GExplorer.InputBoxDialog();
 			this.tabControl1.SuspendLayout();
 			this.tabPlayer.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.wmpMain)).BeginInit();
@@ -203,6 +204,13 @@ namespace Yusen.GExplorer {
 			// toolStripSeparator2
 			// 
 			this.toolStripSeparator2.Name = "toolStripSeparator2";
+			// 
+			// tsmiRemoveAndClose
+			// 
+			this.tsmiRemoveAndClose.Name = "tsmiRemoveAndClose";
+			this.tsmiRemoveAndClose.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.E)));
+			this.tsmiRemoveAndClose.Text = "プレイリストから削除して閉じる (&E)";
+			this.tsmiRemoveAndClose.Click += new System.EventHandler(this.tsmiRemoveAndClose_Click);
 			// 
 			// tsmiClose
 			// 
@@ -402,12 +410,11 @@ namespace Yusen.GExplorer {
 			this.tsmiUserCommands.Name = "tsmiUserCommands";
 			this.tsmiUserCommands.Text = "外部コマンド (&C)";
 			// 
-			// tsmiRemoveAndClose
+			// inputBoxDialog1
 			// 
-			this.tsmiRemoveAndClose.Name = "tsmiRemoveAndClose";
-			this.tsmiRemoveAndClose.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.E)));
-			this.tsmiRemoveAndClose.Text = "プレイリストから削除して閉じる (&E)";
-			this.tsmiRemoveAndClose.Click += new System.EventHandler(this.tsmiRemoveAndClose_Click);
+			this.inputBoxDialog1.Input = null;
+			this.inputBoxDialog1.Message = null;
+			this.inputBoxDialog1.Title = null;
 			// 
 			// PlayerForm
 			// 
@@ -478,5 +485,6 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ToolStripMenuItem tsmiVolumeCf;
 		private System.Windows.Forms.ToolStripMenuItem tsmiKeepFullScreen;
 		private System.Windows.Forms.ToolStripMenuItem tsmiRemoveAndClose;
+		private InputBoxDialog inputBoxDialog1;
 	}
 }

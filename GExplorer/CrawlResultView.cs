@@ -19,6 +19,7 @@ namespace Yusen.GExplorer {
 
 		private List<ListViewItem> allLvis = new List<ListViewItem>();
 		private Migemo migemo = null;
+		private Regex filterRegex = null;
 
 		public CrawlResultView() {
 			InitializeComponent();
@@ -27,6 +28,8 @@ namespace Yusen.GExplorer {
 		private void CrawlResultView_Load(object sender, EventArgs e) {
 			this.tslTitle.Font = new Font(this.tslTitle.Font, FontStyle.Bold);
 			this.tsmiAdd.Font = new Font(this.tsmiAdd.Font, FontStyle.Bold);
+			this.tsddbSettings.DropDown.Closing += Utility.ToolStripDropDown_CancelClosingOnClick;
+			this.tsmiAboneType.DropDown.Closing += Utility.ToolStripDropDown_CancelClosingOnClick;
 
 			this.tsmiAboneType.DropDownItems.Clear();
 			foreach (AboneType atype in Enum.GetValues(typeof(AboneType))) {
@@ -112,45 +115,22 @@ namespace Yusen.GExplorer {
 		[DefaultValue("")]
 		public string FilterString {
 			get {
-				if (this.tstbFilter.ReadOnly) {
-					return string.Empty;
-				} else {
+				if (this.CanUseMigemo) {
 					return this.tstbFilter.Text;
+				} else {
+					return string.Empty;
 				}
 			}
-			set { this.tstbFilter.Text = value; }
+			set {
+				this.tstbFilter.Text = value;
+				this.CreateFilterRegex();
+			}
 		}
 		private Regex FilterRegex {
-			get {
-				Regex rval = null;
-				if (this.CanUseMigemo) {
-					if ("" == this.FilterString) {
-						goto success;
-					}
-					string ans = null;
-					try {
-						ans = this.migemo.Query(this.FilterString);
-					} catch{
-						goto failed;
-					}
-					if (string.IsNullOrEmpty(ans)) {
-						goto failed;
-					}
-					try {
-						rval = new Regex(ans, RegexOptions.IgnoreCase);
-					} catch {
-						goto failed;
-					}
-					goto success;
-				} else {
-					return null;
-				}
-			failed:
-				this.tstbFilter.BackColor= Color.Yellow;
-				return null;
-			success:
-				this.tstbFilter.BackColor = SystemColors.Window;
-				return rval;
+			get {return this.filterRegex;}
+			set {
+				this.filterRegex = value;
+				this.tstbMigemoAnswer.Text = (null==value)? string.Empty : this.filterRegex.ToString();
 			}
 		}
 		
@@ -319,8 +299,9 @@ namespace Yusen.GExplorer {
 					continue;
 				}
 			unfiltered:
-				
+
 				//色づけ
+				lvi.ForeColor = SystemColors.WindowText;
 				if (! cont.FromCache) {
 					lvi.ForeColor = this.NewColor;
 				}
@@ -337,11 +318,6 @@ namespace Yusen.GExplorer {
 			
 			this.tslNumber.Text = this.listView1.Items.Count.ToString() + "+" + filtered.ToString() + "+" + aboned.ToString();
 			this.tslTime.Text = "(" + this.CrawlResult.Time.ToShortDateString() + " "+ this.CrawlResult.Time.ToShortTimeString() + ")";
-			if (null != filter) {
-				this.tstbMigemoAnswer.Text = filter.ToString();
-			} else {
-				this.tstbMigemoAnswer.Text = string.Empty;
-			}
 		}
 		private void CreateNormalPagesMenuItems() {
 			this.tsddbNormalPages.DropDownItems.Clear();
@@ -356,6 +332,39 @@ namespace Yusen.GExplorer {
 				}
 			}
 			this.tsddbNormalPages.Enabled = this.tsddbNormalPages.HasDropDownItems;
+		}
+		private void CreateFilterRegex() {
+			if (!this.CanUseMigemo) {
+				return;
+			}
+			string query = this.FilterString;
+			Regex regex = null;
+			if (string.IsNullOrEmpty(query)) {
+				goto success;
+			}
+			string ans = null;
+			try {
+				ans = this.migemo.Query(query);
+			} catch {
+				goto failed;
+			}
+			if (string.IsNullOrEmpty(ans)) {
+				goto failed;
+			}
+			try {
+				regex = new Regex(ans, RegexOptions.IgnoreCase | RegexOptions.ExplicitCapture);
+			} catch {
+				goto failed;
+			}
+			goto success;
+		failed:
+			this.tstbFilter.BackColor= Color.Yellow;
+			this.FilterRegex = null;
+			return;
+		success:
+			this.tstbFilter.BackColor = SystemColors.Window;
+			this.FilterRegex = regex;
+			return;
 		}
 
 		private void CreateUserCommandsMenuItems() {
@@ -439,10 +448,12 @@ namespace Yusen.GExplorer {
 			PlayList.Instance.EndUpdate();
 		}
 		private void tsmiAddWithComment_Click(object sender, EventArgs e) {
-			InputBoxDialog ibd = new InputBoxDialog("コメントを付けてプレイリストに追加", "付加するコメントを入力してください．", string.Empty);
-			switch (ibd.ShowDialog(this.FindForm())) {
+			this.inputBoxDialog1.Title = "コメントを付けてプレイリストに追加";
+			this.inputBoxDialog1.Message = "付加するコメントを入力してください．";
+			this.inputBoxDialog1.Input = string.Empty;
+			switch (this.inputBoxDialog1.ShowDialog()) {
 				case DialogResult.OK:
-					string comment = ibd.Input;
+					string comment = this.inputBoxDialog1.Input;
 					PlayList.Instance.BeginUpdate();
 					foreach (ContentAdapter cont in this.SelectedContents) {
 						cont.Comment = comment;
@@ -473,53 +484,24 @@ namespace Yusen.GExplorer {
 			}
 		}
 		private void tsmiCopyName_Click(object sender, EventArgs e) {
-			StringBuilder sb = new StringBuilder();
-			foreach (ContentAdapter cont in this.SelectedContents) {
-				if (sb.Length > 0) {
-					sb.Append(Environment.NewLine);
-				}
-				sb.Append(cont.DisplayName);
-			}
-			if (sb.Length > 0) {
-				Clipboard.SetText(sb.ToString());
-			}
+			ContentAdapter.CopyNames(this.SelectedContents);
 		}
 		private void tsmiCopyDetailUri_Click(object sender, EventArgs e) {
-			StringBuilder sb = new StringBuilder();
-			foreach (ContentAdapter cont in this.SelectedContents) {
-				if (sb.Length > 0) {
-					sb.Append(Environment.NewLine);
-				}
-				sb.Append(cont.DetailPageUri.AbsoluteUri);
-			}
-			if (sb.Length > 0) {
-				Clipboard.SetText(sb.ToString());
-			}
+			ContentAdapter.CopyUris(this.SelectedContents);
 		}
 		private void tsmiCopyNameAndDetailUri_Click(object sender, EventArgs e) {
-			StringBuilder sb = new StringBuilder();
-			foreach (ContentAdapter cont in this.SelectedContents) {
-				if (sb.Length > 0) {
-					sb.Append(Environment.NewLine);
-				}
-				sb.Append(cont.DisplayName);
-				sb.Append(Environment.NewLine);
-				sb.Append(cont.DetailPageUri.AbsoluteUri);
-			}
-			if (sb.Length > 0) {
-				Clipboard.SetText(sb.ToString());
-			}
+			ContentAdapter.CopyNamesAndUris(this.SelectedContents);
 		}
 		private void tsmiAddNgWithId_Click(object sender, EventArgs e) {
 			foreach (ContentAdapter cont in this.SelectedContents) {
 				string contId = cont.ContentId;
-				NgContentsManager.Instance.Add(new NgContent("簡易追加(ID)", "ContentId", TwoStringsPredicateMethod.Equals, contId));
+				NgContentsManager.Instance.Add(new NgContent("簡易追加", "ContentId", TwoStringsPredicateMethod.Equals, contId));
 			}
 		}
 		private void tsmiAddNgWithTitle_Click(object sender, EventArgs e) {
 			foreach (ContentAdapter cont in this.SelectedContents) {
 				string title = cont.Title;
-				NgContentsManager.Instance.Add(new NgContent("簡易追加(タイトル)", "Title", TwoStringsPredicateMethod.Equals, title));
+				NgContentsManager.Instance.Add(new NgContent("簡易追加", "Title", TwoStringsPredicateMethod.Equals, title));
 			}
 		}
 		#endregion
@@ -546,14 +528,13 @@ namespace Yusen.GExplorer {
 			if (this.CanUseMigemo && this.ClearFilterStringOnHideEnabled && !this.FilterEnabled) {
 				this.FilterString = string.Empty;
 			}
-			Application.DoEvents();
 			this.UpdateView();
 		}
 		private void tstbFilter_TextChanged(object sender, EventArgs e) {
+			this.CreateFilterRegex();
 			this.UpdateView();
 		}
 		#endregion
-
 	}
 
 	public enum AboneType {

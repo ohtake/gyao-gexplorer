@@ -17,11 +17,12 @@ namespace Yusen.GExplorer {
 		private void PlayListView_Load(object sender, EventArgs e) {
 			this.tslTitle.Font = new Font(this.tslTitle.Font, FontStyle.Bold);
 			this.tsmiPlay.Font = new Font(this.tsmiPlay.Font, FontStyle.Bold);
+			this.tsddbSettings.DropDown.Closing += Utility.ToolStripDropDown_CancelClosingOnClick;
 			
 			PlayList.Instance.PlayListChanged += new EventHandler(PlayList_PlayListChanged);
 			PlayList.Instance.CurrentContentChanged += new EventHandler(PlayList_CurrentContentChanged);
 			UserCommandsManager.Instance.UserCommandsChanged += new EventHandler(UserCommandsManager_UserCommandsChanged);
-			
+
 			this.Disposed += delegate {
 				PlayList.Instance.PlayListChanged -= new EventHandler(PlayList_PlayListChanged);
 				PlayList.Instance.CurrentContentChanged -= new EventHandler(PlayList_CurrentContentChanged);
@@ -180,10 +181,12 @@ namespace Yusen.GExplorer {
 		#region メニューの項目
 		private void tsmiAddById_Click(object sender, EventArgs e) {
 			string title = "コンテンツIDを指定してプレイリストに追加";
-			InputBoxDialog inputBox = new InputBoxDialog(title, "追加するコンテンツのIDを入力してください．", "cnt0000000");
-			if (DialogResult.OK == inputBox.ShowDialog(this.FindForm())) {
+			this.inputBoxDialog1.Title = title;
+			this.inputBoxDialog1.Message = "追加するコンテンツのIDを入力してください．";
+			this.inputBoxDialog1.Input = "cnt0000000";
+			if (DialogResult.OK == this.inputBoxDialog1.ShowDialog()) {
 				GContent cont;
-				if (GContent.TryDownload(inputBox.Input, out cont)) {
+				if (GContent.TryDownload(this.inputBoxDialog1.Input, out cont)) {
 					ContentAdapter ca = new ContentAdapter(cont);
 					if (PlayList.Instance.Contains(ca)) {
 						MessageBox.Show("指定したIDはすでにプレイリストに存在します．",
@@ -273,17 +276,16 @@ namespace Yusen.GExplorer {
 		private void tsmiSetComment_Click(object sender, EventArgs e) {
 			ContentAdapter[] conts = this.SelectedContents;
 			if (conts.Length > 0) {
-				InputBoxDialog ibd = new InputBoxDialog("コメントを入力．", "コメントを入力してください．", conts[0].Comment);
-				switch (ibd.ShowDialog(this.FindForm())) {
+				this.inputBoxDialog1.Title = "コメントを入力．";
+				this.inputBoxDialog1.Message = "コメントを入力してください．";
+				this.inputBoxDialog1.Input = conts[0].Comment;
+				switch (this.inputBoxDialog1.ShowDialog()) {
 					case DialogResult.OK:
-						string comment = ibd.Input;
+						string comment = this.inputBoxDialog1.Input;
 						foreach (ContentAdapter cont in conts) {
 							cont.Comment = comment;
 						}
-						this.listView1.BeginUpdate();
-						this.UpdateItems();
-						this.UpdateBoldness();
-						this.listView1.EndUpdate();
+						this.tsmiRefleshView.PerformClick();
 						break;
 				}
 			}
@@ -340,42 +342,13 @@ namespace Yusen.GExplorer {
 			}
 		}
 		private void tsmiCopyName_Click(object sender, EventArgs e) {
-			StringBuilder sb = new StringBuilder();
-			foreach (ContentAdapter cont in this.SelectedContents) {
-				if (sb.Length > 0) {
-					sb.Append(Environment.NewLine);
-				}
-				sb.Append(cont.DisplayName);
-			}
-			if (sb.Length > 0) {
-				Clipboard.SetText(sb.ToString());
-			}
+			ContentAdapter.CopyNames(this.SelectedContents);
 		}
 		private void tsmiCopyUri_Click(object sender, EventArgs e) {
-			StringBuilder sb = new StringBuilder();
-			foreach (ContentAdapter cont in this.SelectedContents) {
-				if (sb.Length > 0) {
-					sb.Append(Environment.NewLine);
-				}
-				sb.Append(cont.DetailPageUri.AbsoluteUri);
-			}
-			if (sb.Length > 0) {
-				Clipboard.SetText(sb.ToString());
-			}
+			ContentAdapter.CopyUris(this.SelectedContents);
 		}
 		private void tsmiCopyNameAndUri_Click(object sender, EventArgs e) {
-			StringBuilder sb = new StringBuilder();
-			foreach (ContentAdapter cont in this.SelectedContents) {
-				if (sb.Length > 0) {
-					sb.Append(Environment.NewLine);
-				}
-				sb.Append(cont.DisplayName);
-				sb.Append(Environment.NewLine);
-				sb.Append(cont.DetailPageUri.AbsoluteUri);
-			}
-			if (sb.Length > 0) {
-				Clipboard.SetText(sb.ToString());
-			}
+			ContentAdapter.CopyNamesAndUris(this.SelectedContents);
 		}
 		#endregion
 

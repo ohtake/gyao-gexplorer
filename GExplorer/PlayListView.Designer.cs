@@ -74,6 +74,7 @@ namespace Yusen.GExplorer {
 			this.sfdAsx = new System.Windows.Forms.SaveFileDialog();
 			this.ofdXml = new System.Windows.Forms.OpenFileDialog();
 			this.sfdXml = new System.Windows.Forms.SaveFileDialog();
+			this.inputBoxDialog1 = new Yusen.GExplorer.InputBoxDialog();
 			this.toolStripContainer1.ContentPanel.SuspendLayout();
 			this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
 			this.toolStripContainer1.SuspendLayout();
@@ -375,13 +376,13 @@ namespace Yusen.GExplorer {
 			// tsmiImportAppend
 			// 
 			this.tsmiImportAppend.Name = "tsmiImportAppend";
-			this.tsmiImportAppend.Text = "プレイリストをインポートして追加 (&I) ...";
+			this.tsmiImportAppend.Text = "プレイリストを追加インポート (&I) ...";
 			this.tsmiImportAppend.Click += new System.EventHandler(this.tsmiImportAppend_Click);
 			// 
 			// tsmiImportOverwrite
 			// 
 			this.tsmiImportOverwrite.Name = "tsmiImportOverwrite";
-			this.tsmiImportOverwrite.Text = "プレイリストをインポートして上書き (&M) ...";
+			this.tsmiImportOverwrite.Text = "プレイリストを上書きインポート (&M) ...";
 			this.tsmiImportOverwrite.Click += new System.EventHandler(this.tsmiImportOverwrite_Click);
 			// 
 			// tsmiSerializePlayListNow
@@ -455,6 +456,12 @@ namespace Yusen.GExplorer {
 			this.sfdXml.Filter = "XML files (*.xml)|*.xml|All files (*.*)|*.*";
 			this.sfdXml.RestoreDirectory = true;
 			// 
+			// inputBoxDialog1
+			// 
+			this.inputBoxDialog1.Input = null;
+			this.inputBoxDialog1.Message = null;
+			this.inputBoxDialog1.Title = null;
+			// 
 			// PlayListView
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -526,5 +533,6 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator9;
 		private System.Windows.Forms.ToolStripMenuItem tsmiRefleshView;
 		private System.Windows.Forms.ToolStripMenuItem tsmiImportAppend;
+		private InputBoxDialog inputBoxDialog1;
 	}
 }

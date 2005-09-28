@@ -8,7 +8,7 @@ using System.Windows.Forms.VisualStyles;
 namespace Yusen.GExplorer {
 	public class GlobalSettings {
 		private const string SettingsFilename = "GlobalSettings.xml";
-
+		
 		private static GlobalSettings instance = new GlobalSettings();
 		internal static GlobalSettings Instance {
 			get { return GlobalSettings.instance; }
@@ -39,7 +39,7 @@ namespace Yusen.GExplorer {
 		private GBitRate bitRate = GBitRate.SuperFine;
 		[Category("GyaO")]
 		[DisplayName("ビットレート")]
-		[Description("再生する動画のビットレート．専用プレーヤだけでなくWMPでの再生もこの設定の影響を受けます．")]
+		[Description("再生する動画のビットレート．専用プレーヤだけでなくWMPでの再生もこの設定の影響を受ける．")]
 		[DefaultValue(GBitRate.SuperFine)]
 		public GBitRate BitRate {
 			get {return this.bitRate;}

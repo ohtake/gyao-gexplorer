@@ -2,31 +2,46 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Runtime.InteropServices;
-using System.Threading;
 
 namespace Yusen.GExplorer{
 	class Migemo : IDisposable{
+		private enum DictionaryId{
+			Invalid		= 0,
+			Migemo		= 1,
+			RomaToHira	= 2,
+			HiraToKata	= 3,
+			HanToZen	= 4,
+		}
+		private enum OperatorIndex{
+			Or			= 0,
+			NestIn		= 1,
+			NestOut		= 2,
+			SelectIn	= 3,
+			SelectOut	= 4,
+			NewLine		= 5,
+		}
+
 		[DllImport("migemo.dll", EntryPoint="migemo_open")]
 		private static extern IntPtr MigemoOpen(string filename);
-		
 		[DllImport("migemo.dll", EntryPoint="migemo_close")]
 		private static extern void MigemoClose(IntPtr migemoObj);
 		
 		[DllImport("migemo.dll", EntryPoint="migemo_query")]
-		private static extern string MigemoQuery(IntPtr migemoObj, byte[] query);
-		
+		private static extern StringBuilder MigemoQuery(IntPtr migemoObj, string query);
 		[DllImport("migemo.dll", EntryPoint="migemo_release")]
-		private static extern void MigemoRelease(IntPtr migemoObj, string answer);
+		private static extern void MigemoRelease(IntPtr migemoObj, StringBuilder answer);
 		
 		[DllImport("migemo.dll", EntryPoint="migemo_is_enable")]
 		private static extern bool MigemoIsEnable(IntPtr migemoObj);
+		[DllImport("migemo.dll", EntryPoint="migemo_set_operator")]
+		private static extern int MigemoSetOperator(IntPtr migemoObj, OperatorIndex opIndex, string opString);
 
 		private IntPtr migemoObj;
-		private string lastAns = null;
 
 		public Migemo(string dicFileName) {
 			try {
 				this.migemoObj = Migemo.MigemoOpen(dicFileName);
+				Migemo.MigemoSetOperator(this.migemoObj, OperatorIndex.NestIn, "(?:");
 				if (!Migemo.MigemoIsEnable(this.migemoObj)) {
 					throw new MigemoException("Ç®ÇªÇÁÇ≠migemoÇÃé´èëÇ™å©Ç¬Ç©ÇÁÇ»Ç©Ç¡ÇΩÅD");
 				}
@@ -40,27 +55,17 @@ namespace Yusen.GExplorer{
 		}
 
 		public string Query(string query) {
-			lock (this) {
-				if (null != this.lastAns) {
-					string last = this.lastAns;
-					this.lastAns = null;
-					Migemo.MigemoRelease(this.migemoObj, last);
-				}
-				this.lastAns = Migemo.MigemoQuery(this.migemoObj, Encoding.GetEncoding("Shift_JIS").GetBytes(query));
-				if (null != this.lastAns) {
-					return this.lastAns.ToString();
-				} else {
-					return string.Empty;
-				}
+			StringBuilder ans = Migemo.MigemoQuery(this.migemoObj, query);
+			if (null == ans) {
+				return string.Empty;
 			}
+			string ansStr = ans.ToString();
+			Migemo.MigemoRelease(this.migemoObj, ans);
+			return ansStr;
 		}
 		
 		public void Dispose() {
 			if (Migemo.MigemoIsEnable(this.migemoObj)) {
-				if(null != this.lastAns){
-					Migemo.MigemoRelease(this.migemoObj, this.lastAns);
-					this.lastAns = null;
-				}
 				Migemo.MigemoClose(this.migemoObj);
 				this.migemoObj = IntPtr.Zero;
 			}

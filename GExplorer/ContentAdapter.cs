@@ -5,9 +5,50 @@ using System.ComponentModel;
 using System.Text;
 using Yusen.GCrawler;
 using System.Xml.Serialization;
+using Clipboard=System.Windows.Forms.Clipboard;
+
 
 namespace Yusen.GExplorer {
 	public class ContentAdapter {
+		internal static void CopyNames(IEnumerable<ContentAdapter> conts) {
+			StringBuilder sb = new StringBuilder();
+			foreach (ContentAdapter cont in conts) {
+				if (sb.Length > 0) {
+					sb.Append(Environment.NewLine);
+				}
+				sb.Append(cont.DisplayName);
+			}
+			if (sb.Length > 0) {
+				Clipboard.SetText(sb.ToString());
+			}
+		}
+		internal static void CopyUris(IEnumerable<ContentAdapter> conts) {
+			StringBuilder sb = new StringBuilder();
+			foreach (ContentAdapter cont in conts) {
+				if (sb.Length > 0) {
+					sb.Append(Environment.NewLine);
+				}
+				sb.Append(cont.DetailPageUri.AbsoluteUri);
+			}
+			if (sb.Length > 0) {
+				Clipboard.SetText(sb.ToString());
+			}
+		}
+		internal static void CopyNamesAndUris(IEnumerable<ContentAdapter> conts) {
+			StringBuilder sb = new StringBuilder();
+			foreach (ContentAdapter cont in conts) {
+				if (sb.Length > 0) {
+					sb.Append(Environment.NewLine);
+				}
+				sb.Append(cont.DisplayName);
+				sb.Append(Environment.NewLine);
+				sb.Append(cont.DetailPageUri.AbsoluteUri);
+			}
+			if (sb.Length > 0) {
+				Clipboard.SetText(sb.ToString());
+			}
+		}
+
 		private GContent innerCont;
 		private GTimeSpan gTimeSpan;
 		private string deadLine = string.Empty;

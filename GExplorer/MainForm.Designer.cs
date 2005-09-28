@@ -44,7 +44,7 @@ namespace Yusen.GExplorer {
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiQuit = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiUncrawlableGenres = new System.Windows.Forms.ToolStripMenuItem();
-			this.ê›íËSToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiSettings = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiFocusOnResultAfterTabChanged = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiIgnoreCrawlErrors = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiTools = new System.Windows.Forms.ToolStripMenuItem();
@@ -64,6 +64,7 @@ namespace Yusen.GExplorer {
 			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiUserCommands = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiAbortCrawling = new System.Windows.Forms.ToolStripMenuItem();
+			this.inputBoxDialog1 = new Yusen.GExplorer.InputBoxDialog();
 			this.statusStrip1.SuspendLayout();
 			this.toolStripContainer1.BottomToolStripPanel.SuspendLayout();
 			this.toolStripContainer1.ContentPanel.SuspendLayout();
@@ -259,7 +260,7 @@ namespace Yusen.GExplorer {
 			this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiFile,
             this.tsmiUncrawlableGenres,
-            this.ê›íËSToolStripMenuItem,
+            this.tsmiSettings,
             this.tsmiTools,
             this.tsmiAbortCrawling});
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
@@ -313,13 +314,13 @@ namespace Yusen.GExplorer {
 			this.tsmiUncrawlableGenres.Name = "tsmiUncrawlableGenres";
 			this.tsmiUncrawlableGenres.Text = "ñ¢ëŒâûÉWÉÉÉìÉã (&U)";
 			// 
-			// ê›íËSToolStripMenuItem
+			// tsmiSettings
 			// 
-			this.ê›íËSToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+			this.tsmiSettings.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiFocusOnResultAfterTabChanged,
             this.tsmiIgnoreCrawlErrors});
-			this.ê›íËSToolStripMenuItem.Name = "ê›íËSToolStripMenuItem";
-			this.ê›íËSToolStripMenuItem.Text = "ê›íË (&S)";
+			this.tsmiSettings.Name = "tsmiSettings";
+			this.tsmiSettings.Text = "ê›íË (&S)";
 			// 
 			// tsmiFocusOnResultAfterTabChanged
 			// 
@@ -448,6 +449,12 @@ namespace Yusen.GExplorer {
 			this.tsmiAbortCrawling.Text = "<<ÉNÉçÅ[ÉãíÜé~ (&A)>>";
 			this.tsmiAbortCrawling.Click += new System.EventHandler(this.tsmiAbortCrawling_Click);
 			// 
+			// inputBoxDialog1
+			// 
+			this.inputBoxDialog1.Input = null;
+			this.inputBoxDialog1.Message = null;
+			this.inputBoxDialog1.Title = null;
+			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -509,7 +516,7 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
 		private System.Windows.Forms.ToolStripMenuItem tsmiRemoveCaches;
 		private System.Windows.Forms.ToolStripMenuItem tsmiRemoveCachesUnreachable;
-		private System.Windows.Forms.ToolStripMenuItem ê›íËSToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem tsmiSettings;
 		private System.Windows.Forms.ToolStripMenuItem tsmiFocusOnResultAfterTabChanged;
 		private System.Windows.Forms.ToolStripMenuItem tsmiIgnoreCrawlErrors;
 		private System.Windows.Forms.ToolStripMenuItem tsmiRemoveCachesAll;
@@ -524,6 +531,7 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ToolStripMenuItem tsmiRemoveDeadlineEntries;
 		private System.Windows.Forms.ToolStripMenuItem tsmiRemoveDeadlineEntriesUnreacheable;
 		private System.Windows.Forms.ToolStripMenuItem tsmiRemoveDeadlineEntriesAll;
+		private InputBoxDialog inputBoxDialog1;
 
 
 	}

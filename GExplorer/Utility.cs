@@ -124,7 +124,16 @@ namespace Yusen.GExplorer {
 			}
 			return true;
 		}
+
+		public static void ToolStripDropDown_CancelClosingOnClick(object sender, ToolStripDropDownClosingEventArgs e) {
+			switch (e.CloseReason) {
+				case ToolStripDropDownCloseReason.ItemClicked:
+					e.Cancel = true;
+					break;
+			}
+		}
 	}
+	
 	interface IHasSettings<TSettings> where TSettings : new() {
 		void FillSettings(TSettings settings);
 		void ApplySettings(TSettings settings);

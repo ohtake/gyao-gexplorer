@@ -76,6 +76,7 @@ namespace Yusen.GExplorer {
 			this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
 			this.tstbFilter = new System.Windows.Forms.ToolStripTextBox();
 			this.tstbMigemoAnswer = new System.Windows.Forms.ToolStripTextBox();
+			this.inputBoxDialog1 = new Yusen.GExplorer.InputBoxDialog();
 			this.cmsContent.SuspendLayout();
 			this.toolStripContainer1.ContentPanel.SuspendLayout();
 			this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
@@ -549,5 +550,6 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator10;
 		private System.Windows.Forms.ColumnHeader chDeadline;
 		private System.Windows.Forms.ToolStripMenuItem tsmiAddWithComment;
+		private InputBoxDialog inputBoxDialog1;
 	}
 }

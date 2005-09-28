@@ -182,6 +182,7 @@ namespace Yusen.GExplorer {
 
 			this.Text = Application.ProductName + " " + Application.ProductVersion;
 			Utility.AppendHelpMenu(this.menuStrip1);
+			this.tsmiSettings.DropDown.Closing += Utility.ToolStripDropDown_CancelClosingOnClick;
 
 			this.genreTabControl1.TabPages.Clear();
 			this.tsmiUncrawlableGenres.DropDownItems.Clear();
@@ -317,18 +318,22 @@ namespace Yusen.GExplorer {
 			Utility.Browse(new Uri("http://www.gyao.jp/"));
 		}
 		private void tsmiBrowsePackage_Click(object sender, EventArgs e) {
-			InputBoxDialog ibd = new InputBoxDialog("パッケージIDを指定してウェブブラウザで開く", "パッケージIDを入力してください．", "pac0000000");
-			switch (ibd.ShowDialog(this)) {
+			this.inputBoxDialog1.Title = "パッケージIDを指定してウェブブラウザで開く";
+			this.inputBoxDialog1.Message = "パッケージIDを入力してください．";
+			this.inputBoxDialog1.Input = "pac0000000";
+			switch (this.inputBoxDialog1.ShowDialog()) {
 				case DialogResult.OK:
-					Utility.Browse(GPackage.CreatePackagePageUri(ibd.Input));
+					Utility.Browse(GPackage.CreatePackagePageUri(this.inputBoxDialog1.Input));
 					break;
 			}
 		}
 		private void tsmiBrowseContent_Click(object sender, EventArgs e) {
-			InputBoxDialog ibd = new InputBoxDialog("コンテンツIDを指定してウェブブラウザで開く", "コンテンツIDを入力してください．", "cnt0000000");
-			switch (ibd.ShowDialog(this)) {
+			this.inputBoxDialog1.Title = "コンテンツIDを指定してウェブブラウザで開く";
+			this.inputBoxDialog1.Message = "コンテンツIDを入力してください．";
+			this.inputBoxDialog1.Input = "cnt0000000";
+			switch (this.inputBoxDialog1.ShowDialog()) {
 				case DialogResult.OK:
-					Utility.Browse(GContent.CreateDetailPageUri(ibd.Input));
+					Utility.Browse(GContent.CreateDetailPageUri(this.inputBoxDialog1.Input));
 					break;
 			}
 		}

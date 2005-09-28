@@ -1,5 +1,5 @@
 namespace Yusen.GExplorer {
-	partial class InputBoxDialog {
+	partial class InputBoxForm {
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>

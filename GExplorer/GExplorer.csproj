@@ -108,11 +108,14 @@
     <Compile Include="GWebBrowser.Designer.cs">
       <DependentUpon>GWebBrowser.cs</DependentUpon>
     </Compile>
-    <Compile Include="InputBoxDialog.cs">
+    <Compile Include="InputBoxForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="InputBoxDialog.Designer.cs">
-      <DependentUpon>InputBoxDialog.cs</DependentUpon>
+    <Compile Include="InputBoxForm.Designer.cs">
+      <DependentUpon>InputBoxForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="InputBoxDialog.cs">
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="ItemsManagerBase.cs" />
     <Compile Include="ListViewItemComparer.cs" />
@@ -181,8 +184,8 @@
     <EmbeddedResource Include="GWebBrowser.resx">
       <DependentUpon>GWebBrowser.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="InputBoxDialog.resx">
-      <DependentUpon>InputBoxDialog.cs</DependentUpon>
+    <EmbeddedResource Include="InputBoxForm.resx">
+      <DependentUpon>InputBoxForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
