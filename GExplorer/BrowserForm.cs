@@ -90,7 +90,12 @@ namespace Yusen.GExplorer {
 			this.toolStripProgressBar1.Value = (int)e.CurrentProgress;
 		}
 		private void gwbMain_DocumentTitleChanged(object sender, EventArgs e) {
-			this.Text = (sender as WebBrowser).DocumentTitle;
+			WebBrowser wb = sender as WebBrowser;
+			string title = wb.DocumentTitle;
+			if (string.IsNullOrEmpty(title)) {
+				title = "<" + wb.Url.AbsoluteUri + ">";
+			}
+			this.Text = title;
 		}
 		
 		private void gwbMain_Navigating(object sender, WebBrowserNavigatingEventArgs e) {

@@ -64,7 +64,7 @@ namespace Yusen.GExplorer {
 			this.btnCancel.TabIndex = 3;
 			this.btnCancel.Text = "ƒLƒƒƒ“ƒZƒ‹ (&C)";
 			// 
-			// InputBoxDialog
+			// InputBoxForm
 			// 
 			this.AcceptButton = this.btnOk;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -78,10 +78,11 @@ namespace Yusen.GExplorer {
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
-			this.Name = "InputBoxDialog";
+			this.Name = "InputBoxForm";
 			this.ShowInTaskbar = false;
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-			this.Text = "InputBoxDialog";
+			this.Text = "InputBoxForm";
+			this.Shown += new System.EventHandler(this.InputBoxForm_Shown);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 

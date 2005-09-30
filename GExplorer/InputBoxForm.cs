@@ -25,5 +25,10 @@ namespace Yusen.GExplorer {
 			get { return this.txtInput.Text; }
 			set { this.txtInput.Text = value; }
 		}
+
+		private void InputBoxForm_Shown(object sender, EventArgs e) {
+			this.txtInput.Focus();
+			this.txtInput.SelectAll();
+		}
 	}
 }

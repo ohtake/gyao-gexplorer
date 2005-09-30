@@ -26,17 +26,12 @@ namespace Yusen.GExplorer {
 		}
 		public void ApplySettings(GlobalSettingsEditorSettings settings) {
 			base.ApplySettings(settings);
-
-			this.chkTopMost.Checked = this.TopMost;
 		}
 		public string FilenameForSettings {
 			get { return @"GlobalSettingsEditorSettings.xml"; }
 		}
 		private void GlobalSettingsEditor_Load(object sender, EventArgs e) {
 			Utility.LoadSettingsAndEnableSaveOnClosed(this);
-		}
-		private void chkTopMost_CheckedChanged(object sender, EventArgs e) {
-			this.TopMost = this.chkTopMost.Checked;
 		}
 	}
 

@@ -260,6 +260,7 @@ namespace Yusen.GExplorer {
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
 			this.MinimumSize = new System.Drawing.Size(500, 150);
 			this.Name = "NgContentsEditor";
+			this.ShowInTaskbar = false;
 			this.Text = "NgContentsEditor";
 			this.Load += new System.EventHandler(this.NgContentsEditor_Load);
 			this.tableLayoutPanel1.ResumeLayout(false);

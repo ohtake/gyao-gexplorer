@@ -7,7 +7,6 @@ using Yusen.GCrawler;
 using System.Xml.Serialization;
 using Clipboard=System.Windows.Forms.Clipboard;
 
-
 namespace Yusen.GExplorer {
 	public class ContentAdapter {
 		internal static void CopyNames(IEnumerable<ContentAdapter> conts) {

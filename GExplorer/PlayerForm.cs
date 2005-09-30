@@ -4,12 +4,18 @@ using System.Windows.Forms;
 using System.Threading;
 using AxWMPLib;
 using WMPLib;
+using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Yusen.GExplorer {
 	partial class PlayerForm : FormSettingsBase, IFormWithSettings<PlayerFormSettings>{
+		private const string AttribNameEntryUrl = "WMS_CONTENT_DESCRIPTION_PLAYLIST_ENTRY_URL";
 		private const int VolumeMax = 100;
 		private const int VolumeMin = 0;
-		
+		private const long OrdMax = 10000000000000000;
+		private static readonly Regex regexEndFlag = new Regex(":endFlg=([^:=]*)");
+		private static readonly Regex regexDartTag = new Regex(":dartTag=([^:=]*)");
+
 		private static PlayerForm instance = null;
 		public static PlayerForm Instance {
 			get {
@@ -28,11 +34,14 @@ namespace Yusen.GExplorer {
 
 		private ContentAdapter currentContent = null;
 		private int? currentChapter = null;
+		private Dictionary<string, string> currentAttribs = new Dictionary<string, string>();
+		private bool? endFlag = null;
+		private bool fullScreenAtPrev = false;
 		
 		private int volumeNormal = 100;
 		private int volumeCf = 20;
 
-		private bool fullScreenAtPrev = false;
+		private Random rand = new Random();
 
 		private PlayerForm() {
 			InitializeComponent();
@@ -62,6 +71,7 @@ namespace Yusen.GExplorer {
 			settings.AutoVolumeEnabled = this.AutoVolumeEnabled;
 			settings.MediaKeysEnabled = this.MediaKeysEnabled;
 			settings.RemovePlayedContentEnabled = this.RemovePlayedContentEnabled;
+			settings.PlayListLoopEnabled = this.PlayListLoopEnabled;
 			settings.MainTabIndex = this.tabControl1.SelectedIndex;
 			settings.VolumeNormal = this.VolumeNormal;
 			settings.VolumeCf = this.VolumeCf;
@@ -73,6 +83,7 @@ namespace Yusen.GExplorer {
 			this.AutoVolumeEnabled = settings.AutoVolumeEnabled ?? this.AutoVolumeEnabled;
 			this.MediaKeysEnabled = settings.MediaKeysEnabled ?? this.MediaKeysEnabled;
 			this.RemovePlayedContentEnabled = settings.RemovePlayedContentEnabled ?? this.RemovePlayedContentEnabled;
+			this.PlayListLoopEnabled = settings.PlayListLoopEnabled ?? this.PlayListLoopEnabled;
 			this.tabControl1.SelectedIndex = settings.MainTabIndex ?? this.tabControl1.SelectedIndex;
 			this.VolumeNormal = settings.VolumeNormal ?? this.VolumeNormal;
 			this.VolumeCf = settings.VolumeCf ?? this.VolumeCf;
@@ -126,7 +137,6 @@ namespace Yusen.GExplorer {
 				}
 			}
 		}
-
 		public bool KeepFullScreenEnabled {
 			get { return this.tsmiKeepFullScreen.Checked; }
 			set { this.tsmiKeepFullScreen.Checked = value; }
@@ -142,6 +152,10 @@ namespace Yusen.GExplorer {
 		public bool RemovePlayedContentEnabled {
 			get { return this.tsmiRemovePlayedContent.Checked; }
 			set { this.tsmiRemovePlayedContent.Checked = value; }
+		}
+		public bool PlayListLoopEnabled {
+			get { return this.tsmiLoopPlayList.Checked; }
+			set { this.tsmiLoopPlayList.Checked = value; }
 		}
 		public int VolumeNormal {
 			get { return this.volumeNormal; }
@@ -163,6 +177,9 @@ namespace Yusen.GExplorer {
 				}
 			}
 		}
+		private long GetRandomOrd() {
+			return (long)(this.rand.NextDouble() * PlayerForm.OrdMax);
+		}
 
 		private void PlayerForm_Load(object sender, EventArgs e) {
 			Utility.AppendHelpMenu(this.menuStrip1);
@@ -179,8 +196,8 @@ namespace Yusen.GExplorer {
 		private void PlayerForm_FormClosing(object sender, FormClosingEventArgs e) {
 			this.CurrentContent = null;
 		}
-		private void tsmiPlayOneChapter_Click(object sender, EventArgs e) {
-			this.inputBoxDialog1.Title = "特定のチャプターのみ再生";
+		private void tsmiPlayChapter_Click(object sender, EventArgs e) {
+			this.inputBoxDialog1.Title = "特定のチャプターから再生";
 			this.inputBoxDialog1.Message = "チャプター番号の入力．空白の場合は通常再生．";
 			this.inputBoxDialog1.Input = this.CurrentChapter.HasValue ? this.CurrentChapter.Value.ToString() : string.Empty;
 			switch (this.inputBoxDialog1.ShowDialog()) {
@@ -232,19 +249,28 @@ namespace Yusen.GExplorer {
 		}
 		private void tsmiNextContent_Click(object sender, EventArgs e) {
 			ContentAdapter nextCont = PlayList.Instance.NextContentOf(this.CurrentContent);
+			if (null == nextCont && this.PlayListLoopEnabled) {
+				nextCont = PlayList.Instance.NextContentOf(null);
+			}
 			this.CurrentContent = nextCont;
 		}
 		private void tsmiNextContentWithDelete_Click(object sender, EventArgs e) {
 			ContentAdapter nextCont = PlayList.Instance.NextContentOf(this.CurrentContent);
+			if (null == nextCont && this.PlayListLoopEnabled) {
+				nextCont = PlayList.Instance.NextContentOf(null);
+			}
 			PlayList.Instance.Remove(this.CurrentContent);
-			if (PlayList.Instance.Contains(nextCont)) {
-				this.CurrentContent = nextCont;
-			} else {
+			if (this.CurrentContent.Equals(nextCont)) {
 				this.CurrentContent = null;
+			} else {
+				this.CurrentContent = nextCont;
 			}
 		}
 		private void tsmiPrevContent_Click(object sender, EventArgs e) {
 			ContentAdapter prevCont = PlayList.Instance.PrevContentOf(this.CurrentContent);
+			if (null == prevCont && this.PlayListLoopEnabled) {
+				prevCont = PlayList.Instance.PrevContentOf(null);
+			}
 			this.CurrentContent = prevCont;
 		}
 		private void tsmiAlwaysOnTop_Click(object sender, EventArgs e) {
@@ -274,17 +300,33 @@ namespace Yusen.GExplorer {
 			this.tabControl1.SelectedTab = this.tabPlayer;
 			this.wmpMain.Focus();
 		}
+		private void tsmiShowItemInfo_Click(object sender, EventArgs e) {
+			StringBuilder sb = new StringBuilder();
+			foreach (KeyValuePair<string, string> attrib in this.currentAttribs) {
+				if (sb.Length > 0) {
+					sb.Append("\n");
+				}
+				sb.Append(attrib.Key + "\t" + attrib.Value);
+			}
+			MessageBox.Show(sb.ToString(), "ItemInfo の表示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+		}
 		
 		private void wmpMain_OpenStateChange(object sender, _WMPOCXEvents_OpenStateChangeEvent e) {
 			switch ((WMPOpenState)e.newState) {
 				case WMPOpenState.wmposMediaOpen:
-					//ミュートの時には音量を変更しない
-					if (this.wmpMain.settings.mute) {
-						break;
+					// ItemInfo の読み取り
+					this.currentAttribs.Clear();
+					int attribCount = this.wmpMain.currentMedia.attributeCount;
+					for (int i=0; i<attribCount; i++) {
+						string attribName = this.wmpMain.currentMedia.getAttributeName(i);
+						this.currentAttribs.Add(attribName, this.wmpMain.currentMedia.getItemInfo(attribName));
 					}
-					if (this.tsmiAutoVolume.Checked) {
-						// THANKSTO: http://pc8.2ch.net/test/read.cgi/esite/1116115226/81 の神
-						bool isCf = this.wmpMain.currentMedia.getItemInfo("WMS_CONTENT_DESCRIPTION_PLAYLIST_ENTRY_URL").StartsWith("Adv:");
+					// entry url のよみとり
+					string entryUrl = this.currentAttribs[PlayerForm.AttribNameEntryUrl];
+					//音量調整
+					//THANKSTO: http://pc8.2ch.net/test/read.cgi/esite/1116115226/81 の神
+					if (this.tsmiAutoVolume.Checked && !this.wmpMain.settings.mute) {
+						bool isCf = entryUrl.StartsWith("Adv:");
 						
 						this.wmpMain.settings.volume = isCf ? this.VolumeCf : this.VolumeNormal;
 						//謎の対応その3
@@ -296,6 +338,32 @@ namespace Yusen.GExplorer {
 						}));
 						t.Start();
 					}
+					//endFlag の読み取り
+					Match endFlagMatch = PlayerForm.regexEndFlag.Match(entryUrl);
+					if (endFlagMatch.Success) {
+						switch (endFlagMatch.Groups[1].Value) {
+							case "0":
+								this.endFlag = false;
+								break;
+							case "1":
+								this.endFlag = true;
+								break;
+						}
+					}
+					//バナー表示
+					Match dartTagMatch = PlayerForm.regexDartTag.Match(entryUrl);
+					if (dartTagMatch.Success && !string.IsNullOrEmpty(dartTagMatch.Groups[1].Value)) {
+						string dartTag = dartTagMatch.Groups[1].Value;
+						string ordStr = this.GetRandomOrd().ToString();
+						
+						this.splitContainer1.Panel1Collapsed = false;
+						this.pboxBanner.LoadAsync("http://ad.jp.doubleclick.net/ad/gyao.vision.spot/" + dartTag + ";sz=468x60;ord=" + ordStr + "?");
+						this.pboxBanner.Tag = "http://ad.jp.doubleclick.net/jump/gyao.vision.spot/" + dartTag + ";sz=468x60;ord=" + ordStr + "?";
+					} else {
+						this.splitContainer1.Panel1Collapsed = true;
+						this.pboxBanner.Image = null;
+						this.pboxBanner.Tag = null;
+					}
 					break;
 			}
 		}
@@ -306,11 +374,17 @@ namespace Yusen.GExplorer {
 					Thread t = new Thread(new ThreadStart(delegate {
 						Thread.Sleep(100);//適当すぎ
 						if (!this.IsDisposed && !this.wmpMain.IsDisposed) {
-							if (this.RemovePlayedContentEnabled) {
-								this.tsmiNextContentWithDelete.PerformClick();
+							if (this.CurrentChapter.HasValue && (!this.endFlag.HasValue || !this.endFlag.Value)) {
+								//チャプターモードでエンドフラグが不明かFalse
+								this.CurrentChapter++;
 							} else {
-								this.tsmiNextContent.PerformClick();
+								if (this.RemovePlayedContentEnabled) {
+									this.tsmiNextContentWithDelete.PerformClick();
+								} else {
+									this.tsmiNextContent.PerformClick();
+								}
 							}
+							this.endFlag = null;
 						}
 					}));
 					t.Start();
@@ -373,13 +447,20 @@ namespace Yusen.GExplorer {
 					break;
 			}
 		}
+		private void pboxBanner_Click(object sender, EventArgs e) {
+			string jumpUri = this.pboxBanner.Tag as string;
+			if (!string.IsNullOrEmpty(jumpUri)) {
+				Utility.Browse(new Uri(jumpUri));
+			}
+		}
 	}
-	
+
 	public class PlayerFormSettings : FormSettingsBaseSettings {
 		private bool? keepFullScreenEnabled;
 		private bool? autoVolumeEnabled;
 		private bool? mediaKeysEnabled;
 		private bool? removePlayedContentEnabled;
+		private bool? playListLoopEnabled;
 		private int? mainTabIndex;
 		private int? volumeNormal;
 		private int? volumeCf;
@@ -399,6 +480,10 @@ namespace Yusen.GExplorer {
 		public bool? RemovePlayedContentEnabled {
 			get { return this.removePlayedContentEnabled; }
 			set { this.removePlayedContentEnabled = value; }
+		}
+		public bool? PlayListLoopEnabled {
+			get { return this.playListLoopEnabled; }
+			set { this.playListLoopEnabled = value; }
 		}
 		public int? MainTabIndex {
 			get { return this.mainTabIndex; }

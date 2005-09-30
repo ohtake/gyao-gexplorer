@@ -64,8 +64,9 @@ namespace Yusen.GExplorer {
 			ToolStripMenuItem about = new ToolStripMenuItem(
 				"ƒo[ƒWƒ‡ƒ“î•ñ (&A) ...", null,
 				new EventHandler(delegate(object sender, EventArgs e) {
-					AboutBox abox = new AboutBox();
-					abox.ShowDialog((sender as ToolStripMenuItem).Tag as Form);
+					using (AboutBox abox = new AboutBox()) {
+						abox.ShowDialog((sender as ToolStripMenuItem).Tag as Form);
+					}
 				}));
 			about.Tag = menuStrip.FindForm();
 			

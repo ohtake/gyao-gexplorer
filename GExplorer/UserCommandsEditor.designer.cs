@@ -309,6 +309,7 @@ namespace Yusen.GExplorer {
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
 			this.MinimumSize = new System.Drawing.Size(360, 340);
 			this.Name = "UserCommandsEditor";
+			this.ShowInTaskbar = false;
 			this.Text = "外部コマンドエディタ";
 			this.Load += new System.EventHandler(this.UserCommandsEditor_Load);
 			this.grpDetail.ResumeLayout(false);

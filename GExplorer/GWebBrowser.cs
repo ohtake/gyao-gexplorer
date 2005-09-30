@@ -20,6 +20,7 @@ namespace Yusen.GExplorer {
 			this.tsmiPackageCancel.Click += new EventHandler(tsmiPackageCancel_Click);
 			this.tsmiContentOpenDetail.Click += new EventHandler(tsmiContentOpenDetail_Click);
 			this.tsmiContentAddToPlayList.Click += new EventHandler(tsmiContentAddToPlayList_Click);
+			this.tsmiContentAddToPlayListWithComment.Click += new EventHandler(tsmiContentAddToPlayListWithComment_Click);
 			this.tsmiContentPlayWithoutAdding.Click += new EventHandler(tsmiContentPlayWithoutAdding_Click);
 			this.tsmiContentPlayWmp.Click += new EventHandler(tsmiContentPlayWmp_Click);
 			this.tsmiContentPlayBrowser.Click += new EventHandler(tsmiContentPlayBrowser_Click);
@@ -32,6 +33,7 @@ namespace Yusen.GExplorer {
 				UserCommandsManager.Instance.UserCommandsChanged -= new EventHandler(this.UserCommandsManager_UserCommandsChanged);
 			};
 		}
+
 		
 		private void GWebBrowser_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e) {
 			this.dicPackage.Clear();
@@ -123,6 +125,24 @@ namespace Yusen.GExplorer {
 			if (GContent.TryDownload(contId, out cont)) {
 				ContentAdapter ca = new ContentAdapter(cont);
 				PlayList.Instance.AddIfNotExists(ca);
+			} else {
+				MessageBox.Show("指定されたコンテンツIDに関する情報が取得できませんでした．", this.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
+			}
+		}
+		void tsmiContentAddToPlayListWithComment_Click(object sender, EventArgs e) {
+			string contId = this.cmsContent.Tag as string;
+			GContent cont;
+			if (GContent.TryDownload(contId, out cont)) {
+				ContentAdapter ca = new ContentAdapter(cont);
+				this.inputBoxDialog1.Input = string.Empty;
+				this.inputBoxDialog1.Message = "コメントを入力してください．";
+				this.inputBoxDialog1.Title = "コメントの入力";
+				switch (this.inputBoxDialog1.ShowDialog()) {
+					case DialogResult.OK:
+						ca.Comment = this.inputBoxDialog1.Input;
+						PlayList.Instance.AddIfNotExists(ca);
+						break;
+				}
 			} else {
 				MessageBox.Show("指定されたコンテンツIDに関する情報が取得できませんでした．", this.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}

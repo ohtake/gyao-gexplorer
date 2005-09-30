@@ -18,15 +18,17 @@ namespace Yusen.GExplorer {
 			GlobalSettings.TryDeserialize();
 			//レジストリからユーザIDの取得
 			if (GlobalSettings.Instance.IsCookieRequired) {
-				ReadUserIdFromRegistry();
+				Program.ReadUserIdFromRegistry();
 			}
 			//ファイルシステム上のクッキーからユーザIDの取得
 			if (GlobalSettings.Instance.IsCookieRequired) {
-				ReadUserIdFromCookieOnFileSystem();
+				Program.ReadUserIdFromCookieOnFileSystem();
 			}
 			//IE経由でgyaoにアクセスしてクッキーを取得
 			if (GlobalSettings.Instance.IsCookieRequired) {
-				new CookieFetchForm().ShowDialog();
+				using (CookieFetchForm cff =  new CookieFetchForm()) {
+					cff.ShowDialog();
+				}
 			}
 			
 			GlobalSettings.Serialize();

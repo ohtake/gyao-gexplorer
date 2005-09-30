@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 
 namespace Yusen.GExplorer {
 	class InputBoxDialog : CommonDialog{
-		private class Win32WindowImpl : IWin32Window {
+		private sealed class Win32WindowImpl : IWin32Window {
 			private IntPtr handle;
 			public Win32WindowImpl(IntPtr handle) {
 				this.handle = handle;
@@ -20,31 +20,11 @@ namespace Yusen.GExplorer {
 		private string title = null;
 		private string message = null;
 
+		private InputBoxForm ibf = null;
+
 		public InputBoxDialog() {
 		}
-		public override void Reset() {
-			this.input = null;
-			this.title = null;
-			this.message = null;
-		}
 
-		protected override bool RunDialog(IntPtr hwndOwner) {
-			InputBoxForm ibf = new InputBoxForm();
-			if (null != this.input) ibf.Input = this.input;
-			if (null != this.title) ibf.Text = this.title;
-			if (null != this.message) ibf.Message = this.message;
-
-			switch (ibf.ShowDialog(new Win32WindowImpl(hwndOwner))) {
-				case DialogResult.OK:
-					this.input = ibf.Input;
-					this.title = ibf.Text;
-					this.message = ibf.Message;
-					return true;
-				default:
-					return false;
-			}
-		}
-		
 		public string Input {
 			get { return this.input; }
 			set { this.input = value; }
@@ -56,6 +36,39 @@ namespace Yusen.GExplorer {
 		public string Message {
 			get { return this.message; }
 			set { this.message = value; }
+		}
+
+		public override void Reset() {
+			this.Input = null;
+			this.Title = null;
+			this.Message = null;
+		}
+
+		protected override bool RunDialog(IntPtr hwndOwner) {
+			if (null == this.ibf) {
+				this.ibf = new InputBoxForm();
+			}
+
+			this.ibf.Input = (null == this.Input) ? string.Empty : this.Input;
+			this.ibf.Text = (null == this.Title) ? string.Empty : this.Title;
+			this.ibf.Message = (null == this.Message) ? string.Empty : this.Message;
+
+			switch (this.ibf.ShowDialog(new Win32WindowImpl(hwndOwner))) {
+				case DialogResult.OK:
+					this.Input = this.ibf.Input;
+					this.Title = this.ibf.Text;
+					this.Message = this.ibf.Message;
+					return true;
+				default:
+					return false;
+			}
+		}
+
+		protected override void Dispose(bool disposing) {
+			if (disposing && null != this.ibf) {
+				this.ibf.Dispose();
+			}
+			base.Dispose(disposing);
 		}
 	}
 }

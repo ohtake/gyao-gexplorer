@@ -59,11 +59,7 @@ namespace Yusen.GExplorer {
 			}
 			//リスト末尾
 			if (contIdx+1 == this.items.Count) {
-				if (GlobalSettings.Instance.PlaylistLoop) {//ループのチェック
-					return this.items[0];
-				} else {
-					return null;
-				}
+				return null;
 			}
 			return this.items[contIdx+1];
 		}
@@ -79,11 +75,7 @@ namespace Yusen.GExplorer {
 			}
 			//リスト先頭
 			if (0 == contIdx) {
-				if (GlobalSettings.Instance.PlaylistLoop) {//ループのチェック
-					return this.items[this.items.Count -1];
-				} else {
-					return null;
-				}
+				return null;
 			}
 			return this.items[contIdx-1];
 		}

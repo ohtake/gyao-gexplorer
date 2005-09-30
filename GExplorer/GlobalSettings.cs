@@ -107,15 +107,5 @@ namespace Yusen.GExplorer {
 			get { return this.browserPath; }
 			set { this.browserPath = value; }
 		}
-
-		private bool playlistLoop = true;
-		[Category("プレイリスト")]
-		[DisplayName("ループ")]
-		[Description("プレイリストの末尾の項目を再生し終わったら先頭に移動する．")]
-		[DefaultValue(true)]
-		public bool PlaylistLoop {
-			get { return this.playlistLoop; }
-			set { this.playlistLoop = value; }
-		}
 	}
 }

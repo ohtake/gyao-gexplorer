@@ -40,6 +40,8 @@ namespace Yusen.GExplorer {
 			this.tsmiPackageOpen = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiPackageCancel = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiContentAddToPlayListWithComment = new System.Windows.Forms.ToolStripMenuItem();
+			this.inputBoxDialog1 = new Yusen.GExplorer.InputBoxDialog();
 			this.cmsContent.SuspendLayout();
 			this.cmsPackage.SuspendLayout();
 			this.SuspendLayout();
@@ -52,6 +54,7 @@ namespace Yusen.GExplorer {
             this.tsmiContentOpenDetail,
             this.toolStripSeparator1,
             this.tsmiContentAddToPlayList,
+            this.tsmiContentAddToPlayListWithComment,
             this.tsmiContentPlayWithoutAdding,
             this.toolStripSeparator2,
             this.tsmiContentPlayWmp,
@@ -63,8 +66,7 @@ namespace Yusen.GExplorer {
 			this.cmsContent.Location = new System.Drawing.Point(9, 50);
 			this.cmsContent.Name = "cmsContent";
 			this.cmsContent.RightToLeft = System.Windows.Forms.RightToLeft.No;
-			this.cmsContent.Size = new System.Drawing.Size(249, 201);
-			this.cmsContent.Visible = true;
+			this.cmsContent.Size = new System.Drawing.Size(256, 204);
 			// 
 			// tsmiContentOpenDetail
 			// 
@@ -144,6 +146,17 @@ namespace Yusen.GExplorer {
 			this.tsmiPackageCancel.Name = "tsmiPackageCancel";
 			this.tsmiPackageCancel.Text = "変なメニューが出てきて邪魔だよ (&A) ...";
 			// 
+			// tsmiContentAddToPlayListWithComment
+			// 
+			this.tsmiContentAddToPlayListWithComment.Name = "tsmiContentAddToPlayListWithComment";
+			this.tsmiContentAddToPlayListWithComment.Text = "コメントを付けてプレイリストに追加 (&L) ...";
+			// 
+			// inputBoxDialog1
+			// 
+			this.inputBoxDialog1.Input = null;
+			this.inputBoxDialog1.Message = null;
+			this.inputBoxDialog1.Title = null;
+			// 
 			// GWebBrowser
 			// 
 			this.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.GWebBrowser_DocumentCompleted);
@@ -171,6 +184,8 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ToolStripMenuItem tsmiPackageOpen;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
 		private System.Windows.Forms.ToolStripMenuItem tsmiPackageCancel;
+		private System.Windows.Forms.ToolStripMenuItem tsmiContentAddToPlayListWithComment;
+		private InputBoxDialog inputBoxDialog1;
 
 	}
 }

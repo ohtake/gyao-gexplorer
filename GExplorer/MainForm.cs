@@ -341,16 +341,22 @@ namespace Yusen.GExplorer {
 			this.Close();
 		}
 		private void tsmiGlobalSettingsEditor_Click(object sender, EventArgs e) {
-			GlobalSettingsEditor.Instance.Show();
-			GlobalSettingsEditor.Instance.Focus();
+			GlobalSettingsEditor gse = GlobalSettingsEditor.Instance;
+			gse.Owner = this;
+			gse.Show();
+			gse.Focus();
 		}
 		private void tsmiUserCommandsEditor_Click(object sender, EventArgs e) {
-			UserCommandsEditor.Instance.Show();
-			UserCommandsEditor.Instance.Focus();
+			UserCommandsEditor uce = UserCommandsEditor.Instance;
+			uce.Owner = this;
+			uce.Show();
+			uce.Focus();
 		}
 		private void tsmiNgContentsEditor_Click(object sender, EventArgs e) {
-			NgContentsEditor.Instance.Show();
-			NgContentsEditor.Instance.Focus();
+			NgContentsEditor nce = NgContentsEditor.Instance;
+			nce.Owner = this;
+			nce.Show();
+			nce.Focus();
 		}
 		private void tsmiMergeResults_Click(object sender, EventArgs e) {
 			GGenre mergedGenre = new MergedGenre();
