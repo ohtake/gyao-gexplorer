@@ -120,7 +120,7 @@ namespace Yusen.GExplorer {
 			this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.toolStripContainer1.Location = new System.Drawing.Point(0, 0);
 			this.toolStripContainer1.Name = "toolStripContainer1";
-			this.toolStripContainer1.Size = new System.Drawing.Size(807, 537);
+			this.toolStripContainer1.Size = new System.Drawing.Size(807, 536);
 			this.toolStripContainer1.TabIndex = 1;
 			this.toolStripContainer1.Text = "toolStripContainer1";
 			// 
@@ -141,7 +141,7 @@ namespace Yusen.GExplorer {
 			this.tableLayoutPanel1.RowCount = 2;
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-			this.tableLayoutPanel1.Size = new System.Drawing.Size(807, 491);
+			this.tableLayoutPanel1.Size = new System.Drawing.Size(807, 490);
 			this.tableLayoutPanel1.TabIndex = 0;
 			// 
 			// genreTabControl1
@@ -191,7 +191,7 @@ namespace Yusen.GExplorer {
 			// scListsAndDetail.Panel2
 			// 
 			this.scListsAndDetail.Panel2.Controls.Add(this.contentDetailView1);
-			this.scListsAndDetail.Size = new System.Drawing.Size(807, 471);
+			this.scListsAndDetail.Size = new System.Drawing.Size(807, 470);
 			this.scListsAndDetail.SplitterDistance = 548;
 			this.scListsAndDetail.TabIndex = 2;
 			this.scListsAndDetail.Text = "splitContainer1";
@@ -210,7 +210,7 @@ namespace Yusen.GExplorer {
 			// scLists.Panel2
 			// 
 			this.scLists.Panel2.Controls.Add(this.playListView1);
-			this.scLists.Size = new System.Drawing.Size(548, 471);
+			this.scLists.Size = new System.Drawing.Size(548, 470);
 			this.scLists.SplitterDistance = 319;
 			this.scLists.TabIndex = 2;
 			this.scLists.Text = "splitContainer2";
@@ -239,7 +239,7 @@ namespace Yusen.GExplorer {
 			this.playListView1.Location = new System.Drawing.Point(0, 0);
 			this.playListView1.MultiSelectEnabled = true;
 			this.playListView1.Name = "playListView1";
-			this.playListView1.Size = new System.Drawing.Size(548, 148);
+			this.playListView1.Size = new System.Drawing.Size(548, 147);
 			this.playListView1.TabIndex = 0;
 			this.playListView1.ContentSelectionChanged += new System.EventHandler<Yusen.GExplorer.ContentSelectionChangedEventArgs>(this.playListView1_ContentSelectionChanged);
 			// 
@@ -249,7 +249,7 @@ namespace Yusen.GExplorer {
 			this.contentDetailView1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.contentDetailView1.Location = new System.Drawing.Point(0, 0);
 			this.contentDetailView1.Name = "contentDetailView1";
-			this.contentDetailView1.Size = new System.Drawing.Size(255, 471);
+			this.contentDetailView1.Size = new System.Drawing.Size(255, 470);
 			this.contentDetailView1.TabIndex = 0;
 			// 
 			// menuStrip1
@@ -404,7 +404,7 @@ namespace Yusen.GExplorer {
 			// tsmiRemoveCachesUnreachable
 			// 
 			this.tsmiRemoveCachesUnreachable.Name = "tsmiRemoveCachesUnreachable";
-			this.tsmiRemoveCachesUnreachable.Text = "クロール結果で到達不可能なキャッシュを削除 (&U) ...";
+			this.tsmiRemoveCachesUnreachable.Text = "クロール結果で到達不可能なキャッシュを削除 (&U)";
 			this.tsmiRemoveCachesUnreachable.Click += new System.EventHandler(this.tsmiRemoveCachesUnreachable_Click);
 			// 
 			// tsmiRemoveCachesAll
@@ -424,7 +424,7 @@ namespace Yusen.GExplorer {
 			// tsmiRemoveDeadlineEntriesUnreacheable
 			// 
 			this.tsmiRemoveDeadlineEntriesUnreacheable.Name = "tsmiRemoveDeadlineEntriesUnreacheable";
-			this.tsmiRemoveDeadlineEntriesUnreacheable.Text = "クロール結果で到達不可なエントリーを削除 (&U) ...";
+			this.tsmiRemoveDeadlineEntriesUnreacheable.Text = "クロール結果で到達不可なエントリーを削除 (&U)";
 			this.tsmiRemoveDeadlineEntriesUnreacheable.Click += new System.EventHandler(this.tsmiRemoveDeadlineEntriesUnreacheable_Click);
 			// 
 			// tsmiRemoveDeadlineEntriesAll
@@ -459,9 +459,10 @@ namespace Yusen.GExplorer {
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(807, 537);
+			this.ClientSize = new System.Drawing.Size(807, 536);
 			this.Controls.Add(this.toolStripContainer1);
 			this.MainMenuStrip = this.menuStrip1;
+			this.MinimumSize = new System.Drawing.Size(300, 200);
 			this.Name = "MainForm";
 			this.Text = "MainForm";
 			this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);

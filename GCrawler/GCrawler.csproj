@@ -49,7 +49,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="CrawlResult.cd" />
-    <None Include="HtmlParser.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

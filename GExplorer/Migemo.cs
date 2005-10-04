@@ -4,7 +4,7 @@ using System.Text;
 using System.Runtime.InteropServices;
 
 namespace Yusen.GExplorer{
-	class Migemo : IDisposable{
+	sealed class Migemo : IDisposable{
 		private enum DictionaryId{
 			Invalid		= 0,
 			Migemo		= 1,
@@ -72,21 +72,6 @@ namespace Yusen.GExplorer{
 		}
 	}
 
-	enum MigemoDictionaryId {
-		Invalid=0,
-		Migemo=1,
-		Roma2Hira=2,
-		Hira2Kana=3,
-		Han2Zen=4,
-	}
-	enum MigemoOperatorIndex {
-		Or = 0,
-		NestIn = 1,
-		NestOut = 2,
-		SelectIn = 3,
-		SelectOut = 4,
-		NewLine = 5,
-	}
 	class MigemoException : Exception {
 		public MigemoException(string message)
 			: base(message) {

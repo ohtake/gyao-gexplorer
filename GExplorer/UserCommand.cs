@@ -81,9 +81,9 @@ namespace Yusen.GExplorer {
 		
 		internal void Execute(IEnumerable<ContentAdapter> conts) {
 			string args = this.arguments;
-			while(true) {
+			while (true) {
 				Match match = UserCommand.varientExtractor.Match(args);
-				if(!match.Success) break;
+				if (!match.Success) break;
 				PropertyInfo pi = typeof(ContentAdapter).GetProperty(match.Groups[1].Value);
 				StringBuilder sb = new StringBuilder();
 				foreach (ContentAdapter cont in conts) {

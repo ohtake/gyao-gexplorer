@@ -8,11 +8,40 @@ using System.Text;
 using System.Text.RegularExpressions;
 
 namespace Yusen.GExplorer {
-	partial class PlayerForm : FormSettingsBase, IFormWithSettings<PlayerFormSettings>{
+	sealed partial class PlayerForm : FormSettingsBase, IFormWithSettings<PlayerFormSettings>{
+		private sealed class BannerTag {
+			private const long OrdMax = 10000000000000000;
+			private static readonly Random rand = new Random();
+			
+			private readonly string dart;
+			private readonly long ord;
+			private readonly Uri image;
+			private readonly Uri jump;
+
+			public BannerTag(string dart) {
+				this.dart = dart;
+				this.ord = (long)(BannerTag.rand.NextDouble() * BannerTag.OrdMax);
+				this.image = new Uri("http://ad.jp.doubleclick.net/ad/gyao.vision.spot/" + this.dart + ";sz=468x60;ord=" + this.ord.ToString() + "?");
+				this.jump = new Uri("http://ad.jp.doubleclick.net/jump/gyao.vision.spot/" + this.dart + ";sz=468x60;ord=" + this.ord.ToString() + "?");
+			}
+			public string Dart {
+				get { return this.dart; }
+			}
+			public long Ord {
+				get { return this.ord; }
+			}
+			public Uri ImageUri {
+				get { return this.image; }
+			}
+			public Uri JumpUri {
+				get { return this.jump; }
+			}
+			
+		}
+
 		private const string AttribNameEntryUrl = "WMS_CONTENT_DESCRIPTION_PLAYLIST_ENTRY_URL";
 		private const int VolumeMax = 100;
 		private const int VolumeMin = 0;
-		private const long OrdMax = 10000000000000000;
 		private static readonly Regex regexEndFlag = new Regex(":endFlg=([^:=]*)");
 		private static readonly Regex regexDartTag = new Regex(":dartTag=([^:=]*)");
 
@@ -41,8 +70,6 @@ namespace Yusen.GExplorer {
 		private int volumeNormal = 100;
 		private int volumeCf = 20;
 
-		private Random rand = new Random();
-
 		private PlayerForm() {
 			InitializeComponent();
 		}
@@ -68,6 +95,7 @@ namespace Yusen.GExplorer {
 		public void FillSettings(PlayerFormSettings settings) {
 			base.FillSettings(settings);
 			settings.KeepFullScreenEnabled = this.KeepFullScreenEnabled;
+			settings.DisableScreenSaverEnabled = this.DisableScreenSaverEnabled;
 			settings.AutoVolumeEnabled = this.AutoVolumeEnabled;
 			settings.MediaKeysEnabled = this.MediaKeysEnabled;
 			settings.RemovePlayedContentEnabled = this.RemovePlayedContentEnabled;
@@ -80,6 +108,7 @@ namespace Yusen.GExplorer {
 		public void ApplySettings(PlayerFormSettings settings) {
 			base.ApplySettings(settings);
 			this.KeepFullScreenEnabled = settings.KeepFullScreenEnabled ?? this.KeepFullScreenEnabled;
+			this.DisableScreenSaverEnabled = settings.DisableScreenSaverEnabled ?? this.DisableScreenSaverEnabled;
 			this.AutoVolumeEnabled = settings.AutoVolumeEnabled ?? this.AutoVolumeEnabled;
 			this.MediaKeysEnabled = settings.MediaKeysEnabled ?? this.MediaKeysEnabled;
 			this.RemovePlayedContentEnabled = settings.RemovePlayedContentEnabled ?? this.RemovePlayedContentEnabled;
@@ -141,6 +170,10 @@ namespace Yusen.GExplorer {
 			get { return this.tsmiKeepFullScreen.Checked; }
 			set { this.tsmiKeepFullScreen.Checked = value; }
 		}
+		public bool DisableScreenSaverEnabled {
+			get { return this.tsmiDisableScreenSaver.Checked; }
+			set { this.tsmiDisableScreenSaver.Checked = value; }
+		}
 		public bool AutoVolumeEnabled {
 			get {return this.tsmiAutoVolume.Checked;}
 			set {this.tsmiAutoVolume.Checked = value;}
@@ -176,9 +209,6 @@ namespace Yusen.GExplorer {
 					throw new ArgumentOutOfRangeException("VolumeCf");
 				}
 			}
-		}
-		private long GetRandomOrd() {
-			return (long)(this.rand.NextDouble() * PlayerForm.OrdMax);
 		}
 
 		private void PlayerForm_Load(object sender, EventArgs e) {
@@ -353,12 +383,10 @@ namespace Yusen.GExplorer {
 					//バナー表示
 					Match dartTagMatch = PlayerForm.regexDartTag.Match(entryUrl);
 					if (dartTagMatch.Success && !string.IsNullOrEmpty(dartTagMatch.Groups[1].Value)) {
-						string dartTag = dartTagMatch.Groups[1].Value;
-						string ordStr = this.GetRandomOrd().ToString();
-						
+						BannerTag bt = new BannerTag(dartTagMatch.Groups[1].Value);
+						this.pboxBanner.Tag = bt;
+						this.pboxBanner.LoadAsync(bt.ImageUri.AbsoluteUri);
 						this.splitContainer1.Panel1Collapsed = false;
-						this.pboxBanner.LoadAsync("http://ad.jp.doubleclick.net/ad/gyao.vision.spot/" + dartTag + ";sz=468x60;ord=" + ordStr + "?");
-						this.pboxBanner.Tag = "http://ad.jp.doubleclick.net/jump/gyao.vision.spot/" + dartTag + ";sz=468x60;ord=" + ordStr + "?";
 					} else {
 						this.splitContainer1.Panel1Collapsed = true;
 						this.pboxBanner.Image = null;
@@ -448,15 +476,48 @@ namespace Yusen.GExplorer {
 			}
 		}
 		private void pboxBanner_Click(object sender, EventArgs e) {
-			string jumpUri = this.pboxBanner.Tag as string;
-			if (!string.IsNullOrEmpty(jumpUri)) {
-				Utility.Browse(new Uri(jumpUri));
+			BannerTag bt = this.pboxBanner.Tag as BannerTag;
+			if (null != bt) {
+				Utility.Browse(bt.JumpUri);
 			}
 		}
-	}
+		private void tsmiBannerCopyJumpUri_Click(object sender, EventArgs e) {
+			BannerTag bt = this.pboxBanner.Tag as BannerTag;
+			if (null != bt) {
+				Clipboard.SetText(bt.JumpUri.AbsoluteUri);
+			}
+		}
+		private void tsmiBannerCopyImageUri_Click(object sender, EventArgs e) {
+			BannerTag bt = this.pboxBanner.Tag as BannerTag;
+			if (null != bt) {
+				Clipboard.SetText(bt.ImageUri.AbsoluteUri);
+			}
+		}
+		private void tsmiBannerCopyImage_Click(object sender, EventArgs e) {
+			if (null != this.pboxBanner.Image) {
+				Clipboard.SetImage(this.pboxBanner.Image);
+			}
+		}
 
+		protected override void WndProc(ref Message m) {
+			switch ((WM)m.Msg) {
+				case WM.SYSCOMMAND:
+					switch ((SC)m.WParam) {
+						case SC.SCREENSAVE:
+							if (this.DisableScreenSaverEnabled) {
+								return;
+							}
+							break;
+					}
+					break;
+			}
+			base.WndProc(ref m);
+		}
+	}
+	
 	public class PlayerFormSettings : FormSettingsBaseSettings {
 		private bool? keepFullScreenEnabled;
+		private bool? disableScreenSaverEnabled;
 		private bool? autoVolumeEnabled;
 		private bool? mediaKeysEnabled;
 		private bool? removePlayedContentEnabled;
@@ -468,6 +529,10 @@ namespace Yusen.GExplorer {
 		public bool? KeepFullScreenEnabled {
 			get { return this.keepFullScreenEnabled; }
 			set { this.keepFullScreenEnabled = value; }
+		}
+		public bool? DisableScreenSaverEnabled {
+			get { return this.disableScreenSaverEnabled; }
+			set { this.disableScreenSaverEnabled = value; }
 		}
 		public bool? AutoVolumeEnabled {
 			get { return this.autoVolumeEnabled; }

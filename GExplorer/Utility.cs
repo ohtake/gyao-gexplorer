@@ -107,15 +107,15 @@ namespace Yusen.GExplorer {
 		}
 		
 		public static void LoadSettingsAndEnableSaveOnClosed<TSettings>(IFormWithSettings<TSettings> form) where TSettings : new(){
-			TSettings settings;
-			if (Utility.TryDeserializeSettings(form.FilenameForSettings, out settings)) {
-				form.ApplySettings(settings);
-			}
 			form.FormClosed += delegate {
 				TSettings settings2 = new TSettings();
 				form.FillSettings(settings2);
 				Utility.SerializeSettings(form.FilenameForSettings, settings2);
 			};
+			TSettings settings;
+			if (Utility.TryDeserializeSettings(form.FilenameForSettings, out settings)) {
+				form.ApplySettings(settings);
+			}
 		}
 
 		public static bool IsSorted<T>(IList<T> list, IComparer<T> comp) {

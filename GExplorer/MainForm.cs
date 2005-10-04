@@ -10,7 +10,7 @@ using System.IO;
 using System.Drawing;
 
 namespace Yusen.GExplorer {
-	partial class MainForm : FormSettingsBase, IFormWithSettings<MainFormSettings> {
+	sealed partial class MainForm : FormSettingsBase, IFormWithSettings<MainFormSettings> {
 		private sealed class MergedGenre : GGenre {
 			public MergedGenre() : base(0, "dummy", "(マージ)", Color.Black){
 			}
@@ -371,9 +371,9 @@ namespace Yusen.GExplorer {
 				case DialogResult.Yes:
 					int numResults = this.crawlResults.Count;
 					this.crawlResults.Clear();
-					MessageBox.Show(
-						numResults.ToString() + " 個のクロール結果を破棄しました．",
-						title, MessageBoxButtons.OK, MessageBoxIcon.Information);
+					this.tsslCrawl.Text = 
+						"クロール結果の破棄"
+						+ "    破棄数: " + numResults.ToString();
 					break;
 			}
 		}
@@ -402,18 +402,16 @@ namespace Yusen.GExplorer {
 					}
 				}
 			}
-			MessageBox.Show(
-				ignored.ToString() + " 個のキャッシュは到達可能により削除しませんでした．\n"
-				+ success.ToString() + " 個のキャッシュを削除しました．\n"
-				+ failed.ToString() + " 個のキャッシュの削除に失敗しました．",
-				"クロール結果で到達不可能なキャッシュを削除",
-				MessageBoxButtons.OK, MessageBoxIcon.Information);
+			this.tsslCrawl.Text =
+				"キャッシュの削除"
+				+ "    到達可により無視: " + ignored.ToString()
+				+ "    削除成功: " + success.ToString()
+				+ "    削除失敗: " + failed.ToString();
 		}
 		private void tsmiRemoveCachesAll_Click(object sender, EventArgs e) {
-			string title = "全てのキャッシュを削除";
 			switch (MessageBox.Show(
 					"全てのキャッシュを削除します．\nよろしいですか？",
-					title, MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2)) {
+					"全てのキャッシュを削除", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2)) {
 				case DialogResult.Yes:
 					int success = 0;
 					int failed = 0;
@@ -424,15 +422,14 @@ namespace Yusen.GExplorer {
 							failed++;
 						}
 					}
-					MessageBox.Show(
-						success.ToString() + " 個のキャッシュを削除しました．\n"
-						+ failed.ToString() + " 個のキャッシュの削除に失敗しました．",
-						title, MessageBoxButtons.OK, MessageBoxIcon.Information);
+					this.tsslCrawl.Text =
+						"キャッシュの削除"
+						+ "    削除成功: " + success.ToString()
+						+ "    削除失敗: " + failed.ToString();
 					break;
 			}
 		}
 		private void tsmiRemoveDeadlineEntriesUnreacheable_Click(object sender, EventArgs e) {
-			string title = "クロール結果で到達不可能なエントリーを削除";
 			List<string> reachable = new List<string>();
 			foreach (CrawlResult result in this.crawlResults.Values) {
 				foreach (GPackage package in result.Packages) {
@@ -457,23 +454,22 @@ namespace Yusen.GExplorer {
 					}
 				}
 			}
-			MessageBox.Show(
-				ignored.ToString() + " 個のエントリーは到達可能により削除しませんでした．\n"
-				+ success.ToString() + " 個のエントリーを削除しました．\n"
-				+ failed.ToString() + " 個のエントリーの削除に失敗しました．",
-				title, MessageBoxButtons.OK, MessageBoxIcon.Information);
+			this.tsslCrawl.Text =
+				"配信期限エントリーの整理"
+				+ "    到達可により無視: " + ignored.ToString()
+				+ "    削除成功: " + success.ToString()
+				+ "    削除失敗: " + failed.ToString();
 		}
 		private void tsmiRemoveDeadlineEntriesAll_Click(object sender, EventArgs e) {
-			string title = "全てのエントリーを削除";
 			switch (MessageBox.Show(
 					"全てのエントリーを削除します．\nよろしいですか？",
-					title, MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2)) {
+					"全てのエントリーを削除", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2)) {
 				case DialogResult.Yes:
 					int count = this.deadLineDictionary.Count;
 					this.deadLineDictionary.ClearDeadLines();
-					MessageBox.Show(
-						count.ToString() + " 個のエントリーを削除しました．",
-						title, MessageBoxButtons.OK, MessageBoxIcon.Information);
+					this.tsslCrawl.Text =
+						"配信期限エントリーの整理"
+						+ "    削除成功: " + count.ToString();
 					break;
 			}
 		}

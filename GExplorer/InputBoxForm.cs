@@ -7,7 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 
 namespace Yusen.GExplorer {
-	partial class InputBoxForm : FormBase {
+	sealed partial class InputBoxForm : FormBase {
 		public InputBoxForm() {
 			InitializeComponent();
 		}

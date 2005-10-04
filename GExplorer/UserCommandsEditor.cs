@@ -6,7 +6,7 @@ using System.Drawing;
 using System.ComponentModel;
 
 namespace Yusen.GExplorer {
-	partial class UserCommandsEditor : FormSettingsBase, IFormWithSettings<UserCommandsEditorSettings>{
+	sealed partial class UserCommandsEditor : FormSettingsBase, IFormWithSettings<UserCommandsEditorSettings>{
 		private static UserCommandsEditor instance = null;
 		public static UserCommandsEditor Instance {
 			get {

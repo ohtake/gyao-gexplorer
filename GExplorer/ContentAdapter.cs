@@ -117,7 +117,7 @@ namespace Yusen.GExplorer {
 		}
 		[XmlIgnore]
 		[Category("付随情報")]
-		[Description("正味時間．")]
+		[Description("時間．")]
 		public string Duration {
 			get { return this.innerCont.Duration; }
 		}
@@ -152,7 +152,7 @@ namespace Yusen.GExplorer {
 		}
 		[XmlIgnore]
 		[Category("専ブラが付加した情報")]
-		[Description("正味時間のパーズ結果．")]
+		[Description("時間のパーズ結果．")]
 		public GTimeSpan GTimeSpan {
 			get {
 				return this.gTimeSpan;

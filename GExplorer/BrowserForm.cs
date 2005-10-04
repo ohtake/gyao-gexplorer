@@ -6,7 +6,7 @@ using WMPLib;
 using Yusen.GCrawler;
 
 namespace Yusen.GExplorer {
-	partial class BrowserForm : FormSettingsBase, IFormWithSettings<BrowserFormSettings>{
+	sealed partial class BrowserForm : FormSettingsBase, IFormWithSettings<BrowserFormSettings>{
 		private static BrowserForm instance = null;
 		public static BrowserForm Instance {
 			get {

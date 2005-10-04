@@ -1,21 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.ComponentModel;
 using System.Windows.Forms;
-using System.Runtime.InteropServices;
 
 namespace Yusen.GExplorer {
-	class InputBoxDialog : CommonDialog{
-		private sealed class Win32WindowImpl : IWin32Window {
-			private IntPtr handle;
-			public Win32WindowImpl(IntPtr handle) {
-				this.handle = handle;
-			}
-			public IntPtr Handle {
-				get { return this.handle; }
-			}
-		}
-		
+	sealed class InputBoxDialog : CommonDialog{
 		private string input = null;
 		private string title = null;
 		private string message = null;
@@ -47,6 +36,7 @@ namespace Yusen.GExplorer {
 		protected override bool RunDialog(IntPtr hwndOwner) {
 			if (null == this.ibf) {
 				this.ibf = new InputBoxForm();
+				this.ibf.StartPosition = FormStartPosition.CenterParent;
 			}
 
 			this.ibf.Input = (null == this.Input) ? string.Empty : this.Input;

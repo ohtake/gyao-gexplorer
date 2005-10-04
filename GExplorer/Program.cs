@@ -5,12 +5,18 @@ using System.Threading;
 using System.IO;
 using Microsoft.Win32;
 using System.Drawing;
+using System.Media;
 
 namespace Yusen.GExplorer {
 	static class Program {
+		static void PrintTime() {
+			DateTime now = DateTime.Now;
+			Console.WriteLine(now.Second.ToString() + "." + now.Millisecond.ToString("000"));
+		}
 		/// <summary>The main entry point for the application.</summary>
 		[STAThread]
 		static void Main() {
+			
 			Application.EnableVisualStyles();
 			Application.ThreadException += new ThreadExceptionEventHandler(Application_ThreadException);
 			AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
@@ -106,8 +112,20 @@ namespace Yusen.GExplorer {
 				Program.DisplayException(ex);
 			}
 		}
+		
 		private static void DisplayException(Exception e) {
-			MessageBox.Show(e.Message + "\n\n" + e.StackTrace, e.GetType().ToString(), MessageBoxButtons.OK, MessageBoxIcon.Error);
+			SystemSounds.Exclamation.Play();
+			using (ExceptionDialog ed = new ExceptionDialog()) {
+				ed.Exception = e;
+				ed.Title = "キャッチされなかった例外";
+				switch (ed.ShowDialog()) {
+					case DialogResult.OK:
+						break;
+					case DialogResult.Cancel:
+						Application.Exit();
+						break;
+				}
+			}
 		}
 	}
 }

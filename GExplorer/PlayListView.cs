@@ -7,7 +7,7 @@ using System.Windows.Forms;
 using Yusen.GCrawler;
 
 namespace Yusen.GExplorer {
-	partial class PlayListView : UserControl, IHasSettings<PlayListViewSettings> {
+	sealed partial class PlayListView : UserControl, IHasSettings<PlayListViewSettings> {
 		public event EventHandler<SelectedContentsChangedEventArgs> SelectedContentsChanged;
 		public event EventHandler<ContentSelectionChangedEventArgs> ContentSelectionChanged;
 

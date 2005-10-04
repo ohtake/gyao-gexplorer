@@ -4,6 +4,7 @@ using System.IO;
 using System.Collections.ObjectModel;
 
 namespace Yusen.GCrawler {
+	[Serializable]
 	public struct ContentCache{
 		private GContent content;
 		private DateTime lastWriteTime;
@@ -85,6 +86,34 @@ namespace Yusen.GCrawler {
 		private string FileNameOf(string contId) {
 			return Path.Combine(this.cacheDir, contId + ".xml");
 		}
-
+	}
+	
+	[Serializable]
+	public class ContentCacheControllerSortedDic : IContentCacheController {
+		private SortedDictionary<string, ContentCache> dic = new SortedDictionary<string, ContentCache>();
+		
+		public ContentCacheControllerSortedDic() {
+		}
+		
+		public bool TryGetCache(string contentId, out ContentCache cache) {
+			lock (this) {
+				return this.dic.TryGetValue(contentId, out cache);
+			}
+		}
+		public bool RemoveCache(string contentId) {
+			lock (this) {
+				return this.dic.Remove(contentId);
+			}
+		}
+		public void AddToCache(GContent cont) {
+			lock (this) {
+				this.dic.Add(cont.ContentId, new ContentCache(cont, DateTime.Now));
+			}
+		}
+		public ReadOnlyCollection<string> ListAllCacheKeys() {
+			lock (this) {
+				return new List<string>(this.dic.Keys).AsReadOnly();
+			}
+		}
 	}
 }

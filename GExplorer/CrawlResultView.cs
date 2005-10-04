@@ -9,7 +9,7 @@ using System.Text.RegularExpressions;
 using Yusen.GCrawler;
 
 namespace Yusen.GExplorer {
-	partial class CrawlResultView : UserControl, IHasSettings<GenreListViewSettings>{
+	sealed partial class CrawlResultView : UserControl, IHasSettings<GenreListViewSettings>{
 		public event EventHandler<SelectedContentsChangedEventArgs> SelectedContentsChanged;
 		public event EventHandler<ContentSelectionChangedEventArgs> ContentSelectionChanged;
 		
@@ -204,6 +204,7 @@ namespace Yusen.GExplorer {
 			settings.ShowPackages = this.ShowPackages;
 			settings.HoverSelect = this.HoverSelect;
 			settings.MultiSelect = this.MultiSelect;
+			settings.ClearFilterStringOnHideEnabled = this.ClearFilterStringOnHideEnabled;
 			settings.FilterEnabled = this.FilterEnabled;
 			settings.NewColor = this.NewColor;
 		}
@@ -219,6 +220,7 @@ namespace Yusen.GExplorer {
 			this.ShowPackages = settings.ShowPackages ?? this.ShowPackages;
 			this.HoverSelect = settings.HoverSelect ?? this.HoverSelect;
 			this.MultiSelect = settings.MultiSelect ?? this.MultiSelect;
+			this.ClearFilterStringOnHideEnabled = settings.ClearFilterStringOnHideEnabled ?? this.ClearFilterStringOnHideEnabled;
 			this.FilterEnabled = settings.FilterEnabled ?? this.FilterEnabled;
 			this.NewColor = settings.NewColor ?? this.NewColor;
 		}

@@ -5,7 +5,7 @@ using System.Windows.Forms;
 using System.Reflection;
 
 namespace Yusen.GExplorer {
-	partial class NgContentsEditor : FormSettingsBase, IFormWithSettings<NgContentsEditorSettings> {
+	sealed partial class NgContentsEditor : FormSettingsBase, IFormWithSettings<NgContentsEditorSettings> {
 		private static NgContentsEditor instance = null;
 		public static NgContentsEditor Instance {
 			get {

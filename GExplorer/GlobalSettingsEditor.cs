@@ -5,7 +5,7 @@ using System.Drawing;
 using System.Windows.Forms;
 
 namespace Yusen.GExplorer {
-	partial class GlobalSettingsEditor : FormSettingsBase, IFormWithSettings<GlobalSettingsEditorSettings> {
+	sealed partial class GlobalSettingsEditor : FormSettingsBase, IFormWithSettings<GlobalSettingsEditorSettings> {
 		private static GlobalSettingsEditor instance = null;
 		public static GlobalSettingsEditor Instance {
 			get {

@@ -23,11 +23,17 @@ namespace Yusen.GExplorer {
 		/// the contents of this method with the code editor.
 		/// </summary>
 		private void InitializeComponent() {
+			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PlayerForm));
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabPlayer = new System.Windows.Forms.TabPage();
 			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
 			this.pboxBanner = new System.Windows.Forms.PictureBox();
+			this.cmsBanner = new System.Windows.Forms.ContextMenuStrip(this.components);
+			this.tsmiBannerCopyJumpUri = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiBannerCopyImageUri = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
+			this.tsmiBannerCopyImage = new System.Windows.Forms.ToolStripMenuItem();
 			this.wmpMain = new AxWMPLib.AxWindowsMediaPlayer();
 			this.tabDetail = new System.Windows.Forms.TabPage();
 			this.gwbDetail = new Yusen.GExplorer.GWebBrowser();
@@ -71,12 +77,14 @@ namespace Yusen.GExplorer {
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiUserCommands = new System.Windows.Forms.ToolStripMenuItem();
 			this.inputBoxDialog1 = new Yusen.GExplorer.InputBoxDialog();
+			this.tsmiDisableScreenSaver = new System.Windows.Forms.ToolStripMenuItem();
 			this.tabControl1.SuspendLayout();
 			this.tabPlayer.SuspendLayout();
 			this.splitContainer1.Panel1.SuspendLayout();
 			this.splitContainer1.Panel2.SuspendLayout();
 			this.splitContainer1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pboxBanner)).BeginInit();
+			this.cmsBanner.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.wmpMain)).BeginInit();
 			this.tabDetail.SuspendLayout();
 			this.tabRecommend.SuspendLayout();
@@ -133,6 +141,7 @@ namespace Yusen.GExplorer {
 			// 
 			// pboxBanner
 			// 
+			this.pboxBanner.ContextMenuStrip = this.cmsBanner;
 			this.pboxBanner.Cursor = System.Windows.Forms.Cursors.Hand;
 			this.pboxBanner.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.pboxBanner.Location = new System.Drawing.Point(0, 0);
@@ -142,6 +151,42 @@ namespace Yusen.GExplorer {
 			this.pboxBanner.TabIndex = 0;
 			this.pboxBanner.TabStop = false;
 			this.pboxBanner.Click += new System.EventHandler(this.pboxBanner_Click);
+			// 
+			// cmsBanner
+			// 
+			this.cmsBanner.Enabled = true;
+			this.cmsBanner.GripMargin = new System.Windows.Forms.Padding(2);
+			this.cmsBanner.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiBannerCopyJumpUri,
+            this.tsmiBannerCopyImageUri,
+            this.toolStripSeparator8,
+            this.tsmiBannerCopyImage});
+			this.cmsBanner.Location = new System.Drawing.Point(25, 66);
+			this.cmsBanner.Name = "cmsBanner";
+			this.cmsBanner.RightToLeft = System.Windows.Forms.RightToLeft.No;
+			this.cmsBanner.Size = new System.Drawing.Size(181, 76);
+			// 
+			// tsmiBannerCopyJumpUri
+			// 
+			this.tsmiBannerCopyJumpUri.Name = "tsmiBannerCopyJumpUri";
+			this.tsmiBannerCopyJumpUri.Text = "リンク先URIをコピー (&J)";
+			this.tsmiBannerCopyJumpUri.Click += new System.EventHandler(this.tsmiBannerCopyJumpUri_Click);
+			// 
+			// tsmiBannerCopyImageUri
+			// 
+			this.tsmiBannerCopyImageUri.Name = "tsmiBannerCopyImageUri";
+			this.tsmiBannerCopyImageUri.Text = "画像URIをコピー (&B)";
+			this.tsmiBannerCopyImageUri.Click += new System.EventHandler(this.tsmiBannerCopyImageUri_Click);
+			// 
+			// toolStripSeparator8
+			// 
+			this.toolStripSeparator8.Name = "toolStripSeparator8";
+			// 
+			// tsmiBannerCopyImage
+			// 
+			this.tsmiBannerCopyImage.Name = "tsmiBannerCopyImage";
+			this.tsmiBannerCopyImage.Text = "画像をコピー (&I)";
+			this.tsmiBannerCopyImage.Click += new System.EventHandler(this.tsmiBannerCopyImage_Click);
 			// 
 			// wmpMain
 			// 
@@ -362,6 +407,7 @@ namespace Yusen.GExplorer {
 			this.tsmiSettings.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiAlwaysOnTop,
             this.tsmiKeepFullScreen,
+            this.tsmiDisableScreenSaver,
             this.toolStripSeparator3,
             this.tsmiRemovePlayedContent,
             this.tsmiLoopPlayList,
@@ -482,6 +528,14 @@ namespace Yusen.GExplorer {
 			this.inputBoxDialog1.Message = null;
 			this.inputBoxDialog1.Title = null;
 			// 
+			// tsmiDisableScreenSaver
+			// 
+			this.tsmiDisableScreenSaver.Checked = true;
+			this.tsmiDisableScreenSaver.CheckOnClick = true;
+			this.tsmiDisableScreenSaver.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.tsmiDisableScreenSaver.Name = "tsmiDisableScreenSaver";
+			this.tsmiDisableScreenSaver.Text = "アクティブ時にスクリーンセーバ抑止 (&S)";
+			// 
 			// PlayerForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -499,6 +553,7 @@ namespace Yusen.GExplorer {
 			this.splitContainer1.Panel2.ResumeLayout(false);
 			this.splitContainer1.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.pboxBanner)).EndInit();
+			this.cmsBanner.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.wmpMain)).EndInit();
 			this.tabDetail.ResumeLayout(false);
 			this.tabRecommend.ResumeLayout(false);
@@ -561,5 +616,11 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ToolStripMenuItem tsmiShowItemInfo;
 		private System.Windows.Forms.SplitContainer splitContainer1;
 		private System.Windows.Forms.PictureBox pboxBanner;
+		private System.Windows.Forms.ContextMenuStrip cmsBanner;
+		private System.Windows.Forms.ToolStripMenuItem tsmiBannerCopyImageUri;
+		private System.Windows.Forms.ToolStripMenuItem tsmiBannerCopyJumpUri;
+		private System.Windows.Forms.ToolStripMenuItem tsmiBannerCopyImage;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator8;
+		private System.Windows.Forms.ToolStripMenuItem tsmiDisableScreenSaver;
 	}
 }

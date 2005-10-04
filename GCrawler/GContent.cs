@@ -22,7 +22,7 @@ namespace Yusen.GCrawler {
 		private static readonly Regex regexSubtitle = new Regex(@"<td class=""title12"">(.*)</td><!--サブタイトル-->");
 		private static readonly Regex regexImageDir = new Regex(@"<img src=""(/img/info/[a-z0-9]+/{1,2})cnt[0-9]+_[0-9a-z]*\.(?:jpg|gif)"""); // 村上さんはなぜか / が2つ
 		private static readonly Regex regexEpisodeNum = new Regex(@"<td align=""left""><b>(.*)</b></td>");
-		private static readonly Regex regexDuration = new Regex(@"<td align=""right""><b>正味時間 : (.*)</b></td>");
+		private static readonly Regex regexDuration = new Regex(@"<td align=""right""><b>時間 : (.*)</b></td>");
 		private static readonly Regex regexDescription = new Regex(@"^\s*(?:<td align=""[^""]*"">)?((?:[^<>]|<[Bb][Rr]>|(<[Aa][^>]*>)|</[Aa]>)+)</td>$");
 		private const string endOfDescription = @"<table width=""770"" border=""0"" cellspacing=""0"" cellpadding=""0"">";
 		

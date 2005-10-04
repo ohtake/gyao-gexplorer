@@ -5,38 +5,12 @@ using System.ComponentModel;
 using System.Windows.Forms;
 
 namespace Yusen.GExplorer {
-	partial class ContentDetailView : UserControl , IHasSettings<ContentDetailViewSettings>{
+	sealed partial class ContentDetailView : UserControl , IHasSettings<ContentDetailViewSettings>{
 		private ContentAdapter contAd;
 		private ContentImageSize imgSize = ContentImageSize.Large;
 		
 		public ContentDetailView() {
 			InitializeComponent();
-
-			this.tsmiImageSize.DropDownItems.Clear();
-			foreach (ContentImageSize cis in Enum.GetValues(typeof(ContentImageSize))) {
-				ToolStripMenuItem tsmi = new ToolStripMenuItem(cis.ToString());
-				tsmi.Tag = cis;
-				tsmi.Click += new EventHandler(delegate(object sender, EventArgs e){
-					ToolStripMenuItem selMenu = sender as ToolStripMenuItem;
-					ContentImageSize selSize = (ContentImageSize)selMenu.Tag;
-					this.ImageSize = selSize;
-				});
-				this.tsmiImageSize.DropDownItems.Add(tsmi);
-			}
-			this.ImageSize = this.ImageSize;
-			
-			this.tsmiSizeMode.DropDownItems.Clear();
-			foreach (PictureBoxSizeMode sizeMode in Enum.GetValues(typeof(PictureBoxSizeMode))) {
-				ToolStripMenuItem tsmi = new ToolStripMenuItem(sizeMode.ToString());
-				tsmi.Tag = sizeMode;
-				tsmi.Click += new EventHandler(delegate(object sender, EventArgs e) {
-					ToolStripMenuItem selMenu = sender as ToolStripMenuItem;
-					PictureBoxSizeMode selSize = (PictureBoxSizeMode)selMenu.Tag;
-					this.ResizeMode = selSize;
-				});
-				this.tsmiSizeMode.DropDownItems.Add(tsmi);
-			}
-			this.ResizeMode = this.ResizeMode;
 		}
 		
 		public ContentAdapter Content {
@@ -133,6 +107,45 @@ namespace Yusen.GExplorer {
 				this.picboxImage.LoadAsync(uri.AbsoluteUri);
 			}
 		}
+		private void ChangeEnabilityOfCmsItems() {
+			bool hasContent = (null != this.Content);
+			bool showImage = (null != this.picboxImage.Image);
+			this.tsmiCopyImageUri.Enabled = hasContent & showImage;
+			this.tsmiCopyNameAndImageUri.Enabled = hasContent & showImage;
+			this.tsmiCopyNameDetailImageUri.Enabled = hasContent  & showImage;
+			this.tsmiCopyImage.Enabled = hasContent & showImage;
+		}
+		private void ContentDetailView_Load(object sender, EventArgs e) {
+			this.tsmiImageSize.DropDownItems.Clear();
+			foreach (ContentImageSize cis in Enum.GetValues(typeof(ContentImageSize))) {
+				ToolStripMenuItem tsmi = new ToolStripMenuItem(cis.ToString());
+				tsmi.Tag = cis;
+				tsmi.Click += new EventHandler(delegate(object sender2, EventArgs e2) {
+					ToolStripMenuItem selMenu = sender2 as ToolStripMenuItem;
+					ContentImageSize selSize = (ContentImageSize)selMenu.Tag;
+					this.ImageSize = selSize;
+					this.ChangeEnabilityOfCmsItems();
+					
+				});
+				this.tsmiImageSize.DropDownItems.Add(tsmi);
+			}
+			this.tsmiImageSize.DropDown.Closing += Utility.ToolStripDropDown_CancelClosingOnClick;
+			this.ImageSize = this.ImageSize;
+
+			this.tsmiSizeMode.DropDownItems.Clear();
+			foreach (PictureBoxSizeMode sizeMode in Enum.GetValues(typeof(PictureBoxSizeMode))) {
+				ToolStripMenuItem tsmi = new ToolStripMenuItem(sizeMode.ToString());
+				tsmi.Tag = sizeMode;
+				tsmi.Click += new EventHandler(delegate(object sender2, EventArgs e2) {
+					ToolStripMenuItem selMenu = sender2 as ToolStripMenuItem;
+					PictureBoxSizeMode selSize = (PictureBoxSizeMode)selMenu.Tag;
+					this.ResizeMode = selSize;
+				});
+				this.tsmiSizeMode.DropDownItems.Add(tsmi);
+			}
+			this.tsmiSizeMode.DropDown.Closing += Utility.ToolStripDropDown_CancelClosingOnClick;
+			this.ResizeMode = this.ResizeMode;
+		}
 		private void tsmiCopyImageUri_Click(object sender, EventArgs e) {
 			Clipboard.SetText(this.ImageUri.AbsoluteUri);
 		}
@@ -153,12 +166,7 @@ namespace Yusen.GExplorer {
 			}
 		}
 		private void cmsImage_Opening(object sender, CancelEventArgs e) {
-			bool hasContent = (null != this.Content);
-			bool showImage = (null != this.picboxImage.Image);
-			this.tsmiCopyImageUri.Enabled = hasContent & showImage;
-			this.tsmiCopyNameAndImageUri.Enabled = hasContent & showImage;
-			this.tsmiCopyNameDetailImageUri.Enabled = hasContent  & showImage;
-			this.tsmiCopyImage.Enabled = hasContent & showImage;
+			this.ChangeEnabilityOfCmsItems();
 		}
 	}
 	

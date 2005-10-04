@@ -6,7 +6,7 @@ using System.Windows.Forms;
 using System.Reflection;
 
 namespace Yusen.GExplorer {
-	partial class AboutBox : FormBase {
+	sealed partial class AboutBox : FormBase {
 		public AboutBox() {
 			InitializeComponent();
 

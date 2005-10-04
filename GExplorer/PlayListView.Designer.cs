@@ -136,7 +136,7 @@ namespace Yusen.GExplorer {
 			// 
 			// chDuration
 			// 
-			this.chDuration.Text = "³–¡ŠÔ";
+			this.chDuration.Text = "ŠÔ";
 			this.chDuration.Width = 62;
 			// 
 			// chDeadLine
