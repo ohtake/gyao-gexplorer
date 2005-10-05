@@ -113,7 +113,7 @@ namespace Yusen.GExplorer {
 			}
 		}
 		
-		private static void DisplayException(Exception e) {
+		public static void DisplayException(Exception e) {
 			SystemSounds.Exclamation.Play();
 			using (ExceptionDialog ed = new ExceptionDialog()) {
 				ed.Exception = e;

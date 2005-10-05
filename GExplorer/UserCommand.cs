@@ -40,8 +40,7 @@ namespace Yusen.GExplorer {
 			}
 			set {
 				if(null != this.title) throw new InvalidOperationException();
-				if(null == value) throw new ArgumentNullException();
-				if("" == value) throw new ArgumentException("空白の表示名は駄目．");
+				if(string.IsNullOrEmpty(value)) throw new ArgumentException("空白の表示名は駄目．");
 				this.title = value;
 			}
 		}
@@ -55,8 +54,7 @@ namespace Yusen.GExplorer {
 			}
 			set {
 				if(null != this.fileName) throw new InvalidOperationException();
-				if(null == value) throw new ArgumentNullException();
-				if("" == value) throw new ArgumentException("空白のファイル名は駄目．");
+				if(string.IsNullOrEmpty(value)) throw new ArgumentException("空白のファイル名は駄目．");
 				this.fileName = value;
 			}
 		}

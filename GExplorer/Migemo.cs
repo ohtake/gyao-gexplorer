@@ -29,7 +29,7 @@ namespace Yusen.GExplorer{
 		[DllImport("migemo.dll", EntryPoint="migemo_query")]
 		private static extern StringBuilder MigemoQuery(IntPtr migemoObj, string query);
 		[DllImport("migemo.dll", EntryPoint="migemo_release")]
-		private static extern void MigemoRelease(IntPtr migemoObj, StringBuilder answer);
+		private static extern void MigemoRelease(IntPtr migemoObj, [In] StringBuilder answer);
 		
 		[DllImport("migemo.dll", EntryPoint="migemo_is_enable")]
 		private static extern bool MigemoIsEnable(IntPtr migemoObj);
@@ -60,7 +60,10 @@ namespace Yusen.GExplorer{
 				return string.Empty;
 			}
 			string ansStr = ans.ToString();
-			Migemo.MigemoRelease(this.migemoObj, ans);
+			try {
+				Migemo.MigemoRelease(this.migemoObj, ans);
+			} catch (AccessViolationException) {// s ‚Æ‚©“ü‚ê‚é‚Æ‹N“®Œã‚Éˆê‰ñ‚¾‚¯‹N‚«‚é‚ç‚µ‚¢
+			}
 			return ansStr;
 		}
 		

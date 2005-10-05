@@ -6,6 +6,7 @@ using AxWMPLib;
 using WMPLib;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.ComponentModel;
 
 namespace Yusen.GExplorer {
 	sealed partial class PlayerForm : FormSettingsBase, IFormWithSettings<PlayerFormSettings>{
@@ -70,6 +71,8 @@ namespace Yusen.GExplorer {
 		private int volumeNormal = 100;
 		private int volumeCf = 20;
 
+		private ScreenSaveListener ssl;
+		
 		private PlayerForm() {
 			InitializeComponent();
 		}
@@ -124,10 +127,6 @@ namespace Yusen.GExplorer {
 			get { return @"PlayerFormSettings.xml"; }
 		}
 
-		private void UserCommandsManager_UserCommandsChanged(object sender, EventArgs e) {
-			this.CreateUserCommandsMenuItems();
-		}
-
 		public ContentAdapter CurrentContent {
 			get {
 				return this.currentContent;
@@ -172,7 +171,10 @@ namespace Yusen.GExplorer {
 		}
 		public bool DisableScreenSaverEnabled {
 			get { return this.tsmiDisableScreenSaver.Checked; }
-			set { this.tsmiDisableScreenSaver.Checked = value; }
+			set {
+				this.tsmiDisableScreenSaver.Checked = value;
+				this.ssl.Enabled = value;
+			}
 		}
 		public bool AutoVolumeEnabled {
 			get {return this.tsmiAutoVolume.Checked;}
@@ -217,14 +219,30 @@ namespace Yusen.GExplorer {
 
 			this.CreateUserCommandsMenuItems();
 			UserCommandsManager.Instance.UserCommandsChanged += new EventHandler(UserCommandsManager_UserCommandsChanged);
-			this.FormClosing += delegate {
+			this.FormClosed += delegate {
 				UserCommandsManager.Instance.UserCommandsChanged -= new EventHandler(UserCommandsManager_UserCommandsChanged);
+			};
+			
+			this.ssl = new ScreenSaveListener();
+			this.ssl.ScreenSaverRaising += this.ssl_ScreenSaverRaising;
+			this.FormClosed += delegate {
+				this.ssl.ScreenSaverRaising -= this.ssl_ScreenSaverRaising;
+				this.ssl.Dispose();
 			};
 			
 			Utility.LoadSettingsAndEnableSaveOnClosed(this);
 		}
 		private void PlayerForm_FormClosing(object sender, FormClosingEventArgs e) {
 			this.CurrentContent = null;
+		}
+		private void UserCommandsManager_UserCommandsChanged(object sender, EventArgs e) {
+			this.CreateUserCommandsMenuItems();
+		}
+
+		private void ssl_ScreenSaverRaising(object sender, System.ComponentModel.CancelEventArgs e) {
+			if (this.DisableScreenSaverEnabled) {
+				e.Cancel = true;
+			}
 		}
 		private void tsmiPlayChapter_Click(object sender, EventArgs e) {
 			this.inputBoxDialog1.Title = "特定のチャプターから再生";
@@ -305,6 +323,9 @@ namespace Yusen.GExplorer {
 		}
 		private void tsmiAlwaysOnTop_Click(object sender, EventArgs e) {
 			this.TopMost = this.tsmiAlwaysOnTop.Checked;
+		}
+		private void tsmiDisableScreenSaver_Click(object sender, EventArgs e) {
+			this.DisableScreenSaverEnabled = this.DisableScreenSaverEnabled;
 		}
 		private void tsmiVolumeNormal_Click(object sender, EventArgs e) {
 			this.inputBoxDialog1.Title = "自動音量調整における本編の音量";
@@ -497,21 +518,6 @@ namespace Yusen.GExplorer {
 			if (null != this.pboxBanner.Image) {
 				Clipboard.SetImage(this.pboxBanner.Image);
 			}
-		}
-
-		protected override void WndProc(ref Message m) {
-			switch ((WM)m.Msg) {
-				case WM.SYSCOMMAND:
-					switch ((SC)m.WParam) {
-						case SC.SCREENSAVE:
-							if (this.DisableScreenSaverEnabled) {
-								return;
-							}
-							break;
-					}
-					break;
-			}
-			base.WndProc(ref m);
 		}
 	}
 	

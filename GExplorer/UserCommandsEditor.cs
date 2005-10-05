@@ -171,7 +171,7 @@ namespace Yusen.GExplorer {
 
 		void AppendArgWithMenuItemTagText(object sender, EventArgs e) {
 			string tagText = (sender as ToolStripMenuItem).Tag as string;
-			if("" == this.txtArg.Text || this.txtArg.Text.EndsWith(" ")) {
+			if(string.IsNullOrEmpty(this.txtArg.Text) || this.txtArg.Text.EndsWith(" ")) {
 				this.txtArg.Text += tagText;
 			} else {
 				this.txtArg.Text += " " + tagText;

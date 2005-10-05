@@ -246,6 +246,7 @@
     <Compile Include="CrawlResultView.Designer.cs">
       <DependentUpon>CrawlResultView.cs</DependentUpon>
     </Compile>
+    <Compile Include="ScreenSaveListener.cs" />
     <Compile Include="UserCommand.cs" />
     <Compile Include="UserCommandsEditor.cs">
       <SubType>Form</SubType>

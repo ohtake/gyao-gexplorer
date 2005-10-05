@@ -62,6 +62,7 @@ namespace Yusen.GExplorer {
 			this.tsmiSettings = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiAlwaysOnTop = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiKeepFullScreen = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiDisableScreenSaver = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiRemovePlayedContent = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiLoopPlayList = new System.Windows.Forms.ToolStripMenuItem();
@@ -77,7 +78,6 @@ namespace Yusen.GExplorer {
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiUserCommands = new System.Windows.Forms.ToolStripMenuItem();
 			this.inputBoxDialog1 = new Yusen.GExplorer.InputBoxDialog();
-			this.tsmiDisableScreenSaver = new System.Windows.Forms.ToolStripMenuItem();
 			this.tabControl1.SuspendLayout();
 			this.tabPlayer.SuspendLayout();
 			this.splitContainer1.Panel1.SuspendLayout();
@@ -436,6 +436,15 @@ namespace Yusen.GExplorer {
 			this.tsmiKeepFullScreen.Name = "tsmiKeepFullScreen";
 			this.tsmiKeepFullScreen.Text = "全画面状態ならば全画面を維持 (&F)";
 			// 
+			// tsmiDisableScreenSaver
+			// 
+			this.tsmiDisableScreenSaver.Checked = true;
+			this.tsmiDisableScreenSaver.CheckOnClick = true;
+			this.tsmiDisableScreenSaver.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.tsmiDisableScreenSaver.Name = "tsmiDisableScreenSaver";
+			this.tsmiDisableScreenSaver.Text = "アクティブ時にスクリーンセーバ抑止 (&S)";
+			this.tsmiDisableScreenSaver.Click += new System.EventHandler(this.tsmiDisableScreenSaver_Click);
+			// 
 			// toolStripSeparator3
 			// 
 			this.toolStripSeparator3.Name = "toolStripSeparator3";
@@ -527,14 +536,6 @@ namespace Yusen.GExplorer {
 			this.inputBoxDialog1.Input = null;
 			this.inputBoxDialog1.Message = null;
 			this.inputBoxDialog1.Title = null;
-			// 
-			// tsmiDisableScreenSaver
-			// 
-			this.tsmiDisableScreenSaver.Checked = true;
-			this.tsmiDisableScreenSaver.CheckOnClick = true;
-			this.tsmiDisableScreenSaver.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.tsmiDisableScreenSaver.Name = "tsmiDisableScreenSaver";
-			this.tsmiDisableScreenSaver.Text = "アクティブ時にスクリーンセーバ抑止 (&S)";
 			// 
 			// PlayerForm
 			// 

@@ -345,17 +345,10 @@ namespace Yusen.GExplorer {
 				goto success;
 			}
 			string ans = null;
-			try {
-				ans = this.migemo.Query(query);
-			} catch {
-				goto failed;
-			}
-			if (string.IsNullOrEmpty(ans)) {
-				goto failed;
-			}
+			ans = this.migemo.Query(query);
 			try {
 				regex = new Regex(ans, RegexOptions.IgnoreCase | RegexOptions.ExplicitCapture);
-			} catch {
+			} catch(ArgumentException) {
 				goto failed;
 			}
 			goto success;

@@ -33,7 +33,7 @@ namespace Yusen.GExplorer {
 				Process.Start(uri.AbsoluteUri);
 			}
 		}
-		public static void BrowseWithIE(Uri uri) {
+		private static void BrowseWithIE(Uri uri) {
 			Process.Start(Utility.GetPathForIE(), uri.AbsoluteUri);
 		}
 		public static void PlayWithWMP(Uri uri) {

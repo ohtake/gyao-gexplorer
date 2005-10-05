@@ -57,7 +57,7 @@ namespace Yusen.GExplorer {
 				Uri uri;
 				try {
 					uri = new Uri(strUri);
-				} catch {
+				} catch(UriFormatException){
 					continue;
 				}
 				//パッケージ判定
