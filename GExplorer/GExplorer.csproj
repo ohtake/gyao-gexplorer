@@ -47,8 +47,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Data" />
+    <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Messaging" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -65,6 +69,7 @@
     <Compile Include="BrowserForm.designer.cs">
       <DependentUpon>BrowserForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Cache.cs" />
     <Compile Include="ContentDetailView.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -111,7 +116,6 @@
     <Compile Include="GlobalSettingsEditor.Designer.cs">
       <DependentUpon>GlobalSettingsEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="GlobalVariables.cs" />
     <Compile Include="GTimeSpan.cs" />
     <Compile Include="GWebBrowser.cs">
       <SubType>Component</SubType>
@@ -257,7 +261,7 @@
     <Compile Include="GlobalSettings.cs" />
     <Compile Include="Utility.cs" />
     <Compile Include="Win32WindowImpl.cs" />
-    <Compile Include="WindowMessage.cs" />
+    <Compile Include="WindowsConstants.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="ChangeLog.txt">

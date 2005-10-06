@@ -51,49 +51,47 @@ namespace Yusen.GCrawler {
 			return new Uri("http://www.gyao.jp/sityou/catelist/pac_id/" + packageId + "/");
 		}
 
-		public static bool TryDownload(string packId, IDeadLineDictionary deadLineDic, out GPackage package, out List<string> childContIds) {
+		internal static GPackage DoDownload(string packId, IDeadlineTable deadlineDic, out List<string> childContIds) {
 			Uri uri = GPackage.CreatePackagePageUri(packId);
-			TextReader reader = new StreamReader(new WebClient().OpenRead(uri), Encoding.GetEncoding("Shift_JIS"));
+			using (TextReader reader = new StreamReader(new WebClient().OpenRead(uri), Encoding.GetEncoding("Shift_JIS"))) {
+				string line;
+				string packageName = "";
+				//パッケージ名の取得
+				while (null != (line = reader.ReadLine())) {
+					Match match = GPackage.regexPackageName.Match(line);
+					if (match.Success) {
+						packageName = HtmlUtility.HtmlToText(match.Groups[1].Value);
+						break;
+					}
+				}
+				if (null == line) {//パッケージ名の取得ミス
+					throw new Exception("パッケージ名の取得ミス． <" + uri.AbsoluteUri + ">");
+				}
+				//コンテンツIDと期限の抽出
+				List<string> contentIds = new List<string>();
+				string deadLine = null;
+				while (null != (line = reader.ReadLine())) {
+					if (null == deadLine) {
+						if (line.EndsWith(GPackage.strTitleDate)) {
+							deadLine = reader.ReadLine().Trim();
+						}
+						continue;
+					}
+					Match match = GPackage.regexAnchorHref2.Match(line);
+					if (match.Success) {
+						string contId;
+						if (GContent.TryExtractContentId(new Uri(uri, match.Groups[1].Value), out contId)) {
+							contentIds.Add(contId);
+							deadlineDic.SetDeadline(contId, deadLine);
+							deadLine = null;
+						}
+					}
+				}
+				
+				childContIds = contentIds;
+				return new GPackage(packId, packageName);
+			}
 			
-			string line;
-			string packageName = "";
-			//パッケージ名の取得
-			while (null != (line = reader.ReadLine())) {
-				Match match = GPackage.regexPackageName.Match(line);
-				if (match.Success) {
-					packageName = HtmlUtility.HtmlToText(match.Groups[1].Value);
-					break;
-				}
-			}
-			if (null == line) {//パッケージ名の取得ミス
-				package = null;
-				childContIds = null;
-				return false;
-			}
-			//コンテンツIDと期限の抽出
-			List<string> contentIds = new List<string>();
-			string deadLine = null;
-			while (null != (line = reader.ReadLine())) {
-				if (null == deadLine) {
-					if (line.EndsWith(GPackage.strTitleDate)) {
-						deadLine = reader.ReadLine().Trim();
-					}
-					continue;
-				}
-				Match match = GPackage.regexAnchorHref2.Match(line);
-				if (match.Success) {
-					string contId;
-					if (GContent.TryExtractContentId(new Uri(uri, match.Groups[1].Value), out contId)) {
-						contentIds.Add(contId);
-						deadLineDic.SetDeadLine(contId, deadLine);
-						deadLine = null;
-					}
-				}
-			}
-
-			package = new GPackage(packId, packageName);
-			childContIds = contentIds;
-			return true;
 		}
 		internal static GPackage CreateDummyPackage() {
 			return new GPackage("pac???????", "(不明なパッケージ)");

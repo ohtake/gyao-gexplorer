@@ -12,13 +12,13 @@ namespace Yusen.GExplorer {
 
 		private const string UserSettingsDir = "UserSettings";
 		
-		public static string GetPathForIE() {
+		private static string GetPathForIE() {
 			return Path.Combine(
 				Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles),
 				"Internet Explorer" + Path.DirectorySeparatorChar + "iexplore.exe");
 		}
-		
-		public static string GetPathForWMP() {
+
+		private static string GetPathForWMP() {
 			return Path.Combine(
 				Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles),
 				"Windows Media Player" + Path.DirectorySeparatorChar + "wmplayer.exe");
@@ -62,7 +62,7 @@ namespace Yusen.GExplorer {
 				}),
 				Keys.Shift | Keys.F1);
 			ToolStripMenuItem about = new ToolStripMenuItem(
-				"バージョン情報 (&A) ...", null,
+				"バージョン情報(&A) ...", null,
 				new EventHandler(delegate(object sender, EventArgs e) {
 					using (AboutBox abox = new AboutBox()) {
 						abox.ShowDialog((sender as ToolStripMenuItem).Tag as Form);
@@ -71,7 +71,7 @@ namespace Yusen.GExplorer {
 			about.Tag = menuStrip.FindForm();
 			
 			ToolStripMenuItem help = new ToolStripMenuItem(
-				"ヘルプ (&H)", null,
+				"ヘルプ(&H)", null,
 				read, change, new ToolStripSeparator(), about);
 			
 			menuStrip.Items.Add(help);

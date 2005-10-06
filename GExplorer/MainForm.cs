@@ -1,16 +1,17 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
 using System.Windows.Forms;
 using System.Threading;
 using Yusen.GCrawler;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Runtime.Serialization;
-using System.IO;
-using System.Drawing;
+using System.Runtime.InteropServices;
 
 namespace Yusen.GExplorer {
 	sealed partial class MainForm : FormSettingsBase, IFormWithSettings<MainFormSettings> {
+		[DllImport("user32.dll")]
+		static extern bool ShowWindow(IntPtr hWnd, SW nCmdShow);
+		
 		private sealed class MergedGenre : GGenre {
 			public MergedGenre() : base(0, "dummy", "(マージ)", Color.Black){
 			}
@@ -23,19 +24,11 @@ namespace Yusen.GExplorer {
 		}
 		private delegate void ViewCrawlResultDelegate(CrawlResult result);
 
-		private const string cacheDir = @"Cache";
-		private const string cacheResultsFilename = @"CrawlResults.bin";
-		private const string cacheDeadlineFilename = @"DeadLines.bin";
-		
-		private IContentCacheController cacheController;
 		private Crawler crawler;
-		private Dictionary<GGenre, CrawlResult> crawlResults = new Dictionary<GGenre, CrawlResult>();
 		private Thread threadCrawler = null;
-		private IDeadLineDictionary deadLineDictionary;
 
-		private DateTime lastDetailTime = DateTime.MinValue;
-		private object monitorLastDetailTime = new object();
-		private readonly double marginDetailSec = 0.1;
+		private ContentAdapter seletedCont = null;
+		private CrawlProgressEventArgs crawlProgressEventArgs = null;
 
 		public MainForm() {
 			InitializeComponent();
@@ -48,7 +41,7 @@ namespace Yusen.GExplorer {
 				}));
 			} else {
 				this.tspbCrawl.Value = 0;
-				this.tsslCrawl.Text = "";
+				this.tsslCrawl.Text = string.Empty;
 			}
 		}
 		private void DisableTsmiAbortCrawling() {
@@ -74,7 +67,6 @@ namespace Yusen.GExplorer {
 		public void FillSettings(MainFormSettings settings) {
 			base.FillSettings(settings);
 			settings.FocusOnResultAfterGenreChanged = this.FocusOnResultAfterGenreChanged;
-			settings.IgnoreCrawlErrors = this.IgnoreCrawlErrors;
 			settings.ListViewWidth = this.scListsAndDetail.SplitterDistance;
 			settings.ListViewHeight = this.scLists.SplitterDistance;
 			this.crawlResultView1.FillSettings(settings.GenreListViewSettings);
@@ -84,7 +76,6 @@ namespace Yusen.GExplorer {
 		public void ApplySettings(MainFormSettings settings) {
 			base.ApplySettings(settings);
 			this.FocusOnResultAfterGenreChanged = settings.FocusOnResultAfterGenreChanged ?? this.FocusOnResultAfterGenreChanged;
-			this.IgnoreCrawlErrors = settings.IgnoreCrawlErrors ?? this.IgnoreCrawlErrors;
 			this.scListsAndDetail.SplitterDistance = settings.ListViewWidth ?? this.scListsAndDetail.SplitterDistance;
 			this.scLists.SplitterDistance = settings.ListViewHeight ?? this.scLists.SplitterDistance;
 			this.crawlResultView1.ApplySettings(settings.GenreListViewSettings);
@@ -99,57 +90,7 @@ namespace Yusen.GExplorer {
 			get { return this.tsmiFocusOnResultAfterTabChanged.Checked; }
 			set { this.tsmiFocusOnResultAfterTabChanged.Checked = value; }
 		}
-		public bool IgnoreCrawlErrors {
-			get { return this.tsmiIgnoreCrawlErrors.Checked; }
-			set { this.tsmiIgnoreCrawlErrors.Checked = value; }
-		}
-
-		private void SerializeCrawlResults() {
-			using (Stream stream = new FileStream(Path.Combine(MainForm.cacheDir, MainForm.cacheResultsFilename), FileMode.Create)) {
-				IFormatter formatter = new BinaryFormatter();
-				formatter.Serialize(stream, this.crawlResults);
-			}
-		}
-		private bool TryDeserializeCrawlResults() {
-			try {
-				Dictionary<GGenre, CrawlResult> oldResults = null;
-				using (Stream stream = new FileStream(Path.Combine(MainForm.cacheDir, MainForm.cacheResultsFilename), FileMode.Open)) {
-					IFormatter formatter = new BinaryFormatter();
-					this.crawlResults = (Dictionary<GGenre, CrawlResult>)formatter.Deserialize(stream);
-				}
-				
-				//かつてのバージョンではあったが新しいバージョンではなくなったジャンルを削除
-				Dictionary<GGenre, CrawlResult> newResults = new Dictionary<GGenre, CrawlResult>();
-				foreach (GGenre genre in GGenre.AllGenres) {
-					CrawlResult result;
-					if (genre.IsCrawlable && oldResults.TryGetValue(genre, out result)) {
-						newResults.Add(genre, result);
-					}
-				}
-				
-				this.crawlResults = newResults;
-				return true;
-			} catch {
-				return false;
-			}
-		}
-		private void SerializeDeadlineDictionary() {
-			using (Stream stream = new FileStream(Path.Combine(MainForm.cacheDir, MainForm.cacheDeadlineFilename), FileMode.Create)) {
-				IFormatter formatter = new BinaryFormatter();
-				formatter.Serialize(stream, this.deadLineDictionary);
-			}
-		}
-		private bool TryDeserializeDeadlineDictionary() {
-			try {
-				using (Stream stream = new FileStream(Path.Combine(MainForm.cacheDir, MainForm.cacheDeadlineFilename), FileMode.Open)) {
-					IFormatter formatter = new BinaryFormatter();
-					this.deadLineDictionary = (IDeadLineDictionary)formatter.Deserialize(stream);
-					return true;
-				}
-			} catch {
-				return false;
-			}
-		}
+		
 		private void CreateUserCommandsMenuItems() {
 			this.tsmiUserCommands.DropDownItems.Clear();
 			foreach (UserCommand uc in UserCommandsManager.Instance) {
@@ -170,16 +111,8 @@ namespace Yusen.GExplorer {
 		}
 		
 		private void MainForm_Load(object sender, EventArgs e) {
-			this.cacheController = new ContentCacheControllerXml(MainForm.cacheDir);
-			this.deadLineDictionary = new DeadLineDictionarySorted();
+			this.crawler = new Crawler(new HtmlParserRegex(), Cache.Instance.ContentCacheController, Cache.Instance.DeadlineTable);
 			
-			this.TryDeserializeCrawlResults();
-			this.TryDeserializeDeadlineDictionary();
-			
-			GlobalVariables.DeadLineDictionaryReadonly = this.deadLineDictionary;
-			
-			this.crawler = new Crawler(new HtmlParserRegex(), this.cacheController, this.deadLineDictionary);
-
 			this.Text = Application.ProductName + " " + Application.ProductVersion;
 			Utility.AppendHelpMenu(this.menuStrip1);
 			this.tsmiSettings.DropDown.Closing += Utility.ToolStripDropDown_CancelClosingOnClick;
@@ -203,7 +136,6 @@ namespace Yusen.GExplorer {
 			this.tsmiUncrawlableGenres.Visible = this.tsmiUncrawlableGenres.HasDropDownItems;
 			
 			this.crawler.CrawlProgress += new EventHandler<CrawlProgressEventArgs>(crawler_CrawlProgress);
-			this.crawler.IgnorableErrorOccured += new EventHandler<IgnorableErrorOccuredEventArgs>(crawler_IgnorableErrorOccured);
 			
 			UserCommandsManager.Instance.UserCommandsChanged += new EventHandler(UserCommandsManager_UserCommandsChanged);
 			this.CreateUserCommandsMenuItems();
@@ -226,35 +158,18 @@ namespace Yusen.GExplorer {
 		}
 		private void MainForm_FormClosed(object sender, FormClosedEventArgs e) {
 			UserCommandsManager.Instance.UserCommandsChanged -= new EventHandler(UserCommandsManager_UserCommandsChanged);
-			this.SerializeCrawlResults();
-			this.SerializeDeadlineDictionary();
 		}
 		private void UserCommandsManager_UserCommandsChanged(object sender, EventArgs e) {
 			this.CreateUserCommandsMenuItems();
 		}
 		private void crawler_CrawlProgress(object sender, CrawlProgressEventArgs e) {
 			if (this.InvokeRequired) {
-			this.Invoke(new EventHandler<CrawlProgressEventArgs>(
-				delegate(object sender2, CrawlProgressEventArgs e2) {
-					this.crawler_CrawlProgress(sender2, e2);
-				}),
-				sender, e);
+				this.Invoke(
+					new EventHandler<CrawlProgressEventArgs>(this.crawler_CrawlProgress),
+					new object[] { sender, e });
 			} else {
-				this.tspbCrawl.Maximum = e.Visited+e.Waiting;
-				this.tspbCrawl.Value = e.Visited;
-				this.tsslCrawl.Text = e.Message;
-			}
-			Application.DoEvents();
-		}
-		void crawler_IgnorableErrorOccured(object sender, IgnorableErrorOccuredEventArgs e) {
-			if (!this.IgnoreCrawlErrors) {
-				if (DialogResult.No == MessageBox.Show(
-						"クロール時に以下の無視可能エラーが起きました．無視して続行しますか？\n\n"
-						+ e.Message,
-						"クロール時の無視可能エラー",
-						MessageBoxButtons.YesNo, MessageBoxIcon.Question)) {
-					e.Ignore = false;
-				}
+				this.timerCrawlProgress.Start();
+				this.crawlProgressEventArgs = e;
 			}
 		}
 
@@ -262,7 +177,7 @@ namespace Yusen.GExplorer {
 			GGenre genre = e.Genre;
 			if (null == genre) return;
 			CrawlResult result;
-			if (e.ForceReload || !this.crawlResults.TryGetValue(genre, out result)) {
+			if (e.ForceReload || !Cache.Instance.ResultsDictionary.TryGetValue(genre, out result)) {
 				Thread t;
 				lock (this.crawler) {
 					if (null != this.threadCrawler) {
@@ -278,8 +193,9 @@ namespace Yusen.GExplorer {
 							this.DisableTsmiAbortCrawling();
 						}
 						if (result.Success) {
+							this.crawlProgressEventArgs = null;
 							this.ClearStatusBarInfo();
-							this.crawlResults[genre] = result;
+							Cache.Instance.ResultsDictionary[genre] = result;
 							this.ViewCrawlResult(result);
 						}
 					}));
@@ -294,26 +210,17 @@ namespace Yusen.GExplorer {
 
 		private void crawlResultView1_ContentSelectionChanged(object sender, ContentSelectionChangedEventArgs e) {
 			if (e.IsSelected) {
-				lock (this.monitorLastDetailTime) {
-					if (this.lastDetailTime.AddSeconds(this.marginDetailSec) < DateTime.Now) {
-						this.lastDetailTime = DateTime.Now;
-						this.contentDetailView1.Content = e.Content;
-					}
-				}
+				this.seletedCont = e.Content;
+				this.timerViewDetail.Start();
 			}
 		}
 		private void playListView1_ContentSelectionChanged(object sender, ContentSelectionChangedEventArgs e) {
 			if (e.IsSelected) {
-				lock (this.monitorLastDetailTime) {
-					if (this.lastDetailTime.AddSeconds(this.marginDetailSec) < DateTime.Now) {
-						this.lastDetailTime = DateTime.Now;
-						this.contentDetailView1.Content = e.Content;
-					}
-				}
+				this.seletedCont = e.Content;
+				this.timerViewDetail.Start();
 			}
 		}
-
-
+		
 		private void tsmiBrowseTop_Click(object sender, EventArgs e) {
 			Utility.Browse(new Uri("http://www.gyao.jp/"));
 		}
@@ -343,24 +250,21 @@ namespace Yusen.GExplorer {
 		private void tsmiGlobalSettingsEditor_Click(object sender, EventArgs e) {
 			GlobalSettingsEditor gse = GlobalSettingsEditor.Instance;
 			gse.Owner = this;
-			gse.Show();
-			gse.Focus();
+			MainForm.ShowWindow(gse.Handle, SW.ShowNA);
 		}
 		private void tsmiUserCommandsEditor_Click(object sender, EventArgs e) {
 			UserCommandsEditor uce = UserCommandsEditor.Instance;
 			uce.Owner = this;
-			uce.Show();
-			uce.Focus();
+			MainForm.ShowWindow(uce.Handle, SW.ShowNA);
 		}
 		private void tsmiNgContentsEditor_Click(object sender, EventArgs e) {
 			NgContentsEditor nce = NgContentsEditor.Instance;
 			nce.Owner = this;
-			nce.Show();
-			nce.Focus();
+			MainForm.ShowWindow(nce.Handle, SW.ShowNA);
 		}
 		private void tsmiMergeResults_Click(object sender, EventArgs e) {
 			GGenre mergedGenre = new MergedGenre();
-			CrawlResult mergedResult = CrawlResult.Merge(mergedGenre, this.crawlResults.Values);
+			CrawlResult mergedResult = CrawlResult.Merge(mergedGenre, Cache.Instance.ResultsDictionary.Values);
 			this.ViewCrawlResult(mergedResult);
 		}
 		private void tsmiClearCrawlResults_Click(object sender, EventArgs e) {
@@ -369,8 +273,8 @@ namespace Yusen.GExplorer {
 					"全ジャンルのクロール結果を破棄します．よろしいですか？",
 					title, MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2)) {
 				case DialogResult.Yes:
-					int numResults = this.crawlResults.Count;
-					this.crawlResults.Clear();
+					int numResults = Cache.Instance.ResultsDictionary.Count;
+					Cache.Instance.ResultsDictionary.Clear();
 					this.tsslCrawl.Text = 
 						"クロール結果の破棄"
 						+ "    破棄数: " + numResults.ToString();
@@ -378,24 +282,16 @@ namespace Yusen.GExplorer {
 			}
 		}
 		private void tsmiRemoveCachesUnreachable_Click(object sender, EventArgs e) {
-			List<string> reachable = new List<string>();
-			foreach(CrawlResult result in this.crawlResults.Values){
-				foreach (GPackage package in result.Packages) {
-					foreach (GContent content in package.Contents) {
-						reachable.Add(content.ContentId);
-					}
-				}
-			}
-			reachable.Sort();
+			List<string> reachable = Cache.Instance.GetSortedReachableContentIds();
 			
 			int success = 0;
 			int failed = 0;
 			int ignored = 0;
-			foreach (string key in this.cacheController.ListAllCacheKeys()) {
+			foreach (string key in Cache.Instance.ContentCacheController.ListAllCacheKeys()) {
 				if (reachable.BinarySearch(key) >= 0) {
 					ignored++;
 				} else {
-					if (this.cacheController.RemoveCache(key)) {
+					if (Cache.Instance.ContentCacheController.RemoveCache(key)) {
 						success++;
 					} else {
 						failed++;
@@ -415,8 +311,8 @@ namespace Yusen.GExplorer {
 				case DialogResult.Yes:
 					int success = 0;
 					int failed = 0;
-					foreach (string key in this.cacheController.ListAllCacheKeys()) {
-						if (this.cacheController.RemoveCache(key)) {
+					foreach (string key in Cache.Instance.ContentCacheController.ListAllCacheKeys()) {
+						if (Cache.Instance.ContentCacheController.RemoveCache(key)) {
 							success++;
 						} else {
 							failed++;
@@ -430,24 +326,16 @@ namespace Yusen.GExplorer {
 			}
 		}
 		private void tsmiRemoveDeadlineEntriesUnreacheable_Click(object sender, EventArgs e) {
-			List<string> reachable = new List<string>();
-			foreach (CrawlResult result in this.crawlResults.Values) {
-				foreach (GPackage package in result.Packages) {
-					foreach (GContent content in package.Contents) {
-						reachable.Add(content.ContentId);
-					}
-				}
-			}
-			reachable.Sort();
+			List<string> reachable = Cache.Instance.GetSortedReachableContentIds();
 
 			int success = 0;
 			int failed = 0;
 			int ignored = 0;
-			foreach (string key in new List<string>(this.deadLineDictionary.ListContentIds())){
+			foreach (string key in new List<string>(Cache.Instance.DeadlineTable.ListContentIds())){
 				if (reachable.BinarySearch(key) >= 0) {
 					ignored++;
 				} else {
-					if (this.deadLineDictionary.RemoveDeadLineOf(key)) {
+					if (Cache.Instance.DeadlineTable.RemoveDeadlineOf(key)) {
 						success++;
 					} else {
 						failed++;
@@ -465,8 +353,8 @@ namespace Yusen.GExplorer {
 					"全てのエントリーを削除します．\nよろしいですか？",
 					"全てのエントリーを削除", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2)) {
 				case DialogResult.Yes:
-					int count = this.deadLineDictionary.Count;
-					this.deadLineDictionary.ClearDeadLines();
+					int count = Cache.Instance.DeadlineTable.Count;
+					Cache.Instance.DeadlineTable.ClearDeadlines();
 					this.tsslCrawl.Text =
 						"配信期限エントリーの整理"
 						+ "    削除成功: " + count.ToString();
@@ -479,17 +367,32 @@ namespace Yusen.GExplorer {
 					this.threadCrawler.Abort();
 					this.tsmiAbortCrawling.Enabled = false;
 					this.threadCrawler = null;
-
+					
+					this.crawlProgressEventArgs = null;
 					this.ClearStatusBarInfo();
 					this.tsslCrawl.Text = "クロールを中止しました．";
 				}
 			}
 		}
+
+		private void timerViewDetail_Tick(object sender, EventArgs e) {
+			this.timerViewDetail.Stop();
+			this.contentDetailView1.Content = this.seletedCont;
+		}
+
+		private void timerCrawlProgress_Tick(object sender, EventArgs e) {
+			this.timerCrawlProgress.Stop();
+			if(null != this.crawlProgressEventArgs){
+				this.tspbCrawl.Maximum = this.crawlProgressEventArgs.Visited + this.crawlProgressEventArgs.Waiting;
+				this.tspbCrawl.Value = this.crawlProgressEventArgs.Visited;
+				this.tsslCrawl.Text = this.crawlProgressEventArgs.Message;
+			}
+			Application.DoEvents();
+		}
 	}
 
 	public class MainFormSettings : FormSettingsBaseSettings {
 		private bool? focusOnResultAfterGenreChanged;
-		private bool? ignoreCrawlErrors;
 		private int? listViewWidth;
 		private int? listViewHeight;
 		private GenreListViewSettings genreListViewSettings = new GenreListViewSettings();
@@ -499,10 +402,6 @@ namespace Yusen.GExplorer {
 		public bool? FocusOnResultAfterGenreChanged {
 			get { return this.focusOnResultAfterGenreChanged; }
 			set { this.focusOnResultAfterGenreChanged = value; }
-		}
-		public bool? IgnoreCrawlErrors {
-			get { return this.ignoreCrawlErrors; }
-			set { this.ignoreCrawlErrors = value; }
 		}
 		public int? ListViewWidth {
 			get { return this.listViewWidth; }

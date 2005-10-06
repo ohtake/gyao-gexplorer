@@ -1,8 +1,7 @@
 namespace Yusen.GExplorer {
-	// http://216.26.160.137/Forums/AspNetForums20/ShowPost.aspx?PostID=13135
-	
 	/// <summary>Window Messages</summary>
 	enum WM{
+		// http://216.26.160.137/Forums/AspNetForums20/ShowPost.aspx?PostID=13135
 		ACTIVATE=0x0006,
 		ACTIVATEAPP=0x001C,
 		AFXFIRST=0x0360,
@@ -208,6 +207,7 @@ namespace Yusen.GExplorer {
 	
 	/// <summary>System Commands</summary>
 	enum SC{
+		// http://216.26.160.137/Forums/AspNetForums20/ShowPost.aspx?PostID=13135
 		SIZE=0xF000,
 		MOVE=0xF010,
 		MINIMIZE=0xF020,
@@ -228,5 +228,24 @@ namespace Yusen.GExplorer {
 		MONITORPOWER=0xF170,
 		CONTEXTHELP=0xF180,
 		SEPARATOR=0xF00F
+	}
+
+	/// <summary>
+	/// ShowWindow
+	/// </summary>
+	enum SW : int{
+		Hide = 0,
+		Normal = 1,
+		ShowMinimized = 2,
+		ShowMaximized = 3,
+		ShowNoActivate = 4,
+		Show = 5,
+		Minimize = 6,
+		ShowMinNoActive = 7,
+		ShowNA = 8,
+		Restore = 9,
+		ShowDefault = 10,
+		ForceMinimize = 11,
+		Max = 11,
 	}
 }

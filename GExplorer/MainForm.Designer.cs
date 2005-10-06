@@ -23,6 +23,7 @@ namespace Yusen.GExplorer {
 		/// the contents of this method with the code editor.
 		/// </summary>
 		private void InitializeComponent() {
+			this.components = new System.ComponentModel.Container();
 			this.statusStrip1 = new System.Windows.Forms.StatusStrip();
 			this.tspbCrawl = new System.Windows.Forms.ToolStripProgressBar();
 			this.tsslCrawl = new System.Windows.Forms.ToolStripStatusLabel();
@@ -45,13 +46,12 @@ namespace Yusen.GExplorer {
 			this.tsmiQuit = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiUncrawlableGenres = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiSettings = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiFocusOnResultAfterTabChanged = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiIgnoreCrawlErrors = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiTools = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiGlobalSettingsEditor = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiUserCommandsEditor = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiNgContentsEditor = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+			this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
+			this.tsmiFocusOnResultAfterTabChanged = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiTools = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiMergeResults = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiClearCrawlResults = new System.Windows.Forms.ToolStripMenuItem();
@@ -65,6 +65,8 @@ namespace Yusen.GExplorer {
 			this.tsmiUserCommands = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiAbortCrawling = new System.Windows.Forms.ToolStripMenuItem();
 			this.inputBoxDialog1 = new Yusen.GExplorer.InputBoxDialog();
+			this.timerViewDetail = new System.Windows.Forms.Timer(this.components);
+			this.timerCrawlProgress = new System.Windows.Forms.Timer(this.components);
 			this.statusStrip1.SuspendLayout();
 			this.toolStripContainer1.BottomToolStripPanel.SuspendLayout();
 			this.toolStripContainer1.ContentPanel.SuspendLayout();
@@ -278,24 +280,24 @@ namespace Yusen.GExplorer {
             this.toolStripSeparator1,
             this.tsmiQuit});
 			this.tsmiFile.Name = "tsmiFile";
-			this.tsmiFile.Text = "ファイル (&F)";
+			this.tsmiFile.Text = "ファイル(&F)";
 			// 
 			// tsmiBrowseTop
 			// 
 			this.tsmiBrowseTop.Name = "tsmiBrowseTop";
-			this.tsmiBrowseTop.Text = "トップページをウェブブラウザで開く (&T)";
+			this.tsmiBrowseTop.Text = "トップページをウェブブラウザで開く(&T)";
 			this.tsmiBrowseTop.Click += new System.EventHandler(this.tsmiBrowseTop_Click);
 			// 
 			// tsmiBrowsePackage
 			// 
 			this.tsmiBrowsePackage.Name = "tsmiBrowsePackage";
-			this.tsmiBrowsePackage.Text = "パッケージIDを指定してウェブブラウザで開く (&P) ...";
+			this.tsmiBrowsePackage.Text = "パッケージIDを指定してウェブブラウザで開く(&P) ...";
 			this.tsmiBrowsePackage.Click += new System.EventHandler(this.tsmiBrowsePackage_Click);
 			// 
 			// tsmiBrowseContent
 			// 
 			this.tsmiBrowseContent.Name = "tsmiBrowseContent";
-			this.tsmiBrowseContent.Text = "コンテンツIDを指定してウェブブラウザで開く (&C) ...";
+			this.tsmiBrowseContent.Text = "コンテンツIDを指定してウェブブラウザで開く(&C) ...";
 			this.tsmiBrowseContent.Click += new System.EventHandler(this.tsmiBrowseContent_Click);
 			// 
 			// toolStripSeparator1
@@ -306,21 +308,46 @@ namespace Yusen.GExplorer {
 			// 
 			this.tsmiQuit.Name = "tsmiQuit";
 			this.tsmiQuit.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Q)));
-			this.tsmiQuit.Text = "終了 (&Q)";
+			this.tsmiQuit.Text = "終了(&Q)";
 			this.tsmiQuit.Click += new System.EventHandler(this.tsmiQuit_Click);
 			// 
 			// tsmiUncrawlableGenres
 			// 
 			this.tsmiUncrawlableGenres.Name = "tsmiUncrawlableGenres";
-			this.tsmiUncrawlableGenres.Text = "未対応ジャンル (&U)";
+			this.tsmiUncrawlableGenres.Text = "未対応ジャンル(&U)";
 			// 
 			// tsmiSettings
 			// 
 			this.tsmiSettings.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiFocusOnResultAfterTabChanged,
-            this.tsmiIgnoreCrawlErrors});
+            this.tsmiGlobalSettingsEditor,
+            this.tsmiUserCommandsEditor,
+            this.tsmiNgContentsEditor,
+            this.toolStripSeparator5,
+            this.tsmiFocusOnResultAfterTabChanged});
 			this.tsmiSettings.Name = "tsmiSettings";
-			this.tsmiSettings.Text = "設定 (&S)";
+			this.tsmiSettings.Text = "設定(&S)";
+			// 
+			// tsmiGlobalSettingsEditor
+			// 
+			this.tsmiGlobalSettingsEditor.Name = "tsmiGlobalSettingsEditor";
+			this.tsmiGlobalSettingsEditor.Text = "グローバル設定エディタ(&G)";
+			this.tsmiGlobalSettingsEditor.Click += new System.EventHandler(this.tsmiGlobalSettingsEditor_Click);
+			// 
+			// tsmiUserCommandsEditor
+			// 
+			this.tsmiUserCommandsEditor.Name = "tsmiUserCommandsEditor";
+			this.tsmiUserCommandsEditor.Text = "外部コマンドエディタ(&C)";
+			this.tsmiUserCommandsEditor.Click += new System.EventHandler(this.tsmiUserCommandsEditor_Click);
+			// 
+			// tsmiNgContentsEditor
+			// 
+			this.tsmiNgContentsEditor.Name = "tsmiNgContentsEditor";
+			this.tsmiNgContentsEditor.Text = "NGコンテンツエディタ(&N)";
+			this.tsmiNgContentsEditor.Click += new System.EventHandler(this.tsmiNgContentsEditor_Click);
+			// 
+			// toolStripSeparator5
+			// 
+			this.toolStripSeparator5.Name = "toolStripSeparator5";
 			// 
 			// tsmiFocusOnResultAfterTabChanged
 			// 
@@ -328,23 +355,11 @@ namespace Yusen.GExplorer {
 			this.tsmiFocusOnResultAfterTabChanged.CheckOnClick = true;
 			this.tsmiFocusOnResultAfterTabChanged.CheckState = System.Windows.Forms.CheckState.Checked;
 			this.tsmiFocusOnResultAfterTabChanged.Name = "tsmiFocusOnResultAfterTabChanged";
-			this.tsmiFocusOnResultAfterTabChanged.Text = "ジャンルタブ切り替え後にクロール結果ビューにフォーカス (&F)";
-			// 
-			// tsmiIgnoreCrawlErrors
-			// 
-			this.tsmiIgnoreCrawlErrors.Checked = true;
-			this.tsmiIgnoreCrawlErrors.CheckOnClick = true;
-			this.tsmiIgnoreCrawlErrors.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.tsmiIgnoreCrawlErrors.Name = "tsmiIgnoreCrawlErrors";
-			this.tsmiIgnoreCrawlErrors.Text = "クロール時の無視可能エラーを全て無視 (&I)";
+			this.tsmiFocusOnResultAfterTabChanged.Text = "ジャンルタブ切り替え後にクロール結果ビューにフォーカス(&F)";
 			// 
 			// tsmiTools
 			// 
 			this.tsmiTools.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiGlobalSettingsEditor,
-            this.tsmiUserCommandsEditor,
-            this.tsmiNgContentsEditor,
-            this.toolStripSeparator3,
             this.tsmiMergeResults,
             this.toolStripSeparator4,
             this.tsmiClearCrawlResults,
@@ -353,34 +368,12 @@ namespace Yusen.GExplorer {
             this.toolStripSeparator2,
             this.tsmiUserCommands});
 			this.tsmiTools.Name = "tsmiTools";
-			this.tsmiTools.Text = "ツール (&T)";
-			// 
-			// tsmiGlobalSettingsEditor
-			// 
-			this.tsmiGlobalSettingsEditor.Name = "tsmiGlobalSettingsEditor";
-			this.tsmiGlobalSettingsEditor.Text = "グローバル設定エディタ (&G)";
-			this.tsmiGlobalSettingsEditor.Click += new System.EventHandler(this.tsmiGlobalSettingsEditor_Click);
-			// 
-			// tsmiUserCommandsEditor
-			// 
-			this.tsmiUserCommandsEditor.Name = "tsmiUserCommandsEditor";
-			this.tsmiUserCommandsEditor.Text = "外部コマンドエディタ (&C)";
-			this.tsmiUserCommandsEditor.Click += new System.EventHandler(this.tsmiUserCommandsEditor_Click);
-			// 
-			// tsmiNgContentsEditor
-			// 
-			this.tsmiNgContentsEditor.Name = "tsmiNgContentsEditor";
-			this.tsmiNgContentsEditor.Text = "NGコンテンツエディタ (&N)";
-			this.tsmiNgContentsEditor.Click += new System.EventHandler(this.tsmiNgContentsEditor_Click);
-			// 
-			// toolStripSeparator3
-			// 
-			this.toolStripSeparator3.Name = "toolStripSeparator3";
+			this.tsmiTools.Text = "ツール(&T)";
 			// 
 			// tsmiMergeResults
 			// 
 			this.tsmiMergeResults.Name = "tsmiMergeResults";
-			this.tsmiMergeResults.Text = "クロール結果をマージして表示 (&M)";
+			this.tsmiMergeResults.Text = "クロール結果をマージして表示(&M)";
 			this.tsmiMergeResults.Click += new System.EventHandler(this.tsmiMergeResults_Click);
 			// 
 			// toolStripSeparator4
@@ -390,7 +383,7 @@ namespace Yusen.GExplorer {
 			// tsmiClearCrawlResults
 			// 
 			this.tsmiClearCrawlResults.Name = "tsmiClearCrawlResults";
-			this.tsmiClearCrawlResults.Text = "クロール結果の破棄 (&D) ...";
+			this.tsmiClearCrawlResults.Text = "クロール結果の破棄(&D) ...";
 			this.tsmiClearCrawlResults.Click += new System.EventHandler(this.tsmiClearCrawlResults_Click);
 			// 
 			// tsmiRemoveCaches
@@ -399,18 +392,18 @@ namespace Yusen.GExplorer {
             this.tsmiRemoveCachesUnreachable,
             this.tsmiRemoveCachesAll});
 			this.tsmiRemoveCaches.Name = "tsmiRemoveCaches";
-			this.tsmiRemoveCaches.Text = "キャッシュの削除 (&R)";
+			this.tsmiRemoveCaches.Text = "キャッシュの削除(&R)";
 			// 
 			// tsmiRemoveCachesUnreachable
 			// 
 			this.tsmiRemoveCachesUnreachable.Name = "tsmiRemoveCachesUnreachable";
-			this.tsmiRemoveCachesUnreachable.Text = "クロール結果で到達不可能なキャッシュを削除 (&U)";
+			this.tsmiRemoveCachesUnreachable.Text = "クロール結果で到達不可能なキャッシュを削除(&U)";
 			this.tsmiRemoveCachesUnreachable.Click += new System.EventHandler(this.tsmiRemoveCachesUnreachable_Click);
 			// 
 			// tsmiRemoveCachesAll
 			// 
 			this.tsmiRemoveCachesAll.Name = "tsmiRemoveCachesAll";
-			this.tsmiRemoveCachesAll.Text = "全てのキャッシュを削除 (&A) ...";
+			this.tsmiRemoveCachesAll.Text = "全てのキャッシュを削除(&A)...";
 			this.tsmiRemoveCachesAll.Click += new System.EventHandler(this.tsmiRemoveCachesAll_Click);
 			// 
 			// tsmiRemoveDeadlineEntries
@@ -419,18 +412,18 @@ namespace Yusen.GExplorer {
             this.tsmiRemoveDeadlineEntriesUnreacheable,
             this.tsmiRemoveDeadlineEntriesAll});
 			this.tsmiRemoveDeadlineEntries.Name = "tsmiRemoveDeadlineEntries";
-			this.tsmiRemoveDeadlineEntries.Text = "配信期限辞書の整理 (&L)";
+			this.tsmiRemoveDeadlineEntries.Text = "配信期限辞書の整理(&L)";
 			// 
 			// tsmiRemoveDeadlineEntriesUnreacheable
 			// 
 			this.tsmiRemoveDeadlineEntriesUnreacheable.Name = "tsmiRemoveDeadlineEntriesUnreacheable";
-			this.tsmiRemoveDeadlineEntriesUnreacheable.Text = "クロール結果で到達不可なエントリーを削除 (&U)";
+			this.tsmiRemoveDeadlineEntriesUnreacheable.Text = "クロール結果で到達不可なエントリーを削除(&U)";
 			this.tsmiRemoveDeadlineEntriesUnreacheable.Click += new System.EventHandler(this.tsmiRemoveDeadlineEntriesUnreacheable_Click);
 			// 
 			// tsmiRemoveDeadlineEntriesAll
 			// 
 			this.tsmiRemoveDeadlineEntriesAll.Name = "tsmiRemoveDeadlineEntriesAll";
-			this.tsmiRemoveDeadlineEntriesAll.Text = "全てのエントリーを削除 (&A) ...";
+			this.tsmiRemoveDeadlineEntriesAll.Text = "全てのエントリーを削除(&A)...";
 			this.tsmiRemoveDeadlineEntriesAll.Click += new System.EventHandler(this.tsmiRemoveDeadlineEntriesAll_Click);
 			// 
 			// toolStripSeparator2
@@ -440,7 +433,7 @@ namespace Yusen.GExplorer {
 			// tsmiUserCommands
 			// 
 			this.tsmiUserCommands.Name = "tsmiUserCommands";
-			this.tsmiUserCommands.Text = "外部コマンド (&U)";
+			this.tsmiUserCommands.Text = "外部コマンド(&U)";
 			// 
 			// tsmiAbortCrawling
 			// 
@@ -454,6 +447,16 @@ namespace Yusen.GExplorer {
 			this.inputBoxDialog1.Input = null;
 			this.inputBoxDialog1.Message = null;
 			this.inputBoxDialog1.Title = null;
+			// 
+			// timerViewDetail
+			// 
+			this.timerViewDetail.Interval = 10;
+			this.timerViewDetail.Tick += new System.EventHandler(this.timerViewDetail_Tick);
+			// 
+			// timerCrawlProgress
+			// 
+			this.timerCrawlProgress.Interval = 10;
+			this.timerCrawlProgress.Tick += new System.EventHandler(this.timerCrawlProgress_Tick);
 			// 
 			// MainForm
 			// 
@@ -510,16 +513,11 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ToolStripMenuItem tsmiTools;
 		private System.Windows.Forms.SplitContainer scLists;
 		private PlayListView playListView1;
-		private System.Windows.Forms.ToolStripMenuItem tsmiGlobalSettingsEditor;
-		private System.Windows.Forms.ToolStripMenuItem tsmiNgContentsEditor;
-		private System.Windows.Forms.ToolStripMenuItem tsmiUserCommandsEditor;
 		private System.Windows.Forms.ToolStripMenuItem tsmiAbortCrawling;
-		private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
 		private System.Windows.Forms.ToolStripMenuItem tsmiRemoveCaches;
 		private System.Windows.Forms.ToolStripMenuItem tsmiRemoveCachesUnreachable;
 		private System.Windows.Forms.ToolStripMenuItem tsmiSettings;
 		private System.Windows.Forms.ToolStripMenuItem tsmiFocusOnResultAfterTabChanged;
-		private System.Windows.Forms.ToolStripMenuItem tsmiIgnoreCrawlErrors;
 		private System.Windows.Forms.ToolStripMenuItem tsmiRemoveCachesAll;
 		private System.Windows.Forms.ToolStripMenuItem tsmiClearCrawlResults;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
@@ -533,6 +531,12 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ToolStripMenuItem tsmiRemoveDeadlineEntriesUnreacheable;
 		private System.Windows.Forms.ToolStripMenuItem tsmiRemoveDeadlineEntriesAll;
 		private InputBoxDialog inputBoxDialog1;
+		private System.Windows.Forms.Timer timerViewDetail;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
+		private System.Windows.Forms.ToolStripMenuItem tsmiGlobalSettingsEditor;
+		private System.Windows.Forms.ToolStripMenuItem tsmiUserCommandsEditor;
+		private System.Windows.Forms.ToolStripMenuItem tsmiNgContentsEditor;
+		private System.Windows.Forms.Timer timerCrawlProgress;
 
 
 	}

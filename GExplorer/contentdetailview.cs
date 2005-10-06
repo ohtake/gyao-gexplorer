@@ -31,7 +31,7 @@ namespace Yusen.GExplorer {
 				this.txtEpisode.Text = value.EpisodeNumber;
 				this.txtSubtitle.Text = value.SubTitle;
 				this.txtDuration.Text = value.Duration;
-				this.txtDeadline.Text = value.DeadLine;
+				this.txtDeadline.Text = value.Deadline;
 				this.txtDescription.Text = value.LongDescription.Replace("\n", "\r\n");
 				this.propgDetail.SelectedObject = value;
 				this.LoadImageAsync();

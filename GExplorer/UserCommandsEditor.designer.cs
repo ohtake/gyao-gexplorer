@@ -74,7 +74,7 @@ namespace Yusen.GExplorer {
 			this.btnInsert.Name = "btnInsert";
 			this.btnInsert.Size = new System.Drawing.Size(90, 23);
 			this.btnInsert.TabIndex = 221;
-			this.btnInsert.Text = "挿入 (&I)";
+			this.btnInsert.Text = "挿入(&I)";
 			this.btnInsert.Click += new System.EventHandler(this.btnInsert_Click);
 			// 
 			// btnModify
@@ -83,7 +83,7 @@ namespace Yusen.GExplorer {
 			this.btnModify.Name = "btnModify";
 			this.btnModify.Size = new System.Drawing.Size(90, 23);
 			this.btnModify.TabIndex = 222;
-			this.btnModify.Text = "変更 (&M)";
+			this.btnModify.Text = "変更(&M)";
 			this.btnModify.Click += new System.EventHandler(this.btnModify_Click);
 			// 
 			// tableLayoutPanel1
@@ -155,7 +155,7 @@ namespace Yusen.GExplorer {
 			this.btnBrowse.Name = "btnBrowse";
 			this.btnBrowse.Size = new System.Drawing.Size(69, 23);
 			this.btnBrowse.TabIndex = 215;
-			this.btnBrowse.Text = "参照 (&B)...";
+			this.btnBrowse.Text = "参照(&B)...";
 			this.btnBrowse.Click += new System.EventHandler(this.btnBrowse_Click);
 			// 
 			// lblArg
@@ -183,7 +183,7 @@ namespace Yusen.GExplorer {
 			this.btnArg.Name = "btnArg";
 			this.btnArg.Size = new System.Drawing.Size(89, 23);
 			this.btnArg.TabIndex = 218;
-			this.btnArg.Text = "簡易入力 (&U)";
+			this.btnArg.Text = "簡易入力(&U)";
 			this.btnArg.Click += new System.EventHandler(this.btnArg_Click);
 			// 
 			// cmsArgs
@@ -201,7 +201,7 @@ namespace Yusen.GExplorer {
 			this.btnUp.Name = "btnUp";
 			this.btnUp.Size = new System.Drawing.Size(75, 23);
 			this.btnUp.TabIndex = 121;
-			this.btnUp.Text = "上へ (&U)";
+			this.btnUp.Text = "上へ(&U)";
 			this.btnUp.Click += new System.EventHandler(this.btnUp_Click);
 			// 
 			// btnDown
@@ -210,7 +210,7 @@ namespace Yusen.GExplorer {
 			this.btnDown.Name = "btnDown";
 			this.btnDown.Size = new System.Drawing.Size(75, 23);
 			this.btnDown.TabIndex = 122;
-			this.btnDown.Text = "下へ (&D)";
+			this.btnDown.Text = "下へ(&D)";
 			this.btnDown.Click += new System.EventHandler(this.btnDown_Click);
 			// 
 			// btnDelete
@@ -219,7 +219,7 @@ namespace Yusen.GExplorer {
 			this.btnDelete.Name = "btnDelete";
 			this.btnDelete.Size = new System.Drawing.Size(75, 23);
 			this.btnDelete.TabIndex = 123;
-			this.btnDelete.Text = "削除 (&R)";
+			this.btnDelete.Text = "削除(&R)";
 			this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
 			// 
 			// panel1
@@ -240,7 +240,7 @@ namespace Yusen.GExplorer {
 			this.btnSort.Name = "btnSort";
 			this.btnSort.Size = new System.Drawing.Size(75, 23);
 			this.btnSort.TabIndex = 124;
-			this.btnSort.Text = "ソート (&S)";
+			this.btnSort.Text = "ソート(&S)";
 			this.btnSort.Click += new System.EventHandler(this.btnSort_Click);
 			// 
 			// grpList

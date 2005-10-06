@@ -5,7 +5,7 @@ using System.ComponentModel;
 
 namespace Yusen.GCrawler {
 	public class Crawler {
-		private class CrawlerHelper {
+		private class CrawlerHelper{
 			private static Uri ConvertUriWithoutFragment(Uri uri) {
 				if (uri.Fragment.Length > 0) {
 					return new Uri(uri.GetLeftPart(UriPartial.Query));
@@ -15,12 +15,11 @@ namespace Yusen.GCrawler {
 			}
 			
 			public event EventHandler<CrawlProgressEventArgs> CrawlProgress;
-			public event EventHandler<IgnorableErrorOccuredEventArgs> IgnorableErroeOcured;
 			
 			private GGenre genre;
 			private IHtmlParser parser;
 			private IContentCacheController cacheController;
-			private IDeadLineDictionary deadLineDic;
+			private IDeadlineTable deadLineDic;
 			private Stack<Uri> waitingPages = new Stack<Uri>();
 			private Queue<string> waitingPackages = new Queue<string>();
 			private Queue<string> waitingContents = new Queue<string>();
@@ -29,9 +28,9 @@ namespace Yusen.GCrawler {
 			private Dictionary<string, GContent> visitedContents = new Dictionary<string, GContent>();
 			private Dictionary<string, bool> contentsCached = new Dictionary<string, bool>();
 			private Dictionary<string, string> contPackRelations = new Dictionary<string, string>();
-			private List<IgnorableErrorOccuredEventArgs> ignorableErrors = new List<IgnorableErrorOccuredEventArgs>();
+			private List<Exception> ignoredExceptions = new List<Exception>();
 
-			public CrawlerHelper(GGenre genre, IHtmlParser parser, IContentCacheController cacheController, IDeadLineDictionary deadLineDic) {
+			public CrawlerHelper(GGenre genre, IHtmlParser parser, IContentCacheController cacheController, IDeadlineTable deadLineDic) {
 				this.genre = genre;
 				this.parser = parser;
 				this.cacheController = cacheController;
@@ -43,10 +42,10 @@ namespace Yusen.GCrawler {
 			}
 			
 			public CrawlResult StartCrawling() {
-				if (this.TryCrawlPages() && this.TryFetchPackages() && this.TryFetchContents()){
-					return this.CreateCrawlResult(this.BuildGpcTree());
-				}
-				return new CrawlResult(this.genre);
+				this.CrawlPages();
+				this.FetchPackages();
+				this.FetchContents();
+				return this.CreateCrawlResult(this.BuildGpcTree());
 			}
 			private void OnCrawlProgress(string message) {
 				if (null != this.CrawlProgress) {
@@ -56,32 +55,25 @@ namespace Yusen.GCrawler {
 						this.waitingPages.Count + this.waitingPackages.Count + this.waitingContents.Count));
 				}
 			}
-			private bool OnIgnorableErrorOccured(string message) {
-				IgnorableErrorOccuredEventArgs args = new IgnorableErrorOccuredEventArgs(message);
-				this.ignorableErrors.Add(args);
-				if (null != this.IgnorableErroeOcured) {
-					this.IgnorableErroeOcured(this, args);
-					return args.Ignore;
-				}
-				return true;
+			private void OnIgnorableExceptionOccured(Exception e) {
+				this.ignoredExceptions.Add(e);
 			}
 			/// <summary>
 			/// パッケージとコンテンツ以外のページをクロールし，
 			/// パッケージとコンテンツのIDを取得する．
 			/// </summary>
-			private bool TryCrawlPages() {
+			private void CrawlPages() {
 				while (this.waitingPages.Count > 0) {
 					this.OnCrawlProgress("一般ページを取得中 " + this.waitingPages.Peek().PathAndQuery);
 					
 					Uri uri = this.waitingPages.Pop();
 					this.visitedPages.Add(uri);
 					List<Uri> links, images;
-					if (!this.parser.TryExtractLinks(uri, out links, out images)) {
-						if (this.OnIgnorableErrorOccured("一般ページの取得失敗．" + uri.AbsoluteUri)) {
-							continue;
-						} else {
-							return false;
-						}
+					try {
+						this.parser.ExtractLinks(uri, out links, out images);
+					} catch(Exception e) {
+						this.OnIgnorableExceptionOccured(new Exception("一般ページの取得失敗． <" + uri.AbsoluteUri + ">", e));
+						continue;
 					}
 					
 					links = links.ConvertAll<Uri>(CrawlerHelper.ConvertUriWithoutFragment);
@@ -116,23 +108,21 @@ namespace Yusen.GCrawler {
 						if(! this.waitingContents.Contains(contentId)) this.waitingContents.Enqueue(contentId);
 					}
 				}
-				return true;
 			}
 			/// <summary>
 			/// パッケージページを読み込んでコンテンツのIDを取得する．
 			/// </summary>
-			private bool TryFetchPackages() {
+			private void FetchPackages() {
 				while(this.waitingPackages.Count > 0){
 					string packId = this.waitingPackages.Dequeue();
 					this.OnCrawlProgress("パッケージページを取得中 " + packId);
 					GPackage package;
 					List<string> childContIds;
-					if (!GPackage.TryDownload(packId, this.deadLineDic, out package, out childContIds)) {
-						if (this.OnIgnorableErrorOccured("パッケージページの取得ミスもしくは解析ミス．" + packId)) {
-							continue;
-						} else {
-							return false;
-						}
+					try{
+						package = GPackage.DoDownload(packId, this.deadLineDic, out childContIds);
+					}catch(Exception e){
+						this.OnIgnorableExceptionOccured(e);
+						continue;
 					}
 					
 					this.visitedPackages.Add(packId, package);
@@ -143,13 +133,12 @@ namespace Yusen.GCrawler {
 						this.contPackRelations.Add(contId, packId);
 					}
 				}
-				return true;
 			}
 			/// <summary>
 			/// コンテンツページを読み込んで情報を取得する．
 			/// もしキャッシュがあればキャッシュを利用する．
 			/// </summary>
-			private bool TryFetchContents() {
+			private void FetchContents() {
 				while(this.waitingContents.Count > 0){
 					string contId = this.waitingContents.Dequeue();
 					ContentCache cache;
@@ -163,24 +152,22 @@ namespace Yusen.GCrawler {
 						continue;
 					}
 					this.OnCrawlProgress("詳細ページの取得中 " + contId);
-					if (GContent.TryDownload(contId, out content)) {
+					try {
+						content = GContent.DoDownload(contId);
 						//ダウンロード成功
 						this.visitedContents.Add(contId, content);
 						this.contentsCached.Add(contId, false);
 						this.cacheController.AddToCache(content);
 						continue;
-					}
-					//ダウンロード失敗
-					if (this.OnIgnorableErrorOccured("詳細ページの取得ミスまたは解析ミス．" + contId)) {
-						content = GContent.CreateDummyContent(contId, this.genre);
+					} catch (ContentDownloadException e) {
+						//ダウンロード失敗
+						this.OnIgnorableExceptionOccured(e);
+						content = GContent.CreateDummyContent(contId, this.genre, e.Message);
 						this.visitedContents.Add(contId, content);
 						this.contentsCached.Add(contId, false);
 						continue;
-					} else {
-						return false;
 					}
 				}
-				return true;
 			}
 			/// <summary>
 			/// クロール結果からジャンル，パッケージ，コンテンツの木構造を作る．
@@ -223,7 +210,7 @@ namespace Yusen.GCrawler {
 						cDown++;
 					}
 				}
-				return new CrawlResult(this.genre, packages, this.visitedPages.AsReadOnly(), this.ignorableErrors.AsReadOnly(), cDown, cCache);
+				return new CrawlResult(this.genre, packages, this.visitedPages.AsReadOnly(), this.ignoredExceptions.AsReadOnly(), cDown, cCache);
 			}
 			private bool IsInRestriction(Uri uri) {
 				return uri.AbsoluteUri.StartsWith(this.genre.RootUri.AbsoluteUri);
@@ -234,12 +221,11 @@ namespace Yusen.GCrawler {
 		}
 		
 		public event EventHandler<CrawlProgressEventArgs> CrawlProgress;
-		public event EventHandler<IgnorableErrorOccuredEventArgs> IgnorableErrorOccured;
 		private readonly IHtmlParser parser;
 		private readonly IContentCacheController cacheController;
-		private readonly IDeadLineDictionary deadLineDic;
+		private readonly IDeadlineTable deadLineDic;
 
-		public Crawler(IHtmlParser parser, IContentCacheController cacheController, IDeadLineDictionary deadLineDic) {
+		public Crawler(IHtmlParser parser, IContentCacheController cacheController, IDeadlineTable deadLineDic) {
 			this.parser = parser;
 			this.cacheController = cacheController;
 			this.deadLineDic = deadLineDic;
@@ -254,11 +240,6 @@ namespace Yusen.GCrawler {
 			helper.CrawlProgress += delegate(object sender, CrawlProgressEventArgs e) {
 				if (null != this.CrawlProgress) {
 					this.CrawlProgress(sender, e);
-				}
-			};
-			helper.IgnorableErroeOcured += delegate(object sender, IgnorableErrorOccuredEventArgs e) {
-				if (null != this.IgnorableErrorOccured) {
-					this.IgnorableErrorOccured(sender, e);
 				}
 			};
 			return helper.StartCrawling();
@@ -285,21 +266,6 @@ namespace Yusen.GCrawler {
 			get { return this.waiting; }
 		}
 	}
-	[Serializable]
-	public class IgnorableErrorOccuredEventArgs : EventArgs {
-		private bool ignore = true;
-		private string message;
-		internal IgnorableErrorOccuredEventArgs(string message){
-			this.message = message;
-		}
-		public string Message {
-			get { return this.message; }
-		}
-		public bool Ignore {
-			get { return this.ignore; }
-			set { this.ignore = value; }
-		}
-	}
 	
 	[Serializable]
 	public class CrawlResult {
@@ -313,12 +279,12 @@ namespace Yusen.GCrawler {
 			List<Uri> pages = new List<Uri>();
 			pages.AddRange(x.VisitedPages);
 			pages.AddRange(y.VisitedPages);
-			List<IgnorableErrorOccuredEventArgs> errors = new List<IgnorableErrorOccuredEventArgs>();
-			errors.AddRange(x.IgnorableErrors);
-			errors.AddRange(y.IgnorableErrors);
+			List<Exception> ignoredExceptinos = new List<Exception>();
+			ignoredExceptinos.AddRange(x.IgnoredExceptions);
+			ignoredExceptinos.AddRange(y.IgnoredExceptions);
 
 			return new CrawlResult(
-				genre, packages.AsReadOnly(), pages.AsReadOnly(), errors.AsReadOnly(),
+				genre, packages.AsReadOnly(), pages.AsReadOnly(), ignoredExceptinos.AsReadOnly(),
 				x.ContentsDownloaded + y.ContentsDownloaded, x.ContentsCached + y.ContentsCached);
 		}
 		public static CrawlResult Merge(GGenre genre, IEnumerable<CrawlResult> results) {
@@ -326,7 +292,7 @@ namespace Yusen.GCrawler {
 				genre,
 				new ReadOnlyCollection<GPackage>(new List<GPackage>()),
 				new ReadOnlyCollection<Uri>(new List<Uri>()),
-				new ReadOnlyCollection<IgnorableErrorOccuredEventArgs>(new List<IgnorableErrorOccuredEventArgs>()),
+				new ReadOnlyCollection<Exception>(new List<Exception>()),
 				0, 0);
 			foreach (CrawlResult result in results) {
 				seed = CrawlResult.Merge(genre, seed, result);
@@ -338,7 +304,7 @@ namespace Yusen.GCrawler {
 		private readonly GGenre genre;
 		private readonly ReadOnlyCollection<GPackage> packages;
 		private readonly ReadOnlyCollection<Uri> visitedPages;
-		private readonly ReadOnlyCollection<IgnorableErrorOccuredEventArgs> ignorableErrors;
+		private readonly ReadOnlyCollection<Exception> ignoredExceptions;
 		private readonly int contentsDownloaded;
 		private readonly int contentsCached;
 		private readonly DateTime time;
@@ -354,28 +320,15 @@ namespace Yusen.GCrawler {
 		internal CrawlResult(
 				GGenre genre,
 				ReadOnlyCollection<GPackage> packages, ReadOnlyCollection<Uri> vPages,
-				ReadOnlyCollection<IgnorableErrorOccuredEventArgs> ignorableErrors,
+				ReadOnlyCollection<Exception> ignoredExceptions,
 				int cDown, int cCache) {
 			this.success = true;
 			this.genre = genre;
 			this.packages = packages;
 			this.visitedPages = vPages;
-			this.ignorableErrors = ignorableErrors;
+			this.ignoredExceptions = ignoredExceptions;
 			this.contentsDownloaded = cDown;
 			this.contentsCached = cCache;
-			this.time = DateTime.Now;
-		}
-		/// <summary>
-		/// クロール失敗時のクロール結果
-		/// </summary>
-		/// <param name="genre"></param>
-		internal CrawlResult(GGenre genre) {
-			this.success = false;
-			this.genre = genre;
-			this.packages = new ReadOnlyCollection<GPackage>(new List<GPackage>());
-			this.visitedPages = new ReadOnlyCollection<Uri>(new List<Uri>());
-			this.contentsDownloaded = 0;
-			this.contentsCached = 0;
 			this.time = DateTime.Now;
 		}
 		
@@ -388,8 +341,8 @@ namespace Yusen.GCrawler {
 		public ReadOnlyCollection<Uri> VisitedPages {
 			get {return this.visitedPages;}
 		}
-		public ReadOnlyCollection<IgnorableErrorOccuredEventArgs> IgnorableErrors {
-			get { return this.ignorableErrors; }
+		public ReadOnlyCollection<Exception> IgnoredExceptions {
+			get { return this.ignoredExceptions; }
 		}
 		public int ContentsDownloaded {
 			get { return this.contentsDownloaded; }

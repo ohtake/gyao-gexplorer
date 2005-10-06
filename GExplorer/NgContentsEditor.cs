@@ -18,29 +18,6 @@ namespace Yusen.GExplorer {
 		
 		private NgContentsEditor() {
 			InitializeComponent();
-			this.Text = "NGコンテンツエディタ";
-			
-			foreach(PropertyInfo pi in typeof(ContentAdapter).GetProperties()) {
-				object[] attribs = pi.GetCustomAttributes(typeof(BrowsableAttribute), false);
-				if(attribs.Length > 0 && !(attribs[0] as BrowsableAttribute).Browsable) {
-					continue;
-				}
-				this.comboProperty.Items.Add(pi.Name);
-			}
-			foreach(TwoStringsPredicateMethod m in Enum.GetValues(typeof(TwoStringsPredicateMethod))) {
-				this.comboMethod.Items.Add(m);
-			}
-
-			NgContentsManager.Instance.NgContentsChanged +=
-				new EventHandler(this.NgContentsManager_NgContentsChanged);
-			NgContentsManager.Instance.LastAboneChanged +=
-				new EventHandler(this.NgContentsManager_LastAboneChanged);
-			this.FormClosing += delegate {
-				NgContentsManager.Instance.NgContentsChanged -=
-					new EventHandler(this.NgContentsManager_NgContentsChanged);
-				NgContentsManager.Instance.LastAboneChanged -=
-					new EventHandler(this.NgContentsManager_LastAboneChanged);
-			};
 		}
 		public void FillSettings(NgContentsEditorSettings settings) {
 			base.FillSettings(settings);
@@ -69,6 +46,29 @@ namespace Yusen.GExplorer {
 		
 		private void NgContentsEditor_Load(object sender, EventArgs e) {
 			Utility.LoadSettingsAndEnableSaveOnClosed(this);
+
+			foreach (PropertyInfo pi in typeof(ContentAdapter).GetProperties()) {
+				object[] attribs = pi.GetCustomAttributes(typeof(BrowsableAttribute), false);
+				if (attribs.Length > 0 && !(attribs[0] as BrowsableAttribute).Browsable) {
+					continue;
+				}
+				this.comboProperty.Items.Add(pi.Name);
+			}
+			foreach (TwoStringsPredicateMethod m in Enum.GetValues(typeof(TwoStringsPredicateMethod))) {
+				this.comboMethod.Items.Add(m);
+			}
+
+			NgContentsManager.Instance.NgContentsChanged +=
+				new EventHandler(this.NgContentsManager_NgContentsChanged);
+			NgContentsManager.Instance.LastAboneChanged +=
+				new EventHandler(this.NgContentsManager_LastAboneChanged);
+			this.FormClosing += delegate {
+				NgContentsManager.Instance.NgContentsChanged -=
+					new EventHandler(this.NgContentsManager_NgContentsChanged);
+				NgContentsManager.Instance.LastAboneChanged -=
+					new EventHandler(this.NgContentsManager_LastAboneChanged);
+			};
+			
 			this.UpdateView();
 		}
 

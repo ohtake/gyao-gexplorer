@@ -1,10 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Text;
-using Yusen.GCrawler;
 using System.Xml.Serialization;
+using Yusen.GCrawler;
 using Clipboard=System.Windows.Forms.Clipboard;
 
 namespace Yusen.GExplorer {
@@ -47,10 +46,21 @@ namespace Yusen.GExplorer {
 				Clipboard.SetText(sb.ToString());
 			}
 		}
+		internal static void TotalTimeOf(IEnumerable<ContentAdapter> conts, out TimeSpan total, out bool isExact) {
+			total = TimeSpan.Zero;
+			isExact = true;
+			foreach (ContentAdapter cont in conts) {
+				if (cont.GTimeSpan.CanParse) {
+					total += cont.GTimeSpan.TimeSpan;
+				} else {
+					isExact = false;
+				}
+			}
+		}
 
 		private GContent innerCont;
 		private GTimeSpan gTimeSpan;
-		private string deadLine = string.Empty;
+		private string deadline = string.Empty;
 		private string comment = string.Empty;
 
 		public ContentAdapter() {
@@ -73,9 +83,9 @@ namespace Yusen.GExplorer {
 		[ReadOnly(true)]
 		[Category("専ブラが付加した情報")]
 		[Description("配信期限．かなり適当なので必ずしも信用できるわけじゃない．")]
-		public string DeadLine {
-			get { return this.deadLine; }
-			set { this.deadLine = value; }
+		public string Deadline {
+			get { return this.deadline; }
+			set { this.deadline = value; }
 		}
 		[Category("ユーザが入力する情報")]
 		[Description("コメント．ユーザが自由に入力できる．ただしプレイリストに入っているものに対して入力しないとほとんど意味ない．")]
@@ -117,7 +127,7 @@ namespace Yusen.GExplorer {
 		}
 		[XmlIgnore]
 		[Category("付随情報")]
-		[Description("時間．")]
+		[Description("番組時間 (CM時間を除く)．")]
 		public string Duration {
 			get { return this.innerCont.Duration; }
 		}
@@ -215,10 +225,10 @@ namespace Yusen.GExplorer {
 			return GContent.CreateMediaFileUri(this.ContentId, GlobalSettings.Instance.UserNo, GlobalSettings.Instance.BitRate, chapterNo);
 		}
 		public bool TryResetDeadline() {
-			if (GlobalVariables.DeadLineDictionaryReadonly.TryGetDeadLine(this.ContentId, out this.deadLine)) {
+			if (Cache.Instance.DeadlineTableReadOnly.TryGetDeadline(this.ContentId, out this.deadline)) {
 				return true;
 			} else {
-				this.deadLine = string.Empty;
+				this.deadline = string.Empty;
 				return false;
 			}
 		}
@@ -237,20 +247,6 @@ namespace Yusen.GExplorer {
 		}
 		public override string ToString() {
 			return "<" + this.ContentId + "> " + this.DisplayName;
-		}
-	}
-
-	class SelectedContentsChangedEventArgs : EventArgs {
-		private ReadOnlyCollection<ContentAdapter> contents;
-
-		public SelectedContentsChangedEventArgs() {
-			this.contents = new ReadOnlyCollection<ContentAdapter>(new List<ContentAdapter>());
-		}
-		public SelectedContentsChangedEventArgs(IEnumerable<ContentAdapter> contents) {
-			this.contents = new ReadOnlyCollection<ContentAdapter>(new List<ContentAdapter>(contents));
-		}
-		public ReadOnlyCollection<ContentAdapter> Contents {
-			get { return this.contents; }
 		}
 	}
 

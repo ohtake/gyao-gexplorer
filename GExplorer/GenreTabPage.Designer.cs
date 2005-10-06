@@ -25,14 +25,14 @@ namespace Yusen.GExplorer {
 		private void InitializeComponent() {
 			this.components = new System.ComponentModel.Container();
 			this.cmsGenre = new System.Windows.Forms.ContextMenuStrip(this.components);
+			this.tsmiReload = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiBrowseTop = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiBrowseTimetable = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiCopyGenreName = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiCopyUri = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiCopyGenreNameAndUri = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiReload = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this.cmsGenre.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -52,45 +52,45 @@ namespace Yusen.GExplorer {
 			this.cmsGenre.Location = new System.Drawing.Point(9, 50);
 			this.cmsGenre.Name = "cmsGenre";
 			this.cmsGenre.RightToLeft = System.Windows.Forms.RightToLeft.No;
-			this.cmsGenre.Size = new System.Drawing.Size(250, 148);
+			this.cmsGenre.Size = new System.Drawing.Size(246, 148);
 			// 
-			// tsmiBrowseTop
+			// tsmiReload
 			// 
-			this.tsmiBrowseTop.Name = "tsmiBrowseTop";
-			this.tsmiBrowseTop.Text = "ジャンルトップをウェブブラウザで開く (&H)";
-			// 
-			// tsmiBrowseTimetable
-			// 
-			this.tsmiBrowseTimetable.Name = "tsmiBrowseTimetable";
-			this.tsmiBrowseTimetable.Text = "番組表をウェブブラウザで開く (&T)";
+			this.tsmiReload.Name = "tsmiReload";
+			this.tsmiReload.Text = "再読み込み(&R)";
 			// 
 			// toolStripSeparator1
 			// 
 			this.toolStripSeparator1.Name = "toolStripSeparator1";
 			// 
-			// tsmiCopyGenreName
+			// tsmiBrowseTop
 			// 
-			this.tsmiCopyGenreName.Name = "tsmiCopyGenreName";
-			this.tsmiCopyGenreName.Text = "ジャンル名をコピー (&N)";
+			this.tsmiBrowseTop.Name = "tsmiBrowseTop";
+			this.tsmiBrowseTop.Text = "ジャンルトップをウェブブラウザで開く(&H)";
 			// 
-			// tsmiCopyUri
+			// tsmiBrowseTimetable
 			// 
-			this.tsmiCopyUri.Name = "tsmiCopyUri";
-			this.tsmiCopyUri.Text = "URIをコピー (&U)";
-			// 
-			// tsmiCopyGenreNameAndUri
-			// 
-			this.tsmiCopyGenreNameAndUri.Name = "tsmiCopyGenreNameAndUri";
-			this.tsmiCopyGenreNameAndUri.Text = "ジャンル名とURIをコピー (&B)";
-			// 
-			// tsmiReload
-			// 
-			this.tsmiReload.Name = "tsmiReload";
-			this.tsmiReload.Text = "再読み込み (&R)";
+			this.tsmiBrowseTimetable.Name = "tsmiBrowseTimetable";
+			this.tsmiBrowseTimetable.Text = "番組表をウェブブラウザで開く(&T)";
 			// 
 			// toolStripSeparator2
 			// 
 			this.toolStripSeparator2.Name = "toolStripSeparator2";
+			// 
+			// tsmiCopyGenreName
+			// 
+			this.tsmiCopyGenreName.Name = "tsmiCopyGenreName";
+			this.tsmiCopyGenreName.Text = "ジャンル名をコピー(&N)";
+			// 
+			// tsmiCopyUri
+			// 
+			this.tsmiCopyUri.Name = "tsmiCopyUri";
+			this.tsmiCopyUri.Text = "URIをコピー(&U)";
+			// 
+			// tsmiCopyGenreNameAndUri
+			// 
+			this.tsmiCopyGenreNameAndUri.Name = "tsmiCopyGenreNameAndUri";
+			this.tsmiCopyGenreNameAndUri.Text = "ジャンル名とURIをコピー(&B)";
 			// 
 			// GenreTabPage
 			// 

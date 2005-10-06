@@ -28,6 +28,7 @@ namespace Yusen.GExplorer {
 			this.tsmiContentOpenDetail = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiContentAddToPlayList = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiContentAddToPlayListWithComment = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiContentPlayWithoutAdding = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiContentPlayWmp = new System.Windows.Forms.ToolStripMenuItem();
@@ -40,7 +41,6 @@ namespace Yusen.GExplorer {
 			this.tsmiPackageOpen = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiPackageCancel = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiContentAddToPlayListWithComment = new System.Windows.Forms.ToolStripMenuItem();
 			this.inputBoxDialog1 = new Yusen.GExplorer.InputBoxDialog();
 			this.cmsContent.SuspendLayout();
 			this.cmsPackage.SuspendLayout();
@@ -66,12 +66,12 @@ namespace Yusen.GExplorer {
 			this.cmsContent.Location = new System.Drawing.Point(9, 50);
 			this.cmsContent.Name = "cmsContent";
 			this.cmsContent.RightToLeft = System.Windows.Forms.RightToLeft.No;
-			this.cmsContent.Size = new System.Drawing.Size(256, 204);
+			this.cmsContent.Size = new System.Drawing.Size(248, 204);
 			// 
 			// tsmiContentOpenDetail
 			// 
 			this.tsmiContentOpenDetail.Name = "tsmiContentOpenDetail";
-			this.tsmiContentOpenDetail.Text = "詳細ページを開く (&D)";
+			this.tsmiContentOpenDetail.Text = "詳細ページを開く(&D)";
 			// 
 			// toolStripSeparator1
 			// 
@@ -80,12 +80,17 @@ namespace Yusen.GExplorer {
 			// tsmiContentAddToPlayList
 			// 
 			this.tsmiContentAddToPlayList.Name = "tsmiContentAddToPlayList";
-			this.tsmiContentAddToPlayList.Text = "プレイリストに追加 (&A)";
+			this.tsmiContentAddToPlayList.Text = "プレイリストに追加(&A)";
+			// 
+			// tsmiContentAddToPlayListWithComment
+			// 
+			this.tsmiContentAddToPlayListWithComment.Name = "tsmiContentAddToPlayListWithComment";
+			this.tsmiContentAddToPlayListWithComment.Text = "コメントを付けてプレイリストに追加(&L)...";
 			// 
 			// tsmiContentPlayWithoutAdding
 			// 
 			this.tsmiContentPlayWithoutAdding.Name = "tsmiContentPlayWithoutAdding";
-			this.tsmiContentPlayWithoutAdding.Text = "プレイリストに追加せずに再生 (&P)";
+			this.tsmiContentPlayWithoutAdding.Text = "プレイリストに追加せずに再生(&P)";
 			// 
 			// toolStripSeparator2
 			// 
@@ -94,12 +99,12 @@ namespace Yusen.GExplorer {
 			// tsmiContentPlayWmp
 			// 
 			this.tsmiContentPlayWmp.Name = "tsmiContentPlayWmp";
-			this.tsmiContentPlayWmp.Text = "WMPで再生 (&W)";
+			this.tsmiContentPlayWmp.Text = "WMPで再生(&W)";
 			// 
 			// tsmiContentPlayBrowser
 			// 
 			this.tsmiContentPlayBrowser.Name = "tsmiContentPlayBrowser";
-			this.tsmiContentPlayBrowser.Text = "ブラウザで再生 (&B)";
+			this.tsmiContentPlayBrowser.Text = "ブラウザで再生(&B)";
 			// 
 			// toolStripSeparator8
 			// 
@@ -108,7 +113,7 @@ namespace Yusen.GExplorer {
 			// tsmiContentCommands
 			// 
 			this.tsmiContentCommands.Name = "tsmiContentCommands";
-			this.tsmiContentCommands.Text = "外部コマンド (&C)";
+			this.tsmiContentCommands.Text = "外部コマンド(&C)";
 			// 
 			// toolStripSeparator6
 			// 
@@ -117,7 +122,7 @@ namespace Yusen.GExplorer {
 			// tsmiContentCancel
 			// 
 			this.tsmiContentCancel.Name = "tsmiContentCancel";
-			this.tsmiContentCancel.Text = "変なメニューが出てきて邪魔だよ (&A) ...";
+			this.tsmiContentCancel.Text = "変なメニューが出てきて邪魔だよ(&A)...";
 			// 
 			// cmsPackage
 			// 
@@ -130,12 +135,12 @@ namespace Yusen.GExplorer {
 			this.cmsPackage.Location = new System.Drawing.Point(9, 50);
 			this.cmsPackage.Name = "cmsPackage";
 			this.cmsPackage.RightToLeft = System.Windows.Forms.RightToLeft.No;
-			this.cmsPackage.Size = new System.Drawing.Size(249, 54);
+			this.cmsPackage.Size = new System.Drawing.Size(241, 54);
 			// 
 			// tsmiPackageOpen
 			// 
 			this.tsmiPackageOpen.Name = "tsmiPackageOpen";
-			this.tsmiPackageOpen.Text = "パッケージページを開く (&O)";
+			this.tsmiPackageOpen.Text = "パッケージページを開く(&O)";
 			// 
 			// toolStripSeparator5
 			// 
@@ -144,12 +149,7 @@ namespace Yusen.GExplorer {
 			// tsmiPackageCancel
 			// 
 			this.tsmiPackageCancel.Name = "tsmiPackageCancel";
-			this.tsmiPackageCancel.Text = "変なメニューが出てきて邪魔だよ (&A) ...";
-			// 
-			// tsmiContentAddToPlayListWithComment
-			// 
-			this.tsmiContentAddToPlayListWithComment.Name = "tsmiContentAddToPlayListWithComment";
-			this.tsmiContentAddToPlayListWithComment.Text = "コメントを付けてプレイリストに追加 (&L) ...";
+			this.tsmiPackageCancel.Text = "変なメニューが出てきて邪魔だよ(&A)...";
 			// 
 			// inputBoxDialog1
 			// 

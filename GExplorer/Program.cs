@@ -9,10 +9,6 @@ using System.Media;
 
 namespace Yusen.GExplorer {
 	static class Program {
-		static void PrintTime() {
-			DateTime now = DateTime.Now;
-			Console.WriteLine(now.Second.ToString() + "." + now.Millisecond.ToString("000"));
-		}
 		/// <summary>The main entry point for the application.</summary>
 		[STAThread]
 		static void Main() {
@@ -51,10 +47,11 @@ namespace Yusen.GExplorer {
 				if (string.IsNullOrEmpty(iconFileName)) {
 					iconFileName = Path.GetFileNameWithoutExtension(Environment.GetCommandLineArgs()[0]) + ".ico";
 				}
-				GlobalVariables.ApplicationIcon = new Icon(iconFileName);
+				FormBase.CustomIcon = new Icon(iconFileName);
 			} catch {
 			}
 			
+			Cache.Initialize();
 			UserCommandsManager.Instance.DeserializeItems();
 			NgContentsManager.Instance.DeserializeItems();
 			PlayList.Instance.DeserializeItems();
@@ -64,6 +61,7 @@ namespace Yusen.GExplorer {
 			PlayList.Instance.SerializeItems();
 			NgContentsManager.Instance.SerializeItems();
 			UserCommandsManager.Instance.SerializeItems();
+			Cache.Serialize();
 			
 			GlobalSettings.Serialize();
 		}
@@ -116,6 +114,7 @@ namespace Yusen.GExplorer {
 		public static void DisplayException(Exception e) {
 			SystemSounds.Exclamation.Play();
 			using (ExceptionDialog ed = new ExceptionDialog()) {
+				ed.AllowAbort = true;
 				ed.Exception = e;
 				ed.Title = "キャッチされなかった例外";
 				switch (ed.ShowDialog()) {

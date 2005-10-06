@@ -43,7 +43,7 @@ namespace Yusen.GCrawler {
 		public string GenreId {
 			get { return "gen" + this.keyNo.ToString("0000000"); }
 		}
-		public string DirectryName {
+		public string DirectoryName {
 			get { return this.dir; }
 		}
 		public virtual string ImageDirName {
@@ -63,7 +63,7 @@ namespace Yusen.GCrawler {
 		}
 		public virtual Uri RootUri {
 			get {
-				return new Uri("http://www.gyao.jp/" + this.DirectryName + "/");
+				return new Uri("http://www.gyao.jp/" + this.DirectoryName + "/");
 			}
 		}
 		public Uri TimetableUri {
@@ -86,56 +86,13 @@ namespace Yusen.GCrawler {
 		public override string ToString() {
 			return "<" + this.GenreId + "> " + this.GenreName;
 		}
-		#region 2005-05/2005-07
-		[Serializable]
-		[Obsolete]
-		private class GGenre200505 : GGenre {
-			public GGenre200505(int keyNo, string dir, string name, Color color)
-				: base(keyNo, dir, name, color) { }
-			
-			public override Uri TopPageUri {
-				get {
-					return new Uri("http://www.gyao.jp/sityou/catetop/genre_id/" + base.GenreId + "/");
-				}
-			}
-		}
-		[Serializable]
-		[Obsolete]
-		private sealed class GGenre200505Drama : GGenre200505 {
-			public GGenre200505Drama(int keyNo, string dir, string name, Color color)
-				: base(keyNo, dir, name, color) { }
-			public override string ImageDirName {
-				get { return "dorama"; }
-			}
-		}
-		[Serializable]
-		[Obsolete]
-		private class GGenre200507 : GGenre{
-			public GGenre200507(int keyNo, string dir, string name, Color color)
-				: base(keyNo, dir, name, color) { }
-			public override Uri TopPageUri {
-				get {
-					return new Uri("http://www.gyao.jp/" + base.DirectryName + "/");
-				}
-			}
-		}
-		[Obsolete("ビデオブログは番組表からパッケージIDが取得可能")]
-		[Serializable]
-		private class GGenre200507VideoBlog : GGenre200507 {
-			public GGenre200507VideoBlog(int keyNo, string dir, string name, Color color)
-				: base(keyNo, dir, name, color) { }
-			public override bool IsCrawlable {
-				get { return false; }
-			}
-		}
-		#endregion
 		[Serializable]
 		private class GGenre200509 : GGenre {
 			public GGenre200509(int keyNo, string dir, string name, Color color)
 				: base(keyNo, dir, name, color) { }
 			public override Uri TopPageUri {
 				get {
-					return new Uri("http://www.gyao.jp/" + this.DirectryName + "/");
+					return new Uri("http://www.gyao.jp/" + this.DirectoryName + "/");
 				}
 			}
 		}

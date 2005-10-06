@@ -88,12 +88,12 @@ namespace Yusen.GExplorer {
             this.toolStripSeparator4,
             this.tsmiClose});
 			this.tsmiFile.Name = "tsmiFile";
-			this.tsmiFile.Text = "ファイル (&F)";
+			this.tsmiFile.Text = "ファイル(&F)";
 			// 
 			// tsmiOpenTop
 			// 
 			this.tsmiOpenTop.Name = "tsmiOpenTop";
-			this.tsmiOpenTop.Text = "トップページを開く (T)";
+			this.tsmiOpenTop.Text = "トップページを開く(T)";
 			this.tsmiOpenTop.Click += new System.EventHandler(this.tsmiOpenTop_Click);
 			// 
 			// tsmiSaveAs
@@ -101,13 +101,13 @@ namespace Yusen.GExplorer {
 			this.tsmiSaveAs.Name = "tsmiSaveAs";
 			this.tsmiSaveAs.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Shift | System.Windows.Forms.Keys.Control) 
             | System.Windows.Forms.Keys.S)));
-			this.tsmiSaveAs.Text = "名前をつけて保存 (&A)...";
+			this.tsmiSaveAs.Text = "名前をつけて保存(&A)...";
 			this.tsmiSaveAs.Click += new System.EventHandler(this.tsmiSaveAs_Click);
 			// 
 			// tsmiPageProperty
 			// 
 			this.tsmiPageProperty.Name = "tsmiPageProperty";
-			this.tsmiPageProperty.Text = "ページのプロパティ (&R)...";
+			this.tsmiPageProperty.Text = "ページのプロパティ(&R)...";
 			this.tsmiPageProperty.Click += new System.EventHandler(this.tsmiPageProperty_Click);
 			// 
 			// toolStripSeparator3
@@ -117,20 +117,20 @@ namespace Yusen.GExplorer {
 			// tsmiPageSetup
 			// 
 			this.tsmiPageSetup.Name = "tsmiPageSetup";
-			this.tsmiPageSetup.Text = "ページ設定 (&U)...";
+			this.tsmiPageSetup.Text = "ページ設定(&U)...";
 			this.tsmiPageSetup.Click += new System.EventHandler(this.tsmiPageSetup_Click);
 			// 
 			// tsmiPrint
 			// 
 			this.tsmiPrint.Name = "tsmiPrint";
 			this.tsmiPrint.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P)));
-			this.tsmiPrint.Text = "印刷 (&P)...";
+			this.tsmiPrint.Text = "印刷(&P)...";
 			this.tsmiPrint.Click += new System.EventHandler(this.tsmiPrint_Click);
 			// 
 			// tsmiPrintPreview
 			// 
 			this.tsmiPrintPreview.Name = "tsmiPrintPreview";
-			this.tsmiPrintPreview.Text = "印刷プレビュー (&V)...";
+			this.tsmiPrintPreview.Text = "印刷プレビュー(&V)...";
 			this.tsmiPrintPreview.Click += new System.EventHandler(this.tsmiPrintPreview_Click);
 			// 
 			// toolStripSeparator4
@@ -141,18 +141,18 @@ namespace Yusen.GExplorer {
 			// 
 			this.tsmiClose.Name = "tsmiClose";
 			this.tsmiClose.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.W)));
-			this.tsmiClose.Text = "閉じる (&W)";
+			this.tsmiClose.Text = "閉じる(&W)";
 			this.tsmiClose.Click += new System.EventHandler(this.tsmiClose_Click);
 			// 
 			// tsmiGenres
 			// 
 			this.tsmiGenres.Name = "tsmiGenres";
-			this.tsmiGenres.Text = "ジャンルトップ (&T)";
+			this.tsmiGenres.Text = "ジャンルトップ(&T)";
 			// 
 			// tsmiTimeTables
 			// 
 			this.tsmiTimeTables.Name = "tsmiTimeTables";
-			this.tsmiTimeTables.Text = "番組表 (&I)";
+			this.tsmiTimeTables.Text = "番組表(&I)";
 			// 
 			// toolStripContainer1
 			// 
@@ -188,7 +188,7 @@ namespace Yusen.GExplorer {
 			this.statusStrip1.Location = new System.Drawing.Point(0, 0);
 			this.statusStrip1.Name = "statusStrip1";
 			this.statusStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.ManagerRenderMode;
-			this.statusStrip1.Size = new System.Drawing.Size(772, 23);
+			this.statusStrip1.Size = new System.Drawing.Size(772, 22);
 			this.statusStrip1.TabIndex = 1;
 			this.statusStrip1.Text = "statusStrip1";
 			// 
@@ -209,7 +209,7 @@ namespace Yusen.GExplorer {
 			this.gwbMain.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.gwbMain.Location = new System.Drawing.Point(0, 0);
 			this.gwbMain.Name = "gwbMain";
-			this.gwbMain.Size = new System.Drawing.Size(772, 444);
+			this.gwbMain.Size = new System.Drawing.Size(772, 445);
 			this.gwbMain.StatusTextChanged += new System.EventHandler(this.gwbMain_StatusTextChanged);
 			this.gwbMain.CanGoForwardChanged += new System.EventHandler(this.gwbMain_CanGoForwardChanged);
 			this.gwbMain.ProgressChanged += new System.Windows.Forms.WebBrowserProgressChangedEventHandler(this.gwbMain_ProgressChanged);
@@ -270,14 +270,14 @@ namespace Yusen.GExplorer {
             this.tsbGo});
 			this.tsAddress.Location = new System.Drawing.Point(147, 24);
 			this.tsAddress.Name = "tsAddress";
-			this.tsAddress.Size = new System.Drawing.Size(589, 25);
+			this.tsAddress.Size = new System.Drawing.Size(581, 25);
 			this.tsAddress.TabIndex = 1;
 			this.tsAddress.Text = "アドレスバー";
 			// 
 			// tslAddress
 			// 
 			this.tslAddress.Name = "tslAddress";
-			this.tslAddress.Text = "アドレス (&D)";
+			this.tslAddress.Text = "アドレス(&D)";
 			// 
 			// tscbAddress
 			// 
@@ -295,7 +295,7 @@ namespace Yusen.GExplorer {
 			this.tsbGo.Image = ((System.Drawing.Image)(resources.GetObject("tsbGo.Image")));
 			this.tsbGo.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tsbGo.Name = "tsbGo";
-			this.tsbGo.Text = "移動 (&G)";
+			this.tsbGo.Text = "移動(&G)";
 			this.tsbGo.Click += new System.EventHandler(this.GoToAddressBarUri);
 			// 
 			// BrowserForm

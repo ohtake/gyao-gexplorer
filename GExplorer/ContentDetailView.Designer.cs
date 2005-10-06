@@ -108,18 +108,19 @@ namespace Yusen.GExplorer {
 			this.cmsImage.Location = new System.Drawing.Point(21, 36);
 			this.cmsImage.Name = "cmsImage";
 			this.cmsImage.RightToLeft = System.Windows.Forms.RightToLeft.No;
-			this.cmsImage.Size = new System.Drawing.Size(315, 142);
+			this.cmsImage.Size = new System.Drawing.Size(311, 161);
+			this.cmsImage.Visible = true;
 			this.cmsImage.Opening += new System.ComponentModel.CancelEventHandler(this.cmsImage_Opening);
 			// 
 			// tsmiImageSize
 			// 
 			this.tsmiImageSize.Name = "tsmiImageSize";
-			this.tsmiImageSize.Text = "画像の表示とサイズ (&V)";
+			this.tsmiImageSize.Text = "画像の表示とサイズ(&V)";
 			// 
 			// tsmiSizeMode
 			// 
 			this.tsmiSizeMode.Name = "tsmiSizeMode";
-			this.tsmiSizeMode.Text = "リサイズ方法 (&R)";
+			this.tsmiSizeMode.Text = "リサイズ方法(&R)";
 			// 
 			// toolStripSeparator1
 			// 
@@ -128,25 +129,25 @@ namespace Yusen.GExplorer {
 			// tsmiCopyImageUri
 			// 
 			this.tsmiCopyImageUri.Name = "tsmiCopyImageUri";
-			this.tsmiCopyImageUri.Text = "画像URIをコピー (&C)";
+			this.tsmiCopyImageUri.Text = "画像URIをコピー(&C)";
 			this.tsmiCopyImageUri.Click += new System.EventHandler(this.tsmiCopyImageUri_Click);
 			// 
 			// tsmiCopyNameAndImageUri
 			// 
 			this.tsmiCopyNameAndImageUri.Name = "tsmiCopyNameAndImageUri";
-			this.tsmiCopyNameAndImageUri.Text = "コンテンツ名と画像URIをコピー (&B)";
+			this.tsmiCopyNameAndImageUri.Text = "コンテンツ名と画像URIをコピー(&B)";
 			this.tsmiCopyNameAndImageUri.Click += new System.EventHandler(this.tsmiCopyNameAndImageUri_Click);
 			// 
 			// tsmiCopyNameDetailImageUri
 			// 
 			this.tsmiCopyNameDetailImageUri.Name = "tsmiCopyNameDetailImageUri";
-			this.tsmiCopyNameDetailImageUri.Text = "コンテンツ名と詳細ページURIと画像URIをコピー (&A)";
+			this.tsmiCopyNameDetailImageUri.Text = "コンテンツ名と詳細ページURIと画像URIをコピー(&A)";
 			this.tsmiCopyNameDetailImageUri.Click += new System.EventHandler(this.tsmiCopyNameDetailImageUri_Click);
 			// 
 			// tsmiCopyImage
 			// 
 			this.tsmiCopyImage.Name = "tsmiCopyImage";
-			this.tsmiCopyImage.Text = "画像をコピー (&I)";
+			this.tsmiCopyImage.Text = "画像をコピー(&I)";
 			this.tsmiCopyImage.Click += new System.EventHandler(this.tsmiCopyImage_Click);
 			// 
 			// tabControl1

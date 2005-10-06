@@ -121,41 +121,29 @@ namespace Yusen.GExplorer {
 		}
 		private void tsmiContentAddToPlayList_Click(object sender, EventArgs e) {
 			string contId = this.cmsContent.Tag as string;
-			GContent cont;
-			if (GContent.TryDownload(contId, out cont)) {
-				ContentAdapter ca = new ContentAdapter(cont);
-				PlayList.Instance.AddIfNotExists(ca);
-			} else {
-				MessageBox.Show("指定されたコンテンツIDに関する情報が取得できませんでした．", this.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
-			}
+			GContent cont = GContent.DoDownload(contId);
+			ContentAdapter ca = new ContentAdapter(cont);
+			PlayList.Instance.AddIfNotExists(ca);
 		}
-		void tsmiContentAddToPlayListWithComment_Click(object sender, EventArgs e) {
+		private void tsmiContentAddToPlayListWithComment_Click(object sender, EventArgs e) {
 			string contId = this.cmsContent.Tag as string;
-			GContent cont;
-			if (GContent.TryDownload(contId, out cont)) {
-				ContentAdapter ca = new ContentAdapter(cont);
-				this.inputBoxDialog1.Input = string.Empty;
-				this.inputBoxDialog1.Message = "コメントを入力してください．";
-				this.inputBoxDialog1.Title = "コメントの入力";
-				switch (this.inputBoxDialog1.ShowDialog()) {
-					case DialogResult.OK:
-						ca.Comment = this.inputBoxDialog1.Input;
-						PlayList.Instance.AddIfNotExists(ca);
-						break;
-				}
-			} else {
-				MessageBox.Show("指定されたコンテンツIDに関する情報が取得できませんでした．", this.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
+			GContent cont = GContent.DoDownload(contId);
+			ContentAdapter ca = new ContentAdapter(cont);
+			this.inputBoxDialog1.Input = string.Empty;
+			this.inputBoxDialog1.Message = "コメントを入力してください．";
+			this.inputBoxDialog1.Title = "コメントの入力";
+			switch (this.inputBoxDialog1.ShowDialog()) {
+				case DialogResult.OK:
+					ca.Comment = this.inputBoxDialog1.Input;
+					PlayList.Instance.AddIfNotExists(ca);
+					break;
 			}
 		}
 		private void tsmiContentPlayWithoutAdding_Click(object sender, EventArgs e) {
 			string contId = this.cmsContent.Tag as string;
-			GContent cont;
-			if (GContent.TryDownload(contId, out cont)) {
-				ContentAdapter ca = new ContentAdapter(cont);
-				PlayerForm.Play(ca);
-			} else {
-				MessageBox.Show("指定されたコンテンツIDに関する情報が取得できませんでした．", this.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
-			}
+			GContent cont = GContent.DoDownload(contId);
+			ContentAdapter ca = new ContentAdapter(cont);
+			PlayerForm.Play(ca);
 		}
 		private void tsmiContentPlayWmp_Click(object sender, EventArgs e) {
 			Utility.PlayWithWMP(GContent.CreateMediaFileUri(this.cmsContent.Tag as string, GlobalSettings.Instance.UserNo, GlobalSettings.Instance.BitRate));
@@ -174,14 +162,10 @@ namespace Yusen.GExplorer {
 					uc.Title, null,
 					new EventHandler(delegate(object sender2, EventArgs e2) {
 					string contId = this.cmsContent.Tag as string;
-					GContent cont;
-					if (GContent.TryDownload(contId, out cont)) {
-						ContentAdapter ca = new ContentAdapter(cont);
-						((sender2 as ToolStripMenuItem).Tag as UserCommand).Execute(
-							new ContentAdapter[] { ca });
-					} else {
-						MessageBox.Show("指定されたコンテンツIDに関する情報が取得できませんでした．", this.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
-					}
+					GContent cont = GContent.DoDownload(contId);
+					ContentAdapter ca = new ContentAdapter(cont);
+					((sender2 as ToolStripMenuItem).Tag as UserCommand).Execute(
+						new ContentAdapter[] { ca });
 				}));
 				mi.Tag = uc;
 				this.tsmiContentCommands.DropDownItems.Add(mi);

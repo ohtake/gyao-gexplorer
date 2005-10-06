@@ -45,6 +45,7 @@ namespace Yusen.GExplorer {
 			this.tsmiCopyDetailUri = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiCopyNameAndDetailUri = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+			this.tsmiRemoveCache = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiAddNg = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiAddNgWithId = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiAddNgWithTitle = new System.Windows.Forms.ToolStripMenuItem();
@@ -57,6 +58,7 @@ namespace Yusen.GExplorer {
 			this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsbShowFilter = new System.Windows.Forms.ToolStripButton();
 			this.tsddbNormalPages = new System.Windows.Forms.ToolStripDropDownButton();
+			this.tsddbExceptions = new System.Windows.Forms.ToolStripDropDownButton();
 			this.tsddbSettings = new System.Windows.Forms.ToolStripDropDownButton();
 			this.tsmiAboneType = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
@@ -77,6 +79,7 @@ namespace Yusen.GExplorer {
 			this.tstbFilter = new System.Windows.Forms.ToolStripTextBox();
 			this.tstbMigemoAnswer = new System.Windows.Forms.ToolStripTextBox();
 			this.inputBoxDialog1 = new Yusen.GExplorer.InputBoxDialog();
+			this.exceptionDialog1 = new Yusen.GExplorer.ExceptionDialog();
 			this.cmsContent.SuspendLayout();
 			this.toolStripContainer1.ContentPanel.SuspendLayout();
 			this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
@@ -105,7 +108,6 @@ namespace Yusen.GExplorer {
 			this.listView1.Size = new System.Drawing.Size(550, 158);
 			this.listView1.TabIndex = 0;
 			this.listView1.View = System.Windows.Forms.View.Details;
-			this.listView1.SelectedIndexChanged += new System.EventHandler(this.listView1_SelectedIndexChanged);
 			this.listView1.DoubleClick += new System.EventHandler(this.listView1_DoubleClick);
 			this.listView1.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.listView1_ColumnClick);
 			this.listView1.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.listView1_ItemSelectionChanged);
@@ -133,7 +135,7 @@ namespace Yusen.GExplorer {
 			// 
 			// chDuration
 			// 
-			this.chDuration.Text = "時間";
+			this.chDuration.Text = "番組時間";
 			this.chDuration.Width = 56;
 			// 
 			// chDeadline
@@ -163,33 +165,34 @@ namespace Yusen.GExplorer {
             this.tsmiCopyDetailUri,
             this.tsmiCopyNameAndDetailUri,
             this.toolStripSeparator2,
+            this.tsmiRemoveCache,
             this.tsmiAddNg,
             this.toolStripSeparator3,
             this.tsmiUserCommands});
 			this.cmsContent.Location = new System.Drawing.Point(21, 36);
 			this.cmsContent.Name = "contextMenuStrip1";
 			this.cmsContent.RightToLeft = System.Windows.Forms.RightToLeft.No;
-			this.cmsContent.Size = new System.Drawing.Size(310, 270);
+			this.cmsContent.Size = new System.Drawing.Size(306, 292);
 			this.cmsContent.Opening += new System.ComponentModel.CancelEventHandler(this.cmsContent_Opening);
 			// 
 			// tsmiAdd
 			// 
 			this.tsmiAdd.Name = "tsmiAdd";
-			this.tsmiAdd.Text = "プレイリストに追加 (&A)";
+			this.tsmiAdd.Text = "プレイリストに追加(&A)";
 			this.tsmiAdd.Click += new System.EventHandler(this.tsmiAdd_Click);
 			// 
 			// tsmiAddWithComment
 			// 
 			this.tsmiAddWithComment.Name = "tsmiAddWithComment";
 			this.tsmiAddWithComment.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.L)));
-			this.tsmiAddWithComment.Text = "コメントを付けてプレイリストに追加 (&L) ...";
+			this.tsmiAddWithComment.Text = "コメントを付けてプレイリストに追加(&L) ...";
 			this.tsmiAddWithComment.Click += new System.EventHandler(this.tsmiAddWithComment_Click);
 			// 
 			// tsmiPlay
 			// 
 			this.tsmiPlay.Name = "tsmiPlay";
 			this.tsmiPlay.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P)));
-			this.tsmiPlay.Text = "プレイリストに追加せずに再生 (&P)";
+			this.tsmiPlay.Text = "プレイリストに追加せずに再生(&P)";
 			this.tsmiPlay.Click += new System.EventHandler(this.tsmiPlay_Click);
 			// 
 			// toolStripSeparator6
@@ -199,19 +202,19 @@ namespace Yusen.GExplorer {
 			// tsmiPlayWithWmp
 			// 
 			this.tsmiPlayWithWmp.Name = "tsmiPlayWithWmp";
-			this.tsmiPlayWithWmp.Text = "WMPで再生 (&W)";
+			this.tsmiPlayWithWmp.Text = "WMPで再生(&W)";
 			this.tsmiPlayWithWmp.Click += new System.EventHandler(this.tsmiPlayWithWmp_Click);
 			// 
 			// tsmiPlayWithBrowser
 			// 
 			this.tsmiPlayWithBrowser.Name = "tsmiPlayWithBrowser";
-			this.tsmiPlayWithBrowser.Text = "ウェブブラウザで再生 (&I)";
+			this.tsmiPlayWithBrowser.Text = "ウェブブラウザで再生(&I)";
 			this.tsmiPlayWithBrowser.Click += new System.EventHandler(this.tsmiPlayWithBrowser_Click);
 			// 
 			// tsmiBroseDetail
 			// 
 			this.tsmiBroseDetail.Name = "tsmiBroseDetail";
-			this.tsmiBroseDetail.Text = "ウェブブラウザで詳細ページ (&E)";
+			this.tsmiBroseDetail.Text = "ウェブブラウザで詳細ページ(&E)";
 			this.tsmiBroseDetail.Click += new System.EventHandler(this.tsmiBroseDetail_Click);
 			// 
 			// toolStripSeparator1
@@ -223,7 +226,7 @@ namespace Yusen.GExplorer {
 			this.tsmiCopyName.Name = "tsmiCopyName";
 			this.tsmiCopyName.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Shift | System.Windows.Forms.Keys.Control) 
             | System.Windows.Forms.Keys.C)));
-			this.tsmiCopyName.Text = "コンテンツ名をコピー (&N)";
+			this.tsmiCopyName.Text = "コンテンツ名をコピー(&N)";
 			this.tsmiCopyName.Click += new System.EventHandler(this.tsmiCopyName_Click);
 			// 
 			// tsmiCopyDetailUri
@@ -231,19 +234,25 @@ namespace Yusen.GExplorer {
 			this.tsmiCopyDetailUri.Name = "tsmiCopyDetailUri";
 			this.tsmiCopyDetailUri.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.Control) 
             | System.Windows.Forms.Keys.C)));
-			this.tsmiCopyDetailUri.Text = "詳細ページURIをコピー (&D)";
+			this.tsmiCopyDetailUri.Text = "詳細ページURIをコピー(&D)";
 			this.tsmiCopyDetailUri.Click += new System.EventHandler(this.tsmiCopyDetailUri_Click);
 			// 
 			// tsmiCopyNameAndDetailUri
 			// 
 			this.tsmiCopyNameAndDetailUri.Name = "tsmiCopyNameAndDetailUri";
 			this.tsmiCopyNameAndDetailUri.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
-			this.tsmiCopyNameAndDetailUri.Text = "コンテンツ名と詳細ページURIをコピー (&B)";
+			this.tsmiCopyNameAndDetailUri.Text = "コンテンツ名と詳細ページURIをコピー(&B)";
 			this.tsmiCopyNameAndDetailUri.Click += new System.EventHandler(this.tsmiCopyNameAndDetailUri_Click);
 			// 
 			// toolStripSeparator2
 			// 
 			this.toolStripSeparator2.Name = "toolStripSeparator2";
+			// 
+			// tsmiRemoveCache
+			// 
+			this.tsmiRemoveCache.Name = "tsmiRemoveCache";
+			this.tsmiRemoveCache.Text = "キャッシュを削除(&R)";
+			this.tsmiRemoveCache.Click += new System.EventHandler(this.tsmiRemoveCache_Click);
 			// 
 			// tsmiAddNg
 			// 
@@ -251,7 +260,7 @@ namespace Yusen.GExplorer {
             this.tsmiAddNgWithId,
             this.tsmiAddNgWithTitle});
 			this.tsmiAddNg.Name = "tsmiAddNg";
-			this.tsmiAddNg.Text = "NGコンテンツに簡易追加 (&G)";
+			this.tsmiAddNg.Text = "NGコンテンツに簡易追加(&G)";
 			// 
 			// tsmiAddNgWithId
 			// 
@@ -272,7 +281,7 @@ namespace Yusen.GExplorer {
 			// tsmiUserCommands
 			// 
 			this.tsmiUserCommands.Name = "tsmiUserCommands";
-			this.tsmiUserCommands.Text = "外部コマンド (&C)";
+			this.tsmiUserCommands.Text = "外部コマンド(&C)";
 			// 
 			// colorDialog1
 			// 
@@ -307,6 +316,7 @@ namespace Yusen.GExplorer {
             this.toolStripSeparator4,
             this.tsbShowFilter,
             this.tsddbNormalPages,
+            this.tsddbExceptions,
             this.tsddbSettings,
             this.toolStripSeparator5,
             this.tslGenre,
@@ -334,7 +344,7 @@ namespace Yusen.GExplorer {
 			this.tsbShowFilter.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
 			this.tsbShowFilter.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tsbShowFilter.Name = "tsbShowFilter";
-			this.tsbShowFilter.Text = "フィルタ (&M)";
+			this.tsbShowFilter.Text = "フィルタ(&M)";
 			this.tsbShowFilter.Click += new System.EventHandler(this.tsbShowFilter_Click);
 			// 
 			// tsddbNormalPages
@@ -342,7 +352,14 @@ namespace Yusen.GExplorer {
 			this.tsddbNormalPages.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
 			this.tsddbNormalPages.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tsddbNormalPages.Name = "tsddbNormalPages";
-			this.tsddbNormalPages.Text = "ページ (&P)";
+			this.tsddbNormalPages.Text = "ページ(&P)";
+			// 
+			// tsddbExceptions
+			// 
+			this.tsddbExceptions.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+			this.tsddbExceptions.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.tsddbExceptions.Name = "tsddbExceptions";
+			this.tsddbExceptions.Text = "例外(&E)";
 			// 
 			// tsddbSettings
 			// 
@@ -359,7 +376,7 @@ namespace Yusen.GExplorer {
             this.tsmiNewColor});
 			this.tsddbSettings.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tsddbSettings.Name = "tsddbSettings";
-			this.tsddbSettings.Text = "設定 (&C)";
+			this.tsddbSettings.Text = "設定(&C)";
 			// 
 			// tsmiAboneType
 			// 
@@ -475,6 +492,17 @@ namespace Yusen.GExplorer {
 			this.tstbMigemoAnswer.ReadOnly = true;
 			this.tstbMigemoAnswer.Size = new System.Drawing.Size(250, 25);
 			// 
+			// inputBoxDialog1
+			// 
+			this.inputBoxDialog1.Input = null;
+			this.inputBoxDialog1.Message = null;
+			this.inputBoxDialog1.Title = null;
+			// 
+			// exceptionDialog1
+			// 
+			this.exceptionDialog1.Exception = null;
+			this.exceptionDialog1.Title = "クロール時に無視した例外";
+			// 
 			// CrawlResultView
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -551,5 +579,8 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ColumnHeader chDeadline;
 		private System.Windows.Forms.ToolStripMenuItem tsmiAddWithComment;
 		private InputBoxDialog inputBoxDialog1;
+		private System.Windows.Forms.ToolStripMenuItem tsmiRemoveCache;
+		private System.Windows.Forms.ToolStripDropDownButton tsddbExceptions;
+		private ExceptionDialog exceptionDialog1;
 	}
 }

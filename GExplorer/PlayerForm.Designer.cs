@@ -72,7 +72,7 @@ namespace Yusen.GExplorer {
 			this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiVolumeNormal = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiVolumeCf = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiTool = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiTools = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiFocusOnWmp = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiShowItemInfo = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
@@ -164,18 +164,18 @@ namespace Yusen.GExplorer {
 			this.cmsBanner.Location = new System.Drawing.Point(25, 66);
 			this.cmsBanner.Name = "cmsBanner";
 			this.cmsBanner.RightToLeft = System.Windows.Forms.RightToLeft.No;
-			this.cmsBanner.Size = new System.Drawing.Size(181, 76);
+			this.cmsBanner.Size = new System.Drawing.Size(177, 76);
 			// 
 			// tsmiBannerCopyJumpUri
 			// 
 			this.tsmiBannerCopyJumpUri.Name = "tsmiBannerCopyJumpUri";
-			this.tsmiBannerCopyJumpUri.Text = "リンク先URIをコピー (&J)";
+			this.tsmiBannerCopyJumpUri.Text = "リンク先URIをコピー(&J)";
 			this.tsmiBannerCopyJumpUri.Click += new System.EventHandler(this.tsmiBannerCopyJumpUri_Click);
 			// 
 			// tsmiBannerCopyImageUri
 			// 
 			this.tsmiBannerCopyImageUri.Name = "tsmiBannerCopyImageUri";
-			this.tsmiBannerCopyImageUri.Text = "画像URIをコピー (&B)";
+			this.tsmiBannerCopyImageUri.Text = "画像URIをコピー(&B)";
 			this.tsmiBannerCopyImageUri.Click += new System.EventHandler(this.tsmiBannerCopyImageUri_Click);
 			// 
 			// toolStripSeparator8
@@ -185,7 +185,7 @@ namespace Yusen.GExplorer {
 			// tsmiBannerCopyImage
 			// 
 			this.tsmiBannerCopyImage.Name = "tsmiBannerCopyImage";
-			this.tsmiBannerCopyImage.Text = "画像をコピー (&I)";
+			this.tsmiBannerCopyImage.Text = "画像をコピー(&I)";
 			this.tsmiBannerCopyImage.Click += new System.EventHandler(this.tsmiBannerCopyImage_Click);
 			// 
 			// wmpMain
@@ -260,7 +260,7 @@ namespace Yusen.GExplorer {
             this.tsmiFile,
             this.tsmiOperation,
             this.tsmiSettings,
-            this.tsmiTool});
+            this.tsmiTools});
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
 			this.menuStrip1.Size = new System.Drawing.Size(657, 24);
@@ -276,19 +276,19 @@ namespace Yusen.GExplorer {
             this.tsmiRemoveAndClose,
             this.tsmiClose});
 			this.tsmiFile.Name = "tsmiFile";
-			this.tsmiFile.Text = "ファイル (&F)";
+			this.tsmiFile.Text = "ファイル(&F)";
 			// 
 			// tsmiPlayChapter
 			// 
 			this.tsmiPlayChapter.Name = "tsmiPlayChapter";
-			this.tsmiPlayChapter.Text = "特定のチャプターから再生 (&C) ...";
+			this.tsmiPlayChapter.Text = "特定のチャプターから再生(&C)...";
 			this.tsmiPlayChapter.Click += new System.EventHandler(this.tsmiPlayChapter_Click);
 			// 
 			// tsmiReload
 			// 
 			this.tsmiReload.Name = "tsmiReload";
 			this.tsmiReload.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.R)));
-			this.tsmiReload.Text = "動画の再読み込み (&R)";
+			this.tsmiReload.Text = "動画の再読み込み(&R)";
 			this.tsmiReload.Click += new System.EventHandler(this.tsmiReload_Click);
 			// 
 			// toolStripSeparator2
@@ -299,14 +299,14 @@ namespace Yusen.GExplorer {
 			// 
 			this.tsmiRemoveAndClose.Name = "tsmiRemoveAndClose";
 			this.tsmiRemoveAndClose.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.E)));
-			this.tsmiRemoveAndClose.Text = "プレイリストから削除して閉じる (&E)";
+			this.tsmiRemoveAndClose.Text = "プレイリストから削除して閉じる(&E)";
 			this.tsmiRemoveAndClose.Click += new System.EventHandler(this.tsmiRemoveAndClose_Click);
 			// 
 			// tsmiClose
 			// 
 			this.tsmiClose.Name = "tsmiClose";
 			this.tsmiClose.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.W)));
-			this.tsmiClose.Text = "閉じる (&W)";
+			this.tsmiClose.Text = "閉じる(&W)";
 			this.tsmiClose.Click += new System.EventHandler(this.tsmiClose_Click);
 			// 
 			// tsmiOperation
@@ -324,20 +324,20 @@ namespace Yusen.GExplorer {
             this.tsmiNextContent,
             this.tsmiNextContentWithDelete});
 			this.tsmiOperation.Name = "tsmiOperation";
-			this.tsmiOperation.Text = "操作 (&O)";
+			this.tsmiOperation.Text = "操作(&O)";
 			// 
 			// tsmiPlayPause
 			// 
 			this.tsmiPlayPause.Name = "tsmiPlayPause";
 			this.tsmiPlayPause.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P)));
-			this.tsmiPlayPause.Text = "再生/一時停止 (&P)";
+			this.tsmiPlayPause.Text = "再生/一時停止(&P)";
 			this.tsmiPlayPause.Click += new System.EventHandler(this.tsmiPlayPause_Click);
 			// 
 			// tsmiStop
 			// 
 			this.tsmiStop.Name = "tsmiStop";
 			this.tsmiStop.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-			this.tsmiStop.Text = "停止 (&S)";
+			this.tsmiStop.Text = "停止(&S)";
 			this.tsmiStop.Click += new System.EventHandler(this.tsmiStop_Click);
 			// 
 			// toolStripSeparator5
@@ -348,14 +348,14 @@ namespace Yusen.GExplorer {
 			// 
 			this.tsmiPrevTrack.Name = "tsmiPrevTrack";
 			this.tsmiPrevTrack.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.B)));
-			this.tsmiPrevTrack.Text = "前へ (&B)";
+			this.tsmiPrevTrack.Text = "前へ(&B)";
 			this.tsmiPrevTrack.Click += new System.EventHandler(this.tsmiPrevTrack_Click);
 			// 
 			// tsmiNextTrack
 			// 
 			this.tsmiNextTrack.Name = "tsmiNextTrack";
 			this.tsmiNextTrack.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
-			this.tsmiNextTrack.Text = "次へ (&F)";
+			this.tsmiNextTrack.Text = "次へ(&F)";
 			this.tsmiNextTrack.Click += new System.EventHandler(this.tsmiNextTrack_Click);
 			// 
 			// tsmiFastReverse
@@ -363,7 +363,7 @@ namespace Yusen.GExplorer {
 			this.tsmiFastReverse.Name = "tsmiFastReverse";
 			this.tsmiFastReverse.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Shift | System.Windows.Forms.Keys.Control) 
             | System.Windows.Forms.Keys.B)));
-			this.tsmiFastReverse.Text = "巻き戻し (&R)";
+			this.tsmiFastReverse.Text = "巻き戻し(&R)";
 			this.tsmiFastReverse.Click += new System.EventHandler(this.tsmiFastReverse_Click);
 			// 
 			// tsmiFastForward
@@ -371,7 +371,7 @@ namespace Yusen.GExplorer {
 			this.tsmiFastForward.Name = "tsmiFastForward";
 			this.tsmiFastForward.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Shift | System.Windows.Forms.Keys.Control) 
             | System.Windows.Forms.Keys.F)));
-			this.tsmiFastForward.Text = "早送り (&A)";
+			this.tsmiFastForward.Text = "早送り(&A)";
 			this.tsmiFastForward.Click += new System.EventHandler(this.tsmiFastForward_Click);
 			// 
 			// toolStripSeparator7
@@ -383,7 +383,7 @@ namespace Yusen.GExplorer {
 			this.tsmiPrevContent.Name = "tsmiPrevContent";
 			this.tsmiPrevContent.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Shift | System.Windows.Forms.Keys.Control) 
             | System.Windows.Forms.Keys.P)));
-			this.tsmiPrevContent.Text = "前のコンテンツ (E)";
+			this.tsmiPrevContent.Text = "前のコンテンツ(E)";
 			this.tsmiPrevContent.Click += new System.EventHandler(this.tsmiPrevContent_Click);
 			// 
 			// tsmiNextContent
@@ -391,7 +391,7 @@ namespace Yusen.GExplorer {
 			this.tsmiNextContent.Name = "tsmiNextContent";
 			this.tsmiNextContent.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Shift | System.Windows.Forms.Keys.Control) 
             | System.Windows.Forms.Keys.N)));
-			this.tsmiNextContent.Text = "次のコンテンツ (&N)";
+			this.tsmiNextContent.Text = "次のコンテンツ(&N)";
 			this.tsmiNextContent.Click += new System.EventHandler(this.tsmiNextContent_Click);
 			// 
 			// tsmiNextContentWithDelete
@@ -399,7 +399,7 @@ namespace Yusen.GExplorer {
 			this.tsmiNextContentWithDelete.Name = "tsmiNextContentWithDelete";
 			this.tsmiNextContentWithDelete.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Shift | System.Windows.Forms.Keys.Control) 
             | System.Windows.Forms.Keys.D)));
-			this.tsmiNextContentWithDelete.Text = "プレイリストから削除して次 (&D)";
+			this.tsmiNextContentWithDelete.Text = "プレイリストから削除して次(&D)";
 			this.tsmiNextContentWithDelete.Click += new System.EventHandler(this.tsmiNextContentWithDelete_Click);
 			// 
 			// tsmiSettings
@@ -418,14 +418,14 @@ namespace Yusen.GExplorer {
             this.tsmiVolumeNormal,
             this.tsmiVolumeCf});
 			this.tsmiSettings.Name = "tsmiSettings";
-			this.tsmiSettings.Text = "設定 (&S)";
+			this.tsmiSettings.Text = "設定(&S)";
 			// 
 			// tsmiAlwaysOnTop
 			// 
 			this.tsmiAlwaysOnTop.CheckOnClick = true;
 			this.tsmiAlwaysOnTop.Name = "tsmiAlwaysOnTop";
 			this.tsmiAlwaysOnTop.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.T)));
-			this.tsmiAlwaysOnTop.Text = "常に手前に表示 (&T)";
+			this.tsmiAlwaysOnTop.Text = "常に手前に表示(&T)";
 			this.tsmiAlwaysOnTop.Click += new System.EventHandler(this.tsmiAlwaysOnTop_Click);
 			// 
 			// tsmiKeepFullScreen
@@ -434,7 +434,7 @@ namespace Yusen.GExplorer {
 			this.tsmiKeepFullScreen.CheckOnClick = true;
 			this.tsmiKeepFullScreen.CheckState = System.Windows.Forms.CheckState.Checked;
 			this.tsmiKeepFullScreen.Name = "tsmiKeepFullScreen";
-			this.tsmiKeepFullScreen.Text = "全画面状態ならば全画面を維持 (&F)";
+			this.tsmiKeepFullScreen.Text = "全画面状態ならば全画面を維持(&F)";
 			// 
 			// tsmiDisableScreenSaver
 			// 
@@ -442,7 +442,7 @@ namespace Yusen.GExplorer {
 			this.tsmiDisableScreenSaver.CheckOnClick = true;
 			this.tsmiDisableScreenSaver.CheckState = System.Windows.Forms.CheckState.Checked;
 			this.tsmiDisableScreenSaver.Name = "tsmiDisableScreenSaver";
-			this.tsmiDisableScreenSaver.Text = "アクティブ時にスクリーンセーバ抑止 (&S)";
+			this.tsmiDisableScreenSaver.Text = "アクティブ時にスクリーンセーバ抑止(&S)";
 			this.tsmiDisableScreenSaver.Click += new System.EventHandler(this.tsmiDisableScreenSaver_Click);
 			// 
 			// toolStripSeparator3
@@ -453,7 +453,7 @@ namespace Yusen.GExplorer {
 			// 
 			this.tsmiRemovePlayedContent.CheckOnClick = true;
 			this.tsmiRemovePlayedContent.Name = "tsmiRemovePlayedContent";
-			this.tsmiRemovePlayedContent.Text = "再生終了でプレイリストから削除 (D)";
+			this.tsmiRemovePlayedContent.Text = "再生終了でプレイリストから削除(D)";
 			// 
 			// tsmiLoopPlayList
 			// 
@@ -461,7 +461,7 @@ namespace Yusen.GExplorer {
 			this.tsmiLoopPlayList.CheckOnClick = true;
 			this.tsmiLoopPlayList.CheckState = System.Windows.Forms.CheckState.Checked;
 			this.tsmiLoopPlayList.Name = "tsmiLoopPlayList";
-			this.tsmiLoopPlayList.Text = "プレイリストをループ (&L)";
+			this.tsmiLoopPlayList.Text = "プレイリストをループ(&L)";
 			// 
 			// toolStripSeparator6
 			// 
@@ -473,7 +473,7 @@ namespace Yusen.GExplorer {
 			this.tsmiAutoVolume.CheckOnClick = true;
 			this.tsmiAutoVolume.CheckState = System.Windows.Forms.CheckState.Checked;
 			this.tsmiAutoVolume.Name = "tsmiAutoVolume";
-			this.tsmiAutoVolume.Text = "自動音量調整 (&V)";
+			this.tsmiAutoVolume.Text = "自動音量調整(&V)";
 			// 
 			// tsmiMediaKeys
 			// 
@@ -481,7 +481,7 @@ namespace Yusen.GExplorer {
 			this.tsmiMediaKeys.CheckOnClick = true;
 			this.tsmiMediaKeys.CheckState = System.Windows.Forms.CheckState.Checked;
 			this.tsmiMediaKeys.Name = "tsmiMediaKeys";
-			this.tsmiMediaKeys.Text = "メディアキーを使う (&M)";
+			this.tsmiMediaKeys.Text = "メディアキーを使う(&M)";
 			// 
 			// toolStripSeparator4
 			// 
@@ -490,36 +490,36 @@ namespace Yusen.GExplorer {
 			// tsmiVolumeNormal
 			// 
 			this.tsmiVolumeNormal.Name = "tsmiVolumeNormal";
-			this.tsmiVolumeNormal.Text = "自動音量調整における本編の音量 (&A) ...";
+			this.tsmiVolumeNormal.Text = "自動音量調整における本編の音量(&A)...";
 			this.tsmiVolumeNormal.Click += new System.EventHandler(this.tsmiVolumeNormal_Click);
 			// 
 			// tsmiVolumeCf
 			// 
 			this.tsmiVolumeCf.Name = "tsmiVolumeCf";
-			this.tsmiVolumeCf.Text = "自動音量調整におけるCFの音量 (&C) ...";
+			this.tsmiVolumeCf.Text = "自動音量調整におけるCFの音量(&C)...";
 			this.tsmiVolumeCf.Click += new System.EventHandler(this.tsmiVolumeCf_Click);
 			// 
-			// tsmiTool
+			// tsmiTools
 			// 
-			this.tsmiTool.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+			this.tsmiTools.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiFocusOnWmp,
             this.tsmiShowItemInfo,
             this.toolStripSeparator1,
             this.tsmiUserCommands});
-			this.tsmiTool.Name = "tsmiTool";
-			this.tsmiTool.Text = "ツール (&T)";
+			this.tsmiTools.Name = "tsmiTools";
+			this.tsmiTools.Text = "ツール(&T)";
 			// 
 			// tsmiFocusOnWmp
 			// 
 			this.tsmiFocusOnWmp.Name = "tsmiFocusOnWmp";
 			this.tsmiFocusOnWmp.ShortcutKeys = System.Windows.Forms.Keys.F6;
-			this.tsmiFocusOnWmp.Text = "WMPにフォーカスを送る (&F)";
+			this.tsmiFocusOnWmp.Text = "WMPにフォーカスを送る(&F)";
 			this.tsmiFocusOnWmp.Click += new System.EventHandler(this.tsmiFocusOnWmp_Click);
 			// 
 			// tsmiShowItemInfo
 			// 
 			this.tsmiShowItemInfo.Name = "tsmiShowItemInfo";
-			this.tsmiShowItemInfo.Text = "ItemInfo を表示 (&I) ...";
+			this.tsmiShowItemInfo.Text = "ItemInfo を表示(&I)...";
 			this.tsmiShowItemInfo.Click += new System.EventHandler(this.tsmiShowItemInfo_Click);
 			// 
 			// toolStripSeparator1
@@ -529,7 +529,7 @@ namespace Yusen.GExplorer {
 			// tsmiUserCommands
 			// 
 			this.tsmiUserCommands.Name = "tsmiUserCommands";
-			this.tsmiUserCommands.Text = "外部コマンド (&C)";
+			this.tsmiUserCommands.Text = "外部コマンド(&C)";
 			// 
 			// inputBoxDialog1
 			// 
@@ -578,7 +578,7 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.MenuStrip menuStrip1;
 		private System.Windows.Forms.ToolStripMenuItem tsmiFile;
 		private System.Windows.Forms.ToolStripMenuItem tsmiClose;
-		private System.Windows.Forms.ToolStripMenuItem tsmiTool;
+		private System.Windows.Forms.ToolStripMenuItem tsmiTools;
 		private System.Windows.Forms.ToolStripMenuItem tsmiReload;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
 		private System.Windows.Forms.ToolStripMenuItem tsmiFocusOnWmp;

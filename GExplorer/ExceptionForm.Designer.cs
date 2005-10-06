@@ -241,16 +241,17 @@ namespace Yusen.GExplorer {
 			this.btnContinue.Name = "btnContinue";
 			this.btnContinue.Size = new System.Drawing.Size(99, 23);
 			this.btnContinue.TabIndex = 1;
-			this.btnContinue.Text = "無視して続行 (&C)";
+			this.btnContinue.Text = "無視して続行(&C)";
 			// 
 			// btnAbort
 			// 
 			this.btnAbort.DialogResult = System.Windows.Forms.DialogResult.Abort;
+			this.btnAbort.Enabled = false;
 			this.btnAbort.Location = new System.Drawing.Point(108, 3);
 			this.btnAbort.Name = "btnAbort";
 			this.btnAbort.Size = new System.Drawing.Size(88, 23);
 			this.btnAbort.TabIndex = 2;
-			this.btnAbort.Text = "強制終了 (&A)";
+			this.btnAbort.Text = "強制終了(&A)";
 			// 
 			// btnCopy
 			// 
@@ -258,7 +259,7 @@ namespace Yusen.GExplorer {
 			this.btnCopy.Name = "btnCopy";
 			this.btnCopy.Size = new System.Drawing.Size(130, 23);
 			this.btnCopy.TabIndex = 3;
-			this.btnCopy.Text = "クリップボードにコピー (&L)";
+			this.btnCopy.Text = "クリップボードにコピー(&L)";
 			this.btnCopy.Click += new System.EventHandler(this.btnCopy_Click);
 			// 
 			// ExceptionForm

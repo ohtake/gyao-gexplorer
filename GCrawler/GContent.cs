@@ -5,6 +5,7 @@ using System.IO;
 using System.Xml.Serialization;
 using System.Text;
 using System.Net;
+using System.Runtime.Serialization;
 
 namespace Yusen.GCrawler {
 	[Serializable]
@@ -22,8 +23,8 @@ namespace Yusen.GCrawler {
 		private static readonly Regex regexSubtitle = new Regex(@"<td class=""title12"">(.*)</td><!--サブタイトル-->");
 		private static readonly Regex regexImageDir = new Regex(@"<img src=""(/img/info/[a-z0-9]+/{1,2})cnt[0-9]+_[0-9a-z]*\.(?:jpg|gif)"""); // 村上さんはなぜか / が2つ
 		private static readonly Regex regexEpisodeNum = new Regex(@"<td align=""left""><b>(.*)</b></td>");
-		private static readonly Regex regexDuration = new Regex(@"<td align=""right""><b>時間 : (.*)</b></td>");
-		private static readonly Regex regexDescription = new Regex(@"^\s*(?:<td align=""[^""]*"">)?((?:[^<>]|<[Bb][Rr]>|(<[Aa][^>]*>)|</[Aa]>)+)</td>$");
+		private static readonly Regex regexDuration = new Regex(@"<td align=""right""><b>[^:]*時間[^:]* : (.*)</b></td>");
+		private static readonly Regex regexDescription = new Regex(@"^\s*(?:<td align=""[^""]*"">)?((?:[^<>]|<[Bb][Rr]/?>|(<[AaBbPp][^>]*>)|</[AaBbPp]>)+)</td>$");
 		private const string endOfDescription = @"<table width=""770"" border=""0"" cellspacing=""0"" cellpadding=""0"">";
 		
 		static GContent() {
@@ -115,7 +116,7 @@ namespace Yusen.GCrawler {
 				+ "&recommend=1"
 				+ "&contents_id=" + contId);
 		}
-		public static bool TryDownload(string contId, out GContent cont) {
+		public static GContent DoDownload(string contId) {
 			Uri uri = GContent.CreateDetailPageUri(contId);
 			TextReader reader = null;
 			try {
@@ -128,12 +129,24 @@ namespace Yusen.GCrawler {
 				string duration;
 				StringBuilder description = new StringBuilder();
 
-				if (!GContent.TryRegexForEachLine(reader, GContent.regexBreadGenre, out genre)) goto error;
-				if (!GContent.TryRegexForEachLine(reader, GContent.regexTitle, out title)) goto error;
-				if (!GContent.TryRegexForEachLine(reader, GContent.regexSubtitle, out subtitle)) goto error;
-				if (!GContent.TryRegexForEachLine(reader, GContent.regexImageDir, out imageDir)) goto error;
-				if (!GContent.TryRegexForEachLine(reader, GContent.regexEpisodeNum, out episodeNum)) goto error;
-				if (!GContent.TryRegexForEachLine(reader, GContent.regexDuration, out duration)) goto error;
+				if (!GContent.TryRegexForEachLine(reader, GContent.regexBreadGenre, out genre)) {
+					throw new ContentDownloadException("ジャンル名の読み取り失敗 <" + uri.AbsoluteUri + ">");
+				}
+				if (!GContent.TryRegexForEachLine(reader, GContent.regexTitle, out title)) {
+					throw new ContentDownloadException("タイトルの読み取り失敗 <" + uri.AbsoluteUri + ">");
+				}
+				if (!GContent.TryRegexForEachLine(reader, GContent.regexSubtitle, out subtitle)) {
+					throw new ContentDownloadException("サブタイトルの読み取り失敗 <" + uri.AbsoluteUri + ">");
+				}
+				if (!GContent.TryRegexForEachLine(reader, GContent.regexImageDir, out imageDir)) {
+					throw new ContentDownloadException("画像のあるディレクトリ名の読み取り失敗 <" + uri.AbsoluteUri + ">");
+				}
+				if (!GContent.TryRegexForEachLine(reader, GContent.regexEpisodeNum, out episodeNum)) {
+					throw new ContentDownloadException("話数の読み取り失敗 <" + uri.AbsoluteUri + ">");
+				}
+				if (!GContent.TryRegexForEachLine(reader, GContent.regexDuration, out duration)) {
+					throw new ContentDownloadException("時間の読み取り失敗 <" + uri.AbsoluteUri + ">");
+				}
 				string line;
 				while (null != (line = reader.ReadLine())) {
 					if (GContent.endOfDescription == line) break;
@@ -148,14 +161,11 @@ namespace Yusen.GCrawler {
 						}
 					}
 				}
-				cont = new GContent(contId, genre.Trim(), title.Trim(), subtitle.Trim(), imageDir, episodeNum.Trim(), duration.Trim(), description.ToString().Trim());
-				return true;
-			error:
-				cont = null;
-				return false;
-			} catch {
-				cont = null;
-				return false;
+				return new GContent(contId, genre.Trim(), title.Trim(), subtitle.Trim(), imageDir, episodeNum.Trim(), duration.Trim(), description.ToString().Trim());
+			} catch (ContentDownloadException) {
+				throw;
+			} catch(Exception e) {
+				throw new ContentDownloadException("不明なエラー．内部例外を参照．", e);
 			} finally {
 				if (null != reader) reader.Close();
 			}
@@ -172,8 +182,8 @@ namespace Yusen.GCrawler {
 			group1 = null;
 			return false;
 		}
-		internal static GContent CreateDummyContent(string contId, GGenre genre) {
-			return new GContent(contId, "(ダミー)", "(ダミー)", "(ダミー)", "/img/info/"+genre.ImageDirName+"/", "(ダミー)", "(ダミー)", "(ダミー)");
+		internal static GContent CreateDummyContent(string contId, GGenre genre, string reason) {
+			return new GContent(contId, "(ダミー)", "(ダミー)", "(ダミー)", "/img/info/"+genre.ImageDirName+"/", "(ダミー)", "(ダミー)", reason);
 		}
 
 		private string contentId;
@@ -261,6 +271,19 @@ namespace Yusen.GCrawler {
 			} else {
 				return "<" + this.ContentId + "> " + this.Title;
 			}
+		}
+	}
+	
+	[Serializable]
+	public class ContentDownloadException : Exception {
+		protected ContentDownloadException(SerializationInfo info, StreamingContext context):base(info,context){
+		}
+		
+		public ContentDownloadException(string message)
+			: base(message) {
+		}
+		public ContentDownloadException(string message, Exception innerException)
+			: base(message, innerException) {
 		}
 	}
 }

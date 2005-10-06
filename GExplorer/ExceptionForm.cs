@@ -40,6 +40,9 @@ namespace Yusen.GExplorer {
 		public ExceptionForm(Exception e) : this() {
 			this.Exception = e;
 		}
+		private ExceptionForm(Exception e, bool allowAbort) : this(e) {
+			this.AllowAbort = allowAbort;
+		}
 
 		public Exception Exception {
 			get { return this.exception; }
@@ -65,7 +68,10 @@ namespace Yusen.GExplorer {
 				}
 			}
 		}
-
+		public bool AllowAbort {
+			get { return this.btnAbort.Enabled; }
+			set { this.btnAbort.Enabled = value; }
+		}
 		private void ExceptionForm_Shown(object sender, EventArgs e) {
 			this.btnContinue.Focus();
 		}
@@ -97,7 +103,7 @@ namespace Yusen.GExplorer {
 			Clipboard.SetText(sb.ToString());
 		}
 		private void llblInnerException_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) {
-			using (ExceptionForm ef = new ExceptionForm(this.exception.InnerException)) {
+			using (ExceptionForm ef = new ExceptionForm(this.exception.InnerException, this.AllowAbort)) {
 				ef.Text = "“à•”—áŠO";
 				DialogResult result = ef.ShowDialog(this);
 				switch (result) {

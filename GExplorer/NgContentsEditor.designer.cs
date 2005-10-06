@@ -195,9 +195,9 @@ namespace Yusen.GExplorer {
 			this.lblWord.AutoSize = true;
 			this.lblWord.Location = new System.Drawing.Point(384, 6);
 			this.lblWord.Name = "lblWord";
-			this.lblWord.Size = new System.Drawing.Size(110, 12);
+			this.lblWord.Size = new System.Drawing.Size(106, 12);
 			this.lblWord.TabIndex = 240;
-			this.lblWord.Text = "目的語: NGワード (&W)";
+			this.lblWord.Text = "目的語: NGワード(&W)";
 			// 
 			// lblMethod
 			// 
@@ -205,9 +205,9 @@ namespace Yusen.GExplorer {
 			this.lblMethod.AutoSize = true;
 			this.lblMethod.Location = new System.Drawing.Point(257, 6);
 			this.lblMethod.Name = "lblMethod";
-			this.lblMethod.Size = new System.Drawing.Size(102, 12);
+			this.lblMethod.Size = new System.Drawing.Size(98, 12);
 			this.lblMethod.TabIndex = 230;
-			this.lblMethod.Text = "述語: 比較方法 (&M)";
+			this.lblMethod.Text = "述語: 比較方法(&M)";
 			// 
 			// lblProperty
 			// 
@@ -215,9 +215,9 @@ namespace Yusen.GExplorer {
 			this.lblProperty.AutoSize = true;
 			this.lblProperty.Location = new System.Drawing.Point(130, 6);
 			this.lblProperty.Name = "lblProperty";
-			this.lblProperty.Size = new System.Drawing.Size(108, 12);
+			this.lblProperty.Size = new System.Drawing.Size(104, 12);
 			this.lblProperty.TabIndex = 220;
-			this.lblProperty.Text = "主語: プロパティ名 (&P)";
+			this.lblProperty.Text = "主語: プロパティ名(&P)";
 			// 
 			// lblComment
 			// 
@@ -225,9 +225,9 @@ namespace Yusen.GExplorer {
 			this.lblComment.AutoSize = true;
 			this.lblComment.Location = new System.Drawing.Point(3, 6);
 			this.lblComment.Name = "lblComment";
-			this.lblComment.Size = new System.Drawing.Size(56, 12);
+			this.lblComment.Size = new System.Drawing.Size(52, 12);
 			this.lblComment.TabIndex = 210;
-			this.lblComment.Text = "コメント (&C)";
+			this.lblComment.Text = "コメント(&C)";
 			// 
 			// btnAdd
 			// 
@@ -237,7 +237,7 @@ namespace Yusen.GExplorer {
 			this.tableLayoutPanel2.SetRowSpan(this.btnAdd, 2);
 			this.btnAdd.Size = new System.Drawing.Size(66, 23);
 			this.btnAdd.TabIndex = 250;
-			this.btnAdd.Text = "追加 (&A)";
+			this.btnAdd.Text = "追加(&A)";
 			this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
 			// 
 			// grpList
@@ -261,7 +261,7 @@ namespace Yusen.GExplorer {
 			this.MinimumSize = new System.Drawing.Size(500, 150);
 			this.Name = "NgContentsEditor";
 			this.ShowInTaskbar = false;
-			this.Text = "NgContentsEditor";
+			this.Text = "NGコンテンツエディタ";
 			this.Load += new System.EventHandler(this.NgContentsEditor_Load);
 			this.tableLayoutPanel1.ResumeLayout(false);
 			this.grpAdd.ResumeLayout(false);

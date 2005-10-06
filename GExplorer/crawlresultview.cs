@@ -10,7 +10,6 @@ using Yusen.GCrawler;
 
 namespace Yusen.GExplorer {
 	sealed partial class CrawlResultView : UserControl, IHasSettings<GenreListViewSettings>{
-		public event EventHandler<SelectedContentsChangedEventArgs> SelectedContentsChanged;
 		public event EventHandler<ContentSelectionChangedEventArgs> ContentSelectionChanged;
 		
 		private CrawlResult crawlResult;
@@ -84,6 +83,7 @@ namespace Yusen.GExplorer {
 					this.listView1.EndUpdate();
 
 					this.CreateNormalPagesMenuItems();
+					this.CreateExceptionsMenuItems();
 				}
 			}
 		}
@@ -225,9 +225,6 @@ namespace Yusen.GExplorer {
 			this.NewColor = settings.NewColor ?? this.NewColor;
 		}
 		private void ClearAllItems() {
-			if (null != this.SelectedContentsChanged) {
-				this.SelectedContentsChanged(this, new SelectedContentsChangedEventArgs());
-			}
 			this.allLvis.Clear();
 			this.listView1.Items.Clear();
 			this.listView1.Groups.Clear();
@@ -247,7 +244,7 @@ namespace Yusen.GExplorer {
 					ContentAdapter ca = new ContentAdapter(c);
 					ListViewItem item = new ListViewItem(
 						new string[]{
-							ca.ContentId, ca.Title, ca.EpisodeNumber, ca.SubTitle, ca.GTimeSpan.ToString(), ca.DeadLine, ca.LongDescription},
+							ca.ContentId, ca.Title, ca.EpisodeNumber, ca.SubTitle, ca.GTimeSpan.ToString(), ca.Deadline, ca.LongDescription},
 						group);
 					item.Tag = ca;
 					this.allLvis.Add(item);
@@ -335,6 +332,21 @@ namespace Yusen.GExplorer {
 			}
 			this.tsddbNormalPages.Enabled = this.tsddbNormalPages.HasDropDownItems;
 		}
+		private void CreateExceptionsMenuItems() {
+			this.tsddbExceptions.DropDownItems.Clear();
+			if (null != this.CrawlResult) {
+				foreach (Exception ex in this.CrawlResult.IgnoredExceptions) {
+					ToolStripMenuItem tsmi = new ToolStripMenuItem(ex.Message);
+					tsmi.Tag = ex;
+					tsmi.Click += delegate(object sender, EventArgs e) {
+						this.exceptionDialog1.Exception =  (sender as ToolStripMenuItem).Tag as Exception;
+						this.exceptionDialog1.ShowDialog();
+					};
+					this.tsddbExceptions.DropDownItems.Add(tsmi);
+				}
+			}
+			this.tsddbExceptions.Enabled = this.tsddbExceptions.HasDropDownItems;
+		}
 		private void CreateFilterRegex() {
 			if (!this.CanUseMigemo) {
 				return;
@@ -393,11 +405,6 @@ namespace Yusen.GExplorer {
 			this.UpdateView();
 		}
 
-		private void listView1_SelectedIndexChanged(object sender, EventArgs e) {
-			if (null != this.SelectedContentsChanged) {
-				this.SelectedContentsChanged(this, new SelectedContentsChangedEventArgs(this.SelectedContents));
-			}
-		}
 		private void listView1_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e) {
 			if (null != this.ContentSelectionChanged) {
 				this.ContentSelectionChanged(this, new ContentSelectionChangedEventArgs(e.Item.Tag as ContentAdapter, e.IsSelected));
@@ -486,6 +493,17 @@ namespace Yusen.GExplorer {
 		}
 		private void tsmiCopyNameAndDetailUri_Click(object sender, EventArgs e) {
 			ContentAdapter.CopyNamesAndUris(this.SelectedContents);
+		}
+		private void tsmiRemoveCache_Click(object sender, EventArgs e) {
+			int succeeded = 0;
+			int failed = 0;
+			foreach (ContentAdapter cont in this.SelectedContents) {
+				if (Cache.Instance.ContentCacheController.RemoveCache(cont.ContentId)) {
+					succeeded++;
+				} else {
+					failed++;
+				}
+			}
 		}
 		private void tsmiAddNgWithId_Click(object sender, EventArgs e) {
 			foreach (ContentAdapter cont in this.SelectedContents) {

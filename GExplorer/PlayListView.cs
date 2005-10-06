@@ -8,7 +8,6 @@ using Yusen.GCrawler;
 
 namespace Yusen.GExplorer {
 	sealed partial class PlayListView : UserControl, IHasSettings<PlayListViewSettings> {
-		public event EventHandler<SelectedContentsChangedEventArgs> SelectedContentsChanged;
 		public event EventHandler<ContentSelectionChangedEventArgs> ContentSelectionChanged;
 
 		public PlayListView() {
@@ -43,7 +42,7 @@ namespace Yusen.GExplorer {
 			settings.ColWidthId = this.chId.Width;
 			settings.ColWidthName = this.chName.Width;
 			settings.ColWidthDuration = this.chDuration.Width;
-			settings.ColWidthDeadline = this.chDeadLine.Width;
+			settings.ColWidthDeadline = this.chDeadline.Width;
 			settings.ColWidthComment = this.chComment.Width;
 		}
 		public void ApplySettings(PlayListViewSettings settings) {
@@ -51,7 +50,7 @@ namespace Yusen.GExplorer {
 			this.chId.Width = settings.ColWidthId ?? this.chId.Width;
 			this.chName.Width = settings.ColWidthName ?? this.chName.Width;
 			this.chDuration.Width = settings.ColWidthDuration ?? this.chDuration.Width;
-			this.chDeadLine.Width = settings.ColWidthDeadline ?? this.chDeadLine.Width;
+			this.chDeadline.Width = settings.ColWidthDeadline ?? this.chDeadline.Width;
 			this.chComment.Width = settings.ColWidthComment ?? this.chComment.Width;
 		}
 
@@ -81,7 +80,7 @@ namespace Yusen.GExplorer {
 		private void UpdateItems() {
 			this.listView1.Items.Clear();
 			foreach (ContentAdapter cont in PlayList.Instance) {
-				ListViewItem lvi = new ListViewItem(new string[] { cont.ContentId, cont.DisplayName, cont.GTimeSpan.ToString(), cont.DeadLine, cont.Comment });
+				ListViewItem lvi = new ListViewItem(new string[] { cont.ContentId, cont.DisplayName, cont.GTimeSpan.ToString(), cont.Deadline, cont.Comment });
 				lvi.Tag = cont;
 				this.listView1.Items.Add(lvi);
 			}
@@ -96,18 +95,21 @@ namespace Yusen.GExplorer {
 			}
 		}
 		private void UpdateStatusBarText() {
-			string num = "数: " + this.listView1.Items.Count.ToString();
-			TimeSpan totalTimeSpan = new TimeSpan();
-			bool hasExactTotalTimeSpan = true;
-			foreach (ListViewItem lvi in this.listView1.Items) {
-				ContentAdapter ca = lvi.Tag as ContentAdapter;
-				if (ca.GTimeSpan.CanParse) {
-					totalTimeSpan += ca.GTimeSpan.TimeSpan;
-				} else {
-					hasExactTotalTimeSpan = false;
-				}
-			}
-			string time = "時間: " + totalTimeSpan.ToString() + (hasExactTotalTimeSpan ? "" : "+?");
+			int totalNum = PlayList.Instance.Count;
+			TimeSpan totalTimeSpan;
+			bool hasExactTotalTimeSpan;
+			ContentAdapter.TotalTimeOf(PlayList.Instance, out totalTimeSpan, out hasExactTotalTimeSpan);
+
+			int selectedNum = this.listView1.SelectedIndices.Count;
+			TimeSpan selectedTimeSpan;
+			bool hasExactSelectedTimeSpan;
+			ContentAdapter.TotalTimeOf(this.SelectedContents, out selectedTimeSpan, out hasExactSelectedTimeSpan);
+
+			string num = "数: " + selectedNum.ToString() + " / " + totalNum.ToString();
+			string time = "時間: "
+				+ selectedTimeSpan.ToString() + (hasExactSelectedTimeSpan ? "" : "+?")
+				+ " / "
+				+ totalTimeSpan.ToString() + (hasExactTotalTimeSpan ? "" : "+?");
 			this.tslMessage.Text = num + "   " + time;
 		}
 		private void UpdateUserCommandsMenu() {
@@ -150,12 +152,9 @@ namespace Yusen.GExplorer {
 					break;
 			}
 		}
-		private void listView1_SelectedIndexChanged(object sender, EventArgs e) {
-			if (null != this.SelectedContentsChanged) {
-				this.SelectedContentsChanged(this, new SelectedContentsChangedEventArgs(this.SelectedContents));
-			}
-		}
 		private void listView1_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e) {
+			this.timerSumSelected.Start();
+			
 			if (null != this.ContentSelectionChanged) {
 				this.ContentSelectionChanged(this, new ContentSelectionChangedEventArgs(e.Item.Tag as ContentAdapter, e.IsSelected));
 			}
@@ -185,19 +184,13 @@ namespace Yusen.GExplorer {
 			this.inputBoxDialog1.Message = "追加するコンテンツのIDを入力してください．";
 			this.inputBoxDialog1.Input = "cnt0000000";
 			if (DialogResult.OK == this.inputBoxDialog1.ShowDialog()) {
-				GContent cont;
-				if (GContent.TryDownload(this.inputBoxDialog1.Input, out cont)) {
-					ContentAdapter ca = new ContentAdapter(cont);
-					if (PlayList.Instance.Contains(ca)) {
-						MessageBox.Show("指定したIDはすでにプレイリストに存在します．",
-							title, MessageBoxButtons.OK, MessageBoxIcon.Error);
-					} else {
-						PlayList.Instance.AddIfNotExists(ca);
-					}
-				} else {
-					MessageBox.Show(
-						"指定されたIDに関する情報が取得できませんでした．",
+				GContent cont = GContent.DoDownload(this.inputBoxDialog1.Input);
+				ContentAdapter ca = new ContentAdapter(cont);
+				if (PlayList.Instance.Contains(ca)) {
+					MessageBox.Show("指定したIDはすでにプレイリストに存在します．",
 						title, MessageBoxButtons.OK, MessageBoxIcon.Error);
+				} else {
+					PlayList.Instance.AddIfNotExists(ca);
 				}
 			}
 		}
@@ -252,6 +245,17 @@ namespace Yusen.GExplorer {
 		}
 		private void tsmiSerializePlayListNow_Click(object sender, EventArgs e) {
 			PlayList.Instance.SerializeItems();
+		}
+		private void tsmiRemoveUnreachables_Click(object sender, EventArgs e) {
+			PlayList.Instance.BeginUpdate();
+			List<string> reachable = Cache.Instance.GetSortedReachableContentIds();
+			foreach (ListViewItem lvi in this.listView1.Items) {
+				ContentAdapter cont = lvi.Tag as ContentAdapter;
+				if (reachable.BinarySearch(cont.ContentId) < 0) {
+					PlayList.Instance.Remove(cont);
+				}
+			}
+			PlayList.Instance.EndUpdate();
 		}
 		private void tsmiClearPlayList_Click(object sender, EventArgs e) {
 			switch (MessageBox.Show("プレイリスト内の全項目を削除します．よろしいですか？", "プレイリスト内の全項目を削除", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2)) {
@@ -357,6 +361,12 @@ namespace Yusen.GExplorer {
 				e.Cancel = true;
 			}
 		}
+
+		private void timerSumSelected_Tick(object sender, EventArgs e) {
+			this.timerSumSelected.Stop();
+			this.UpdateStatusBarText();
+		}
+
 	}
 	
 	public class PlayListViewSettings {
