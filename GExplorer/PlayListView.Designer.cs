@@ -75,8 +75,8 @@ namespace Yusen.GExplorer {
 			this.sfdAsx = new System.Windows.Forms.SaveFileDialog();
 			this.ofdXml = new System.Windows.Forms.OpenFileDialog();
 			this.sfdXml = new System.Windows.Forms.SaveFileDialog();
-			this.inputBoxDialog1 = new Yusen.GExplorer.InputBoxDialog();
 			this.timerSumSelected = new System.Windows.Forms.Timer(this.components);
+			this.inputBoxDialog1 = new Yusen.GExplorer.InputBoxDialog();
 			this.toolStripContainer1.ContentPanel.SuspendLayout();
 			this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
 			this.toolStripContainer1.SuspendLayout();
@@ -464,16 +464,16 @@ namespace Yusen.GExplorer {
 			this.sfdXml.Filter = "XML files (*.xml)|*.xml|All files (*.*)|*.*";
 			this.sfdXml.RestoreDirectory = true;
 			// 
+			// timerSumSelected
+			// 
+			this.timerSumSelected.Interval = 10;
+			this.timerSumSelected.Tick += new System.EventHandler(this.timerSumSelected_Tick);
+			// 
 			// inputBoxDialog1
 			// 
 			this.inputBoxDialog1.Input = null;
 			this.inputBoxDialog1.Message = null;
 			this.inputBoxDialog1.Title = null;
-			// 
-			// timerSumSelected
-			// 
-			this.timerSumSelected.Interval = 10;
-			this.timerSumSelected.Tick += new System.EventHandler(this.timerSumSelected_Tick);
 			// 
 			// PlayListView
 			// 
@@ -546,8 +546,8 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator9;
 		private System.Windows.Forms.ToolStripMenuItem tsmiRefleshView;
 		private System.Windows.Forms.ToolStripMenuItem tsmiImportAppend;
-		private InputBoxDialog inputBoxDialog1;
 		private System.Windows.Forms.Timer timerSumSelected;
 		private System.Windows.Forms.ToolStripMenuItem tsmiRemoveUnreachables;
+		private InputBoxDialog inputBoxDialog1;
 	}
 }

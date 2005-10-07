@@ -87,33 +87,4 @@ namespace Yusen.GCrawler {
 			return Path.Combine(this.cacheDir, contId + ".xml");
 		}
 	}
-	
-	[Serializable]
-	public class ContentCacheControllerSortedDic : IContentCacheController {
-		private SortedDictionary<string, ContentCache> dic = new SortedDictionary<string, ContentCache>();
-		
-		public ContentCacheControllerSortedDic() {
-		}
-		
-		public bool TryGetCache(string contentId, out ContentCache cache) {
-			lock (this) {
-				return this.dic.TryGetValue(contentId, out cache);
-			}
-		}
-		public bool RemoveCache(string contentId) {
-			lock (this) {
-				return this.dic.Remove(contentId);
-			}
-		}
-		public void AddToCache(GContent cont) {
-			lock (this) {
-				this.dic.Add(cont.ContentId, new ContentCache(cont, DateTime.Now));
-			}
-		}
-		public ReadOnlyCollection<string> ListAllCacheKeys() {
-			lock (this) {
-				return new List<string>(this.dic.Keys).AsReadOnly();
-			}
-		}
-	}
 }

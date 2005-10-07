@@ -35,6 +35,9 @@ namespace Yusen.GExplorer {
 
 			this.UpdateStatusBarText();
 			this.UpdateUserCommandsMenu();
+
+			//リスト先頭を表示
+			this.ScrollToTop();
 		}
 
 		public void FillSettings(PlayListViewSettings settings) {
@@ -69,6 +72,46 @@ namespace Yusen.GExplorer {
 				}
 			}
 		}
+		public ContentAdapter FocusedContent {
+			get {
+				ListViewItem lvi = this.listView1.FocusedItem;
+				if (null != lvi) {
+					return lvi.Tag as ContentAdapter;
+				}
+				return null;
+			}
+			set {
+				if (null != value) {
+					foreach (ListViewItem lvi in this.listView1.Items) {
+						if (value.Equals(lvi.Tag)) {
+							this.listView1.FocusedItem = lvi;
+							return;
+						}
+					}
+				}
+				this.listView1.FocusedItem = null;
+			}
+		}
+		public ContentAdapter TopContent {
+			get {
+				ListViewItem lvi = this.listView1.TopItem;
+				if (null != lvi) {
+					return lvi.Tag as ContentAdapter;
+				}
+				return null;
+			}
+			set {
+				if (null != value) {
+					foreach (ListViewItem lvi in this.listView1.Items) {
+						if (value.Equals(lvi.Tag)) {
+							this.listView1.TopItem = lvi;
+							return;
+						}
+					}
+				}
+				this.listView1.TopItem = null;
+			}
+		}
 		public bool MultiSelectEnabled {
 			get { return this.tsmiMultiSelectEnabled.Checked; }
 			set {
@@ -76,13 +119,43 @@ namespace Yusen.GExplorer {
 				this.listView1.MultiSelect = value;
 			}
 		}
-		
+
+		private bool CheckIfWholeUpdateItemsRequired() {
+			int len = PlayList.Instance.Count;
+			if (this.listView1.Items.Count != len) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+
 		private void UpdateItems() {
-			this.listView1.Items.Clear();
-			foreach (ContentAdapter cont in PlayList.Instance) {
-				ListViewItem lvi = new ListViewItem(new string[] { cont.ContentId, cont.DisplayName, cont.GTimeSpan.ToString(), cont.Deadline, cont.Comment });
-				lvi.Tag = cont;
-				this.listView1.Items.Add(lvi);
+			int def = PlayList.Instance.Count - this.listView1.Items.Count;
+			if (0 == def) {
+				//個数が変わらないので text と tag のみ更新
+				int len = PlayList.Instance.Count;
+				for (int i = 0; i<len; i++) {
+					ContentAdapter cont = PlayList.Instance[i];
+					ListViewItem lvi = this.listView1.Items[i];
+					lvi.SubItems[0].Text = cont.ContentId;
+					lvi.SubItems[1].Text = cont.DisplayName;
+					lvi.SubItems[2].Text = cont.GTimeSpan.ToString();
+					lvi.SubItems[3].Text = cont.Deadline;
+					lvi.SubItems[4].Text = cont.Comment;
+					lvi.Tag = cont;
+				}
+			} else {
+				//個数が変わったのでアイテムの作り直し
+				this.listView1.Items.Clear();
+				foreach (ContentAdapter cont in PlayList.Instance) {
+					ListViewItem lvi = new ListViewItem(new string[] { cont.ContentId, cont.DisplayName, cont.GTimeSpan.ToString(), cont.Deadline, cont.Comment });
+					lvi.Tag = cont;
+					this.listView1.Items.Add(lvi);
+				}
+				if (def>0) {
+					//個数が増えたのならばおそらく末尾への追加だろう
+					this.TopContent = PlayList.Instance[PlayList.Instance.Count -1];
+				}
 			}
 		}
 		private void UpdateBoldness() {
@@ -111,6 +184,16 @@ namespace Yusen.GExplorer {
 				+ " / "
 				+ totalTimeSpan.ToString() + (hasExactTotalTimeSpan ? "" : "+?");
 			this.tslMessage.Text = num + "   " + time;
+		}
+		private void ScrollToTop() {
+			if (0 < this.listView1.Items.Count) {
+				this.listView1.TopItem = this.listView1.Items[0];
+			}
+		}
+		private void ScrollToBottom() {
+			if (0 < this.listView1.Items.Count) {
+				this.listView1.TopItem = this.listView1.Items[this.listView1.Items.Count -1];
+			}
 		}
 		private void UpdateUserCommandsMenu() {
 			this.tsmiCommands.DropDownItems.Clear();
@@ -198,10 +281,7 @@ namespace Yusen.GExplorer {
 			foreach (ContentAdapter cont in PlayList.Instance) {
 				cont.TryResetDeadline();
 			}
-			this.listView1.BeginUpdate();
-			this.UpdateItems();
-			this.UpdateBoldness();
-			this.listView1.EndUpdate();
+			this.tsmiRefleshView.PerformClick();
 		}
 		private void tsmiRefleshView_Click(object sender, EventArgs e) {
 			this.listView1.BeginUpdate();
@@ -290,6 +370,7 @@ namespace Yusen.GExplorer {
 							cont.Comment = comment;
 						}
 						this.tsmiRefleshView.PerformClick();
+						this.SelectedContents = conts;
 						break;
 				}
 			}
@@ -301,6 +382,7 @@ namespace Yusen.GExplorer {
 			conts.ForEach(PlayList.Instance.MoveToTop);
 			PlayList.Instance.EndUpdate();
 			this.SelectedContents = conts.ToArray();
+			this.ScrollToTop();
 		}
 		private void tsmiMoveUp_Click(object sender, EventArgs e) {
 			List<ContentAdapter> conts = new List<ContentAdapter>(this.SelectedContents);
@@ -323,6 +405,7 @@ namespace Yusen.GExplorer {
 			conts.ForEach(PlayList.Instance.MoveToBottom);
 			PlayList.Instance.EndUpdate();
 			this.SelectedContents = conts.ToArray();
+			this.ScrollToBottom();
 		}
 		private void tsmiRemoveItem_Click(object sender, EventArgs e) {
 			List<ContentAdapter> conts = new List<ContentAdapter>(this.SelectedContents);

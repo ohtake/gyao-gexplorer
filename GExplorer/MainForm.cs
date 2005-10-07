@@ -5,12 +5,9 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.Threading;
 using Yusen.GCrawler;
-using System.Runtime.InteropServices;
 
 namespace Yusen.GExplorer {
 	sealed partial class MainForm : FormSettingsBase, IFormWithSettings<MainFormSettings> {
-		[DllImport("user32.dll")]
-		static extern bool ShowWindow(IntPtr hWnd, SW nCmdShow);
 		
 		private sealed class MergedGenre : GGenre {
 			public MergedGenre() : base(0, "dummy", "(É}Å[ÉW)", Color.Black){
@@ -250,17 +247,20 @@ namespace Yusen.GExplorer {
 		private void tsmiGlobalSettingsEditor_Click(object sender, EventArgs e) {
 			GlobalSettingsEditor gse = GlobalSettingsEditor.Instance;
 			gse.Owner = this;
-			MainForm.ShowWindow(gse.Handle, SW.ShowNA);
+			gse.Show();
+			gse.Focus();
 		}
 		private void tsmiUserCommandsEditor_Click(object sender, EventArgs e) {
 			UserCommandsEditor uce = UserCommandsEditor.Instance;
 			uce.Owner = this;
-			MainForm.ShowWindow(uce.Handle, SW.ShowNA);
+			uce.Show();
+			uce.Focus();
 		}
 		private void tsmiNgContentsEditor_Click(object sender, EventArgs e) {
 			NgContentsEditor nce = NgContentsEditor.Instance;
 			nce.Owner = this;
-			MainForm.ShowWindow(nce.Handle, SW.ShowNA);
+			nce.Show();
+			nce.Focus();
 		}
 		private void tsmiMergeResults_Click(object sender, EventArgs e) {
 			GGenre mergedGenre = new MergedGenre();

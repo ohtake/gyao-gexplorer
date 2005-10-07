@@ -7,9 +7,9 @@ using System.Web;
 namespace Yusen.GCrawler {
 	static class HtmlUtility {
 		private static readonly Regex regexWhiteSpaces = new Regex(@"\s+");
-		private static readonly Regex regexTabParaBegin = new Regex(@"<[Pp]>");
-		private static readonly Regex regexTabParaEnd = new Regex(@"</[Pp]>");
-		private static readonly Regex regexTabBreak = new Regex(@"<[Bb][Rr] */?>");
+		private static readonly Regex regexTabParaBegin = new Regex(@"<p>", RegexOptions.IgnoreCase);
+		private static readonly Regex regexTabParaEnd = new Regex(@"</p>", RegexOptions.IgnoreCase);
+		private static readonly Regex regexTabBreak = new Regex(@"<br */?>", RegexOptions.IgnoreCase);
 		private static readonly Regex regexTab = new Regex(@"<[^>]*>");
 		
 		public static string HtmlToText(string input) {

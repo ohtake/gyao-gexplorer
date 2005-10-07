@@ -9,27 +9,17 @@ using System.Collections.ObjectModel;
 namespace Yusen.GCrawler {
 	[Serializable]
 	public class GPackage {
-		private readonly static Regex regexAnchorHref = new Regex(@"http://www.gyao.jp/sityou/catelist/pac_id/(pac[0-9]+)/");
-		private readonly static Regex regexAnchorJscript = new Regex(@"javascript:gotoList\((?:%20| )?'(pac[0-9]+)(?:%20| )?'\);");
-		private readonly static Regex regexImageSrc = new Regex(@"http://www.gyao.jp/img/info/[0-9a-z]+/(pac[0-9]+)_[0-9a-z]*\.(?:jpg|gif)");
-		private readonly static IEnumerable<Regex> regexesExtractor;
-		
+		private readonly static Regex regexId = new Regex("pac[0-9]{7}");
+
 		private readonly static Regex regexPackageName = new Regex(@"<td class=""title12b"">(.+)</td>");
 		private const string strTitleDate = "<td class=\"titledate10\">";
 		private readonly static Regex regexAnchorHref2 = new Regex(@"<a href=""(.+?)""");
 		
-		static GPackage() {
-			GPackage.regexesExtractor = new Regex[]{
-				GPackage.regexAnchorHref, GPackage.regexAnchorJscript, GPackage.regexImageSrc,};
-		}
-		
 		public static bool TryExtractPackageId(Uri uri, out string id) {
-			foreach (Regex regex in GPackage.regexesExtractor) {
-				Match match = regex.Match(uri.AbsoluteUri);
-				if (match.Success) {
-					id = match.Groups[1].Value;
-					return true;
-				}
+			Match match = GPackage.regexId.Match(uri.AbsoluteUri);
+			if (match.Success) {
+				id = match.Value;
+				return true;
 			}
 			id = null;
 			return false;

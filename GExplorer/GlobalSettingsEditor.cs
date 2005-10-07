@@ -18,7 +18,6 @@ namespace Yusen.GExplorer {
 		
 		public GlobalSettingsEditor() {
 			InitializeComponent();
-			this.propertyGrid1.SelectedObject = GlobalSettings.Instance;
 		}
 
 		public void FillSettings(GlobalSettingsEditorSettings settings) {
@@ -32,6 +31,7 @@ namespace Yusen.GExplorer {
 		}
 		private void GlobalSettingsEditor_Load(object sender, EventArgs e) {
 			Utility.LoadSettingsAndEnableSaveOnClosed(this);
+			this.propertyGrid1.SelectedObject = GlobalSettings.Instance;
 		}
 	}
 

@@ -12,7 +12,6 @@ namespace Yusen.GExplorer {
 		/// <summary>The main entry point for the application.</summary>
 		[STAThread]
 		static void Main() {
-			
 			Application.EnableVisualStyles();
 			Application.ThreadException += new ThreadExceptionEventHandler(Application_ThreadException);
 			AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);

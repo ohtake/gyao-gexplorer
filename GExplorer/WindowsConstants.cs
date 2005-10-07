@@ -230,6 +230,7 @@ namespace Yusen.GExplorer {
 		SEPARATOR=0xF00F
 	}
 
+#if false
 	/// <summary>
 	/// ShowWindow
 	/// </summary>
@@ -248,4 +249,5 @@ namespace Yusen.GExplorer {
 		ForceMinimize = 11,
 		Max = 11,
 	}
+#endif
 }
