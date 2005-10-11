@@ -1,4 +1,4 @@
-GyaO 専用ブラウザ GExplorer 1.2.5.1
+GyaO 専用ブラウザ GExplorer 1.2.5.2
 
 ◆必要な環境
 .NET Framework 2.0.50215 がインストールされており正常に動作していること
@@ -12,6 +12,7 @@ http://www.microsoft.com/downloads/details.aspx?displaylang=ja&FamilyID=7abd8c8f
 Windows 98, Me, 2000 では以下の機能が働きません
 ・クロール結果ビュー > 設定 > パッケージごとに分類
 ・グローバル設定 > GUI > ビジュアルスタイル
+・デフォルトのアイコンの正常な表示
 
 ◆C/Migemo
 クロール結果のフィルタ処理を行うために C/Migemo を利用します

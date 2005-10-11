@@ -4,6 +4,8 @@ using System.ComponentModel;
 using GBitRate = Yusen.GCrawler.GBitRate;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
+using Microsoft.Win32;
+using System.IO;
 
 namespace Yusen.GExplorer {
 	public class GlobalSettings {
@@ -106,6 +108,58 @@ namespace Yusen.GExplorer {
 		public string BrowserPath {
 			get { return this.browserPath; }
 			set { this.browserPath = value; }
+		}
+
+		public bool TryGetUserNumberIfRequired() {
+			if (!this.IsCookieRequired) {
+				return true;
+			}
+			//レジストリからの取得を試みる
+			try {
+				using (RegistryKey cu = Registry.CurrentUser)
+				using (RegistryKey software = cu.OpenSubKey("SOFTWARE"))
+				using (RegistryKey usen = software.OpenSubKey("USEN"))
+				using (RegistryKey gyaoTool = usen.OpenSubKey("GyaOTool")) {
+					GlobalSettings.Instance.UserNo = int.Parse(gyaoTool.GetValue("Cookie_UserId") as string);
+				}
+			} catch {
+			}
+			if (!this.IsCookieRequired) {
+				return true;
+			}
+			//ファイルシステム上のクッキーから取得を試みる
+			try {
+				DirectoryInfo cookieDir = new DirectoryInfo(Environment.GetFolderPath(Environment.SpecialFolder.Cookies));
+				if (cookieDir.Exists) {
+					FileInfo[] fis = cookieDir.GetFiles("*@gyao*.txt");
+					foreach (FileInfo fi in fis) {
+						using (TextReader reader = new StreamReader(fi.FullName)) {
+							string line;
+							while (null != (line=reader.ReadLine())) {
+								if ("Cookie_UserId" == line) {
+									GlobalSettings.Instance.UserNo = int.Parse(reader.ReadLine());
+									break;
+								}
+							}
+							if (!GlobalSettings.Instance.IsCookieRequired) {
+								break;
+							}
+						}
+					}
+				}
+			} catch {
+			}
+			if (!this.IsCookieRequired) {
+				return true;
+			}
+			//ブラウザ上からクッキーを取得する
+			using (CookieFetchForm cff =  new CookieFetchForm()) {
+				cff.ShowDialog();
+			}
+			if (!this.IsCookieRequired) {
+				return true;
+			}
+			return false;
 		}
 	}
 }

@@ -266,6 +266,13 @@ namespace Yusen.GExplorer {
 				this.wmpMain.URL = this.CurrentContent.MediaFileUri.AbsoluteUri;
 			}
 		}
+		private void tsmiReloadWithLicense_Click(object sender, EventArgs e) {
+			if (this.CurrentChapter.HasValue) {
+				this.wmpMain.URL = this.CurrentContent.ChapterPlayListUriOf(this.CurrentChapter.Value).AbsoluteUri;
+			} else {
+				this.wmpMain.URL = this.CurrentContent.PlayListUri.AbsoluteUri;
+			}
+		}
 		private void tsmiRemoveAndClose_Click(object sender, EventArgs e) {
 			PlayList.Instance.Remove(this.CurrentContent);
 			this.Close();
@@ -419,6 +426,10 @@ namespace Yusen.GExplorer {
 		private void wmpMain_PlayStateChange(object sender, _WMPOCXEvents_PlayStateChangeEvent e) {
 			switch((WMPPlayState)e.newState){
 				case WMPPlayState.wmppsMediaEnded:
+					if (this.wmpMain.currentMedia.sourceURL.Contains("cm_license")) {
+						// cm_license ‚È‚ç–³Ž‹
+						break;
+					}
 					this.fullScreenAtPrev = this.wmpMain.fullScreen;
 					Thread t = new Thread(new ThreadStart(delegate {
 						Thread.Sleep(100);//“K“–‚·‚¬

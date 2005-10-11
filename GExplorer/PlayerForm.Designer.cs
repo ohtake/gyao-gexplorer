@@ -44,6 +44,8 @@ namespace Yusen.GExplorer {
 			this.tsmiFile = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiPlayChapter = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiReload = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
+			this.tsmiReloadWithLicense = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiRemoveAndClose = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiClose = new System.Windows.Forms.ToolStripMenuItem();
@@ -271,7 +273,9 @@ namespace Yusen.GExplorer {
 			// 
 			this.tsmiFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiPlayChapter,
+            this.toolStripSeparator9,
             this.tsmiReload,
+            this.tsmiReloadWithLicense,
             this.toolStripSeparator2,
             this.tsmiRemoveAndClose,
             this.tsmiClose});
@@ -290,6 +294,18 @@ namespace Yusen.GExplorer {
 			this.tsmiReload.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.R)));
 			this.tsmiReload.Text = "ìÆâÊÇÃçƒì«Ç›çûÇ›(&R)";
 			this.tsmiReload.Click += new System.EventHandler(this.tsmiReload_Click);
+			// 
+			// toolStripSeparator9
+			// 
+			this.toolStripSeparator9.Name = "toolStripSeparator9";
+			// 
+			// tsmiReloadWithLicense
+			// 
+			this.tsmiReloadWithLicense.Name = "tsmiReloadWithLicense";
+			this.tsmiReloadWithLicense.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Shift | System.Windows.Forms.Keys.Control) 
+            | System.Windows.Forms.Keys.R)));
+			this.tsmiReloadWithLicense.Text = "cm_license ïtÇ´ÇÃÇçƒì«Ç›çûÇ› (&L)";
+			this.tsmiReloadWithLicense.Click += new System.EventHandler(this.tsmiReloadWithLicense_Click);
 			// 
 			// toolStripSeparator2
 			// 
@@ -623,5 +639,7 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ToolStripMenuItem tsmiBannerCopyImage;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator8;
 		private System.Windows.Forms.ToolStripMenuItem tsmiDisableScreenSaver;
+		private System.Windows.Forms.ToolStripMenuItem tsmiReloadWithLicense;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator9;
 	}
 }

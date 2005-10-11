@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Yusen.GExplorer</RootNamespace>
     <AssemblyName>GExplorer</AssemblyName>
-    <ApplicationIcon>Icons\GExplorer_32x32_16.ico</ApplicationIcon>
+    <ApplicationIcon>Icons\GExplorer_16-32-48_XP.ico</ApplicationIcon>
     <IsWebBootstrapper>true</IsWebBootstrapper>
     <PublishUrl>http://localhost/GExplorer/</PublishUrl>
     <Install>true</Install>
@@ -47,12 +47,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Configuration.Install" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Messaging" />
-    <Reference Include="System.Transactions" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -267,6 +262,8 @@
     <Content Include="ChangeLog.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Icons\GExplorer_16_XP.ico" />
+    <Content Include="Icons\GExplorer_16-32-48_XP.ico" />
     <Content Include="Icons\GExplorer_32x32_16.ico" />
     <Content Include="Icons\GExplorer_16x16_16.ico" />
     <Content Include="Icons\Icon_13_756.ico" />

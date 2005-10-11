@@ -71,7 +71,7 @@ namespace Yusen.GExplorer {
             this.tsmiTimeTables});
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
-			this.menuStrip1.Size = new System.Drawing.Size(772, 24);
+			this.menuStrip1.Size = new System.Drawing.Size(842, 24);
 			this.menuStrip1.TabIndex = 0;
 			this.menuStrip1.Text = "menuStrip1";
 			// 
@@ -167,7 +167,7 @@ namespace Yusen.GExplorer {
 			this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.toolStripContainer1.Location = new System.Drawing.Point(0, 0);
 			this.toolStripContainer1.Name = "toolStripContainer1";
-			this.toolStripContainer1.Size = new System.Drawing.Size(772, 516);
+			this.toolStripContainer1.Size = new System.Drawing.Size(842, 596);
 			this.toolStripContainer1.TabIndex = 0;
 			this.toolStripContainer1.Text = "toolStripContainer1";
 			// 
@@ -188,7 +188,7 @@ namespace Yusen.GExplorer {
 			this.statusStrip1.Location = new System.Drawing.Point(0, 0);
 			this.statusStrip1.Name = "statusStrip1";
 			this.statusStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.ManagerRenderMode;
-			this.statusStrip1.Size = new System.Drawing.Size(772, 22);
+			this.statusStrip1.Size = new System.Drawing.Size(842, 23);
 			this.statusStrip1.TabIndex = 1;
 			this.statusStrip1.Text = "statusStrip1";
 			// 
@@ -209,7 +209,7 @@ namespace Yusen.GExplorer {
 			this.gwbMain.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.gwbMain.Location = new System.Drawing.Point(0, 0);
 			this.gwbMain.Name = "gwbMain";
-			this.gwbMain.Size = new System.Drawing.Size(772, 445);
+			this.gwbMain.Size = new System.Drawing.Size(842, 524);
 			this.gwbMain.StatusTextChanged += new System.EventHandler(this.gwbMain_StatusTextChanged);
 			this.gwbMain.CanGoForwardChanged += new System.EventHandler(this.gwbMain_CanGoForwardChanged);
 			this.gwbMain.ProgressChanged += new System.Windows.Forms.WebBrowserProgressChangedEventHandler(this.gwbMain_ProgressChanged);
@@ -229,7 +229,7 @@ namespace Yusen.GExplorer {
             this.tsbStop});
 			this.tsStandard.Location = new System.Drawing.Point(0, 24);
 			this.tsStandard.Name = "tsStandard";
-			this.tsStandard.Size = new System.Drawing.Size(147, 25);
+			this.tsStandard.Size = new System.Drawing.Size(193, 25);
 			this.tsStandard.TabIndex = 3;
 			this.tsStandard.Text = "標準バー";
 			// 
@@ -239,7 +239,7 @@ namespace Yusen.GExplorer {
 			this.tsbBack.Image = ((System.Drawing.Image)(resources.GetObject("tsbBack.Image")));
 			this.tsbBack.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tsbBack.Name = "tsbBack";
-			this.tsbBack.Text = "戻る";
+			this.tsbBack.Text = "戻る(&B)";
 			this.tsbBack.Click += new System.EventHandler(this.tsbBack_Click);
 			// 
 			// tsbForward
@@ -248,7 +248,7 @@ namespace Yusen.GExplorer {
 			this.tsbForward.Image = ((System.Drawing.Image)(resources.GetObject("tsbForward.Image")));
 			this.tsbForward.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tsbForward.Name = "tsbForward";
-			this.tsbForward.Text = "進む";
+			this.tsbForward.Text = "進む(&F)";
 			this.tsbForward.Click += new System.EventHandler(this.tsbForward_Click);
 			// 
 			// tsbStop
@@ -257,7 +257,7 @@ namespace Yusen.GExplorer {
 			this.tsbStop.Image = ((System.Drawing.Image)(resources.GetObject("tsbStop.Image")));
 			this.tsbStop.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tsbStop.Name = "tsbStop";
-			this.tsbStop.Text = "中止";
+			this.tsbStop.Text = "中止(&S)";
 			this.tsbStop.Click += new System.EventHandler(this.tsbStop_Click);
 			// 
 			// tsAddress
@@ -268,7 +268,7 @@ namespace Yusen.GExplorer {
             this.tslAddress,
             this.tscbAddress,
             this.tsbGo});
-			this.tsAddress.Location = new System.Drawing.Point(147, 24);
+			this.tsAddress.Location = new System.Drawing.Point(193, 24);
 			this.tsAddress.Name = "tsAddress";
 			this.tsAddress.Size = new System.Drawing.Size(581, 25);
 			this.tsAddress.TabIndex = 1;
@@ -302,7 +302,7 @@ namespace Yusen.GExplorer {
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(772, 516);
+			this.ClientSize = new System.Drawing.Size(842, 596);
 			this.Controls.Add(this.toolStripContainer1);
 			this.MainMenuStrip = this.menuStrip1;
 			this.Name = "BrowserForm";

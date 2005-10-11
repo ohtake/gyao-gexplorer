@@ -80,6 +80,14 @@ namespace Yusen.GCrawler {
 				+ "&userNo=" + userNo
 				+ "&rateId=" + "bit" + ((int)bitrate).ToString("0000000"));
 		}
+		public static Uri CreatePlayListUri(string contId, int userNo, GBitRate bitrate, int chapterNo) {
+			return new Uri(
+				"http://www.gyao.jp/sityou/asx.php?"
+				+ "contentsId=" + contId
+				+ "&userNo=" + userNo
+				+ "&rateId=" + "bit" + ((int)bitrate).ToString("0000000")
+				+ "&chapterNo=" + chapterNo.ToString());
+		}
 		public static Uri CreateMediaFileUri(string contId, int userNo, GBitRate bitrate) {
 			return new Uri(
 				"rtsp://wms.cd.gyao.jp/gyaovod01?QueryString="

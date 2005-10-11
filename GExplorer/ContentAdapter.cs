@@ -224,6 +224,9 @@ namespace Yusen.GExplorer {
 		public Uri ChapterMediaFileUriOf(int chapterNo) {
 			return GContent.CreateMediaFileUri(this.ContentId, GlobalSettings.Instance.UserNo, GlobalSettings.Instance.BitRate, chapterNo);
 		}
+		public Uri ChapterPlayListUriOf(int chapterNo) {
+			return GContent.CreatePlayListUri(this.ContentId, GlobalSettings.Instance.UserNo, GlobalSettings.Instance.BitRate, chapterNo);
+		}
 		public bool TryResetDeadline() {
 			if (Cache.Instance.DeadlineTableReadOnly.TryGetDeadline(this.ContentId, out this.deadline)) {
 				return true;
