@@ -20,9 +20,7 @@ namespace Yusen.GExplorer {
 			
 			//グローバル設定
 			GlobalSettings.TryDeserialize();
-			GlobalSettings.Instance.TryGetUserNumberIfRequired();
-			GlobalSettings.Serialize();
-			if (GlobalSettings.Instance.IsCookieRequired) {
+			if (!GlobalSettings.Instance.TryGetUserNumber()) {
 				MessageBox.Show(
 					"ユーザIDの取得に失敗したため " + Application.ProductName + " を終了します．",
 					Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);

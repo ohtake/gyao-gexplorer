@@ -52,6 +52,7 @@ namespace Yusen.GExplorer {
 			this.txtDeadline = new System.Windows.Forms.TextBox();
 			this.tabpDetail = new System.Windows.Forms.TabPage();
 			this.propgDetail = new System.Windows.Forms.PropertyGrid();
+			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this.splitContainer1.Panel1.SuspendLayout();
 			this.splitContainer1.Panel2.SuspendLayout();
 			this.splitContainer1.SuspendLayout();
@@ -104,12 +105,12 @@ namespace Yusen.GExplorer {
             this.tsmiCopyImageUri,
             this.tsmiCopyNameAndImageUri,
             this.tsmiCopyNameDetailImageUri,
+            this.toolStripSeparator2,
             this.tsmiCopyImage});
-			this.cmsImage.Location = new System.Drawing.Point(21, 36);
+			this.cmsImage.Location = new System.Drawing.Point(-24, -120);
 			this.cmsImage.Name = "cmsImage";
 			this.cmsImage.RightToLeft = System.Windows.Forms.RightToLeft.No;
-			this.cmsImage.Size = new System.Drawing.Size(311, 161);
-			this.cmsImage.Visible = true;
+			this.cmsImage.Size = new System.Drawing.Size(249, 148);
 			this.cmsImage.Opening += new System.ComponentModel.CancelEventHandler(this.cmsImage_Opening);
 			// 
 			// tsmiImageSize
@@ -135,13 +136,13 @@ namespace Yusen.GExplorer {
 			// tsmiCopyNameAndImageUri
 			// 
 			this.tsmiCopyNameAndImageUri.Name = "tsmiCopyNameAndImageUri";
-			this.tsmiCopyNameAndImageUri.Text = "コンテンツ名と画像URIをコピー(&B)";
+			this.tsmiCopyNameAndImageUri.Text = "名前と画像URIをコピー(&B)";
 			this.tsmiCopyNameAndImageUri.Click += new System.EventHandler(this.tsmiCopyNameAndImageUri_Click);
 			// 
 			// tsmiCopyNameDetailImageUri
 			// 
 			this.tsmiCopyNameDetailImageUri.Name = "tsmiCopyNameDetailImageUri";
-			this.tsmiCopyNameDetailImageUri.Text = "コンテンツ名と詳細ページURIと画像URIをコピー(&A)";
+			this.tsmiCopyNameDetailImageUri.Text = "名前，詳細URI，画像URIをコピー(&A)";
 			this.tsmiCopyNameDetailImageUri.Click += new System.EventHandler(this.tsmiCopyNameDetailImageUri_Click);
 			// 
 			// tsmiCopyImage
@@ -345,6 +346,10 @@ namespace Yusen.GExplorer {
 			this.propgDetail.Size = new System.Drawing.Size(216, 201);
 			this.propgDetail.TabIndex = 0;
 			// 
+			// toolStripSeparator2
+			// 
+			this.toolStripSeparator2.Name = "toolStripSeparator2";
+			// 
 			// ContentDetailView
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -397,5 +402,6 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ToolStripMenuItem tsmiCopyImage;
 		private System.Windows.Forms.Label label6;
 		private System.Windows.Forms.TextBox txtDeadline;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
 	}
 }

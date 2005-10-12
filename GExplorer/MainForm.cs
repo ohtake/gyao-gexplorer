@@ -8,9 +8,8 @@ using Yusen.GCrawler;
 
 namespace Yusen.GExplorer {
 	sealed partial class MainForm : FormSettingsBase, IFormWithSettings<MainFormSettings> {
-		
 		private sealed class MergedGenre : GGenre {
-			public MergedGenre() : base(0, "dummy", "(マージ)", Color.Black){
+			public MergedGenre() : base(0, "dummy", "(既得ジャンル)", Color.Black){
 			}
 			public override Uri TopPageUri {
 				get {return new Uri("about:blank");}
@@ -154,6 +153,7 @@ namespace Yusen.GExplorer {
 			}
 		}
 		private void MainForm_FormClosed(object sender, FormClosedEventArgs e) {
+			this.tsmiAbortCrawling.PerformClick();
 			UserCommandsManager.Instance.UserCommandsChanged -= new EventHandler(UserCommandsManager_UserCommandsChanged);
 		}
 		private void UserCommandsManager_UserCommandsChanged(object sender, EventArgs e) {

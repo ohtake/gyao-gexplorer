@@ -238,11 +238,13 @@ namespace Yusen.GExplorer {
 			// playListView1
 			// 
 			this.playListView1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.playListView1.FocusedContent = null;
 			this.playListView1.Location = new System.Drawing.Point(0, 0);
 			this.playListView1.MultiSelectEnabled = true;
 			this.playListView1.Name = "playListView1";
 			this.playListView1.Size = new System.Drawing.Size(548, 147);
 			this.playListView1.TabIndex = 0;
+			this.playListView1.TopContent = null;
 			this.playListView1.ContentSelectionChanged += new System.EventHandler<Yusen.GExplorer.ContentSelectionChangedEventArgs>(this.playListView1_ContentSelectionChanged);
 			// 
 			// contentDetailView1
@@ -355,7 +357,7 @@ namespace Yusen.GExplorer {
 			this.tsmiFocusOnResultAfterTabChanged.CheckOnClick = true;
 			this.tsmiFocusOnResultAfterTabChanged.CheckState = System.Windows.Forms.CheckState.Checked;
 			this.tsmiFocusOnResultAfterTabChanged.Name = "tsmiFocusOnResultAfterTabChanged";
-			this.tsmiFocusOnResultAfterTabChanged.Text = "ジャンルタブ切り替え後にクロール結果ビューにフォーカス(&F)";
+			this.tsmiFocusOnResultAfterTabChanged.Text = "ジャンルタブ切り替えでクロール結果ビューにフォーカス(&F)";
 			// 
 			// tsmiTools
 			// 
@@ -373,7 +375,7 @@ namespace Yusen.GExplorer {
 			// tsmiMergeResults
 			// 
 			this.tsmiMergeResults.Name = "tsmiMergeResults";
-			this.tsmiMergeResults.Text = "クロール結果をマージして表示(&M)";
+			this.tsmiMergeResults.Text = "既得ジャンルを結合して表示(&M)";
 			this.tsmiMergeResults.Click += new System.EventHandler(this.tsmiMergeResults_Click);
 			// 
 			// toolStripSeparator4
@@ -397,7 +399,7 @@ namespace Yusen.GExplorer {
 			// tsmiRemoveCachesUnreachable
 			// 
 			this.tsmiRemoveCachesUnreachable.Name = "tsmiRemoveCachesUnreachable";
-			this.tsmiRemoveCachesUnreachable.Text = "クロール結果で到達不可能なキャッシュを削除(&U)";
+			this.tsmiRemoveCachesUnreachable.Text = "到達不可キャッシュを削除(&U)";
 			this.tsmiRemoveCachesUnreachable.Click += new System.EventHandler(this.tsmiRemoveCachesUnreachable_Click);
 			// 
 			// tsmiRemoveCachesAll
@@ -417,7 +419,7 @@ namespace Yusen.GExplorer {
 			// tsmiRemoveDeadlineEntriesUnreacheable
 			// 
 			this.tsmiRemoveDeadlineEntriesUnreacheable.Name = "tsmiRemoveDeadlineEntriesUnreacheable";
-			this.tsmiRemoveDeadlineEntriesUnreacheable.Text = "クロール結果で到達不可なエントリーを削除(&U)";
+			this.tsmiRemoveDeadlineEntriesUnreacheable.Text = "到達不可エントリーを削除(&U)";
 			this.tsmiRemoveDeadlineEntriesUnreacheable.Click += new System.EventHandler(this.tsmiRemoveDeadlineEntriesUnreacheable_Click);
 			// 
 			// tsmiRemoveDeadlineEntriesAll

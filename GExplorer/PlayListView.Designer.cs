@@ -173,7 +173,8 @@ namespace Yusen.GExplorer {
 			this.cmsPlayListItem.Location = new System.Drawing.Point(21, 36);
 			this.cmsPlayListItem.Name = "cmsPlayListItem";
 			this.cmsPlayListItem.RightToLeft = System.Windows.Forms.RightToLeft.No;
-			this.cmsPlayListItem.Size = new System.Drawing.Size(306, 270);
+			this.cmsPlayListItem.Size = new System.Drawing.Size(220, 289);
+			this.cmsPlayListItem.Visible = true;
 			this.cmsPlayListItem.Opening += new System.ComponentModel.CancelEventHandler(this.cmsPlayListItem_Opening);
 			// 
 			// tsmiPlay
@@ -253,7 +254,7 @@ namespace Yusen.GExplorer {
 			// tsmiPlayWithBrowser
 			// 
 			this.tsmiPlayWithBrowser.Name = "tsmiPlayWithBrowser";
-			this.tsmiPlayWithBrowser.Text = "ウェブブラウザで再生(&I)";
+			this.tsmiPlayWithBrowser.Text = "ウェブブラウザで再生ページ(&I)";
 			this.tsmiPlayWithBrowser.Click += new System.EventHandler(this.tsmiPlayWithBrowser_Click);
 			// 
 			// tsmiBrowseDetail
@@ -269,24 +270,20 @@ namespace Yusen.GExplorer {
 			// tsmiCopyName
 			// 
 			this.tsmiCopyName.Name = "tsmiCopyName";
-			this.tsmiCopyName.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Shift | System.Windows.Forms.Keys.Control) 
-            | System.Windows.Forms.Keys.C)));
-			this.tsmiCopyName.Text = "コンテンツ名をコピー(&N)";
+			this.tsmiCopyName.Text = "名前をコピー(&N)";
 			this.tsmiCopyName.Click += new System.EventHandler(this.tsmiCopyName_Click);
 			// 
 			// tsmiCopyUri
 			// 
 			this.tsmiCopyUri.Name = "tsmiCopyUri";
-			this.tsmiCopyUri.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.Control) 
-            | System.Windows.Forms.Keys.C)));
-			this.tsmiCopyUri.Text = "詳細ページURIをコピー(&D)";
+			this.tsmiCopyUri.Text = "URIをコピー(&D)";
 			this.tsmiCopyUri.Click += new System.EventHandler(this.tsmiCopyUri_Click);
 			// 
 			// tsmiCopyNameAndUri
 			// 
 			this.tsmiCopyNameAndUri.Name = "tsmiCopyNameAndUri";
 			this.tsmiCopyNameAndUri.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
-			this.tsmiCopyNameAndUri.Text = "コンテンツ名と詳細ページURIをコピー(&B)";
+			this.tsmiCopyNameAndUri.Text = "名前とURIをコピー(&B)";
 			this.tsmiCopyNameAndUri.Click += new System.EventHandler(this.tsmiCopyNameAndUri_Click);
 			// 
 			// toolStripSeparator4
@@ -466,7 +463,7 @@ namespace Yusen.GExplorer {
 			// 
 			// timerSumSelected
 			// 
-			this.timerSumSelected.Interval = 10;
+			this.timerSumSelected.Interval = 30;
 			this.timerSumSelected.Tick += new System.EventHandler(this.timerSumSelected_Tick);
 			// 
 			// inputBoxDialog1

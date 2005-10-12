@@ -87,6 +87,17 @@ namespace Yusen.GExplorer {
 			foreach(ToolStripMenuItem tsmi in menus.Values){
 				this.cmsArgs.Items.Add(tsmi);
 			}
+			{//リテラル文字
+				this.cmsArgs.Items.Add(new ToolStripSeparator());
+				ToolStripMenuItem tsmiLiterals = new ToolStripMenuItem("リテラル文字");
+				foreach (string escaped in UserCommand.GetEscapedLiterals()) {
+					ToolStripMenuItem tsmi = new ToolStripMenuItem(UserCommand.UnescapeLiteral(escaped));
+					tsmi.Tag = escaped;
+					tsmi.Click += this.AppendArgWithMenuItemTagText;
+					tsmiLiterals.DropDownItems.Add(tsmi);
+				}
+				this.cmsArgs.Items.Add(tsmiLiterals);
+			}
 			
 			//コマンド
 			UserCommandsManager.Instance.UserCommandsChanged
@@ -153,7 +164,12 @@ namespace Yusen.GExplorer {
 		}
 		private void btnInsert_Click(object sender, EventArgs e) {
 			UserCommand uc = null;
-			uc = new UserCommand(this.txtTitle.Text, this.txtFile.Text, this.txtArg.Text);
+			try {
+				uc = new UserCommand(this.txtTitle.Text, this.txtFile.Text, this.txtArg.Text);
+			} catch (Exception ex) {
+				MessageBox.Show(ex.Message, "外部コマンドの挿入", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				return;
+			}
 			
 			if(this.lboxCommands.SelectedIndex < 0) {
 				UserCommandsManager.Instance.Add(uc);
@@ -165,17 +181,23 @@ namespace Yusen.GExplorer {
 		
 		private void btnModify_Click(object sender, EventArgs e) {
 			UserCommand uc = null;
-			uc = new UserCommand(this.txtTitle.Text, this.txtFile.Text, this.txtArg.Text);
+			try {
+				uc = new UserCommand(this.txtTitle.Text, this.txtFile.Text, this.txtArg.Text);
+			} catch (Exception ex) {
+				MessageBox.Show(ex.Message, "外部コマンドの変更", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				return;
+			}
 			UserCommandsManager.Instance[this.lboxCommands.SelectedIndex] = uc;
 		}
 
 		void AppendArgWithMenuItemTagText(object sender, EventArgs e) {
 			string tagText = (sender as ToolStripMenuItem).Tag as string;
-			if(string.IsNullOrEmpty(this.txtArg.Text) || this.txtArg.Text.EndsWith(" ")) {
-				this.txtArg.Text += tagText;
-			} else {
-				this.txtArg.Text += " " + tagText;
-			}
+			string beforeCarret = this.txtArg.Text.Substring(0, this.txtArg.SelectionStart);
+			string afterCarret = this.txtArg.Text.Substring(this.txtArg.SelectionStart + this.txtArg.SelectionLength);
+
+			this.txtArg.Text = beforeCarret + tagText + afterCarret;
+			this.txtArg.SelectionLength = 0;
+			this.txtArg.SelectionStart = beforeCarret.Length + tagText.Length;
 		}
 	}
 	

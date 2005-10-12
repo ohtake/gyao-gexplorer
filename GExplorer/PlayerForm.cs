@@ -245,7 +245,8 @@ namespace Yusen.GExplorer {
 			}
 		}
 		private void tsmiPlayChapter_Click(object sender, EventArgs e) {
-			this.inputBoxDialog1.Title = "特定のチャプターから再生";
+			string title =  "特定のチャプターから再生";
+			this.inputBoxDialog1.Title =title;
 			this.inputBoxDialog1.Message = "チャプター番号の入力．空白の場合は通常再生．";
 			this.inputBoxDialog1.Input = this.CurrentChapter.HasValue ? this.CurrentChapter.Value.ToString() : string.Empty;
 			switch (this.inputBoxDialog1.ShowDialog()) {
@@ -253,7 +254,12 @@ namespace Yusen.GExplorer {
 					int? chapter = null;
 					string input = this.inputBoxDialog1.Input;
 					if (! string.IsNullOrEmpty(input)) {
-						chapter = int.Parse(input);
+						try {
+							chapter = int.Parse(input);
+						} catch (Exception ex) {
+							MessageBox.Show(ex.Message, title, MessageBoxButtons.OK, MessageBoxIcon.Error);
+							break;
+						}
 					}
 					this.CurrentChapter = chapter;
 					break;
@@ -335,22 +341,32 @@ namespace Yusen.GExplorer {
 			this.DisableScreenSaverEnabled = this.DisableScreenSaverEnabled;
 		}
 		private void tsmiVolumeNormal_Click(object sender, EventArgs e) {
-			this.inputBoxDialog1.Title = "自動音量調整における本編の音量";
+			string title = "自動音量調整における本編の音量";
+			this.inputBoxDialog1.Title =title;
 			this.inputBoxDialog1.Message = "本編の音量を入力してください．" + "[" + PlayerForm.VolumeMin.ToString() + "-" + PlayerForm.VolumeMax.ToString() + "]";
 			this.inputBoxDialog1.Input = this.VolumeNormal.ToString();
 			switch (this.inputBoxDialog1.ShowDialog()) {
 				case DialogResult.OK:
-					this.VolumeNormal = int.Parse(this.inputBoxDialog1.Input);
+					try {
+						this.VolumeNormal = int.Parse(this.inputBoxDialog1.Input);
+					} catch (Exception ex) {
+						MessageBox.Show(ex.Message, title, MessageBoxButtons.OK, MessageBoxIcon.Error);
+					}
 					break;
 			}
 		}
 		private void tsmiVolumeCf_Click(object sender, EventArgs e) {
-			this.inputBoxDialog1.Title = "自動音量調整におけるCFの音量";
+			string title = "自動音量調整におけるCFの音量";
+			this.inputBoxDialog1.Title = title;
 			this.inputBoxDialog1.Message = "CFの音量を入力してください．" + "[" + PlayerForm.VolumeMin.ToString() + "-" + PlayerForm.VolumeMax.ToString() + "]";
 			this.inputBoxDialog1.Input = this.VolumeCf.ToString();
 			switch (this.inputBoxDialog1.ShowDialog()) {
 				case DialogResult.OK:
-					this.VolumeCf = int.Parse(this.inputBoxDialog1.Input);
+					try{
+						this.VolumeCf = int.Parse(this.inputBoxDialog1.Input);
+					} catch (Exception ex) {
+						MessageBox.Show(ex.Message, title, MessageBoxButtons.OK, MessageBoxIcon.Error);
+					}
 					break;
 			}
 		}

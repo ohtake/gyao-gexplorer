@@ -14,6 +14,7 @@ namespace Yusen.GExplorer {
 		
 		private CrawlResult crawlResult;
 		private AboneType aboneType = AboneType.Sabori;
+		private FilterType filterType = FilterType.Migemo;
 		private Color newColor = Color.Red;
 
 		private List<ListViewItem> allLvis = new List<ListViewItem>();
@@ -29,6 +30,17 @@ namespace Yusen.GExplorer {
 			this.tsmiAdd.Font = new Font(this.tsmiAdd.Font, FontStyle.Bold);
 			this.tsddbSettings.DropDown.Closing += Utility.ToolStripDropDown_CancelClosingOnClick;
 			this.tsmiAboneType.DropDown.Closing += Utility.ToolStripDropDown_CancelClosingOnClick;
+			
+			//Migemo初期化
+			try {
+				this.migemo = new Migemo(GlobalSettings.Instance.MigemoDictionaryFilename);
+				this.Disposed += delegate {
+					this.migemo.Dispose();
+				};
+			} catch (MigemoException ex) {
+				this.migemo = null;
+				this.tstbAnswer.Text = ex.Message;
+			}
 
 			this.tsmiAboneType.DropDownItems.Clear();
 			foreach (AboneType atype in Enum.GetValues(typeof(AboneType))) {
@@ -41,6 +53,20 @@ namespace Yusen.GExplorer {
 			}
 			this.AboneType = this.AboneType;
 
+			this.tsddbFilterType.DropDownItems.Clear();
+			foreach (FilterType ftype in Enum.GetValues(typeof(FilterType))) {
+				ToolStripMenuItem tsmi = new ToolStripMenuItem(ftype.ToString());
+				tsmi.Tag = ftype;
+				tsmi.Click += delegate(object sender2, EventArgs e2) {
+					this.FilterType = (FilterType)(sender2 as ToolStripMenuItem).Tag;
+				};
+				if (FilterType.Migemo == ftype && !this.CanUseMigemo) {
+					tsmi.Enabled = false;
+				}
+				this.tsddbFilterType.DropDownItems.Add(tsmi);
+			}
+			this.FilterType = this.FilterType;
+			
 			this.CreateUserCommandsMenuItems();
 			UserCommandsManager.Instance.UserCommandsChanged += new EventHandler(UserCommandsManager_UserCommandsChanged);
 			this.Disposed += delegate {
@@ -52,17 +78,6 @@ namespace Yusen.GExplorer {
 				NgContentsManager.Instance.NgContentsChanged -= new EventHandler(NgContentsManager_NgContentsChanged);
 			};
 			
-			try {
-				this.migemo = new Migemo(GlobalSettings.Instance.MigemoDictionaryFilename);
-				this.Disposed += delegate {
-					this.migemo.Dispose();
-				};
-			} catch (MigemoException ex) {
-				this.migemo = null;
-				this.tstbFilter.ReadOnly = true;
-				this.tstbFilter.BackColor = Color.Pink;
-				this.tstbFilter.Text = ex.Message;
-			}
 		}
 		
 		public CrawlResult CrawlResult {
@@ -111,26 +126,44 @@ namespace Yusen.GExplorer {
 				return null != this.migemo;
 			}
 		}
-
+		
 		[DefaultValue("")]
 		public string FilterString {
 			get {
-				if (this.CanUseMigemo) {
-					return this.tstbFilter.Text;
-				} else {
-					return string.Empty;
-				}
+				return this.tstbFilter.Text;
 			}
 			set {
 				this.tstbFilter.Text = value;
 				this.CreateFilterRegex();
 			}
 		}
+		public FilterType FilterType {
+			get { return this.filterType; }
+			set {
+				if (FilterType.Migemo == value && !this.CanUseMigemo) {
+					value = FilterType.Normal;
+				}
+				if (value != this.filterType) {
+					this.filterType = value;
+					this.CreateFilterRegex();
+				}
+				foreach (ToolStripMenuItem tsmi in this.tsddbFilterType.DropDownItems) {
+					bool active = value == (FilterType)tsmi.Tag;
+					tsmi.Checked = active;
+					if (active) {
+						this.tsddbFilterType.Text = "方法(&Y): " + tsmi.Text;
+					}
+				}
+			}
+		}
 		private Regex FilterRegex {
 			get {return this.filterRegex;}
 			set {
-				this.filterRegex = value;
-				this.tstbMigemoAnswer.Text = (null==value)? string.Empty : this.filterRegex.ToString();
+				if (this.filterRegex != value) {
+					this.filterRegex = value;
+					this.tstbAnswer.Text = (null==value)? string.Empty : this.filterRegex.ToString();
+					this.UpdateView();
+				}
 			}
 		}
 		
@@ -206,6 +239,7 @@ namespace Yusen.GExplorer {
 			settings.MultiSelect = this.MultiSelect;
 			settings.ClearFilterStringOnHideEnabled = this.ClearFilterStringOnHideEnabled;
 			settings.FilterEnabled = this.FilterEnabled;
+			settings.FilterType = this.FilterType;
 			settings.NewColor = this.NewColor;
 		}
 		public void ApplySettings(GenreListViewSettings settings) {
@@ -222,6 +256,7 @@ namespace Yusen.GExplorer {
 			this.MultiSelect = settings.MultiSelect ?? this.MultiSelect;
 			this.ClearFilterStringOnHideEnabled = settings.ClearFilterStringOnHideEnabled ?? this.ClearFilterStringOnHideEnabled;
 			this.FilterEnabled = settings.FilterEnabled ?? this.FilterEnabled;
+			this.FilterType = settings.FilterType ?? this.FilterType;
 			this.NewColor = settings.NewColor ?? this.NewColor;
 		}
 		private void ClearAllItems() {
@@ -348,29 +383,39 @@ namespace Yusen.GExplorer {
 			this.tsddbExceptions.Enabled = this.tsddbExceptions.HasDropDownItems;
 		}
 		private void CreateFilterRegex() {
-			if (!this.CanUseMigemo) {
-				return;
-			}
-			string query = this.FilterString;
 			Regex regex = null;
-			if (string.IsNullOrEmpty(query)) {
-				goto success;
+			if (!string.IsNullOrEmpty(this.FilterString)) {
+				switch (this.FilterType) {
+					case FilterType.Normal:
+						try {
+							regex = new Regex(Regex.Escape(this.FilterString), RegexOptions.IgnoreCase);
+						} catch (ArgumentException) {
+							goto failed;
+						}
+						break;
+					case FilterType.Migemo:
+						string ans = this.migemo.Query(this.FilterString);
+						try {
+							regex = new Regex(ans, RegexOptions.IgnoreCase | RegexOptions.ExplicitCapture);
+						} catch (ArgumentException) {
+							goto failed;
+						}
+						break;
+					case FilterType.Regex:
+						try {
+							regex = new Regex(this.FilterString, RegexOptions.IgnoreCase);
+						} catch (ArgumentException) {
+							goto failed;
+						}
+						break;
+				}
 			}
-			string ans = null;
-			ans = this.migemo.Query(query);
-			try {
-				regex = new Regex(ans, RegexOptions.IgnoreCase | RegexOptions.ExplicitCapture);
-			} catch(ArgumentException) {
-				goto failed;
-			}
-			goto success;
+			this.tstbFilter.BackColor = SystemColors.Window;
+			this.FilterRegex = regex;
+			return;
 		failed:
 			this.tstbFilter.BackColor= Color.Yellow;
 			this.FilterRegex = null;
-			return;
-		success:
-			this.tstbFilter.BackColor = SystemColors.Window;
-			this.FilterRegex = regex;
 			return;
 		}
 
@@ -538,14 +583,13 @@ namespace Yusen.GExplorer {
 		#region フィルタ関連
 		private void tsbShowFilter_Click(object sender, EventArgs e) {
 			this.FilterEnabled = this.FilterEnabled;
-			if (this.CanUseMigemo && this.ClearFilterStringOnHideEnabled && !this.FilterEnabled) {
+			if (this.ClearFilterStringOnHideEnabled && !this.FilterEnabled) {
 				this.FilterString = string.Empty;
 			}
 			this.UpdateView();
 		}
 		private void tstbFilter_TextChanged(object sender, EventArgs e) {
 			this.CreateFilterRegex();
-			this.UpdateView();
 		}
 		#endregion
 	}
@@ -554,6 +598,11 @@ namespace Yusen.GExplorer {
 		Toumei,
 		Sabori,
 		Hakidame,
+	}
+	public enum FilterType {
+		Normal,
+		Migemo,
+		Regex,
 	}
 	public class GenreListViewSettings {
 		private int? colWidthId;
@@ -569,6 +618,7 @@ namespace Yusen.GExplorer {
 		private bool? multiSelect;
 		private bool? clearFilterStringOnHideEnabled;
 		private bool? filterEnabled;
+		private FilterType? filterType;
 		private Color? newColor;
 		
 		public int? ColWidthId {
@@ -622,6 +672,10 @@ namespace Yusen.GExplorer {
 		public bool? FilterEnabled {
 			get { return this.filterEnabled; }
 			set { this.filterEnabled = value; }
+		}
+		public FilterType? FilterType {
+			get { return this.filterType; }
+			set { this.filterType = value; }
 		}
 		
 		[XmlIgnore] //ColorはXMLシリアライズできない？

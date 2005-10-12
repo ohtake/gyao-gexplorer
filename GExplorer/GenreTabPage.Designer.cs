@@ -57,7 +57,7 @@ namespace Yusen.GExplorer {
 			// tsmiReload
 			// 
 			this.tsmiReload.Name = "tsmiReload";
-			this.tsmiReload.Text = "再読み込み(&R)";
+			this.tsmiReload.Text = "再クロール(&R)";
 			// 
 			// toolStripSeparator1
 			// 
@@ -66,12 +66,12 @@ namespace Yusen.GExplorer {
 			// tsmiBrowseTop
 			// 
 			this.tsmiBrowseTop.Name = "tsmiBrowseTop";
-			this.tsmiBrowseTop.Text = "ジャンルトップをウェブブラウザで開く(&H)";
+			this.tsmiBrowseTop.Text = "ウェブブラウザでジャンルトップ(&H)";
 			// 
 			// tsmiBrowseTimetable
 			// 
 			this.tsmiBrowseTimetable.Name = "tsmiBrowseTimetable";
-			this.tsmiBrowseTimetable.Text = "番組表をウェブブラウザで開く(&T)";
+			this.tsmiBrowseTimetable.Text = "ウェブブラウザで番組表(&T)";
 			// 
 			// toolStripSeparator2
 			// 
@@ -80,7 +80,7 @@ namespace Yusen.GExplorer {
 			// tsmiCopyGenreName
 			// 
 			this.tsmiCopyGenreName.Name = "tsmiCopyGenreName";
-			this.tsmiCopyGenreName.Text = "ジャンル名をコピー(&N)";
+			this.tsmiCopyGenreName.Text = "名前をコピー(&N)";
 			// 
 			// tsmiCopyUri
 			// 
@@ -90,7 +90,7 @@ namespace Yusen.GExplorer {
 			// tsmiCopyGenreNameAndUri
 			// 
 			this.tsmiCopyGenreNameAndUri.Name = "tsmiCopyGenreNameAndUri";
-			this.tsmiCopyGenreNameAndUri.Text = "ジャンル名とURIをコピー(&B)";
+			this.tsmiCopyGenreNameAndUri.Text = "名前とURIをコピー(&B)";
 			// 
 			// GenreTabPage
 			// 

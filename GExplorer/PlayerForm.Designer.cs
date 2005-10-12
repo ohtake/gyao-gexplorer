@@ -43,13 +43,13 @@ namespace Yusen.GExplorer {
 			this.menuStrip1 = new System.Windows.Forms.MenuStrip();
 			this.tsmiFile = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiPlayChapter = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiReload = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
+			this.tsmiReload = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiReloadWithLicense = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiRemoveAndClose = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiClose = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiOperation = new System.Windows.Forms.ToolStripMenuItem();
+			this.操作OToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiPlayPause = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiStop = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
@@ -260,7 +260,7 @@ namespace Yusen.GExplorer {
 			this.menuStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Visible;
 			this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiFile,
-            this.tsmiOperation,
+            this.操作OToolStripMenuItem,
             this.tsmiSettings,
             this.tsmiTools});
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
@@ -288,6 +288,10 @@ namespace Yusen.GExplorer {
 			this.tsmiPlayChapter.Text = "特定のチャプターから再生(&C)...";
 			this.tsmiPlayChapter.Click += new System.EventHandler(this.tsmiPlayChapter_Click);
 			// 
+			// toolStripSeparator9
+			// 
+			this.toolStripSeparator9.Name = "toolStripSeparator9";
+			// 
 			// tsmiReload
 			// 
 			this.tsmiReload.Name = "tsmiReload";
@@ -295,16 +299,12 @@ namespace Yusen.GExplorer {
 			this.tsmiReload.Text = "動画の再読み込み(&R)";
 			this.tsmiReload.Click += new System.EventHandler(this.tsmiReload_Click);
 			// 
-			// toolStripSeparator9
-			// 
-			this.toolStripSeparator9.Name = "toolStripSeparator9";
-			// 
 			// tsmiReloadWithLicense
 			// 
 			this.tsmiReloadWithLicense.Name = "tsmiReloadWithLicense";
 			this.tsmiReloadWithLicense.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Shift | System.Windows.Forms.Keys.Control) 
             | System.Windows.Forms.Keys.R)));
-			this.tsmiReloadWithLicense.Text = "cm_license 付きのを再読み込み (&L)";
+			this.tsmiReloadWithLicense.Text = "cm_license 付きで再読み込み(&L)";
 			this.tsmiReloadWithLicense.Click += new System.EventHandler(this.tsmiReloadWithLicense_Click);
 			// 
 			// toolStripSeparator2
@@ -325,9 +325,9 @@ namespace Yusen.GExplorer {
 			this.tsmiClose.Text = "閉じる(&W)";
 			this.tsmiClose.Click += new System.EventHandler(this.tsmiClose_Click);
 			// 
-			// tsmiOperation
+			// 操作OToolStripMenuItem
 			// 
-			this.tsmiOperation.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+			this.操作OToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiPlayPause,
             this.tsmiStop,
             this.toolStripSeparator5,
@@ -339,8 +339,8 @@ namespace Yusen.GExplorer {
             this.tsmiPrevContent,
             this.tsmiNextContent,
             this.tsmiNextContentWithDelete});
-			this.tsmiOperation.Name = "tsmiOperation";
-			this.tsmiOperation.Text = "操作(&O)";
+			this.操作OToolStripMenuItem.Name = "操作OToolStripMenuItem";
+			this.操作OToolStripMenuItem.Text = "操作(&O)";
 			// 
 			// tsmiPlayPause
 			// 
@@ -399,7 +399,7 @@ namespace Yusen.GExplorer {
 			this.tsmiPrevContent.Name = "tsmiPrevContent";
 			this.tsmiPrevContent.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Shift | System.Windows.Forms.Keys.Control) 
             | System.Windows.Forms.Keys.P)));
-			this.tsmiPrevContent.Text = "前のコンテンツ(E)";
+			this.tsmiPrevContent.Text = "プレイリストで前のコンテンツ(E)";
 			this.tsmiPrevContent.Click += new System.EventHandler(this.tsmiPrevContent_Click);
 			// 
 			// tsmiNextContent
@@ -407,7 +407,7 @@ namespace Yusen.GExplorer {
 			this.tsmiNextContent.Name = "tsmiNextContent";
 			this.tsmiNextContent.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Shift | System.Windows.Forms.Keys.Control) 
             | System.Windows.Forms.Keys.N)));
-			this.tsmiNextContent.Text = "次のコンテンツ(&N)";
+			this.tsmiNextContent.Text = "プレイリストで次のコンテンツ(&N)";
 			this.tsmiNextContent.Click += new System.EventHandler(this.tsmiNextContent_Click);
 			// 
 			// tsmiNextContentWithDelete
@@ -598,7 +598,7 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ToolStripMenuItem tsmiReload;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
 		private System.Windows.Forms.ToolStripMenuItem tsmiFocusOnWmp;
-		private System.Windows.Forms.ToolStripMenuItem tsmiOperation;
+		private System.Windows.Forms.ToolStripMenuItem 操作OToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem tsmiPlayPause;
 		private System.Windows.Forms.ToolStripMenuItem tsmiStop;
 		private System.Windows.Forms.ToolStripMenuItem tsmiNextTrack;

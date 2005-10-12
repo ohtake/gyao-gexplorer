@@ -9,6 +9,9 @@ namespace Yusen.GExplorer {
 	/// </summary>
 	sealed partial class CookieFetchForm : FormBase {
 		private static readonly Regex regexUserNo = new Regex(@"Cookie_UserId=([0-9]+)", RegexOptions.Singleline);
+		
+		private int? userNo = null;
+		
 		public CookieFetchForm() {
 			InitializeComponent();
 			
@@ -28,7 +31,7 @@ namespace Yusen.GExplorer {
 			string cookie = this.webBrowser1.Document.Cookie;
 			Match matchUserNo = CookieFetchForm.regexUserNo.Match(cookie);
 			if (matchUserNo.Success) {
-				GlobalSettings.Instance.UserNo = int.Parse(matchUserNo.Groups[1].Value);
+				this.userNo = int.Parse(matchUserNo.Groups[1].Value);
 				this.DialogResult = DialogResult.OK;
 			} else {
 				this.DialogResult = DialogResult.Abort;
@@ -36,6 +39,9 @@ namespace Yusen.GExplorer {
 			MessageBox.Show("クッキーの内容:\n\n" + cookie,
 				Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information);
 			this.Close();
+		}
+		public int? UserNo {
+			get { return this.userNo; }
 		}
 	}
 }

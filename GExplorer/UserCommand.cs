@@ -12,12 +12,56 @@ namespace Yusen.GExplorer {
 	/// 簡単にアプリケーションの拡張を行えるようにする．
 	/// </remarks>
 	public class UserCommand : IComparable<UserCommand> {
-		private const string regexVarient = @"([_A-Za-z]\w*)";
-		private static readonly Regex argValidator =
-			new Regex(@"^(?:[^{}]|\{" + UserCommand.regexVarient + @"\})*$");
-		private static readonly Regex varientExtractor =
-			new Regex(@"\{" + UserCommand.regexVarient + @"\}");
+		public static IEnumerable<string> GetEscapedLiterals() {
+			return UserCommand.dicLiteralsEU.Keys;
+		}
+		public static string UnescapeLiteral(string escaped) {
+			return UserCommand.dicLiteralsEU[escaped];
+		}
 		
+		private const string strOpenBrace = "{";
+		private const string strCloseBrace = "}";
+		private const string strEscapedOpenBrace = "{{";
+		private const string strEscapedCloseBrace = "}}";
+		private const string reVarient = @"(?<PropName>[_A-Za-z]\w*)";
+		private static readonly Regex regexArgValidator;
+		private static readonly Regex regexReplaceable;
+		private static readonly Dictionary<string, string> dicLiteralsEU = new Dictionary<string,string>();
+		
+		static UserCommand(){
+			string replaceable = @"\{" + UserCommand.reVarient + @"\}|" + Regex.Escape(UserCommand.strEscapedOpenBrace) + "|" + Regex.Escape(UserCommand.strEscapedCloseBrace);
+			UserCommand.regexArgValidator = new Regex(@"^(?:[^{}]|" + replaceable + @")*$");
+			UserCommand.regexReplaceable = new Regex(replaceable);
+			
+			UserCommand.dicLiteralsEU.Add(UserCommand.strEscapedOpenBrace, UserCommand.strOpenBrace);
+			UserCommand.dicLiteralsEU.Add(UserCommand.strEscapedCloseBrace, UserCommand.strCloseBrace);
+		}
+
+		private sealed class UserCommandArgumentReplacer {
+			private IEnumerable<ContentAdapter> conts;
+			public UserCommandArgumentReplacer(IEnumerable<ContentAdapter> conts) {
+				this.conts = conts;
+			}
+			public string ExpandPropertyValues(string arg) {
+				return UserCommand.regexReplaceable.Replace(arg, this.EvaluateMatch);
+			}
+			private string EvaluateMatch(Match match) {
+				if (UserCommand.dicLiteralsEU.ContainsKey(match.Value)) {
+					return UserCommand.UnescapeLiteral(match.Value);
+				} else {
+					PropertyInfo pi = typeof(ContentAdapter).GetProperty(match.Groups["PropName"].Value);
+					StringBuilder sb = new StringBuilder();
+					foreach (ContentAdapter cont in this.conts) {
+						if (sb.Length > 0) {
+							sb.Append(' ');
+						}
+						sb.Append(pi.GetValue(cont, null).ToString());
+					}
+					return sb.ToString();
+				}
+			}
+		}
+
 		private string title = null;
 		private string fileName = null;
 		private string arguments = null;
@@ -72,27 +116,15 @@ namespace Yusen.GExplorer {
 			set {
 				if(null != this.arguments) throw new InvalidOperationException();
 				if(null == value) throw new ArgumentNullException();
-				if(!UserCommand.argValidator.Match(value).Success) throw new ArgumentException("引数の書式が間違ってる．");
+				if (!UserCommand.regexArgValidator.Match(value).Success) throw new ArgumentException("引数の書式が間違ってる．");
 				this.arguments = value;
 			}
 		}
 		
 		internal void Execute(IEnumerable<ContentAdapter> conts) {
-			string args = this.arguments;
-			while (true) {
-				Match match = UserCommand.varientExtractor.Match(args);
-				if (!match.Success) break;
-				PropertyInfo pi = typeof(ContentAdapter).GetProperty(match.Groups[1].Value);
-				StringBuilder sb = new StringBuilder();
-				foreach (ContentAdapter cont in conts) {
-					if (sb.Length > 0) {
-						sb.Append(' ');
-					}
-					sb.Append(pi.GetValue(cont, null).ToString());
-				}
-				args = args.Replace(match.Value, sb.ToString());
-			}
-			Process.Start(this.fileName, args);
+			UserCommandArgumentReplacer replacer = new UserCommandArgumentReplacer(conts);
+			string args = replacer.ExpandPropertyValues(this.Arguments);
+			Process.Start(Environment.ExpandEnvironmentVariables(this.fileName), args);
 		}
 		
 		public int CompareTo(UserCommand other) {

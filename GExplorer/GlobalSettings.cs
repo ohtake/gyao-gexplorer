@@ -6,10 +6,12 @@ using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
 using Microsoft.Win32;
 using System.IO;
+using System.Xml.Serialization;
 
 namespace Yusen.GExplorer {
 	public class GlobalSettings {
 		private const string SettingsFilename = "GlobalSettings.xml";
+		private const int InvalidUserNo = 0;
 		
 		private static GlobalSettings instance = new GlobalSettings();
 		internal static GlobalSettings Instance {
@@ -27,15 +29,16 @@ namespace Yusen.GExplorer {
 			Utility.SerializeSettings(GlobalSettings.SettingsFilename, GlobalSettings.Instance);
 		}
 		
-		private int userNo = 0;
+		private int userNo = GlobalSettings.InvalidUserNo;
+		[XmlIgnore]
 		[Category("GyaO")]
 		[DisplayName("Cookie_UserId")]
 		[Description("クッキーに保存されている Cookie_UserId の値．いちおう変更不可．")]
-		[DefaultValue(0)]
+		[DefaultValue(GlobalSettings.InvalidUserNo)]
 		[ReadOnly(true)]
 		public int UserNo {
 			get { return this.userNo; }
-			set { this.userNo = value; }
+			private set { this.userNo = value; }
 		}
 		
 		private GBitRate bitRate = GBitRate.SuperFine;
@@ -54,7 +57,7 @@ namespace Yusen.GExplorer {
 		[Browsable(false)]
 		internal bool IsCookieRequired {
 			get {
-				return 0 == this.UserNo;
+				return GlobalSettings.InvalidUserNo == this.UserNo;
 			}
 		}
 		
@@ -110,10 +113,8 @@ namespace Yusen.GExplorer {
 			set { this.browserPath = value; }
 		}
 
-		public bool TryGetUserNumberIfRequired() {
-			if (!this.IsCookieRequired) {
-				return true;
-			}
+		public bool TryGetUserNumber() {
+			this.UserNo = GlobalSettings.InvalidUserNo;
 			//レジストリからの取得を試みる
 			try {
 				using (RegistryKey cu = Registry.CurrentUser)
@@ -154,7 +155,13 @@ namespace Yusen.GExplorer {
 			}
 			//ブラウザ上からクッキーを取得する
 			using (CookieFetchForm cff =  new CookieFetchForm()) {
-				cff.ShowDialog();
+				switch (cff.ShowDialog()) {
+					case DialogResult.OK:
+						if (cff.UserNo.HasValue) {
+							this.UserNo = cff.UserNo.Value;
+						}
+						break;
+				}
 			}
 			if (!this.IsCookieRequired) {
 				return true;

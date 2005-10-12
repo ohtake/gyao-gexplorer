@@ -115,8 +115,9 @@ namespace Yusen.GExplorer {
 					(TwoStringsPredicateMethod)Enum.Parse(
 						typeof(TwoStringsPredicateMethod), this.comboMethod.Text),
 					this.txtWord.Text);
-			}catch{
-				throw;
+			}catch(Exception ex){
+				MessageBox.Show(ex.Message, "NGƒRƒ“ƒeƒ“ƒc‚Ì’Ç‰Á", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				return;
 			}
 			NgContentsManager.Instance.Add(ng);
 		}

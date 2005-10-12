@@ -63,6 +63,7 @@ namespace Yusen.GExplorer {
 			this.lvNgContents.HideSelection = false;
 			this.lvNgContents.Location = new System.Drawing.Point(3, 15);
 			this.lvNgContents.Name = "lvNgContents";
+			this.lvNgContents.ShowItemToolTips = true;
 			this.lvNgContents.Size = new System.Drawing.Size(580, 128);
 			this.lvNgContents.TabIndex = 101;
 			this.lvNgContents.View = System.Windows.Forms.View.Details;

@@ -106,7 +106,7 @@ namespace Yusen.GExplorer {
 			elem.Click += new HtmlElementEventHandler(this.Content_Click);
 		}
 		private void ShowHelpOnHowToCancelMenu() {
-			MessageBox.Show("Altキーを押していれば通常のクリックとして扱います．", "変なメニューが出てきて邪魔だよ．", MessageBoxButtons.OK, MessageBoxIcon.Information);
+			MessageBox.Show("Altキーを押していれば通常のクリックとして扱います．", "変なメニューが邪魔だよ", MessageBoxButtons.OK, MessageBoxIcon.Information);
 		}
 
 		private void tsmiPackageOpen_Click(object sender, EventArgs e) {
