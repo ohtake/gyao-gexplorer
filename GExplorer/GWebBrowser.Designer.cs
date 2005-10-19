@@ -41,6 +41,7 @@ namespace Yusen.GExplorer {
 			this.tsmiPackageOpen = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiPackageCancel = new System.Windows.Forms.ToolStripMenuItem();
+			this.ttId = new System.Windows.Forms.ToolTip(this.components);
 			this.inputBoxDialog1 = new Yusen.GExplorer.InputBoxDialog();
 			this.cmsContent.SuspendLayout();
 			this.cmsPackage.SuspendLayout();
@@ -66,12 +67,12 @@ namespace Yusen.GExplorer {
 			this.cmsContent.Location = new System.Drawing.Point(9, 50);
 			this.cmsContent.Name = "cmsContent";
 			this.cmsContent.RightToLeft = System.Windows.Forms.RightToLeft.No;
-			this.cmsContent.Size = new System.Drawing.Size(202, 204);
+			this.cmsContent.Size = new System.Drawing.Size(204, 204);
 			// 
 			// tsmiContentOpenDetail
 			// 
 			this.tsmiContentOpenDetail.Name = "tsmiContentOpenDetail";
-			this.tsmiContentOpenDetail.Text = "詳細ページを開く(&D)";
+			this.tsmiContentOpenDetail.Text = "詳細ページを開く(&O)";
 			// 
 			// toolStripSeparator1
 			// 
@@ -122,7 +123,7 @@ namespace Yusen.GExplorer {
 			// tsmiContentCancel
 			// 
 			this.tsmiContentCancel.Name = "tsmiContentCancel";
-			this.tsmiContentCancel.Text = "変なメニューが邪魔だよ(&A)...";
+			this.tsmiContentCancel.Text = "ティップやメニューが邪魔(&D)...";
 			// 
 			// cmsPackage
 			// 
@@ -135,7 +136,7 @@ namespace Yusen.GExplorer {
 			this.cmsPackage.Location = new System.Drawing.Point(9, 50);
 			this.cmsPackage.Name = "cmsPackage";
 			this.cmsPackage.RightToLeft = System.Windows.Forms.RightToLeft.No;
-			this.cmsPackage.Size = new System.Drawing.Size(202, 54);
+			this.cmsPackage.Size = new System.Drawing.Size(204, 54);
 			// 
 			// tsmiPackageOpen
 			// 
@@ -149,7 +150,12 @@ namespace Yusen.GExplorer {
 			// tsmiPackageCancel
 			// 
 			this.tsmiPackageCancel.Name = "tsmiPackageCancel";
-			this.tsmiPackageCancel.Text = "変なメニューが邪魔だよ(&A)...";
+			this.tsmiPackageCancel.Text = "ティップやメニューが邪魔(&D)...";
+			// 
+			// ttId
+			// 
+			this.ttId.IsBalloon = true;
+			this.ttId.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
 			// 
 			// inputBoxDialog1
 			// 
@@ -185,6 +191,7 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
 		private System.Windows.Forms.ToolStripMenuItem tsmiPackageCancel;
 		private System.Windows.Forms.ToolStripMenuItem tsmiContentAddToPlayListWithComment;
+		private System.Windows.Forms.ToolTip ttId;
 		private InputBoxDialog inputBoxDialog1;
 
 	}

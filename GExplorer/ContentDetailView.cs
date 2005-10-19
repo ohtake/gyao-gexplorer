@@ -73,7 +73,7 @@ namespace Yusen.GExplorer {
 			this.tabControl1.SelectedIndex = settings.SelectedTabIndex ?? this.tabControl1.SelectedIndex;
 		}
 		
-		public Uri ImageUri {
+		private Uri ImageUri {
 			get {
 				if (null == this.Content) {
 					return null;

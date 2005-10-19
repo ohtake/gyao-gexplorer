@@ -33,6 +33,12 @@ namespace Yusen.GExplorer {
 			}
 		}
 		internal static void CopyNamesAndUris(IEnumerable<ContentAdapter> conts) {
+			string text = ContentAdapter.GetNamesAndUris(conts);
+			if (!string.IsNullOrEmpty(text)) {
+				Clipboard.SetText(text);
+			}
+		}
+		internal static string GetNamesAndUris(IEnumerable<ContentAdapter> conts) {
 			StringBuilder sb = new StringBuilder();
 			foreach (ContentAdapter cont in conts) {
 				if (sb.Length > 0) {
@@ -42,9 +48,7 @@ namespace Yusen.GExplorer {
 				sb.Append(Environment.NewLine);
 				sb.Append(cont.DetailPageUri.AbsoluteUri);
 			}
-			if (sb.Length > 0) {
-				Clipboard.SetText(sb.ToString());
-			}
+			return sb.ToString();
 		}
 		internal static void TotalTimeOf(IEnumerable<ContentAdapter> conts, out TimeSpan total, out bool isExact) {
 			total = TimeSpan.Zero;

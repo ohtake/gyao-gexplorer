@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Threading;
-using AxWMPLib;
-using WMPLib;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.ComponentModel;
+using AxWMPLib;
+using WMPLib;
 
 namespace Yusen.GExplorer {
 	sealed partial class PlayerForm : FormSettingsBase, IFormWithSettings<PlayerFormSettings>{
@@ -66,7 +66,6 @@ namespace Yusen.GExplorer {
 		private int? currentChapter = null;
 		private Dictionary<string, string> currentAttribs = new Dictionary<string, string>();
 		private bool? endFlag = null;
-		private bool fullScreenAtPrev = false;
 		
 		private int volumeNormal = 100;
 		private int volumeCf = 20;
@@ -97,10 +96,8 @@ namespace Yusen.GExplorer {
 		}
 		public void FillSettings(PlayerFormSettings settings) {
 			base.FillSettings(settings);
-			settings.KeepFullScreenEnabled = this.KeepFullScreenEnabled;
 			settings.DisableScreenSaverEnabled = this.DisableScreenSaverEnabled;
 			settings.AutoVolumeEnabled = this.AutoVolumeEnabled;
-			settings.MediaKeysEnabled = this.MediaKeysEnabled;
 			settings.RemovePlayedContentEnabled = this.RemovePlayedContentEnabled;
 			settings.PlayListLoopEnabled = this.PlayListLoopEnabled;
 			settings.MainTabIndex = this.tabControl1.SelectedIndex;
@@ -110,10 +107,8 @@ namespace Yusen.GExplorer {
 
 		public void ApplySettings(PlayerFormSettings settings) {
 			base.ApplySettings(settings);
-			this.KeepFullScreenEnabled = settings.KeepFullScreenEnabled ?? this.KeepFullScreenEnabled;
 			this.DisableScreenSaverEnabled = settings.DisableScreenSaverEnabled ?? this.DisableScreenSaverEnabled;
 			this.AutoVolumeEnabled = settings.AutoVolumeEnabled ?? this.AutoVolumeEnabled;
-			this.MediaKeysEnabled = settings.MediaKeysEnabled ?? this.MediaKeysEnabled;
 			this.RemovePlayedContentEnabled = settings.RemovePlayedContentEnabled ?? this.RemovePlayedContentEnabled;
 			this.PlayListLoopEnabled = settings.PlayListLoopEnabled ?? this.PlayListLoopEnabled;
 			this.tabControl1.SelectedIndex = settings.MainTabIndex ?? this.tabControl1.SelectedIndex;
@@ -143,7 +138,12 @@ namespace Yusen.GExplorer {
 					this.gwbRecommend.Url = blankUri;
 				} else {
 					Utility.SetTitlebarText(this, value.DisplayName);
-					this.wmpMain.URL = value.MediaFileUri.AbsoluteUri;
+					IWMPMedia media = this.wmpMain.newMedia(value.PlayListUri.AbsoluteUri);
+					this.wmpMain.currentPlaylist.insertItem(this.wmpMain.currentPlaylist.count, media);
+					if (WMPPlayState.wmppsMediaEnded != this.wmpMain.playState) {
+						this.wmpMain.currentMedia = media;
+						this.wmpMain.Ctlcontrols.play();
+					}
 					this.gwbDetail.Navigate(value.DetailPageUri);
 					this.gwbRecommend.Navigate(value.RecommendPageUri);
 				}
@@ -157,17 +157,19 @@ namespace Yusen.GExplorer {
 			private set {
 				if (! value.Equals(this.currentChapter)) {
 					this.currentChapter = value;
+					IWMPMedia media;
 					if (value.HasValue) {
-						this.wmpMain.URL = this.CurrentContent.ChapterMediaFileUriOf(value.Value).AbsoluteUri;
+						media = this.wmpMain.newMedia(this.CurrentContent.ChapterPlayListUriOf(value.Value).AbsoluteUri);
 					} else {
-						this.wmpMain.URL = this.CurrentContent.MediaFileUri.AbsoluteUri;
+						media = this.wmpMain.newMedia(this.CurrentContent.PlayListUri.AbsoluteUri);
+					}
+					this.wmpMain.currentPlaylist.insertItem(this.wmpMain.currentPlaylist.count, media);
+					if (WMPPlayState.wmppsMediaEnded != this.wmpMain.playState) {
+						this.wmpMain.currentMedia = media;
+						this.wmpMain.Ctlcontrols.play();
 					}
 				}
 			}
-		}
-		public bool KeepFullScreenEnabled {
-			get { return this.tsmiKeepFullScreen.Checked; }
-			set { this.tsmiKeepFullScreen.Checked = value; }
 		}
 		public bool DisableScreenSaverEnabled {
 			get { return this.tsmiDisableScreenSaver.Checked; }
@@ -178,11 +180,11 @@ namespace Yusen.GExplorer {
 		}
 		public bool AutoVolumeEnabled {
 			get {return this.tsmiAutoVolume.Checked;}
-			set {this.tsmiAutoVolume.Checked = value;}
-		}
-		public bool MediaKeysEnabled {
-			get {return this.tsmiMediaKeys.Checked;}
-			set {this.tsmiMediaKeys.Checked = value;}
+			set {
+				this.tsmiAutoVolume.Checked = value;
+				this.tsmiVolumeNormal.Enabled = value;
+				this.tsmiVolumeCf.Enabled = value;
+			}
 		}
 		public bool RemovePlayedContentEnabled {
 			get { return this.tsmiRemovePlayedContent.Checked; }
@@ -266,18 +268,8 @@ namespace Yusen.GExplorer {
 			}
 		}
 		private void tsmiReload_Click(object sender, EventArgs e) {
-			if (this.CurrentChapter.HasValue) {
-				this.wmpMain.URL = this.CurrentContent.ChapterMediaFileUriOf(this.CurrentChapter.Value).AbsoluteUri;
-			} else {
-				this.wmpMain.URL = this.CurrentContent.MediaFileUri.AbsoluteUri;
-			}
-		}
-		private void tsmiReloadWithLicense_Click(object sender, EventArgs e) {
-			if (this.CurrentChapter.HasValue) {
-				this.wmpMain.URL = this.CurrentContent.ChapterPlayListUriOf(this.CurrentChapter.Value).AbsoluteUri;
-			} else {
-				this.wmpMain.URL = this.CurrentContent.PlayListUri.AbsoluteUri;
-			}
+			this.wmpMain.currentPlaylist = this.wmpMain.currentPlaylist;
+			this.wmpMain.Ctlcontrols.play();
 		}
 		private void tsmiRemoveAndClose_Click(object sender, EventArgs e) {
 			PlayList.Instance.Remove(this.CurrentContent);
@@ -339,6 +331,9 @@ namespace Yusen.GExplorer {
 		}
 		private void tsmiDisableScreenSaver_Click(object sender, EventArgs e) {
 			this.DisableScreenSaverEnabled = this.DisableScreenSaverEnabled;
+		}
+		private void tsmiAutoVolume_Click(object sender, EventArgs e) {
+			this.AutoVolumeEnabled = this.AutoVolumeEnabled;
 		}
 		private void tsmiVolumeNormal_Click(object sender, EventArgs e) {
 			string title = "自動音量調整における本編の音量";
@@ -442,41 +437,27 @@ namespace Yusen.GExplorer {
 		private void wmpMain_PlayStateChange(object sender, _WMPOCXEvents_PlayStateChangeEvent e) {
 			switch((WMPPlayState)e.newState){
 				case WMPPlayState.wmppsMediaEnded:
-					if (this.wmpMain.currentMedia.sourceURL.Contains("cm_license")) {
-						// cm_license なら無視
+					if(this.wmpMain.currentMedia.sourceURL.Contains("cm_license")){
+						//cm_licenseなら無視
 						break;
 					}
-					this.fullScreenAtPrev = this.wmpMain.fullScreen;
-					Thread t = new Thread(new ThreadStart(delegate {
-						Thread.Sleep(100);//適当すぎ
-						if (!this.IsDisposed && !this.wmpMain.IsDisposed) {
-							if (this.CurrentChapter.HasValue && (!this.endFlag.HasValue || !this.endFlag.Value)) {
-								//チャプターモードでエンドフラグが不明かFalse
-								this.CurrentChapter++;
-							} else {
-								if (this.RemovePlayedContentEnabled) {
-									this.tsmiNextContentWithDelete.PerformClick();
-								} else {
-									this.tsmiNextContent.PerformClick();
-								}
-							}
-							this.endFlag = null;
+					if (this.CurrentChapter.HasValue && (!this.endFlag.HasValue || !this.endFlag.Value)) {
+						//チャプターモードでエンドフラグが不明かFalse
+						this.CurrentChapter++;
+					} else {
+						if (this.RemovePlayedContentEnabled) {
+							this.tsmiNextContentWithDelete.PerformClick();
+						} else {
+							this.tsmiNextContent.PerformClick();
 						}
-					}));
-					t.Start();
-					break;
-				case WMPPlayState.wmppsPlaying:
-					if (this.KeepFullScreenEnabled && this.fullScreenAtPrev) {
-						this.wmpMain.fullScreen = true;
-						this.fullScreenAtPrev = false;
 					}
+					this.endFlag = null;
 					break;
 			}
 		}
 
 		private void PlayerForm_KeyDown(object sender, KeyEventArgs e) {
 			if (e.Handled) return;
-			if (!this.tsmiMediaKeys.Checked) return;
 			if (this.wmpMain.Focused) return;
 			switch (e.KeyCode) {
 				case Keys.MediaNextTrack:
@@ -547,33 +528,32 @@ namespace Yusen.GExplorer {
 			}
 		}
 	}
-	
+
+#if false
+	public enum PlayMode {
+		Playlist,
+		PlaylistLoop,
+		SingleRepeat,
+		Shuffle,
+	}
+#endif
+
 	public class PlayerFormSettings : FormSettingsBaseSettings {
-		private bool? keepFullScreenEnabled;
+		private int? mainTabIndex;
 		private bool? disableScreenSaverEnabled;
-		private bool? autoVolumeEnabled;
-		private bool? mediaKeysEnabled;
 		private bool? removePlayedContentEnabled;
 		private bool? playListLoopEnabled;
-		private int? mainTabIndex;
+		private bool? autoVolumeEnabled;
 		private int? volumeNormal;
 		private int? volumeCf;
 
-		public bool? KeepFullScreenEnabled {
-			get { return this.keepFullScreenEnabled; }
-			set { this.keepFullScreenEnabled = value; }
+		public int? MainTabIndex {
+			get { return this.mainTabIndex; }
+			set { this.mainTabIndex = value; }
 		}
 		public bool? DisableScreenSaverEnabled {
 			get { return this.disableScreenSaverEnabled; }
 			set { this.disableScreenSaverEnabled = value; }
-		}
-		public bool? AutoVolumeEnabled {
-			get { return this.autoVolumeEnabled; }
-			set { this.autoVolumeEnabled = value; }
-		}
-		public bool? MediaKeysEnabled {
-			get { return this.mediaKeysEnabled; }
-			set { this.mediaKeysEnabled = value; }
 		}
 		public bool? RemovePlayedContentEnabled {
 			get { return this.removePlayedContentEnabled; }
@@ -583,9 +563,9 @@ namespace Yusen.GExplorer {
 			get { return this.playListLoopEnabled; }
 			set { this.playListLoopEnabled = value; }
 		}
-		public int? MainTabIndex {
-			get { return this.mainTabIndex; }
-			set { this.mainTabIndex = value; }
+		public bool? AutoVolumeEnabled {
+			get { return this.autoVolumeEnabled; }
+			set { this.autoVolumeEnabled = value; }
 		}
 		public int? VolumeNormal {
 			get { return this.volumeNormal; }

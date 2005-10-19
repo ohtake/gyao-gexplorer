@@ -235,6 +235,7 @@ namespace Yusen.GExplorer {
 	/// ShowWindow
 	/// </summary>
 	enum SW : int{
+		// http://www.pinvoke.net/default.aspx/Constants/SW.html
 		Hide = 0,
 		Normal = 1,
 		ShowMinimized = 2,

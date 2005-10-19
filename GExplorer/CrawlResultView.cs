@@ -41,7 +41,8 @@ namespace Yusen.GExplorer {
 				this.migemo = null;
 				this.tstbAnswer.Text = ex.Message;
 			}
-
+			
+			//あぼ～ん方法のメニュー作成
 			this.tsmiAboneType.DropDownItems.Clear();
 			foreach (AboneType atype in Enum.GetValues(typeof(AboneType))) {
 				ToolStripMenuItem tsmi = new ToolStripMenuItem(atype.ToString());
@@ -53,6 +54,7 @@ namespace Yusen.GExplorer {
 			}
 			this.AboneType = this.AboneType;
 
+			//フィルタ用のメニュー作成
 			this.tsddbFilterType.DropDownItems.Clear();
 			foreach (FilterType ftype in Enum.GetValues(typeof(FilterType))) {
 				ToolStripMenuItem tsmi = new ToolStripMenuItem(ftype.ToString());
@@ -60,6 +62,7 @@ namespace Yusen.GExplorer {
 				tsmi.Click += delegate(object sender2, EventArgs e2) {
 					this.FilterType = (FilterType)(sender2 as ToolStripMenuItem).Tag;
 				};
+				//Migemoが使用不可の場合は選択不可に
 				if (FilterType.Migemo == ftype && !this.CanUseMigemo) {
 					tsmi.Enabled = false;
 				}
@@ -72,7 +75,7 @@ namespace Yusen.GExplorer {
 			this.Disposed += delegate {
 				UserCommandsManager.Instance.UserCommandsChanged -= new EventHandler(UserCommandsManager_UserCommandsChanged);
 			};
-
+			
 			NgContentsManager.Instance.NgContentsChanged += new EventHandler(NgContentsManager_NgContentsChanged);
 			this.Disposed += delegate {
 				NgContentsManager.Instance.NgContentsChanged -= new EventHandler(NgContentsManager_NgContentsChanged);
@@ -89,7 +92,6 @@ namespace Yusen.GExplorer {
 					this.crawlResult = value;
 					
 					this.listView1.BeginUpdate();
-					this.listView1.ListViewItemSorter = null;
 					this.ClearAllItems();
 					if (null != value) {
 						this.CreateItems();
@@ -263,6 +265,11 @@ namespace Yusen.GExplorer {
 			this.allLvis.Clear();
 			this.listView1.Items.Clear();
 			this.listView1.Groups.Clear();
+			this.listView1.ListViewItemSorter = null;
+			if (CheckState.Indeterminate == this.tsmiShowPackages.CheckState) {
+				this.tsmiShowPackages.CheckState = CheckState.Checked;
+			}
+			
 			this.tslGenre.Text = string.Empty;
 			this.tslNumber.Text = string.Empty;
 			this.tslTime.Text = string.Empty;
@@ -296,7 +303,7 @@ namespace Yusen.GExplorer {
 		private void DisplayItems(){
 			if (null == this.CrawlResult) return;
 			this.listView1.Items.Clear();
-
+			
 			bool showg = this.listView1.ShowGroups;
 			if (!showg) {
 				this.listView1.ShowGroups = true;
@@ -480,7 +487,13 @@ namespace Yusen.GExplorer {
 			
 			this.ShowPackages = showpackages;
 		}
-		
+		private void listView1_ItemDrag(object sender, ItemDragEventArgs e) {
+			DataObject dobj = new DataObject();
+			dobj.SetText(ContentAdapter.GetNamesAndUris(this.SelectedContents));
+			dobj.SetData(typeof(ContentAdapter[]), this.SelectedContents);
+			this.listView1.DoDragDrop(dobj, DragDropEffects.Copy);
+		}
+
 		private void cmsContent_Opening(object sender, CancelEventArgs e) {
 			if (0 == this.SelectedContents.Length) {
 				e.Cancel = true;
@@ -517,7 +530,7 @@ namespace Yusen.GExplorer {
 		}
 		private void tsmiPlayWithWmp_Click(object sender, EventArgs e) {
 			foreach (ContentAdapter cont in this.SelectedContents) {
-				Utility.PlayWithWMP(cont.MediaFileUri);
+				Utility.PlayWithWMP(cont.PlayListUri);
 			}
 		}
 		private void tsmiPlayWithBrowser_Click(object sender, EventArgs e) {

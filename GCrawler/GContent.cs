@@ -56,6 +56,13 @@ namespace Yusen.GCrawler {
 				throw new ArgumentException("引数のURIからコンテンツのIDを取得できなかった．\n引数のURI: " + uri.AbsoluteUri);
 			}
 		}
+		public static string[] ExtractContentIds(string text) {
+			List<string> ids = new List<string>();
+			for (Match match = GContent.regexId.Match(text); match.Success; match = match.NextMatch()) {
+				ids.Add(match.Value);
+			}
+			return ids.ToArray();
+		}
 		public static bool CanExtractContentId(Uri uri) {
 			string dummy;
 			return GContent.TryExtractContentId(uri, out dummy);

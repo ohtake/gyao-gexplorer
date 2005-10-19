@@ -23,9 +23,9 @@ namespace Yusen.GCrawler {
 	}
 
 	public interface IContentCacheController {
+		void AddCache(GContent cont);
 		bool TryGetCache(string contentId, out ContentCache cache);
 		bool RemoveCache(string contentId);
-		void AddToCache(GContent cont);
 		ReadOnlyCollection<string> ListAllCacheKeys();
 	}
 
@@ -58,15 +58,19 @@ namespace Yusen.GCrawler {
 		}
 		public bool RemoveCache(string contentId) {
 			lock (this) {
-				FileInfo fi = new FileInfo(this.FileNameOf(contentId));
-				if (fi.Exists) {
-					fi.Delete();
-					return true;
+				try {
+					FileInfo fi = new FileInfo(this.FileNameOf(contentId));
+					if (fi.Exists) {
+						fi.Delete();
+						return true;
+					}
+					return false;
+				} catch {
+					return false;
 				}
-				return false;
 			}
 		}
-		public void AddToCache(GContent cont) {
+		public void AddCache(GContent cont) {
 			lock (this) {
 				GContent.Serialize(this.FileNameOf(cont.ContentId), cont);
 			}

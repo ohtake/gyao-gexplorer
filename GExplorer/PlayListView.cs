@@ -5,10 +5,15 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using Yusen.GCrawler;
+using System.IO;
 
 namespace Yusen.GExplorer {
 	sealed partial class PlayListView : UserControl, IHasSettings<PlayListViewSettings> {
 		public event EventHandler<ContentSelectionChangedEventArgs> ContentSelectionChanged;
+
+		private bool dragging = false;
+		private string[] dropIds = null;
+		private ContentAdapter[] dropConts = null;
 
 		public PlayListView() {
 			InitializeComponent();
@@ -195,6 +200,7 @@ namespace Yusen.GExplorer {
 				this.listView1.TopItem = this.listView1.Items[this.listView1.Items.Count -1];
 			}
 		}
+
 		private void UpdateUserCommandsMenu() {
 			this.tsmiCommands.DropDownItems.Clear();
 			foreach (UserCommand uc in UserCommandsManager.Instance) {
@@ -259,7 +265,86 @@ namespace Yusen.GExplorer {
 					return lvi.Tag as ContentAdapter;
 				}));
 		}
+		private void listView1_ItemDrag(object sender, ItemDragEventArgs e) {
+			this.dragging = true;
+			DataObject dobj = new DataObject();
+			dobj.SetText(ContentAdapter.GetNamesAndUris(this.SelectedContents));
+			dobj.SetData(typeof(ContentAdapter[]), this.SelectedContents);
+			this.listView1.DoDragDrop(dobj, DragDropEffects.Copy);
+			this.dragging = false;
+		}
+		private void listView1_DragEnter(object sender, DragEventArgs e) {
+			if (this.dragging) {
+				return;
+			}
 
+			ContentAdapter[] conts = null;
+			string text = null;
+			DragDropEffects effect = DragDropEffects.None;
+			if((e.AllowedEffect & DragDropEffects.Copy) != DragDropEffects.None){
+				//ContentAdapter[] から
+				conts = e.Data.GetData(typeof(ContentAdapter[])) as ContentAdapter[];
+				//文字列から
+				text = e.Data.GetData(typeof(string)) as string;
+				effect = DragDropEffects.Copy;
+			} else if ((e.AllowedEffect & DragDropEffects.Link) != DragDropEffects.None) {
+				//UniformResourceLocator から
+				Stream linkStream = e.Data.GetData("UniformResourceLocator") as MemoryStream;
+				if (null != linkStream) {
+					byte[] linkBytes = new byte[linkStream.Length];
+					linkStream.Read(linkBytes, 0, linkBytes.Length);
+					text = Encoding.Default.GetString(linkBytes);
+					effect = DragDropEffects.Link;
+				}
+			}
+
+			this.dropConts = null;
+			this.dropIds = null;
+
+			if (null != conts) {
+				this.dropConts = conts;
+				e.Effect = effect;
+			}else if (! string.IsNullOrEmpty(text)) {
+				//ID取り出し
+				string[] ids = GContent.ExtractContentIds(text);
+				this.dropIds = ids;
+				e.Effect = effect;
+			}
+		}
+		private void listView1_DragDrop(object sender, DragEventArgs e) {
+			if (null != this.dropConts) {
+				PlayList.Instance.BeginUpdate();
+				foreach (ContentAdapter cont in this.dropConts) {
+					PlayList.Instance.AddIfNotExists(cont);
+				}
+				PlayList.Instance.EndUpdate();
+			} else if (null != this.dropIds) {
+				try {
+					PlayList.Instance.BeginUpdate();
+					foreach (string id in this.dropIds) {
+					retry:
+						GContent cont = null;
+						try {
+							cont = GContent.DoDownload(id);
+						} catch (Exception ex) {
+							switch (MessageBox.Show(ex.Message, "ドロップによる追加", MessageBoxButtons.AbortRetryIgnore, MessageBoxIcon.Error)) {
+								case DialogResult.Abort:
+									return;
+								case DialogResult.Retry:
+									goto retry;
+								case DialogResult.Ignore:
+									continue;
+							}
+						}
+						ContentAdapter ca = new ContentAdapter(cont);
+						PlayList.Instance.AddIfNotExists(ca);
+					}
+				} finally {
+					PlayList.Instance.EndUpdate();
+				}
+			}
+		}
+		
 		#region メニューの項目
 		private void tsmiAddById_Click(object sender, EventArgs e) {
 			string title = "コンテンツIDを指定してプレイリストに追加";
@@ -316,11 +401,6 @@ namespace Yusen.GExplorer {
 		private void tsmiImportOverwrite_Click(object sender, EventArgs e) {
 			if (DialogResult.OK == this.ofdXml.ShowDialog()) {
 				PlayList.Instance.DeserializeItems(this.ofdXml.FileName);
-			}
-		}
-		private void tsmiExportAsAsx_Click(object sender, EventArgs e) {
-			if (DialogResult.OK == this.sfdAsx.ShowDialog()) {
-				PlayList.Instance.ExportAsAsx(this.sfdAsx.FileName);
 			}
 		}
 		private void tsmiSerializePlayListNow_Click(object sender, EventArgs e) {
@@ -415,7 +495,7 @@ namespace Yusen.GExplorer {
 		}
 		private void tsmiPlayWithWmp_Click(object sender, EventArgs e) {
 			foreach (ContentAdapter cont in this.SelectedContents) {
-				Utility.PlayWithWMP(cont.MediaFileUri);
+				Utility.PlayWithWMP(cont.PlayListUri);
 			}
 		}
 		private void tsmiPlayWithBrowser_Click(object sender, EventArgs e) {

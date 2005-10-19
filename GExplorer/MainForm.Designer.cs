@@ -357,7 +357,7 @@ namespace Yusen.GExplorer {
 			this.tsmiFocusOnResultAfterTabChanged.CheckOnClick = true;
 			this.tsmiFocusOnResultAfterTabChanged.CheckState = System.Windows.Forms.CheckState.Checked;
 			this.tsmiFocusOnResultAfterTabChanged.Name = "tsmiFocusOnResultAfterTabChanged";
-			this.tsmiFocusOnResultAfterTabChanged.Text = "ジャンルタブ切り替えでクロール結果ビューにフォーカス(&F)";
+			this.tsmiFocusOnResultAfterTabChanged.Text = "タブ切り替えでフォーカス移動(&F)";
 			// 
 			// tsmiTools
 			// 

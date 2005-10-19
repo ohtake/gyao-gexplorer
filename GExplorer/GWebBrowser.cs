@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Forms;
 using Yusen.GCrawler;
+using System.Drawing;
 
 namespace Yusen.GExplorer {
 	public partial class GWebBrowser : WebBrowser {
@@ -76,7 +77,7 @@ namespace Yusen.GExplorer {
 		}
 
 		private void Package_Click(object sender, HtmlElementEventArgs e) {
-			if (Keys.Alt != Control.ModifierKeys) {
+			if (Keys.None == (Keys.Alt & Control.ModifierKeys)) {
 				//TagにIDを仕込んでおく
 				this.cmsPackage.Tag = this.dicPackage[sender as HtmlElement];
 				this.cmsPackage.Location = Control.MousePosition;
@@ -85,13 +86,27 @@ namespace Yusen.GExplorer {
 				e.ReturnValue = false;
 			}
 		}
+		private void Package_MouseEnter(object sender, HtmlElementEventArgs e) {
+			if (Keys.None == (Keys.Alt & Control.ModifierKeys)) {
+				HtmlElement elem = sender as HtmlElement;
+				this.ttId.ToolTipTitle = this.dicPackage[elem];
+				//場所がうまく取れないので MousePosition で
+				this.ttId.Show(" ", this, this.PointToClient(Control.MousePosition));
+			}
+		}
+		private void Package_MouseLeave(object sender, HtmlElementEventArgs e) {
+			this.ttId.Hide(this);
+		}
 		private void AddToPackages(HtmlElement elem, string packageId) {
 			this.dicPackage.Add(elem, packageId);
 			elem.Style += GWebBrowser.stylePackage;
+			elem.MouseEnter += new HtmlElementEventHandler(this.Package_MouseEnter);
+			elem.MouseLeave += new HtmlElementEventHandler(this.Package_MouseLeave);
 			elem.Click += new HtmlElementEventHandler(this.Package_Click);
 		}
+		
 		private void Content_Click(object sender, HtmlElementEventArgs e) {
-			if (Keys.Alt != Control.ModifierKeys) {
+			if (Keys.None == (Keys.Alt & Control.ModifierKeys)) {
 				//TagにIDを仕込んでおく
 				this.cmsContent.Tag = this.dicContent[sender as HtmlElement];
 				this.cmsContent.Location = Control.MousePosition;
@@ -100,13 +115,43 @@ namespace Yusen.GExplorer {
 				e.ReturnValue = false;
 			}
 		}
+		private void Content_MouseEnter(object sender, HtmlElementEventArgs e) {
+			if (Keys.None == (Keys.Alt & Control.ModifierKeys)) {
+				HtmlElement elem = sender as HtmlElement;
+				string id = this.dicContent[elem];
+				string tipText;
+				ContentCache cache;
+				if (Cache.Instance.ContentCacheController.TryGetCache(id, out cache)) {
+					ContentAdapter ca = new ContentAdapter(cache.Content);
+					this.ttId.ToolTipTitle = id + " のキャッシュ";
+					tipText =
+						cache.LastWriteTime.ToString() + Environment.NewLine
+						+ ca.GenreName + Environment.NewLine
+						+ ca.Title + Environment.NewLine
+						+ ca.EpisodeNumber + Environment.NewLine
+						+ ca.SubTitle + Environment.NewLine
+						+ ca.Duration + Environment.NewLine
+						+ ca.Deadline;
+				} else {
+					this.ttId.ToolTipTitle = id;
+					tipText = " ";
+				}
+				//場所がうまく取れないので MousePosition で
+				this.ttId.Show(tipText, this, this.PointToClient(Control.MousePosition));
+			}
+		}
+		private void Content_MouseLeave(object sender, HtmlElementEventArgs e) {
+			this.ttId.Hide(this);
+		}
 		private void AddToContents(HtmlElement elem, string contentId) {
 			this.dicContent.Add(elem, contentId);
 			elem.Style += GWebBrowser.styleContent;
 			elem.Click += new HtmlElementEventHandler(this.Content_Click);
+			elem.MouseEnter += new HtmlElementEventHandler(this.Content_MouseEnter);
+			elem.MouseLeave += new HtmlElementEventHandler(this.Content_MouseLeave);
 		}
 		private void ShowHelpOnHowToCancelMenu() {
-			MessageBox.Show("Altキーを押していれば通常のクリックとして扱います．", "変なメニューが邪魔だよ", MessageBoxButtons.OK, MessageBoxIcon.Information);
+			MessageBox.Show("Altキーを押していれば何も出ません．", "ティップやメニューが邪魔", MessageBoxButtons.OK, MessageBoxIcon.Information);
 		}
 
 		private void tsmiPackageOpen_Click(object sender, EventArgs e) {
@@ -146,7 +191,7 @@ namespace Yusen.GExplorer {
 			PlayerForm.Play(ca);
 		}
 		private void tsmiContentPlayWmp_Click(object sender, EventArgs e) {
-			Utility.PlayWithWMP(GContent.CreateMediaFileUri(this.cmsContent.Tag as string, GlobalSettings.Instance.UserNo, GlobalSettings.Instance.BitRate));
+			Utility.PlayWithWMP(GContent.CreatePlayListUri(this.cmsContent.Tag as string, GlobalSettings.Instance.UserNo, GlobalSettings.Instance.BitRate));
 		}
 		private void tsmiContentPlayBrowser_Click(object sender, EventArgs e) {
 			Utility.Browse(GContent.CreatePlayerPageUri(this.cmsContent.Tag as string, GlobalSettings.Instance.BitRate));

@@ -157,7 +157,7 @@ namespace Yusen.GCrawler {
 						//ダウンロード成功
 						this.visitedContents.Add(contId, content);
 						this.contentsCached.Add(contId, false);
-						this.cacheController.AddToCache(content);
+						this.cacheController.AddCache(content);
 						continue;
 					} catch (ContentDownloadException e) {
 						//ダウンロード失敗

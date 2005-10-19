@@ -72,7 +72,7 @@ namespace Yusen.GExplorer {
 					case DialogResult.OK:
 						break;
 					case DialogResult.Cancel:
-						Application.Exit();
+						Environment.Exit(1);
 						break;
 				}
 			}

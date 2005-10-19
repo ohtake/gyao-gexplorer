@@ -64,8 +64,6 @@ namespace Yusen.GExplorer {
 			this.tsmiImportOverwrite = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiSerializePlayListNow = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
-			this.tsmiExportAsAsx = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiRemoveUnreachables = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiClearPlayList = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsddbSettings = new System.Windows.Forms.ToolStripDropDownButton();
@@ -103,6 +101,7 @@ namespace Yusen.GExplorer {
 			// 
 			// listView1
 			// 
+			this.listView1.AllowDrop = true;
 			this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.chId,
             this.chName,
@@ -120,9 +119,12 @@ namespace Yusen.GExplorer {
 			this.listView1.Size = new System.Drawing.Size(544, 136);
 			this.listView1.TabIndex = 0;
 			this.listView1.View = System.Windows.Forms.View.Details;
+			this.listView1.DragEnter += new System.Windows.Forms.DragEventHandler(this.listView1_DragEnter);
 			this.listView1.DoubleClick += new System.EventHandler(this.listView1_DoubleClick);
+			this.listView1.DragDrop += new System.Windows.Forms.DragEventHandler(this.listView1_DragDrop);
 			this.listView1.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.listView1_ColumnClick);
 			this.listView1.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.listView1_ItemSelectionChanged);
+			this.listView1.ItemDrag += new System.Windows.Forms.ItemDragEventHandler(this.listView1_ItemDrag);
 			this.listView1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.listView1_KeyDown);
 			// 
 			// chId
@@ -173,8 +175,7 @@ namespace Yusen.GExplorer {
 			this.cmsPlayListItem.Location = new System.Drawing.Point(21, 36);
 			this.cmsPlayListItem.Name = "cmsPlayListItem";
 			this.cmsPlayListItem.RightToLeft = System.Windows.Forms.RightToLeft.No;
-			this.cmsPlayListItem.Size = new System.Drawing.Size(220, 289);
-			this.cmsPlayListItem.Visible = true;
+			this.cmsPlayListItem.Size = new System.Drawing.Size(220, 270);
 			this.cmsPlayListItem.Opening += new System.ComponentModel.CancelEventHandler(this.cmsPlayListItem_Opening);
 			// 
 			// tsmiPlay
@@ -336,8 +337,6 @@ namespace Yusen.GExplorer {
             this.tsmiImportOverwrite,
             this.tsmiSerializePlayListNow,
             this.toolStripSeparator5,
-            this.tsmiExportAsAsx,
-            this.toolStripSeparator8,
             this.tsmiRemoveUnreachables,
             this.tsmiClearPlayList});
 			this.tsddbOperation.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -393,16 +392,6 @@ namespace Yusen.GExplorer {
 			// toolStripSeparator5
 			// 
 			this.toolStripSeparator5.Name = "toolStripSeparator5";
-			// 
-			// tsmiExportAsAsx
-			// 
-			this.tsmiExportAsAsx.Name = "tsmiExportAsAsx";
-			this.tsmiExportAsAsx.Text = "プレイリストをASXとしてイクスポート(&A)...";
-			this.tsmiExportAsAsx.Click += new System.EventHandler(this.tsmiExportAsAsx_Click);
-			// 
-			// toolStripSeparator8
-			// 
-			this.toolStripSeparator8.Name = "toolStripSeparator8";
 			// 
 			// tsmiRemoveUnreachables
 			// 
@@ -521,7 +510,6 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ToolStripLabel tslTitle;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
 		private System.Windows.Forms.ToolStripDropDownButton tsddbOperation;
-		private System.Windows.Forms.ToolStripMenuItem tsmiExportAsAsx;
 		private System.Windows.Forms.ToolStripMenuItem tsmiSerializePlayListNow;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
 		private System.Windows.Forms.ToolStripMenuItem tsmiClearPlayList;
@@ -533,7 +521,6 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ToolStripMenuItem tsmiAddById;
 		private System.Windows.Forms.ToolStripMenuItem tsmiExport;
 		private System.Windows.Forms.ToolStripMenuItem tsmiImportOverwrite;
-		private System.Windows.Forms.ToolStripSeparator toolStripSeparator8;
 		private System.Windows.Forms.OpenFileDialog ofdXml;
 		private System.Windows.Forms.SaveFileDialog sfdXml;
 		private System.Windows.Forms.ColumnHeader chDeadline;

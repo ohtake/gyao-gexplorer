@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using System.IO;
-using System.Xml;
 
 namespace Yusen.GExplorer {
 	class PlayList : ItemsManagerBase<ContentAdapter> {
@@ -79,7 +77,7 @@ namespace Yusen.GExplorer {
 			}
 			return this.items[contIdx-1];
 		}
-
+		
 		public void BeginUpdate() {
 			lock (this) {
 				if (this.updating) throw new InvalidOperationException("updatingÇ»ÇÃÇ…BeginUpdateåƒÇ—èoÇµ");
@@ -122,33 +120,6 @@ namespace Yusen.GExplorer {
 			}
 			if (null != this.PlayListChanged) {
 				this.PlayListChanged(this, EventArgs.Empty);
-			}
-		}
-		public void ExportAsAsx(string filename) {
-			XmlWriterSettings settings = new XmlWriterSettings();
-			settings.Indent = true;
-			settings.IndentChars = "\t";
-			settings.OmitXmlDeclaration = true; // XMLêÈåæÇ™Ç†ÇÈÇ∆WMPÇ™ì«Ç›çûÇÒÇ≈Ç≠ÇÍÇ»Ç¢
-			
-			using (TextWriter textWriter = new StreamWriter(filename))
-			using (XmlWriter writer = XmlWriter.Create(textWriter, settings)) {
-				writer.WriteStartDocument();
-				writer.WriteStartElement("ASX");
-				writer.WriteAttributeString("VERSION", "3.0");
-				foreach (ContentAdapter cont in this.items) {
-					writer.WriteStartElement("ENTRY");
-
-					//ì˙ñ{åÍÇ™Ç†ÇÈÇ∆WMPÇ™ì«Ç›çûÇÒÇ≈Ç≠ÇÍÇ»Ç¢
-					//writer.WriteElementString("TITLE", cont.DisplayName);
-					
-					writer.WriteStartElement("REF");
-					writer.WriteAttributeString("href", cont.MediaFileUri.AbsoluteUri);
-					writer.WriteEndElement();
-
-					writer.WriteEndElement();
-				}
-				writer.WriteEndElement();
-				writer.WriteEndDocument();
 			}
 		}
 		
