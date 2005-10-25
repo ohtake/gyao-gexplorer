@@ -34,7 +34,6 @@ namespace Yusen.GExplorer {
 				UserCommandsManager.Instance.UserCommandsChanged -= new EventHandler(this.UserCommandsManager_UserCommandsChanged);
 			};
 		}
-
 		
 		private void GWebBrowser_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e) {
 			this.dicPackage.Clear();

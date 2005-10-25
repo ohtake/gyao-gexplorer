@@ -327,7 +327,7 @@ namespace Yusen.GExplorer {
 						try {
 							cont = GContent.DoDownload(id);
 						} catch (Exception ex) {
-							switch (MessageBox.Show(ex.Message, "ドロップによる追加", MessageBoxButtons.AbortRetryIgnore, MessageBoxIcon.Error)) {
+							switch (MessageBox.Show(ex.Message, "ドロップによる追加", MessageBoxButtons.AbortRetryIgnore, MessageBoxIcon.Error, MessageBoxDefaultButton.Button3)) {
 								case DialogResult.Abort:
 									return;
 								case DialogResult.Retry:

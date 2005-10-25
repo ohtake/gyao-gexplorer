@@ -53,21 +53,21 @@ namespace Yusen.GExplorer {
 		}
 		
 		private static void Application_ThreadException(object sender, ThreadExceptionEventArgs e) {
-			Program.DisplayException(e.Exception);
+			Program.DisplayException("Application.ThreadException", e.Exception);
 		}
 		private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e) {
 			Exception ex = e.ExceptionObject as Exception;
 			if (null != ex) {
-				Program.DisplayException(ex);
+				Program.DisplayException("CurrentDomain.UnhandledException", ex);
 			}
 		}
 		
-		public static void DisplayException(Exception e) {
+		public static void DisplayException(string title, Exception e) {
 			SystemSounds.Exclamation.Play();
 			using (ExceptionDialog ed = new ExceptionDialog()) {
 				ed.AllowAbort = true;
 				ed.Exception = e;
-				ed.Title = "キャッチされなかった例外";
+				ed.Title = title;
 				switch (ed.ShowDialog()) {
 					case DialogResult.OK:
 						break;

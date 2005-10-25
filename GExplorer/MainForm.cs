@@ -184,10 +184,13 @@ namespace Yusen.GExplorer {
 						return;
 					}
 					t = new Thread(new ThreadStart(delegate {
-						result = this.crawler.Crawl(genre);
-						lock (this.crawler) {
-							this.threadCrawler = null;
-							this.DisableTsmiAbortCrawling();
+						try {
+							result = this.crawler.Crawl(genre);
+						} finally {
+							lock (this.crawler) {
+								this.threadCrawler = null;
+								this.DisableTsmiAbortCrawling();
+							}
 						}
 						if (result.Success) {
 							this.crawlProgressEventArgs = null;

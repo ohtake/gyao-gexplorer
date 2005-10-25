@@ -47,7 +47,7 @@ namespace Yusen.GExplorer {
 			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiRemoveAndClose = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiClose = new System.Windows.Forms.ToolStripMenuItem();
-			this.操作OToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiOperations = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiPlayPause = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiStop = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
@@ -61,11 +61,14 @@ namespace Yusen.GExplorer {
 			this.tsmiNextContentWithDelete = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiSettings = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiAlwaysOnTop = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiStrechToFit = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiDisableScreenSaver = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiRemovePlayedContent = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiLoopPlayList = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
+			this.tsmiSkipCmLicense = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiAutoVolume = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiVolumeNormal = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiVolumeCf = new System.Windows.Forms.ToolStripMenuItem();
@@ -255,7 +258,7 @@ namespace Yusen.GExplorer {
 			this.menuStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Visible;
 			this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiFile,
-            this.操作OToolStripMenuItem,
+            this.tsmiOperations,
             this.tsmiSettings,
             this.tsmiTools});
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
@@ -306,9 +309,9 @@ namespace Yusen.GExplorer {
 			this.tsmiClose.Text = "閉じる(&W)";
 			this.tsmiClose.Click += new System.EventHandler(this.tsmiClose_Click);
 			// 
-			// 操作OToolStripMenuItem
+			// tsmiOperations
 			// 
-			this.操作OToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+			this.tsmiOperations.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiPlayPause,
             this.tsmiStop,
             this.toolStripSeparator5,
@@ -320,8 +323,8 @@ namespace Yusen.GExplorer {
             this.tsmiPrevContent,
             this.tsmiNextContent,
             this.tsmiNextContentWithDelete});
-			this.操作OToolStripMenuItem.Name = "操作OToolStripMenuItem";
-			this.操作OToolStripMenuItem.Text = "操作(&O)";
+			this.tsmiOperations.Name = "tsmiOperations";
+			this.tsmiOperations.Text = "操作(&O)";
 			// 
 			// tsmiPlayPause
 			// 
@@ -403,11 +406,14 @@ namespace Yusen.GExplorer {
 			// 
 			this.tsmiSettings.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiAlwaysOnTop,
+            this.tsmiStrechToFit,
             this.tsmiDisableScreenSaver,
             this.toolStripSeparator3,
             this.tsmiRemovePlayedContent,
             this.tsmiLoopPlayList,
             this.toolStripSeparator6,
+            this.tsmiSkipCmLicense,
+            this.toolStripSeparator4,
             this.tsmiAutoVolume,
             this.tsmiVolumeNormal,
             this.tsmiVolumeCf});
@@ -422,11 +428,16 @@ namespace Yusen.GExplorer {
 			this.tsmiAlwaysOnTop.Text = "常に手前に表示(&T)";
 			this.tsmiAlwaysOnTop.Click += new System.EventHandler(this.tsmiAlwaysOnTop_Click);
 			// 
+			// tsmiStrechToFit
+			// 
+			this.tsmiStrechToFit.CheckOnClick = true;
+			this.tsmiStrechToFit.Name = "tsmiStrechToFit";
+			this.tsmiStrechToFit.Text = "ウィンドウサイズに合わせて拡大(&F)";
+			this.tsmiStrechToFit.Click += new System.EventHandler(this.tsmiStrechToFit_Click);
+			// 
 			// tsmiDisableScreenSaver
 			// 
-			this.tsmiDisableScreenSaver.Checked = true;
 			this.tsmiDisableScreenSaver.CheckOnClick = true;
-			this.tsmiDisableScreenSaver.CheckState = System.Windows.Forms.CheckState.Checked;
 			this.tsmiDisableScreenSaver.Name = "tsmiDisableScreenSaver";
 			this.tsmiDisableScreenSaver.Text = "アクティブ時にスクリーンセーバ抑止(&S)";
 			this.tsmiDisableScreenSaver.Click += new System.EventHandler(this.tsmiDisableScreenSaver_Click);
@@ -452,6 +463,18 @@ namespace Yusen.GExplorer {
 			// toolStripSeparator6
 			// 
 			this.toolStripSeparator6.Name = "toolStripSeparator6";
+			// 
+			// tsmiSkipCmLicense
+			// 
+			this.tsmiSkipCmLicense.Checked = true;
+			this.tsmiSkipCmLicense.CheckOnClick = true;
+			this.tsmiSkipCmLicense.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.tsmiSkipCmLicense.Name = "tsmiSkipCmLicense";
+			this.tsmiSkipCmLicense.Text = "cm_license の早期スキップ(&K)";
+			// 
+			// toolStripSeparator4
+			// 
+			this.toolStripSeparator4.Name = "toolStripSeparator4";
 			// 
 			// tsmiAutoVolume
 			// 
@@ -488,7 +511,7 @@ namespace Yusen.GExplorer {
 			// 
 			this.tsmiFocusOnWmp.Name = "tsmiFocusOnWmp";
 			this.tsmiFocusOnWmp.ShortcutKeys = System.Windows.Forms.Keys.F6;
-			this.tsmiFocusOnWmp.Text = "WMPにフォーカスを送る(&F)";
+			this.tsmiFocusOnWmp.Text = "WMP にフォーカスを送る(&F)";
 			this.tsmiFocusOnWmp.Click += new System.EventHandler(this.tsmiFocusOnWmp_Click);
 			// 
 			// tsmiShowItemInfo
@@ -558,7 +581,7 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ToolStripMenuItem tsmiReload;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
 		private System.Windows.Forms.ToolStripMenuItem tsmiFocusOnWmp;
-		private System.Windows.Forms.ToolStripMenuItem 操作OToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem tsmiOperations;
 		private System.Windows.Forms.ToolStripMenuItem tsmiPlayPause;
 		private System.Windows.Forms.ToolStripMenuItem tsmiStop;
 		private System.Windows.Forms.ToolStripMenuItem tsmiNextTrack;
@@ -596,5 +619,8 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ToolStripMenuItem tsmiAutoVolume;
 		private System.Windows.Forms.ToolStripMenuItem tsmiVolumeNormal;
 		private System.Windows.Forms.ToolStripMenuItem tsmiVolumeCf;
+		private System.Windows.Forms.ToolStripMenuItem tsmiSkipCmLicense;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
+		private System.Windows.Forms.ToolStripMenuItem tsmiStrechToFit;
 	}
 }

@@ -23,25 +23,41 @@ namespace Yusen.GCrawler {
 		}
 		
 		public void SetDeadline(string contId, string deadline) {
-			this.dic[contId] = deadline;
+			lock (this.dic) {
+				this.dic[contId] = deadline;
+			}
 		}
 		public bool RemoveDeadlineOf(string contId) {
-			return this.dic.Remove(contId);
+			lock (this.dic) {
+				return this.dic.Remove(contId);
+			}
 		}
 		public void ClearDeadlines() {
-			this.dic.Clear();
+			lock (this.dic) {
+				this.dic.Clear();
+			}
 		}
 		public bool ContainsDeadlineOf(string contId) {
-			return this.dic.ContainsKey(contId);
+			lock (this.dic) {
+				return this.dic.ContainsKey(contId);
+			}
 		}
 		public bool TryGetDeadline(string contId, out string deadline) {
-			return this.dic.TryGetValue(contId, out deadline);
+			lock (this.dic) {
+				return this.dic.TryGetValue(contId, out deadline);
+			}
 		}
 		public IEnumerable<string> ListContentIds() {
-			return this.dic.Keys;
+			lock (this.dic) {
+				return this.dic.Keys;
+			}
 		}
 		public int Count {
-			get {return this.dic.Count;}
+			get {
+				lock (this.dic) {
+					return this.dic.Count;
+				}
+			}
 		}
 	}
 }

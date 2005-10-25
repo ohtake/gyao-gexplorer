@@ -314,8 +314,8 @@ namespace Yusen.GExplorer {
 			Regex filter = this.FilterEnabled ? this.FilterRegex : null;
 			foreach (ListViewItem lvi in this.allLvis) {
 				ContentAdapter cont = lvi.Tag as ContentAdapter;
-				bool isNg = NgContentsManager.Instance.IsNgContent(cont);
 				//NGèàóù
+				bool isNg = NgContentsManager.Instance.IsNgContent(cont);
 				switch (this.AboneType) {
 					case AboneType.Hakidame:
 						isNg = !isNg;

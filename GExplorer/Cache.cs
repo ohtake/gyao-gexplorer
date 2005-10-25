@@ -7,7 +7,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using Yusen.GCrawler;
 
 namespace Yusen.GExplorer {
-	class Cache {
+	sealed class Cache {
 		private const string CacheDir = @"Cache";
 		private const string DeadlineFilename = @"Deadlines.bin";
 		private const string ResultsFilename = @"CrawlResults.bin";

@@ -96,22 +96,26 @@ namespace Yusen.GExplorer {
 		}
 		public void FillSettings(PlayerFormSettings settings) {
 			base.FillSettings(settings);
+			settings.MainTabIndex = this.tabControl1.SelectedIndex;
+			settings.StrechToFitEnabled = this.StreachToFitEnabled;
 			settings.DisableScreenSaverEnabled = this.DisableScreenSaverEnabled;
-			settings.AutoVolumeEnabled = this.AutoVolumeEnabled;
 			settings.RemovePlayedContentEnabled = this.RemovePlayedContentEnabled;
 			settings.PlayListLoopEnabled = this.PlayListLoopEnabled;
-			settings.MainTabIndex = this.tabControl1.SelectedIndex;
+			settings.SkipCmLicenseEnabled = this.SkipCmLicenseEnabled;
+			settings.AutoVolumeEnabled = this.AutoVolumeEnabled;
 			settings.VolumeNormal = this.VolumeNormal;
 			settings.VolumeCf = this.VolumeCf;
 		}
 
 		public void ApplySettings(PlayerFormSettings settings) {
 			base.ApplySettings(settings);
+			this.tabControl1.SelectedIndex = settings.MainTabIndex ?? this.tabControl1.SelectedIndex;
+			this.StreachToFitEnabled = settings.StrechToFitEnabled ?? this.StreachToFitEnabled;
 			this.DisableScreenSaverEnabled = settings.DisableScreenSaverEnabled ?? this.DisableScreenSaverEnabled;
-			this.AutoVolumeEnabled = settings.AutoVolumeEnabled ?? this.AutoVolumeEnabled;
 			this.RemovePlayedContentEnabled = settings.RemovePlayedContentEnabled ?? this.RemovePlayedContentEnabled;
 			this.PlayListLoopEnabled = settings.PlayListLoopEnabled ?? this.PlayListLoopEnabled;
-			this.tabControl1.SelectedIndex = settings.MainTabIndex ?? this.tabControl1.SelectedIndex;
+			this.SkipCmLicenseEnabled = settings.SkipCmLicenseEnabled ?? this.SkipCmLicenseEnabled;
+			this.AutoVolumeEnabled = settings.AutoVolumeEnabled ?? this.AutoVolumeEnabled;
 			this.VolumeNormal = settings.VolumeNormal ?? this.VolumeNormal;
 			this.VolumeCf = settings.VolumeCf ?? this.VolumeCf;
 			
@@ -139,8 +143,9 @@ namespace Yusen.GExplorer {
 				} else {
 					Utility.SetTitlebarText(this, value.DisplayName);
 					IWMPMedia media = this.wmpMain.newMedia(value.PlayListUri.AbsoluteUri);
-					this.wmpMain.currentPlaylist.insertItem(this.wmpMain.currentPlaylist.count, media);
+					this.wmpMain.currentPlaylist.appendItem(media);
 					if (WMPPlayState.wmppsMediaEnded != this.wmpMain.playState) {
+						//手動で切り替えた場合では強制的に再生させる
 						this.wmpMain.currentMedia = media;
 						this.wmpMain.Ctlcontrols.play();
 					}
@@ -163,12 +168,20 @@ namespace Yusen.GExplorer {
 					} else {
 						media = this.wmpMain.newMedia(this.CurrentContent.PlayListUri.AbsoluteUri);
 					}
-					this.wmpMain.currentPlaylist.insertItem(this.wmpMain.currentPlaylist.count, media);
+					this.wmpMain.currentPlaylist.appendItem(media);
 					if (WMPPlayState.wmppsMediaEnded != this.wmpMain.playState) {
+						//手動で切り替えた場合では強制的に再生させる
 						this.wmpMain.currentMedia = media;
 						this.wmpMain.Ctlcontrols.play();
 					}
 				}
+			}
+		}
+		public bool StreachToFitEnabled {
+			get { return this.tsmiStrechToFit.Checked; }
+			set {
+				this.tsmiStrechToFit.Checked = value;
+				this.wmpMain.stretchToFit = value;
 			}
 		}
 		public bool DisableScreenSaverEnabled {
@@ -178,14 +191,6 @@ namespace Yusen.GExplorer {
 				this.ssl.Enabled = value;
 			}
 		}
-		public bool AutoVolumeEnabled {
-			get {return this.tsmiAutoVolume.Checked;}
-			set {
-				this.tsmiAutoVolume.Checked = value;
-				this.tsmiVolumeNormal.Enabled = value;
-				this.tsmiVolumeCf.Enabled = value;
-			}
-		}
 		public bool RemovePlayedContentEnabled {
 			get { return this.tsmiRemovePlayedContent.Checked; }
 			set { this.tsmiRemovePlayedContent.Checked = value; }
@@ -193,6 +198,18 @@ namespace Yusen.GExplorer {
 		public bool PlayListLoopEnabled {
 			get { return this.tsmiLoopPlayList.Checked; }
 			set { this.tsmiLoopPlayList.Checked = value; }
+		}
+		public bool SkipCmLicenseEnabled {
+			get { return this.tsmiSkipCmLicense.Checked; }
+			set { this.tsmiSkipCmLicense.Checked = value; }
+		}
+		public bool AutoVolumeEnabled {
+			get { return this.tsmiAutoVolume.Checked; }
+			set {
+				this.tsmiAutoVolume.Checked = value;
+				this.tsmiVolumeNormal.Enabled = value;
+				this.tsmiVolumeCf.Enabled = value;
+			}
 		}
 		public int VolumeNormal {
 			get { return this.volumeNormal; }
@@ -212,6 +229,11 @@ namespace Yusen.GExplorer {
 				} else {
 					throw new ArgumentOutOfRangeException("VolumeCf");
 				}
+			}
+		}
+		private bool IsCmLicense {
+			get {
+				return this.wmpMain.currentMedia.sourceURL.Contains("cm_license");
 			}
 		}
 
@@ -268,7 +290,7 @@ namespace Yusen.GExplorer {
 			}
 		}
 		private void tsmiReload_Click(object sender, EventArgs e) {
-			this.wmpMain.currentPlaylist = this.wmpMain.currentPlaylist;
+			this.wmpMain.currentMedia = this.wmpMain.currentMedia;
 			this.wmpMain.Ctlcontrols.play();
 		}
 		private void tsmiRemoveAndClose_Click(object sender, EventArgs e) {
@@ -328,6 +350,9 @@ namespace Yusen.GExplorer {
 		}
 		private void tsmiAlwaysOnTop_Click(object sender, EventArgs e) {
 			this.TopMost = this.tsmiAlwaysOnTop.Checked;
+		}
+		private void tsmiStrechToFit_Click(object sender, EventArgs e) {
+			this.StreachToFitEnabled = this.StreachToFitEnabled;
 		}
 		private void tsmiDisableScreenSaver_Click(object sender, EventArgs e) {
 			this.DisableScreenSaverEnabled = this.DisableScreenSaverEnabled;
@@ -431,13 +456,23 @@ namespace Yusen.GExplorer {
 						this.pboxBanner.Image = null;
 						this.pboxBanner.Tag = null;
 					}
+					//cm_licenseの早期スキップ
+					if (this.SkipCmLicenseEnabled && this.IsCmLicense) {
+						Thread t = new Thread(new ThreadStart(delegate {
+							Thread.Sleep(100);
+							if (!this.IsDisposed && !this.wmpMain.IsDisposed) {
+								this.tsmiNextTrack.PerformClick();
+							}
+						}));
+						t.Start();
+					}
 					break;
 			}
 		}
 		private void wmpMain_PlayStateChange(object sender, _WMPOCXEvents_PlayStateChangeEvent e) {
 			switch((WMPPlayState)e.newState){
 				case WMPPlayState.wmppsMediaEnded:
-					if(this.wmpMain.currentMedia.sourceURL.Contains("cm_license")){
+					if(this.IsCmLicense){
 						//cm_licenseなら無視
 						break;
 					}
@@ -540,9 +575,11 @@ namespace Yusen.GExplorer {
 
 	public class PlayerFormSettings : FormSettingsBaseSettings {
 		private int? mainTabIndex;
+		private bool? strechToFitEnabled;
 		private bool? disableScreenSaverEnabled;
 		private bool? removePlayedContentEnabled;
 		private bool? playListLoopEnabled;
+		private bool? skipCmLicenseEnabled;
 		private bool? autoVolumeEnabled;
 		private int? volumeNormal;
 		private int? volumeCf;
@@ -550,6 +587,10 @@ namespace Yusen.GExplorer {
 		public int? MainTabIndex {
 			get { return this.mainTabIndex; }
 			set { this.mainTabIndex = value; }
+		}
+		public bool? StrechToFitEnabled {
+			get { return this.strechToFitEnabled; }
+			set { this.strechToFitEnabled = value; }
 		}
 		public bool? DisableScreenSaverEnabled {
 			get { return this.disableScreenSaverEnabled; }
@@ -562,6 +603,10 @@ namespace Yusen.GExplorer {
 		public bool? PlayListLoopEnabled {
 			get { return this.playListLoopEnabled; }
 			set { this.playListLoopEnabled = value; }
+		}
+		public bool? SkipCmLicenseEnabled {
+			get { return this.skipCmLicenseEnabled; }
+			set { this.skipCmLicenseEnabled = value; }
 		}
 		public bool? AutoVolumeEnabled {
 			get { return this.autoVolumeEnabled; }

@@ -7,10 +7,10 @@ namespace Yusen.GCrawler {
 	public class Crawler {
 		private class CrawlerHelper{
 			private static Uri ConvertUriWithoutFragment(Uri uri) {
-				if (uri.Fragment.Length > 0) {
-					return new Uri(uri.GetLeftPart(UriPartial.Query));
-				} else {
+				if (string.IsNullOrEmpty(uri.Fragment)) {
 					return uri;
+				} else {
+					return new Uri(uri.GetLeftPart(UriPartial.Query));
 				}
 			}
 			
@@ -55,7 +55,7 @@ namespace Yusen.GCrawler {
 						this.waitingPages.Count + this.waitingPackages.Count + this.waitingContents.Count));
 				}
 			}
-			private void OnIgnorableExceptionOccured(Exception e) {
+			private void OnIgnoringException(Exception e) {
 				this.ignoredExceptions.Add(e);
 			}
 			/// <summary>
@@ -64,7 +64,10 @@ namespace Yusen.GCrawler {
 			/// </summary>
 			private void CrawlPages() {
 				while (this.waitingPages.Count > 0) {
-					this.OnCrawlProgress("一般ページを取得中 " + this.waitingPages.Peek().PathAndQuery);
+					this.OnCrawlProgress(string.Format("フェーズ 1/4: 一般ページを取得中 ({0}/{1}) {2}",
+						this.visitedPages.Count,
+						this.visitedPages.Count + this.waitingPages.Count,
+						this.waitingPages.Peek().PathAndQuery));
 					
 					Uri uri = this.waitingPages.Pop();
 					this.visitedPages.Add(uri);
@@ -72,7 +75,7 @@ namespace Yusen.GCrawler {
 					try {
 						this.parser.ExtractLinks(uri, out links, out images);
 					} catch(Exception e) {
-						this.OnIgnorableExceptionOccured(new Exception("一般ページの取得失敗． <" + uri.AbsoluteUri + ">", e));
+						this.OnIgnoringException(new Exception("一般ページの取得失敗． <" + uri.AbsoluteUri + ">", e));
 						continue;
 					}
 					
@@ -115,13 +118,16 @@ namespace Yusen.GCrawler {
 			private void FetchPackages() {
 				while(this.waitingPackages.Count > 0){
 					string packId = this.waitingPackages.Dequeue();
-					this.OnCrawlProgress("パッケージページを取得中 " + packId);
+					this.OnCrawlProgress(string.Format("フェーズ 2/4: パッケージページを取得中 ({0}/{1}) {2}",
+						this.visitedPackages.Count,
+						this.visitedPackages.Count + this.waitingPackages.Count,
+						packId));
 					GPackage package;
 					List<string> childContIds;
 					try{
 						package = GPackage.DoDownload(packId, this.deadLineDic, out childContIds);
 					}catch(Exception e){
-						this.OnIgnorableExceptionOccured(e);
+						this.OnIgnoringException(e);
 						continue;
 					}
 					
@@ -146,12 +152,18 @@ namespace Yusen.GCrawler {
 					if (this.cacheController.TryGetCache(contId, out cache)) {
 						content = cache.Content;
 						content.FromCache = true;
-						this.OnCrawlProgress("キャッシュにヒット " + contId);
+						this.OnCrawlProgress(string.Format("フェーズ 3/4: 詳細ページのキャッシュにヒット ({0}/{1}) {2}",
+							this.visitedContents.Count,
+							this.visitedContents.Count + this.waitingContents.Count,
+							contId));
 						this.visitedContents.Add(contId, content);
 						this.contentsCached.Add(contId, true);
 						continue;
 					}
-					this.OnCrawlProgress("詳細ページの取得中 " + contId);
+					this.OnCrawlProgress(string.Format("フェーズ 3/4: 詳細ページの取得中 ({0}/{1}) {2}",
+						this.visitedContents.Count,
+						this.visitedContents.Count + this.waitingContents.Count,
+						contId));
 					try {
 						content = GContent.DoDownload(contId);
 						//ダウンロード成功
@@ -161,7 +173,7 @@ namespace Yusen.GCrawler {
 						continue;
 					} catch (ContentDownloadException e) {
 						//ダウンロード失敗
-						this.OnIgnorableExceptionOccured(e);
+						this.OnIgnoringException(e);
 						content = GContent.CreateDummyContent(contId, this.genre, e.Message);
 						this.visitedContents.Add(contId, content);
 						this.contentsCached.Add(contId, false);
@@ -173,7 +185,7 @@ namespace Yusen.GCrawler {
 			/// クロール結果からジャンル，パッケージ，コンテンツの木構造を作る．
 			/// </summary>
 			private ReadOnlyCollection<GPackage> BuildGpcTree() {
-				this.OnCrawlProgress("データ構造の解析中");
+				this.OnCrawlProgress("フェーズ 4/4: データ構造の解析中");
 				//パッケージに含まれるコンテンツ
 				List<GPackage> packages = new List<GPackage>();
 				foreach (KeyValuePair<string, GPackage> packPair in this.visitedPackages) {

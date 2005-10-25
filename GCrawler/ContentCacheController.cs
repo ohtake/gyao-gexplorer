@@ -31,6 +31,7 @@ namespace Yusen.GCrawler {
 
 	public class ContentCacheControllerXml : IContentCacheController {
 		private string cacheDir;
+		private object objLock = new object();
 		
 		public ContentCacheControllerXml(string cacheDir) {
 			this.cacheDir = cacheDir;
@@ -41,7 +42,7 @@ namespace Yusen.GCrawler {
 		}
 		
 		public bool TryGetCache(string contentId, out ContentCache cache) {
-			lock (this) {
+			lock (this.objLock) {
 				FileInfo fi = new FileInfo(this.FileNameOf(contentId));
 				if (fi.Exists) {
 					GContent cont;
@@ -57,7 +58,7 @@ namespace Yusen.GCrawler {
 			}
 		}
 		public bool RemoveCache(string contentId) {
-			lock (this) {
+			lock (this.objLock) {
 				try {
 					FileInfo fi = new FileInfo(this.FileNameOf(contentId));
 					if (fi.Exists) {
@@ -71,12 +72,12 @@ namespace Yusen.GCrawler {
 			}
 		}
 		public void AddCache(GContent cont) {
-			lock (this) {
+			lock (this.objLock) {
 				GContent.Serialize(this.FileNameOf(cont.ContentId), cont);
 			}
 		}
 		public ReadOnlyCollection<string> ListAllCacheKeys() {
-			lock (this) {
+			lock (this.objLock) {
 				DirectoryInfo di = new DirectoryInfo(this.cacheDir);
 				FileInfo[] fis = di.GetFiles("cnt*.xml", SearchOption.TopDirectoryOnly);
 				List<string> ids = new List<string>();

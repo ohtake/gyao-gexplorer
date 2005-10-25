@@ -13,23 +13,24 @@ namespace Yusen.GCrawler {
 
 		private readonly static Regex regexPackageName = new Regex(@"<td class=""title12b"">(.+)</td>");
 		private const string strTitleDate = "<td class=\"titledate10\">";
-		private readonly static Regex regexAnchorHref2 = new Regex(@"<a href=""(.+?)""");
+		private readonly static Regex regexAnchorHref = new Regex(@"<a href=""(.+?)""");
 		
 		public static bool TryExtractPackageId(Uri uri, out string id) {
 			Match match = GPackage.regexId.Match(uri.AbsoluteUri);
 			if (match.Success) {
 				id = match.Value;
 				return true;
+			} else {
+				id = null;
+				return false;
 			}
-			id = null;
-			return false;
 		}
 		public static string ExtractPackageId(Uri uri) {
 			string id;
 			if (GPackage.TryExtractPackageId(uri, out id)) {
 				return id;
 			} else {
-				throw new ArgumentException("引数のURIからパッケージのIDを取得できなかった．\n引数のURI: " + uri.AbsoluteUri);
+				throw new ArgumentException("引数のURIからパッケージのIDを取得できなかった．引数のURI: " + uri.AbsoluteUri);
 			}
 		}
 		public static bool CanExtractPackageId(Uri uri) {
@@ -67,7 +68,7 @@ namespace Yusen.GCrawler {
 						}
 						continue;
 					}
-					Match match = GPackage.regexAnchorHref2.Match(line);
+					Match match = GPackage.regexAnchorHref.Match(line);
 					if (match.Success) {
 						string contId;
 						if (GContent.TryExtractContentId(new Uri(uri, match.Groups[1].Value), out contId)) {
