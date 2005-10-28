@@ -1,4 +1,4 @@
-GyaO 専用ブラウザ GExplorer 1.2.5.5
+GyaO 専用ブラウザ GExplorer 2.0.0.0
 
 ◆概要
 株式会社USENによる「パソコンテレビGyaO」を閲覧するためのブラウザです．
@@ -7,14 +7,14 @@ GyaO 専用ブラウザ GExplorer 1.2.5.5
 ・内蔵のプレーヤで快適に再生できます．
 
 ◆必要な環境
-.NET Framework 2.0.50215 が必要です．
+.NET Framework 2.0 が必要です．
 ただし Windows のバージョンによっては一部の機能に制限があります．
 
-Microsoft .NET Framework 2.0 再頒布可能パッケージ Beta 2 (x86)
-http://www.microsoft.com/downloads/details.aspx?displaylang=ja&FamilyID=7abd8c8f-287e-4c7e-9a4a-a4ecff40fc8e
+Microsoft .NET Framework Version 2.0 Redistributable Package (x86)
+http://www.microsoft.com/downloads/details.aspx?FamilyID=0856eacb-4362-4b0d-8edd-aab15c5e04f5&DisplayLang=en
 
-まだβ製品しかありませんが， 2ch でうｐされているプログラムを
-実行するほどの度胸のある人ならMSのβ製品なんて恐るるに足らんでしょう．
+64bit版の Windows を使っている場合は上記のページにある
+「Related Downloads」を辿っていってください．
 
 ◆Windowsのバージョンによる機能の制限
 Windows 98, Me, 2000 では以下の機能が利用できません．
@@ -49,15 +49,6 @@ http://www.kaoriya.net/#CMIGEMO
 上記サイトから「バイナリ(DLL)リリース版 for Windows」をダウンロード．
 必須ファイルは migemo.dll と dict ディレクトリ内の全辞書ファイル．
 migemo.dll と dict を GExplorer.exe と同じディレクトリにおいてください．
-
-◆使用期限
-ライセンスの都合により
-(i) 2006-05-01
-(ii) Visual Studio 2005 の製品版の発売から30日後
-のどちらか早い方までしか使用できません．
-
-Go-Live License
-http://lab.msdn.microsoft.com/vs2005/golive/license/default.aspx
 
 ◆操作方法
 ・ユーザIDの読み取り
