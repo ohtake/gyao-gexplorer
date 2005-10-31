@@ -159,8 +159,7 @@ namespace Yusen.GExplorer {
 		}
 		private void btnArg_Click(object sender, EventArgs e) {
 			Button btn = sender as Button;
-			this.cmsArgs.Location = btn.PointToScreen(new Point(0, btn.Height));
-			this.cmsArgs.Show();
+			this.cmsArgs.Show(btn.PointToScreen(new Point(0, btn.Height)));
 		}
 		private void btnInsert_Click(object sender, EventArgs e) {
 			UserCommand uc = null;

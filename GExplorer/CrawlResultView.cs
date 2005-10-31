@@ -17,7 +17,10 @@ namespace Yusen.GExplorer {
 		private FilterType filterType = FilterType.Migemo;
 		private Color newColor = Color.Red;
 
+		private Dictionary<ListViewItem, ListViewGroup> dicGroup = new Dictionary<ListViewItem, ListViewGroup>();
+		private List<ListViewGroup> allLvgs = new List<ListViewGroup>();
 		private List<ListViewItem> allLvis = new List<ListViewItem>();
+		
 		private Migemo migemo = null;
 		private Regex filterRegex = null;
 
@@ -93,6 +96,7 @@ namespace Yusen.GExplorer {
 					
 					this.listView1.BeginUpdate();
 					this.ClearAllItems();
+					this.ShowPackages = this.ShowPackages;
 					if (null != value) {
 						this.CreateItems();
 						this.DisplayItems();
@@ -172,23 +176,20 @@ namespace Yusen.GExplorer {
 		public AboneType AboneType {
 			get { return this.aboneType; }
 			set {
-				if (value != this.aboneType) {
+				foreach(ToolStripMenuItem tsmi in this.tsmiAboneType.DropDownItems) {
+					tsmi.Checked = value == (AboneType)tsmi.Tag;
+				}
+				if(value != this.aboneType) {
 					this.aboneType = value;
 					this.UpdateView();
-				}
-				foreach (ToolStripMenuItem tsmi in this.tsmiAboneType.DropDownItems) {
-					tsmi.Checked = value == (AboneType)tsmi.Tag;
 				}
 			}
 		}
 		public bool ShowPackages {
 			get { return this.tsmiShowPackages.Checked; }
 			set {
-				this.tsmiShowPackages.Checked = value;
+				this.tsmiShowPackages.CheckState = value ? CheckState.Checked : CheckState.Unchecked;
 				this.listView1.ShowGroups = value;
-				if (value) {
-					this.UpdateView();
-				}
 			}
 		}
 		public bool HoverSelect {
@@ -262,39 +263,30 @@ namespace Yusen.GExplorer {
 			this.NewColor = settings.NewColor ?? this.NewColor;
 		}
 		private void ClearAllItems() {
+			this.dicGroup.Clear();
 			this.allLvis.Clear();
+			this.allLvgs.Clear();
+
 			this.listView1.Items.Clear();
 			this.listView1.Groups.Clear();
 			this.listView1.ListViewItemSorter = null;
-			if (CheckState.Indeterminate == this.tsmiShowPackages.CheckState) {
-				this.tsmiShowPackages.CheckState = CheckState.Checked;
-			}
 			
 			this.tslGenre.Text = string.Empty;
 			this.tslNumber.Text = string.Empty;
 			this.tslTime.Text = string.Empty;
 		}
 		private void CreateItems() {
-			bool showg = this.listView1.ShowGroups;
-			if (!showg) {
-				this.listView1.ShowGroups = true;
-			}
 			foreach (GPackage p in this.CrawlResult.Packages) {
 				ListViewGroup group = new ListViewGroup(p.ToString());
-				this.listView1.Groups.Add(group);
+				this.allLvgs.Add(group);
 				foreach (GContent c in p.Contents) {
 					ContentAdapter ca = new ContentAdapter(c);
 					ListViewItem item = new ListViewItem(
-						new string[]{
-							ca.ContentId, ca.Title, ca.EpisodeNumber, ca.SubTitle, ca.GTimeSpan.ToString(), ca.Deadline, ca.LongDescription},
-						group);
+						new string[]{ca.ContentId, ca.Title, ca.EpisodeNumber, ca.SubTitle, ca.GTimeSpan.ToString(), ca.Deadline, ca.LongDescription});
 					item.Tag = ca;
 					this.allLvis.Add(item);
+					this.dicGroup.Add(item, group);
 				}
-			}
-
-			if (!showg) {
-				this.listView1.ShowGroups = false;
 			}
 			
 			this.tslGenre.ForeColor = this.Genre.GenreColor;
@@ -302,13 +294,11 @@ namespace Yusen.GExplorer {
 		}
 		private void DisplayItems(){
 			if (null == this.CrawlResult) return;
+			this.listView1.Groups.Clear();
 			this.listView1.Items.Clear();
 			
-			bool showg = this.listView1.ShowGroups;
-			if (!showg) {
-				this.listView1.ShowGroups = true;
-			}
-
+			this.listView1.Groups.AddRange(this.allLvgs.ToArray());
+			
 			int aboned = 0;
 			int filtered = 0;
 			Regex filter = this.FilterEnabled ? this.FilterRegex : null;
@@ -350,18 +340,16 @@ namespace Yusen.GExplorer {
 					lvi.ForeColor = SystemColors.GrayText;
 				}
 
+				lvi.Group = this.dicGroup[lvi];
 				this.listView1.Items.Add(lvi);
 			}
 
-			if (!showg) {
-				this.listView1.ShowGroups = false;
-			}
-			
 			this.tslNumber.Text = this.listView1.Items.Count.ToString() + "+" + filtered.ToString() + "+" + aboned.ToString();
 			this.tslTime.Text = "(" + this.CrawlResult.Time.ToShortDateString() + " "+ this.CrawlResult.Time.ToShortTimeString() + ")";
 		}
 		private void CreateNormalPagesMenuItems() {
 			this.tsddbNormalPages.DropDownItems.Clear();
+			List<ToolStripMenuItem> menuItems = new List<ToolStripMenuItem>();
 			if (null != this.CrawlResult) {
 				foreach (Uri page in this.CrawlResult.VisitedPages) {
 					ToolStripMenuItem tsmi = new ToolStripMenuItem(page.PathAndQuery);
@@ -369,14 +357,16 @@ namespace Yusen.GExplorer {
 					tsmi.Click += delegate(object sender, EventArgs e) {
 						Utility.Browse((sender as ToolStripMenuItem).Tag as Uri);
 					};
-					this.tsddbNormalPages.DropDownItems.Add(tsmi);
+					menuItems.Add(tsmi);
 				}
 			}
+			this.tsddbNormalPages.DropDownItems.AddRange(menuItems.ToArray());
 			this.tsddbNormalPages.Enabled = this.tsddbNormalPages.HasDropDownItems;
 		}
 		private void CreateExceptionsMenuItems() {
 			this.tsddbExceptions.DropDownItems.Clear();
-			if (null != this.CrawlResult) {
+			List<ToolStripMenuItem> menuItems = new List<ToolStripMenuItem>();
+			if(null != this.CrawlResult) {
 				foreach (Exception ex in this.CrawlResult.IgnoredExceptions) {
 					ToolStripMenuItem tsmi = new ToolStripMenuItem(ex.Message);
 					tsmi.Tag = ex;
@@ -384,9 +374,10 @@ namespace Yusen.GExplorer {
 						this.exceptionDialog1.Exception =  (sender as ToolStripMenuItem).Tag as Exception;
 						this.exceptionDialog1.ShowDialog();
 					};
-					this.tsddbExceptions.DropDownItems.Add(tsmi);
+					menuItems.Add(tsmi);
 				}
 			}
+			this.tsddbExceptions.DropDownItems.AddRange(menuItems.ToArray());
 			this.tsddbExceptions.Enabled = this.tsddbExceptions.HasDropDownItems;
 		}
 		private void CreateFilterRegex() {
@@ -428,6 +419,7 @@ namespace Yusen.GExplorer {
 
 		private void CreateUserCommandsMenuItems() {
 			this.tsmiUserCommands.DropDownItems.Clear();
+			List<ToolStripMenuItem> menuItems = new List<ToolStripMenuItem>();
 			foreach (UserCommand uc in UserCommandsManager.Instance) {
 				ToolStripMenuItem tsmi = new ToolStripMenuItem(uc.Title);
 				tsmi.Tag = uc;
@@ -440,8 +432,9 @@ namespace Yusen.GExplorer {
 						}
 					}
 				};
-				this.tsmiUserCommands.DropDownItems.Add(tsmi);
+				menuItems.Add(tsmi);
 			}
+			this.tsmiUserCommands.DropDownItems.AddRange(menuItems.ToArray());
 			this.tsmiUserCommands.Enabled = this.tsmiUserCommands.HasDropDownItems;
 		}
 		private void UpdateView() {
@@ -473,8 +466,10 @@ namespace Yusen.GExplorer {
 			}
 		}
 		private void listView1_ColumnClick(object sender, ColumnClickEventArgs e) {
-			bool showpackages = this.ShowPackages;
-			this.ShowPackages = false;
+			if(this.ShowPackages) {
+				this.listView1.ShowGroups = false;
+				this.tsmiShowPackages.CheckState = CheckState.Indeterminate;
+			}
 
 			ListViewItemComparer comparer = new ListViewItemComparer(e.Column);
 			if (comparer.SameIndexAs(this.listView1.ListViewItemSorter as ListViewItemComparer)) {
@@ -484,8 +479,6 @@ namespace Yusen.GExplorer {
 			} else {
 				this.listView1.ListViewItemSorter = comparer;
 			}
-			
-			this.ShowPackages = showpackages;
 		}
 		private void listView1_ItemDrag(object sender, ItemDragEventArgs e) {
 			DataObject dobj = new DataObject();
@@ -578,7 +571,22 @@ namespace Yusen.GExplorer {
 		#endregion
 		#region ÉÅÉjÉÖÅ[ÇÃçÄñ⁄
 		private void tsmiShowPackages_Click(object sender, EventArgs e) {
-			this.ShowPackages = this.ShowPackages;
+			switch(this.tsmiShowPackages.CheckState) {
+				case CheckState.Checked:
+					this.ShowPackages = false;
+					break;
+				case CheckState.Indeterminate:
+				case CheckState.Unchecked:
+					this.ShowPackages = true;
+					this.listView1.BeginUpdate();
+					this.ClearAllItems();
+					if(null != this.CrawlResult) {
+						this.CreateItems();
+						this.DisplayItems();
+					}
+					this.listView1.EndUpdate();
+					break;
+			}
 		}
 		private void tsmiHoverSelect_Click(object sender, EventArgs e) {
 			this.HoverSelect = this.HoverSelect;
@@ -587,6 +595,7 @@ namespace Yusen.GExplorer {
 			this.MultiSelect = this.MultiSelect;
 		}
 		private void tsmiNewColor_Click(object sender, EventArgs e) {
+			this.tsddbSettings.DropDown.Close();
 			this.colorDialog1.Color = this.NewColor;
 			if (DialogResult.OK == this.colorDialog1.ShowDialog()) {
 				this.NewColor = this.colorDialog1.Color;
@@ -602,6 +611,10 @@ namespace Yusen.GExplorer {
 			this.UpdateView();
 		}
 		private void tstbFilter_TextChanged(object sender, EventArgs e) {
+			this.timerFilter.Start();
+		}
+		private void timerFilter_Tick(object sender, EventArgs e) {
+			this.timerFilter.Stop();
 			this.CreateFilterRegex();
 		}
 		#endregion

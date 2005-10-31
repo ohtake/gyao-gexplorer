@@ -26,7 +26,7 @@ namespace Yusen.GExplorer {
 					Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
 				return;
 			}
-			
+			Console.WriteLine("b");
 			//ÉAÉCÉRÉìÇÃì«Ç›çûÇ›
 			try {
 				string iconFileName = GlobalSettings.Instance.IconFile;
@@ -43,12 +43,12 @@ namespace Yusen.GExplorer {
 			PlayList.Instance.DeserializeItems();
 			
 			Application.Run(new MainForm());
-			
+
 			PlayList.Instance.SerializeItems();
 			NgContentsManager.Instance.SerializeItems();
 			UserCommandsManager.Instance.SerializeItems();
 			Cache.Serialize();
-			
+
 			GlobalSettings.Serialize();
 		}
 		

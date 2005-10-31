@@ -76,11 +76,11 @@ namespace Yusen.GExplorer {
 		}
 
 		private void Package_Click(object sender, HtmlElementEventArgs e) {
+			this.ttId.Hide(this);
 			if (Keys.None == (Keys.Alt & Control.ModifierKeys)) {
 				//TagÇ…IDÇédçûÇÒÇ≈Ç®Ç≠
 				this.cmsPackage.Tag = this.dicPackage[sender as HtmlElement];
-				this.cmsPackage.Location = Control.MousePosition;
-				this.cmsPackage.Show();
+				this.cmsPackage.Show(Control.MousePosition);
 				e.BubbleEvent = false;
 				e.ReturnValue = false;
 			}
@@ -105,11 +105,11 @@ namespace Yusen.GExplorer {
 		}
 		
 		private void Content_Click(object sender, HtmlElementEventArgs e) {
+			this.ttId.Hide(this);
 			if (Keys.None == (Keys.Alt & Control.ModifierKeys)) {
 				//TagÇ…IDÇédçûÇÒÇ≈Ç®Ç≠
 				this.cmsContent.Tag = this.dicContent[sender as HtmlElement];
-				this.cmsContent.Location = Control.MousePosition;
-				this.cmsContent.Show();
+				this.cmsContent.Show(Control.MousePosition);
 				e.BubbleEvent = false;
 				e.ReturnValue = false;
 			}
@@ -201,6 +201,7 @@ namespace Yusen.GExplorer {
 
 		private void UserCommandsManager_UserCommandsChanged(object sender, EventArgs e) {
 			this.tsmiContentCommands.DropDownItems.Clear();
+			List<ToolStripMenuItem> menuItems = new List<ToolStripMenuItem>();
 			foreach (UserCommand uc in UserCommandsManager.Instance) {
 				ToolStripMenuItem mi = new ToolStripMenuItem(
 					uc.Title, null,
@@ -212,8 +213,9 @@ namespace Yusen.GExplorer {
 						new ContentAdapter[] { ca });
 				}));
 				mi.Tag = uc;
-				this.tsmiContentCommands.DropDownItems.Add(mi);
+				menuItems.Add(mi);
 			}
+			this.tsmiContentCommands.DropDownItems.AddRange(menuItems.ToArray());
 			this.tsmiContentCommands.Enabled = this.tsmiContentCommands.HasDropDownItems;
 		}
 	}

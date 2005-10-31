@@ -89,6 +89,7 @@ namespace Yusen.GExplorer {
 		
 		private void CreateUserCommandsMenuItems() {
 			this.tsmiUserCommands.DropDownItems.Clear();
+			List<ToolStripMenuItem> menuItems = new List<ToolStripMenuItem>();
 			foreach (UserCommand uc in UserCommandsManager.Instance) {
 				ToolStripMenuItem tsmi = new ToolStripMenuItem(uc.Title);
 				tsmi.Tag = uc;
@@ -101,8 +102,9 @@ namespace Yusen.GExplorer {
 						}
 					}
 				};
-				this.tsmiUserCommands.DropDownItems.Add(tsmi);
+				menuItems.Add(tsmi);
 			}
+			this.tsmiUserCommands.DropDownItems.AddRange(menuItems.ToArray());
 			this.tsmiUserCommands.Enabled = this.tsmiUserCommands.HasDropDownItems;
 		}
 		

@@ -12,6 +12,7 @@ namespace Yusen.GCrawler {
 	
 	public class HtmlParserRegex : IHtmlParser , IDisposable{
 		private static readonly Regex regexAnchorHref = new Regex(@"<(?:a|area) [^>]*href=""(.+?)""");
+		private static readonly Regex regexFrameSrc = new Regex(@"<i?frame [^>]*src=""(.+?)""");
 		private static readonly Regex regexImgSrc = new Regex(@"<img src=""(.+?)""");
 		private const string beginComment = "<!--";
 		private const string endComment = "-->";
@@ -54,6 +55,13 @@ namespace Yusen.GCrawler {
 						try {
 							links.Add(new Uri(uri, match.Groups[1].Value));
 						} catch (UriFormatException) {
+						}
+					}
+					match = HtmlParserRegex.regexFrameSrc.Match(line);
+					if(match.Success) {
+						try {
+							links.Add(new Uri(uri, match.Groups[1].Value));
+						} catch(UriFormatException) {
 						}
 					}
 					match = HtmlParserRegex.regexImgSrc.Match(line);

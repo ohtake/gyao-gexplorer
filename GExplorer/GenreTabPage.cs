@@ -48,8 +48,7 @@ namespace Yusen.GExplorer {
 		}
 		public void ShowContextMenu(Point location) {
 			if (null != this.Genre) {
-				this.cmsGenre.Location = location;
-				this.cmsGenre.Show();
+				this.cmsGenre.Show(location);
 			}
 		}
 	}
