@@ -173,13 +173,13 @@ namespace Yusen.GExplorer {
             this.toolStripSeparator3,
             this.tsmiUserCommands});
 			this.cmsContent.Name = "contextMenuStrip1";
-			this.cmsContent.Size = new System.Drawing.Size(219, 292);
+			this.cmsContent.Size = new System.Drawing.Size(215, 292);
 			this.cmsContent.Opening += new System.ComponentModel.CancelEventHandler(this.cmsContent_Opening);
 			// 
 			// tsmiAdd
 			// 
 			this.tsmiAdd.Name = "tsmiAdd";
-			this.tsmiAdd.Size = new System.Drawing.Size(218, 22);
+			this.tsmiAdd.Size = new System.Drawing.Size(214, 22);
 			this.tsmiAdd.Text = "プレイリストに追加(&A)";
 			this.tsmiAdd.Click += new System.EventHandler(this.tsmiAdd_Click);
 			// 
@@ -187,60 +187,60 @@ namespace Yusen.GExplorer {
 			// 
 			this.tsmiAddWithComment.Name = "tsmiAddWithComment";
 			this.tsmiAddWithComment.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.L)));
-			this.tsmiAddWithComment.Size = new System.Drawing.Size(218, 22);
-			this.tsmiAddWithComment.Text = "コメント付きで追加(&L) ...";
+			this.tsmiAddWithComment.Size = new System.Drawing.Size(214, 22);
+			this.tsmiAddWithComment.Text = "コメント付きで追加(&L)...";
 			this.tsmiAddWithComment.Click += new System.EventHandler(this.tsmiAddWithComment_Click);
 			// 
 			// tsmiPlay
 			// 
 			this.tsmiPlay.Name = "tsmiPlay";
 			this.tsmiPlay.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P)));
-			this.tsmiPlay.Size = new System.Drawing.Size(218, 22);
+			this.tsmiPlay.Size = new System.Drawing.Size(214, 22);
 			this.tsmiPlay.Text = "追加せずに再生(&P)";
 			this.tsmiPlay.Click += new System.EventHandler(this.tsmiPlay_Click);
 			// 
 			// toolStripSeparator6
 			// 
 			this.toolStripSeparator6.Name = "toolStripSeparator6";
-			this.toolStripSeparator6.Size = new System.Drawing.Size(215, 6);
+			this.toolStripSeparator6.Size = new System.Drawing.Size(211, 6);
 			// 
 			// tsmiPlayWithWmp
 			// 
 			this.tsmiPlayWithWmp.Name = "tsmiPlayWithWmp";
-			this.tsmiPlayWithWmp.Size = new System.Drawing.Size(218, 22);
+			this.tsmiPlayWithWmp.Size = new System.Drawing.Size(214, 22);
 			this.tsmiPlayWithWmp.Text = "WMPで再生(&W)";
 			this.tsmiPlayWithWmp.Click += new System.EventHandler(this.tsmiPlayWithWmp_Click);
 			// 
 			// tsmiPlayWithBrowser
 			// 
 			this.tsmiPlayWithBrowser.Name = "tsmiPlayWithBrowser";
-			this.tsmiPlayWithBrowser.Size = new System.Drawing.Size(218, 22);
+			this.tsmiPlayWithBrowser.Size = new System.Drawing.Size(214, 22);
 			this.tsmiPlayWithBrowser.Text = "ウェブブラウザで再生ページ(&I)";
 			this.tsmiPlayWithBrowser.Click += new System.EventHandler(this.tsmiPlayWithBrowser_Click);
 			// 
 			// tsmiBroseDetail
 			// 
 			this.tsmiBroseDetail.Name = "tsmiBroseDetail";
-			this.tsmiBroseDetail.Size = new System.Drawing.Size(218, 22);
+			this.tsmiBroseDetail.Size = new System.Drawing.Size(214, 22);
 			this.tsmiBroseDetail.Text = "ウェブブラウザで詳細ページ(&E)";
 			this.tsmiBroseDetail.Click += new System.EventHandler(this.tsmiBroseDetail_Click);
 			// 
 			// toolStripSeparator1
 			// 
 			this.toolStripSeparator1.Name = "toolStripSeparator1";
-			this.toolStripSeparator1.Size = new System.Drawing.Size(215, 6);
+			this.toolStripSeparator1.Size = new System.Drawing.Size(211, 6);
 			// 
 			// tsmiCopyName
 			// 
 			this.tsmiCopyName.Name = "tsmiCopyName";
-			this.tsmiCopyName.Size = new System.Drawing.Size(218, 22);
+			this.tsmiCopyName.Size = new System.Drawing.Size(214, 22);
 			this.tsmiCopyName.Text = "名前をコピー(&N)";
 			this.tsmiCopyName.Click += new System.EventHandler(this.tsmiCopyName_Click);
 			// 
 			// tsmiCopyDetailUri
 			// 
 			this.tsmiCopyDetailUri.Name = "tsmiCopyDetailUri";
-			this.tsmiCopyDetailUri.Size = new System.Drawing.Size(218, 22);
+			this.tsmiCopyDetailUri.Size = new System.Drawing.Size(214, 22);
 			this.tsmiCopyDetailUri.Text = "URIをコピー(&D)";
 			this.tsmiCopyDetailUri.Click += new System.EventHandler(this.tsmiCopyDetailUri_Click);
 			// 
@@ -248,19 +248,19 @@ namespace Yusen.GExplorer {
 			// 
 			this.tsmiCopyNameAndDetailUri.Name = "tsmiCopyNameAndDetailUri";
 			this.tsmiCopyNameAndDetailUri.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
-			this.tsmiCopyNameAndDetailUri.Size = new System.Drawing.Size(218, 22);
+			this.tsmiCopyNameAndDetailUri.Size = new System.Drawing.Size(214, 22);
 			this.tsmiCopyNameAndDetailUri.Text = "名前とURIをコピー(&B)";
 			this.tsmiCopyNameAndDetailUri.Click += new System.EventHandler(this.tsmiCopyNameAndDetailUri_Click);
 			// 
 			// toolStripSeparator2
 			// 
 			this.toolStripSeparator2.Name = "toolStripSeparator2";
-			this.toolStripSeparator2.Size = new System.Drawing.Size(215, 6);
+			this.toolStripSeparator2.Size = new System.Drawing.Size(211, 6);
 			// 
 			// tsmiRemoveCache
 			// 
 			this.tsmiRemoveCache.Name = "tsmiRemoveCache";
-			this.tsmiRemoveCache.Size = new System.Drawing.Size(218, 22);
+			this.tsmiRemoveCache.Size = new System.Drawing.Size(214, 22);
 			this.tsmiRemoveCache.Text = "キャッシュを削除(&R)";
 			this.tsmiRemoveCache.Click += new System.EventHandler(this.tsmiRemoveCache_Click);
 			// 
@@ -270,7 +270,7 @@ namespace Yusen.GExplorer {
             this.tsmiAddNgWithTitle,
             this.tsmiAddNgWithId});
 			this.tsmiAddNg.Name = "tsmiAddNg";
-			this.tsmiAddNg.Size = new System.Drawing.Size(218, 22);
+			this.tsmiAddNg.Size = new System.Drawing.Size(214, 22);
 			this.tsmiAddNg.Text = "NGコンテンツに簡易追加(&G)";
 			// 
 			// tsmiAddNgWithTitle
@@ -290,12 +290,12 @@ namespace Yusen.GExplorer {
 			// toolStripSeparator3
 			// 
 			this.toolStripSeparator3.Name = "toolStripSeparator3";
-			this.toolStripSeparator3.Size = new System.Drawing.Size(215, 6);
+			this.toolStripSeparator3.Size = new System.Drawing.Size(211, 6);
 			// 
 			// tsmiUserCommands
 			// 
 			this.tsmiUserCommands.Name = "tsmiUserCommands";
-			this.tsmiUserCommands.Size = new System.Drawing.Size(218, 22);
+			this.tsmiUserCommands.Size = new System.Drawing.Size(214, 22);
 			this.tsmiUserCommands.Text = "外部コマンド(&C)";
 			// 
 			// colorDialog1

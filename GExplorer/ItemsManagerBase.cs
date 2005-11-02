@@ -60,6 +60,11 @@ namespace Yusen.GExplorer {
 			this.items.RemoveAt(idx);
 			this.OnChanged();
 		}
+		public void RemoveAll(Predicate<T> pred) {
+			if(this.items.RemoveAll(pred) > 0) {
+				this.OnChanged();
+			}
+		}
 		public void AddIfNotExists(T item) {
 			if (!this.items.Contains(item)) {
 				this.items.Add(item);
@@ -68,6 +73,10 @@ namespace Yusen.GExplorer {
 		}
 		public void Add(T item) {
 			this.items.Add(item);
+			this.OnChanged();
+		}
+		public void AddRange(IEnumerable<T> col) {
+			this.items.AddRange(col);
 			this.OnChanged();
 		}
 		public void Insert(int idx, T item) {

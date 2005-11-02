@@ -76,15 +76,25 @@ namespace Yusen.GExplorer {
 			this.UpdateView();
 		}
 		private void NgContentsManager_LastAboneChanged(object sender, EventArgs e) {
+			this.timerLastAbone.Start();
+		}
+		private void timerLastAbone_Tick(object sender, EventArgs e) {
+			this.timerLastAbone.Stop();
 			this.UpdateView();
 		}
 
 		private void lvNgContents_KeyDown(object sender, KeyEventArgs e) {
 			switch(e.KeyCode) {
 				case Keys.Delete:
-					foreach(ListViewItem selItem in (sender as ListView).SelectedItems) {
-						NgContentsManager.Instance.Remove(selItem.Tag as NgContent);
+					List<NgContent> selectedContents = new List<NgContent>();
+					foreach(ListViewItem selItem in (sender as ListView).SelectedItems){
+						selectedContents.Add(selItem.Tag as NgContent);
 					}
+					NgContentsManager.Instance.RemoveAll(new Predicate<NgContent>(
+						delegate(NgContent nc) {
+							return selectedContents.Contains(nc);
+						}
+					));
 					break;
 			}
 		}

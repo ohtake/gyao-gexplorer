@@ -1,4 +1,5 @@
 using System;
+using System.Drawing;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Threading;
@@ -43,6 +44,7 @@ namespace Yusen.GExplorer {
 		private const string AttribNameEntryUrl = "WMS_CONTENT_DESCRIPTION_PLAYLIST_ENTRY_URL";
 		private const int VolumeMax = 100;
 		private const int VolumeMin = 0;
+		private static readonly Size WmpUiSize = new Size(0, 64);
 		private static readonly Regex regexEndFlag = new Regex(":endFlg=([^:=]*)");
 		private static readonly Regex regexDartTag = new Regex(":dartTag=([^:=]*)");
 
@@ -57,9 +59,9 @@ namespace Yusen.GExplorer {
 		}
 		public static void Play(ContentAdapter contentAdapter) {
 			PlayerForm p = PlayerForm.Instance;
-			p.CurrentContent = contentAdapter;
 			p.Show();
 			p.Focus();
+			p.CurrentContent = contentAdapter;
 		}
 
 		private ContentAdapter currentContent = null;
@@ -76,6 +78,24 @@ namespace Yusen.GExplorer {
 			InitializeComponent();
 		}
 
+		private void OpenVideo() {
+			if(null == this.CurrentContent) {
+				this.wmpMain.currentMedia = null;
+			}
+			IWMPMedia media;
+			if(this.CurrentChapter.HasValue) {
+				media = this.wmpMain.newMedia(this.CurrentContent.ChapterPlayListUriOf(this.CurrentChapter.Value).AbsoluteUri);
+			} else {
+				media = this.wmpMain.newMedia(this.CurrentContent.PlayListUri.AbsoluteUri);
+			}
+			this.wmpMain.currentPlaylist.appendItem(media);
+			if(WMPPlayState.wmppsMediaEnded != this.wmpMain.playState) {
+				//手動で切り替えた場合では強制的に再生させる
+				this.wmpMain.currentMedia = media;
+				this.wmpMain.Ctlcontrols.play();
+			}
+			this.UpdateStatusbatText();
+		}
 		private void CreateUserCommandsMenuItems() {
 			this.tsmiUserCommands.DropDownItems.Clear();
 			List<ToolStripMenuItem> menuItems = new List<ToolStripMenuItem>();
@@ -96,27 +116,42 @@ namespace Yusen.GExplorer {
 			this.tsmiUserCommands.DropDownItems.AddRange(menuItems.ToArray());
 			this.tsmiUserCommands.Enabled = this.tsmiUserCommands.HasDropDownItems;
 		}
+		private void UpdateStatusbatText() {
+			if(this.StatusbarVisible && null != this.CurrentContent) {
+				IWMPMedia curMedia = this.wmpMain.currentMedia;
+				this.tsslId.Text = this.CurrentContent.ContentId;
+				this.tsslChapter.Text = this.CurrentChapter.HasValue ?
+					"チャプター" + this.CurrentChapter.Value.ToString() : "通常";
+				this.tsslSize.Text = curMedia.imageSourceWidth.ToString() + "x" + curMedia.imageSourceHeight.ToString();
+				this.tsslDuration.Text = new TimeSpan((long)(10000000 * curMedia.duration)).ToString();
+				this.tsslTitle.Text = curMedia.name;
+			}
+		}
 		public void FillSettings(PlayerFormSettings settings) {
 			base.FillSettings(settings);
 			settings.MainTabIndex = this.tabControl1.SelectedIndex;
 			settings.StrechToFitEnabled = this.StreachToFitEnabled;
 			settings.DisableScreenSaverEnabled = this.DisableScreenSaverEnabled;
+			settings.StatusbarVisible = this.StatusbarVisible;
 			settings.RemovePlayedContentEnabled = this.RemovePlayedContentEnabled;
 			settings.PlayListLoopEnabled = this.PlayListLoopEnabled;
 			settings.SkipCmLicenseEnabled = this.SkipCmLicenseEnabled;
+			settings.ChapterModeFromBegining = this.ChapterModeFromBegining;
 			settings.AutoVolumeEnabled = this.AutoVolumeEnabled;
 			settings.VolumeNormal = this.VolumeNormal;
 			settings.VolumeCf = this.VolumeCf;
 		}
-
+		
 		public void ApplySettings(PlayerFormSettings settings) {
 			base.ApplySettings(settings);
 			this.tabControl1.SelectedIndex = settings.MainTabIndex ?? this.tabControl1.SelectedIndex;
 			this.StreachToFitEnabled = settings.StrechToFitEnabled ?? this.StreachToFitEnabled;
 			this.DisableScreenSaverEnabled = settings.DisableScreenSaverEnabled ?? this.DisableScreenSaverEnabled;
+			this.StatusbarVisible = settings.StatusbarVisible ?? this.StatusbarVisible;
 			this.RemovePlayedContentEnabled = settings.RemovePlayedContentEnabled ?? this.RemovePlayedContentEnabled;
 			this.PlayListLoopEnabled = settings.PlayListLoopEnabled ?? this.PlayListLoopEnabled;
 			this.SkipCmLicenseEnabled = settings.SkipCmLicenseEnabled ?? this.SkipCmLicenseEnabled;
+			this.ChapterModeFromBegining = settings.ChapterModeFromBegining ?? this.ChapterModeFromBegining;
 			this.AutoVolumeEnabled = settings.AutoVolumeEnabled ?? this.AutoVolumeEnabled;
 			this.VolumeNormal = settings.VolumeNormal ?? this.VolumeNormal;
 			this.VolumeCf = settings.VolumeCf ?? this.VolumeCf;
@@ -134,23 +169,17 @@ namespace Yusen.GExplorer {
 			}
 			private set {
 				this.currentContent = value;
-				this.currentChapter = null;
+				this.currentChapter = this.ChapterModeFromBegining ? 1 : (int?)null;
 				
 				if (null == value) {
-					Utility.SetTitlebarText(this, "PlayerForm");
+					this.Text = "PlayerForm";
 					this.wmpMain.close();
 					Uri blankUri = new Uri("about:blank");
 					this.gwbDetail.Url = blankUri;
 					this.gwbRecommend.Url = blankUri;
 				} else {
-					Utility.SetTitlebarText(this, value.DisplayName);
-					IWMPMedia media = this.wmpMain.newMedia(value.PlayListUri.AbsoluteUri);
-					this.wmpMain.currentPlaylist.appendItem(media);
-					if (WMPPlayState.wmppsMediaEnded != this.wmpMain.playState) {
-						//手動で切り替えた場合では強制的に再生させる
-						this.wmpMain.currentMedia = media;
-						this.wmpMain.Ctlcontrols.play();
-					}
+					this.Text = value.DisplayName;
+					this.OpenVideo();
 					this.gwbDetail.Navigate(value.DetailPageUri);
 					this.gwbRecommend.Navigate(value.RecommendPageUri);
 				}
@@ -164,18 +193,7 @@ namespace Yusen.GExplorer {
 			private set {
 				if (! value.Equals(this.currentChapter)) {
 					this.currentChapter = value;
-					IWMPMedia media;
-					if (value.HasValue) {
-						media = this.wmpMain.newMedia(this.CurrentContent.ChapterPlayListUriOf(value.Value).AbsoluteUri);
-					} else {
-						media = this.wmpMain.newMedia(this.CurrentContent.PlayListUri.AbsoluteUri);
-					}
-					this.wmpMain.currentPlaylist.appendItem(media);
-					if (WMPPlayState.wmppsMediaEnded != this.wmpMain.playState) {
-						//手動で切り替えた場合では強制的に再生させる
-						this.wmpMain.currentMedia = media;
-						this.wmpMain.Ctlcontrols.play();
-					}
+					this.OpenVideo();
 				}
 			}
 		}
@@ -193,6 +211,16 @@ namespace Yusen.GExplorer {
 				this.ssl.Enabled = value;
 			}
 		}
+		public bool StatusbarVisible {
+			get { return this.tsmiStatusbarVisible.Checked; }
+			set {
+				this.tsmiStatusbarVisible.Checked = value;
+				if(value) {
+					this.UpdateStatusbatText();
+				}
+				this.statusStrip1.Visible = value;
+			}
+		}
 		public bool RemovePlayedContentEnabled {
 			get { return this.tsmiRemovePlayedContent.Checked; }
 			set { this.tsmiRemovePlayedContent.Checked = value; }
@@ -204,6 +232,10 @@ namespace Yusen.GExplorer {
 		public bool SkipCmLicenseEnabled {
 			get { return this.tsmiSkipCmLicense.Checked; }
 			set { this.tsmiSkipCmLicense.Checked = value; }
+		}
+		public bool ChapterModeFromBegining {
+			get { return this.tsmiChapterModeFromBegining.Checked; }
+			set { this.tsmiChapterModeFromBegining.Checked = value; }
 		}
 		public bool AutoVolumeEnabled {
 			get { return this.tsmiAutoVolume.Checked; }
@@ -292,7 +324,8 @@ namespace Yusen.GExplorer {
 			}
 		}
 		private void tsmiReload_Click(object sender, EventArgs e) {
-			this.wmpMain.currentMedia = this.wmpMain.currentMedia;
+			//this.wmpMain.currentMedia = this.wmpMain.currentMedia;
+			this.OpenVideo();
 			this.wmpMain.Ctlcontrols.play();
 		}
 		private void tsmiRemoveAndClose_Click(object sender, EventArgs e) {
@@ -359,6 +392,9 @@ namespace Yusen.GExplorer {
 		private void tsmiDisableScreenSaver_Click(object sender, EventArgs e) {
 			this.DisableScreenSaverEnabled = this.DisableScreenSaverEnabled;
 		}
+		private void tsmiStatusbarVisible_Click(object sender, EventArgs e) {
+			this.StatusbarVisible = this.StatusbarVisible;
+		}
 		private void tsmiAutoVolume_Click(object sender, EventArgs e) {
 			this.AutoVolumeEnabled = this.AutoVolumeEnabled;
 		}
@@ -395,6 +431,12 @@ namespace Yusen.GExplorer {
 		private void tsmiFocusOnWmp_Click(object sender, EventArgs e) {
 			this.tabControl1.SelectedTab = this.tabPlayer;
 			this.wmpMain.Focus();
+		}
+		private void tsmiResizeToVideoResolution_Click(object sender, EventArgs e) {
+			this.WindowState = FormWindowState.Normal;
+			Size videoSize = new Size(this.wmpMain.currentMedia.imageSourceWidth, this.wmpMain.currentMedia.imageSourceHeight);
+			Size delta = videoSize + PlayerForm.WmpUiSize - this.wmpMain.Size;
+			this.Size += delta;
 		}
 		private void tsmiShowItemInfo_Click(object sender, EventArgs e) {
 			StringBuilder sb = new StringBuilder();
@@ -468,6 +510,8 @@ namespace Yusen.GExplorer {
 						}));
 						t.Start();
 					}
+					//ステータスバー更新
+					this.UpdateStatusbatText();
 					break;
 			}
 		}
@@ -579,9 +623,11 @@ namespace Yusen.GExplorer {
 		private int? mainTabIndex;
 		private bool? strechToFitEnabled;
 		private bool? disableScreenSaverEnabled;
+		private bool? statusbarVisible;
 		private bool? removePlayedContentEnabled;
 		private bool? playListLoopEnabled;
 		private bool? skipCmLicenseEnabled;
+		private bool? chapterModeFromBegining;
 		private bool? autoVolumeEnabled;
 		private int? volumeNormal;
 		private int? volumeCf;
@@ -598,6 +644,10 @@ namespace Yusen.GExplorer {
 			get { return this.disableScreenSaverEnabled; }
 			set { this.disableScreenSaverEnabled = value; }
 		}
+		public bool? StatusbarVisible {
+			get { return this.statusbarVisible; }
+			set { this.statusbarVisible = value; }
+		}
 		public bool? RemovePlayedContentEnabled {
 			get { return this.removePlayedContentEnabled; }
 			set { this.removePlayedContentEnabled = value; }
@@ -609,6 +659,10 @@ namespace Yusen.GExplorer {
 		public bool? SkipCmLicenseEnabled {
 			get { return this.skipCmLicenseEnabled; }
 			set { this.skipCmLicenseEnabled = value; }
+		}
+		public bool? ChapterModeFromBegining {
+			get { return this.chapterModeFromBegining; }
+			set { this.chapterModeFromBegining = value; }
 		}
 		public bool? AutoVolumeEnabled {
 			get { return this.autoVolumeEnabled; }

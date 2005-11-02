@@ -23,6 +23,7 @@ namespace Yusen.GExplorer {
 		/// the contents of this method with the code editor.
 		/// </summary>
 		private void InitializeComponent() {
+			this.components = new System.ComponentModel.Container();
 			this.lvNgContents = new System.Windows.Forms.ListView();
 			this.chComment = new System.Windows.Forms.ColumnHeader();
 			this.chPropertyName = new System.Windows.Forms.ColumnHeader();
@@ -43,6 +44,7 @@ namespace Yusen.GExplorer {
 			this.lblComment = new System.Windows.Forms.Label();
 			this.btnAdd = new System.Windows.Forms.Button();
 			this.grpList = new System.Windows.Forms.GroupBox();
+			this.timerLastAbone = new System.Windows.Forms.Timer(this.components);
 			this.tableLayoutPanel1.SuspendLayout();
 			this.grpAdd.SuspendLayout();
 			this.tableLayoutPanel2.SuspendLayout();
@@ -66,9 +68,10 @@ namespace Yusen.GExplorer {
 			this.lvNgContents.ShowItemToolTips = true;
 			this.lvNgContents.Size = new System.Drawing.Size(580, 128);
 			this.lvNgContents.TabIndex = 101;
+			this.lvNgContents.UseCompatibleStateImageBehavior = false;
 			this.lvNgContents.View = System.Windows.Forms.View.Details;
-			this.lvNgContents.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.lvNgContents_ColumnClick);
 			this.lvNgContents.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lvNgContents_KeyDown);
+			this.lvNgContents.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.lvNgContents_ColumnClick);
 			// 
 			// chComment
 			// 
@@ -133,7 +136,7 @@ namespace Yusen.GExplorer {
 			this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
 			this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
 			this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-			this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 70F));
+			this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 72F));
 			this.tableLayoutPanel2.Controls.Add(this.txtWord, 3, 1);
 			this.tableLayoutPanel2.Controls.Add(this.txtComment, 0, 1);
 			this.tableLayoutPanel2.Controls.Add(this.comboMethod, 2, 1);
@@ -196,7 +199,7 @@ namespace Yusen.GExplorer {
 			this.lblWord.AutoSize = true;
 			this.lblWord.Location = new System.Drawing.Point(384, 6);
 			this.lblWord.Name = "lblWord";
-			this.lblWord.Size = new System.Drawing.Size(106, 12);
+			this.lblWord.Size = new System.Drawing.Size(108, 12);
 			this.lblWord.TabIndex = 240;
 			this.lblWord.Text = "目的語: NGワード(&W)";
 			// 
@@ -206,7 +209,7 @@ namespace Yusen.GExplorer {
 			this.lblMethod.AutoSize = true;
 			this.lblMethod.Location = new System.Drawing.Point(257, 6);
 			this.lblMethod.Name = "lblMethod";
-			this.lblMethod.Size = new System.Drawing.Size(98, 12);
+			this.lblMethod.Size = new System.Drawing.Size(100, 12);
 			this.lblMethod.TabIndex = 230;
 			this.lblMethod.Text = "述語: 比較方法(&M)";
 			// 
@@ -216,7 +219,7 @@ namespace Yusen.GExplorer {
 			this.lblProperty.AutoSize = true;
 			this.lblProperty.Location = new System.Drawing.Point(130, 6);
 			this.lblProperty.Name = "lblProperty";
-			this.lblProperty.Size = new System.Drawing.Size(104, 12);
+			this.lblProperty.Size = new System.Drawing.Size(106, 12);
 			this.lblProperty.TabIndex = 220;
 			this.lblProperty.Text = "主語: プロパティ名(&P)";
 			// 
@@ -226,7 +229,7 @@ namespace Yusen.GExplorer {
 			this.lblComment.AutoSize = true;
 			this.lblComment.Location = new System.Drawing.Point(3, 6);
 			this.lblComment.Name = "lblComment";
-			this.lblComment.Size = new System.Drawing.Size(52, 12);
+			this.lblComment.Size = new System.Drawing.Size(54, 12);
 			this.lblComment.TabIndex = 210;
 			this.lblComment.Text = "コメント(&C)";
 			// 
@@ -251,6 +254,10 @@ namespace Yusen.GExplorer {
 			this.grpList.TabIndex = 100;
 			this.grpList.TabStop = false;
 			this.grpList.Text = "NGコンテンツ一覧 (Deleteキーで削除)";
+			// 
+			// timerLastAbone
+			// 
+			this.timerLastAbone.Tick += new System.EventHandler(this.timerLastAbone_Tick);
 			// 
 			// NgContentsEditor
 			// 
@@ -295,5 +302,6 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ComboBox comboMethod;
 		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
 		private System.Windows.Forms.Button btnAdd;
+		private System.Windows.Forms.Timer timerLastAbone;
 	}
 }

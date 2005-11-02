@@ -5,6 +5,7 @@ using System.Threading;
 using System.IO;
 using System.Drawing;
 using System.Media;
+using System.Diagnostics;
 
 namespace Yusen.GExplorer {
 	static class Program {
@@ -14,13 +15,13 @@ namespace Yusen.GExplorer {
 			Application.EnableVisualStyles();
 			Application.ThreadException += new ThreadExceptionEventHandler(Application_ThreadException);
 			AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
-			
+
 			//カレントディレクトリをスタートアップパスにあわせる
 			Environment.CurrentDirectory = Application.StartupPath;
-			
+
 			//グローバル設定
 			GlobalSettings.TryDeserialize();
-			if (!GlobalSettings.Instance.TryGetUserNumber()) {
+			if(!GlobalSettings.Instance.TryGetUserNumber()) {
 				MessageBox.Show(
 					"ユーザIDの取得に失敗したため " + Application.ProductName + " を終了します．",
 					Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -30,18 +31,18 @@ namespace Yusen.GExplorer {
 			//アイコンの読み込み
 			try {
 				string iconFileName = GlobalSettings.Instance.IconFile;
-				if (string.IsNullOrEmpty(iconFileName)) {
+				if(string.IsNullOrEmpty(iconFileName)) {
 					iconFileName = Path.GetFileNameWithoutExtension(Application.ExecutablePath) + ".ico";
 				}
 				FormBase.CustomIcon = new Icon(iconFileName);
 			} catch {
 			}
-			
+
 			Cache.Initialize();
 			UserCommandsManager.Instance.DeserializeItems();
 			NgContentsManager.Instance.DeserializeItems();
 			PlayList.Instance.DeserializeItems();
-			
+
 			Application.Run(new MainForm());
 
 			PlayList.Instance.SerializeItems();

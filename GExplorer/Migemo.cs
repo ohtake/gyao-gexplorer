@@ -60,10 +60,7 @@ namespace Yusen.GExplorer{
 				return string.Empty;
 			}
 			string ansStr = ans.ToString();
-			try {
-				Migemo.MigemoRelease(this.migemoObj, ans);
-			} catch (AccessViolationException) {// s ‚Æ‚©“ü‚ê‚é‚Æ‹N“®Œã‚Éˆê‰ñ‚¾‚¯‹N‚«‚é‚ç‚µ‚¢
-			}
+			Migemo.MigemoRelease(this.migemoObj, ans);
 			return ansStr;
 		}
 		

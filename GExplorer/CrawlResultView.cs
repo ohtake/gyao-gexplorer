@@ -556,16 +556,28 @@ namespace Yusen.GExplorer {
 				}
 			}
 		}
-		private void tsmiAddNgWithId_Click(object sender, EventArgs e) {
-			foreach (ContentAdapter cont in this.SelectedContents) {
-				string contId = cont.ContentId;
-				NgContentsManager.Instance.Add(new NgContent("�ȈՒǉ�", "ContentId", TwoStringsPredicateMethod.Equals, contId));
+		private void tsmiAddNgWithTitle_Click(object sender, EventArgs e) {
+			List<string> titles = new List<string>();
+			foreach(ContentAdapter cont in this.SelectedContents) {
+				string title = cont.Title;
+				if(!titles.Contains(title)) {
+					titles.Add(title);
+				}
+			}
+			List<NgContent> ngs = titles.ConvertAll<NgContent>(new Converter<string, NgContent>(delegate(string input) {
+				return new NgContent("�ȈՒǉ�", "Title", TwoStringsPredicateMethod.Equals, input);
+			}));
+			if(ngs.Count > 0) {
+				NgContentsManager.Instance.AddRange(ngs);
 			}
 		}
-		private void tsmiAddNgWithTitle_Click(object sender, EventArgs e) {
-			foreach (ContentAdapter cont in this.SelectedContents) {
-				string title = cont.Title;
-				NgContentsManager.Instance.Add(new NgContent("�ȈՒǉ�", "Title", TwoStringsPredicateMethod.Equals, title));
+		private void tsmiAddNgWithId_Click(object sender, EventArgs e) {
+			List<NgContent> ngs = new List<NgContent>();
+			foreach(ContentAdapter cont in this.SelectedContents) {
+				ngs.Add(new NgContent("�ȈՒǉ�", "ContentId", TwoStringsPredicateMethod.Equals, cont.ContentId));
+			}
+			if(ngs.Count > 0) {
+				NgContentsManager.Instance.AddRange(ngs);
 			}
 		}
 		#endregion
