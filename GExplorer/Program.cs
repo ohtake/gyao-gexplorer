@@ -27,7 +27,7 @@ namespace Yusen.GExplorer {
 					Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
 				return;
 			}
-			Console.WriteLine("b");
+			
 			//ÉAÉCÉRÉìÇÃì«Ç›çûÇ›
 			try {
 				string iconFileName = GlobalSettings.Instance.IconFile;

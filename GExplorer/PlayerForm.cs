@@ -2,10 +2,8 @@ using System;
 using System.Drawing;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using System.Threading;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.ComponentModel;
 using AxWMPLib;
 using WMPLib;
 
@@ -73,7 +71,7 @@ namespace Yusen.GExplorer {
 		private int volumeCf = 20;
 
 		private ScreenSaveListener ssl;
-		
+
 		private PlayerForm() {
 			InitializeComponent();
 		}
@@ -121,10 +119,17 @@ namespace Yusen.GExplorer {
 				IWMPMedia curMedia = this.wmpMain.currentMedia;
 				this.tsslId.Text = this.CurrentContent.ContentId;
 				this.tsslChapter.Text = this.CurrentChapter.HasValue ?
-					"チャプター" + this.CurrentChapter.Value.ToString() : "通常";
+					"チャプター" + this.CurrentChapter.Value.ToString() + "(endFlag=" + this.endFlag.ToString() + ")"
+					: "通常";
 				this.tsslSize.Text = curMedia.imageSourceWidth.ToString() + "x" + curMedia.imageSourceHeight.ToString();
 				this.tsslDuration.Text = new TimeSpan((long)(10000000 * curMedia.duration)).ToString();
 				this.tsslTitle.Text = curMedia.name;
+			}
+		}
+		private void ModifyVolume() {
+			bool? isCf = this.IsCf;
+			if(isCf.HasValue) {
+				this.wmpMain.settings.volume = isCf.Value ? this.VolumeCf : this.VolumeNormal;
 			}
 		}
 		public void FillSettings(PlayerFormSettings settings) {
@@ -270,6 +275,18 @@ namespace Yusen.GExplorer {
 				return this.wmpMain.currentMedia.sourceURL.Contains("cm_license");
 			}
 		}
+		private bool? IsCf {
+			get {
+				string entryUrl = this.currentAttribs[PlayerForm.AttribNameEntryUrl];
+				if(entryUrl.StartsWith("Adv:")) {
+					return true;
+				} else if(entryUrl.StartsWith("Cnt:")) {
+					return false;
+				} else {
+					return null;
+				}
+			}
+		}
 
 		private void PlayerForm_Load(object sender, EventArgs e) {
 			Utility.AppendHelpMenu(this.menuStrip1);
@@ -290,6 +307,7 @@ namespace Yusen.GExplorer {
 			
 			Utility.LoadSettingsAndEnableSaveOnClosed(this);
 		}
+
 		private void PlayerForm_FormClosing(object sender, FormClosingEventArgs e) {
 			this.CurrentContent = null;
 		}
@@ -302,6 +320,7 @@ namespace Yusen.GExplorer {
 				e.Cancel = true;
 			}
 		}
+		#region メインメニュー
 		private void tsmiPlayChapter_Click(object sender, EventArgs e) {
 			string title =  "特定のチャプターから再生";
 			this.inputBoxDialog1.Title =title;
@@ -434,9 +453,13 @@ namespace Yusen.GExplorer {
 		}
 		private void tsmiResizeToVideoResolution_Click(object sender, EventArgs e) {
 			this.WindowState = FormWindowState.Normal;
-			Size videoSize = new Size(this.wmpMain.currentMedia.imageSourceWidth, this.wmpMain.currentMedia.imageSourceHeight);
-			Size delta = videoSize + PlayerForm.WmpUiSize - this.wmpMain.Size;
-			this.Size += delta;
+			for(int i=0; i<2; i++) {
+				//リサイズによってメニューバーやステータスバーの高さが変わることがあるので
+				//2回リサイズを試みる
+				Size videoSize = new Size(this.wmpMain.currentMedia.imageSourceWidth, this.wmpMain.currentMedia.imageSourceHeight);
+				Size delta = videoSize + PlayerForm.WmpUiSize - this.wmpMain.Size;
+				this.Size += delta;
+			}
 		}
 		private void tsmiShowItemInfo_Click(object sender, EventArgs e) {
 			StringBuilder sb = new StringBuilder();
@@ -448,7 +471,7 @@ namespace Yusen.GExplorer {
 			}
 			MessageBox.Show(sb.ToString(), "ItemInfo の表示", MessageBoxButtons.OK, MessageBoxIcon.Information);
 		}
-		
+		#endregion
 		private void wmpMain_OpenStateChange(object sender, _WMPOCXEvents_OpenStateChangeEvent e) {
 			switch ((WMPOpenState)e.newState) {
 				case WMPOpenState.wmposMediaOpen:
@@ -464,17 +487,10 @@ namespace Yusen.GExplorer {
 					//音量調整
 					//THANKSTO: http://pc8.2ch.net/test/read.cgi/esite/1116115226/81 の神
 					if (this.tsmiAutoVolume.Checked && !this.wmpMain.settings.mute) {
-						bool isCf = entryUrl.StartsWith("Adv:");
-						
-						this.wmpMain.settings.volume = isCf ? this.VolumeCf : this.VolumeNormal;
-						//謎の対応その3
-						Thread t = new Thread(new ThreadStart(delegate {
-							Thread.Sleep(100);
-							if (!this.IsDisposed && !this.wmpMain.IsDisposed) {
-								this.wmpMain.settings.volume = isCf ?  this.VolumeCf : this.VolumeNormal;
-							}
-						}));
-						t.Start();
+						//一旦音量を代入
+						this.ModifyVolume();
+						//音量が変わらないことがあるのでタイマーで後から再代入
+						this.timerAutoVolume.Start();
 					}
 					//endFlag の読み取り
 					Match endFlagMatch = PlayerForm.regexEndFlag.Match(entryUrl);
@@ -502,13 +518,7 @@ namespace Yusen.GExplorer {
 					}
 					//cm_licenseの早期スキップ
 					if (this.SkipCmLicenseEnabled && this.IsCmLicense) {
-						Thread t = new Thread(new ThreadStart(delegate {
-							Thread.Sleep(100);
-							if (!this.IsDisposed && !this.wmpMain.IsDisposed) {
-								this.tsmiNextTrack.PerformClick();
-							}
-						}));
-						t.Start();
+						this.timerSkipCmLisence.Start();
 					}
 					//ステータスバー更新
 					this.UpdateStatusbatText();
@@ -585,6 +595,7 @@ namespace Yusen.GExplorer {
 					break;
 			}
 		}
+		#region バナー
 		private void pboxBanner_Click(object sender, EventArgs e) {
 			BannerTag bt = this.pboxBanner.Tag as BannerTag;
 			if (null != bt) {
@@ -607,6 +618,15 @@ namespace Yusen.GExplorer {
 			if (null != this.pboxBanner.Image) {
 				Clipboard.SetImage(this.pboxBanner.Image);
 			}
+		}
+		#endregion
+		private void timerAutoVolume_Tick(object sender, EventArgs e) {
+			this.timerAutoVolume.Stop();
+			this.ModifyVolume();
+		}
+		private void timerSkipCmLisence_Tick(object sender, EventArgs e) {
+			this.timerSkipCmLisence.Stop();
+			this.tsmiNextTrack.PerformClick();
 		}
 	}
 

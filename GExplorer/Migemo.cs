@@ -55,12 +55,18 @@ namespace Yusen.GExplorer{
 		}
 
 		public string Query(string query) {
-			StringBuilder ans = Migemo.MigemoQuery(this.migemoObj, query);
-			if (null == ans) {
-				return string.Empty;
+			StringBuilder ans = null;
+			string ansStr = string.Empty;
+			try {
+				ans = Migemo.MigemoQuery(this.migemoObj, query);
+				if(null != ans) {
+					ansStr = ans.ToString();
+				}
+			} finally {
+				if(null != ans) {
+					Migemo.MigemoRelease(this.migemoObj, ans);
+				}
 			}
-			string ansStr = ans.ToString();
-			Migemo.MigemoRelease(this.migemoObj, ans);
 			return ansStr;
 		}
 		

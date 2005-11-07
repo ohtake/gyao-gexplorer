@@ -4,7 +4,7 @@ using Color = System.Drawing.Color;
 
 namespace Yusen.GCrawler {
 	[Serializable]
-	public abstract class GGenre {
+	public abstract class GGenre : IEquatable<GGenre> {
 		private static readonly GGenre[] allGenres;
 		static GGenre() {
 			GGenre.allGenres = new GGenre[]{
@@ -26,6 +26,9 @@ namespace Yusen.GCrawler {
 			get {
 				return GGenre.allGenres;
 			}
+		}
+		private static bool EqualsHelper(GGenre obj1, GGenre obj2) {
+			return obj1.GenreId.Equals(obj2.GenreId);
 		}
 
 		private readonly int keyNo;
@@ -72,13 +75,17 @@ namespace Yusen.GCrawler {
 			}
 		}
 		public override bool Equals(object obj) {
-			if (null == obj) {
+			GGenre gObj = obj as GGenre;
+			if (null == gObj) {
 				return false;
 			}
-			if (!(obj is GGenre)) {
-				return base.Equals(obj);
+			return GGenre.EqualsHelper(this, gObj);
+		}
+		public bool Equals(GGenre other) {
+			if(null == other) {
+				return false;
 			}
-			return this.GenreId.Equals((obj as GGenre).GenreId);
+			return GGenre.EqualsHelper(this, other);
 		}
 		public override int GetHashCode() {
 			return this.GenreId.GetHashCode();

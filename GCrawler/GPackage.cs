@@ -9,11 +9,11 @@ using System.Collections.ObjectModel;
 namespace Yusen.GCrawler {
 	[Serializable]
 	public class GPackage {
-		private readonly static Regex regexId = new Regex("pac[0-9]{7}");
+		private readonly static Regex regexId = new Regex("pac[0-9]{7}", RegexOptions.Compiled);
 
-		private readonly static Regex regexPackageName = new Regex(@"<td class=""title12b"">(.+)</td>");
+		private readonly static Regex regexPackageName = new Regex(@"<td class=""title12b"">(.+)</td>", RegexOptions.Compiled);
 		private const string strTitleDate = "<td class=\"titledate10\">";
-		private readonly static Regex regexAnchorHref = new Regex(@"<a href=""(.+?)""");
+		private readonly static Regex regexAnchorHref = new Regex(@"<a href=""(.+?)""", RegexOptions.Compiled);
 		
 		public static bool TryExtractPackageId(Uri uri, out string id) {
 			Match match = GPackage.regexId.Match(uri.AbsoluteUri);
@@ -42,7 +42,7 @@ namespace Yusen.GCrawler {
 			return new Uri("http://www.gyao.jp/sityou/catelist/pac_id/" + packageId + "/");
 		}
 
-		internal static GPackage DoDownload(string packId, IDeadlineTable deadlineDic, out List<string> childContIds) {
+		internal static GPackage DoDownload(string packId, IDeadlineTable deadlineTable, out List<string> childContIds) {
 			Uri uri = GPackage.CreatePackagePageUri(packId);
 			using (TextReader reader = new StreamReader(new WebClient().OpenRead(uri), Encoding.GetEncoding("Shift_JIS"))) {
 				string line;
@@ -60,11 +60,11 @@ namespace Yusen.GCrawler {
 				}
 				//コンテンツIDと期限の抽出
 				List<string> contentIds = new List<string>();
-				string deadLine = null;
+				string deadline = null;
 				while (null != (line = reader.ReadLine())) {
-					if (null == deadLine) {
+					if (null == deadline) {
 						if (line.EndsWith(GPackage.strTitleDate)) {
-							deadLine = reader.ReadLine().Trim();
+							deadline = reader.ReadLine().Trim();
 						}
 						continue;
 					}
@@ -73,8 +73,8 @@ namespace Yusen.GCrawler {
 						string contId;
 						if (GContent.TryExtractContentId(new Uri(uri, match.Groups[1].Value), out contId)) {
 							contentIds.Add(contId);
-							deadlineDic.SetDeadline(contId, deadLine);
-							deadLine = null;
+							deadlineTable.SetDeadline(contId, deadline);
+							deadline = null;
 						}
 					}
 				}

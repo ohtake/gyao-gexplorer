@@ -12,15 +12,15 @@ namespace Yusen.GCrawler {
 	public class GContent {
 		private static readonly XmlSerializer serializer = new XmlSerializer(typeof(GContent));
 		
-		private static readonly Regex regexId = new Regex("cnt[0-9]{7}");
-		
-		private static readonly Regex regexBreadGenre = new Regex(@"^<a href=""[^""]*"">(.*)</a> &gt; $");
-		private static readonly Regex regexTitle = new Regex(@"<td class=""title12b"">(.*)</td>");
-		private static readonly Regex regexSubtitle = new Regex(@"<td class=""title12"">(.*)</td><!--サブタイトル-->");
-		private static readonly Regex regexImageDir = new Regex(@"<img src=""(/img/info/[a-z0-9]+/{1,2})cnt[0-9]+_[0-9a-z]*\.(?:jpg|gif)"""); // 村上さんはなぜか / が2つ
-		private static readonly Regex regexEpisodeNum = new Regex(@"<td align=""left""><b>(.*)</b></td>");
-		private static readonly Regex regexDuration = new Regex(@"<td align=""right""><b>[^:]*時間[^:]* : (.*)</b></td>");
-		private static readonly Regex regexDescription = new Regex(@"^\s*(?:<td align=""[^""]*"">)?((?:[^<]|<br */?>|<[abp](?:>| [^>]*>)|</[abp]>)+)</td>$", RegexOptions.IgnoreCase);
+		private static readonly Regex regexId = new Regex("cnt[0-9]{7}", RegexOptions.Compiled);
+
+		private static readonly Regex regexBreadGenre = new Regex(@"^<a href=""[^""]*"">(.*)</a> &gt; $", RegexOptions.Compiled);
+		private static readonly Regex regexTitle = new Regex(@"<td class=""title12b"">(.*)</td>", RegexOptions.Compiled);
+		private static readonly Regex regexSubtitle = new Regex(@"<td class=""title12"">(.*)</td><!--サブタイトル-->", RegexOptions.Compiled);
+		private static readonly Regex regexImageDir = new Regex(@"<img src=""(/img/info/[a-z0-9]+/{1,2})cnt[0-9]+_[0-9a-z]*\.(?:jpg|gif)""", RegexOptions.Compiled); // 村上さんはなぜか / が2つ
+		private static readonly Regex regexEpisodeNum = new Regex(@"<td align=""left""><b>(.*)</b></td>", RegexOptions.Compiled);
+		private static readonly Regex regexDuration = new Regex(@"<td align=""right""><b>[^:]*時間[^:]* : (.*)</b></td>", RegexOptions.Compiled);
+		private static readonly Regex regexDescription = new Regex(@"^\s*(?:<td align=""[^""]*"">)?((?:[^<]|<br */?>|<[abp](?:>| [^>]*>)|</[abp]>)+)</td>$", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 		private const string endOfDescription = @"<table width=""770"" border=""0"" cellspacing=""0"" cellpadding=""0"">";
 		
 		public static void Serialize(string filename, GContent cont){
@@ -94,21 +94,6 @@ namespace Yusen.GCrawler {
 				+ "&userNo=" + userNo
 				+ "&rateId=" + "bit" + ((int)bitrate).ToString("0000000")
 				+ "&chapterNo=" + chapterNo.ToString());
-		}
-		public static Uri CreateMediaFileUri(string contId, int userNo, GBitRate bitrate) {
-			return new Uri(
-				"rtsp://wms.cd.gyao.jp/gyaovod01?QueryString="
-				+ "contentsId=" + contId
-				+ ":userNo=" + userNo.ToString()
-				+ ":rateId=" + "bit" + ((int)bitrate).ToString("0000000"));
-		}
-		public static Uri CreateMediaFileUri(string contId, int userNo, GBitRate bitrate, int chapterNo) {
-			return new Uri(
-				"rtsp://wms.cd.gyao.jp/gyaovod01?QueryString="
-				+ "contentsId=" + contId
-				+ ":userNo=" + userNo.ToString()
-				+ ":rateId=" + "bit" + ((int)bitrate).ToString("0000000")
-				+ ":chapterNo=" + chapterNo.ToString());
 		}
 		public static Uri CreateRecommendPageUri(string contId, GBitRate bitrate) {
 			return new Uri(

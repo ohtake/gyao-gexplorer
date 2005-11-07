@@ -64,14 +64,14 @@ namespace Yusen.GExplorer {
 			// 
 			this.menuStrip1.AllowItemReorder = true;
 			this.menuStrip1.Dock = System.Windows.Forms.DockStyle.None;
-			this.menuStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Visible;
 			this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiFile,
             this.tsmiGenres,
             this.tsmiTimeTables});
+			this.menuStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
-			this.menuStrip1.Size = new System.Drawing.Size(842, 24);
+			this.menuStrip1.Size = new System.Drawing.Size(842, 20);
 			this.menuStrip1.TabIndex = 0;
 			this.menuStrip1.Text = "menuStrip1";
 			// 
@@ -88,7 +88,7 @@ namespace Yusen.GExplorer {
             this.toolStripSeparator4,
             this.tsmiClose});
 			this.tsmiFile.Name = "tsmiFile";
-			this.tsmiFile.Size = new System.Drawing.Size(66, 20);
+			this.tsmiFile.Size = new System.Drawing.Size(66, 16);
 			this.tsmiFile.Text = "ファイル(&F)";
 			// 
 			// tsmiOpenTop
@@ -157,13 +157,13 @@ namespace Yusen.GExplorer {
 			// tsmiGenres
 			// 
 			this.tsmiGenres.Name = "tsmiGenres";
-			this.tsmiGenres.Size = new System.Drawing.Size(93, 20);
+			this.tsmiGenres.Size = new System.Drawing.Size(93, 16);
 			this.tsmiGenres.Text = "ジャンルトップ(&T)";
 			// 
 			// tsmiTimeTables
 			// 
 			this.tsmiTimeTables.Name = "tsmiTimeTables";
-			this.tsmiTimeTables.Size = new System.Drawing.Size(64, 20);
+			this.tsmiTimeTables.Size = new System.Drawing.Size(64, 16);
 			this.tsmiTimeTables.Text = "番組表(&I)";
 			// 
 			// toolStripContainer1
@@ -176,7 +176,7 @@ namespace Yusen.GExplorer {
 			// toolStripContainer1.ContentPanel
 			// 
 			this.toolStripContainer1.ContentPanel.Controls.Add(this.gwbMain);
-			this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(842, 525);
+			this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(842, 529);
 			this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.toolStripContainer1.Location = new System.Drawing.Point(0, 0);
 			this.toolStripContainer1.Name = "toolStripContainer1";
@@ -220,7 +220,7 @@ namespace Yusen.GExplorer {
 			this.gwbMain.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.gwbMain.Location = new System.Drawing.Point(0, 0);
 			this.gwbMain.Name = "gwbMain";
-			this.gwbMain.Size = new System.Drawing.Size(842, 525);
+			this.gwbMain.Size = new System.Drawing.Size(842, 529);
 			this.gwbMain.TabIndex = 0;
 			this.gwbMain.StatusTextChanged += new System.EventHandler(this.gwbMain_StatusTextChanged);
 			this.gwbMain.CanGoForwardChanged += new System.EventHandler(this.gwbMain_CanGoForwardChanged);
@@ -239,7 +239,7 @@ namespace Yusen.GExplorer {
             this.tsbBack,
             this.tsbForward,
             this.tsbStop});
-			this.tsStandard.Location = new System.Drawing.Point(3, 24);
+			this.tsStandard.Location = new System.Drawing.Point(3, 20);
 			this.tsStandard.Name = "tsStandard";
 			this.tsStandard.Size = new System.Drawing.Size(200, 25);
 			this.tsStandard.TabIndex = 3;
@@ -283,7 +283,7 @@ namespace Yusen.GExplorer {
             this.tslAddress,
             this.tscbAddress,
             this.tsbGo});
-			this.tsAddress.Location = new System.Drawing.Point(203, 24);
+			this.tsAddress.Location = new System.Drawing.Point(203, 20);
 			this.tsAddress.Name = "tsAddress";
 			this.tsAddress.Size = new System.Drawing.Size(586, 25);
 			this.tsAddress.TabIndex = 1;

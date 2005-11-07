@@ -7,8 +7,8 @@ using System.Drawing;
 
 namespace Yusen.GExplorer {
 	public partial class GWebBrowser : WebBrowser {
-		private const string stylePackage = "border: 4px dotted blue !important;";
-		private const string styleContent = "border: 4px dotted red !important;";
+		private const string stylePackage = "border-top: 2px dashed blue !important; border-bottom: 2px dashed blue !important;";
+		private const string styleContent = "border-top: 2px dashed red !important; border-bottom: 2px dashed red !important;";
 		
 		private Dictionary<HtmlElement, string> dicPackage = new Dictionary<HtmlElement, string>();
 		private Dictionary<HtmlElement, string> dicContent = new Dictionary<HtmlElement, string>();

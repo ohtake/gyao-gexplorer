@@ -7,7 +7,7 @@ using Yusen.GCrawler;
 using Clipboard=System.Windows.Forms.Clipboard;
 
 namespace Yusen.GExplorer {
-	public class ContentAdapter {
+	public class ContentAdapter : IEquatable<ContentAdapter>{
 		internal static void CopyNames(IEnumerable<ContentAdapter> conts) {
 			StringBuilder sb = new StringBuilder();
 			foreach (ContentAdapter cont in conts) {
@@ -60,6 +60,9 @@ namespace Yusen.GExplorer {
 					isExact = false;
 				}
 			}
+		}
+		private static bool EqualsHelper(ContentAdapter cont1, ContentAdapter cont2) {
+			return cont1.ContentId.Equals(cont2.ContentId);
 		}
 
 		private GContent innerCont;
@@ -197,14 +200,6 @@ namespace Yusen.GExplorer {
 		}
 		[XmlIgnore]
 		[Category("URI")]
-		[Description("動画ファイルのURI．(グローバル設定のビットレートの影響を受ける．ユーザIDを含む．)")]
-		public Uri MediaFileUri {
-			get {
-				return GContent.CreateMediaFileUri(this.ContentId, GlobalSettings.Instance.UserNo, GlobalSettings.Instance.BitRate);
-			}
-		}
-		[XmlIgnore]
-		[Category("URI")]
 		[Description("コンテンツの画像(大)のURI．")]
 		public Uri ImageLargeUri {
 			get {return this.innerCont.ImageLargeUri;}
@@ -225,9 +220,6 @@ namespace Yusen.GExplorer {
 		}
 		
 		
-		public Uri ChapterMediaFileUriOf(int chapterNo) {
-			return GContent.CreateMediaFileUri(this.ContentId, GlobalSettings.Instance.UserNo, GlobalSettings.Instance.BitRate, chapterNo);
-		}
 		public Uri ChapterPlayListUriOf(int chapterNo) {
 			return GContent.CreatePlayListUri(this.ContentId, GlobalSettings.Instance.UserNo, GlobalSettings.Instance.BitRate, chapterNo);
 		}
@@ -241,14 +233,19 @@ namespace Yusen.GExplorer {
 		}
 
 		public override bool Equals(object obj) {
-			if (null == obj) {
+			ContentAdapter cObj = obj as ContentAdapter;
+			if (null == cObj) {
 				return false;
 			}
-			if (!(obj is ContentAdapter)) {
-				return base.Equals(obj);
-			}
-			return this.ContentId.Equals((obj as ContentAdapter).ContentId);
+			return ContentAdapter.EqualsHelper(this, cObj);
 		}
+		public bool Equals(ContentAdapter other) {
+			if(null == other) {
+				return false;
+			}
+			return ContentAdapter.EqualsHelper(this, other);
+		}
+		
 		public override int GetHashCode() {
 			return this.ContentId.GetHashCode();
 		}

@@ -49,8 +49,6 @@ namespace Yusen.GExplorer {
 			// 
 			// cmsContent
 			// 
-			this.cmsContent.Enabled = true;
-			this.cmsContent.GripMargin = new System.Windows.Forms.Padding(2);
 			this.cmsContent.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiContentOpenDetail,
             this.toolStripSeparator1,
@@ -64,92 +62,101 @@ namespace Yusen.GExplorer {
             this.tsmiContentCommands,
             this.toolStripSeparator6,
             this.tsmiContentCancel});
-			this.cmsContent.Location = new System.Drawing.Point(9, 50);
 			this.cmsContent.Name = "cmsContent";
-			this.cmsContent.RightToLeft = System.Windows.Forms.RightToLeft.No;
 			this.cmsContent.Size = new System.Drawing.Size(204, 204);
 			// 
 			// tsmiContentOpenDetail
 			// 
 			this.tsmiContentOpenDetail.Name = "tsmiContentOpenDetail";
+			this.tsmiContentOpenDetail.Size = new System.Drawing.Size(203, 22);
 			this.tsmiContentOpenDetail.Text = "詳細ページを開く(&O)";
 			// 
 			// toolStripSeparator1
 			// 
 			this.toolStripSeparator1.Name = "toolStripSeparator1";
+			this.toolStripSeparator1.Size = new System.Drawing.Size(200, 6);
 			// 
 			// tsmiContentAddToPlayList
 			// 
 			this.tsmiContentAddToPlayList.Name = "tsmiContentAddToPlayList";
+			this.tsmiContentAddToPlayList.Size = new System.Drawing.Size(203, 22);
 			this.tsmiContentAddToPlayList.Text = "プレイリストに追加(&A)";
 			// 
 			// tsmiContentAddToPlayListWithComment
 			// 
 			this.tsmiContentAddToPlayListWithComment.Name = "tsmiContentAddToPlayListWithComment";
+			this.tsmiContentAddToPlayListWithComment.Size = new System.Drawing.Size(203, 22);
 			this.tsmiContentAddToPlayListWithComment.Text = "コメント付きで追加(&L)...";
 			// 
 			// tsmiContentPlayWithoutAdding
 			// 
 			this.tsmiContentPlayWithoutAdding.Name = "tsmiContentPlayWithoutAdding";
+			this.tsmiContentPlayWithoutAdding.Size = new System.Drawing.Size(203, 22);
 			this.tsmiContentPlayWithoutAdding.Text = "追加せずに再生(&P)";
 			// 
 			// toolStripSeparator2
 			// 
 			this.toolStripSeparator2.Name = "toolStripSeparator2";
+			this.toolStripSeparator2.Size = new System.Drawing.Size(200, 6);
 			// 
 			// tsmiContentPlayWmp
 			// 
 			this.tsmiContentPlayWmp.Name = "tsmiContentPlayWmp";
+			this.tsmiContentPlayWmp.Size = new System.Drawing.Size(203, 22);
 			this.tsmiContentPlayWmp.Text = "WMPで再生(&W)";
 			// 
 			// tsmiContentPlayBrowser
 			// 
 			this.tsmiContentPlayBrowser.Name = "tsmiContentPlayBrowser";
+			this.tsmiContentPlayBrowser.Size = new System.Drawing.Size(203, 22);
 			this.tsmiContentPlayBrowser.Text = "ブラウザで再生(&B)";
 			// 
 			// toolStripSeparator8
 			// 
 			this.toolStripSeparator8.Name = "toolStripSeparator8";
+			this.toolStripSeparator8.Size = new System.Drawing.Size(200, 6);
 			// 
 			// tsmiContentCommands
 			// 
 			this.tsmiContentCommands.Name = "tsmiContentCommands";
+			this.tsmiContentCommands.Size = new System.Drawing.Size(203, 22);
 			this.tsmiContentCommands.Text = "外部コマンド(&C)";
 			// 
 			// toolStripSeparator6
 			// 
 			this.toolStripSeparator6.Name = "toolStripSeparator6";
+			this.toolStripSeparator6.Size = new System.Drawing.Size(200, 6);
 			// 
 			// tsmiContentCancel
 			// 
 			this.tsmiContentCancel.Name = "tsmiContentCancel";
+			this.tsmiContentCancel.Size = new System.Drawing.Size(203, 22);
 			this.tsmiContentCancel.Text = "ティップやメニューが邪魔(&D)...";
 			// 
 			// cmsPackage
 			// 
-			this.cmsPackage.Enabled = true;
-			this.cmsPackage.GripMargin = new System.Windows.Forms.Padding(2);
 			this.cmsPackage.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiPackageOpen,
             this.toolStripSeparator5,
             this.tsmiPackageCancel});
-			this.cmsPackage.Location = new System.Drawing.Point(9, 50);
 			this.cmsPackage.Name = "cmsPackage";
-			this.cmsPackage.RightToLeft = System.Windows.Forms.RightToLeft.No;
 			this.cmsPackage.Size = new System.Drawing.Size(204, 54);
 			// 
 			// tsmiPackageOpen
 			// 
 			this.tsmiPackageOpen.Name = "tsmiPackageOpen";
+			this.tsmiPackageOpen.Size = new System.Drawing.Size(203, 22);
 			this.tsmiPackageOpen.Text = "パッケージページを開く(&O)";
 			// 
 			// toolStripSeparator5
 			// 
 			this.toolStripSeparator5.Name = "toolStripSeparator5";
+			this.toolStripSeparator5.Size = new System.Drawing.Size(200, 6);
 			// 
 			// tsmiPackageCancel
 			// 
 			this.tsmiPackageCancel.Name = "tsmiPackageCancel";
+			this.tsmiPackageCancel.Size = new System.Drawing.Size(203, 22);
 			this.tsmiPackageCancel.Text = "ティップやメニューが邪魔(&D)...";
 			// 
 			// ttId
