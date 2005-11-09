@@ -64,7 +64,11 @@ namespace Yusen.GExplorer{
 				}
 			} finally {
 				if(null != ans) {
-					Migemo.MigemoRelease(this.migemoObj, ans);
+					try {
+						Migemo.MigemoRelease(this.migemoObj, ans);
+					} catch(AccessViolationException) {
+						//ŠÂ‹«‚É‚æ‚Á‚Ä‚Í‚¨‚«‚é‚±‚Æ‚ª‚ ‚é‚ç‚µ‚¢
+					}
 				}
 			}
 			return ansStr;

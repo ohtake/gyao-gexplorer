@@ -82,6 +82,9 @@ namespace Yusen.GExplorer {
 			this.inputBoxDialog1 = new Yusen.GExplorer.InputBoxDialog();
 			this.exceptionDialog1 = new Yusen.GExplorer.ExceptionDialog();
 			this.timerFilter = new System.Windows.Forms.Timer(this.components);
+			this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+			this.tsmiMaxPageMenuItems = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiMaxExceptionMenuItems = new System.Windows.Forms.ToolStripMenuItem();
 			this.cmsContent.SuspendLayout();
 			this.toolStripContainer1.ContentPanel.SuspendLayout();
 			this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
@@ -394,7 +397,10 @@ namespace Yusen.GExplorer {
             this.toolStripSeparator7,
             this.tsmiClearFilterStringOnHide,
             this.toolStripSeparator10,
-            this.tsmiNewColor});
+            this.tsmiNewColor,
+            this.toolStripMenuItem1,
+            this.tsmiMaxPageMenuItems,
+            this.tsmiMaxExceptionMenuItems});
 			this.tsddbSettings.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tsddbSettings.Name = "tsddbSettings";
 			this.tsddbSettings.Size = new System.Drawing.Size(58, 22);
@@ -403,20 +409,20 @@ namespace Yusen.GExplorer {
 			// tsmiAboneType
 			// 
 			this.tsmiAboneType.Name = "tsmiAboneType";
-			this.tsmiAboneType.Size = new System.Drawing.Size(246, 22);
+			this.tsmiAboneType.Size = new System.Drawing.Size(260, 22);
 			this.tsmiAboneType.Text = "あぼ～ん方法(&A)";
 			// 
 			// toolStripSeparator8
 			// 
 			this.toolStripSeparator8.Name = "toolStripSeparator8";
-			this.toolStripSeparator8.Size = new System.Drawing.Size(243, 6);
+			this.toolStripSeparator8.Size = new System.Drawing.Size(257, 6);
 			// 
 			// tsmiShowPackages
 			// 
 			this.tsmiShowPackages.Checked = true;
 			this.tsmiShowPackages.CheckState = System.Windows.Forms.CheckState.Checked;
 			this.tsmiShowPackages.Name = "tsmiShowPackages";
-			this.tsmiShowPackages.Size = new System.Drawing.Size(246, 22);
+			this.tsmiShowPackages.Size = new System.Drawing.Size(260, 22);
 			this.tsmiShowPackages.Text = "パッケージごとに分類(&G)";
 			this.tsmiShowPackages.Click += new System.EventHandler(this.tsmiShowPackages_Click);
 			// 
@@ -424,7 +430,7 @@ namespace Yusen.GExplorer {
 			// 
 			this.tsmiHoverSelect.CheckOnClick = true;
 			this.tsmiHoverSelect.Name = "tsmiHoverSelect";
-			this.tsmiHoverSelect.Size = new System.Drawing.Size(246, 22);
+			this.tsmiHoverSelect.Size = new System.Drawing.Size(260, 22);
 			this.tsmiHoverSelect.Text = "マウスホバーで選択(&H)";
 			this.tsmiHoverSelect.Click += new System.EventHandler(this.tsmiHoverSelect_Click);
 			// 
@@ -434,14 +440,14 @@ namespace Yusen.GExplorer {
 			this.tsmiMultiSelect.CheckOnClick = true;
 			this.tsmiMultiSelect.CheckState = System.Windows.Forms.CheckState.Checked;
 			this.tsmiMultiSelect.Name = "tsmiMultiSelect";
-			this.tsmiMultiSelect.Size = new System.Drawing.Size(246, 22);
+			this.tsmiMultiSelect.Size = new System.Drawing.Size(260, 22);
 			this.tsmiMultiSelect.Text = "複数選択を有効(&M)";
 			this.tsmiMultiSelect.Click += new System.EventHandler(this.tsmiMultiSelect_Click);
 			// 
 			// toolStripSeparator7
 			// 
 			this.toolStripSeparator7.Name = "toolStripSeparator7";
-			this.toolStripSeparator7.Size = new System.Drawing.Size(243, 6);
+			this.toolStripSeparator7.Size = new System.Drawing.Size(257, 6);
 			// 
 			// tsmiClearFilterStringOnHide
 			// 
@@ -449,18 +455,18 @@ namespace Yusen.GExplorer {
 			this.tsmiClearFilterStringOnHide.CheckOnClick = true;
 			this.tsmiClearFilterStringOnHide.CheckState = System.Windows.Forms.CheckState.Checked;
 			this.tsmiClearFilterStringOnHide.Name = "tsmiClearFilterStringOnHide";
-			this.tsmiClearFilterStringOnHide.Size = new System.Drawing.Size(246, 22);
+			this.tsmiClearFilterStringOnHide.Size = new System.Drawing.Size(260, 22);
 			this.tsmiClearFilterStringOnHide.Text = "フィルタ解除でフィルタ文字列クリア(&C)";
 			// 
 			// toolStripSeparator10
 			// 
 			this.toolStripSeparator10.Name = "toolStripSeparator10";
-			this.toolStripSeparator10.Size = new System.Drawing.Size(243, 6);
+			this.toolStripSeparator10.Size = new System.Drawing.Size(257, 6);
 			// 
 			// tsmiNewColor
 			// 
 			this.tsmiNewColor.Name = "tsmiNewColor";
-			this.tsmiNewColor.Size = new System.Drawing.Size(246, 22);
+			this.tsmiNewColor.Size = new System.Drawing.Size(260, 22);
 			this.tsmiNewColor.Text = "新着の色(&N)...";
 			this.tsmiNewColor.Click += new System.EventHandler(this.tsmiNewColor_Click);
 			// 
@@ -550,6 +556,25 @@ namespace Yusen.GExplorer {
 			// 
 			this.timerFilter.Tick += new System.EventHandler(this.timerFilter_Tick);
 			// 
+			// toolStripMenuItem1
+			// 
+			this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+			this.toolStripMenuItem1.Size = new System.Drawing.Size(257, 6);
+			// 
+			// tsmiMaxPageMenuItems
+			// 
+			this.tsmiMaxPageMenuItems.Name = "tsmiMaxPageMenuItems";
+			this.tsmiMaxPageMenuItems.Size = new System.Drawing.Size(260, 22);
+			this.tsmiMaxPageMenuItems.Text = "「ページ」メニューの項目数の最大値(&P)...";
+			this.tsmiMaxPageMenuItems.Click += new System.EventHandler(this.tsmiMaxPageMenuItems_Click);
+			// 
+			// tsmiMaxExceptionMenuItems
+			// 
+			this.tsmiMaxExceptionMenuItems.Name = "tsmiMaxExceptionMenuItems";
+			this.tsmiMaxExceptionMenuItems.Size = new System.Drawing.Size(260, 22);
+			this.tsmiMaxExceptionMenuItems.Text = "「例外」メニューの項目数の最大値(&E)...";
+			this.tsmiMaxExceptionMenuItems.Click += new System.EventHandler(this.tsmiMaxExceptionMenuItems_Click);
+			// 
 			// CrawlResultView
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -632,5 +657,8 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ToolStripLabel tslFilter;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator9;
 		private System.Windows.Forms.Timer timerFilter;
+		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
+		private System.Windows.Forms.ToolStripMenuItem tsmiMaxPageMenuItems;
+		private System.Windows.Forms.ToolStripMenuItem tsmiMaxExceptionMenuItems;
 	}
 }

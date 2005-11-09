@@ -16,10 +16,11 @@ namespace Yusen.GExplorer {
 		private AboneType aboneType = AboneType.Sabori;
 		private FilterType filterType = FilterType.Migemo;
 		private Color newColor = Color.Red;
-
-		private Dictionary<ListViewItem, ListViewGroup> dicGroup = new Dictionary<ListViewItem, ListViewGroup>();
+		private int maxPageMenuItems = 16;
+		private int maxExceptionMenuItems = 16;
+		
 		private List<ListViewGroup> allLvgs = new List<ListViewGroup>();
-		private List<ListViewItem> allLvis = new List<ListViewItem>();
+		private Dictionary<ListViewItem, ListViewGroup> allLvis = new Dictionary<ListViewItem, ListViewGroup>();
 		
 		private Migemo migemo = null;
 		private Regex filterRegex = null;
@@ -103,8 +104,8 @@ namespace Yusen.GExplorer {
 					}
 					this.listView1.EndUpdate();
 
-					this.CreateNormalPagesMenuItems();
-					this.CreateExceptionsMenuItems();
+					this.CreateNormalPagesMenuItems(false);
+					this.CreateExceptionsMenuItems(false);
 				}
 			}
 		}
@@ -228,6 +229,24 @@ namespace Yusen.GExplorer {
 				}
 			}
 		}
+		public int MaxPageMenuItems {
+			get { return this.maxPageMenuItems; }
+			set {
+				if(value != this.maxPageMenuItems) {
+					this.maxPageMenuItems = value;
+					this.CreateNormalPagesMenuItems(false);
+				}
+			}
+		}
+		public int MaxExceptionMenuItems {
+			get { return this.maxExceptionMenuItems; }
+			set {
+				if(value != this.maxExceptionMenuItems) {
+					this.maxExceptionMenuItems = value;
+					this.CreateExceptionsMenuItems(false);
+				}
+			}
+		}
 		public void FillSettings(GenreListViewSettings settings) {
 			settings.ColWidthId = this.chId.Width;
 			settings.ColWidthTitle = this.chTitle.Width;
@@ -244,6 +263,8 @@ namespace Yusen.GExplorer {
 			settings.FilterEnabled = this.FilterEnabled;
 			settings.FilterType = this.FilterType;
 			settings.NewColor = this.NewColor;
+			settings.MaxPageMenuItems = this.MaxPageMenuItems;
+			settings.MaxExceptionMenuItems = this.MaxExceptionMenuItems;
 		}
 		public void ApplySettings(GenreListViewSettings settings) {
 			this.chId.Width = settings.ColWidthId ?? this.chId.Width;
@@ -261,11 +282,12 @@ namespace Yusen.GExplorer {
 			this.FilterEnabled = settings.FilterEnabled ?? this.FilterEnabled;
 			this.FilterType = settings.FilterType ?? this.FilterType;
 			this.NewColor = settings.NewColor ?? this.NewColor;
+			this.MaxPageMenuItems = settings.MaxPageMenuItems ?? this.MaxPageMenuItems;
+			this.MaxExceptionMenuItems = settings.MaxExceptionMenuItems ?? this.MaxExceptionMenuItems;
 		}
 		private void ClearAllItems() {
-			this.dicGroup.Clear();
-			this.allLvis.Clear();
 			this.allLvgs.Clear();
+			this.allLvis.Clear();
 
 			this.listView1.Items.Clear();
 			this.listView1.Groups.Clear();
@@ -284,8 +306,7 @@ namespace Yusen.GExplorer {
 					ListViewItem item = new ListViewItem(
 						new string[]{ca.ContentId, ca.Title, ca.EpisodeNumber, ca.SubTitle, ca.GTimeSpan.ToString(), ca.Deadline, ca.LongDescription});
 					item.Tag = ca;
-					this.allLvis.Add(item);
-					this.dicGroup.Add(item, group);
+					this.allLvis.Add(item, group);
 				}
 			}
 			
@@ -302,8 +323,10 @@ namespace Yusen.GExplorer {
 			int aboned = 0;
 			int filtered = 0;
 			Regex filter = this.FilterEnabled ? this.FilterRegex : null;
-			foreach (ListViewItem lvi in this.allLvis) {
+			foreach (KeyValuePair<ListViewItem, ListViewGroup> pair in this.allLvis) {
+				ListViewItem lvi = pair.Key;
 				ContentAdapter cont = lvi.Tag as ContentAdapter;
+				
 				//NG処理
 				bool isNg = NgContentsManager.Instance.IsNgContent(cont);
 				switch (this.AboneType) {
@@ -340,18 +363,28 @@ namespace Yusen.GExplorer {
 					lvi.ForeColor = SystemColors.GrayText;
 				}
 
-				lvi.Group = this.dicGroup[lvi];
+				lvi.Group = pair.Value;
 				this.listView1.Items.Add(lvi);
 			}
 
 			this.tslNumber.Text = this.listView1.Items.Count.ToString() + "+" + filtered.ToString() + "+" + aboned.ToString();
 			this.tslTime.Text = "(" + this.CrawlResult.Time.ToShortDateString() + " "+ this.CrawlResult.Time.ToShortTimeString() + ")";
 		}
-		private void CreateNormalPagesMenuItems() {
+		private void CreateNormalPagesMenuItems(bool createAll) {
 			this.tsddbNormalPages.DropDownItems.Clear();
-			List<ToolStripMenuItem> menuItems = new List<ToolStripMenuItem>();
+			List<ToolStripItem> menuItems = new List<ToolStripItem>();
 			if (null != this.CrawlResult) {
 				foreach (Uri page in this.CrawlResult.VisitedPages) {
+					if(!createAll && menuItems.Count == this.MaxPageMenuItems) {
+						menuItems.Add(new ToolStripSeparator());
+						menuItems.Add(new ToolStripMenuItem(
+							string.Format("省略せずに全{0}項目を展開する(&E)", this.CrawlResult.VisitedPages.Count),
+							null,
+							new EventHandler(delegate {
+							this.CreateNormalPagesMenuItems(true);
+						})));
+						break;
+					}
 					ToolStripMenuItem tsmi = new ToolStripMenuItem(page.PathAndQuery);
 					tsmi.Tag = page;
 					tsmi.Click += delegate(object sender, EventArgs e) {
@@ -363,11 +396,21 @@ namespace Yusen.GExplorer {
 			this.tsddbNormalPages.DropDownItems.AddRange(menuItems.ToArray());
 			this.tsddbNormalPages.Enabled = this.tsddbNormalPages.HasDropDownItems;
 		}
-		private void CreateExceptionsMenuItems() {
+		private void CreateExceptionsMenuItems(bool createAll) {
 			this.tsddbExceptions.DropDownItems.Clear();
-			List<ToolStripMenuItem> menuItems = new List<ToolStripMenuItem>();
+			List<ToolStripItem> menuItems = new List<ToolStripItem>();
 			if(null != this.CrawlResult) {
 				foreach (Exception ex in this.CrawlResult.IgnoredExceptions) {
+					if(!createAll && menuItems.Count == this.MaxPageMenuItems) {
+						menuItems.Add(new ToolStripSeparator());
+						menuItems.Add(new ToolStripMenuItem(
+							string.Format("省略せずに全{0}項目を展開する(&E)", this.CrawlResult.IgnoredExceptions.Count),
+							null,
+							new EventHandler(delegate {
+							this.CreateExceptionsMenuItems(true);
+						})));
+						break;
+					}
 					ToolStripMenuItem tsmi = new ToolStripMenuItem(ex.Message);
 					tsmi.Tag = ex;
 					tsmi.Click += delegate(object sender, EventArgs e) {
@@ -613,6 +656,36 @@ namespace Yusen.GExplorer {
 				this.NewColor = this.colorDialog1.Color;
 			}
 		}
+		private void tsmiMaxPageMenuItems_Click(object sender, EventArgs e) {
+			this.inputBoxDialog1.Title = "「ページ」メニューの項目数の最大値";
+			this.inputBoxDialog1.Message = "項目数の最大値を入力してください．負数で無制限．";
+			this.inputBoxDialog1.Input = this.MaxPageMenuItems.ToString();
+			switch(this.inputBoxDialog1.ShowDialog()) {
+				case DialogResult.OK:
+					string s = this.inputBoxDialog1.Input;
+					try {
+						this.MaxPageMenuItems = int.Parse(s);
+					} catch(Exception ex) {
+						MessageBox.Show(ex.Message, ex.GetType().ToString(), MessageBoxButtons.OK, MessageBoxIcon.Error);
+					}
+					break;
+			}
+		}
+		private void tsmiMaxExceptionMenuItems_Click(object sender, EventArgs e) {
+			this.inputBoxDialog1.Title = "「例外」メニューの項目数の最大値";
+			this.inputBoxDialog1.Message = "項目数の最大値を入力してください．負数で無制限．";
+			this.inputBoxDialog1.Input = this.MaxPageMenuItems.ToString();
+			switch(this.inputBoxDialog1.ShowDialog()) {
+				case DialogResult.OK:
+					string s = this.inputBoxDialog1.Input;
+					try {
+						this.MaxExceptionMenuItems = int.Parse(s);
+					} catch(Exception ex) {
+						MessageBox.Show(ex.Message, ex.GetType().ToString(), MessageBoxButtons.OK, MessageBoxIcon.Error);
+					}
+					break;
+			}
+		}
 		#endregion
 		#region フィルタ関連
 		private void tsbShowFilter_Click(object sender, EventArgs e) {
@@ -658,6 +731,8 @@ namespace Yusen.GExplorer {
 		private bool? filterEnabled;
 		private FilterType? filterType;
 		private Color? newColor;
+		private int? maxPageMenuItems;
+		private int? maxExceptionMenuItems;
 		
 		public int? ColWidthId {
 			get { return this.colWidthId; }
@@ -736,6 +811,15 @@ namespace Yusen.GExplorer {
 					this.NewColor = null;
 				}
 			}
+		}
+
+		public int? MaxPageMenuItems {
+			get { return this.maxPageMenuItems; }
+			set { this.maxPageMenuItems = value; }
+		}
+		public int? MaxExceptionMenuItems {
+			get { return this.maxExceptionMenuItems; }
+			set { this.maxExceptionMenuItems = value; }
 		}
 	}
 }

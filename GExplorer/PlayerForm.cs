@@ -43,6 +43,7 @@ namespace Yusen.GExplorer {
 		private const int VolumeMax = 100;
 		private const int VolumeMin = 0;
 		private static readonly Size WmpUiSize = new Size(0, 64);
+		private static readonly Size WmpMarginSize = new Size(3, 3);
 		private static readonly Regex regexEndFlag = new Regex(":endFlg=([^:=]*)");
 		private static readonly Regex regexDartTag = new Regex(":dartTag=([^:=]*)");
 
@@ -71,6 +72,8 @@ namespace Yusen.GExplorer {
 		private int volumeCf = 20;
 
 		private ScreenSaveListener ssl;
+
+		private Point? tabDragPoint;
 
 		private PlayerForm() {
 			InitializeComponent();
@@ -132,12 +135,29 @@ namespace Yusen.GExplorer {
 				this.wmpMain.settings.volume = isCf.Value ? this.VolumeCf : this.VolumeNormal;
 			}
 		}
+		private void HideUi() {
+			Point loc = this.PointToClient(this.tabPlayer.PointToScreen(new Point()));
+			loc.X += SystemInformation.SizingBorderWidth;
+			loc.Y += SystemInformation.SizingBorderWidth + SystemInformation.CaptionHeight;
+			loc += PlayerForm.WmpMarginSize;
+			Size size = this.tabPlayer.ClientSize;
+			if(this.tabControl1.SelectedTab == this.tabPlayer) {
+				size -= PlayerForm.WmpUiSize;
+			}
+			this.Region = new Region(new Rectangle(loc, size));
+		}
+		private void ShowUi() {
+			this.Region = null;
+		}
 		public void FillSettings(PlayerFormSettings settings) {
 			base.FillSettings(settings);
 			settings.MainTabIndex = this.tabControl1.SelectedIndex;
+			settings.StatusbarVisible = this.StatusbarVisible;
+			settings.HideUiOnDeactivatedEnabled = this.HideUiOnDeactivatedEnabled;
+			settings.AutoSizeOnNormalEnabled = this.AutoSizeOnNormalEnabled;
+			settings.AutoSizeOnCfEnabled = this.AutoSizeOnCfEnabled;
 			settings.StrechToFitEnabled = this.StreachToFitEnabled;
 			settings.DisableScreenSaverEnabled = this.DisableScreenSaverEnabled;
-			settings.StatusbarVisible = this.StatusbarVisible;
 			settings.RemovePlayedContentEnabled = this.RemovePlayedContentEnabled;
 			settings.PlayListLoopEnabled = this.PlayListLoopEnabled;
 			settings.SkipCmLicenseEnabled = this.SkipCmLicenseEnabled;
@@ -150,9 +170,12 @@ namespace Yusen.GExplorer {
 		public void ApplySettings(PlayerFormSettings settings) {
 			base.ApplySettings(settings);
 			this.tabControl1.SelectedIndex = settings.MainTabIndex ?? this.tabControl1.SelectedIndex;
+			this.StatusbarVisible = settings.StatusbarVisible ?? this.StatusbarVisible;
+			this.HideUiOnDeactivatedEnabled = settings.HideUiOnDeactivatedEnabled ?? this.HideUiOnDeactivatedEnabled;
+			this.AutoSizeOnNormalEnabled = settings.AutoSizeOnNormalEnabled ?? this.AutoSizeOnNormalEnabled;
+			this.AutoSizeOnCfEnabled = settings.AutoSizeOnCfEnabled ?? this.AutoSizeOnCfEnabled;
 			this.StreachToFitEnabled = settings.StrechToFitEnabled ?? this.StreachToFitEnabled;
 			this.DisableScreenSaverEnabled = settings.DisableScreenSaverEnabled ?? this.DisableScreenSaverEnabled;
-			this.StatusbarVisible = settings.StatusbarVisible ?? this.StatusbarVisible;
 			this.RemovePlayedContentEnabled = settings.RemovePlayedContentEnabled ?? this.RemovePlayedContentEnabled;
 			this.PlayListLoopEnabled = settings.PlayListLoopEnabled ?? this.PlayListLoopEnabled;
 			this.SkipCmLicenseEnabled = settings.SkipCmLicenseEnabled ?? this.SkipCmLicenseEnabled;
@@ -202,6 +225,28 @@ namespace Yusen.GExplorer {
 				}
 			}
 		}
+		public bool StatusbarVisible {
+			get { return this.tsmiStatusbarVisible.Checked; }
+			set {
+				this.tsmiStatusbarVisible.Checked = value;
+				if(value) {
+					this.UpdateStatusbatText();
+				}
+				this.statusStrip1.Visible = value;
+			}
+		}
+		public bool HideUiOnDeactivatedEnabled {
+			get { return this.tsmiHideUiOnDeactivated.Checked; }
+			set { this.tsmiHideUiOnDeactivated.Checked = value; }
+		}
+		public bool AutoSizeOnNormalEnabled {
+			get { return this.tsmiAutoSizeOnNormal.Checked; }
+			set { this.tsmiAutoSizeOnNormal.Checked = value; }
+		}
+		public bool AutoSizeOnCfEnabled {
+			get { return this.tsmiAutoSizeOnCf.Checked; }
+			set { this.tsmiAutoSizeOnCf.Checked = value; }
+		}
 		public bool StreachToFitEnabled {
 			get { return this.tsmiStrechToFit.Checked; }
 			set {
@@ -214,16 +259,6 @@ namespace Yusen.GExplorer {
 			set {
 				this.tsmiDisableScreenSaver.Checked = value;
 				this.ssl.Enabled = value;
-			}
-		}
-		public bool StatusbarVisible {
-			get { return this.tsmiStatusbarVisible.Checked; }
-			set {
-				this.tsmiStatusbarVisible.Checked = value;
-				if(value) {
-					this.UpdateStatusbatText();
-				}
-				this.statusStrip1.Visible = value;
 			}
 		}
 		public bool RemovePlayedContentEnabled {
@@ -307,14 +342,47 @@ namespace Yusen.GExplorer {
 			
 			Utility.LoadSettingsAndEnableSaveOnClosed(this);
 		}
-
 		private void PlayerForm_FormClosing(object sender, FormClosingEventArgs e) {
 			this.CurrentContent = null;
 		}
+		private void PlayerForm_Activated(object sender, EventArgs e) {
+			this.ShowUi();
+		}
+		private void PlayerForm_Deactivate(object sender, EventArgs e) {
+			if(this.HideUiOnDeactivatedEnabled) {
+				this.HideUi();
+			}
+		}
+		private void PlayerForm_Resize(object sender, EventArgs e) {
+			if(null != this.Region) {
+				this.HideUi();
+			}
+		}
+		private void PlayerForm_KeyDown(object sender, KeyEventArgs e) {
+			if(e.Handled) return;
+			if(this.wmpMain.Focused) return;
+			switch(e.KeyCode) {
+				case Keys.MediaNextTrack:
+					this.tsmiNextTrack.PerformClick();
+					break;
+				case Keys.MediaPlayPause:
+					this.tsmiPlayPause.PerformClick();
+					break;
+				case Keys.MediaPreviousTrack:
+					this.tsmiPrevTrack.PerformClick();
+					break;
+				case Keys.MediaStop:
+					this.tsmiStop.PerformClick();
+					break;
+				default:
+					return;
+			}
+			e.Handled = true;
+		}
+		
 		private void UserCommandsManager_UserCommandsChanged(object sender, EventArgs e) {
 			this.CreateUserCommandsMenuItems();
 		}
-
 		private void ssl_ScreenSaverRaising(object sender, System.ComponentModel.CancelEventArgs e) {
 			if (this.DisableScreenSaverEnabled) {
 				e.Cancel = true;
@@ -343,7 +411,6 @@ namespace Yusen.GExplorer {
 			}
 		}
 		private void tsmiReload_Click(object sender, EventArgs e) {
-			//this.wmpMain.currentMedia = this.wmpMain.currentMedia;
 			this.OpenVideo();
 			this.wmpMain.Ctlcontrols.play();
 		}
@@ -472,6 +539,26 @@ namespace Yusen.GExplorer {
 			MessageBox.Show(sb.ToString(), "ItemInfo の表示", MessageBoxButtons.OK, MessageBoxIcon.Information);
 		}
 		#endregion
+		#region タブドラッグでのウィンドウ移動
+		private void tabControl1_MouseDown(object sender, MouseEventArgs e) {
+			this.tabDragPoint = this.PointToScreen(new Point(e.X, e.Y));
+		}
+		private void tabControl1_MouseMove(object sender, MouseEventArgs e) {
+			if(!this.tabDragPoint.HasValue) {
+				return;
+			}
+			Point pt1 = this.tabDragPoint.Value;
+			Point pt2 = this.PointToScreen(new Point(e.X, e.Y));
+			if((e.Button & MouseButtons.Left) == MouseButtons.Left && pt1 != pt2) {
+				this.Location += new Size(pt2 - new Size(pt1));
+				this.tabDragPoint = pt2;
+			}
+		}
+		private void tabControl1_MouseUp(object sender, MouseEventArgs e) {
+			this.tabDragPoint = null;
+		}
+		#endregion
+		#region WMPのイベント
 		private void wmpMain_OpenStateChange(object sender, _WMPOCXEvents_OpenStateChangeEvent e) {
 			switch ((WMPOpenState)e.newState) {
 				case WMPOpenState.wmposMediaOpen:
@@ -522,6 +609,18 @@ namespace Yusen.GExplorer {
 					}
 					//ステータスバー更新
 					this.UpdateStatusbatText();
+					//リサイズ
+					if(this.IsCf.HasValue && FormWindowState.Normal == this.WindowState) {
+						if(this.IsCf.Value) {
+							if(this.AutoSizeOnCfEnabled) {
+								this.tsmiResizeToVideoResolution.PerformClick();
+							}
+						} else {
+							if(this.AutoSizeOnNormalEnabled) {
+								this.tsmiResizeToVideoResolution.PerformClick();
+							}
+						}
+					}
 					break;
 			}
 		}
@@ -546,28 +645,7 @@ namespace Yusen.GExplorer {
 					break;
 			}
 		}
-
-		private void PlayerForm_KeyDown(object sender, KeyEventArgs e) {
-			if (e.Handled) return;
-			if (this.wmpMain.Focused) return;
-			switch (e.KeyCode) {
-				case Keys.MediaNextTrack:
-					this.tsmiNextTrack.PerformClick();
-					break;
-				case Keys.MediaPlayPause:
-					this.tsmiPlayPause.PerformClick();
-					break;
-				case Keys.MediaPreviousTrack:
-					this.tsmiPrevTrack.PerformClick();
-					break;
-				case Keys.MediaStop:
-					this.tsmiStop.PerformClick();
-					break;
-				default:
-					return;
-			}
-			e.Handled = true;
-		}
+		#endregion
 		
 		private void gwbDetail_Navigating(object sender, WebBrowserNavigatingEventArgs e) {
 			switch (e.Url.Scheme) {
@@ -641,9 +719,12 @@ namespace Yusen.GExplorer {
 
 	public class PlayerFormSettings : FormSettingsBaseSettings {
 		private int? mainTabIndex;
+		private bool? statusbarVisible;
+		private bool? hideUiOnDeactivatedEnabled;
+		private bool? autoSizeOnNormalEnabled;
+		private bool? autoSizeOnCfEnabled;
 		private bool? strechToFitEnabled;
 		private bool? disableScreenSaverEnabled;
-		private bool? statusbarVisible;
 		private bool? removePlayedContentEnabled;
 		private bool? playListLoopEnabled;
 		private bool? skipCmLicenseEnabled;
@@ -656,6 +737,22 @@ namespace Yusen.GExplorer {
 			get { return this.mainTabIndex; }
 			set { this.mainTabIndex = value; }
 		}
+		public bool? StatusbarVisible {
+			get { return this.statusbarVisible; }
+			set { this.statusbarVisible = value; }
+		}
+		public bool? HideUiOnDeactivatedEnabled {
+			get { return this.hideUiOnDeactivatedEnabled; }
+			set { this.hideUiOnDeactivatedEnabled = value; }
+		}
+		public bool? AutoSizeOnNormalEnabled {
+			get { return this.autoSizeOnNormalEnabled; }
+			set { this.autoSizeOnNormalEnabled = value; }
+		}
+		public bool? AutoSizeOnCfEnabled {
+			get { return this.autoSizeOnCfEnabled; }
+			set { this.autoSizeOnCfEnabled = value; }
+		}
 		public bool? StrechToFitEnabled {
 			get { return this.strechToFitEnabled; }
 			set { this.strechToFitEnabled = value; }
@@ -663,10 +760,6 @@ namespace Yusen.GExplorer {
 		public bool? DisableScreenSaverEnabled {
 			get { return this.disableScreenSaverEnabled; }
 			set { this.disableScreenSaverEnabled = value; }
-		}
-		public bool? StatusbarVisible {
-			get { return this.statusbarVisible; }
-			set { this.statusbarVisible = value; }
 		}
 		public bool? RemovePlayedContentEnabled {
 			get { return this.removePlayedContentEnabled; }
