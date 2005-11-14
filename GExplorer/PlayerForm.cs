@@ -198,6 +198,7 @@ namespace Yusen.GExplorer {
 			private set {
 				this.currentContent = value;
 				this.currentChapter = this.ChapterModeFromBegining ? 1 : (int?)null;
+				this.endFlag = null;
 				
 				if (null == value) {
 					this.Text = "PlayerForm";
@@ -221,6 +222,7 @@ namespace Yusen.GExplorer {
 			private set {
 				if (! value.Equals(this.currentChapter)) {
 					this.currentChapter = value;
+					this.endFlag = null;
 					this.OpenVideo();
 				}
 			}
@@ -411,6 +413,7 @@ namespace Yusen.GExplorer {
 			}
 		}
 		private void tsmiReload_Click(object sender, EventArgs e) {
+			this.endFlag = null;
 			this.OpenVideo();
 			this.wmpMain.Ctlcontrols.play();
 		}

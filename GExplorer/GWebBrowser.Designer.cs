@@ -172,6 +172,7 @@ namespace Yusen.GExplorer {
 			// 
 			// GWebBrowser
 			// 
+			this.Navigating += new System.Windows.Forms.WebBrowserNavigatingEventHandler(this.GWebBrowser_Navigating);
 			this.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.GWebBrowser_DocumentCompleted);
 			this.cmsContent.ResumeLayout(false);
 			this.cmsPackage.ResumeLayout(false);

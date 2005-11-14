@@ -74,6 +74,9 @@ namespace Yusen.GExplorer {
 				}
 			}
 		}
+		private void GWebBrowser_Navigating(object sender, WebBrowserNavigatingEventArgs e) {
+			this.ttId.Hide(this);
+		}
 
 		private void Package_Click(object sender, HtmlElementEventArgs e) {
 			this.ttId.Hide(this);
@@ -218,5 +221,6 @@ namespace Yusen.GExplorer {
 			this.tsmiContentCommands.DropDownItems.AddRange(menuItems.ToArray());
 			this.tsmiContentCommands.Enabled = this.tsmiContentCommands.HasDropDownItems;
 		}
+		
 	}
 }

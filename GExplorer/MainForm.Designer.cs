@@ -51,6 +51,7 @@ namespace Yusen.GExplorer {
 			this.tsmiNgContentsEditor = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiFocusOnResultAfterTabChanged = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiSettingsCrawlResultView = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiTools = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiMergeResults = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
@@ -67,6 +68,8 @@ namespace Yusen.GExplorer {
 			this.inputBoxDialog1 = new Yusen.GExplorer.InputBoxDialog();
 			this.timerViewDetail = new System.Windows.Forms.Timer(this.components);
 			this.timerCrawlProgress = new System.Windows.Forms.Timer(this.components);
+			this.tsmiSettingsPlaylistView = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiSettingsDetailView = new System.Windows.Forms.ToolStripMenuItem();
 			this.statusStrip1.SuspendLayout();
 			this.toolStripContainer1.BottomToolStripPanel.SuspendLayout();
 			this.toolStripContainer1.ContentPanel.SuspendLayout();
@@ -212,7 +215,7 @@ namespace Yusen.GExplorer {
 			// 
 			this.scLists.Panel2.Controls.Add(this.playListView1);
 			this.scLists.Size = new System.Drawing.Size(548, 474);
-			this.scLists.SplitterDistance = 320;
+			this.scLists.SplitterDistance = 319;
 			this.scLists.TabIndex = 2;
 			this.scLists.Text = "splitContainer2";
 			// 
@@ -227,11 +230,13 @@ namespace Yusen.GExplorer {
 			this.crawlResultView1.HoverSelect = false;
 			this.crawlResultView1.Location = new System.Drawing.Point(0, 0);
 			this.crawlResultView1.Margin = new System.Windows.Forms.Padding(0);
+			this.crawlResultView1.MaxExceptionMenuItems = 16;
+			this.crawlResultView1.MaxPageMenuItems = 16;
 			this.crawlResultView1.MultiSelect = true;
 			this.crawlResultView1.Name = "crawlResultView1";
 			this.crawlResultView1.NewColor = System.Drawing.Color.Red;
 			this.crawlResultView1.ShowPackages = true;
-			this.crawlResultView1.Size = new System.Drawing.Size(548, 320);
+			this.crawlResultView1.Size = new System.Drawing.Size(548, 319);
 			this.crawlResultView1.TabIndex = 1;
 			this.crawlResultView1.ContentSelectionChanged += new System.EventHandler<Yusen.GExplorer.ContentSelectionChangedEventArgs>(this.crawlResultView1_ContentSelectionChanged);
 			// 
@@ -242,7 +247,7 @@ namespace Yusen.GExplorer {
 			this.playListView1.Location = new System.Drawing.Point(0, 0);
 			this.playListView1.MultiSelectEnabled = true;
 			this.playListView1.Name = "playListView1";
-			this.playListView1.Size = new System.Drawing.Size(548, 150);
+			this.playListView1.Size = new System.Drawing.Size(548, 151);
 			this.playListView1.TabIndex = 0;
 			this.playListView1.TopContent = null;
 			this.playListView1.ContentSelectionChanged += new System.EventHandler<Yusen.GExplorer.ContentSelectionChangedEventArgs>(this.playListView1_ContentSelectionChanged);
@@ -332,7 +337,10 @@ namespace Yusen.GExplorer {
             this.tsmiUserCommandsEditor,
             this.tsmiNgContentsEditor,
             this.toolStripSeparator5,
-            this.tsmiFocusOnResultAfterTabChanged});
+            this.tsmiFocusOnResultAfterTabChanged,
+            this.tsmiSettingsCrawlResultView,
+            this.tsmiSettingsPlaylistView,
+            this.tsmiSettingsDetailView});
 			this.tsmiSettings.Name = "tsmiSettings";
 			this.tsmiSettings.Size = new System.Drawing.Size(56, 16);
 			this.tsmiSettings.Text = "設定(&S)";
@@ -371,6 +379,12 @@ namespace Yusen.GExplorer {
 			this.tsmiFocusOnResultAfterTabChanged.Name = "tsmiFocusOnResultAfterTabChanged";
 			this.tsmiFocusOnResultAfterTabChanged.Size = new System.Drawing.Size(221, 22);
 			this.tsmiFocusOnResultAfterTabChanged.Text = "タブ切り替えでフォーカス移動(&F)";
+			// 
+			// tsmiSettingsCrawlResultView
+			// 
+			this.tsmiSettingsCrawlResultView.Name = "tsmiSettingsCrawlResultView";
+			this.tsmiSettingsCrawlResultView.Size = new System.Drawing.Size(221, 22);
+			this.tsmiSettingsCrawlResultView.Text = "クロール結果ビュー(&R)";
 			// 
 			// tsmiTools
 			// 
@@ -486,6 +500,18 @@ namespace Yusen.GExplorer {
 			this.timerCrawlProgress.Interval = 50;
 			this.timerCrawlProgress.Tick += new System.EventHandler(this.timerCrawlProgress_Tick);
 			// 
+			// tsmiSettingsPlaylistView
+			// 
+			this.tsmiSettingsPlaylistView.Name = "tsmiSettingsPlaylistView";
+			this.tsmiSettingsPlaylistView.Size = new System.Drawing.Size(221, 22);
+			this.tsmiSettingsPlaylistView.Text = "プレイリストビュー(&P)";
+			// 
+			// tsmiSettingsDetailView
+			// 
+			this.tsmiSettingsDetailView.Name = "tsmiSettingsDetailView";
+			this.tsmiSettingsDetailView.Size = new System.Drawing.Size(221, 22);
+			this.tsmiSettingsDetailView.Text = "詳細ビュー(&D)";
+			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -567,6 +593,9 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ToolStripMenuItem tsmiUserCommandsEditor;
 		private System.Windows.Forms.ToolStripMenuItem tsmiNgContentsEditor;
 		private System.Windows.Forms.Timer timerCrawlProgress;
+		private System.Windows.Forms.ToolStripMenuItem tsmiSettingsCrawlResultView;
+		private System.Windows.Forms.ToolStripMenuItem tsmiSettingsPlaylistView;
+		private System.Windows.Forms.ToolStripMenuItem tsmiSettingsDetailView;
 
 
 	}

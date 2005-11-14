@@ -703,6 +703,14 @@ namespace Yusen.GExplorer {
 			this.CreateFilterRegex();
 		}
 		#endregion
+		
+		internal ToolStripDropDown SettingsDropDown {
+			get { return this.tsddbSettings.DropDown; }
+		}
+		internal bool SettingsVisible {
+			get { return this.tsddbSettings.Visible; }
+			set { this.tsddbSettings.Visible = value; }
+		}
 	}
 
 	public enum AboneType {

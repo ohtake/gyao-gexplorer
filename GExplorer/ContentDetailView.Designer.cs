@@ -27,14 +27,17 @@ namespace Yusen.GExplorer {
 			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
 			this.picboxImage = new System.Windows.Forms.PictureBox();
 			this.cmsImage = new System.Windows.Forms.ContextMenuStrip(this.components);
-			this.tsmiImageSize = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiSizeMode = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiCopyImageUri = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiCopyNameAndImageUri = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiCopyNameDetailImageUri = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiCopyImage = new System.Windows.Forms.ToolStripMenuItem();
+			this.tssSettings = new System.Windows.Forms.ToolStripSeparator();
+			this.tsmiSettings = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiImageSize = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiSizeMode = new System.Windows.Forms.ToolStripMenuItem();
+			this.tabControl1 = new System.Windows.Forms.TabControl();
+			this.tabpSummary2 = new System.Windows.Forms.TabPage();
 			this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
 			this.label1 = new System.Windows.Forms.Label();
 			this.label2 = new System.Windows.Forms.Label();
@@ -49,8 +52,6 @@ namespace Yusen.GExplorer {
 			this.txtDescription = new System.Windows.Forms.TextBox();
 			this.label6 = new System.Windows.Forms.Label();
 			this.txtDeadline = new System.Windows.Forms.TextBox();
-			this.tabControl1 = new System.Windows.Forms.TabControl();
-			this.tabpSummary2 = new System.Windows.Forms.TabPage();
 			this.tabpDetail = new System.Windows.Forms.TabPage();
 			this.propgDetail = new System.Windows.Forms.PropertyGrid();
 			this.splitContainer1.Panel1.SuspendLayout();
@@ -58,9 +59,9 @@ namespace Yusen.GExplorer {
 			this.splitContainer1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.picboxImage)).BeginInit();
 			this.cmsImage.SuspendLayout();
-			this.tableLayoutPanel2.SuspendLayout();
 			this.tabControl1.SuspendLayout();
 			this.tabpSummary2.SuspendLayout();
+			this.tableLayoutPanel2.SuspendLayout();
 			this.tabpDetail.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -97,34 +98,16 @@ namespace Yusen.GExplorer {
 			// cmsImage
 			// 
 			this.cmsImage.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiImageSize,
-            this.tsmiSizeMode,
-            this.toolStripSeparator1,
             this.tsmiCopyImageUri,
             this.tsmiCopyNameAndImageUri,
             this.tsmiCopyNameDetailImageUri,
             this.toolStripSeparator2,
-            this.tsmiCopyImage});
+            this.tsmiCopyImage,
+            this.tssSettings,
+            this.tsmiSettings});
 			this.cmsImage.Name = "cmsImage";
 			this.cmsImage.Size = new System.Drawing.Size(249, 148);
 			this.cmsImage.Opening += new System.ComponentModel.CancelEventHandler(this.cmsImage_Opening);
-			// 
-			// tsmiImageSize
-			// 
-			this.tsmiImageSize.Name = "tsmiImageSize";
-			this.tsmiImageSize.Size = new System.Drawing.Size(248, 22);
-			this.tsmiImageSize.Text = "画像の表示とサイズ(&V)";
-			// 
-			// tsmiSizeMode
-			// 
-			this.tsmiSizeMode.Name = "tsmiSizeMode";
-			this.tsmiSizeMode.Size = new System.Drawing.Size(248, 22);
-			this.tsmiSizeMode.Text = "リサイズ方法(&R)";
-			// 
-			// toolStripSeparator1
-			// 
-			this.toolStripSeparator1.Name = "toolStripSeparator1";
-			this.toolStripSeparator1.Size = new System.Drawing.Size(245, 6);
 			// 
 			// tsmiCopyImageUri
 			// 
@@ -158,6 +141,53 @@ namespace Yusen.GExplorer {
 			this.tsmiCopyImage.Size = new System.Drawing.Size(248, 22);
 			this.tsmiCopyImage.Text = "画像をコピー(&I)";
 			this.tsmiCopyImage.Click += new System.EventHandler(this.tsmiCopyImage_Click);
+			// 
+			// tssSettings
+			// 
+			this.tssSettings.Name = "tssSettings";
+			this.tssSettings.Size = new System.Drawing.Size(245, 6);
+			// 
+			// tsmiSettings
+			// 
+			this.tsmiSettings.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiImageSize,
+            this.tsmiSizeMode});
+			this.tsmiSettings.Name = "tsmiSettings";
+			this.tsmiSettings.Size = new System.Drawing.Size(248, 22);
+			this.tsmiSettings.Text = "設定(&S)";
+			// 
+			// tsmiImageSize
+			// 
+			this.tsmiImageSize.Name = "tsmiImageSize";
+			this.tsmiImageSize.Size = new System.Drawing.Size(180, 22);
+			this.tsmiImageSize.Text = "画像の表示とサイズ(&S)";
+			// 
+			// tsmiSizeMode
+			// 
+			this.tsmiSizeMode.Name = "tsmiSizeMode";
+			this.tsmiSizeMode.Size = new System.Drawing.Size(180, 22);
+			this.tsmiSizeMode.Text = "画像のリサイズ方法(&R)";
+			// 
+			// tabControl1
+			// 
+			this.tabControl1.Controls.Add(this.tabpSummary2);
+			this.tabControl1.Controls.Add(this.tabpDetail);
+			this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.tabControl1.Location = new System.Drawing.Point(0, 0);
+			this.tabControl1.Name = "tabControl1";
+			this.tabControl1.SelectedIndex = 0;
+			this.tabControl1.Size = new System.Drawing.Size(224, 226);
+			this.tabControl1.TabIndex = 0;
+			// 
+			// tabpSummary2
+			// 
+			this.tabpSummary2.Controls.Add(this.tableLayoutPanel2);
+			this.tabpSummary2.Location = new System.Drawing.Point(4, 21);
+			this.tabpSummary2.Name = "tabpSummary2";
+			this.tabpSummary2.Size = new System.Drawing.Size(216, 201);
+			this.tabpSummary2.TabIndex = 0;
+			this.tabpSummary2.Text = "簡易";
+			this.tabpSummary2.UseVisualStyleBackColor = true;
 			// 
 			// tableLayoutPanel2
 			// 
@@ -317,27 +347,6 @@ namespace Yusen.GExplorer {
 			this.txtDeadline.Size = new System.Drawing.Size(163, 19);
 			this.txtDeadline.TabIndex = 11;
 			// 
-			// tabControl1
-			// 
-			this.tabControl1.Controls.Add(this.tabpSummary2);
-			this.tabControl1.Controls.Add(this.tabpDetail);
-			this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.tabControl1.Location = new System.Drawing.Point(0, 0);
-			this.tabControl1.Name = "tabControl1";
-			this.tabControl1.SelectedIndex = 0;
-			this.tabControl1.Size = new System.Drawing.Size(224, 226);
-			this.tabControl1.TabIndex = 0;
-			// 
-			// tabpSummary2
-			// 
-			this.tabpSummary2.Controls.Add(this.tableLayoutPanel2);
-			this.tabpSummary2.Location = new System.Drawing.Point(4, 21);
-			this.tabpSummary2.Name = "tabpSummary2";
-			this.tabpSummary2.Size = new System.Drawing.Size(216, 201);
-			this.tabpSummary2.TabIndex = 0;
-			this.tabpSummary2.Text = "簡易";
-			this.tabpSummary2.UseVisualStyleBackColor = true;
-			// 
 			// tabpDetail
 			// 
 			this.tabpDetail.Controls.Add(this.propgDetail);
@@ -369,10 +378,10 @@ namespace Yusen.GExplorer {
 			this.splitContainer1.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.picboxImage)).EndInit();
 			this.cmsImage.ResumeLayout(false);
-			this.tableLayoutPanel2.ResumeLayout(false);
-			this.tableLayoutPanel2.PerformLayout();
 			this.tabControl1.ResumeLayout(false);
 			this.tabpSummary2.ResumeLayout(false);
+			this.tableLayoutPanel2.ResumeLayout(false);
+			this.tableLayoutPanel2.PerformLayout();
 			this.tabpDetail.ResumeLayout(false);
 			this.ResumeLayout(false);
 
@@ -397,9 +406,6 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.TextBox txtSubtitle;
 		private System.Windows.Forms.TextBox txtDescription;
 		private System.Windows.Forms.ContextMenuStrip cmsImage;
-		private System.Windows.Forms.ToolStripMenuItem tsmiImageSize;
-		private System.Windows.Forms.ToolStripMenuItem tsmiSizeMode;
-		private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
 		private System.Windows.Forms.ToolStripMenuItem tsmiCopyImageUri;
 		private System.Windows.Forms.Label label5;
 		private System.Windows.Forms.TextBox txtDuration;
@@ -409,5 +415,9 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.Label label6;
 		private System.Windows.Forms.TextBox txtDeadline;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+		private System.Windows.Forms.ToolStripSeparator tssSettings;
+		private System.Windows.Forms.ToolStripMenuItem tsmiSettings;
+		private System.Windows.Forms.ToolStripMenuItem tsmiImageSize;
+		private System.Windows.Forms.ToolStripMenuItem tsmiSizeMode;
 	}
 }

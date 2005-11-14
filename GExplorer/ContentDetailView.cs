@@ -145,6 +145,8 @@ namespace Yusen.GExplorer {
 			}
 			this.tsmiSizeMode.DropDown.Closing += Utility.ToolStripDropDown_CancelClosingOnClick;
 			this.ResizeMode = this.ResizeMode;
+
+			this.tsmiSettings.DropDown.Closing += Utility.ToolStripDropDown_CancelClosingOnClick;
 		}
 		private void tsmiCopyImageUri_Click(object sender, EventArgs e) {
 			Clipboard.SetText(this.ImageUri.AbsoluteUri);
@@ -167,6 +169,17 @@ namespace Yusen.GExplorer {
 		}
 		private void cmsImage_Opening(object sender, CancelEventArgs e) {
 			this.ChangeEnabilityOfCmsItems();
+		}
+
+		internal ToolStripDropDown SettingsDropDown{
+			get { return this.tsmiSettings.DropDown; }
+		}
+		internal bool SettingsVisible{
+			get { return this.tsmiSettings.Visible; }
+			set{
+				this.tsmiSettings.Visible = value;
+				this.tssSettings.Visible = value;
+			}
 		}
 	}
 	

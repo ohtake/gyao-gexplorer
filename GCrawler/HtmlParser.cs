@@ -27,7 +27,6 @@ namespace Yusen.GCrawler {
 			images = new List<Uri>();
 			using (TextReader reader = new StreamReader(this.wc.OpenRead(uri.AbsoluteUri), Encoding.GetEncoding("Shift_JIS"))) {
 				string line;
-				Match match;
 				bool isInComment = false;
 				while (null != (line = reader.ReadLine())) {
 				processComment://コメントは読み飛ばす
@@ -49,17 +48,15 @@ namespace Yusen.GCrawler {
 						}
 					}
 					//リンクと画像の抽出
-					match = HtmlParserRegex.regexLinks.Match(line);
-					if (match.Success) {
+					for(Match m = HtmlParserRegex.regexLinks.Match(line); m.Success; m = m.NextMatch()) {
 						try {
-							links.Add(new Uri(uri, match.Groups[1].Value));
-						} catch (UriFormatException) {
+							links.Add(new Uri(uri, m.Groups[1].Value));
+						} catch(UriFormatException) {
 						}
 					}
-					match = HtmlParserRegex.regexImgSrc.Match(line);
-					if (match.Success) {
+					for(Match m = HtmlParserRegex.regexImgSrc.Match(line); m.Success; m=m.NextMatch()) {
 						try {
-							images.Add(new Uri(uri, match.Groups[1].Value));
+							images.Add(new Uri(uri, m.Groups[1].Value));
 						} catch(UriFormatException) {
 						}
 					}

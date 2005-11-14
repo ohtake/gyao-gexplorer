@@ -7,8 +7,6 @@ using System.Collections.Generic;
 
 namespace Yusen.GExplorer {
 	static class Utility{
-		private delegate void SetTitlebarTextDelegate(Form form, string title);
-
 		private const string UserSettingsDir = "UserSettings";
 		
 		private static string GetPathForIE() {
@@ -39,14 +37,6 @@ namespace Yusen.GExplorer {
 			Process.Start(Utility.GetPathForWMP(), uri.AbsoluteUri);
 		}
 		
-		public static void SetTitlebarText(Form form, string title) {
-			if(form.InvokeRequired) {
-				form.Invoke(new SetTitlebarTextDelegate(Utility.SetTitlebarText),
-					new object[] { form, title });
-			} else {
-				form.Text = title;
-			}
-		}
 		public static void AppendHelpMenu(MenuStrip menuStrip) {
 			ToolStripMenuItem read = new ToolStripMenuItem(
 				"&ReadMe.txt", null,
@@ -61,7 +51,7 @@ namespace Yusen.GExplorer {
 				}),
 				Keys.Shift | Keys.F1);
 			ToolStripMenuItem about = new ToolStripMenuItem(
-				"バージョン情報(&A) ...", null,
+				"バージョン情報(&A)...", null,
 				new EventHandler(delegate(object sender, EventArgs e) {
 					using (AboutBox abox = new AboutBox()) {
 						abox.ShowDialog((sender as ToolStripMenuItem).Tag as Form);

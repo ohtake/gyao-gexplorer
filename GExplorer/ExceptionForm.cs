@@ -12,8 +12,11 @@ namespace Yusen.GExplorer {
 			return a.Top.CompareTo(b.Top);
 		}
 		private static string TrimStackTrace(string stackTrace) {
+			if(string.IsNullOrEmpty(stackTrace)) {
+				return string.Empty;
+			}
 			StringBuilder sb = new StringBuilder();
-			using (StringReader reader = new StringReader(stackTrace)) {
+			using(StringReader reader = new StringReader(stackTrace)) {
 				string line;
 				while (null != (line = reader.ReadLine())) {
 					if (sb.Length>0) {

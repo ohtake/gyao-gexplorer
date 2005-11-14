@@ -132,7 +132,15 @@ namespace Yusen.GExplorer {
 			this.genreTabControl1.SelectedGenre = null;
 			this.tsmiUncrawlableGenres.Enabled = this.tsmiUncrawlableGenres.HasDropDownItems;
 			this.tsmiUncrawlableGenres.Visible = this.tsmiUncrawlableGenres.HasDropDownItems;
-			
+
+			this.tsmiSettingsCrawlResultView.DropDown = this.crawlResultView1.SettingsDropDown;
+			this.crawlResultView1.SettingsVisible = false;
+			this.tsmiSettingsPlaylistView.DropDown = this.playListView1.SettingsDropDown;
+			this.playListView1.SettingsVisible = false;
+			this.tsmiSettingsDetailView.DropDown = this.contentDetailView1.SettingsDropDown;
+			this.contentDetailView1.SettingsVisible = false;
+
+
 			this.crawler.CrawlProgress += new EventHandler<CrawlProgressEventArgs>(crawler_CrawlProgress);
 			
 			UserCommandsManager.Instance.UserCommandsChanged += new EventHandler(UserCommandsManager_UserCommandsChanged);
