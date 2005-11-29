@@ -42,6 +42,8 @@ namespace Yusen.GExplorer {
 		private const string AttribNameEntryUrl = "WMS_CONTENT_DESCRIPTION_PLAYLIST_ENTRY_URL";
 		private const int VolumeMax = 100;
 		private const int VolumeMin = 0;
+		private const int ZoomMax = 200;
+		private const int ZoomMin = 25;
 		private static readonly Size WmpUiSize = new Size(0, 64);
 		private static readonly Size WmpMarginSize = new Size(3, 3);
 		private static readonly Regex regexEndFlag = new Regex(":endFlg=([^:=]*)");
@@ -67,7 +69,8 @@ namespace Yusen.GExplorer {
 		private int? currentChapter = null;
 		private Dictionary<string, string> currentAttribs = new Dictionary<string, string>();
 		private bool? endFlag = null;
-		
+
+		private int zoomRatioOnResize = 100;
 		private int volumeNormal = 100;
 		private int volumeCf = 20;
 
@@ -163,6 +166,7 @@ namespace Yusen.GExplorer {
 			settings.SkipCmLicenseEnabled = this.SkipCmLicenseEnabled;
 			settings.ChapterModeFromBegining = this.ChapterModeFromBegining;
 			settings.AutoVolumeEnabled = this.AutoVolumeEnabled;
+			settings.ZoomRatioOnResize = this.ZoomRatioOnResize;
 			settings.VolumeNormal = this.VolumeNormal;
 			settings.VolumeCf = this.VolumeCf;
 		}
@@ -181,6 +185,7 @@ namespace Yusen.GExplorer {
 			this.SkipCmLicenseEnabled = settings.SkipCmLicenseEnabled ?? this.SkipCmLicenseEnabled;
 			this.ChapterModeFromBegining = settings.ChapterModeFromBegining ?? this.ChapterModeFromBegining;
 			this.AutoVolumeEnabled = settings.AutoVolumeEnabled ?? this.AutoVolumeEnabled;
+			this.ZoomRatioOnResize = settings.ZoomRatioOnResize ?? this.ZoomRatioOnResize;
 			this.VolumeNormal = settings.VolumeNormal ?? this.VolumeNormal;
 			this.VolumeCf = settings.VolumeCf ?? this.VolumeCf;
 			
@@ -278,6 +283,16 @@ namespace Yusen.GExplorer {
 		public bool ChapterModeFromBegining {
 			get { return this.tsmiChapterModeFromBegining.Checked; }
 			set { this.tsmiChapterModeFromBegining.Checked = value; }
+		}
+		public int ZoomRatioOnResize {
+			get { return this.zoomRatioOnResize; }
+			set {
+				if(PlayerForm.ZoomMin <= value && value <= PlayerForm.ZoomMax) {
+					this.zoomRatioOnResize = value;
+				} else {
+					throw new ArgumentOutOfRangeException("ZoomRatioOnResize");
+				}
+			}
 		}
 		public bool AutoVolumeEnabled {
 			get { return this.tsmiAutoVolume.Checked; }
@@ -484,6 +499,21 @@ namespace Yusen.GExplorer {
 		private void tsmiStatusbarVisible_Click(object sender, EventArgs e) {
 			this.StatusbarVisible = this.StatusbarVisible;
 		}
+		private void tsmiResizeZoomValue_Click(object sender, EventArgs e) {
+			string title = "リサイズ時の倍率";
+			this.inputBoxDialog1.Title =title;
+			this.inputBoxDialog1.Message = "サイズの倍率を入力してください．" + "[" + PlayerForm.ZoomMin.ToString() + "-" + PlayerForm.ZoomMax.ToString() + "]";
+			this.inputBoxDialog1.Input = this.ZoomRatioOnResize.ToString();
+			switch(this.inputBoxDialog1.ShowDialog()) {
+				case DialogResult.OK:
+					try {
+						this.ZoomRatioOnResize = int.Parse(this.inputBoxDialog1.Input);
+					} catch(Exception ex) {
+						MessageBox.Show(ex.Message, title, MessageBoxButtons.OK, MessageBoxIcon.Error);
+					}
+					break;
+			}
+		}
 		private void tsmiAutoVolume_Click(object sender, EventArgs e) {
 			this.AutoVolumeEnabled = this.AutoVolumeEnabled;
 		}
@@ -523,11 +553,13 @@ namespace Yusen.GExplorer {
 		}
 		private void tsmiResizeToVideoResolution_Click(object sender, EventArgs e) {
 			this.WindowState = FormWindowState.Normal;
+			this.tabControl1.SelectedTab = this.tabPlayer;
+			Size videoSize = new Size(this.wmpMain.currentMedia.imageSourceWidth, this.wmpMain.currentMedia.imageSourceHeight);
+			Size distSize = new Size(videoSize.Width*this.ZoomRatioOnResize/100, videoSize.Height*this.ZoomRatioOnResize/100);
 			for(int i=0; i<2; i++) {
 				//リサイズによってメニューバーやステータスバーの高さが変わることがあるので
 				//2回リサイズを試みる
-				Size videoSize = new Size(this.wmpMain.currentMedia.imageSourceWidth, this.wmpMain.currentMedia.imageSourceHeight);
-				Size delta = videoSize + PlayerForm.WmpUiSize - this.wmpMain.Size;
+				Size delta = distSize + PlayerForm.WmpUiSize - this.wmpMain.Size;
 				this.Size += delta;
 			}
 		}
@@ -599,7 +631,7 @@ namespace Yusen.GExplorer {
 					if (dartTagMatch.Success && !string.IsNullOrEmpty(dartTagMatch.Groups[1].Value)) {
 						BannerTag bt = new BannerTag(dartTagMatch.Groups[1].Value);
 						this.pboxBanner.Tag = bt;
-						this.pboxBanner.LoadAsync(bt.ImageUri.AbsoluteUri);
+						this.pboxBanner.Load(bt.ImageUri.AbsoluteUri);
 						this.splitContainer1.Panel1Collapsed = false;
 					} else {
 						this.splitContainer1.Panel1Collapsed = true;
@@ -613,7 +645,7 @@ namespace Yusen.GExplorer {
 					//ステータスバー更新
 					this.UpdateStatusbatText();
 					//リサイズ
-					if(this.IsCf.HasValue && FormWindowState.Normal == this.WindowState) {
+					if(this.IsCf.HasValue && FormWindowState.Normal == this.WindowState && this.tabControl1.SelectedTab == this.tabPlayer) {
 						if(this.IsCf.Value) {
 							if(this.AutoSizeOnCfEnabled) {
 								this.tsmiResizeToVideoResolution.PerformClick();
@@ -733,6 +765,7 @@ namespace Yusen.GExplorer {
 		private bool? skipCmLicenseEnabled;
 		private bool? chapterModeFromBegining;
 		private bool? autoVolumeEnabled;
+		private int? zoomRatioOnResize;
 		private int? volumeNormal;
 		private int? volumeCf;
 
@@ -783,6 +816,10 @@ namespace Yusen.GExplorer {
 		public bool? AutoVolumeEnabled {
 			get { return this.autoVolumeEnabled; }
 			set { this.autoVolumeEnabled = value; }
+		}
+		public int? ZoomRatioOnResize {
+			get { return this.zoomRatioOnResize; }
+			set { this.zoomRatioOnResize = value; }
 		}
 		public int? VolumeNormal {
 			get { return this.volumeNormal; }

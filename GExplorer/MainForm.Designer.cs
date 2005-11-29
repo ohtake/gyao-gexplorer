@@ -52,6 +52,8 @@ namespace Yusen.GExplorer {
 			this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiFocusOnResultAfterTabChanged = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiSettingsCrawlResultView = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiSettingsPlaylistView = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiSettingsDetailView = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiTools = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiMergeResults = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
@@ -68,8 +70,6 @@ namespace Yusen.GExplorer {
 			this.inputBoxDialog1 = new Yusen.GExplorer.InputBoxDialog();
 			this.timerViewDetail = new System.Windows.Forms.Timer(this.components);
 			this.timerCrawlProgress = new System.Windows.Forms.Timer(this.components);
-			this.tsmiSettingsPlaylistView = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiSettingsDetailView = new System.Windows.Forms.ToolStripMenuItem();
 			this.statusStrip1.SuspendLayout();
 			this.toolStripContainer1.BottomToolStripPanel.SuspendLayout();
 			this.toolStripContainer1.ContentPanel.SuspendLayout();
@@ -239,6 +239,7 @@ namespace Yusen.GExplorer {
 			this.crawlResultView1.Size = new System.Drawing.Size(548, 319);
 			this.crawlResultView1.TabIndex = 1;
 			this.crawlResultView1.ContentSelectionChanged += new System.EventHandler<Yusen.GExplorer.ContentSelectionChangedEventArgs>(this.crawlResultView1_ContentSelectionChanged);
+			this.crawlResultView1.ManuallyCacheDeleted += new System.EventHandler<Yusen.GExplorer.ManuallyCacheDeletedEventArgs>(this.crawlResultView1_ManuallyCacheDeleted);
 			// 
 			// playListView1
 			// 
@@ -293,34 +294,34 @@ namespace Yusen.GExplorer {
 			// tsmiBrowseTop
 			// 
 			this.tsmiBrowseTop.Name = "tsmiBrowseTop";
-			this.tsmiBrowseTop.Size = new System.Drawing.Size(292, 22);
-			this.tsmiBrowseTop.Text = "トップページをウェブブラウザで開く(&T)";
+			this.tsmiBrowseTop.Size = new System.Drawing.Size(221, 22);
+			this.tsmiBrowseTop.Text = "トップページを開く(&T)";
 			this.tsmiBrowseTop.Click += new System.EventHandler(this.tsmiBrowseTop_Click);
 			// 
 			// tsmiBrowsePackage
 			// 
 			this.tsmiBrowsePackage.Name = "tsmiBrowsePackage";
-			this.tsmiBrowsePackage.Size = new System.Drawing.Size(292, 22);
-			this.tsmiBrowsePackage.Text = "パッケージIDを指定してウェブブラウザで開く(&P) ...";
+			this.tsmiBrowsePackage.Size = new System.Drawing.Size(221, 22);
+			this.tsmiBrowsePackage.Text = "パッケージIDを指定して開く(&P) ...";
 			this.tsmiBrowsePackage.Click += new System.EventHandler(this.tsmiBrowsePackage_Click);
 			// 
 			// tsmiBrowseContent
 			// 
 			this.tsmiBrowseContent.Name = "tsmiBrowseContent";
-			this.tsmiBrowseContent.Size = new System.Drawing.Size(292, 22);
-			this.tsmiBrowseContent.Text = "コンテンツIDを指定してウェブブラウザで開く(&C) ...";
+			this.tsmiBrowseContent.Size = new System.Drawing.Size(221, 22);
+			this.tsmiBrowseContent.Text = "コンテンツIDを指定して開く(&C) ...";
 			this.tsmiBrowseContent.Click += new System.EventHandler(this.tsmiBrowseContent_Click);
 			// 
 			// toolStripSeparator1
 			// 
 			this.toolStripSeparator1.Name = "toolStripSeparator1";
-			this.toolStripSeparator1.Size = new System.Drawing.Size(289, 6);
+			this.toolStripSeparator1.Size = new System.Drawing.Size(218, 6);
 			// 
 			// tsmiQuit
 			// 
 			this.tsmiQuit.Name = "tsmiQuit";
 			this.tsmiQuit.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Q)));
-			this.tsmiQuit.Size = new System.Drawing.Size(292, 22);
+			this.tsmiQuit.Size = new System.Drawing.Size(221, 22);
 			this.tsmiQuit.Text = "終了(&Q)";
 			this.tsmiQuit.Click += new System.EventHandler(this.tsmiQuit_Click);
 			// 
@@ -385,6 +386,18 @@ namespace Yusen.GExplorer {
 			this.tsmiSettingsCrawlResultView.Name = "tsmiSettingsCrawlResultView";
 			this.tsmiSettingsCrawlResultView.Size = new System.Drawing.Size(221, 22);
 			this.tsmiSettingsCrawlResultView.Text = "クロール結果ビュー(&R)";
+			// 
+			// tsmiSettingsPlaylistView
+			// 
+			this.tsmiSettingsPlaylistView.Name = "tsmiSettingsPlaylistView";
+			this.tsmiSettingsPlaylistView.Size = new System.Drawing.Size(221, 22);
+			this.tsmiSettingsPlaylistView.Text = "プレイリストビュー(&P)";
+			// 
+			// tsmiSettingsDetailView
+			// 
+			this.tsmiSettingsDetailView.Name = "tsmiSettingsDetailView";
+			this.tsmiSettingsDetailView.Size = new System.Drawing.Size(221, 22);
+			this.tsmiSettingsDetailView.Text = "詳細ビュー(&D)";
 			// 
 			// tsmiTools
 			// 
@@ -499,18 +512,6 @@ namespace Yusen.GExplorer {
 			// 
 			this.timerCrawlProgress.Interval = 50;
 			this.timerCrawlProgress.Tick += new System.EventHandler(this.timerCrawlProgress_Tick);
-			// 
-			// tsmiSettingsPlaylistView
-			// 
-			this.tsmiSettingsPlaylistView.Name = "tsmiSettingsPlaylistView";
-			this.tsmiSettingsPlaylistView.Size = new System.Drawing.Size(221, 22);
-			this.tsmiSettingsPlaylistView.Text = "プレイリストビュー(&P)";
-			// 
-			// tsmiSettingsDetailView
-			// 
-			this.tsmiSettingsDetailView.Name = "tsmiSettingsDetailView";
-			this.tsmiSettingsDetailView.Size = new System.Drawing.Size(221, 22);
-			this.tsmiSettingsDetailView.Text = "詳細ビュー(&D)";
 			// 
 			// MainForm
 			// 

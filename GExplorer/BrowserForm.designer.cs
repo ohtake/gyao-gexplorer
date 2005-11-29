@@ -36,7 +36,8 @@ namespace Yusen.GExplorer {
 			this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiClose = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiGenres = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiTimeTables = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiTimeTablesUpdated = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiTimeTablesDeadline = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
 			this.statusStrip1 = new System.Windows.Forms.StatusStrip();
 			this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
@@ -67,7 +68,8 @@ namespace Yusen.GExplorer {
 			this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiFile,
             this.tsmiGenres,
-            this.tsmiTimeTables});
+            this.tsmiTimeTablesUpdated,
+            this.tsmiTimeTablesDeadline});
 			this.menuStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
@@ -160,11 +162,18 @@ namespace Yusen.GExplorer {
 			this.tsmiGenres.Size = new System.Drawing.Size(93, 16);
 			this.tsmiGenres.Text = "ジャンルトップ(&T)";
 			// 
-			// tsmiTimeTables
+			// tsmiTimeTablesUpdated
 			// 
-			this.tsmiTimeTables.Name = "tsmiTimeTables";
-			this.tsmiTimeTables.Size = new System.Drawing.Size(64, 16);
-			this.tsmiTimeTables.Text = "番組表(&I)";
+			this.tsmiTimeTablesUpdated.Name = "tsmiTimeTablesUpdated";
+			this.tsmiTimeTablesUpdated.Size = new System.Drawing.Size(129, 16);
+			this.tsmiTimeTablesUpdated.Text = "更新日優先番組表(&U)";
+			// 
+			// tsmiTimeTablesDeadline
+			// 
+			this.tsmiTimeTablesDeadline.Enabled = false;
+			this.tsmiTimeTablesDeadline.Name = "tsmiTimeTablesDeadline";
+			this.tsmiTimeTablesDeadline.Size = new System.Drawing.Size(137, 16);
+			this.tsmiTimeTablesDeadline.Text = "残り日数優先番組表(&D)";
 			// 
 			// toolStripContainer1
 			// 
@@ -369,7 +378,8 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ToolStripMenuItem tsmiSaveAs;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
 		private System.Windows.Forms.ToolStripComboBox tscbAddress;
-		private System.Windows.Forms.ToolStripMenuItem tsmiTimeTables;
+		private System.Windows.Forms.ToolStripMenuItem tsmiTimeTablesUpdated;
 		private GWebBrowser gwbMain;
+		private System.Windows.Forms.ToolStripMenuItem tsmiTimeTablesDeadline;
 	}
 }

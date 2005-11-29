@@ -21,8 +21,11 @@ namespace Yusen.GExplorer {
 			this.tsmiBrowseTop.Click += delegate {
 				Utility.Browse(this.Genre.TopPageUri);
 			};
-			this.tsmiBrowseTimetable.Click += delegate {
-				Utility.Browse(this.Genre.TimetableUri);
+			this.tsmiBrowseTimetableRecentlyUpdatedFirst.Click +=delegate {
+				Utility.Browse(this.Genre.TimetableRecentlyUpdatedFirstUri);
+			};
+			this.tsmiBrowseTimetableDeadlineNearFirst.Click += delegate {
+				Utility.Browse(this.Genre.TimetableDeadlineNearFirstUri);
 			};
 			this.tsmiCopyGenreName.Click += delegate {
 				Clipboard.SetText(this.Genre.GenreName);

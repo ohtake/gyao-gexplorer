@@ -6,8 +6,33 @@ using System.Net;
 using System.IO;
 
 namespace Yusen.GCrawler {
+	public enum LinkType {
+		AnchorOrFrame,
+		Image,
+	}
+
+	public struct UriLinkTypePair : IEquatable<UriLinkTypePair>{
+		private Uri uri;
+		private LinkType linkType;
+		
+		public UriLinkTypePair(Uri uri, LinkType linkType) {
+			this.uri = uri;
+			this.linkType = linkType;
+		}
+		public Uri Uri {
+			get { return this.uri; }
+		}
+		public LinkType LinkType {
+			get { return this.linkType; }
+		}
+		
+		public bool Equals(UriLinkTypePair other) {
+			return this.LinkType == other.LinkType && this.Uri.Equals(other.Uri);
+		}
+	}
+
 	public interface IHtmlParser {
-		void ExtractLinks(Uri uri, out List<Uri> links, out List<Uri> images);
+		List<UriLinkTypePair> ExtractLinks(Uri uri);
 	}
 	
 	public class HtmlParserRegex : IHtmlParser , IDisposable{
@@ -22,9 +47,9 @@ namespace Yusen.GCrawler {
 			this.wc = new WebClient();
 		}
 
-		public void ExtractLinks(Uri uri, out List<Uri> links, out List<Uri> images) {
-			links = new List<Uri>();
-			images = new List<Uri>();
+		public List<UriLinkTypePair> ExtractLinks(Uri uri) {
+			List<UriLinkTypePair> links = new List<UriLinkTypePair>();
+
 			using (TextReader reader = new StreamReader(this.wc.OpenRead(uri.AbsoluteUri), Encoding.GetEncoding("Shift_JIS"))) {
 				string line;
 				bool isInComment = false;
@@ -50,18 +75,19 @@ namespace Yusen.GCrawler {
 					//ÉäÉìÉNÇ∆âÊëúÇÃíäèo
 					for(Match m = HtmlParserRegex.regexLinks.Match(line); m.Success; m = m.NextMatch()) {
 						try {
-							links.Add(new Uri(uri, m.Groups[1].Value));
+							links.Add(new UriLinkTypePair(new Uri(uri, m.Groups[1].Value), LinkType.AnchorOrFrame));
 						} catch(UriFormatException) {
 						}
 					}
 					for(Match m = HtmlParserRegex.regexImgSrc.Match(line); m.Success; m=m.NextMatch()) {
 						try {
-							images.Add(new Uri(uri, m.Groups[1].Value));
+							links.Add(new UriLinkTypePair(new Uri(uri, m.Groups[1].Value), LinkType.Image));
 						} catch(UriFormatException) {
 						}
 					}
 				}
 			}
+			return links;
 		}
 
 		public void Dispose() {

@@ -34,7 +34,7 @@ namespace Yusen.GExplorer {
 				this.txtDeadline.Text = value.Deadline;
 				this.txtDescription.Text = value.LongDescription.Replace("\n", "\r\n");
 				this.propgDetail.SelectedObject = value;
-				this.LoadImageAsync();
+				this.LoadImage();
 			}
 		}
 		[DefaultValue(ContentImageSize.Large)]
@@ -45,7 +45,7 @@ namespace Yusen.GExplorer {
 				foreach (ToolStripMenuItem subitem in this.tsmiImageSize.DropDownItems) {
 					subitem.Checked = (value == (ContentImageSize)subitem.Tag);
 				}
-				this.LoadImageAsync();
+				this.LoadImage();
 			}
 		}
 		[DefaultValue(PictureBoxSizeMode.Zoom)]
@@ -58,12 +58,18 @@ namespace Yusen.GExplorer {
 				}
 			}
 		}
+		[DefaultValue(true)]
+		public bool SyncronizeToCurrentContentEnabled {
+			get { return this.tsmiSyncronizeToCurrentContent.Checked; }
+			set { this.tsmiSyncronizeToCurrentContent.Checked = value; }
+		}
 
 		public void FillSettings(ContentDetailViewSettings settings) {
 			settings.ContentImageSize = this.ImageSize;
 			settings.ResizeMode = this.ResizeMode;
 			settings.ImageHeight = this.splitContainer1.SplitterDistance;
 			settings.SelectedTabIndex = this.tabControl1.SelectedIndex;
+			settings.SyncronizeToCurrentContentEnabled = this.SyncronizeToCurrentContentEnabled;
 		}
 
 		public void ApplySettings(ContentDetailViewSettings settings) {
@@ -71,6 +77,7 @@ namespace Yusen.GExplorer {
 			this.ResizeMode = settings.ResizeMode ?? this.ResizeMode;
 			this.splitContainer1.SplitterDistance = settings.ImageHeight ?? this.splitContainer1.SplitterDistance;
 			this.tabControl1.SelectedIndex = settings.SelectedTabIndex ?? this.tabControl1.SelectedIndex;
+			this.SyncronizeToCurrentContentEnabled = settings.SyncronizeToCurrentContentEnabled ?? this.SyncronizeToCurrentContentEnabled;
 		}
 		
 		private Uri ImageUri {
@@ -99,12 +106,12 @@ namespace Yusen.GExplorer {
 			this.propgDetail.SelectedObject = null;
 			this.picboxImage.Image = null;
 		}
-		private void LoadImageAsync() {
+		private void LoadImage() {
 			Uri uri = this.ImageUri;
 			if(null == uri){
 				this.picboxImage.Image = null;
 			}else{
-				this.picboxImage.LoadAsync(uri.AbsoluteUri);
+				this.picboxImage.Load(uri.AbsoluteUri);
 			}
 		}
 		private void ChangeEnabilityOfCmsItems() {
@@ -147,6 +154,18 @@ namespace Yusen.GExplorer {
 			this.ResizeMode = this.ResizeMode;
 
 			this.tsmiSettings.DropDown.Closing += Utility.ToolStripDropDown_CancelClosingOnClick;
+
+			PlayList.Instance.CurrentContentChanged += new EventHandler(this.PlayList_CurrentContentChanged);
+			this.Disposed += delegate {
+				PlayList.Instance.CurrentContentChanged -= new EventHandler(this.PlayList_CurrentContentChanged);
+			};
+		}
+		private void PlayList_CurrentContentChanged(object sender, EventArgs e) {
+			if(this.SyncronizeToCurrentContentEnabled) {
+				if(PlayList.Instance.HasCurrentContent) {
+					this.Content = PlayList.Instance.CurrentContent;
+				}
+			}
 		}
 		private void tsmiCopyImageUri_Click(object sender, EventArgs e) {
 			Clipboard.SetText(this.ImageUri.AbsoluteUri);
@@ -194,6 +213,7 @@ namespace Yusen.GExplorer {
 		private ContentImageSize? contentImageSize;
 		private PictureBoxSizeMode? resizeMode;
 		private int? selectedTabIndex;
+		private bool? syncronizeToCurrentContentEnabled;
 		
 		public int? ImageHeight {
 			get { return this.imageHeight; }
@@ -210,6 +230,10 @@ namespace Yusen.GExplorer {
 		public int? SelectedTabIndex {
 			get { return this.selectedTabIndex; }
 			set { this.selectedTabIndex = value; }
+		}
+		public bool? SyncronizeToCurrentContentEnabled {
+			get { return this.syncronizeToCurrentContentEnabled; }
+			set { this.syncronizeToCurrentContentEnabled = value; }
 		}
 	}
 }

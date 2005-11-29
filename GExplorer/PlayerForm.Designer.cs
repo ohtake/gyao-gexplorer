@@ -68,13 +68,14 @@ namespace Yusen.GExplorer {
 			this.tsmiSettings = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiAlwaysOnTop = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiStatusbarVisible = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiHideUiOnDeactivated = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiAutoSizeOnNormal = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiAutoSizeOnCf = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
+			this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiStrechToFit = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiDisableScreenSaver = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
+			this.tsmiAutoSizeOnNormal = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiAutoSizeOnCf = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiResizeZoomValue = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiRemovePlayedContent = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiLoopPlayList = new System.Windows.Forms.ToolStripMenuItem();
@@ -503,13 +504,14 @@ namespace Yusen.GExplorer {
 			this.tsmiSettings.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiAlwaysOnTop,
             this.tsmiStatusbarVisible,
-            this.toolStripMenuItem1,
             this.tsmiHideUiOnDeactivated,
-            this.tsmiAutoSizeOnNormal,
-            this.tsmiAutoSizeOnCf,
-            this.toolStripMenuItem2,
+            this.toolStripMenuItem1,
             this.tsmiStrechToFit,
             this.tsmiDisableScreenSaver,
+            this.toolStripMenuItem2,
+            this.tsmiAutoSizeOnNormal,
+            this.tsmiAutoSizeOnCf,
+            this.tsmiResizeZoomValue,
             this.toolStripSeparator3,
             this.tsmiRemovePlayedContent,
             this.tsmiLoopPlayList,
@@ -543,11 +545,6 @@ namespace Yusen.GExplorer {
 			this.tsmiStatusbarVisible.Text = "ステータスバー表示(&S)";
 			this.tsmiStatusbarVisible.Click += new System.EventHandler(this.tsmiStatusbarVisible_Click);
 			// 
-			// toolStripMenuItem1
-			// 
-			this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-			this.toolStripMenuItem1.Size = new System.Drawing.Size(257, 6);
-			// 
 			// tsmiHideUiOnDeactivated
 			// 
 			this.tsmiHideUiOnDeactivated.Checked = true;
@@ -556,6 +553,32 @@ namespace Yusen.GExplorer {
 			this.tsmiHideUiOnDeactivated.Name = "tsmiHideUiOnDeactivated";
 			this.tsmiHideUiOnDeactivated.Size = new System.Drawing.Size(260, 22);
 			this.tsmiHideUiOnDeactivated.Text = "非アクティブ時にUIを隠す(&H)";
+			// 
+			// toolStripMenuItem1
+			// 
+			this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+			this.toolStripMenuItem1.Size = new System.Drawing.Size(257, 6);
+			// 
+			// tsmiStrechToFit
+			// 
+			this.tsmiStrechToFit.CheckOnClick = true;
+			this.tsmiStrechToFit.Name = "tsmiStrechToFit";
+			this.tsmiStrechToFit.Size = new System.Drawing.Size(260, 22);
+			this.tsmiStrechToFit.Text = "ウィンドウサイズに合わせて拡大(&F)";
+			this.tsmiStrechToFit.Click += new System.EventHandler(this.tsmiStrechToFit_Click);
+			// 
+			// tsmiDisableScreenSaver
+			// 
+			this.tsmiDisableScreenSaver.CheckOnClick = true;
+			this.tsmiDisableScreenSaver.Name = "tsmiDisableScreenSaver";
+			this.tsmiDisableScreenSaver.Size = new System.Drawing.Size(260, 22);
+			this.tsmiDisableScreenSaver.Text = "アクティブ時にスクリーンセーバ抑止(&D)";
+			this.tsmiDisableScreenSaver.Click += new System.EventHandler(this.tsmiDisableScreenSaver_Click);
+			// 
+			// toolStripMenuItem2
+			// 
+			this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+			this.toolStripMenuItem2.Size = new System.Drawing.Size(257, 6);
 			// 
 			// tsmiAutoSizeOnNormal
 			// 
@@ -575,26 +598,12 @@ namespace Yusen.GExplorer {
 			this.tsmiAutoSizeOnCf.Size = new System.Drawing.Size(260, 22);
 			this.tsmiAutoSizeOnCf.Text = "CF開始時に動画解像度にリサイズ(&E)";
 			// 
-			// toolStripMenuItem2
+			// tsmiResizeZoomValue
 			// 
-			this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-			this.toolStripMenuItem2.Size = new System.Drawing.Size(257, 6);
-			// 
-			// tsmiStrechToFit
-			// 
-			this.tsmiStrechToFit.CheckOnClick = true;
-			this.tsmiStrechToFit.Name = "tsmiStrechToFit";
-			this.tsmiStrechToFit.Size = new System.Drawing.Size(260, 22);
-			this.tsmiStrechToFit.Text = "ウィンドウサイズに合わせて拡大(&F)";
-			this.tsmiStrechToFit.Click += new System.EventHandler(this.tsmiStrechToFit_Click);
-			// 
-			// tsmiDisableScreenSaver
-			// 
-			this.tsmiDisableScreenSaver.CheckOnClick = true;
-			this.tsmiDisableScreenSaver.Name = "tsmiDisableScreenSaver";
-			this.tsmiDisableScreenSaver.Size = new System.Drawing.Size(260, 22);
-			this.tsmiDisableScreenSaver.Text = "アクティブ時にスクリーンセーバ抑止(&D)";
-			this.tsmiDisableScreenSaver.Click += new System.EventHandler(this.tsmiDisableScreenSaver_Click);
+			this.tsmiResizeZoomValue.Name = "tsmiResizeZoomValue";
+			this.tsmiResizeZoomValue.Size = new System.Drawing.Size(260, 22);
+			this.tsmiResizeZoomValue.Text = "リサイズ時の倍率(&Z)...";
+			this.tsmiResizeZoomValue.Click += new System.EventHandler(this.tsmiResizeZoomValue_Click);
 			// 
 			// toolStripSeparator3
 			// 
@@ -837,5 +846,6 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ToolStripMenuItem tsmiAutoSizeOnNormal;
 		private System.Windows.Forms.ToolStripMenuItem tsmiAutoSizeOnCf;
 		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
+		private System.Windows.Forms.ToolStripMenuItem tsmiResizeZoomValue;
 	}
 }

@@ -7,6 +7,7 @@ using System.Windows.Forms.VisualStyles;
 using Microsoft.Win32;
 using System.IO;
 using System.Xml.Serialization;
+using Yusen.GCrawler;
 
 namespace Yusen.GExplorer {
 	public class GlobalSettings {
@@ -61,6 +62,35 @@ namespace Yusen.GExplorer {
 			}
 		}
 		
+		private CrawlOrder crawlOrder = CrawlOrder.TimetableFirst;
+		[Category("クローラ")]
+		[DisplayName("クロールの順序")]
+		[Description("トップページと番組表のどちらを先にクロールするか指定します．先にクロールしたページでのパッケージの出現順序がクロール結果に強く影響されます．")]
+		[DefaultValue(CrawlOrder.TimetableFirst)]
+		public CrawlOrder CrawlOrder {
+			get { return this.crawlOrder; }
+			set { this.crawlOrder = value; }
+		}
+		private TimetableSortType timetableSortType = TimetableSortType.RecentlyUpdatedFirst;
+		[XmlIgnore]
+		[Category("クローラ")]
+		[DisplayName("番組表のソート対象")]
+		[Description("クロール時に利用する番組表を更新日優先にするか残り日数優先にするかを指定します．「クロールの順序」で番組表を先に読む設定にしておかないとほとんど意味がありません．")]
+		[DefaultValue(TimetableSortType.RecentlyUpdatedFirst)]
+		public TimetableSortType TimetableSortType {
+			get { return this.timetableSortType; }
+			//set { this.timetableSortType = value; }
+		}
+		private int maxCrawlPages = 256;
+		[Category("クローラ")]
+		[DisplayName("一般ページの最大数")]
+		[Description("クロールする一般ページの最大数を指定します．指定された値以上になったらクロールを打ち切ります．値を小さくしてもクロール結果の精度には大きな悪影響を及ぼさないので，値を小さくして動作速度とサーバへの負荷を改善するのも一興です．")]
+		[DefaultValue(256)]
+		public int MaxCrawlPages {
+			get { return this.maxCrawlPages; }
+			set { this.maxCrawlPages = value; }
+		}
+
 		[Category("GUI")]
 		[DisplayName("ビジュアルスタイル")]
 		[Description("ビジュアルスタイルの適用領域の指定．")]
@@ -113,7 +143,7 @@ namespace Yusen.GExplorer {
 			set { this.browserPath = value; }
 		}
 
-		public bool TryGetUserNumber() {
+		internal bool TryGetUserNumber() {
 			this.UserNo = GlobalSettings.InvalidUserNo;
 			//レジストリからの取得を試みる
 			try {
@@ -167,6 +197,10 @@ namespace Yusen.GExplorer {
 				return true;
 			}
 			return false;
+		}
+
+		internal CrawlSettings GetCrawlSettings() {
+			return new CrawlSettings(this.maxCrawlPages, this.crawlOrder, this.timetableSortType);
 		}
 	}
 }

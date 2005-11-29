@@ -139,8 +139,7 @@ namespace Yusen.GExplorer {
 			this.playListView1.SettingsVisible = false;
 			this.tsmiSettingsDetailView.DropDown = this.contentDetailView1.SettingsDropDown;
 			this.contentDetailView1.SettingsVisible = false;
-
-
+			
 			this.crawler.CrawlProgress += new EventHandler<CrawlProgressEventArgs>(crawler_CrawlProgress);
 			
 			UserCommandsManager.Instance.UserCommandsChanged += new EventHandler(UserCommandsManager_UserCommandsChanged);
@@ -195,7 +194,7 @@ namespace Yusen.GExplorer {
 					}
 					t = new Thread(new ThreadStart(delegate {
 						try {
-							result = this.crawler.Crawl(genre);
+							result = this.crawler.Crawl(GlobalSettings.Instance.GetCrawlSettings(), genre);
 						} finally {
 							lock (this.crawler) {
 								this.threadCrawler = null;
@@ -218,6 +217,9 @@ namespace Yusen.GExplorer {
 			}
 		}
 
+		private void crawlResultView1_ManuallyCacheDeleted(object sender, ManuallyCacheDeletedEventArgs e) {
+			this.tsslCrawl.Text = string.Format("ÉLÉÉÉbÉVÉÖÇÃçÌèú    ê¨å˜: {0}    é∏îs: {1}", e.Succeeded, e.Failed);
+		}
 		private void crawlResultView1_ContentSelectionChanged(object sender, ContentSelectionChangedEventArgs e) {
 			if (e.IsSelected) {
 				this.seletedCont = e.Content;

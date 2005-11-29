@@ -93,6 +93,7 @@ namespace Yusen.GExplorer {
 			}
 		}
 		public ContentAdapter CurrentContent {
+			get { return this.currentContent; }
 			set {
 				if (value != this.currentContent) {
 					this.currentContent = value;

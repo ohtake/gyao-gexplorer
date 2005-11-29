@@ -69,9 +69,18 @@ namespace Yusen.GCrawler {
 				return new Uri("http://www.gyao.jp/" + this.DirectoryName + "/");
 			}
 		}
-		public Uri TimetableUri {
+		public Uri TimetableRecentlyUpdatedFirstUri {
 			get {
-				return new Uri("http://www.gyao.jp/timetable/index.php?genre_id=" + this.GenreId);
+				return new Uri("http://www.gyao.jp/timetable/index.php?"
+					+"genre_id=" + this.GenreId
+					/* + "&sort_flag1=" + ((int)TimetableSortType.RecentlyUpdatedFirst).ToString()*/);
+			}
+		}
+		public Uri TimetableDeadlineNearFirstUri {
+			get {
+				//GET‚Å‚ÍŽæ‚ê‚È‚¢‚Á‚Û‚¢
+				return null;
+				//return new Uri("http://www.gyao.jp/timetable/index.php?genre_id=" + this.GenreId + "&sort_flag1=" + ((int)TimetableSortType.DeadlineNearFirst).ToString());
 			}
 		}
 		public override bool Equals(object obj) {

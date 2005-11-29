@@ -11,6 +11,7 @@ using Yusen.GCrawler;
 namespace Yusen.GExplorer {
 	sealed partial class CrawlResultView : UserControl, IHasSettings<GenreListViewSettings>{
 		public event EventHandler<ContentSelectionChangedEventArgs> ContentSelectionChanged;
+		public event EventHandler<ManuallyCacheDeletedEventArgs> ManuallyCacheDeleted;
 		
 		private CrawlResult crawlResult;
 		private AboneType aboneType = AboneType.Sabori;
@@ -57,7 +58,8 @@ namespace Yusen.GExplorer {
 				this.tsmiAboneType.DropDownItems.Add(tsmi);
 			}
 			this.AboneType = this.AboneType;
-
+			this.tsddbAboneType.DropDown = this.tsmiAboneType.DropDown;
+			
 			//フィルタ用のメニュー作成
 			this.tsddbFilterType.DropDownItems.Clear();
 			foreach (FilterType ftype in Enum.GetValues(typeof(FilterType))) {
@@ -598,6 +600,9 @@ namespace Yusen.GExplorer {
 					failed++;
 				}
 			}
+			if(null != this.ManuallyCacheDeleted) {
+				this.ManuallyCacheDeleted(this, new ManuallyCacheDeletedEventArgs(succeeded, failed));
+			}
 		}
 		private void tsmiAddNgWithTitle_Click(object sender, EventArgs e) {
 			List<string> titles = new List<string>();
@@ -722,6 +727,20 @@ namespace Yusen.GExplorer {
 		Normal,
 		Migemo,
 		Regex,
+	}
+	internal class ManuallyCacheDeletedEventArgs : EventArgs {
+		private int succeeded;
+		private int failed;
+		internal ManuallyCacheDeletedEventArgs(int succeeded, int failed) {
+			this.succeeded = succeeded;
+			this.failed = failed;
+		}
+		public int Succeeded {
+			get { return this.succeeded; }
+		}
+		public int Failed {
+			get { return this.failed; }
+		}
 	}
 	public class GenreListViewSettings {
 		private int? colWidthId;

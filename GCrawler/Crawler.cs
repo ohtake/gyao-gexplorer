@@ -6,16 +6,17 @@ using System.ComponentModel;
 namespace Yusen.GCrawler {
 	public class Crawler {
 		private class CrawlerHelper{
-			private static Uri ConvertUriWithoutFragment(Uri uri) {
-				if (string.IsNullOrEmpty(uri.Fragment)) {
-					return uri;
+			private static UriLinkTypePair ConvertUriWithoutFragment(UriLinkTypePair pair) {
+				if (string.IsNullOrEmpty(pair.Uri.Fragment)) {
+					return pair;
 				} else {
-					return new Uri(uri.GetLeftPart(UriPartial.Query));
+					return new UriLinkTypePair(new Uri(pair.Uri.GetLeftPart(UriPartial.Query)), pair.LinkType);
 				}
 			}
 			
 			public event EventHandler<CrawlProgressEventArgs> CrawlProgress;
-			
+
+			private CrawlSettings settings;
 			private GGenre genre;
 			private IHtmlParser parser;
 			private IContentCacheController cacheController;
@@ -30,15 +31,33 @@ namespace Yusen.GCrawler {
 			private Dictionary<string, string> contPackRelations = new Dictionary<string, string>();
 			private List<Exception> ignoredExceptions = new List<Exception>();
 
-			public CrawlerHelper(GGenre genre, IHtmlParser parser, IContentCacheController cacheController, IDeadlineTable deadLineDic) {
+			public CrawlerHelper(CrawlSettings settings, GGenre genre, IHtmlParser parser, IContentCacheController cacheController, IDeadlineTable deadLineDic) {
+				this.settings = settings;
 				this.genre = genre;
 				this.parser = parser;
 				this.cacheController = cacheController;
 				this.deadLineDic = deadLineDic;
 				
-				//トップ，番組表の順でクロール
-				this.waitingPages.Push(this.genre.TimetableUri);
-				this.waitingPages.Push(this.genre.TopPageUri);
+				switch(settings.CrawlOrder) {
+					case CrawlOrder.TopPageFirst:
+						this.PushTimeTable();
+						this.waitingPages.Push(this.genre.TopPageUri);
+						break;
+					case CrawlOrder.TimetableFirst:
+						this.waitingPages.Push(this.genre.TopPageUri);
+						this.PushTimeTable();
+						break;
+				}
+			}
+			private void PushTimeTable (){
+				switch(this.settings.TimeTableSortType) {
+					case TimetableSortType.RecentlyUpdatedFirst:
+						this.waitingPages.Push(this.genre.TimetableRecentlyUpdatedFirstUri);
+						break;
+					case TimetableSortType.DeadlineNearFirst:
+						this.waitingPages.Push(this.genre.TimetableDeadlineNearFirstUri);
+						break;
+				}
 			}
 			
 			public CrawlResult StartCrawling() {
@@ -64,6 +83,11 @@ namespace Yusen.GCrawler {
 			/// </summary>
 			private void CrawlPages() {
 				while (this.waitingPages.Count > 0) {
+					if(this.visitedPages.Count >= this.settings.MaxPages) {
+						this.OnIgnoringException(new Exception(string.Format("クロールする一般ページの上限数に達した． ({0}/{1})", this.settings.MaxPages, this.visitedPages.Count + this.waitingPages.Count)));
+						this.waitingPages.Clear();
+						return;
+					}
 					this.OnCrawlProgress(string.Format("フェーズ 1/4: 一般ページを取得中 ({0}/{1}) {2}",
 						this.visitedPages.Count,
 						this.visitedPages.Count + this.waitingPages.Count,
@@ -71,44 +95,38 @@ namespace Yusen.GCrawler {
 					
 					Uri uri = this.waitingPages.Pop();
 					this.visitedPages.Add(uri);
-					List<Uri> links, images;
+					List<UriLinkTypePair> links;
 					try {
-						this.parser.ExtractLinks(uri, out links, out images);
+						links = this.parser.ExtractLinks(uri);
 					} catch(Exception e) {
 						this.OnIgnoringException(new Exception("一般ページの取得失敗． <" + uri.AbsoluteUri + ">", e));
 						continue;
 					}
 					
-					links = links.ConvertAll<Uri>(CrawlerHelper.ConvertUriWithoutFragment);
-					links.RemoveAll(this.waitingPages.Contains);
-					links.RemoveAll(this.visitedPages.Contains);
-					
-					List<Uri> packageUris = links.FindAll(GPackage.CanExtractPackageId);
-					links.RemoveAll(GPackage.CanExtractPackageId);
-					packageUris.AddRange(images.FindAll(GPackage.CanExtractPackageId));
-					images.RemoveAll(GPackage.CanExtractPackageId);
-					
-					List<Uri> contentUris = links.FindAll(GContent.CanExtractContentId);
-					links.RemoveAll(GContent.CanExtractContentId);
-					contentUris.AddRange(images.FindAll(GContent.CanExtractContentId));
-					images.RemoveAll(GContent.CanExtractContentId);
-					
-					links = links.FindAll(this.IsInRestriction);
-					links.Reverse();
-					foreach (Uri link in links) {
-						if(! this.waitingPages.Contains(link)) this.waitingPages.Push(link);
-					}
-					
-					List<string> packageIds = packageUris.ConvertAll<string>(GPackage.ExtractPackageId);
-					packageIds.RemoveAll(this.waitingPackages.Contains);
-					foreach(string packageId in packageIds){
-						if(!this.waitingPackages.Contains(packageId)) this.waitingPackages.Enqueue(packageId);
-					}
-					
-					List<string> contentIds = contentUris.ConvertAll<string>(GContent.ExtractContentId);
-					contentIds.RemoveAll(this.waitingContents.Contains);
-					foreach (string contentId in contentIds) {
-						if(! this.waitingContents.Contains(contentId)) this.waitingContents.Enqueue(contentId);
+					links = links.ConvertAll<UriLinkTypePair>(CrawlerHelper.ConvertUriWithoutFragment);
+					foreach(UriLinkTypePair pair in links) {
+						string id;
+						if(GPackage.TryExtractPackageId(pair.Uri, out id)) {
+							if(!this.waitingPackages.Contains(id)) {
+								this.waitingPackages.Enqueue(id);
+								continue;
+							}
+						}
+						if(GContent.TryExtractContentId(pair.Uri, out id)) {
+							if(!this.waitingContents.Contains(id)) {
+								this.waitingContents.Enqueue(id);
+								continue;
+							}
+						}
+						if(this.IsInRestriction(pair.Uri)) {
+							switch(pair.LinkType) {
+								case LinkType.AnchorOrFrame:
+									if(!this.visitedPages.Contains(pair.Uri) && !this.waitingPages.Contains(pair.Uri)) {
+										this.waitingPages.Push(pair.Uri);
+									}
+									break;
+							}
+						}
 					}
 				}
 			}
@@ -243,12 +261,12 @@ namespace Yusen.GCrawler {
 			this.deadLineDic = deadLineDic;
 		}
 		
-		public CrawlResult Crawl(GGenre genre) {
+		public CrawlResult Crawl(CrawlSettings settings, GGenre genre) {
 			if (!genre.IsCrawlable) {
 				throw new ArgumentException("ジャンル「" + genre.GenreName + "」はクロールできない．");
 			}
 
-			CrawlerHelper helper = new CrawlerHelper(genre, this.parser, this.cacheController, this.deadLineDic);
+			CrawlerHelper helper = new CrawlerHelper(settings, genre, this.parser, this.cacheController, this.deadLineDic);
 			helper.CrawlProgress += delegate(object sender, CrawlProgressEventArgs e) {
 				if (null != this.CrawlProgress) {
 					this.CrawlProgress(sender, e);
@@ -257,7 +275,35 @@ namespace Yusen.GCrawler {
 			return helper.StartCrawling();
 		}
 	}
-	
+
+	public enum CrawlOrder {
+		TopPageFirst,
+		TimetableFirst,
+	}
+	public enum TimetableSortType {
+		RecentlyUpdatedFirst=0,
+		DeadlineNearFirst=1,
+	}
+	public class CrawlSettings {
+		private int maxPages;
+		private CrawlOrder crawlOrder;
+		private TimetableSortType timeTableSortType;
+		public CrawlSettings(int maxPages, CrawlOrder crawlOrder, TimetableSortType timeTableSortType) {
+			this.maxPages = maxPages;
+			this.crawlOrder = crawlOrder;
+			this.timeTableSortType = timeTableSortType;
+		}
+		public int MaxPages {
+			get { return this.maxPages; }
+		}
+		public CrawlOrder CrawlOrder {
+			get { return this.crawlOrder; }
+		}
+		public TimetableSortType TimeTableSortType {
+			get { return this.timeTableSortType; }
+		}
+	}
+
 	public class CrawlProgressEventArgs : EventArgs {
 		private readonly string message;
 		private readonly int visited;

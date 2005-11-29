@@ -29,7 +29,7 @@ namespace Yusen.GExplorer {
 			Utility.AppendHelpMenu(this.menuStrip1);
 			
 			this.tsmiGenres.DropDownItems.Clear();
-			this.tsmiTimeTables.DropDownItems.Clear();
+			this.tsmiTimeTablesUpdated.DropDownItems.Clear();
 			this.tscbAddress.Items.Clear();
 			foreach (GGenre g in GGenre.AllGenres) {
 				ToolStripMenuItem mi;
@@ -46,12 +46,19 @@ namespace Yusen.GExplorer {
 				mi.Tag = g;
 				mi.Click += new EventHandler(delegate(object sender2, EventArgs e2) {
 					GGenre genre = (sender2 as ToolStripMenuItem).Tag as GGenre;
-					this.DocumentUri = genre.TimetableUri;
+					this.DocumentUri = genre.TimetableRecentlyUpdatedFirstUri;
 				});
-				this.tsmiTimeTables.DropDownItems.Add(mi);
+				this.tsmiTimeTablesUpdated.DropDownItems.Add(mi);
 
+				mi = new ToolStripMenuItem(g.GenreName);
+				mi.Tag = g;
+				mi.Click += new EventHandler(delegate(object sender2, EventArgs e2) {
+					GGenre genre = (sender2 as ToolStripMenuItem).Tag as GGenre;
+					this.DocumentUri = genre.TimetableDeadlineNearFirstUri;
+				});
+				this.tsmiTimeTablesDeadline.DropDownItems.Add(mi);
+				
 				this.tscbAddress.Items.Add(g.TopPageUri);
-				this.tscbAddress.Items.Add(g.TimetableUri);
 			}
 			
 			Utility.LoadSettingsAndEnableSaveOnClosed(this);

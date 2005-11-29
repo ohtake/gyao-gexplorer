@@ -36,6 +36,8 @@ namespace Yusen.GExplorer {
 			this.tsmiSettings = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiImageSize = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiSizeMode = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+			this.tsmiSyncronizeToCurrentContent = new System.Windows.Forms.ToolStripMenuItem();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabpSummary2 = new System.Windows.Forms.TabPage();
 			this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
@@ -106,7 +108,7 @@ namespace Yusen.GExplorer {
             this.tssSettings,
             this.tsmiSettings});
 			this.cmsImage.Name = "cmsImage";
-			this.cmsImage.Size = new System.Drawing.Size(249, 148);
+			this.cmsImage.Size = new System.Drawing.Size(249, 126);
 			this.cmsImage.Opening += new System.ComponentModel.CancelEventHandler(this.cmsImage_Opening);
 			// 
 			// tsmiCopyImageUri
@@ -151,7 +153,9 @@ namespace Yusen.GExplorer {
 			// 
 			this.tsmiSettings.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiImageSize,
-            this.tsmiSizeMode});
+            this.tsmiSizeMode,
+            this.toolStripMenuItem1,
+            this.tsmiSyncronizeToCurrentContent});
 			this.tsmiSettings.Name = "tsmiSettings";
 			this.tsmiSettings.Size = new System.Drawing.Size(248, 22);
 			this.tsmiSettings.Text = "設定(&S)";
@@ -159,14 +163,28 @@ namespace Yusen.GExplorer {
 			// tsmiImageSize
 			// 
 			this.tsmiImageSize.Name = "tsmiImageSize";
-			this.tsmiImageSize.Size = new System.Drawing.Size(180, 22);
+			this.tsmiImageSize.Size = new System.Drawing.Size(189, 22);
 			this.tsmiImageSize.Text = "画像の表示とサイズ(&S)";
 			// 
 			// tsmiSizeMode
 			// 
 			this.tsmiSizeMode.Name = "tsmiSizeMode";
-			this.tsmiSizeMode.Size = new System.Drawing.Size(180, 22);
+			this.tsmiSizeMode.Size = new System.Drawing.Size(189, 22);
 			this.tsmiSizeMode.Text = "画像のリサイズ方法(&R)";
+			// 
+			// toolStripMenuItem1
+			// 
+			this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+			this.toolStripMenuItem1.Size = new System.Drawing.Size(186, 6);
+			// 
+			// tsmiSyncronizeToCurrentContent
+			// 
+			this.tsmiSyncronizeToCurrentContent.Checked = true;
+			this.tsmiSyncronizeToCurrentContent.CheckOnClick = true;
+			this.tsmiSyncronizeToCurrentContent.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.tsmiSyncronizeToCurrentContent.Name = "tsmiSyncronizeToCurrentContent";
+			this.tsmiSyncronizeToCurrentContent.Size = new System.Drawing.Size(189, 22);
+			this.tsmiSyncronizeToCurrentContent.Text = "再生中の項目に同期(&C)";
 			// 
 			// tabControl1
 			// 
@@ -419,5 +437,7 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ToolStripMenuItem tsmiSettings;
 		private System.Windows.Forms.ToolStripMenuItem tsmiImageSize;
 		private System.Windows.Forms.ToolStripMenuItem tsmiSizeMode;
+		private System.Windows.Forms.ToolStripMenuItem tsmiSyncronizeToCurrentContent;
+		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
 	}
 }

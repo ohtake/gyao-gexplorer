@@ -69,6 +69,10 @@ namespace Yusen.GExplorer {
 			this.tsmiClearFilterStringOnHide = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiNewColor = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+			this.tsmiMaxPageMenuItems = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiMaxExceptionMenuItems = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsddbAboneType = new System.Windows.Forms.ToolStripDropDownButton();
 			this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
 			this.tslGenre = new System.Windows.Forms.ToolStripLabel();
 			this.tslNumber = new System.Windows.Forms.ToolStripLabel();
@@ -79,12 +83,9 @@ namespace Yusen.GExplorer {
 			this.tsddbFilterType = new System.Windows.Forms.ToolStripDropDownButton();
 			this.tstbFilter = new System.Windows.Forms.ToolStripTextBox();
 			this.tstbAnswer = new System.Windows.Forms.ToolStripTextBox();
+			this.timerFilter = new System.Windows.Forms.Timer(this.components);
 			this.inputBoxDialog1 = new Yusen.GExplorer.InputBoxDialog();
 			this.exceptionDialog1 = new Yusen.GExplorer.ExceptionDialog();
-			this.timerFilter = new System.Windows.Forms.Timer(this.components);
-			this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
-			this.tsmiMaxPageMenuItems = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiMaxExceptionMenuItems = new System.Windows.Forms.ToolStripMenuItem();
 			this.cmsContent.SuspendLayout();
 			this.toolStripContainer1.ContentPanel.SuspendLayout();
 			this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
@@ -334,9 +335,10 @@ namespace Yusen.GExplorer {
             this.tslTitle,
             this.toolStripSeparator4,
             this.tsbShowFilter,
+            this.tsddbSettings,
+            this.tsddbAboneType,
             this.tsddbNormalPages,
             this.tsddbExceptions,
-            this.tsddbSettings,
             this.toolStripSeparator5,
             this.tslGenre,
             this.tslNumber,
@@ -470,6 +472,33 @@ namespace Yusen.GExplorer {
 			this.tsmiNewColor.Text = "新着の色(&N)...";
 			this.tsmiNewColor.Click += new System.EventHandler(this.tsmiNewColor_Click);
 			// 
+			// toolStripMenuItem1
+			// 
+			this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+			this.toolStripMenuItem1.Size = new System.Drawing.Size(257, 6);
+			// 
+			// tsmiMaxPageMenuItems
+			// 
+			this.tsmiMaxPageMenuItems.Name = "tsmiMaxPageMenuItems";
+			this.tsmiMaxPageMenuItems.Size = new System.Drawing.Size(260, 22);
+			this.tsmiMaxPageMenuItems.Text = "「ページ」メニューの項目数の最大値(&P)...";
+			this.tsmiMaxPageMenuItems.Click += new System.EventHandler(this.tsmiMaxPageMenuItems_Click);
+			// 
+			// tsmiMaxExceptionMenuItems
+			// 
+			this.tsmiMaxExceptionMenuItems.Name = "tsmiMaxExceptionMenuItems";
+			this.tsmiMaxExceptionMenuItems.Size = new System.Drawing.Size(260, 22);
+			this.tsmiMaxExceptionMenuItems.Text = "「例外」メニューの項目数の最大値(&E)...";
+			this.tsmiMaxExceptionMenuItems.Click += new System.EventHandler(this.tsmiMaxExceptionMenuItems_Click);
+			// 
+			// tsddbAboneType
+			// 
+			this.tsddbAboneType.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+			this.tsddbAboneType.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.tsddbAboneType.Name = "tsddbAboneType";
+			this.tsddbAboneType.Size = new System.Drawing.Size(76, 22);
+			this.tsddbAboneType.Text = "あぼ～ん(&A)";
+			// 
 			// toolStripSeparator5
 			// 
 			this.toolStripSeparator5.Name = "toolStripSeparator5";
@@ -541,6 +570,10 @@ namespace Yusen.GExplorer {
 			this.tstbAnswer.ReadOnly = true;
 			this.tstbAnswer.Size = new System.Drawing.Size(200, 25);
 			// 
+			// timerFilter
+			// 
+			this.timerFilter.Tick += new System.EventHandler(this.timerFilter_Tick);
+			// 
 			// inputBoxDialog1
 			// 
 			this.inputBoxDialog1.Input = null;
@@ -551,29 +584,6 @@ namespace Yusen.GExplorer {
 			// 
 			this.exceptionDialog1.Exception = null;
 			this.exceptionDialog1.Title = "クロール時に無視した例外";
-			// 
-			// timerFilter
-			// 
-			this.timerFilter.Tick += new System.EventHandler(this.timerFilter_Tick);
-			// 
-			// toolStripMenuItem1
-			// 
-			this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-			this.toolStripMenuItem1.Size = new System.Drawing.Size(257, 6);
-			// 
-			// tsmiMaxPageMenuItems
-			// 
-			this.tsmiMaxPageMenuItems.Name = "tsmiMaxPageMenuItems";
-			this.tsmiMaxPageMenuItems.Size = new System.Drawing.Size(260, 22);
-			this.tsmiMaxPageMenuItems.Text = "「ページ」メニューの項目数の最大値(&P)...";
-			this.tsmiMaxPageMenuItems.Click += new System.EventHandler(this.tsmiMaxPageMenuItems_Click);
-			// 
-			// tsmiMaxExceptionMenuItems
-			// 
-			this.tsmiMaxExceptionMenuItems.Name = "tsmiMaxExceptionMenuItems";
-			this.tsmiMaxExceptionMenuItems.Size = new System.Drawing.Size(260, 22);
-			this.tsmiMaxExceptionMenuItems.Text = "「例外」メニューの項目数の最大値(&E)...";
-			this.tsmiMaxExceptionMenuItems.Click += new System.EventHandler(this.tsmiMaxExceptionMenuItems_Click);
 			// 
 			// CrawlResultView
 			// 
@@ -660,5 +670,6 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
 		private System.Windows.Forms.ToolStripMenuItem tsmiMaxPageMenuItems;
 		private System.Windows.Forms.ToolStripMenuItem tsmiMaxExceptionMenuItems;
+		private System.Windows.Forms.ToolStripDropDownButton tsddbAboneType;
 	}
 }
