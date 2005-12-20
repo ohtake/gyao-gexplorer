@@ -73,12 +73,6 @@
       <DependentUpon>ContentDetailView.cs</DependentUpon>
     </Compile>
     <Compile Include="ContentAdapter.cs" />
-    <Compile Include="CookieFetchForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="CookieFetchForm.Designer.cs">
-      <DependentUpon>CookieFetchForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="ExceptionDialog.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -173,9 +167,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ContentDetailView.resx">
       <DependentUpon>ContentDetailView.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="CookieFetchForm.resx">
-      <DependentUpon>CookieFetchForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ExceptionForm.resx">
       <DependentUpon>ExceptionForm.cs</DependentUpon>

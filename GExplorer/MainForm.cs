@@ -19,6 +19,7 @@ namespace Yusen.GExplorer {
 			}
 		}
 		private delegate void ViewCrawlResultDelegate(CrawlResult result);
+		private delegate void SetStatusBarTextDelegate(string text);
 
 		private Crawler crawler;
 		private Thread threadCrawler = null;
@@ -32,7 +33,7 @@ namespace Yusen.GExplorer {
 
 		private void ClearStatusBarInfo() {
 			if (this.InvokeRequired) {
-				this.Invoke(new ThreadStart(delegate {
+				this.Invoke(new MethodInvoker(delegate {
 					this.ClearStatusBarInfo();
 				}));
 			} else {
@@ -40,6 +41,18 @@ namespace Yusen.GExplorer {
 				this.tsslCrawl.Text = string.Empty;
 			}
 		}
+		private void SetStatutBarTextTemporary(string text) {
+			if(this.InvokeRequired) {
+				this.Invoke(new SetStatusBarTextDelegate(delegate(string text2) {
+					this.SetStatutBarTextTemporary(text2);
+				}));
+			} else {
+				this.timerClearStatusText.Stop();
+				this.tsslCrawl.Text = text;
+				this.timerClearStatusText.Start();
+			}
+		}
+		
 		private void DisableTsmiAbortCrawling() {
 			if (this.InvokeRequired) {
 				this.Invoke(new ThreadStart(delegate {
@@ -218,7 +231,7 @@ namespace Yusen.GExplorer {
 		}
 
 		private void crawlResultView1_ManuallyCacheDeleted(object sender, ManuallyCacheDeletedEventArgs e) {
-			this.tsslCrawl.Text = string.Format("キャッシュの削除    成功: {0}    失敗: {1}", e.Succeeded, e.Failed);
+			this.SetStatutBarTextTemporary(string.Format("キャッシュの削除    成功: {0}    失敗: {1}", e.Succeeded, e.Failed));
 		}
 		private void crawlResultView1_ContentSelectionChanged(object sender, ContentSelectionChangedEventArgs e) {
 			if (e.IsSelected) {
@@ -231,6 +244,9 @@ namespace Yusen.GExplorer {
 				this.seletedCont = e.Content;
 				this.timerViewDetail.Start();
 			}
+		}
+		private void contentDetailView1_ImageLoadError(object sender, ImageLoadErrorEventArgs e) {
+			this.SetStatutBarTextTemporary("詳細ビューでの画像読み込みエラー: " + e.Exception.Message);
 		}
 		
 		private void tsmiBrowseTop_Click(object sender, EventArgs e) {
@@ -290,9 +306,7 @@ namespace Yusen.GExplorer {
 				case DialogResult.Yes:
 					int numResults = Cache.Instance.ResultsDictionary.Count;
 					Cache.Instance.ResultsDictionary.Clear();
-					this.tsslCrawl.Text = 
-						"クロール結果の破棄"
-						+ "    破棄数: " + numResults.ToString();
+					this.SetStatutBarTextTemporary("クロール結果の破棄    破棄数: " + numResults.ToString());
 					break;
 			}
 		}
@@ -313,11 +327,8 @@ namespace Yusen.GExplorer {
 					}
 				}
 			}
-			this.tsslCrawl.Text =
-				"キャッシュの削除"
-				+ "    到達可により無視: " + ignored.ToString()
-				+ "    削除成功: " + success.ToString()
-				+ "    削除失敗: " + failed.ToString();
+			this.SetStatutBarTextTemporary(string.Format("キャッシュの削除    到達可により無視: {0}    削除成功: {1}    削除失敗: {2}",
+				ignored, success, failed));
 		}
 		private void tsmiRemoveCachesAll_Click(object sender, EventArgs e) {
 			switch (MessageBox.Show(
@@ -333,10 +344,8 @@ namespace Yusen.GExplorer {
 							failed++;
 						}
 					}
-					this.tsslCrawl.Text =
-						"キャッシュの削除"
-						+ "    削除成功: " + success.ToString()
-						+ "    削除失敗: " + failed.ToString();
+					this.SetStatutBarTextTemporary(string.Format("キャッシュの削除    削除成功: {0}    削除失敗: {1}",
+						success, failed));
 					break;
 			}
 		}
@@ -357,11 +366,8 @@ namespace Yusen.GExplorer {
 					}
 				}
 			}
-			this.tsslCrawl.Text =
-				"配信期限エントリーの整理"
-				+ "    到達可により無視: " + ignored.ToString()
-				+ "    削除成功: " + success.ToString()
-				+ "    削除失敗: " + failed.ToString();
+			this.SetStatutBarTextTemporary(string.Format("配信期限エントリーの整理    到達可により無視: {0}    削除成功: {1}    削除失敗: {2}",
+				ignored, success, failed));
 		}
 		private void tsmiRemoveDeadlineEntriesAll_Click(object sender, EventArgs e) {
 			switch (MessageBox.Show(
@@ -370,9 +376,7 @@ namespace Yusen.GExplorer {
 				case DialogResult.Yes:
 					int count = Cache.Instance.DeadlineTable.Count;
 					Cache.Instance.DeadlineTable.ClearDeadlines();
-					this.tsslCrawl.Text =
-						"配信期限エントリーの整理"
-						+ "    削除成功: " + count.ToString();
+					this.SetStatutBarTextTemporary("配信期限エントリーの整理    削除成功: " + count.ToString());
 					break;
 			}
 		}
@@ -385,7 +389,7 @@ namespace Yusen.GExplorer {
 					
 					this.crawlProgressEventArgs = null;
 					this.ClearStatusBarInfo();
-					this.tsslCrawl.Text = "クロールを中止しました．";
+					this.SetStatutBarTextTemporary("クロールを中止しました．");
 				}
 			}
 		}
@@ -403,6 +407,10 @@ namespace Yusen.GExplorer {
 				this.tsslCrawl.Text = this.crawlProgressEventArgs.Message;
 			}
 			Application.DoEvents();
+		}
+		private void timerClearStatusText_Tick(object sender, EventArgs e) {
+			this.timerClearStatusText.Stop();
+			this.tsslCrawl.Text = string.Empty;
 		}
 	}
 

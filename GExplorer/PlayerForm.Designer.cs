@@ -503,8 +503,8 @@ namespace Yusen.GExplorer {
 			// 
 			this.tsmiSettings.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiAlwaysOnTop,
-            this.tsmiStatusbarVisible,
             this.tsmiHideUiOnDeactivated,
+            this.tsmiStatusbarVisible,
             this.toolStripMenuItem1,
             this.tsmiStrechToFit,
             this.tsmiDisableScreenSaver,
@@ -551,6 +551,7 @@ namespace Yusen.GExplorer {
 			this.tsmiHideUiOnDeactivated.CheckOnClick = true;
 			this.tsmiHideUiOnDeactivated.CheckState = System.Windows.Forms.CheckState.Checked;
 			this.tsmiHideUiOnDeactivated.Name = "tsmiHideUiOnDeactivated";
+			this.tsmiHideUiOnDeactivated.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.H)));
 			this.tsmiHideUiOnDeactivated.Size = new System.Drawing.Size(260, 22);
 			this.tsmiHideUiOnDeactivated.Text = "非アクティブ時にUIを隠す(&H)";
 			// 

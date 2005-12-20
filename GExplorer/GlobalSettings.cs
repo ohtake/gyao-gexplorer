@@ -34,12 +34,11 @@ namespace Yusen.GExplorer {
 		[XmlIgnore]
 		[Category("GyaO")]
 		[DisplayName("Cookie_UserId")]
-		[Description("クッキーに保存されている Cookie_UserId の値．いちおう変更不可．")]
+		[Description("クッキーに保存されている Cookie_UserId の値．")]
 		[DefaultValue(GlobalSettings.InvalidUserNo)]
-		[ReadOnly(true)]
 		public int UserNo {
 			get { return this.userNo; }
-			private set { this.userNo = value; }
+			set { this.userNo = value; }
 		}
 		
 		private GBitRate bitRate = GBitRate.SuperFine;
@@ -183,22 +182,9 @@ namespace Yusen.GExplorer {
 			if (!this.IsCookieRequired) {
 				return true;
 			}
-			//ブラウザ上からクッキーを取得する
-			using (CookieFetchForm cff =  new CookieFetchForm()) {
-				switch (cff.ShowDialog()) {
-					case DialogResult.OK:
-						if (cff.UserNo.HasValue) {
-							this.UserNo = cff.UserNo.Value;
-						}
-						break;
-				}
-			}
-			if (!this.IsCookieRequired) {
-				return true;
-			}
 			return false;
 		}
-
+		
 		internal CrawlSettings GetCrawlSettings() {
 			return new CrawlSettings(this.maxCrawlPages, this.crawlOrder, this.timetableSortType);
 		}

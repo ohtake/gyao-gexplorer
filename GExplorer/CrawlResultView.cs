@@ -370,7 +370,7 @@ namespace Yusen.GExplorer {
 			}
 
 			this.tslNumber.Text = this.listView1.Items.Count.ToString() + "+" + filtered.ToString() + "+" + aboned.ToString();
-			this.tslTime.Text = "(" + this.CrawlResult.Time.ToShortDateString() + " "+ this.CrawlResult.Time.ToShortTimeString() + ")";
+			this.tslTime.Text = string.Format("({0})", this.CrawlResult.Time.ToString("MM/dd ddd hh:mm"));
 		}
 		private void CreateNormalPagesMenuItems(bool createAll) {
 			this.tsddbNormalPages.DropDownItems.Clear();

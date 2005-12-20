@@ -13,6 +13,7 @@ namespace Yusen.GExplorer {
 		[STAThread]
 		static void Main() {
 			Application.EnableVisualStyles();
+			Application.SetCompatibleTextRenderingDefault(false);
 			Application.ThreadException += new ThreadExceptionEventHandler(Application_ThreadException);
 			AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
 
@@ -23,9 +24,8 @@ namespace Yusen.GExplorer {
 			GlobalSettings.TryDeserialize();
 			if(!GlobalSettings.Instance.TryGetUserNumber()) {
 				MessageBox.Show(
-					"ユーザIDの取得に失敗したため " + Application.ProductName + " を終了します．",
+					"ユーザIDが取得できませんでした．グローバル設定でIDの設定をしてください．",
 					Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
-				return;
 			}
 			
 			//アイコンの読み込み

@@ -6,6 +6,8 @@ using System.Windows.Forms;
 
 namespace Yusen.GExplorer {
 	sealed partial class ContentDetailView : UserControl , IHasSettings<ContentDetailViewSettings>{
+		public event EventHandler<ImageLoadErrorEventArgs> ImageLoadError;
+
 		private ContentAdapter contAd;
 		private ContentImageSize imgSize = ContentImageSize.Large;
 		
@@ -34,7 +36,14 @@ namespace Yusen.GExplorer {
 				this.txtDeadline.Text = value.Deadline;
 				this.txtDescription.Text = value.LongDescription.Replace("\n", "\r\n");
 				this.propgDetail.SelectedObject = value;
-				this.LoadImage();
+				try {
+					this.LoadImage();
+				} catch(Exception e) {
+					this.picboxImage.Image = this.picboxImage.ErrorImage;
+					if(null != this.ImageLoadError) {
+						this.ImageLoadError(this, new ImageLoadErrorEventArgs(e));
+					}
+				}
 			}
 		}
 		[DefaultValue(ContentImageSize.Large)]
@@ -234,6 +243,16 @@ namespace Yusen.GExplorer {
 		public bool? SyncronizeToCurrentContentEnabled {
 			get { return this.syncronizeToCurrentContentEnabled; }
 			set { this.syncronizeToCurrentContentEnabled = value; }
+		}
+	}
+
+	class ImageLoadErrorEventArgs : EventArgs {
+		private Exception exception;
+		public ImageLoadErrorEventArgs(Exception ex) {
+			this.exception = ex;
+		}
+		public Exception Exception {
+			get { return this.exception; }
 		}
 	}
 }

@@ -1,4 +1,4 @@
-GyaO 専用ブラウザ GExplorer 2.0.1.0
+GyaO 専用ブラウザ GExplorer 2.0.1.1
 
 ◆概要
 株式会社USENによる「パソコンテレビGyaO」を閲覧するためのブラウザです．
@@ -8,7 +8,20 @@ GyaO 専用ブラウザ GExplorer 2.0.1.0
 
 ◆必要な環境
 .NET Framework 2.0 が必要です．
-Microsoft Update や Windows Update などで入手できます．
+
+Microsoft Update や Windows Update などで入手できますが
+デフォルトでは選択されません．
+「高速」ではなく「カスタム」を選択するようにし
+「追加選択(ソフトウェア)」で .NET Framework 2.0 を追加してください．
+
+手作業でインストールする方法もありますが
+CPUごとに別々のバイナリとなるので注意してください．
+Microsoft .NET Framework Version 2.0 再頒布可能パッケージ (x86)
+http://www.microsoft.com/downloads/details.aspx?FamilyID=0856eacb-4362-4b0d-8edd-aab15c5e04f5&DisplayLang=ja
+Microsoft .NET Framework Version 2.0 再頒布可能パッケージ (x64)
+http://www.microsoft.com/downloads/details.aspx?FamilyID=b44a0000-acf8-4fa1-affb-40e78d788b00&DisplayLang=ja
+Microsoft .NET Framework Version 2.0 再頒布可能パッケージ (IA64)
+http://www.microsoft.com/downloads/details.aspx?FamilyID=53c2548b-bec7-4ab4-8cbe-33e07cfc83a7&DisplayLang=ja
 
 ◆Windowsのバージョンによる機能の制限
 Windows 98, Me, 2000 では以下の機能が利用できません．
@@ -54,12 +67,10 @@ migemo.dll と dict を GExplorer.exe と同じディレクトリにおいてください．
 ◇ユーザIDの読み取り
 GyaOを利用する際にはユーザIDが必要となるため
 GExplrerは起動時にユーザIDを読みにいきます．
-そのためには起動前に IE でのユーザ登録を済ませておいてください．
-ユーザIDの取得に失敗したら GExplorer は起動できません．
+起動前に IE でのユーザ登録を済ませておいてください．
 以下の順序で読み取りを試みます．
 ・ActiveX の GyaOTool が利用しているレジストリを読む
 ・ファイルシステムからクッキーを読む
-・IE 経由で http://www.gyao.jp/about/ にアクセスしてクッキーを読む
 
 ◇ジャンルタブ (メイン画面の上部)
 GyaOのジャンルの一覧です．

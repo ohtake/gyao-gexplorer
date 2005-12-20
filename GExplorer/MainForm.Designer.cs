@@ -70,6 +70,7 @@ namespace Yusen.GExplorer {
 			this.inputBoxDialog1 = new Yusen.GExplorer.InputBoxDialog();
 			this.timerViewDetail = new System.Windows.Forms.Timer(this.components);
 			this.timerCrawlProgress = new System.Windows.Forms.Timer(this.components);
+			this.timerClearStatusText = new System.Windows.Forms.Timer(this.components);
 			this.statusStrip1.SuspendLayout();
 			this.toolStripContainer1.BottomToolStripPanel.SuspendLayout();
 			this.toolStripContainer1.ContentPanel.SuspendLayout();
@@ -261,6 +262,7 @@ namespace Yusen.GExplorer {
 			this.contentDetailView1.Name = "contentDetailView1";
 			this.contentDetailView1.Size = new System.Drawing.Size(255, 474);
 			this.contentDetailView1.TabIndex = 0;
+			this.contentDetailView1.ImageLoadError += new System.EventHandler<Yusen.GExplorer.ImageLoadErrorEventArgs>(this.contentDetailView1_ImageLoadError);
 			// 
 			// menuStrip1
 			// 
@@ -513,6 +515,11 @@ namespace Yusen.GExplorer {
 			this.timerCrawlProgress.Interval = 50;
 			this.timerCrawlProgress.Tick += new System.EventHandler(this.timerCrawlProgress_Tick);
 			// 
+			// timerClearStatusText
+			// 
+			this.timerClearStatusText.Interval = 10000;
+			this.timerClearStatusText.Tick += new System.EventHandler(this.timerClearStatusText_Tick);
+			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -597,6 +604,7 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ToolStripMenuItem tsmiSettingsCrawlResultView;
 		private System.Windows.Forms.ToolStripMenuItem tsmiSettingsPlaylistView;
 		private System.Windows.Forms.ToolStripMenuItem tsmiSettingsDetailView;
+		private System.Windows.Forms.Timer timerClearStatusText;
 
 
 	}
