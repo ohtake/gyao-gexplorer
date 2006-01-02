@@ -79,12 +79,12 @@ namespace Yusen.GExplorer {
 			}
 		}
 		public static bool TryDeserializeSettings<T>(string filename, out T settings) {
-			XmlSerializer xs = new XmlSerializer(typeof(T));
 			TextReader tr = null;
 			try {
 				DirectoryInfo di = new DirectoryInfo(Utility.UserSettingsDir);
 				if (!di.Exists) di.Create();
 				tr = new StreamReader(Path.Combine(Utility.UserSettingsDir, filename));
+				XmlSerializer xs = new XmlSerializer(typeof(T));
 				settings = (T)xs.Deserialize(tr);
 				return true;
 			} catch (FileNotFoundException) {

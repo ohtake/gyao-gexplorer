@@ -15,14 +15,12 @@ namespace Yusen.GExplorer {
 			
 			private readonly string dart;
 			private readonly long ord;
-			private readonly Uri image;
-			private readonly Uri jump;
+			private readonly Uri page;
 
 			public BannerTag(string dart) {
 				this.dart = dart;
 				this.ord = (long)(BannerTag.rand.NextDouble() * BannerTag.OrdMax);
-				this.image = new Uri("http://ad.jp.doubleclick.net/ad/gyao.vision.spot/" + this.dart + ";sz=468x60;ord=" + this.ord.ToString() + "?");
-				this.jump = new Uri("http://ad.jp.doubleclick.net/jump/gyao.vision.spot/" + this.dart + ";sz=468x60;ord=" + this.ord.ToString() + "?");
+				this.page = new Uri("http://ad.jp.doubleclick.net/adi/gyao.spot.sky/" + this.dart + ";sz=120x600;ord=" + this.ord.ToString() + "?");
 			}
 			public string Dart {
 				get { return this.dart; }
@@ -30,13 +28,9 @@ namespace Yusen.GExplorer {
 			public long Ord {
 				get { return this.ord; }
 			}
-			public Uri ImageUri {
-				get { return this.image; }
+			public Uri PageUri {
+				get { return this.page; }
 			}
-			public Uri JumpUri {
-				get { return this.jump; }
-			}
-			
 		}
 
 		private const string AttribNameEntryUrl = "WMS_CONTENT_DESCRIPTION_PLAYLIST_ENTRY_URL";
@@ -75,8 +69,6 @@ namespace Yusen.GExplorer {
 		private int volumeCf = 20;
 
 		private ScreenSaveListener ssl;
-
-		private Point? tabDragPoint;
 
 		private PlayerForm() {
 			InitializeComponent();
@@ -121,7 +113,7 @@ namespace Yusen.GExplorer {
 			this.tsmiUserCommands.Enabled = this.tsmiUserCommands.HasDropDownItems;
 		}
 		private void UpdateStatusbatText() {
-			if(this.StatusbarVisible && null != this.CurrentContent) {
+			if(null != this.CurrentContent) {
 				IWMPMedia curMedia = this.wmpMain.currentMedia;
 				this.tsslId.Text = this.CurrentContent.ContentId;
 				this.tsslChapter.Text = this.CurrentChapter.HasValue ?
@@ -139,30 +131,27 @@ namespace Yusen.GExplorer {
 			}
 		}
 		private void HideUi() {
-			Point loc = this.PointToClient(this.tabPlayer.PointToScreen(new Point()));
+			Point loc = this.PointToClient(this.splitContainer1.PointToScreen(new Point()));
 			loc.X += SystemInformation.SizingBorderWidth;
 			loc.Y += SystemInformation.SizingBorderWidth + SystemInformation.CaptionHeight;
 			loc += PlayerForm.WmpMarginSize;
-			Size size = this.tabPlayer.ClientSize;
-			if(this.tabControl1.SelectedTab == this.tabPlayer) {
-				size -= PlayerForm.WmpUiSize;
-			}
+			Size size = this.splitContainer1.ClientSize;
+			size -= PlayerForm.WmpUiSize;
+			this.splitContainer2.Panel2Collapsed = false;
 			this.Region = new Region(new Rectangle(loc, size));
 		}
 		private void ShowUi() {
+			this.splitContainer2.Panel2Collapsed = true;
 			this.Region = null;
 		}
 		public void FillSettings(PlayerFormSettings settings) {
 			base.FillSettings(settings);
-			settings.MainTabIndex = this.tabControl1.SelectedIndex;
-			settings.StatusbarVisible = this.StatusbarVisible;
 			settings.HideUiOnDeactivatedEnabled = this.HideUiOnDeactivatedEnabled;
 			settings.AutoSizeOnNormalEnabled = this.AutoSizeOnNormalEnabled;
 			settings.AutoSizeOnCfEnabled = this.AutoSizeOnCfEnabled;
 			settings.StrechToFitEnabled = this.StreachToFitEnabled;
 			settings.DisableScreenSaverEnabled = this.DisableScreenSaverEnabled;
 			settings.RemovePlayedContentEnabled = this.RemovePlayedContentEnabled;
-			settings.PlayListLoopEnabled = this.PlayListLoopEnabled;
 			settings.SkipCmLicenseEnabled = this.SkipCmLicenseEnabled;
 			settings.ChapterModeFromBegining = this.ChapterModeFromBegining;
 			settings.AutoVolumeEnabled = this.AutoVolumeEnabled;
@@ -173,15 +162,12 @@ namespace Yusen.GExplorer {
 		
 		public void ApplySettings(PlayerFormSettings settings) {
 			base.ApplySettings(settings);
-			this.tabControl1.SelectedIndex = settings.MainTabIndex ?? this.tabControl1.SelectedIndex;
-			this.StatusbarVisible = settings.StatusbarVisible ?? this.StatusbarVisible;
 			this.HideUiOnDeactivatedEnabled = settings.HideUiOnDeactivatedEnabled ?? this.HideUiOnDeactivatedEnabled;
 			this.AutoSizeOnNormalEnabled = settings.AutoSizeOnNormalEnabled ?? this.AutoSizeOnNormalEnabled;
 			this.AutoSizeOnCfEnabled = settings.AutoSizeOnCfEnabled ?? this.AutoSizeOnCfEnabled;
 			this.StreachToFitEnabled = settings.StrechToFitEnabled ?? this.StreachToFitEnabled;
 			this.DisableScreenSaverEnabled = settings.DisableScreenSaverEnabled ?? this.DisableScreenSaverEnabled;
 			this.RemovePlayedContentEnabled = settings.RemovePlayedContentEnabled ?? this.RemovePlayedContentEnabled;
-			this.PlayListLoopEnabled = settings.PlayListLoopEnabled ?? this.PlayListLoopEnabled;
 			this.SkipCmLicenseEnabled = settings.SkipCmLicenseEnabled ?? this.SkipCmLicenseEnabled;
 			this.ChapterModeFromBegining = settings.ChapterModeFromBegining ?? this.ChapterModeFromBegining;
 			this.AutoVolumeEnabled = settings.AutoVolumeEnabled ?? this.AutoVolumeEnabled;
@@ -208,14 +194,9 @@ namespace Yusen.GExplorer {
 				if (null == value) {
 					this.Text = "PlayerForm";
 					this.wmpMain.close();
-					Uri blankUri = new Uri("about:blank");
-					this.gwbDetail.Url = blankUri;
-					this.gwbRecommend.Url = blankUri;
 				} else {
 					this.Text = value.DisplayName;
 					this.OpenVideo();
-					this.gwbDetail.Navigate(value.DetailPageUri);
-					this.gwbRecommend.Navigate(value.RecommendPageUri);
 				}
 				PlayList.Instance.CurrentContent = value;
 			}
@@ -230,16 +211,6 @@ namespace Yusen.GExplorer {
 					this.endFlag = null;
 					this.OpenVideo();
 				}
-			}
-		}
-		public bool StatusbarVisible {
-			get { return this.tsmiStatusbarVisible.Checked; }
-			set {
-				this.tsmiStatusbarVisible.Checked = value;
-				if(value) {
-					this.UpdateStatusbatText();
-				}
-				this.statusStrip1.Visible = value;
 			}
 		}
 		public bool HideUiOnDeactivatedEnabled {
@@ -271,10 +242,6 @@ namespace Yusen.GExplorer {
 		public bool RemovePlayedContentEnabled {
 			get { return this.tsmiRemovePlayedContent.Checked; }
 			set { this.tsmiRemovePlayedContent.Checked = value; }
-		}
-		public bool PlayListLoopEnabled {
-			get { return this.tsmiLoopPlayList.Checked; }
-			set { this.tsmiLoopPlayList.Checked = value; }
 		}
 		public bool SkipCmLicenseEnabled {
 			get { return this.tsmiSkipCmLicense.Checked; }
@@ -463,14 +430,14 @@ namespace Yusen.GExplorer {
 		}
 		private void tsmiNextContent_Click(object sender, EventArgs e) {
 			ContentAdapter nextCont = PlayList.Instance.NextContentOf(this.CurrentContent);
-			if (null == nextCont && this.PlayListLoopEnabled) {
+			if (null == nextCont) {
 				nextCont = PlayList.Instance.NextContentOf(null);
 			}
 			this.CurrentContent = nextCont;
 		}
 		private void tsmiNextContentWithDelete_Click(object sender, EventArgs e) {
 			ContentAdapter nextCont = PlayList.Instance.NextContentOf(this.CurrentContent);
-			if (null == nextCont && this.PlayListLoopEnabled) {
+			if (null == nextCont) {
 				nextCont = PlayList.Instance.NextContentOf(null);
 			}
 			PlayList.Instance.Remove(this.CurrentContent);
@@ -482,7 +449,7 @@ namespace Yusen.GExplorer {
 		}
 		private void tsmiPrevContent_Click(object sender, EventArgs e) {
 			ContentAdapter prevCont = PlayList.Instance.PrevContentOf(this.CurrentContent);
-			if (null == prevCont && this.PlayListLoopEnabled) {
+			if (null == prevCont) {
 				prevCont = PlayList.Instance.PrevContentOf(null);
 			}
 			this.CurrentContent = prevCont;
@@ -495,9 +462,6 @@ namespace Yusen.GExplorer {
 		}
 		private void tsmiDisableScreenSaver_Click(object sender, EventArgs e) {
 			this.DisableScreenSaverEnabled = this.DisableScreenSaverEnabled;
-		}
-		private void tsmiStatusbarVisible_Click(object sender, EventArgs e) {
-			this.StatusbarVisible = this.StatusbarVisible;
 		}
 		private void tsmiResizeZoomValue_Click(object sender, EventArgs e) {
 			string title = "リサイズ時の倍率";
@@ -548,12 +512,10 @@ namespace Yusen.GExplorer {
 			}
 		}
 		private void tsmiFocusOnWmp_Click(object sender, EventArgs e) {
-			this.tabControl1.SelectedTab = this.tabPlayer;
 			this.wmpMain.Focus();
 		}
 		private void tsmiResizeToVideoResolution_Click(object sender, EventArgs e) {
 			this.WindowState = FormWindowState.Normal;
-			this.tabControl1.SelectedTab = this.tabPlayer;
 			Size videoSize = new Size(this.wmpMain.currentMedia.imageSourceWidth, this.wmpMain.currentMedia.imageSourceHeight);
 			Size distSize = new Size(videoSize.Width*this.ZoomRatioOnResize/100, videoSize.Height*this.ZoomRatioOnResize/100);
 			for(int i=0; i<2; i++) {
@@ -573,24 +535,11 @@ namespace Yusen.GExplorer {
 			}
 			MessageBox.Show(sb.ToString(), "ItemInfo の表示", MessageBoxButtons.OK, MessageBoxIcon.Information);
 		}
-		#endregion
-		#region タブドラッグでのウィンドウ移動
-		private void tabControl1_MouseDown(object sender, MouseEventArgs e) {
-			this.tabDragPoint = this.PointToScreen(new Point(e.X, e.Y));
+		private void tsmiBrowseDetail_Click(object sender, EventArgs e) {
+			Utility.Browse(this.CurrentContent.DetailPageUri);
 		}
-		private void tabControl1_MouseMove(object sender, MouseEventArgs e) {
-			if(!this.tabDragPoint.HasValue) {
-				return;
-			}
-			Point pt1 = this.tabDragPoint.Value;
-			Point pt2 = this.PointToScreen(new Point(e.X, e.Y));
-			if((e.Button & MouseButtons.Left) == MouseButtons.Left && pt1 != pt2) {
-				this.Location += new Size(pt2 - new Size(pt1));
-				this.tabDragPoint = pt2;
-			}
-		}
-		private void tabControl1_MouseUp(object sender, MouseEventArgs e) {
-			this.tabDragPoint = null;
+		private void tsmiBrowseRecommended_Click(object sender, EventArgs e) {
+			Utility.Browse(this.CurrentContent.RecommendPageUri);
 		}
 		#endregion
 		#region WMPのイベント
@@ -630,13 +579,11 @@ namespace Yusen.GExplorer {
 					Match dartTagMatch = PlayerForm.regexDartTag.Match(entryUrl);
 					if (dartTagMatch.Success && !string.IsNullOrEmpty(dartTagMatch.Groups[1].Value)) {
 						BannerTag bt = new BannerTag(dartTagMatch.Groups[1].Value);
-						this.pboxBanner.Tag = bt;
-						this.pboxBanner.Load(bt.ImageUri.AbsoluteUri);
-						this.splitContainer1.Panel1Collapsed = false;
+						this.wbBanner.Navigate(bt.PageUri);
+						this.splitContainer1.Panel2Collapsed = false;
 					} else {
-						this.splitContainer1.Panel1Collapsed = true;
-						this.pboxBanner.Image = null;
-						this.pboxBanner.Tag = null;
+						this.splitContainer1.Panel2Collapsed = true;
+						this.wbBanner.Navigate("about:blank");
 					}
 					//cm_licenseの早期スキップ
 					if (this.SkipCmLicenseEnabled && this.IsCmLicense) {
@@ -645,7 +592,7 @@ namespace Yusen.GExplorer {
 					//ステータスバー更新
 					this.UpdateStatusbatText();
 					//リサイズ
-					if(this.IsCf.HasValue && FormWindowState.Normal == this.WindowState && this.tabControl1.SelectedTab == this.tabPlayer) {
+					if(this.IsCf.HasValue && FormWindowState.Normal == this.WindowState) {
 						if(this.IsCf.Value) {
 							if(this.AutoSizeOnCfEnabled) {
 								this.tsmiResizeToVideoResolution.PerformClick();
@@ -682,57 +629,6 @@ namespace Yusen.GExplorer {
 		}
 		#endregion
 		
-		private void gwbDetail_Navigating(object sender, WebBrowserNavigatingEventArgs e) {
-			switch (e.Url.Scheme) {
-				case "javascript":
-				case "mailto":
-					break;
-				default:
-					if (!e.Url.Equals(this.CurrentContent.DetailPageUri)) {
-						e.Cancel = true;
-						Utility.Browse(e.Url);
-					}
-					break;
-			}
-		}
-		private void gwbRecommend_Navigating(object sender, WebBrowserNavigatingEventArgs e) {
-			switch (e.Url.Scheme) {
-				case "javascript":
-				case "mailto":
-					break;
-				default:
-					if (!e.Url.Equals(this.CurrentContent.RecommendPageUri)) {
-						e.Cancel = true;
-						Utility.Browse(e.Url);
-					}
-					break;
-			}
-		}
-		#region バナー
-		private void pboxBanner_Click(object sender, EventArgs e) {
-			BannerTag bt = this.pboxBanner.Tag as BannerTag;
-			if (null != bt) {
-				Utility.Browse(bt.JumpUri);
-			}
-		}
-		private void tsmiBannerCopyJumpUri_Click(object sender, EventArgs e) {
-			BannerTag bt = this.pboxBanner.Tag as BannerTag;
-			if (null != bt) {
-				Clipboard.SetText(bt.JumpUri.AbsoluteUri);
-			}
-		}
-		private void tsmiBannerCopyImageUri_Click(object sender, EventArgs e) {
-			BannerTag bt = this.pboxBanner.Tag as BannerTag;
-			if (null != bt) {
-				Clipboard.SetText(bt.ImageUri.AbsoluteUri);
-			}
-		}
-		private void tsmiBannerCopyImage_Click(object sender, EventArgs e) {
-			if (null != this.pboxBanner.Image) {
-				Clipboard.SetImage(this.pboxBanner.Image);
-			}
-		}
-		#endregion
 		private void timerAutoVolume_Tick(object sender, EventArgs e) {
 			this.timerAutoVolume.Stop();
 			this.ModifyVolume();
@@ -753,15 +649,12 @@ namespace Yusen.GExplorer {
 #endif
 
 	public class PlayerFormSettings : FormSettingsBaseSettings {
-		private int? mainTabIndex;
-		private bool? statusbarVisible;
 		private bool? hideUiOnDeactivatedEnabled;
 		private bool? autoSizeOnNormalEnabled;
 		private bool? autoSizeOnCfEnabled;
 		private bool? strechToFitEnabled;
 		private bool? disableScreenSaverEnabled;
 		private bool? removePlayedContentEnabled;
-		private bool? playListLoopEnabled;
 		private bool? skipCmLicenseEnabled;
 		private bool? chapterModeFromBegining;
 		private bool? autoVolumeEnabled;
@@ -769,14 +662,6 @@ namespace Yusen.GExplorer {
 		private int? volumeNormal;
 		private int? volumeCf;
 
-		public int? MainTabIndex {
-			get { return this.mainTabIndex; }
-			set { this.mainTabIndex = value; }
-		}
-		public bool? StatusbarVisible {
-			get { return this.statusbarVisible; }
-			set { this.statusbarVisible = value; }
-		}
 		public bool? HideUiOnDeactivatedEnabled {
 			get { return this.hideUiOnDeactivatedEnabled; }
 			set { this.hideUiOnDeactivatedEnabled = value; }
@@ -800,10 +685,6 @@ namespace Yusen.GExplorer {
 		public bool? RemovePlayedContentEnabled {
 			get { return this.removePlayedContentEnabled; }
 			set { this.removePlayedContentEnabled = value; }
-		}
-		public bool? PlayListLoopEnabled {
-			get { return this.playListLoopEnabled; }
-			set { this.playListLoopEnabled = value; }
 		}
 		public bool? SkipCmLicenseEnabled {
 			get { return this.skipCmLicenseEnabled; }

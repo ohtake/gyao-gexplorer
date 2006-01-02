@@ -5,6 +5,10 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.Threading;
 using Yusen.GCrawler;
+using System.Net;
+using System.IO;
+using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Yusen.GExplorer {
 	sealed partial class MainForm : FormSettingsBase, IFormWithSettings<MainFormSettings> {
@@ -378,6 +382,32 @@ namespace Yusen.GExplorer {
 					Cache.Instance.DeadlineTable.ClearDeadlines();
 					this.SetStatutBarTextTemporary("配信期限エントリーの整理    削除成功: " + count.ToString());
 					break;
+			}
+		}
+		private void tsmiGetProfile_Click(object sender, EventArgs e) {
+			string title = "ユーザIDに対応するプロファイルを取得";
+			try{
+				HttpWebRequest req = WebRequest.Create("http://www.gyao.jp/sityou/movie/contentsId/cnt0000000/rateId/bit0000001/login_from/shityou/") as HttpWebRequest;
+				CookieContainer cc = new CookieContainer();
+				cc.Add(new Cookie("Cookie_UserId", GlobalSettings.Instance.UserNo.ToString(), "/", "www.gyao.jp"));
+				cc.Add(new Cookie("Cookie_CookieId", "0", "/", "www.gyao.jp"));
+				req.CookieContainer = cc;
+				WebResponse res = req.GetResponse();
+				using(TextReader reader = new StreamReader(res.GetResponseStream(), Encoding.GetEncoding("Shift_JIS"))){
+					Regex regex = new Regex(@"(sex=\w+;(\w+=\w+;)*)sz=");
+					string line;
+					while(null != (line = reader.ReadLine())) {
+						Match match = regex.Match(line);
+						if(match.Success) {
+							MessageBox.Show(match.Groups[1].Value, title, MessageBoxButtons.OK, MessageBoxIcon.Information);
+							return;
+						}
+					}
+					MessageBox.Show("ユーザプロファイルの取得に失敗しました．", title, MessageBoxButtons.OK, MessageBoxIcon.Error);
+					return;
+				}
+			}catch{
+				throw;
 			}
 		}
 		private void tsmiAbortCrawling_Click(object sender, EventArgs e) {

@@ -56,7 +56,7 @@ namespace Yusen.GExplorer {
 			this.tsmiSettingsDetailView = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiTools = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiMergeResults = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+			this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiClearCrawlResults = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiRemoveCaches = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiRemoveCachesUnreachable = new System.Windows.Forms.ToolStripMenuItem();
@@ -64,6 +64,8 @@ namespace Yusen.GExplorer {
 			this.tsmiRemoveDeadlineEntries = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiRemoveDeadlineEntriesUnreacheable = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiRemoveDeadlineEntriesAll = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+			this.tsmiGetProfile = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiUserCommands = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiAbortCrawling = new System.Windows.Forms.ToolStripMenuItem();
@@ -216,7 +218,7 @@ namespace Yusen.GExplorer {
 			// 
 			this.scLists.Panel2.Controls.Add(this.playListView1);
 			this.scLists.Size = new System.Drawing.Size(548, 474);
-			this.scLists.SplitterDistance = 319;
+			this.scLists.SplitterDistance = 318;
 			this.scLists.TabIndex = 2;
 			this.scLists.Text = "splitContainer2";
 			// 
@@ -237,7 +239,7 @@ namespace Yusen.GExplorer {
 			this.crawlResultView1.Name = "crawlResultView1";
 			this.crawlResultView1.NewColor = System.Drawing.Color.Red;
 			this.crawlResultView1.ShowPackages = true;
-			this.crawlResultView1.Size = new System.Drawing.Size(548, 319);
+			this.crawlResultView1.Size = new System.Drawing.Size(548, 318);
 			this.crawlResultView1.TabIndex = 1;
 			this.crawlResultView1.ContentSelectionChanged += new System.EventHandler<Yusen.GExplorer.ContentSelectionChangedEventArgs>(this.crawlResultView1_ContentSelectionChanged);
 			this.crawlResultView1.ManuallyCacheDeleted += new System.EventHandler<Yusen.GExplorer.ManuallyCacheDeletedEventArgs>(this.crawlResultView1_ManuallyCacheDeleted);
@@ -249,7 +251,7 @@ namespace Yusen.GExplorer {
 			this.playListView1.Location = new System.Drawing.Point(0, 0);
 			this.playListView1.MultiSelectEnabled = true;
 			this.playListView1.Name = "playListView1";
-			this.playListView1.Size = new System.Drawing.Size(548, 151);
+			this.playListView1.Size = new System.Drawing.Size(548, 152);
 			this.playListView1.TabIndex = 0;
 			this.playListView1.TopContent = null;
 			this.playListView1.ContentSelectionChanged += new System.EventHandler<Yusen.GExplorer.ContentSelectionChangedEventArgs>(this.playListView1_ContentSelectionChanged);
@@ -405,10 +407,12 @@ namespace Yusen.GExplorer {
 			// 
 			this.tsmiTools.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiMergeResults,
-            this.toolStripSeparator4,
+            this.toolStripMenuItem1,
             this.tsmiClearCrawlResults,
             this.tsmiRemoveCaches,
             this.tsmiRemoveDeadlineEntries,
+            this.toolStripSeparator4,
+            this.tsmiGetProfile,
             this.toolStripSeparator2,
             this.tsmiUserCommands});
 			this.tsmiTools.Name = "tsmiTools";
@@ -418,19 +422,19 @@ namespace Yusen.GExplorer {
 			// tsmiMergeResults
 			// 
 			this.tsmiMergeResults.Name = "tsmiMergeResults";
-			this.tsmiMergeResults.Size = new System.Drawing.Size(223, 22);
+			this.tsmiMergeResults.Size = new System.Drawing.Size(269, 22);
 			this.tsmiMergeResults.Text = "既得ジャンルを結合して表示(&M)";
 			this.tsmiMergeResults.Click += new System.EventHandler(this.tsmiMergeResults_Click);
 			// 
-			// toolStripSeparator4
+			// toolStripMenuItem1
 			// 
-			this.toolStripSeparator4.Name = "toolStripSeparator4";
-			this.toolStripSeparator4.Size = new System.Drawing.Size(220, 6);
+			this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+			this.toolStripMenuItem1.Size = new System.Drawing.Size(266, 6);
 			// 
 			// tsmiClearCrawlResults
 			// 
 			this.tsmiClearCrawlResults.Name = "tsmiClearCrawlResults";
-			this.tsmiClearCrawlResults.Size = new System.Drawing.Size(223, 22);
+			this.tsmiClearCrawlResults.Size = new System.Drawing.Size(269, 22);
 			this.tsmiClearCrawlResults.Text = "クロール結果の破棄(&D) ...";
 			this.tsmiClearCrawlResults.Click += new System.EventHandler(this.tsmiClearCrawlResults_Click);
 			// 
@@ -440,7 +444,7 @@ namespace Yusen.GExplorer {
             this.tsmiRemoveCachesUnreachable,
             this.tsmiRemoveCachesAll});
 			this.tsmiRemoveCaches.Name = "tsmiRemoveCaches";
-			this.tsmiRemoveCaches.Size = new System.Drawing.Size(223, 22);
+			this.tsmiRemoveCaches.Size = new System.Drawing.Size(269, 22);
 			this.tsmiRemoveCaches.Text = "キャッシュの削除(&R)";
 			// 
 			// tsmiRemoveCachesUnreachable
@@ -463,7 +467,7 @@ namespace Yusen.GExplorer {
             this.tsmiRemoveDeadlineEntriesUnreacheable,
             this.tsmiRemoveDeadlineEntriesAll});
 			this.tsmiRemoveDeadlineEntries.Name = "tsmiRemoveDeadlineEntries";
-			this.tsmiRemoveDeadlineEntries.Size = new System.Drawing.Size(223, 22);
+			this.tsmiRemoveDeadlineEntries.Size = new System.Drawing.Size(269, 22);
 			this.tsmiRemoveDeadlineEntries.Text = "配信期限辞書の整理(&L)";
 			// 
 			// tsmiRemoveDeadlineEntriesUnreacheable
@@ -480,23 +484,35 @@ namespace Yusen.GExplorer {
 			this.tsmiRemoveDeadlineEntriesAll.Text = "全てのエントリーを削除(&A)...";
 			this.tsmiRemoveDeadlineEntriesAll.Click += new System.EventHandler(this.tsmiRemoveDeadlineEntriesAll_Click);
 			// 
+			// toolStripSeparator4
+			// 
+			this.toolStripSeparator4.Name = "toolStripSeparator4";
+			this.toolStripSeparator4.Size = new System.Drawing.Size(266, 6);
+			// 
+			// tsmiGetProfile
+			// 
+			this.tsmiGetProfile.Name = "tsmiGetProfile";
+			this.tsmiGetProfile.Size = new System.Drawing.Size(269, 22);
+			this.tsmiGetProfile.Text = "ユーザIDに対応するプロファイルを取得(&P)...";
+			this.tsmiGetProfile.Click += new System.EventHandler(this.tsmiGetProfile_Click);
+			// 
 			// toolStripSeparator2
 			// 
 			this.toolStripSeparator2.Name = "toolStripSeparator2";
-			this.toolStripSeparator2.Size = new System.Drawing.Size(220, 6);
+			this.toolStripSeparator2.Size = new System.Drawing.Size(266, 6);
 			// 
 			// tsmiUserCommands
 			// 
 			this.tsmiUserCommands.Name = "tsmiUserCommands";
-			this.tsmiUserCommands.Size = new System.Drawing.Size(223, 22);
+			this.tsmiUserCommands.Size = new System.Drawing.Size(269, 22);
 			this.tsmiUserCommands.Text = "外部コマンド(&U)";
 			// 
 			// tsmiAbortCrawling
 			// 
 			this.tsmiAbortCrawling.Enabled = false;
 			this.tsmiAbortCrawling.Name = "tsmiAbortCrawling";
-			this.tsmiAbortCrawling.Size = new System.Drawing.Size(122, 16);
-			this.tsmiAbortCrawling.Text = "<<クロール中止 (&A)>>";
+			this.tsmiAbortCrawling.Size = new System.Drawing.Size(118, 16);
+			this.tsmiAbortCrawling.Text = "<<クロール中止(&A)>>";
 			this.tsmiAbortCrawling.Click += new System.EventHandler(this.tsmiAbortCrawling_Click);
 			// 
 			// inputBoxDialog1
@@ -605,6 +621,8 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ToolStripMenuItem tsmiSettingsPlaylistView;
 		private System.Windows.Forms.ToolStripMenuItem tsmiSettingsDetailView;
 		private System.Windows.Forms.Timer timerClearStatusText;
+		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
+		private System.Windows.Forms.ToolStripMenuItem tsmiGetProfile;
 
 
 	}

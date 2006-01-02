@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("YUSEN")]
 [assembly: AssemblyProduct("GExplorer")]
-[assembly: AssemblyCopyright("Copyright (c) 2005")]
+[assembly: AssemblyCopyright("Copyright (c) 2005, 2006.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -29,6 +29,6 @@ using System.Runtime.InteropServices;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("2.0.1.1")]
-[assembly: AssemblyFileVersion("2.0.1.1")]
+[assembly: AssemblyVersion("2.0.1.2")]
+[assembly: AssemblyFileVersion("2.0.1.2")]
 
