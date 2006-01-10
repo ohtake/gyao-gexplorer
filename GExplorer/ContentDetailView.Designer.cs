@@ -56,6 +56,10 @@ namespace Yusen.GExplorer {
 			this.txtDeadline = new System.Windows.Forms.TextBox();
 			this.tabpDetail = new System.Windows.Forms.TabPage();
 			this.propgDetail = new System.Windows.Forms.PropertyGrid();
+			this.tsmiTest = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
+			this.tsmiTestLoad = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiTestLoadAsync = new System.Windows.Forms.ToolStripMenuItem();
 			this.splitContainer1.Panel1.SuspendLayout();
 			this.splitContainer1.Panel2.SuspendLayout();
 			this.splitContainer1.SuspendLayout();
@@ -105,10 +109,12 @@ namespace Yusen.GExplorer {
             this.tsmiCopyNameDetailImageUri,
             this.toolStripSeparator2,
             this.tsmiCopyImage,
+            this.toolStripMenuItem2,
+            this.tsmiTest,
             this.tssSettings,
             this.tsmiSettings});
 			this.cmsImage.Name = "cmsImage";
-			this.cmsImage.Size = new System.Drawing.Size(249, 126);
+			this.cmsImage.Size = new System.Drawing.Size(249, 176);
 			this.cmsImage.Opening += new System.ComponentModel.CancelEventHandler(this.cmsImage_Opening);
 			// 
 			// tsmiCopyImageUri
@@ -383,6 +389,34 @@ namespace Yusen.GExplorer {
 			this.propgDetail.Size = new System.Drawing.Size(216, 201);
 			this.propgDetail.TabIndex = 0;
 			// 
+			// tsmiTest
+			// 
+			this.tsmiTest.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiTestLoad,
+            this.tsmiTestLoadAsync});
+			this.tsmiTest.Name = "tsmiTest";
+			this.tsmiTest.Size = new System.Drawing.Size(248, 22);
+			this.tsmiTest.Text = "ƒeƒXƒg(&T)";
+			// 
+			// toolStripMenuItem2
+			// 
+			this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+			this.toolStripMenuItem2.Size = new System.Drawing.Size(245, 6);
+			// 
+			// tsmiTestLoad
+			// 
+			this.tsmiTestLoad.Name = "tsmiTestLoad";
+			this.tsmiTestLoad.Size = new System.Drawing.Size(152, 22);
+			this.tsmiTestLoad.Text = "&Load";
+			this.tsmiTestLoad.Click += new System.EventHandler(this.tsmiTestLoad_Click);
+			// 
+			// tsmiTestLoadAsync
+			// 
+			this.tsmiTestLoadAsync.Name = "tsmiTestLoadAsync";
+			this.tsmiTestLoadAsync.Size = new System.Drawing.Size(152, 22);
+			this.tsmiTestLoadAsync.Text = "Load&Async";
+			this.tsmiTestLoadAsync.Click += new System.EventHandler(this.tsmiTestLoadAsync_Click);
+			// 
 			// ContentDetailView
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -439,5 +473,9 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ToolStripMenuItem tsmiSizeMode;
 		private System.Windows.Forms.ToolStripMenuItem tsmiSyncronizeToCurrentContent;
 		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
+		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
+		private System.Windows.Forms.ToolStripMenuItem tsmiTest;
+		private System.Windows.Forms.ToolStripMenuItem tsmiTestLoad;
+		private System.Windows.Forms.ToolStripMenuItem tsmiTestLoadAsync;
 	}
 }

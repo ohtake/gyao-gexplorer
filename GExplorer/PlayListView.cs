@@ -97,26 +97,6 @@ namespace Yusen.GExplorer {
 				this.listView1.FocusedItem = null;
 			}
 		}
-		public ContentAdapter TopContent {
-			get {
-				ListViewItem lvi = this.listView1.TopItem;
-				if (null != lvi) {
-					return lvi.Tag as ContentAdapter;
-				}
-				return null;
-			}
-			set {
-				if (null != value) {
-					foreach (ListViewItem lvi in this.listView1.Items) {
-						if (value.Equals(lvi.Tag)) {
-							this.listView1.TopItem = lvi;
-							return;
-						}
-					}
-				}
-				this.listView1.TopItem = null;
-			}
-		}
 		public bool MultiSelectEnabled {
 			get { return this.tsmiMultiSelectEnabled.Checked; }
 			set {
@@ -135,32 +115,35 @@ namespace Yusen.GExplorer {
 		}
 
 		private void UpdateItems() {
-			int def = PlayList.Instance.Count - this.listView1.Items.Count;
-			if (0 == def) {
-				//個数が変わらないので text と tag のみ更新
-				int len = PlayList.Instance.Count;
-				for (int i = 0; i<len; i++) {
-					ContentAdapter cont = PlayList.Instance[i];
-					ListViewItem lvi = this.listView1.Items[i];
-					lvi.SubItems[0].Text = cont.ContentId;
-					lvi.SubItems[1].Text = cont.DisplayName;
-					lvi.SubItems[2].Text = cont.GTimeSpan.ToString();
-					lvi.SubItems[3].Text = cont.Deadline;
-					lvi.SubItems[4].Text = cont.Comment;
-					lvi.Tag = cont;
+			int oldCount = this.listView1.Items.Count;
+			int newCount = PlayList.Instance.Count;
+			int minCount = (oldCount < newCount) ? oldCount : newCount;
+
+			//従来のアイテムの値を書き換える
+			for(int i=0; i<minCount; i++) {
+				ContentAdapter cont = PlayList.Instance[i];
+				ListViewItem lvi = this.listView1.Items[i];
+				lvi.SubItems[0].Text = cont.ContentId;
+				lvi.SubItems[1].Text = cont.DisplayName;
+				lvi.SubItems[2].Text = cont.GTimeSpan.ToString();
+				lvi.SubItems[3].Text = cont.Deadline;
+				lvi.SubItems[4].Text = cont.Comment;
+				lvi.Tag = cont;
+			}
+			//増減をチェックしてから差分を埋める
+			if(minCount == newCount) { //減ったか同じの場合
+				for(int i=oldCount-1; i>=newCount; i--) {
+					this.listView1.Items.RemoveAt(i);
 				}
-			} else {
-				//個数が変わったのでアイテムの作り直し
-				this.listView1.Items.Clear();
-				foreach (ContentAdapter cont in PlayList.Instance) {
+			} else if(minCount == oldCount){//増えた場合
+				for(int i=minCount; i<newCount; i++) {
+					ContentAdapter cont = PlayList.Instance[i];
 					ListViewItem lvi = new ListViewItem(new string[] { cont.ContentId, cont.DisplayName, cont.GTimeSpan.ToString(), cont.Deadline, cont.Comment });
 					lvi.Tag = cont;
 					this.listView1.Items.Add(lvi);
 				}
-				if (def>0) {
-					//個数が増えたのならばおそらく末尾への追加だろう
-					this.TopContent = PlayList.Instance[PlayList.Instance.Count -1];
-				}
+				//個数が増えたのならばおそらく末尾への追加だろう
+				this.ScrollToBottom();
 			}
 		}
 		private void UpdateBoldness() {

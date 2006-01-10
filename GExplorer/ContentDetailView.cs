@@ -36,14 +36,11 @@ namespace Yusen.GExplorer {
 				this.txtDeadline.Text = value.Deadline;
 				this.txtDescription.Text = value.LongDescription.Replace("\n", "\r\n");
 				this.propgDetail.SelectedObject = value;
-				try {
-					this.LoadImage();
-				} catch(Exception e) {
-					this.picboxImage.Image = this.picboxImage.ErrorImage;
-					if(null != this.ImageLoadError) {
-						this.ImageLoadError(this, new ImageLoadErrorEventArgs(e));
-					}
-				}
+#if false
+				this.LoadImage();
+#else
+				this.LoadImageAsync();
+#endif
 			}
 		}
 		[DefaultValue(ContentImageSize.Large)]
@@ -120,7 +117,22 @@ namespace Yusen.GExplorer {
 			if(null == uri){
 				this.picboxImage.Image = null;
 			}else{
-				this.picboxImage.Load(uri.AbsoluteUri);
+				try {
+					this.picboxImage.Load(uri.AbsoluteUri);
+				} catch(Exception e) {
+					this.picboxImage.Image = this.picboxImage.ErrorImage;
+					if(null != this.ImageLoadError) {
+						this.ImageLoadError(this, new ImageLoadErrorEventArgs(e));
+					}
+				}
+			}
+		}
+		private void LoadImageAsync() {
+			Uri uri = this.ImageUri;
+			if(null == uri) {
+				this.picboxImage.Image = null;
+			} else {
+				this.picboxImage.LoadAsync(uri.AbsoluteUri);
 			}
 		}
 		private void ChangeEnabilityOfCmsItems() {
@@ -208,6 +220,13 @@ namespace Yusen.GExplorer {
 				this.tsmiSettings.Visible = value;
 				this.tssSettings.Visible = value;
 			}
+		}
+
+		private void tsmiTestLoad_Click(object sender, EventArgs e) {
+			this.picboxImage.Load();
+		}
+		private void tsmiTestLoadAsync_Click(object sender, EventArgs e) {
+			this.picboxImage.LoadAsync();
 		}
 	}
 	

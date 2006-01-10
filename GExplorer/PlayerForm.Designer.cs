@@ -34,9 +34,8 @@ namespace Yusen.GExplorer {
 			this.tsslDuration = new System.Windows.Forms.ToolStripStatusLabel();
 			this.tsslTitle = new System.Windows.Forms.ToolStripStatusLabel();
 			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-			this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+			this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
 			this.wbBanner = new System.Windows.Forms.WebBrowser();
-			this.label1 = new System.Windows.Forms.Label();
 			this.menuStrip1 = new System.Windows.Forms.MenuStrip();
 			this.tsmiFile = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiPlayChapter = new System.Windows.Forms.ToolStripMenuItem();
@@ -95,9 +94,7 @@ namespace Yusen.GExplorer {
 			this.splitContainer1.Panel1.SuspendLayout();
 			this.splitContainer1.Panel2.SuspendLayout();
 			this.splitContainer1.SuspendLayout();
-			this.splitContainer2.Panel1.SuspendLayout();
-			this.splitContainer2.Panel2.SuspendLayout();
-			this.splitContainer2.SuspendLayout();
+			this.tableLayoutPanel1.SuspendLayout();
 			this.menuStrip1.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -197,56 +194,38 @@ namespace Yusen.GExplorer {
 			// 
 			// splitContainer1.Panel2
 			// 
-			this.splitContainer1.Panel2.Controls.Add(this.splitContainer2);
+			this.splitContainer1.Panel2.Controls.Add(this.tableLayoutPanel1);
 			this.splitContainer1.Panel2Collapsed = true;
 			this.splitContainer1.Panel2MinSize = 120;
 			this.splitContainer1.Size = new System.Drawing.Size(644, 548);
-			this.splitContainer1.SplitterDistance = 524;
+			this.splitContainer1.SplitterDistance = 523;
 			this.splitContainer1.SplitterWidth = 1;
 			this.splitContainer1.TabIndex = 1;
 			// 
-			// splitContainer2
+			// tableLayoutPanel1
 			// 
-			this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.splitContainer2.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
-			this.splitContainer2.IsSplitterFixed = true;
-			this.splitContainer2.Location = new System.Drawing.Point(0, 0);
-			this.splitContainer2.Name = "splitContainer2";
-			this.splitContainer2.Orientation = System.Windows.Forms.Orientation.Horizontal;
-			// 
-			// splitContainer2.Panel1
-			// 
-			this.splitContainer2.Panel1.Controls.Add(this.wbBanner);
-			this.splitContainer2.Panel1MinSize = 0;
-			// 
-			// splitContainer2.Panel2
-			// 
-			this.splitContainer2.Panel2.Controls.Add(this.label1);
-			this.splitContainer2.Panel2Collapsed = true;
-			this.splitContainer2.Panel2MinSize = 64;
-			this.splitContainer2.Size = new System.Drawing.Size(96, 100);
-			this.splitContainer2.SplitterDistance = 36;
-			this.splitContainer2.SplitterWidth = 1;
-			this.splitContainer2.TabIndex = 0;
+			this.tableLayoutPanel1.ColumnCount = 1;
+			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+			this.tableLayoutPanel1.Controls.Add(this.wbBanner, 0, 0);
+			this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+			this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+			this.tableLayoutPanel1.RowCount = 2;
+			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 600F));
+			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+			this.tableLayoutPanel1.Size = new System.Drawing.Size(96, 100);
+			this.tableLayoutPanel1.TabIndex = 1;
 			// 
 			// wbBanner
 			// 
 			this.wbBanner.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.wbBanner.Location = new System.Drawing.Point(0, 0);
+			this.wbBanner.Margin = new System.Windows.Forms.Padding(0);
 			this.wbBanner.MinimumSize = new System.Drawing.Size(20, 20);
 			this.wbBanner.Name = "wbBanner";
 			this.wbBanner.ScrollBarsEnabled = false;
-			this.wbBanner.Size = new System.Drawing.Size(96, 100);
+			this.wbBanner.Size = new System.Drawing.Size(96, 600);
 			this.wbBanner.TabIndex = 0;
-			// 
-			// label1
-			// 
-			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(13, 26);
-			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(95, 12);
-			this.label1.TabIndex = 0;
-			this.label1.Text = "ècí∑ÉoÉiÅ[UZEEE";
 			// 
 			// menuStrip1
 			// 
@@ -677,10 +656,7 @@ namespace Yusen.GExplorer {
 			this.splitContainer1.Panel1.ResumeLayout(false);
 			this.splitContainer1.Panel2.ResumeLayout(false);
 			this.splitContainer1.ResumeLayout(false);
-			this.splitContainer2.Panel1.ResumeLayout(false);
-			this.splitContainer2.Panel2.ResumeLayout(false);
-			this.splitContainer2.Panel2.PerformLayout();
-			this.splitContainer2.ResumeLayout(false);
+			this.tableLayoutPanel1.ResumeLayout(false);
 			this.menuStrip1.ResumeLayout(false);
 			this.menuStrip1.PerformLayout();
 			this.ResumeLayout(false);
@@ -744,11 +720,10 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
 		private System.Windows.Forms.ToolStripMenuItem tsmiResizeZoomValue;
 		private System.Windows.Forms.SplitContainer splitContainer1;
-		private System.Windows.Forms.SplitContainer splitContainer2;
 		private System.Windows.Forms.WebBrowser wbBanner;
-		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
 		private System.Windows.Forms.ToolStripMenuItem tsmiBrowseDetail;
 		private System.Windows.Forms.ToolStripMenuItem tsmiBrowseRecommended;
+		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
 	}
 }

@@ -137,11 +137,9 @@ namespace Yusen.GExplorer {
 			loc += PlayerForm.WmpMarginSize;
 			Size size = this.splitContainer1.ClientSize;
 			size -= PlayerForm.WmpUiSize;
-			this.splitContainer2.Panel2Collapsed = false;
 			this.Region = new Region(new Rectangle(loc, size));
 		}
 		private void ShowUi() {
-			this.splitContainer2.Panel2Collapsed = true;
 			this.Region = null;
 		}
 		public void FillSettings(PlayerFormSettings settings) {

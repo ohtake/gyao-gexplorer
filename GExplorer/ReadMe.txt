@@ -1,4 +1,4 @@
-GyaO 専用ブラウザ GExplorer 2.0.1.2
+GyaO 専用ブラウザ GExplorer 2.0.1.3
 
 ◆概要
 株式会社USENによる「パソコンテレビGyaO」を閲覧するためのブラウザです．

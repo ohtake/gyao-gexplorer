@@ -253,7 +253,6 @@ namespace Yusen.GExplorer {
 			this.playListView1.Name = "playListView1";
 			this.playListView1.Size = new System.Drawing.Size(548, 152);
 			this.playListView1.TabIndex = 0;
-			this.playListView1.TopContent = null;
 			this.playListView1.ContentSelectionChanged += new System.EventHandler<Yusen.GExplorer.ContentSelectionChangedEventArgs>(this.playListView1_ContentSelectionChanged);
 			// 
 			// contentDetailView1

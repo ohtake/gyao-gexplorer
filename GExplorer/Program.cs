@@ -6,33 +6,65 @@ using System.IO;
 using System.Drawing;
 using System.Media;
 using System.Diagnostics;
+using System.ComponentModel;
 
 namespace Yusen.GExplorer {
 	static class Program {
+		private static SplashForm splashInit;
+		private static MainForm mainForm;
+		private const int SerializationSteps = 5;
+		internal static event EventHandler<ProgramSerializationProgressEventArgs> ProgramSerializationProgress;
+		
 		/// <summary>The main entry point for the application.</summary>
 		[STAThread]
 		static void Main() {
-			ApplicationContext context = Program.InitializeProgram();
-			Application.Run(context);
-			Program.QuitProgram();
-		}
-
-		private static ApplicationContext InitializeProgram() {
+			//おまじない
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
+			//キャッチされない例外をキャッチ
 			Application.ThreadException += new ThreadExceptionEventHandler(Application_ThreadException);
 			AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
+			//多重起動チェック
+			if(Program.CheckMultipleExecution()) {
+				MessageBox.Show("多重起動によりプログラムを終了します．", Application.ProductName + " " + Application.ProductVersion, MessageBoxButtons.OK, MessageBoxIcon.Error);
+				return;
+			}
 			//カレントディレクトリをスタートアップパスにあわせる
 			Environment.CurrentDirectory = Application.StartupPath;
+			
+			Program.splashInit = new SplashForm();
+			Program.splashInit.Initialize("起動中です．．．", 8+1);
+			Program.InitializeProgram();
+			Program.mainForm.Load += delegate {
+				Program.splashInit.EndProgress();
+				Program.splashInit = null;
+			};
+			
+			Application.Run(Program.mainForm);
+		}
 
-			SplashForm sf = new SplashForm();
-			sf.Initialize("起動中です．．．", 8+1);
+		private static bool CheckMultipleExecution() {
+			Process curProc = Process.GetCurrentProcess();
+			foreach(Process p in Process.GetProcesses()) {
+				if(curProc.Id.Equals(p.Id)) {
+					continue;
+				}
+				try {
+					if(curProc.MainModule.FileName.Equals(p.MainModule.FileName)) {
+						return true;
+					}
+				} catch {
+				}
+			}
+			return false;
+		}
 
+		private static void InitializeProgram() {
 			//グローバル設定
-			sf.StepProgress("グローバル設定の読み込み");
+			Program.splashInit.StepProgress("グローバル設定の読み込み");
 			GlobalSettings.TryDeserialize();
 			//ユーザID
-			sf.StepProgress("ユーザIDの読み取り");
+			Program.splashInit.StepProgress("ユーザIDの読み取り");
 			if(!GlobalSettings.Instance.TryGetUserNumber()) {
 				MessageBox.Show(
 					"ユーザIDが取得できませんでした．グローバル設定でIDの設定をしてください．",
@@ -40,7 +72,7 @@ namespace Yusen.GExplorer {
 			}
 
 			//アイコンの読み込み
-			sf.StepProgress("アイコンの読み込み");
+			Program.splashInit.StepProgress("アイコンの読み込み");
 			try {
 				string iconFileName = GlobalSettings.Instance.IconFile;
 				if(string.IsNullOrEmpty(iconFileName)) {
@@ -50,37 +82,37 @@ namespace Yusen.GExplorer {
 			} catch {
 			}
 
-			sf.StepProgress("キャッシュの初期化");
+			Program.splashInit.StepProgress("キャッシュの初期化");
 			Cache.Initialize();
-			sf.StepProgress("外部コマンドの読み取り");
+			Program.splashInit.StepProgress("外部コマンドの読み取り");
 			UserCommandsManager.Instance.DeserializeItems();
-			sf.StepProgress("NGコンテンツの読み取り");
+			Program.splashInit.StepProgress("NGコンテンツの読み取り");
 			NgContentsManager.Instance.DeserializeItems();
-			sf.StepProgress("プレイリストの読み取り");
+			Program.splashInit.StepProgress("プレイリストの読み取り");
 			PlayList.Instance.DeserializeItems();
 
-			sf.StepProgress("メインフォームの作成");
-			ApplicationContext context = new ApplicationContext(new MainForm());
-
-			sf.EndProgress();
-
-			return context;
+			Program.splashInit.StepProgress("メインフォームの作成");
+			Program.mainForm = new MainForm();
 		}
-		private static void QuitProgram() {
-			SplashForm sf = new SplashForm();
-			sf.Initialize("終了中です．．．", 5+1);
-			sf.StepProgress("プレイリストの保存");
+		private static void OnProgramSerializationProgress(int current, string message) {
+			if(null != Program.ProgramSerializationProgress) {
+				Program.ProgramSerializationProgress(null, new ProgramSerializationProgressEventArgs(current, Program.SerializationSteps, message));
+			}
+		}
+		internal static void SerializeSettings() {
+			int step = 0;
+			Program.OnProgramSerializationProgress(step++, "プレイリストの保存");
 			PlayList.Instance.SerializeItems();
-			sf.StepProgress("NGコンテンツの保存");
+			Program.OnProgramSerializationProgress(step++, "NGコンテンツの保存");
 			NgContentsManager.Instance.SerializeItems();
-			sf.StepProgress("外部コマンドの保存");
+			Program.OnProgramSerializationProgress(step++, "外部コマンドの保存");
 			UserCommandsManager.Instance.SerializeItems();
-			sf.StepProgress("キャッシュの保存");
+			Program.OnProgramSerializationProgress(step++, "キャッシュの保存");
 			Cache.Serialize();
-			sf.StepProgress("グローバル設定の保存");
+			Program.OnProgramSerializationProgress(step++, "グローバル設定の保存");
 			GlobalSettings.Serialize();
-			sf.EndProgress();
 		}
+
 
 		private static void Application_ThreadException(object sender, ThreadExceptionEventArgs e) {
 			Program.DisplayException("Application.ThreadException", e.Exception);
@@ -108,4 +140,25 @@ namespace Yusen.GExplorer {
 			}
 		}
 	}
+
+	sealed class ProgramSerializationProgressEventArgs : EventArgs{
+		private int current;
+		private int max;
+		private string message;
+		public ProgramSerializationProgressEventArgs(int current, int max, string message) {
+			this.current = current;
+			this.max = max;
+			this.message = message;
+		}
+		public int Current {
+			get { return this.current; }
+		}
+		public int Max {
+			get { return this.max; }
+		}
+		public string Message {
+			get { return this.message; }
+		}
+	}
+
 }

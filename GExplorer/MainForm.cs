@@ -164,7 +164,10 @@ namespace Yusen.GExplorer {
 			
 			Utility.LoadSettingsAndEnableSaveOnClosed(this);
 			this.ClearStatusBarInfo();
+
+			Program.ProgramSerializationProgress += new EventHandler<ProgramSerializationProgressEventArgs>(this.Program_ProgramSerializationProgress);
 		}
+
 		private void MainForm_FormClosing(object sender, FormClosingEventArgs e) {
 			switch (e.CloseReason) {
 				case CloseReason.UserClosing:
@@ -179,12 +182,23 @@ namespace Yusen.GExplorer {
 			}
 		}
 		private void MainForm_FormClosed(object sender, FormClosedEventArgs e) {
-			this.tsmiAbortCrawling.PerformClick();
 			UserCommandsManager.Instance.UserCommandsChanged -= new EventHandler(UserCommandsManager_UserCommandsChanged);
+			
+			this.tsmiAbortCrawling.PerformClick();
+			
+			this.Enabled = false;
+			Program.SerializeSettings();
 		}
 		private void UserCommandsManager_UserCommandsChanged(object sender, EventArgs e) {
 			this.CreateUserCommandsMenuItems();
 		}
+		private void Program_ProgramSerializationProgress(object sender, ProgramSerializationProgressEventArgs e) {
+			this.tspbCrawl.Maximum = e.Max;
+			this.tspbCrawl.Value = e.Current;
+			this.tsslCrawl.Text = string.Format("èIóπèàóù {0}/{1}: {2}", e.Current, e.Max, e.Message);
+			Application.DoEvents();
+		}
+
 		private void crawler_CrawlProgress(object sender, CrawlProgressEventArgs e) {
 			if (this.InvokeRequired) {
 				this.Invoke(
