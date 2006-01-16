@@ -32,6 +32,7 @@ namespace Yusen.GExplorer {
 			this.chDuration = new System.Windows.Forms.ColumnHeader();
 			this.chDeadline = new System.Windows.Forms.ColumnHeader();
 			this.chDescription = new System.Windows.Forms.ColumnHeader();
+			this.chAttribs = new System.Windows.Forms.ColumnHeader();
 			this.cmsContent = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.tsmiAdd = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiAddWithComment = new System.Windows.Forms.ToolStripMenuItem();
@@ -57,8 +58,6 @@ namespace Yusen.GExplorer {
 			this.tslTitle = new System.Windows.Forms.ToolStripLabel();
 			this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsbShowFilter = new System.Windows.Forms.ToolStripButton();
-			this.tsddbNormalPages = new System.Windows.Forms.ToolStripDropDownButton();
-			this.tsddbExceptions = new System.Windows.Forms.ToolStripDropDownButton();
 			this.tsddbSettings = new System.Windows.Forms.ToolStripDropDownButton();
 			this.tsmiAboneType = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
@@ -73,6 +72,8 @@ namespace Yusen.GExplorer {
 			this.tsmiMaxPageMenuItems = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiMaxExceptionMenuItems = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsddbAboneType = new System.Windows.Forms.ToolStripDropDownButton();
+			this.tsddbNormalPages = new System.Windows.Forms.ToolStripDropDownButton();
+			this.tsddbExceptions = new System.Windows.Forms.ToolStripDropDownButton();
 			this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
 			this.tslGenre = new System.Windows.Forms.ToolStripLabel();
 			this.tslNumber = new System.Windows.Forms.ToolStripLabel();
@@ -104,7 +105,8 @@ namespace Yusen.GExplorer {
             this.chSubTitle,
             this.chDuration,
             this.chDeadline,
-            this.chDescription});
+            this.chDescription,
+            this.chAttribs});
 			this.listView1.ContextMenuStrip = this.cmsContent;
 			this.listView1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.listView1.FullRowSelect = true;
@@ -155,7 +157,12 @@ namespace Yusen.GExplorer {
 			// chDescription
 			// 
 			this.chDescription.Text = "説明";
-			this.chDescription.Width = 134;
+			this.chDescription.Width = 100;
+			// 
+			// chAttribs
+			// 
+			this.chAttribs.Text = "属性";
+			this.chAttribs.Width = 34;
 			// 
 			// cmsContent
 			// 
@@ -371,22 +378,6 @@ namespace Yusen.GExplorer {
 			this.tsbShowFilter.Text = "フィルタ(&I)";
 			this.tsbShowFilter.Click += new System.EventHandler(this.tsbShowFilter_Click);
 			// 
-			// tsddbNormalPages
-			// 
-			this.tsddbNormalPages.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-			this.tsddbNormalPages.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.tsddbNormalPages.Name = "tsddbNormalPages";
-			this.tsddbNormalPages.Size = new System.Drawing.Size(63, 22);
-			this.tsddbNormalPages.Text = "ページ(&P)";
-			// 
-			// tsddbExceptions
-			// 
-			this.tsddbExceptions.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-			this.tsddbExceptions.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.tsddbExceptions.Name = "tsddbExceptions";
-			this.tsddbExceptions.Size = new System.Drawing.Size(57, 22);
-			this.tsddbExceptions.Text = "例外(&E)";
-			// 
 			// tsddbSettings
 			// 
 			this.tsddbSettings.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
@@ -498,6 +489,22 @@ namespace Yusen.GExplorer {
 			this.tsddbAboneType.Name = "tsddbAboneType";
 			this.tsddbAboneType.Size = new System.Drawing.Size(76, 22);
 			this.tsddbAboneType.Text = "あぼ～ん(&A)";
+			// 
+			// tsddbNormalPages
+			// 
+			this.tsddbNormalPages.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+			this.tsddbNormalPages.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.tsddbNormalPages.Name = "tsddbNormalPages";
+			this.tsddbNormalPages.Size = new System.Drawing.Size(63, 22);
+			this.tsddbNormalPages.Text = "ページ(&P)";
+			// 
+			// tsddbExceptions
+			// 
+			this.tsddbExceptions.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+			this.tsddbExceptions.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.tsddbExceptions.Name = "tsddbExceptions";
+			this.tsddbExceptions.Size = new System.Drawing.Size(57, 22);
+			this.tsddbExceptions.Text = "例外(&E)";
 			// 
 			// toolStripSeparator5
 			// 
@@ -671,5 +678,6 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ToolStripMenuItem tsmiMaxPageMenuItems;
 		private System.Windows.Forms.ToolStripMenuItem tsmiMaxExceptionMenuItems;
 		private System.Windows.Forms.ToolStripDropDownButton tsddbAboneType;
+		private System.Windows.Forms.ColumnHeader chAttribs;
 	}
 }

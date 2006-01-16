@@ -257,6 +257,7 @@ namespace Yusen.GExplorer {
 			settings.ColWidthDuration = this.chDuration.Width;
 			settings.ColWidthDeadline = this.chDeadline.Width;
 			settings.ColWidthLongDesc = this.chDescription.Width;
+			settings.ColWidthAttribs = this.chAttribs.Width;
 			settings.AboneType = this.AboneType;
 			settings.ShowPackages = this.ShowPackages;
 			settings.HoverSelect = this.HoverSelect;
@@ -276,6 +277,7 @@ namespace Yusen.GExplorer {
 			this.chDuration.Width = settings.ColWidthDuration ?? this.chDuration.Width;
 			this.chDeadline.Width = settings.ColWidthDeadline ?? this.chDeadline.Width;
 			this.chDescription.Width = settings.ColWidthLongDesc ?? this.chDescription.Width;
+			this.chAttribs.Width = settings.ColWidthAttribs ?? this.chAttribs.Width;
 			this.AboneType = settings.AboneType ?? this.AboneType;
 			this.ShowPackages = settings.ShowPackages ?? this.ShowPackages;
 			this.HoverSelect = settings.HoverSelect ?? this.HoverSelect;
@@ -306,7 +308,7 @@ namespace Yusen.GExplorer {
 				foreach (GContent c in p.Contents) {
 					ContentAdapter ca = new ContentAdapter(c);
 					ListViewItem item = new ListViewItem(
-						new string[]{ca.ContentId, ca.Title, ca.EpisodeNumber, ca.SubTitle, ca.GTimeSpan.ToString(), ca.Deadline, ca.LongDescription});
+						new string[]{ca.ContentId, ca.Title, ca.EpisodeNumber, ca.SubTitle, ca.GTimeSpan.ToString(), ca.Deadline, ca.LongDescription, ca.Attributes});
 					item.Tag = ca;
 					this.allLvis.Add(item, group);
 				}
@@ -750,6 +752,7 @@ namespace Yusen.GExplorer {
 		private int? colWidthDuration;
 		private int? colWidthDeadline;
 		private int? colWidthLongDesc;
+		private int? colWidthAttribs;
 		private AboneType? aboneType;
 		private bool? showPackages;
 		private bool? hoverSelect;
@@ -788,6 +791,10 @@ namespace Yusen.GExplorer {
 		public int? ColWidthLongDesc {
 			get { return this.colWidthLongDesc; }
 			set { this.colWidthLongDesc = value; }
+		}
+		public int? ColWidthAttribs {
+			get { return this.colWidthAttribs; }
+			set { this.colWidthAttribs = value; }
 		}
 		public AboneType? AboneType {
 			get { return this.aboneType; }

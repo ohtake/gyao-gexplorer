@@ -175,6 +175,24 @@ namespace Yusen.GExplorer {
 				return this.gTimeSpan;
 			}
 		}
+		[XmlIgnore]
+		[Category("専ブラが付加した情報")]
+		[Description("ダミーかどうかのフラグ．")]
+		public bool IsDummy {
+			get { return this.InnerContent.IsDummy; }
+		}
+		[XmlIgnore]
+		[Category("専ブラが付加した情報")]
+		[Description("属性文字列．")]
+		public string Attributes{
+			get {
+				if(this.IsDummy) {
+					return this.FromCache ? "D" : "DN";
+				} else {
+					return this.FromCache ? string.Empty : "N";
+				}
+			}
+		}
 		
 		[XmlIgnore]
 		[Category("URI")]

@@ -5,10 +5,6 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.Threading;
 using Yusen.GCrawler;
-using System.Net;
-using System.IO;
-using System.Text;
-using System.Text.RegularExpressions;
 
 namespace Yusen.GExplorer {
 	sealed partial class MainForm : FormSettingsBase, IFormWithSettings<MainFormSettings> {
@@ -165,8 +161,10 @@ namespace Yusen.GExplorer {
 			Utility.LoadSettingsAndEnableSaveOnClosed(this);
 			this.ClearStatusBarInfo();
 
+			Cache.Instance.CacheRearranged += new EventHandler<CacheEventArgs>(Cache_CacheRearranged);
 			Program.ProgramSerializationProgress += new EventHandler<ProgramSerializationProgressEventArgs>(this.Program_ProgramSerializationProgress);
 		}
+
 
 		private void MainForm_FormClosing(object sender, FormClosingEventArgs e) {
 			switch (e.CloseReason) {
@@ -197,6 +195,9 @@ namespace Yusen.GExplorer {
 			this.tspbCrawl.Value = e.Current;
 			this.tsslCrawl.Text = string.Format("終了処理 {0}/{1}: {2}", e.Current, e.Max, e.Message);
 			Application.DoEvents();
+		}
+		void Cache_CacheRearranged(object sender, CacheEventArgs e) {
+			this.SetStatutBarTextTemporary(e.Message);
 		}
 
 		private void crawler_CrawlProgress(object sender, CrawlProgressEventArgs e) {
@@ -317,111 +318,45 @@ namespace Yusen.GExplorer {
 			this.ViewCrawlResult(mergedResult);
 		}
 		private void tsmiClearCrawlResults_Click(object sender, EventArgs e) {
-			string title = "クロール結果の破棄";
 			switch (MessageBox.Show(
-					"全ジャンルのクロール結果を破棄します．よろしいですか？",
-					title, MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2)) {
+					"全ジャンルのクロール結果を破棄します．よろしいですか？", "クロール結果の破棄",
+					MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2)) {
 				case DialogResult.Yes:
-					int numResults = Cache.Instance.ResultsDictionary.Count;
-					Cache.Instance.ResultsDictionary.Clear();
-					this.SetStatutBarTextTemporary("クロール結果の破棄    破棄数: " + numResults.ToString());
+					Cache.Instance.ClearCrawlResults();
 					break;
 			}
 		}
 		private void tsmiRemoveCachesUnreachable_Click(object sender, EventArgs e) {
-			List<string> reachable = Cache.Instance.GetSortedReachableContentIds();
-			
-			int success = 0;
-			int failed = 0;
-			int ignored = 0;
-			foreach (string key in Cache.Instance.ContentCacheController.ListAllCacheKeys()) {
-				if (reachable.BinarySearch(key) >= 0) {
-					ignored++;
-				} else {
-					if (Cache.Instance.ContentCacheController.RemoveCache(key)) {
-						success++;
-					} else {
-						failed++;
-					}
-				}
-			}
-			this.SetStatutBarTextTemporary(string.Format("キャッシュの削除    到達可により無視: {0}    削除成功: {1}    削除失敗: {2}",
-				ignored, success, failed));
+			Cache.Instance.RemoveCachesUnreachable();
 		}
 		private void tsmiRemoveCachesAll_Click(object sender, EventArgs e) {
 			switch (MessageBox.Show(
-					"全てのキャッシュを削除します．\nよろしいですか？",
+					"全てのキャッシュを削除します．よろしいですか？",
 					"全てのキャッシュを削除", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2)) {
 				case DialogResult.Yes:
-					int success = 0;
-					int failed = 0;
-					foreach (string key in Cache.Instance.ContentCacheController.ListAllCacheKeys()) {
-						if (Cache.Instance.ContentCacheController.RemoveCache(key)) {
-							success++;
-						} else {
-							failed++;
-						}
-					}
-					this.SetStatutBarTextTemporary(string.Format("キャッシュの削除    削除成功: {0}    削除失敗: {1}",
-						success, failed));
+					Cache.Instance.RemoveCachesAll();
 					break;
 			}
 		}
 		private void tsmiRemoveDeadlineEntriesUnreacheable_Click(object sender, EventArgs e) {
-			List<string> reachable = Cache.Instance.GetSortedReachableContentIds();
-
-			int success = 0;
-			int failed = 0;
-			int ignored = 0;
-			foreach (string key in new List<string>(Cache.Instance.DeadlineTable.ListContentIds())){
-				if (reachable.BinarySearch(key) >= 0) {
-					ignored++;
-				} else {
-					if (Cache.Instance.DeadlineTable.RemoveDeadlineOf(key)) {
-						success++;
-					} else {
-						failed++;
-					}
-				}
-			}
-			this.SetStatutBarTextTemporary(string.Format("配信期限エントリーの整理    到達可により無視: {0}    削除成功: {1}    削除失敗: {2}",
-				ignored, success, failed));
+			Cache.Instance.RemoveDeadlineEntriesUnreacheable();
 		}
 		private void tsmiRemoveDeadlineEntriesAll_Click(object sender, EventArgs e) {
 			switch (MessageBox.Show(
 					"全てのエントリーを削除します．\nよろしいですか？",
 					"全てのエントリーを削除", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2)) {
 				case DialogResult.Yes:
-					int count = Cache.Instance.DeadlineTable.Count;
-					Cache.Instance.DeadlineTable.ClearDeadlines();
-					this.SetStatutBarTextTemporary("配信期限エントリーの整理    削除成功: " + count.ToString());
+					Cache.Instance.RemoveDeadlineEntriesAll();
 					break;
 			}
 		}
 		private void tsmiGetProfile_Click(object sender, EventArgs e) {
 			string title = "ユーザIDに対応するプロファイルを取得";
-			try{
-				HttpWebRequest req = WebRequest.Create("http://www.gyao.jp/sityou/movie/contentsId/cnt0000000/rateId/bit0000001/login_from/shityou/") as HttpWebRequest;
-				CookieContainer cc = new CookieContainer();
-				cc.Add(new Cookie("Cookie_UserId", GlobalSettings.Instance.UserNo.ToString(), "/", "www.gyao.jp"));
-				cc.Add(new Cookie("Cookie_CookieId", "0", "/", "www.gyao.jp"));
-				req.CookieContainer = cc;
-				WebResponse res = req.GetResponse();
-				using(TextReader reader = new StreamReader(res.GetResponseStream(), Encoding.GetEncoding("Shift_JIS"))){
-					Regex regex = new Regex(@"(sex=\w+;(\w+=\w+;)*)sz=");
-					string line;
-					while(null != (line = reader.ReadLine())) {
-						Match match = regex.Match(line);
-						if(match.Success) {
-							MessageBox.Show(match.Groups[1].Value, title, MessageBoxButtons.OK, MessageBoxIcon.Information);
-							return;
-						}
-					}
-					MessageBox.Show("ユーザプロファイルの取得に失敗しました．", title, MessageBoxButtons.OK, MessageBoxIcon.Error);
-					return;
-				}
-			}catch{
-				throw;
+			string profile;
+			if(Utility.TryGetUserProfileOf(GlobalSettings.Instance.UserNo, out profile)) {
+				MessageBox.Show(profile, title, MessageBoxButtons.OK, MessageBoxIcon.Information);
+			} else {
+				MessageBox.Show("ユーザプロファイルの取得に失敗しました．", title, MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
 		}
 		private void tsmiAbortCrawling_Click(object sender, EventArgs e) {

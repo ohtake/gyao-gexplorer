@@ -61,7 +61,9 @@ namespace Yusen.GExplorer {
 				formatter.Serialize(stream, Cache.Instance.deadlineTable);
 			}
 		}
-		
+
+		public event EventHandler<CacheEventArgs> CacheRearranged;
+
 		private ContentCacheControllerXml cacheCtl;
 		private DeadlineTableSortedDic deadlineTable;
 		private Dictionary<GGenre, CrawlResult> resultsDic;
@@ -93,6 +95,91 @@ namespace Yusen.GExplorer {
 			}
 			reachable.Sort();
 			return reachable;
+		}
+
+		private void OnCacheRearranged(CacheEventArgs e) {
+			if(null != this.CacheRearranged) {
+				this.CacheRearranged(this, e);
+			}
+		}
+
+		public void ClearCrawlResults() {
+			int numResults = Cache.Instance.ResultsDictionary.Count;
+			Cache.Instance.ResultsDictionary.Clear();
+			this.OnCacheRearranged(new CacheEventArgs(
+				string.Format("クロール結果の破棄    破棄数: {0}", numResults)));
+		}
+		public void RemoveCachesUnreachable() {
+			List<string> reachable = this.GetSortedReachableContentIds();
+			
+			int success = 0;
+			int failed = 0;
+			int ignored = 0;
+			foreach(string key in this.ContentCacheController.ListAllCacheKeys()) {
+				if(reachable.BinarySearch(key) >= 0) {
+					ignored++;
+				} else {
+					if(this.ContentCacheController.RemoveCache(key)) {
+						success++;
+					} else {
+						failed++;
+					}
+				}
+			}
+			this.OnCacheRearranged(new CacheEventArgs(
+				string.Format("キャッシュの削除    到達可により無視: {0}    削除成功: {1}    削除失敗: {2}",
+					ignored, success, failed)));
+		}
+		public void RemoveCachesAll() {
+			int success = 0;
+			int failed = 0;
+			foreach(string key in this.ContentCacheController.ListAllCacheKeys()) {
+				if(Cache.Instance.ContentCacheController.RemoveCache(key)) {
+					success++;
+				} else {
+					failed++;
+				}
+			}
+			this.OnCacheRearranged(new CacheEventArgs(
+				string.Format("キャッシュの削除    削除成功: {0}    削除失敗: {1}",
+					success, failed)));
+		}
+		public void RemoveDeadlineEntriesUnreacheable() {
+			List<string> reachable = this.GetSortedReachableContentIds();
+
+			int success = 0;
+			int failed = 0;
+			int ignored = 0;
+			foreach(string key in new List<string>(this.DeadlineTable.ListContentIds())) {
+				if(reachable.BinarySearch(key) >= 0) {
+					ignored++;
+				} else {
+					if(this.DeadlineTable.RemoveDeadlineOf(key)) {
+						success++;
+					} else {
+						failed++;
+					}
+				}
+			}
+			this.OnCacheRearranged(new CacheEventArgs(
+				string.Format("配信期限エントリーの整理    到達可により無視: {0}    削除成功: {1}    削除失敗: {2}",
+					ignored, success, failed)));
+		}
+		public void RemoveDeadlineEntriesAll() {
+			int count = this.DeadlineTable.Count;
+			this.DeadlineTable.ClearDeadlines();
+			this.OnCacheRearranged(new CacheEventArgs(
+				string.Format("配信期限エントリーの整理    削除成功: {0}" + count)));
+		}
+	}
+
+	class CacheEventArgs : EventArgs {
+		private string message;
+		public CacheEventArgs(string message) {
+			this.message = message;
+		}
+		public string Message {
+			get { return this.message; }
 		}
 	}
 }

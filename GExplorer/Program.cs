@@ -6,18 +6,18 @@ using System.IO;
 using System.Drawing;
 using System.Media;
 using System.Diagnostics;
-using System.ComponentModel;
 
 namespace Yusen.GExplorer {
 	static class Program {
+		private const int InitializationSteps = 8;
+		private const int SerializationSteps = 5;
 		private static SplashForm splashInit;
 		private static MainForm mainForm;
-		private const int SerializationSteps = 5;
 		internal static event EventHandler<ProgramSerializationProgressEventArgs> ProgramSerializationProgress;
 		
 		/// <summary>The main entry point for the application.</summary>
 		[STAThread]
-		static void Main() {
+		private static void Main() {
 			//おまじない
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
@@ -25,15 +25,22 @@ namespace Yusen.GExplorer {
 			Application.ThreadException += new ThreadExceptionEventHandler(Application_ThreadException);
 			AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
 			//多重起動チェック
-			if(Program.CheckMultipleExecution()) {
-				MessageBox.Show("多重起動によりプログラムを終了します．", Application.ProductName + " " + Application.ProductVersion, MessageBoxButtons.OK, MessageBoxIcon.Error);
-				return;
+			while(Program.CheckMultipleExecution()) {
+				switch(MessageBox.Show("多重起動と思われます．どうしますか？", Application.ProductName + " " + Application.ProductVersion, MessageBoxButtons.AbortRetryIgnore, MessageBoxIcon.Warning)) {
+					case DialogResult.Abort:
+						return;
+					case DialogResult.Retry:
+						continue;
+					case DialogResult.Ignore:
+						break;
+				}
+				break;
 			}
 			//カレントディレクトリをスタートアップパスにあわせる
 			Environment.CurrentDirectory = Application.StartupPath;
 			
 			Program.splashInit = new SplashForm();
-			Program.splashInit.Initialize("起動中です．．．", 8+1);
+			Program.splashInit.Initialize("起動中です．．．", Program.InitializationSteps +1);
 			Program.InitializeProgram();
 			Program.mainForm.Load += delegate {
 				Program.splashInit.EndProgress();
@@ -124,7 +131,7 @@ namespace Yusen.GExplorer {
 			}
 		}
 		
-		public static void DisplayException(string title, Exception e) {
+		private static void DisplayException(string title, Exception e) {
 			SystemSounds.Exclamation.Play();
 			using (ExceptionDialog ed = new ExceptionDialog()) {
 				ed.AllowAbort = true;

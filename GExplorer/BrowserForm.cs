@@ -161,6 +161,9 @@ namespace Yusen.GExplorer {
 		private void tsmiClose_Click(object sender, EventArgs e) {
 			this.Close();
 		}
+		private void tsmiGotoCampaign_Click(object sender, EventArgs e) {
+			this.gwbMain.GotoCampaign();
+		}
 		#endregion
 	}
 

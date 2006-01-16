@@ -228,6 +228,9 @@ namespace Yusen.GExplorer {
 		private void tsmiTestLoadAsync_Click(object sender, EventArgs e) {
 			this.picboxImage.LoadAsync();
 		}
+		private void tsmiTestCancelAsync_Click(object sender, EventArgs e) {
+			this.picboxImage.CancelAsync();
+		}
 	}
 	
 	public enum ContentImageSize {

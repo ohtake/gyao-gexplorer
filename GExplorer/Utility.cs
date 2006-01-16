@@ -1,9 +1,12 @@
 using System;
 using System.Windows.Forms;
 using System.IO;
-using Process = System.Diagnostics.Process;
+using System.Diagnostics;
 using System.Xml.Serialization;
 using System.Collections.Generic;
+using System.Net;
+using System.Text.RegularExpressions;
+using System.Text;
 
 namespace Yusen.GExplorer {
 	static class Utility{
@@ -103,7 +106,10 @@ namespace Yusen.GExplorer {
 			};
 			TSettings settings;
 			if (Utility.TryDeserializeSettings(form.FilenameForSettings, out settings)) {
-				form.ApplySettings(settings);
+				try {
+					form.ApplySettings(settings);
+				} catch {
+				}
 			}
 		}
 
@@ -120,6 +126,32 @@ namespace Yusen.GExplorer {
 				case ToolStripDropDownCloseReason.ItemClicked:
 					e.Cancel = true;
 					break;
+			}
+		}
+
+		public static bool TryGetUserProfileOf(int userNo, out string profile) {
+			try {
+				HttpWebRequest req = WebRequest.Create("http://www.gyao.jp/sityou/movie/contentsId/cnt0000000/rateId/bit0000001/login_from/shityou/") as HttpWebRequest;
+				CookieContainer cc = new CookieContainer();
+				cc.Add(new Cookie("Cookie_UserId", userNo.ToString(), "/", "www.gyao.jp"));
+				cc.Add(new Cookie("Cookie_CookieId", "0", "/", "www.gyao.jp"));
+				req.CookieContainer = cc;
+				WebResponse res = req.GetResponse();
+				using(TextReader reader = new StreamReader(res.GetResponseStream(), Encoding.GetEncoding("Shift_JIS"))) {
+					Regex regex = new Regex(@"(sex=\w+;(\w+=\w+;)*)sz=");
+					string line;
+					while(null != (line = reader.ReadLine())) {
+						Match match = regex.Match(line);
+						if(match.Success) {
+							profile = match.Groups[1].Value;
+							return true;
+						}
+					}
+					profile = null;
+					return false;
+				}
+			} catch {
+				throw;
 			}
 		}
 	}

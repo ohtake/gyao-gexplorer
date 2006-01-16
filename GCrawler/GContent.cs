@@ -150,7 +150,7 @@ namespace Yusen.GCrawler {
 						}
 					}
 				}
-				return new GContent(contId, genre.Trim(), title.Trim(), subtitle.Trim(), imageDir, episodeNum.Trim(), duration.Trim(), description.ToString().Trim());
+				return new GContent(contId, genre.Trim(), title.Trim(), subtitle.Trim(), imageDir, episodeNum.Trim(), duration.Trim(), description.ToString().Trim(), false);
 			} catch (ContentDownloadException) {
 				throw;
 			} catch(Exception e) {
@@ -171,8 +171,8 @@ namespace Yusen.GCrawler {
 			group1 = null;
 			return false;
 		}
-		internal static GContent CreateDummyContent(string contId, GGenre genre, string reason) {
-			return new GContent(contId, "(ダミー)", "(ダミー)", "(ダミー)", "/img/info/"+genre.ImageDirName+"/", "(ダミー)", "(ダミー)", reason);
+		public static GContent CreateDummyContent(string contId, GGenre genre, string reason) {
+			return new GContent(contId, "(ダミー)", "(ダミー)", "(ダミー)", "/img/info/"+genre.ImageDirName+"/", "(ダミー)", "(ダミー)", reason, true);
 		}
 
 		private string contentId;
@@ -184,11 +184,13 @@ namespace Yusen.GCrawler {
 		private string duration;
 		private string longDescription;
 		private bool fromCache;
+		[OptionalField]//2.0.1.1で追加
+		private bool isDummy;
 
 		public GContent() {
 			this.fromCache = true;
 		}
-		private GContent(string contentId, string genre, string title, string subtitle, string imageDir, string episodeNumber, string duration, string longDescription) {
+		private GContent(string contentId, string genre, string title, string subtitle, string imageDir, string episodeNumber, string duration, string longDescription, bool isDummy) {
 			this.contentId = contentId;
 			this.genre = genre;
 			this.title = title;
@@ -199,6 +201,7 @@ namespace Yusen.GCrawler {
 			this.duration  =duration;
 			this.longDescription = longDescription;
 			this.fromCache = false;
+			this.isDummy = isDummy;
 		}
 		public string ContentId {
 			get { return this.contentId; }
@@ -252,6 +255,10 @@ namespace Yusen.GCrawler {
 		public bool FromCache {
 			get { return this.fromCache; }
 			internal set { this.fromCache = value; }
+		}
+		[XmlIgnore]
+		public bool IsDummy {
+			get { return this.isDummy; }
 		}
 		
 		public override string ToString() {

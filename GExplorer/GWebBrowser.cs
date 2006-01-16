@@ -221,6 +221,11 @@ namespace Yusen.GExplorer {
 			this.tsmiContentCommands.DropDownItems.AddRange(menuItems.ToArray());
 			this.tsmiContentCommands.Enabled = this.tsmiContentCommands.HasDropDownItems;
 		}
-		
+
+		public void GotoCampaign() {
+			if(null != this.Document) {
+				this.Document.InvokeScript("gotoCampaign");
+			}
+		}
 	}
 }

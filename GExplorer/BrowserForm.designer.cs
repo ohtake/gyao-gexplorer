@@ -51,6 +51,8 @@ namespace Yusen.GExplorer {
 			this.tslAddress = new System.Windows.Forms.ToolStripLabel();
 			this.tscbAddress = new System.Windows.Forms.ToolStripComboBox();
 			this.tsbGo = new System.Windows.Forms.ToolStripButton();
+			this.tsmiTools = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiGotoCampaign = new System.Windows.Forms.ToolStripMenuItem();
 			this.menuStrip1.SuspendLayout();
 			this.toolStripContainer1.BottomToolStripPanel.SuspendLayout();
 			this.toolStripContainer1.ContentPanel.SuspendLayout();
@@ -69,11 +71,12 @@ namespace Yusen.GExplorer {
             this.tsmiFile,
             this.tsmiGenres,
             this.tsmiTimeTablesUpdated,
-            this.tsmiTimeTablesDeadline});
+            this.tsmiTimeTablesDeadline,
+            this.tsmiTools});
 			this.menuStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
-			this.menuStrip1.Size = new System.Drawing.Size(842, 20);
+			this.menuStrip1.Size = new System.Drawing.Size(842, 23);
 			this.menuStrip1.TabIndex = 0;
 			this.menuStrip1.Text = "menuStrip1";
 			// 
@@ -185,7 +188,7 @@ namespace Yusen.GExplorer {
 			// toolStripContainer1.ContentPanel
 			// 
 			this.toolStripContainer1.ContentPanel.Controls.Add(this.gwbMain);
-			this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(842, 529);
+			this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(842, 501);
 			this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.toolStripContainer1.Location = new System.Drawing.Point(0, 0);
 			this.toolStripContainer1.Name = "toolStripContainer1";
@@ -229,7 +232,7 @@ namespace Yusen.GExplorer {
 			this.gwbMain.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.gwbMain.Location = new System.Drawing.Point(0, 0);
 			this.gwbMain.Name = "gwbMain";
-			this.gwbMain.Size = new System.Drawing.Size(842, 529);
+			this.gwbMain.Size = new System.Drawing.Size(842, 501);
 			this.gwbMain.TabIndex = 0;
 			this.gwbMain.StatusTextChanged += new System.EventHandler(this.gwbMain_StatusTextChanged);
 			this.gwbMain.CanGoForwardChanged += new System.EventHandler(this.gwbMain_CanGoForwardChanged);
@@ -248,7 +251,7 @@ namespace Yusen.GExplorer {
             this.tsbBack,
             this.tsbForward,
             this.tsbStop});
-			this.tsStandard.Location = new System.Drawing.Point(3, 20);
+			this.tsStandard.Location = new System.Drawing.Point(3, 23);
 			this.tsStandard.Name = "tsStandard";
 			this.tsStandard.Size = new System.Drawing.Size(200, 25);
 			this.tsStandard.TabIndex = 3;
@@ -292,7 +295,7 @@ namespace Yusen.GExplorer {
             this.tslAddress,
             this.tscbAddress,
             this.tsbGo});
-			this.tsAddress.Location = new System.Drawing.Point(203, 20);
+			this.tsAddress.Location = new System.Drawing.Point(3, 48);
 			this.tsAddress.Name = "tsAddress";
 			this.tsAddress.Size = new System.Drawing.Size(586, 25);
 			this.tsAddress.TabIndex = 1;
@@ -322,6 +325,21 @@ namespace Yusen.GExplorer {
 			this.tsbGo.Size = new System.Drawing.Size(65, 22);
 			this.tsbGo.Text = "à⁄ìÆ(&G)";
 			this.tsbGo.Click += new System.EventHandler(this.GoToAddressBarUri);
+			// 
+			// tsmiTools
+			// 
+			this.tsmiTools.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiGotoCampaign});
+			this.tsmiTools.Name = "tsmiTools";
+			this.tsmiTools.Size = new System.Drawing.Size(61, 16);
+			this.tsmiTools.Text = "ÉcÅ[Éã(&T)";
+			// 
+			// tsmiGotoCampaign
+			// 
+			this.tsmiGotoCampaign.Name = "tsmiGotoCampaign";
+			this.tsmiGotoCampaign.Size = new System.Drawing.Size(152, 22);
+			this.tsmiGotoCampaign.Text = "goto&Campaign";
+			this.tsmiGotoCampaign.Click += new System.EventHandler(this.tsmiGotoCampaign_Click);
 			// 
 			// BrowserForm
 			// 
@@ -381,5 +399,7 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ToolStripMenuItem tsmiTimeTablesUpdated;
 		private GWebBrowser gwbMain;
 		private System.Windows.Forms.ToolStripMenuItem tsmiTimeTablesDeadline;
+		private System.Windows.Forms.ToolStripMenuItem tsmiTools;
+		private System.Windows.Forms.ToolStripMenuItem tsmiGotoCampaign;
 	}
 }

@@ -17,7 +17,7 @@ namespace Yusen.GExplorer {
 			settings.NormalSize = this.normalSize;
 			settings.NormalLocation = this.normalLocation;
 			settings.TopMost = this.TopMost;
-			settings.WindowState = this.WindowState;
+			settings.IsMaximized = this.WindowState == FormWindowState.Maximized;
 		}
 		public void ApplySettings(FormSettingsBaseSettings settings) {
 			if (null == settings) return;
@@ -27,7 +27,9 @@ namespace Yusen.GExplorer {
 			}
 			this.Size = settings.NormalSize ?? this.Size;
 			this.TopMost = settings.TopMost ?? this.TopMost;
-			this.WindowState = settings.WindowState ?? this.WindowState;
+			if(settings.IsMaximized.HasValue && settings.IsMaximized.Value) {
+				this.WindowState = FormWindowState.Maximized;
+			}
 		}
 		private void SaveNormalSizeAndLocation() {
 			switch (this.WindowState) {
@@ -53,7 +55,7 @@ namespace Yusen.GExplorer {
 		private Size? normalSize;
 		private Point? normalLocation;
 		private bool? topMost;
-		private FormWindowState? windowState;
+		private bool? isMaximized;
 		
 		[Category("フォームの基本設定")]
 		[DisplayName("通常時のサイズ")]
@@ -77,11 +79,11 @@ namespace Yusen.GExplorer {
 			set { this.topMost = value; }
 		}
 		[Category("フォームの基本設定")]
-		[DisplayName("フォームの状態")]
-		[Description("通常，最小化，最大化の状態のこと．")]
-		public FormWindowState? WindowState {
-			get { return this.windowState; }
-			set { this.windowState = value; }
+		[DisplayName("最大化")]
+		[Description("最大化されている場合はTrue．")]
+		public bool? IsMaximized {
+			get { return this.isMaximized; }
+			set { this.isMaximized = value; }
 		}
 	}
 }
