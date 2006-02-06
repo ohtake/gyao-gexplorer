@@ -64,6 +64,9 @@ namespace Yusen.GExplorer {
 			this.tsmiRemoveDeadlineEntries = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiRemoveDeadlineEntriesUnreacheable = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiRemoveDeadlineEntriesAll = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiRemoveNgContents = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiDeleteNgContentsWeek = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiDeleteNgContentsAll = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiGetProfile = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
@@ -218,7 +221,7 @@ namespace Yusen.GExplorer {
 			// 
 			this.scLists.Panel2.Controls.Add(this.playListView1);
 			this.scLists.Size = new System.Drawing.Size(548, 474);
-			this.scLists.SplitterDistance = 318;
+			this.scLists.SplitterDistance = 316;
 			this.scLists.TabIndex = 2;
 			this.scLists.Text = "splitContainer2";
 			// 
@@ -239,7 +242,7 @@ namespace Yusen.GExplorer {
 			this.crawlResultView1.Name = "crawlResultView1";
 			this.crawlResultView1.NewColor = System.Drawing.Color.Red;
 			this.crawlResultView1.ShowPackages = true;
-			this.crawlResultView1.Size = new System.Drawing.Size(548, 318);
+			this.crawlResultView1.Size = new System.Drawing.Size(548, 316);
 			this.crawlResultView1.TabIndex = 1;
 			this.crawlResultView1.ContentSelectionChanged += new System.EventHandler<Yusen.GExplorer.ContentSelectionChangedEventArgs>(this.crawlResultView1_ContentSelectionChanged);
 			this.crawlResultView1.ManuallyCacheDeleted += new System.EventHandler<Yusen.GExplorer.ManuallyCacheDeletedEventArgs>(this.crawlResultView1_ManuallyCacheDeleted);
@@ -251,7 +254,7 @@ namespace Yusen.GExplorer {
 			this.playListView1.Location = new System.Drawing.Point(0, 0);
 			this.playListView1.MultiSelectEnabled = true;
 			this.playListView1.Name = "playListView1";
-			this.playListView1.Size = new System.Drawing.Size(548, 152);
+			this.playListView1.Size = new System.Drawing.Size(548, 154);
 			this.playListView1.TabIndex = 0;
 			this.playListView1.ContentSelectionChanged += new System.EventHandler<Yusen.GExplorer.ContentSelectionChangedEventArgs>(this.playListView1_ContentSelectionChanged);
 			// 
@@ -410,6 +413,7 @@ namespace Yusen.GExplorer {
             this.tsmiClearCrawlResults,
             this.tsmiRemoveCaches,
             this.tsmiRemoveDeadlineEntries,
+            this.tsmiRemoveNgContents,
             this.toolStripSeparator4,
             this.tsmiGetProfile,
             this.toolStripSeparator2,
@@ -482,6 +486,29 @@ namespace Yusen.GExplorer {
 			this.tsmiRemoveDeadlineEntriesAll.Size = new System.Drawing.Size(210, 22);
 			this.tsmiRemoveDeadlineEntriesAll.Text = "全てのエントリーを削除(&A)...";
 			this.tsmiRemoveDeadlineEntriesAll.Click += new System.EventHandler(this.tsmiRemoveDeadlineEntriesAll_Click);
+			// 
+			// tsmiRemoveNgContents
+			// 
+			this.tsmiRemoveNgContents.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiDeleteNgContentsWeek,
+            this.tsmiDeleteNgContentsAll});
+			this.tsmiRemoveNgContents.Name = "tsmiRemoveNgContents";
+			this.tsmiRemoveNgContents.Size = new System.Drawing.Size(269, 22);
+			this.tsmiRemoveNgContents.Text = "NGコンテンツの削除(&N)";
+			// 
+			// tsmiDeleteNgContentsWeek
+			// 
+			this.tsmiDeleteNgContentsWeek.Name = "tsmiDeleteNgContentsWeek";
+			this.tsmiDeleteNgContentsWeek.Size = new System.Drawing.Size(284, 22);
+			this.tsmiDeleteNgContentsWeek.Text = "最終NGから1週間以上経過したのを削除(&W)";
+			this.tsmiDeleteNgContentsWeek.Click += new System.EventHandler(this.tsmiDeleteNgContentsWeek_Click);
+			// 
+			// tsmiDeleteNgContentsAll
+			// 
+			this.tsmiDeleteNgContentsAll.Name = "tsmiDeleteNgContentsAll";
+			this.tsmiDeleteNgContentsAll.Size = new System.Drawing.Size(284, 22);
+			this.tsmiDeleteNgContentsAll.Text = "全てのNGを削除(&A)...";
+			this.tsmiDeleteNgContentsAll.Click += new System.EventHandler(this.tsmiDeleteNgContentsAll_Click);
 			// 
 			// toolStripSeparator4
 			// 
@@ -622,6 +649,9 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.Timer timerClearStatusText;
 		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
 		private System.Windows.Forms.ToolStripMenuItem tsmiGetProfile;
+		private System.Windows.Forms.ToolStripMenuItem tsmiRemoveNgContents;
+		private System.Windows.Forms.ToolStripMenuItem tsmiDeleteNgContentsWeek;
+		private System.Windows.Forms.ToolStripMenuItem tsmiDeleteNgContentsAll;
 
 
 	}

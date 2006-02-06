@@ -45,6 +45,7 @@ namespace Yusen.GExplorer {
 			this.btnAdd = new System.Windows.Forms.Button();
 			this.grpList = new System.Windows.Forms.GroupBox();
 			this.timerLastAbone = new System.Windows.Forms.Timer(this.components);
+			this.timerItemSelect = new System.Windows.Forms.Timer(this.components);
 			this.tableLayoutPanel1.SuspendLayout();
 			this.grpAdd.SuspendLayout();
 			this.tableLayoutPanel2.SuspendLayout();
@@ -72,6 +73,7 @@ namespace Yusen.GExplorer {
 			this.lvNgContents.View = System.Windows.Forms.View.Details;
 			this.lvNgContents.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lvNgContents_KeyDown);
 			this.lvNgContents.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.lvNgContents_ColumnClick);
+			this.lvNgContents.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.lvNgContents_ItemSelectionChanged);
 			// 
 			// chComment
 			// 
@@ -259,6 +261,11 @@ namespace Yusen.GExplorer {
 			// 
 			this.timerLastAbone.Tick += new System.EventHandler(this.timerLastAbone_Tick);
 			// 
+			// timerItemSelect
+			// 
+			this.timerItemSelect.Interval = 10;
+			this.timerItemSelect.Tick += new System.EventHandler(this.timerItemSelect_Tick);
+			// 
 			// NgContentsEditor
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -303,5 +310,6 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
 		private System.Windows.Forms.Button btnAdd;
 		private System.Windows.Forms.Timer timerLastAbone;
+		private System.Windows.Forms.Timer timerItemSelect;
 	}
 }

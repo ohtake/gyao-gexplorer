@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Windows.Forms;
 using Yusen.GCrawler;
 using System.Drawing;
+using System.Runtime.InteropServices;
 
 namespace Yusen.GExplorer {
 	public partial class GWebBrowser : WebBrowser {
@@ -227,5 +228,87 @@ namespace Yusen.GExplorer {
 				this.Document.InvokeScript("gotoCampaign");
 			}
 		}
+
+#if false
+		#region http://lab.msdn.microsoft.com/ProductFeedback/ViewWorkaround.aspx?FeedbackID=FDBK12057
+
+		AxHost.ConnectionPointCookie cookie;
+		WebBrowserExtendedEvents events;
+
+		//This method will be called to give you a chance to create your own event sink
+		protected override void CreateSink() {
+			//MAKE SURE TO CALL THE BASE or the normal events won't fire
+			base.CreateSink();
+			events = new WebBrowserExtendedEvents(this);
+			cookie = new AxHost.ConnectionPointCookie(this.ActiveXInstance, events, typeof(DWebBrowserEvents2));
+		}
+
+		protected override void DetachSink() {
+			if(null != cookie) {
+				cookie.Disconnect();
+				cookie = null;
+			}
+			base.DetachSink();
+		}
+		
+		//This new event will fire when the page is navigating
+		public event EventHandler<WebBrowserNavigatingEventArgs> BeforeNavigate;
+		public event EventHandler<WebBrowserNavigatingEventArgs> BeforeNewWindow;
+
+		protected void OnBeforeNewWindow(Uri uri, out bool cancel) {
+			EventHandler<WebBrowserNavigatingEventArgs> h = BeforeNewWindow;
+			WebBrowserNavigatingEventArgs args = new WebBrowserNavigatingEventArgs(uri, null);
+			if(null != h) {
+				h(this, args);
+			}
+			cancel = args.Cancel;
+		}
+
+		protected void OnBeforeNavigate(Uri uri, string frame, out bool cancel) {
+			EventHandler<WebBrowserNavigatingEventArgs> h = BeforeNavigate;
+			WebBrowserNavigatingEventArgs args = new WebBrowserNavigatingEventArgs(uri, frame);
+			if(null != h) {
+				h(this, args);
+			}
+			//Pass the cancellation chosen back out to the events
+			cancel = args.Cancel;
+		}
+		//This class will capture events from the WebBrowser
+		private class WebBrowserExtendedEvents : StandardOleMarshalObject, DWebBrowserEvents2 {
+			GWebBrowser _Browser;
+			public WebBrowserExtendedEvents(GWebBrowser browser) { _Browser = browser; }
+
+			//Implement whichever events you wish
+			public void BeforeNavigate2(object pDisp, ref object URL, ref object flags, ref object targetFrameName, ref object postData, ref object headers, ref bool cancel) {
+				_Browser.OnBeforeNavigate(new Uri((string)URL), (string)targetFrameName, out cancel);
+			}
+
+			public void NewWindow3(object pDisp, ref bool cancel, ref object flags, ref object URLContext, ref object URL) {
+				_Browser.OnBeforeNewWindow(new Uri((string)URL), out cancel);
+			}
+		}
+		[ComImport(), Guid("34A715A0-6587-11D0-924A-0020AFC7AC4D"),
+		InterfaceTypeAttribute(ComInterfaceType.InterfaceIsIDispatch),
+		TypeLibType(TypeLibTypeFlags.FHidden)]
+		private interface DWebBrowserEvents2 {
+			[DispId(250)]
+			void BeforeNavigate2(
+				[In, MarshalAs(UnmanagedType.IDispatch)] object pDisp,
+				[In] ref object URL,
+				[In] ref object flags,
+				[In] ref object targetFrameName,
+				[In] ref object postData,
+				[In] ref object headers,
+				[In, Out] ref bool cancel);
+			[DispId(273)]
+			void NewWindow3(
+				[In, MarshalAs(UnmanagedType.IDispatch)] object pDisp,
+				[In, Out] ref bool cancel,
+				[In] ref object flags,
+				[In] ref object URLContext,
+				[In] ref object URL);
+		}
+		#endregion
+#endif
 	}
 }

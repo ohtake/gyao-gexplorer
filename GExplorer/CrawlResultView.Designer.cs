@@ -57,7 +57,6 @@ namespace Yusen.GExplorer {
 			this.tsMain = new System.Windows.Forms.ToolStrip();
 			this.tslTitle = new System.Windows.Forms.ToolStripLabel();
 			this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
-			this.tsbShowFilter = new System.Windows.Forms.ToolStripButton();
 			this.tsddbSettings = new System.Windows.Forms.ToolStripDropDownButton();
 			this.tsmiAboneType = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
@@ -65,28 +64,42 @@ namespace Yusen.GExplorer {
 			this.tsmiHoverSelect = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiMultiSelect = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
+			this.tsmiFilterType = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiClearFilterStringOnHide = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiNewColor = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiMaxPageMenuItems = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiMaxExceptionMenuItems = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsddbAboneType = new System.Windows.Forms.ToolStripDropDownButton();
+			this.tsbShowFilter = new System.Windows.Forms.ToolStripButton();
+			this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
+			this.tsbOneAboneToumei = new System.Windows.Forms.ToolStripButton();
+			this.tsbOneAboneSabori = new System.Windows.Forms.ToolStripButton();
+			this.tsbOneAboneHakidame = new System.Windows.Forms.ToolStripButton();
+			this.toolStripSeparator12 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsddbNormalPages = new System.Windows.Forms.ToolStripDropDownButton();
 			this.tsddbExceptions = new System.Windows.Forms.ToolStripDropDownButton();
-			this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
+			this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
 			this.tslGenre = new System.Windows.Forms.ToolStripLabel();
 			this.tslNumber = new System.Windows.Forms.ToolStripLabel();
 			this.tslTime = new System.Windows.Forms.ToolStripLabel();
 			this.tsFilter = new System.Windows.Forms.ToolStrip();
 			this.tslFilter = new System.Windows.Forms.ToolStripLabel();
 			this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
-			this.tsddbFilterType = new System.Windows.Forms.ToolStripDropDownButton();
+			this.tsbOneFTypeNormal = new System.Windows.Forms.ToolStripButton();
+			this.tsbOneFTypeMigemo = new System.Windows.Forms.ToolStripButton();
+			this.tsbOneFTypeRegex = new System.Windows.Forms.ToolStripButton();
+			this.tsddbFilterTarget = new System.Windows.Forms.ToolStripDropDownButton();
+			this.tsmiFilterTargetCheckAll = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiFilterTargetUncheckAll = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiFilterTargetToggleAll = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
 			this.tstbFilter = new System.Windows.Forms.ToolStripTextBox();
 			this.tstbAnswer = new System.Windows.Forms.ToolStripTextBox();
 			this.timerFilter = new System.Windows.Forms.Timer(this.components);
 			this.inputBoxDialog1 = new Yusen.GExplorer.InputBoxDialog();
 			this.exceptionDialog1 = new Yusen.GExplorer.ExceptionDialog();
+			this.toolStripSeparator13 = new System.Windows.Forms.ToolStripSeparator();
 			this.cmsContent.SuspendLayout();
 			this.toolStripContainer1.ContentPanel.SuspendLayout();
 			this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
@@ -341,12 +354,16 @@ namespace Yusen.GExplorer {
 			this.tsMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tslTitle,
             this.toolStripSeparator4,
-            this.tsbShowFilter,
             this.tsddbSettings,
-            this.tsddbAboneType,
+            this.tsbShowFilter,
+            this.toolStripSeparator5,
+            this.tsbOneAboneToumei,
+            this.tsbOneAboneSabori,
+            this.tsbOneAboneHakidame,
+            this.toolStripSeparator12,
             this.tsddbNormalPages,
             this.tsddbExceptions,
-            this.toolStripSeparator5,
+            this.toolStripSeparator11,
             this.tslGenre,
             this.tslNumber,
             this.tslTime});
@@ -368,18 +385,9 @@ namespace Yusen.GExplorer {
 			this.toolStripSeparator4.Name = "toolStripSeparator4";
 			this.toolStripSeparator4.Size = new System.Drawing.Size(6, 25);
 			// 
-			// tsbShowFilter
-			// 
-			this.tsbShowFilter.CheckOnClick = true;
-			this.tsbShowFilter.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-			this.tsbShowFilter.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.tsbShowFilter.Name = "tsbShowFilter";
-			this.tsbShowFilter.Size = new System.Drawing.Size(53, 22);
-			this.tsbShowFilter.Text = "フィルタ(&I)";
-			this.tsbShowFilter.Click += new System.EventHandler(this.tsbShowFilter_Click);
-			// 
 			// tsddbSettings
 			// 
+			this.tsddbSettings.AutoToolTip = false;
 			this.tsddbSettings.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
 			this.tsddbSettings.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiAboneType,
@@ -388,6 +396,7 @@ namespace Yusen.GExplorer {
             this.tsmiHoverSelect,
             this.tsmiMultiSelect,
             this.toolStripSeparator7,
+            this.tsmiFilterType,
             this.tsmiClearFilterStringOnHide,
             this.toolStripSeparator10,
             this.tsmiNewColor,
@@ -442,6 +451,12 @@ namespace Yusen.GExplorer {
 			this.toolStripSeparator7.Name = "toolStripSeparator7";
 			this.toolStripSeparator7.Size = new System.Drawing.Size(257, 6);
 			// 
+			// tsmiFilterType
+			// 
+			this.tsmiFilterType.Name = "tsmiFilterType";
+			this.tsmiFilterType.Size = new System.Drawing.Size(260, 22);
+			this.tsmiFilterType.Text = "フィルタの種類(&T)";
+			// 
 			// tsmiClearFilterStringOnHide
 			// 
 			this.tsmiClearFilterStringOnHide.Checked = true;
@@ -482,16 +497,63 @@ namespace Yusen.GExplorer {
 			this.tsmiMaxExceptionMenuItems.Text = "「例外」メニューの項目数の最大値(&E)...";
 			this.tsmiMaxExceptionMenuItems.Click += new System.EventHandler(this.tsmiMaxExceptionMenuItems_Click);
 			// 
-			// tsddbAboneType
+			// tsbShowFilter
 			// 
-			this.tsddbAboneType.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-			this.tsddbAboneType.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.tsddbAboneType.Name = "tsddbAboneType";
-			this.tsddbAboneType.Size = new System.Drawing.Size(76, 22);
-			this.tsddbAboneType.Text = "あぼ～ん(&A)";
+			this.tsbShowFilter.AutoToolTip = false;
+			this.tsbShowFilter.CheckOnClick = true;
+			this.tsbShowFilter.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+			this.tsbShowFilter.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.tsbShowFilter.Name = "tsbShowFilter";
+			this.tsbShowFilter.Size = new System.Drawing.Size(53, 22);
+			this.tsbShowFilter.Text = "フィルタ(&I)";
+			this.tsbShowFilter.Click += new System.EventHandler(this.tsbShowFilter_Click);
+			// 
+			// toolStripSeparator5
+			// 
+			this.toolStripSeparator5.Name = "toolStripSeparator5";
+			this.toolStripSeparator5.Size = new System.Drawing.Size(6, 25);
+			// 
+			// tsbOneAboneToumei
+			// 
+			this.tsbOneAboneToumei.AutoToolTip = false;
+			this.tsbOneAboneToumei.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+			this.tsbOneAboneToumei.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.tsbOneAboneToumei.Name = "tsbOneAboneToumei";
+			this.tsbOneAboneToumei.Size = new System.Drawing.Size(31, 22);
+			this.tsbOneAboneToumei.Text = "と(&1)";
+			this.tsbOneAboneToumei.ToolTipText = "とうめい";
+			this.tsbOneAboneToumei.Click += new System.EventHandler(this.tsbOneAboneToumei_Click);
+			// 
+			// tsbOneAboneSabori
+			// 
+			this.tsbOneAboneSabori.AutoToolTip = false;
+			this.tsbOneAboneSabori.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+			this.tsbOneAboneSabori.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.tsbOneAboneSabori.Name = "tsbOneAboneSabori";
+			this.tsbOneAboneSabori.Size = new System.Drawing.Size(31, 22);
+			this.tsbOneAboneSabori.Text = "さ(&2)";
+			this.tsbOneAboneSabori.ToolTipText = "さぼり";
+			this.tsbOneAboneSabori.Click += new System.EventHandler(this.tsbOneAboneSabori_Click);
+			// 
+			// tsbOneAboneHakidame
+			// 
+			this.tsbOneAboneHakidame.AutoToolTip = false;
+			this.tsbOneAboneHakidame.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+			this.tsbOneAboneHakidame.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.tsbOneAboneHakidame.Name = "tsbOneAboneHakidame";
+			this.tsbOneAboneHakidame.Size = new System.Drawing.Size(33, 22);
+			this.tsbOneAboneHakidame.Text = "は(&3)";
+			this.tsbOneAboneHakidame.ToolTipText = "はきだめ";
+			this.tsbOneAboneHakidame.Click += new System.EventHandler(this.tsbOneAboneHakidame_Click);
+			// 
+			// toolStripSeparator12
+			// 
+			this.toolStripSeparator12.Name = "toolStripSeparator12";
+			this.toolStripSeparator12.Size = new System.Drawing.Size(6, 25);
 			// 
 			// tsddbNormalPages
 			// 
+			this.tsddbNormalPages.AutoToolTip = false;
 			this.tsddbNormalPages.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
 			this.tsddbNormalPages.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tsddbNormalPages.Name = "tsddbNormalPages";
@@ -500,34 +562,35 @@ namespace Yusen.GExplorer {
 			// 
 			// tsddbExceptions
 			// 
+			this.tsddbExceptions.AutoToolTip = false;
 			this.tsddbExceptions.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
 			this.tsddbExceptions.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tsddbExceptions.Name = "tsddbExceptions";
 			this.tsddbExceptions.Size = new System.Drawing.Size(57, 22);
 			this.tsddbExceptions.Text = "例外(&E)";
 			// 
-			// toolStripSeparator5
+			// toolStripSeparator11
 			// 
-			this.toolStripSeparator5.Name = "toolStripSeparator5";
-			this.toolStripSeparator5.Size = new System.Drawing.Size(6, 25);
+			this.toolStripSeparator11.Name = "toolStripSeparator11";
+			this.toolStripSeparator11.Size = new System.Drawing.Size(6, 25);
 			// 
 			// tslGenre
 			// 
 			this.tslGenre.Name = "tslGenre";
-			this.tslGenre.Size = new System.Drawing.Size(48, 22);
-			this.tslGenre.Text = "tslGenre";
+			this.tslGenre.Size = new System.Drawing.Size(33, 22);
+			this.tslGenre.Text = "genre";
 			// 
 			// tslNumber
 			// 
 			this.tslNumber.Name = "tslNumber";
-			this.tslNumber.Size = new System.Drawing.Size(57, 22);
-			this.tslNumber.Text = "tslNumber";
+			this.tslNumber.Size = new System.Drawing.Size(42, 22);
+			this.tslNumber.Text = "number";
 			// 
 			// tslTime
 			// 
 			this.tslTime.Name = "tslTime";
-			this.tslTime.Size = new System.Drawing.Size(43, 22);
-			this.tslTime.Text = "tslTime";
+			this.tslTime.Size = new System.Drawing.Size(27, 22);
+			this.tslTime.Text = "time";
 			// 
 			// tsFilter
 			// 
@@ -536,7 +599,11 @@ namespace Yusen.GExplorer {
 			this.tsFilter.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tslFilter,
             this.toolStripSeparator9,
-            this.tsddbFilterType,
+            this.tsbOneFTypeNormal,
+            this.tsbOneFTypeMigemo,
+            this.tsbOneFTypeRegex,
+            this.toolStripSeparator13,
+            this.tsddbFilterTarget,
             this.tstbFilter,
             this.tstbAnswer});
 			this.tsFilter.Location = new System.Drawing.Point(0, 25);
@@ -557,13 +624,78 @@ namespace Yusen.GExplorer {
 			this.toolStripSeparator9.Name = "toolStripSeparator9";
 			this.toolStripSeparator9.Size = new System.Drawing.Size(6, 25);
 			// 
-			// tsddbFilterType
+			// tsbOneFTypeNormal
 			// 
-			this.tsddbFilterType.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-			this.tsddbFilterType.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.tsddbFilterType.Name = "tsddbFilterType";
-			this.tsddbFilterType.Size = new System.Drawing.Size(70, 22);
-			this.tsddbFilterType.Text = "FilterType";
+			this.tsbOneFTypeNormal.AutoToolTip = false;
+			this.tsbOneFTypeNormal.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+			this.tsbOneFTypeNormal.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.tsbOneFTypeNormal.Name = "tsbOneFTypeNormal";
+			this.tsbOneFTypeNormal.Size = new System.Drawing.Size(23, 22);
+			this.tsbOneFTypeNormal.Text = "&N";
+			this.tsbOneFTypeNormal.ToolTipText = "Normal";
+			this.tsbOneFTypeNormal.Click += new System.EventHandler(this.tsbOneFTypeNormal_Click);
+			// 
+			// tsbOneFTypeMigemo
+			// 
+			this.tsbOneFTypeMigemo.AutoToolTip = false;
+			this.tsbOneFTypeMigemo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+			this.tsbOneFTypeMigemo.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.tsbOneFTypeMigemo.Name = "tsbOneFTypeMigemo";
+			this.tsbOneFTypeMigemo.Size = new System.Drawing.Size(23, 22);
+			this.tsbOneFTypeMigemo.Text = "&M";
+			this.tsbOneFTypeMigemo.ToolTipText = "Migemo";
+			this.tsbOneFTypeMigemo.Click += new System.EventHandler(this.tsbOneFTypeMigemo_Click);
+			// 
+			// tsbOneFTypeRegex
+			// 
+			this.tsbOneFTypeRegex.AutoToolTip = false;
+			this.tsbOneFTypeRegex.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+			this.tsbOneFTypeRegex.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.tsbOneFTypeRegex.Name = "tsbOneFTypeRegex";
+			this.tsbOneFTypeRegex.Size = new System.Drawing.Size(23, 22);
+			this.tsbOneFTypeRegex.Text = "&R";
+			this.tsbOneFTypeRegex.ToolTipText = "Regex";
+			this.tsbOneFTypeRegex.Click += new System.EventHandler(this.tsbOneFTypeRegex_Click);
+			// 
+			// tsddbFilterTarget
+			// 
+			this.tsddbFilterTarget.AutoToolTip = false;
+			this.tsddbFilterTarget.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+			this.tsddbFilterTarget.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiFilterTargetCheckAll,
+            this.tsmiFilterTargetUncheckAll,
+            this.tsmiFilterTargetToggleAll,
+            this.toolStripMenuItem2});
+			this.tsddbFilterTarget.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.tsddbFilterTarget.Name = "tsddbFilterTarget";
+			this.tsddbFilterTarget.Size = new System.Drawing.Size(58, 22);
+			this.tsddbFilterTarget.Text = "対象(&C)";
+			// 
+			// tsmiFilterTargetCheckAll
+			// 
+			this.tsmiFilterTargetCheckAll.Name = "tsmiFilterTargetCheckAll";
+			this.tsmiFilterTargetCheckAll.Size = new System.Drawing.Size(156, 22);
+			this.tsmiFilterTargetCheckAll.Text = "全てチェック(&C)";
+			this.tsmiFilterTargetCheckAll.Click += new System.EventHandler(this.tsmiFilterTargetCheckAll_Click);
+			// 
+			// tsmiFilterTargetUncheckAll
+			// 
+			this.tsmiFilterTargetUncheckAll.Name = "tsmiFilterTargetUncheckAll";
+			this.tsmiFilterTargetUncheckAll.Size = new System.Drawing.Size(156, 22);
+			this.tsmiFilterTargetUncheckAll.Text = "全てアンチェック(&U)";
+			this.tsmiFilterTargetUncheckAll.Click += new System.EventHandler(this.tsmiFilterTargetUncheckAll_Click);
+			// 
+			// tsmiFilterTargetToggleAll
+			// 
+			this.tsmiFilterTargetToggleAll.Name = "tsmiFilterTargetToggleAll";
+			this.tsmiFilterTargetToggleAll.Size = new System.Drawing.Size(156, 22);
+			this.tsmiFilterTargetToggleAll.Text = "全て反転(&T)";
+			this.tsmiFilterTargetToggleAll.Click += new System.EventHandler(this.tsmiFilterTargetToggleAll_Click);
+			// 
+			// toolStripMenuItem2
+			// 
+			this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+			this.toolStripMenuItem2.Size = new System.Drawing.Size(153, 6);
 			// 
 			// tstbFilter
 			// 
@@ -575,7 +707,7 @@ namespace Yusen.GExplorer {
 			// 
 			this.tstbAnswer.Name = "tstbAnswer";
 			this.tstbAnswer.ReadOnly = true;
-			this.tstbAnswer.Size = new System.Drawing.Size(200, 25);
+			this.tstbAnswer.Size = new System.Drawing.Size(150, 25);
 			// 
 			// timerFilter
 			// 
@@ -591,6 +723,11 @@ namespace Yusen.GExplorer {
 			// 
 			this.exceptionDialog1.Exception = null;
 			this.exceptionDialog1.Title = "クロール時に無視した例外";
+			// 
+			// toolStripSeparator13
+			// 
+			this.toolStripSeparator13.Name = "toolStripSeparator13";
+			this.toolStripSeparator13.Size = new System.Drawing.Size(6, 25);
 			// 
 			// CrawlResultView
 			// 
@@ -670,14 +807,27 @@ namespace Yusen.GExplorer {
 		private System.Windows.Forms.ToolStripMenuItem tsmiRemoveCache;
 		private System.Windows.Forms.ToolStripDropDownButton tsddbExceptions;
 		private ExceptionDialog exceptionDialog1;
-		private System.Windows.Forms.ToolStripDropDownButton tsddbFilterType;
 		private System.Windows.Forms.ToolStripLabel tslFilter;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator9;
 		private System.Windows.Forms.Timer timerFilter;
 		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
 		private System.Windows.Forms.ToolStripMenuItem tsmiMaxPageMenuItems;
 		private System.Windows.Forms.ToolStripMenuItem tsmiMaxExceptionMenuItems;
-		private System.Windows.Forms.ToolStripDropDownButton tsddbAboneType;
 		private System.Windows.Forms.ColumnHeader chAttribs;
+		private System.Windows.Forms.ToolStripButton tsbOneAboneToumei;
+		private System.Windows.Forms.ToolStripButton tsbOneAboneSabori;
+		private System.Windows.Forms.ToolStripButton tsbOneAboneHakidame;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator11;
+		private System.Windows.Forms.ToolStripMenuItem tsmiFilterType;
+		private System.Windows.Forms.ToolStripButton tsbOneFTypeNormal;
+		private System.Windows.Forms.ToolStripButton tsbOneFTypeMigemo;
+		private System.Windows.Forms.ToolStripButton tsbOneFTypeRegex;
+		private System.Windows.Forms.ToolStripDropDownButton tsddbFilterTarget;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator12;
+		private System.Windows.Forms.ToolStripMenuItem tsmiFilterTargetCheckAll;
+		private System.Windows.Forms.ToolStripMenuItem tsmiFilterTargetUncheckAll;
+		private System.Windows.Forms.ToolStripMenuItem tsmiFilterTargetToggleAll;
+		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator13;
 	}
 }

@@ -20,7 +20,7 @@ namespace Yusen.GCrawler {
 		private static readonly Regex regexImageDir = new Regex(@"<img src=""(/img/info/[a-z0-9]+/{1,2})cnt[0-9]+_[0-9a-z]*\.(?:jpg|gif)""", RegexOptions.Compiled); // ‘ºã‚³‚ñ‚Í‚È‚º‚© / ‚ª2‚Â
 		private static readonly Regex regexEpisodeNum = new Regex(@"<td align=""left""><b>(.*)</b></td>", RegexOptions.Compiled);
 		private static readonly Regex regexDuration = new Regex(@"<td align=""right""><b>[^:]*ŽžŠÔ[^:]* : (.*)</b></td>", RegexOptions.Compiled);
-		private static readonly Regex regexDescription = new Regex(@"^\s*(?:<td align=""[^""]*"">)?((?:[^<]|<br */?>|<[abp](?:>| [^>]*>)|</[abp]>)+)</td>$", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+		private static readonly Regex regexDescription = new Regex(@"^\s*(?:<td align=""[^""]*"">)?((?:[^<]|<br */?>|<([abp]|font)(?:>| [^>]*>)|</(?:[abp]|font)>)+)</td>$", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 		private const string endOfDescription = @"<table width=""770"" border=""0"" cellspacing=""0"" cellpadding=""0"">";
 		
 		public static void Serialize(string filename, GContent cont){

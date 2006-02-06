@@ -15,7 +15,9 @@ namespace Yusen.GExplorer {
 				return NgContentsEditor.instance;
 			}
 		}
-		
+
+		private volatile NgContent selNg = null;
+
 		private NgContentsEditor() {
 			InitializeComponent();
 		}
@@ -130,6 +132,24 @@ namespace Yusen.GExplorer {
 				return;
 			}
 			NgContentsManager.Instance.Add(ng);
+		}
+
+		private void lvNgContents_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e) {
+			if(e.IsSelected) {
+				this.selNg = e.Item.Tag as NgContent;
+				this.timerItemSelect.Start();
+			}
+		}
+
+		private void timerItemSelect_Tick(object sender, EventArgs e) {
+			this.timerItemSelect.Stop();
+			NgContent ng = this.selNg;
+			if(null != ng) {
+				this.txtComment.Text = ng.Comment;
+				this.comboProperty.Text = ng.PropertyName;
+				this.comboMethod.Text = ng.Method.ToString();
+				this.txtWord.Text = ng.Word;
+			}
 		}
 	}
 

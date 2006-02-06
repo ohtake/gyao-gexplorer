@@ -92,7 +92,7 @@ namespace Yusen.GExplorer {
 
 		[Category("GUI")]
 		[DisplayName("ビジュアルスタイル")]
-		[Description("ビジュアルスタイルの適用領域の指定．")]
+		[Description("ビジュアルスタイルの適用領域の指定．切り替えに時間がかかる場合があります．")]
 		[DefaultValue(VisualStyleState.ClientAndNonClientAreasEnabled)]
 		public VisualStyleState VisualStyle {
 			get {return Application.VisualStyleState;}

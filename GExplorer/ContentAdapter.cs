@@ -161,7 +161,7 @@ namespace Yusen.GExplorer {
 				if (! string.IsNullOrEmpty(this.EpisodeNumber)) {
 					sb.Append(" / " + this.EpisodeNumber);
 				}
-				if (! string.IsNullOrEmpty(this.SubTitle) && this.Title != this.SubTitle) {
+				if (! string.IsNullOrEmpty(this.SubTitle) && this.Title != this.SubTitle && this.EpisodeNumber != this.SubTitle) {
 					sb.Append(" / " + this.SubTitle);
 				}
 				return sb.ToString();

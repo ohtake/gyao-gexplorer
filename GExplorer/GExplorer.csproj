@@ -164,9 +164,11 @@
     </EmbeddedResource>
     <EmbeddedResource Include="BrowserForm.resx">
       <DependentUpon>BrowserForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="ContentDetailView.resx">
       <DependentUpon>ContentDetailView.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="ExceptionForm.resx">
       <DependentUpon>ExceptionForm.cs</DependentUpon>
@@ -179,30 +181,37 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GenreTabControl.resx">
       <DependentUpon>GenreTabControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="GenreTabPage.resx">
       <DependentUpon>GenreTabPage.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="GlobalSettingsEditor.resx">
       <DependentUpon>GlobalSettingsEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GWebBrowser.resx">
       <DependentUpon>GWebBrowser.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="InputBoxForm.resx">
       <DependentUpon>InputBoxForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="NgContentsEditor.resx">
       <DependentUpon>NgContentsEditor.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="PlayerForm.resx">
       <DependentUpon>PlayerForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="PlayListView.resx">
       <DependentUpon>PlayListView.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -211,6 +220,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="CrawlResultView.resx">
       <DependentUpon>CrawlResultView.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="SplashForm.resx">
       <SubType>Designer</SubType>

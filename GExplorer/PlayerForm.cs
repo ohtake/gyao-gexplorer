@@ -6,6 +6,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using AxWMPLib;
 using WMPLib;
+using DRegion=System.Drawing.Region;
 
 namespace Yusen.GExplorer {
 	sealed partial class PlayerForm : FormSettingsBase, IFormWithSettings<PlayerFormSettings>{
@@ -46,11 +47,14 @@ namespace Yusen.GExplorer {
 		private static PlayerForm instance = null;
 		public static PlayerForm Instance {
 			get {
-				if(null == PlayerForm.instance || PlayerForm.instance.IsDisposed) {
+				if(! PlayerForm.HasInstance) {
 					PlayerForm.instance = new PlayerForm();
 				}
 				return PlayerForm.instance;
 			}
+		}
+		public static bool HasInstance {
+			get { return null != PlayerForm.instance && !PlayerForm.instance.IsDisposed; }
 		}
 		public static void Play(ContentAdapter contentAdapter) {
 			PlayerForm p = PlayerForm.Instance;
@@ -76,7 +80,9 @@ namespace Yusen.GExplorer {
 
 		private void OpenVideo() {
 			if(null == this.CurrentContent) {
+				this.wmpMain.close();
 				this.wmpMain.currentMedia = null;
+				return;
 			}
 			IWMPMedia media;
 			if(this.CurrentChapter.HasValue) {
@@ -131,16 +137,27 @@ namespace Yusen.GExplorer {
 			}
 		}
 		private void HideUi() {
+			//WMPの座標計算
 			Point loc = this.PointToClient(this.splitContainer1.PointToScreen(new Point()));
 			loc.X += SystemInformation.SizingBorderWidth;
 			loc.Y += SystemInformation.SizingBorderWidth + SystemInformation.CaptionHeight;
 			loc += PlayerForm.WmpMarginSize;
+			//WMPのビデオ部分のサイズ計算
 			Size size = this.splitContainer1.ClientSize;
 			size -= PlayerForm.WmpUiSize;
+			//リージョン設定
+			DRegion oldRegion = this.Region;
 			this.Region = new Region(new Rectangle(loc, size));
+			if(null != oldRegion) {
+				oldRegion.Dispose();
+			}
 		}
 		private void ShowUi() {
-			this.Region = null;
+			if(null != this.Region) {
+				DRegion oldRegion = this.Region;
+				this.Region = null;
+				oldRegion.Dispose();
+			}
 		}
 		public void FillSettings(PlayerFormSettings settings) {
 			base.FillSettings(settings);
@@ -195,6 +212,7 @@ namespace Yusen.GExplorer {
 				} else {
 					this.Text = value.DisplayName;
 					this.OpenVideo();
+					//this.wmpMain.Ctlcontrols.play();//念のため
 				}
 				PlayList.Instance.CurrentContent = value;
 			}

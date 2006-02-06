@@ -35,6 +35,8 @@ namespace Yusen.GExplorer {
 			this.tsmiAdd.Font = new Font(this.tsmiAdd.Font, FontStyle.Bold);
 			this.tsddbSettings.DropDown.Closing += Utility.ToolStripDropDown_CancelClosingOnClick;
 			this.tsmiAboneType.DropDown.Closing += Utility.ToolStripDropDown_CancelClosingOnClick;
+			this.tsmiFilterType.DropDown.Closing += Utility.ToolStripDropDown_CancelClosingOnClick;
+			this.tsddbFilterTarget.DropDown.Closing += Utility.ToolStripDropDown_CancelClosingOnClick;
 			
 			//Migemo初期化
 			try {
@@ -58,10 +60,9 @@ namespace Yusen.GExplorer {
 				this.tsmiAboneType.DropDownItems.Add(tsmi);
 			}
 			this.AboneType = this.AboneType;
-			this.tsddbAboneType.DropDown = this.tsmiAboneType.DropDown;
 			
 			//フィルタ用のメニュー作成
-			this.tsddbFilterType.DropDownItems.Clear();
+			this.tsmiFilterType.DropDownItems.Clear();
 			foreach (FilterType ftype in Enum.GetValues(typeof(FilterType))) {
 				ToolStripMenuItem tsmi = new ToolStripMenuItem(ftype.ToString());
 				tsmi.Tag = ftype;
@@ -71,11 +72,23 @@ namespace Yusen.GExplorer {
 				//Migemoが使用不可の場合は選択不可に
 				if (FilterType.Migemo == ftype && !this.CanUseMigemo) {
 					tsmi.Enabled = false;
+					this.tsbOneFTypeMigemo.Enabled = false;
 				}
-				this.tsddbFilterType.DropDownItems.Add(tsmi);
+				this.tsmiFilterType.DropDownItems.Add(tsmi);
 			}
 			this.FilterType = this.FilterType;
 			
+			//フィルタの対象のメニューを作成
+			foreach(ColumnHeader ch in this.listView1.Columns) {
+				ToolStripMenuItem tsmi = new ToolStripMenuItem(ch.Text);
+				tsmi.Checked = true;
+				tsmi.CheckOnClick = true;
+				tsmi.Click += delegate {
+					this.UpdateViewIfFilterEnabledAndHasFilterRegex();
+				};
+				this.tsddbFilterTarget.DropDownItems.Add(tsmi);
+			}
+
 			this.CreateUserCommandsMenuItems();
 			UserCommandsManager.Instance.UserCommandsChanged += new EventHandler(UserCommandsManager_UserCommandsChanged);
 			this.Disposed += delegate {
@@ -143,25 +156,39 @@ namespace Yusen.GExplorer {
 			}
 			set {
 				this.tstbFilter.Text = value;
-				this.CreateFilterRegex();
+				this.CreateAndSetFilterRegex();
 			}
 		}
 		public FilterType FilterType {
 			get { return this.filterType; }
 			set {
+				//Migemoチェック
 				if (FilterType.Migemo == value && !this.CanUseMigemo) {
 					value = FilterType.Normal;
 				}
-				if (value != this.filterType) {
-					this.filterType = value;
-					this.CreateFilterRegex();
-				}
-				foreach (ToolStripMenuItem tsmi in this.tsddbFilterType.DropDownItems) {
+				//ボタンなどの更新
+				foreach(ToolStripMenuItem tsmi in this.tsmiFilterType.DropDownItems) {
 					bool active = value == (FilterType)tsmi.Tag;
 					tsmi.Checked = active;
-					if (active) {
-						this.tsddbFilterType.Text = "方法(&Y): " + tsmi.Text;
-					}
+				}
+				this.tsbOneFTypeNormal.Checked = false;
+				this.tsbOneFTypeMigemo.Checked = false;
+				this.tsbOneFTypeRegex.Checked = false;
+				switch(value) {
+					case FilterType.Normal:
+						this.tsbOneFTypeNormal.Checked = true;
+						break;
+					case FilterType.Migemo:
+						this.tsbOneFTypeMigemo.Checked = true;
+						break;
+					case FilterType.Regex:
+						this.tsbOneFTypeRegex.Checked = true;
+						break;
+				}
+				//フィルタ適用
+				if(value != this.filterType) {
+					this.filterType = value;
+					this.CreateAndSetFilterRegex();
 				}
 			}
 		}
@@ -170,7 +197,6 @@ namespace Yusen.GExplorer {
 			set {
 				if (this.filterRegex != value) {
 					this.filterRegex = value;
-					this.tstbAnswer.Text = (null==value)? string.Empty : this.filterRegex.ToString();
 					this.UpdateView();
 				}
 			}
@@ -181,6 +207,20 @@ namespace Yusen.GExplorer {
 			set {
 				foreach(ToolStripMenuItem tsmi in this.tsmiAboneType.DropDownItems) {
 					tsmi.Checked = value == (AboneType)tsmi.Tag;
+				}
+				this.tsbOneAboneToumei.Checked = false;
+				this.tsbOneAboneSabori.Checked = false;
+				this.tsbOneAboneHakidame.Checked = false;
+				switch(value) {
+					case AboneType.Toumei:
+						this.tsbOneAboneToumei.Checked = true;
+						break;
+					case AboneType.Sabori:
+						this.tsbOneAboneSabori.Checked = true;
+						break;
+					case AboneType.Hakidame:
+						this.tsbOneAboneHakidame.Checked = true;
+						break;
 				}
 				if(value != this.aboneType) {
 					this.aboneType = value;
@@ -327,6 +367,7 @@ namespace Yusen.GExplorer {
 			int aboned = 0;
 			int filtered = 0;
 			Regex filter = this.FilterEnabled ? this.FilterRegex : null;
+			List<bool> filterTarges = this.GetFilterTargetList();
 			foreach (KeyValuePair<ListViewItem, ListViewGroup> pair in this.allLvis) {
 				ListViewItem lvi = pair.Key;
 				ContentAdapter cont = lvi.Tag as ContentAdapter;
@@ -347,11 +388,11 @@ namespace Yusen.GExplorer {
 				//フィルタ処理
 				if (null != filter) {
 					Match match;
-					match = filter.Match(lvi.Text);
-					if (match.Success) goto unfiltered;
-					foreach (ListViewItem.ListViewSubItem si in lvi.SubItems) {
-						match = filter.Match(si.Text);
-						if (match.Success) goto unfiltered;
+					for(int i=0; i<filterTarges.Count; i++) {
+						if(filterTarges[i]) {
+							match = filter.Match(lvi.SubItems[i].Text);
+							if(match.Success) goto unfiltered;
+						}
 					}
 					filtered++;
 					continue;
@@ -427,14 +468,16 @@ namespace Yusen.GExplorer {
 			this.tsddbExceptions.DropDownItems.AddRange(menuItems.ToArray());
 			this.tsddbExceptions.Enabled = this.tsddbExceptions.HasDropDownItems;
 		}
-		private void CreateFilterRegex() {
+		private void CreateAndSetFilterRegex() {
 			Regex regex = null;
+			string regexCompileErrMessage = null;
 			if (!string.IsNullOrEmpty(this.FilterString)) {
 				switch (this.FilterType) {
 					case FilterType.Normal:
 						try {
 							regex = new Regex(Regex.Escape(this.FilterString), RegexOptions.IgnoreCase);
-						} catch (ArgumentException) {
+						} catch (ArgumentException e) {
+							regexCompileErrMessage = e.Message;
 							goto failed;
 						}
 						break;
@@ -442,24 +485,30 @@ namespace Yusen.GExplorer {
 						string ans = this.migemo.Query(this.FilterString);
 						try {
 							regex = new Regex(ans, RegexOptions.IgnoreCase | RegexOptions.ExplicitCapture);
-						} catch (ArgumentException) {
+						} catch (ArgumentException e) {
+							regexCompileErrMessage = e.Message;
 							goto failed;
 						}
 						break;
 					case FilterType.Regex:
 						try {
 							regex = new Regex(this.FilterString, RegexOptions.IgnoreCase);
-						} catch (ArgumentException) {
+						} catch (ArgumentException e) {
+							regexCompileErrMessage = e.Message;
 							goto failed;
 						}
 						break;
 				}
 			}
 			this.tstbFilter.BackColor = SystemColors.Window;
+			this.tstbAnswer.Text = (null == regex) ? string.Empty : regex.ToString();
 			this.FilterRegex = regex;
 			return;
 		failed:
 			this.tstbFilter.BackColor= Color.Yellow;
+			if(!string.IsNullOrEmpty(regexCompileErrMessage)){
+				this.tstbAnswer.Text = regexCompileErrMessage;
+			}
 			this.FilterRegex = null;
 			return;
 		}
@@ -488,6 +537,11 @@ namespace Yusen.GExplorer {
 			this.listView1.BeginUpdate();
 			this.DisplayItems();
 			this.listView1.EndUpdate();
+		}
+		private void UpdateViewIfFilterEnabledAndHasFilterRegex() {
+			if(this.FilterEnabled && null != this.FilterRegex) {
+				this.UpdateView();
+			}
 		}
 
 		private void UserCommandsManager_UserCommandsChanged(object sender, EventArgs e) {
@@ -707,10 +761,80 @@ namespace Yusen.GExplorer {
 		}
 		private void timerFilter_Tick(object sender, EventArgs e) {
 			this.timerFilter.Stop();
-			this.CreateFilterRegex();
+			this.CreateAndSetFilterRegex();
 		}
 		#endregion
 		
+		#region ワンクリックでの切り替え
+		private void tsbOneAboneToumei_Click(object sender, EventArgs e) {
+			this.AboneType = AboneType.Toumei;
+		}
+		private void tsbOneAboneSabori_Click(object sender, EventArgs e) {
+			this.AboneType = AboneType.Sabori;
+		}
+		private void tsbOneAboneHakidame_Click(object sender, EventArgs e) {
+			this.AboneType = AboneType.Hakidame;
+		}
+		private void tsbOneFTypeNormal_Click(object sender, EventArgs e) {
+			this.FilterType = FilterType.Normal;
+		}
+		private void tsbOneFTypeMigemo_Click(object sender, EventArgs e) {
+			this.FilterType = FilterType.Migemo;
+		}
+		private void tsbOneFTypeRegex_Click(object sender, EventArgs e) {
+			this.FilterType = FilterType.Regex;
+		}
+		#endregion
+
+		#region フィルタ対象
+		private List<bool> GetFilterTargetList() {
+			List<bool> targets = new List<bool>(this.listView1.Columns.Count);
+			bool afterSeparator = false;
+			foreach(ToolStripItem tsi in this.tsddbFilterTarget.DropDownItems) {
+				if(!afterSeparator) {
+					if(tsi is ToolStripSeparator) {
+						afterSeparator = true;
+					}
+					continue;
+				}
+				ToolStripMenuItem tsmi = tsi as ToolStripMenuItem;
+				targets.Add(tsmi.Checked);
+			}
+			return targets;
+		}
+		private void ChangeAllFilterTargetHelper(Action<ToolStripMenuItem> action) {
+			bool afterSeparator = false;
+			foreach(ToolStripItem tsi in this.tsddbFilterTarget.DropDownItems) {
+				if(!afterSeparator) {
+					if(tsi is ToolStripSeparator) {
+						afterSeparator = true;
+					}
+					continue;
+				}
+				ToolStripMenuItem tsmi = tsi as ToolStripMenuItem;
+				action(tsmi);
+			}
+		}
+		private void tsmiFilterTargetCheckAll_Click(object sender, EventArgs e) {
+			this.ChangeAllFilterTargetHelper(new Action<ToolStripMenuItem>(delegate(ToolStripMenuItem tsmi) {
+				tsmi.Checked = true;
+			}));
+			this.UpdateViewIfFilterEnabledAndHasFilterRegex();
+		}
+		private void tsmiFilterTargetUncheckAll_Click(object sender, EventArgs e) {
+			this.ChangeAllFilterTargetHelper(new Action<ToolStripMenuItem>(delegate(ToolStripMenuItem tsmi) {
+				tsmi.Checked = false;
+			}));
+			this.UpdateViewIfFilterEnabledAndHasFilterRegex();
+		}
+		private void tsmiFilterTargetToggleAll_Click(object sender, EventArgs e) {
+			this.ChangeAllFilterTargetHelper(new Action<ToolStripMenuItem>(delegate(ToolStripMenuItem tsmi) {
+				tsmi.Checked = !tsmi.Checked;
+			}));
+			this.UpdateViewIfFilterEnabledAndHasFilterRegex();
+		}
+		#endregion
+
 		internal ToolStripDropDown SettingsDropDown {
 			get { return this.tsddbSettings.DropDown; }
 		}

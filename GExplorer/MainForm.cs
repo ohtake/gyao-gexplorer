@@ -185,6 +185,9 @@ namespace Yusen.GExplorer {
 			this.tsmiAbortCrawling.PerformClick();
 			
 			this.Enabled = false;
+			if(PlayerForm.HasInstance) PlayerForm.Instance.Close();
+			if(BrowserForm.HasInstance) BrowserForm.Instance.Close();
+			
 			Program.SerializeSettings();
 		}
 		private void UserCommandsManager_UserCommandsChanged(object sender, EventArgs e) {
@@ -347,6 +350,26 @@ namespace Yusen.GExplorer {
 					"全てのエントリーを削除", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2)) {
 				case DialogResult.Yes:
 					Cache.Instance.RemoveDeadlineEntriesAll();
+					break;
+			}
+		}
+		private void tsmiDeleteNgContentsWeek_Click(object sender, EventArgs e) {
+			NgContentsManager manager = NgContentsManager.Instance;
+			int cntAll = manager.Count;
+			NgContentsManager.Instance.RemoveAll(new Predicate<NgContent>(delegate(NgContent ng) {
+				return ng.LastAbone < DateTime.Now.AddDays(-7);
+			}));
+			int cntLast = manager.Count;
+			this.SetStatutBarTextTemporary(string.Format("NGコンテンツの削除    削除数: {0}    残り: {1}", cntAll - cntLast, cntLast));
+		}
+		private void tsmiDeleteNgContentsAll_Click(object sender, EventArgs e) {
+			switch(MessageBox.Show(
+				"全てのNGコンテンツを削除します．\nよろしいですか？",
+				"全てのNGコンテンツを削除", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2)) {
+				case DialogResult.Yes:
+					int num = NgContentsManager.Instance.Count;
+					NgContentsManager.Instance.Clear();
+					this.SetStatutBarTextTemporary(string.Format("NGコンテンツの削除    削除数: {0}", num));
 					break;
 			}
 		}

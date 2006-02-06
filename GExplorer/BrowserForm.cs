@@ -4,17 +4,21 @@ using System.ComponentModel;
 using System.Windows.Forms;
 using WMPLib;
 using Yusen.GCrawler;
+using System.Drawing;
 
 namespace Yusen.GExplorer {
 	sealed partial class BrowserForm : FormSettingsBase, IFormWithSettings<BrowserFormSettings>{
 		private static BrowserForm instance = null;
 		public static BrowserForm Instance {
 			get {
-				if(null == BrowserForm.instance || BrowserForm.instance.IsDisposed) {
+				if(! BrowserForm.HasInstance) {
 					BrowserForm.instance = new BrowserForm();
 				}
 				return BrowserForm.instance;
 			}
+		}
+		public static bool HasInstance {
+			get { return null != BrowserForm.instance && !BrowserForm.instance.IsDisposed; }
 		}
 		public static void Browse(Uri uri) {
 			BrowserForm.Instance.Show();

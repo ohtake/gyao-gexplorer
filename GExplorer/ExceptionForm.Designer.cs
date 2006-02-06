@@ -49,7 +49,7 @@ namespace Yusen.GExplorer {
 			// tableLayoutPanel1
 			// 
 			this.tableLayoutPanel1.ColumnCount = 2;
-			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 110F));
+			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 90F));
 			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
 			this.tableLayoutPanel1.Controls.Add(this.lblProdVer, 0, 0);
 			this.tableLayoutPanel1.Controls.Add(this.lblClrVer, 0, 1);
@@ -78,7 +78,7 @@ namespace Yusen.GExplorer {
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 36F));
-			this.tableLayoutPanel1.Size = new System.Drawing.Size(356, 311);
+			this.tableLayoutPanel1.Size = new System.Drawing.Size(344, 311);
 			this.tableLayoutPanel1.TabIndex = 0;
 			// 
 			// lblProdVer
@@ -87,9 +87,9 @@ namespace Yusen.GExplorer {
 			this.lblProdVer.AutoSize = true;
 			this.lblProdVer.Location = new System.Drawing.Point(3, 6);
 			this.lblProdVer.Name = "lblProdVer";
-			this.lblProdVer.Size = new System.Drawing.Size(85, 12);
+			this.lblProdVer.Size = new System.Drawing.Size(74, 12);
 			this.lblProdVer.TabIndex = 10;
-			this.lblProdVer.Text = "Product Version";
+			this.lblProdVer.Text = "製品バージョン";
 			// 
 			// lblClrVer
 			// 
@@ -97,9 +97,9 @@ namespace Yusen.GExplorer {
 			this.lblClrVer.AutoSize = true;
 			this.lblClrVer.Location = new System.Drawing.Point(3, 30);
 			this.lblClrVer.Name = "lblClrVer";
-			this.lblClrVer.Size = new System.Drawing.Size(68, 12);
+			this.lblClrVer.Size = new System.Drawing.Size(72, 12);
 			this.lblClrVer.TabIndex = 12;
-			this.lblClrVer.Text = "CLR Version";
+			this.lblClrVer.Text = "CLRバージョン";
 			// 
 			// lblOsVer
 			// 
@@ -107,9 +107,9 @@ namespace Yusen.GExplorer {
 			this.lblOsVer.AutoSize = true;
 			this.lblOsVer.Location = new System.Drawing.Point(3, 54);
 			this.lblOsVer.Name = "lblOsVer";
-			this.lblOsVer.Size = new System.Drawing.Size(61, 12);
+			this.lblOsVer.Size = new System.Drawing.Size(65, 12);
 			this.lblOsVer.TabIndex = 14;
-			this.lblOsVer.Text = "OS Version";
+			this.lblOsVer.Text = "OSバージョン";
 			// 
 			// lblExceptionType
 			// 
@@ -117,9 +117,9 @@ namespace Yusen.GExplorer {
 			this.lblExceptionType.AutoSize = true;
 			this.lblExceptionType.Location = new System.Drawing.Point(3, 78);
 			this.lblExceptionType.Name = "lblExceptionType";
-			this.lblExceptionType.Size = new System.Drawing.Size(82, 12);
+			this.lblExceptionType.Size = new System.Drawing.Size(51, 12);
 			this.lblExceptionType.TabIndex = 16;
-			this.lblExceptionType.Text = "Exception Type";
+			this.lblExceptionType.Text = "例外の型";
 			// 
 			// lblExceptionMessage
 			// 
@@ -127,9 +127,9 @@ namespace Yusen.GExplorer {
 			this.lblExceptionMessage.AutoSize = true;
 			this.lblExceptionMessage.Location = new System.Drawing.Point(3, 102);
 			this.lblExceptionMessage.Name = "lblExceptionMessage";
-			this.lblExceptionMessage.Size = new System.Drawing.Size(102, 12);
+			this.lblExceptionMessage.Size = new System.Drawing.Size(84, 12);
 			this.lblExceptionMessage.TabIndex = 18;
-			this.lblExceptionMessage.Text = "Exception Message";
+			this.lblExceptionMessage.Text = "例外のメッセージ";
 			// 
 			// lblStackTrace
 			// 
@@ -137,9 +137,9 @@ namespace Yusen.GExplorer {
 			this.lblStackTrace.AutoSize = true;
 			this.lblStackTrace.Location = new System.Drawing.Point(3, 181);
 			this.lblStackTrace.Name = "lblStackTrace";
-			this.lblStackTrace.Size = new System.Drawing.Size(65, 12);
+			this.lblStackTrace.Size = new System.Drawing.Size(73, 12);
 			this.lblStackTrace.TabIndex = 19;
-			this.lblStackTrace.Text = "Stack Trace";
+			this.lblStackTrace.Text = "スタックトレース";
 			// 
 			// lblInnerException
 			// 
@@ -147,64 +147,64 @@ namespace Yusen.GExplorer {
 			this.lblInnerException.AutoSize = true;
 			this.lblInnerException.Location = new System.Drawing.Point(3, 259);
 			this.lblInnerException.Name = "lblInnerException";
-			this.lblInnerException.Size = new System.Drawing.Size(82, 12);
+			this.lblInnerException.Size = new System.Drawing.Size(53, 12);
 			this.lblInnerException.TabIndex = 21;
-			this.lblInnerException.Text = "Inner Exception";
+			this.lblInnerException.Text = "内部例外";
 			// 
 			// txtProdVer
 			// 
 			this.txtProdVer.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.txtProdVer.Location = new System.Drawing.Point(113, 3);
+			this.txtProdVer.Location = new System.Drawing.Point(93, 3);
 			this.txtProdVer.Name = "txtProdVer";
 			this.txtProdVer.ReadOnly = true;
-			this.txtProdVer.Size = new System.Drawing.Size(240, 19);
+			this.txtProdVer.Size = new System.Drawing.Size(248, 19);
 			this.txtProdVer.TabIndex = 11;
 			// 
 			// txtClrVer
 			// 
 			this.txtClrVer.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.txtClrVer.Location = new System.Drawing.Point(113, 27);
+			this.txtClrVer.Location = new System.Drawing.Point(93, 27);
 			this.txtClrVer.Name = "txtClrVer";
 			this.txtClrVer.ReadOnly = true;
-			this.txtClrVer.Size = new System.Drawing.Size(240, 19);
+			this.txtClrVer.Size = new System.Drawing.Size(248, 19);
 			this.txtClrVer.TabIndex = 13;
 			// 
 			// txtOsVer
 			// 
 			this.txtOsVer.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.txtOsVer.Location = new System.Drawing.Point(113, 51);
+			this.txtOsVer.Location = new System.Drawing.Point(93, 51);
 			this.txtOsVer.Name = "txtOsVer";
 			this.txtOsVer.ReadOnly = true;
-			this.txtOsVer.Size = new System.Drawing.Size(240, 19);
+			this.txtOsVer.Size = new System.Drawing.Size(248, 19);
 			this.txtOsVer.TabIndex = 15;
 			// 
 			// txtExceptionType
 			// 
 			this.txtExceptionType.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.txtExceptionType.Location = new System.Drawing.Point(113, 75);
+			this.txtExceptionType.Location = new System.Drawing.Point(93, 75);
 			this.txtExceptionType.Name = "txtExceptionType";
 			this.txtExceptionType.ReadOnly = true;
-			this.txtExceptionType.Size = new System.Drawing.Size(240, 19);
+			this.txtExceptionType.Size = new System.Drawing.Size(248, 19);
 			this.txtExceptionType.TabIndex = 17;
 			// 
 			// txtExceptionMessage
 			// 
 			this.txtExceptionMessage.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.txtExceptionMessage.Location = new System.Drawing.Point(113, 99);
+			this.txtExceptionMessage.Location = new System.Drawing.Point(93, 99);
 			this.txtExceptionMessage.Name = "txtExceptionMessage";
 			this.txtExceptionMessage.ReadOnly = true;
-			this.txtExceptionMessage.Size = new System.Drawing.Size(240, 19);
+			this.txtExceptionMessage.Size = new System.Drawing.Size(248, 19);
 			this.txtExceptionMessage.TabIndex = 18;
 			// 
 			// txtStackTrace
 			// 
 			this.txtStackTrace.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.txtStackTrace.Location = new System.Drawing.Point(113, 123);
+			this.txtStackTrace.Location = new System.Drawing.Point(93, 123);
 			this.txtStackTrace.Multiline = true;
 			this.txtStackTrace.Name = "txtStackTrace";
 			this.txtStackTrace.ReadOnly = true;
 			this.txtStackTrace.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-			this.txtStackTrace.Size = new System.Drawing.Size(240, 129);
+			this.txtStackTrace.Size = new System.Drawing.Size(248, 129);
 			this.txtStackTrace.TabIndex = 20;
 			this.txtStackTrace.WordWrap = false;
 			// 
@@ -213,9 +213,9 @@ namespace Yusen.GExplorer {
 			this.llblInnerException.Anchor = System.Windows.Forms.AnchorStyles.Left;
 			this.llblInnerException.AutoSize = true;
 			this.llblInnerException.Enabled = false;
-			this.llblInnerException.Location = new System.Drawing.Point(113, 259);
+			this.llblInnerException.Location = new System.Drawing.Point(93, 259);
 			this.llblInnerException.Name = "llblInnerException";
-			this.llblInnerException.Size = new System.Drawing.Size(21, 12);
+			this.llblInnerException.Size = new System.Drawing.Size(23, 12);
 			this.llblInnerException.TabIndex = 22;
 			this.llblInnerException.TabStop = true;
 			this.llblInnerException.Text = "null";
@@ -230,7 +230,7 @@ namespace Yusen.GExplorer {
 			this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 278);
 			this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-			this.flowLayoutPanel1.Size = new System.Drawing.Size(350, 30);
+			this.flowLayoutPanel1.Size = new System.Drawing.Size(338, 30);
 			this.flowLayoutPanel1.TabIndex = 14;
 			this.flowLayoutPanel1.WrapContents = false;
 			// 
@@ -268,7 +268,7 @@ namespace Yusen.GExplorer {
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.CancelButton = this.btnContinue;
-			this.ClientSize = new System.Drawing.Size(356, 311);
+			this.ClientSize = new System.Drawing.Size(344, 311);
 			this.Controls.Add(this.tableLayoutPanel1);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
 			this.MaximizeBox = false;

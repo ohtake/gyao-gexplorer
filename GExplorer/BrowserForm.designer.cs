@@ -38,6 +38,8 @@ namespace Yusen.GExplorer {
 			this.tsmiGenres = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiTimeTablesUpdated = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiTimeTablesDeadline = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiTools = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiGotoCampaign = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
 			this.statusStrip1 = new System.Windows.Forms.StatusStrip();
 			this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
@@ -51,8 +53,6 @@ namespace Yusen.GExplorer {
 			this.tslAddress = new System.Windows.Forms.ToolStripLabel();
 			this.tscbAddress = new System.Windows.Forms.ToolStripComboBox();
 			this.tsbGo = new System.Windows.Forms.ToolStripButton();
-			this.tsmiTools = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiGotoCampaign = new System.Windows.Forms.ToolStripMenuItem();
 			this.menuStrip1.SuspendLayout();
 			this.toolStripContainer1.BottomToolStripPanel.SuspendLayout();
 			this.toolStripContainer1.ContentPanel.SuspendLayout();
@@ -76,7 +76,7 @@ namespace Yusen.GExplorer {
 			this.menuStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
-			this.menuStrip1.Size = new System.Drawing.Size(842, 23);
+			this.menuStrip1.Size = new System.Drawing.Size(842, 20);
 			this.menuStrip1.TabIndex = 0;
 			this.menuStrip1.Text = "menuStrip1";
 			// 
@@ -178,6 +178,21 @@ namespace Yusen.GExplorer {
 			this.tsmiTimeTablesDeadline.Size = new System.Drawing.Size(137, 16);
 			this.tsmiTimeTablesDeadline.Text = "残り日数優先番組表(&D)";
 			// 
+			// tsmiTools
+			// 
+			this.tsmiTools.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiGotoCampaign});
+			this.tsmiTools.Name = "tsmiTools";
+			this.tsmiTools.Size = new System.Drawing.Size(61, 16);
+			this.tsmiTools.Text = "ツール(&T)";
+			// 
+			// tsmiGotoCampaign
+			// 
+			this.tsmiGotoCampaign.Name = "tsmiGotoCampaign";
+			this.tsmiGotoCampaign.Size = new System.Drawing.Size(142, 22);
+			this.tsmiGotoCampaign.Text = "goto&Campaign";
+			this.tsmiGotoCampaign.Click += new System.EventHandler(this.tsmiGotoCampaign_Click);
+			// 
 			// toolStripContainer1
 			// 
 			// 
@@ -188,7 +203,7 @@ namespace Yusen.GExplorer {
 			// toolStripContainer1.ContentPanel
 			// 
 			this.toolStripContainer1.ContentPanel.Controls.Add(this.gwbMain);
-			this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(842, 501);
+			this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(842, 529);
 			this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.toolStripContainer1.Location = new System.Drawing.Point(0, 0);
 			this.toolStripContainer1.Name = "toolStripContainer1";
@@ -232,7 +247,7 @@ namespace Yusen.GExplorer {
 			this.gwbMain.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.gwbMain.Location = new System.Drawing.Point(0, 0);
 			this.gwbMain.Name = "gwbMain";
-			this.gwbMain.Size = new System.Drawing.Size(842, 501);
+			this.gwbMain.Size = new System.Drawing.Size(842, 529);
 			this.gwbMain.TabIndex = 0;
 			this.gwbMain.StatusTextChanged += new System.EventHandler(this.gwbMain_StatusTextChanged);
 			this.gwbMain.CanGoForwardChanged += new System.EventHandler(this.gwbMain_CanGoForwardChanged);
@@ -251,7 +266,7 @@ namespace Yusen.GExplorer {
             this.tsbBack,
             this.tsbForward,
             this.tsbStop});
-			this.tsStandard.Location = new System.Drawing.Point(3, 23);
+			this.tsStandard.Location = new System.Drawing.Point(3, 20);
 			this.tsStandard.Name = "tsStandard";
 			this.tsStandard.Size = new System.Drawing.Size(200, 25);
 			this.tsStandard.TabIndex = 3;
@@ -259,6 +274,7 @@ namespace Yusen.GExplorer {
 			// 
 			// tsbBack
 			// 
+			this.tsbBack.AutoToolTip = false;
 			this.tsbBack.Enabled = false;
 			this.tsbBack.Image = ((System.Drawing.Image)(resources.GetObject("tsbBack.Image")));
 			this.tsbBack.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -269,6 +285,7 @@ namespace Yusen.GExplorer {
 			// 
 			// tsbForward
 			// 
+			this.tsbForward.AutoToolTip = false;
 			this.tsbForward.Enabled = false;
 			this.tsbForward.Image = ((System.Drawing.Image)(resources.GetObject("tsbForward.Image")));
 			this.tsbForward.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -279,6 +296,7 @@ namespace Yusen.GExplorer {
 			// 
 			// tsbStop
 			// 
+			this.tsbStop.AutoToolTip = false;
 			this.tsbStop.Enabled = false;
 			this.tsbStop.Image = ((System.Drawing.Image)(resources.GetObject("tsbStop.Image")));
 			this.tsbStop.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -295,7 +313,7 @@ namespace Yusen.GExplorer {
             this.tslAddress,
             this.tscbAddress,
             this.tsbGo});
-			this.tsAddress.Location = new System.Drawing.Point(3, 48);
+			this.tsAddress.Location = new System.Drawing.Point(203, 20);
 			this.tsAddress.Name = "tsAddress";
 			this.tsAddress.Size = new System.Drawing.Size(586, 25);
 			this.tsAddress.TabIndex = 1;
@@ -319,27 +337,13 @@ namespace Yusen.GExplorer {
 			// 
 			// tsbGo
 			// 
+			this.tsbGo.AutoToolTip = false;
 			this.tsbGo.Image = ((System.Drawing.Image)(resources.GetObject("tsbGo.Image")));
 			this.tsbGo.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tsbGo.Name = "tsbGo";
 			this.tsbGo.Size = new System.Drawing.Size(65, 22);
 			this.tsbGo.Text = "移動(&G)";
 			this.tsbGo.Click += new System.EventHandler(this.GoToAddressBarUri);
-			// 
-			// tsmiTools
-			// 
-			this.tsmiTools.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiGotoCampaign});
-			this.tsmiTools.Name = "tsmiTools";
-			this.tsmiTools.Size = new System.Drawing.Size(61, 16);
-			this.tsmiTools.Text = "ツール(&T)";
-			// 
-			// tsmiGotoCampaign
-			// 
-			this.tsmiGotoCampaign.Name = "tsmiGotoCampaign";
-			this.tsmiGotoCampaign.Size = new System.Drawing.Size(152, 22);
-			this.tsmiGotoCampaign.Text = "goto&Campaign";
-			this.tsmiGotoCampaign.Click += new System.EventHandler(this.tsmiGotoCampaign_Click);
 			// 
 			// BrowserForm
 			// 

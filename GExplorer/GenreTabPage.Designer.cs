@@ -108,6 +108,7 @@ namespace Yusen.GExplorer {
 			// GenreTabPage
 			// 
 			this.ContextMenuStrip = this.cmsGenre;
+			this.UseVisualStyleBackColor = true;
 			this.cmsGenre.ResumeLayout(false);
 			this.ResumeLayout(false);
 
