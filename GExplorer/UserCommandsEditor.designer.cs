@@ -1,4 +1,4 @@
-namespace Yusen.GExplorer {
+ï»¿namespace Yusen.GExplorer {
 	partial class UserCommandsEditor {
 		/// <summary>
 		/// Required designer variable.
@@ -66,7 +66,7 @@ namespace Yusen.GExplorer {
 			this.grpDetail.Size = new System.Drawing.Size(346, 139);
 			this.grpDetail.TabIndex = 200;
 			this.grpDetail.TabStop = false;
-			this.grpDetail.Text = "ŠO•”ƒRƒ}ƒ“ƒh‚Ì‘}“ü‚Æ•ÏX (&E)";
+			this.grpDetail.Text = "å¤–éƒ¨ã‚³ãƒãƒ³ãƒ‰ã®æŒ¿å…¥ã¨å¤‰æ›´ (&E)";
 			// 
 			// btnInsert
 			// 
@@ -74,7 +74,7 @@ namespace Yusen.GExplorer {
 			this.btnInsert.Name = "btnInsert";
 			this.btnInsert.Size = new System.Drawing.Size(90, 23);
 			this.btnInsert.TabIndex = 221;
-			this.btnInsert.Text = "‘}“ü(&I)";
+			this.btnInsert.Text = "æŒ¿å…¥(&I)";
 			this.btnInsert.Click += new System.EventHandler(this.btnInsert_Click);
 			// 
 			// btnModify
@@ -83,7 +83,7 @@ namespace Yusen.GExplorer {
 			this.btnModify.Name = "btnModify";
 			this.btnModify.Size = new System.Drawing.Size(90, 23);
 			this.btnModify.TabIndex = 222;
-			this.btnModify.Text = "•ÏX(&M)";
+			this.btnModify.Text = "å¤‰æ›´(&M)";
 			this.btnModify.Click += new System.EventHandler(this.btnModify_Click);
 			// 
 			// tableLayoutPanel1
@@ -118,7 +118,7 @@ namespace Yusen.GExplorer {
 			this.lblTitle.Name = "lblTitle";
 			this.lblTitle.Size = new System.Drawing.Size(58, 12);
 			this.lblTitle.TabIndex = 211;
-			this.lblTitle.Text = "•\¦–¼ (&T)";
+			this.lblTitle.Text = "è¡¨ç¤ºå (&T)";
 			// 
 			// txtTitle
 			// 
@@ -136,7 +136,7 @@ namespace Yusen.GExplorer {
 			this.lblFile.Name = "lblFile";
 			this.lblFile.Size = new System.Drawing.Size(80, 12);
 			this.lblFile.TabIndex = 213;
-			this.lblFile.Text = "Àsƒtƒ@ƒCƒ‹ (&F)";
+			this.lblFile.Text = "å®Ÿè¡Œãƒ•ã‚¡ã‚¤ãƒ« (&F)";
 			// 
 			// txtFile
 			// 
@@ -155,7 +155,7 @@ namespace Yusen.GExplorer {
 			this.btnBrowse.Name = "btnBrowse";
 			this.btnBrowse.Size = new System.Drawing.Size(69, 23);
 			this.btnBrowse.TabIndex = 215;
-			this.btnBrowse.Text = "QÆ(&B)...";
+			this.btnBrowse.Text = "å‚ç…§(&B)...";
 			this.btnBrowse.Click += new System.EventHandler(this.btnBrowse_Click);
 			// 
 			// lblArg
@@ -166,7 +166,7 @@ namespace Yusen.GExplorer {
 			this.lblArg.Name = "lblArg";
 			this.lblArg.Size = new System.Drawing.Size(47, 12);
 			this.lblArg.TabIndex = 216;
-			this.lblArg.Text = "ˆø” (&A)";
+			this.lblArg.Text = "å¼•æ•° (&A)";
 			// 
 			// txtArg
 			// 
@@ -183,7 +183,7 @@ namespace Yusen.GExplorer {
 			this.btnArg.Name = "btnArg";
 			this.btnArg.Size = new System.Drawing.Size(89, 23);
 			this.btnArg.TabIndex = 218;
-			this.btnArg.Text = "ŠÈˆÕ“ü—Í(&U)";
+			this.btnArg.Text = "ç°¡æ˜“å…¥åŠ›(&U)";
 			this.btnArg.Click += new System.EventHandler(this.btnArg_Click);
 			// 
 			// cmsArgs
@@ -201,7 +201,7 @@ namespace Yusen.GExplorer {
 			this.btnUp.Name = "btnUp";
 			this.btnUp.Size = new System.Drawing.Size(75, 23);
 			this.btnUp.TabIndex = 121;
-			this.btnUp.Text = "ã‚Ö(&U)";
+			this.btnUp.Text = "ä¸Šã¸(&U)";
 			this.btnUp.Click += new System.EventHandler(this.btnUp_Click);
 			// 
 			// btnDown
@@ -210,7 +210,7 @@ namespace Yusen.GExplorer {
 			this.btnDown.Name = "btnDown";
 			this.btnDown.Size = new System.Drawing.Size(75, 23);
 			this.btnDown.TabIndex = 122;
-			this.btnDown.Text = "‰º‚Ö(&D)";
+			this.btnDown.Text = "ä¸‹ã¸(&D)";
 			this.btnDown.Click += new System.EventHandler(this.btnDown_Click);
 			// 
 			// btnDelete
@@ -219,7 +219,7 @@ namespace Yusen.GExplorer {
 			this.btnDelete.Name = "btnDelete";
 			this.btnDelete.Size = new System.Drawing.Size(75, 23);
 			this.btnDelete.TabIndex = 123;
-			this.btnDelete.Text = "íœ(&R)";
+			this.btnDelete.Text = "å‰Šé™¤(&R)";
 			this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
 			// 
 			// panel1
@@ -240,7 +240,7 @@ namespace Yusen.GExplorer {
 			this.btnSort.Name = "btnSort";
 			this.btnSort.Size = new System.Drawing.Size(75, 23);
 			this.btnSort.TabIndex = 124;
-			this.btnSort.Text = "ƒ\[ƒg(&S)";
+			this.btnSort.Text = "ã‚½ãƒ¼ãƒˆ(&S)";
 			this.btnSort.Click += new System.EventHandler(this.btnSort_Click);
 			// 
 			// grpList
@@ -252,7 +252,7 @@ namespace Yusen.GExplorer {
 			this.grpList.Size = new System.Drawing.Size(346, 163);
 			this.grpList.TabIndex = 100;
 			this.grpList.TabStop = false;
-			this.grpList.Text = "ŠO•”ƒRƒ}ƒ“ƒhˆê—— (&L)";
+			this.grpList.Text = "å¤–éƒ¨ã‚³ãƒãƒ³ãƒ‰ä¸€è¦§ (&L)";
 			// 
 			// tableLayoutPanel2
 			// 
@@ -297,7 +297,7 @@ namespace Yusen.GExplorer {
 			// 
 			// openFileDialog1
 			// 
-			this.openFileDialog1.Filter = "Àsƒtƒ@ƒCƒ‹ (*.exe)|*.exe|‘S‚Ä‚Ìƒtƒ@ƒCƒ‹|*.*";
+			this.openFileDialog1.Filter = "å®Ÿè¡Œãƒ•ã‚¡ã‚¤ãƒ« (*.exe)|*.exe|å…¨ã¦ã®ãƒ•ã‚¡ã‚¤ãƒ«|*.*";
 			this.openFileDialog1.RestoreDirectory = true;
 			// 
 			// UserCommandsEditor
@@ -310,7 +310,7 @@ namespace Yusen.GExplorer {
 			this.MinimumSize = new System.Drawing.Size(360, 340);
 			this.Name = "UserCommandsEditor";
 			this.ShowInTaskbar = false;
-			this.Text = "ŠO•”ƒRƒ}ƒ“ƒhƒGƒfƒBƒ^";
+			this.Text = "å¤–éƒ¨ã‚³ãƒãƒ³ãƒ‰ã‚¨ãƒ‡ã‚£ã‚¿";
 			this.Load += new System.EventHandler(this.UserCommandsEditor_Load);
 			this.grpDetail.ResumeLayout(false);
 			this.tableLayoutPanel1.ResumeLayout(false);

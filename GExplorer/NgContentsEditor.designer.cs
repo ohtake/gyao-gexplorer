@@ -1,4 +1,4 @@
-namespace Yusen.GExplorer {
+ï»¿namespace Yusen.GExplorer {
 	partial class NgContentsEditor {
 		/// <summary>
 		/// Required designer variable.
@@ -24,7 +24,7 @@ namespace Yusen.GExplorer {
 		/// </summary>
 		private void InitializeComponent() {
 			this.components = new System.ComponentModel.Container();
-			this.lvNgContents = new System.Windows.Forms.ListView();
+			this.lvNgContents = new Yusen.GExplorer.DoubleBufferedListView();
 			this.chComment = new System.Windows.Forms.ColumnHeader();
 			this.chPropertyName = new System.Windows.Forms.ColumnHeader();
 			this.chPredicate = new System.Windows.Forms.ColumnHeader();
@@ -77,32 +77,32 @@ namespace Yusen.GExplorer {
 			// 
 			// chComment
 			// 
-			this.chComment.Text = "ƒRƒƒ“ƒg";
+			this.chComment.Text = "ã‚³ãƒ¡ãƒ³ãƒˆ";
 			this.chComment.Width = 90;
 			// 
 			// chPropertyName
 			// 
-			this.chPropertyName.Text = "ƒvƒƒpƒeƒB–¼";
+			this.chPropertyName.Text = "ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£å";
 			this.chPropertyName.Width = 80;
 			// 
 			// chPredicate
 			// 
-			this.chPredicate.Text = "”äŠr•û–@";
+			this.chPredicate.Text = "æ¯”è¼ƒæ–¹æ³•";
 			this.chPredicate.Width = 65;
 			// 
 			// chWord
 			// 
-			this.chWord.Text = "NGƒ[ƒh";
+			this.chWord.Text = "NGãƒ¯ãƒ¼ãƒ‰";
 			this.chWord.Width = 90;
 			// 
 			// chCreated
 			// 
-			this.chCreated.Text = "ì¬“ú";
+			this.chCreated.Text = "ä½œæˆæ—¥æ™‚";
 			this.chCreated.Width = 116;
 			// 
 			// chLastAbone
 			// 
-			this.chLastAbone.Text = "ÅING“ú";
+			this.chLastAbone.Text = "æœ€çµ‚NGæ—¥æ™‚";
 			this.chLastAbone.Width = 116;
 			// 
 			// tableLayoutPanel1
@@ -129,7 +129,7 @@ namespace Yusen.GExplorer {
 			this.grpAdd.Size = new System.Drawing.Size(586, 66);
 			this.grpAdd.TabIndex = 200;
 			this.grpAdd.TabStop = false;
-			this.grpAdd.Text = "NGƒRƒ“ƒeƒ“ƒc‚Ì’Ç‰Á";
+			this.grpAdd.Text = "NGã‚³ãƒ³ãƒ†ãƒ³ãƒ„ã®è¿½åŠ ";
 			// 
 			// tableLayoutPanel2
 			// 
@@ -203,7 +203,7 @@ namespace Yusen.GExplorer {
 			this.lblWord.Name = "lblWord";
 			this.lblWord.Size = new System.Drawing.Size(108, 12);
 			this.lblWord.TabIndex = 240;
-			this.lblWord.Text = "–Ú“IŒê: NGƒ[ƒh(&W)";
+			this.lblWord.Text = "ç›®çš„èª: NGãƒ¯ãƒ¼ãƒ‰(&W)";
 			// 
 			// lblMethod
 			// 
@@ -213,7 +213,7 @@ namespace Yusen.GExplorer {
 			this.lblMethod.Name = "lblMethod";
 			this.lblMethod.Size = new System.Drawing.Size(100, 12);
 			this.lblMethod.TabIndex = 230;
-			this.lblMethod.Text = "qŒê: ”äŠr•û–@(&M)";
+			this.lblMethod.Text = "è¿°èª: æ¯”è¼ƒæ–¹æ³•(&M)";
 			// 
 			// lblProperty
 			// 
@@ -223,7 +223,7 @@ namespace Yusen.GExplorer {
 			this.lblProperty.Name = "lblProperty";
 			this.lblProperty.Size = new System.Drawing.Size(106, 12);
 			this.lblProperty.TabIndex = 220;
-			this.lblProperty.Text = "åŒê: ƒvƒƒpƒeƒB–¼(&P)";
+			this.lblProperty.Text = "ä¸»èª: ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£å(&P)";
 			// 
 			// lblComment
 			// 
@@ -233,7 +233,7 @@ namespace Yusen.GExplorer {
 			this.lblComment.Name = "lblComment";
 			this.lblComment.Size = new System.Drawing.Size(54, 12);
 			this.lblComment.TabIndex = 210;
-			this.lblComment.Text = "ƒRƒƒ“ƒg(&C)";
+			this.lblComment.Text = "ã‚³ãƒ¡ãƒ³ãƒˆ(&C)";
 			// 
 			// btnAdd
 			// 
@@ -243,7 +243,7 @@ namespace Yusen.GExplorer {
 			this.tableLayoutPanel2.SetRowSpan(this.btnAdd, 2);
 			this.btnAdd.Size = new System.Drawing.Size(66, 23);
 			this.btnAdd.TabIndex = 250;
-			this.btnAdd.Text = "’Ç‰Á(&A)";
+			this.btnAdd.Text = "è¿½åŠ (&A)";
 			this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
 			// 
 			// grpList
@@ -255,7 +255,7 @@ namespace Yusen.GExplorer {
 			this.grpList.Size = new System.Drawing.Size(586, 146);
 			this.grpList.TabIndex = 100;
 			this.grpList.TabStop = false;
-			this.grpList.Text = "NGƒRƒ“ƒeƒ“ƒcˆê—— (DeleteƒL[‚Åíœ)";
+			this.grpList.Text = "NGã‚³ãƒ³ãƒ†ãƒ³ãƒ„ä¸€è¦§ (Deleteã‚­ãƒ¼ã§å‰Šé™¤)";
 			// 
 			// timerLastAbone
 			// 
@@ -276,7 +276,7 @@ namespace Yusen.GExplorer {
 			this.MinimumSize = new System.Drawing.Size(500, 150);
 			this.Name = "NgContentsEditor";
 			this.ShowInTaskbar = false;
-			this.Text = "NGƒRƒ“ƒeƒ“ƒcƒGƒfƒBƒ^";
+			this.Text = "NGã‚³ãƒ³ãƒ†ãƒ³ãƒ„ã‚¨ãƒ‡ã‚£ã‚¿";
 			this.Load += new System.EventHandler(this.NgContentsEditor_Load);
 			this.tableLayoutPanel1.ResumeLayout(false);
 			this.grpAdd.ResumeLayout(false);
@@ -289,7 +289,7 @@ namespace Yusen.GExplorer {
 
 		#endregion
 
-		private System.Windows.Forms.ListView lvNgContents;
+		private Yusen.GExplorer.DoubleBufferedListView lvNgContents;
 		private System.Windows.Forms.ColumnHeader chComment;
 		private System.Windows.Forms.ColumnHeader chPropertyName;
 		private System.Windows.Forms.ColumnHeader chPredicate;

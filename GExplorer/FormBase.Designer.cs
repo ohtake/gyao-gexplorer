@@ -1,4 +1,4 @@
-namespace Yusen.GExplorer {
+﻿namespace Yusen.GExplorer {
 	partial class FormBase {
 		/// <summary>
 		/// Required designer variable.

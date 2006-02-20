@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -41,7 +41,7 @@ namespace Yusen.GExplorer {
 			this.UpdateStatusBarText();
 			this.UpdateUserCommandsMenu();
 
-			//ƒŠƒXƒgæ“ª‚ğ•\¦
+			//ãƒªã‚¹ãƒˆå…ˆé ­ã‚’è¡¨ç¤º
 			this.ScrollToTop();
 		}
 
@@ -119,7 +119,7 @@ namespace Yusen.GExplorer {
 			int newCount = PlayList.Instance.Count;
 			int minCount = (oldCount < newCount) ? oldCount : newCount;
 
-			//]—ˆ‚ÌƒAƒCƒeƒ€‚Ì’l‚ğ‘‚«Š·‚¦‚é
+			//å¾“æ¥ã®ã‚¢ã‚¤ãƒ†ãƒ ã®å€¤ã‚’æ›¸ãæ›ãˆã‚‹
 			for(int i=0; i<minCount; i++) {
 				ContentAdapter cont = PlayList.Instance[i];
 				ListViewItem lvi = this.listView1.Items[i];
@@ -130,19 +130,19 @@ namespace Yusen.GExplorer {
 				lvi.SubItems[4].Text = cont.Comment;
 				lvi.Tag = cont;
 			}
-			//‘Œ¸‚ğƒ`ƒFƒbƒN‚µ‚Ä‚©‚ç·•ª‚ğ–„‚ß‚é
-			if(minCount == newCount) { //Œ¸‚Á‚½‚©“¯‚¶‚Ìê‡
+			//å¢—æ¸›ã‚’ãƒã‚§ãƒƒã‚¯ã—ã¦ã‹ã‚‰å·®åˆ†ã‚’åŸ‹ã‚ã‚‹
+			if(minCount == newCount) { //æ¸›ã£ãŸã‹åŒã˜ã®å ´åˆ
 				for(int i=oldCount-1; i>=newCount; i--) {
 					this.listView1.Items.RemoveAt(i);
 				}
-			} else if(minCount == oldCount){//‘‚¦‚½ê‡
+			} else if(minCount == oldCount){//å¢—ãˆãŸå ´åˆ
 				for(int i=minCount; i<newCount; i++) {
 					ContentAdapter cont = PlayList.Instance[i];
 					ListViewItem lvi = new ListViewItem(new string[] { cont.ContentId, cont.DisplayName, cont.GTimeSpan.ToString(), cont.Deadline, cont.Comment });
 					lvi.Tag = cont;
 					this.listView1.Items.Add(lvi);
 				}
-				//ŒÂ”‚ª‘‚¦‚½‚Ì‚È‚ç‚Î‚¨‚»‚ç‚­––”ö‚Ö‚Ì’Ç‰Á‚¾‚ë‚¤
+				//å€‹æ•°ãŒå¢—ãˆãŸã®ãªã‚‰ã°ãŠãã‚‰ãæœ«å°¾ã¸ã®è¿½åŠ ã ã‚ã†
 				this.ScrollToBottom();
 			}
 		}
@@ -166,8 +166,8 @@ namespace Yusen.GExplorer {
 			bool hasExactSelectedTimeSpan;
 			ContentAdapter.TotalTimeOf(this.SelectedContents, out selectedTimeSpan, out hasExactSelectedTimeSpan);
 
-			string num = "”: " + selectedNum.ToString() + " / " + totalNum.ToString();
-			string time = "ŠÔ: "
+			string num = "æ•°: " + selectedNum.ToString() + " / " + totalNum.ToString();
+			string time = "æ™‚é–“: "
 				+ selectedTimeSpan.ToString() + (hasExactSelectedTimeSpan ? "" : "+?")
 				+ " / "
 				+ totalTimeSpan.ToString() + (hasExactTotalTimeSpan ? "" : "+?");
@@ -265,13 +265,13 @@ namespace Yusen.GExplorer {
 			string text = null;
 			DragDropEffects effect = DragDropEffects.None;
 			if((e.AllowedEffect & DragDropEffects.Copy) != DragDropEffects.None){
-				//ContentAdapter[] ‚©‚ç
+				//ContentAdapter[] ã‹ã‚‰
 				conts = e.Data.GetData(typeof(ContentAdapter[])) as ContentAdapter[];
-				//•¶š—ñ‚©‚ç
+				//æ–‡å­—åˆ—ã‹ã‚‰
 				text = e.Data.GetData(typeof(string)) as string;
 				effect = DragDropEffects.Copy;
 			} else if ((e.AllowedEffect & DragDropEffects.Link) != DragDropEffects.None) {
-				//UniformResourceLocator ‚©‚ç
+				//UniformResourceLocator ã‹ã‚‰
 				Stream linkStream = e.Data.GetData("UniformResourceLocator") as MemoryStream;
 				if (null != linkStream) {
 					byte[] linkBytes = new byte[linkStream.Length];
@@ -288,7 +288,7 @@ namespace Yusen.GExplorer {
 				this.dropConts = conts;
 				e.Effect = effect;
 			}else if (! string.IsNullOrEmpty(text)) {
-				//IDæ‚èo‚µ
+				//IDå–ã‚Šå‡ºã—
 				string[] ids = GContent.ExtractContentIds(text);
 				this.dropIds = ids;
 				e.Effect = effect;
@@ -310,7 +310,7 @@ namespace Yusen.GExplorer {
 						try {
 							cont = GContent.DoDownload(id);
 						} catch (Exception ex) {
-							switch (MessageBox.Show(ex.Message, "ƒhƒƒbƒv‚É‚æ‚é’Ç‰Á", MessageBoxButtons.AbortRetryIgnore, MessageBoxIcon.Error, MessageBoxDefaultButton.Button3)) {
+							switch (MessageBox.Show(ex.Message, "ãƒ‰ãƒ­ãƒƒãƒ—ã«ã‚ˆã‚‹è¿½åŠ ", MessageBoxButtons.AbortRetryIgnore, MessageBoxIcon.Error, MessageBoxDefaultButton.Button3)) {
 								case DialogResult.Abort:
 									return;
 								case DialogResult.Retry:
@@ -328,17 +328,17 @@ namespace Yusen.GExplorer {
 			}
 		}
 		
-		#region ƒƒjƒ…[‚Ì€–Ú
+		#region ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®é …ç›®
 		private void tsmiAddById_Click(object sender, EventArgs e) {
-			string title = "ƒRƒ“ƒeƒ“ƒcID‚ğw’è‚µ‚ÄƒvƒŒƒCƒŠƒXƒg‚É’Ç‰Á";
+			string title = "ã‚³ãƒ³ãƒ†ãƒ³ãƒ„IDã‚’æŒ‡å®šã—ã¦ãƒ—ãƒ¬ã‚¤ãƒªã‚¹ãƒˆã«è¿½åŠ ";
 			this.inputBoxDialog1.Title = title;
-			this.inputBoxDialog1.Message = "’Ç‰Á‚·‚éƒRƒ“ƒeƒ“ƒc‚ÌID‚ğ“ü—Í‚µ‚Ä‚­‚¾‚³‚¢D";
+			this.inputBoxDialog1.Message = "è¿½åŠ ã™ã‚‹ã‚³ãƒ³ãƒ†ãƒ³ãƒ„ã®IDã‚’å…¥åŠ›ã—ã¦ãã ã•ã„ï¼";
 			this.inputBoxDialog1.Input = "cnt0000000";
 			if (DialogResult.OK == this.inputBoxDialog1.ShowDialog()) {
 				GContent cont = GContent.DoDownload(this.inputBoxDialog1.Input);
 				ContentAdapter ca = new ContentAdapter(cont);
 				if (PlayList.Instance.Contains(ca)) {
-					MessageBox.Show("w’è‚µ‚½ID‚Í‚·‚Å‚ÉƒvƒŒƒCƒŠƒXƒg‚É‘¶İ‚µ‚Ü‚·D",
+					MessageBox.Show("æŒ‡å®šã—ãŸIDã¯ã™ã§ã«ãƒ—ãƒ¬ã‚¤ãƒªã‚¹ãƒˆã«å­˜åœ¨ã—ã¾ã™ï¼",
 						title, MessageBoxButtons.OK, MessageBoxIcon.Error);
 				} else {
 					PlayList.Instance.AddIfNotExists(ca);
@@ -401,7 +401,7 @@ namespace Yusen.GExplorer {
 			PlayList.Instance.EndUpdate();
 		}
 		private void tsmiClearPlayList_Click(object sender, EventArgs e) {
-			switch (MessageBox.Show("ƒvƒŒƒCƒŠƒXƒg“à‚Ì‘S€–Ú‚ğíœ‚µ‚Ü‚·D‚æ‚ë‚µ‚¢‚Å‚·‚©H", "ƒvƒŒƒCƒŠƒXƒg“à‚Ì‘S€–Ú‚ğíœ", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2)) {
+			switch (MessageBox.Show("ãƒ—ãƒ¬ã‚¤ãƒªã‚¹ãƒˆå†…ã®å…¨é …ç›®ã‚’å‰Šé™¤ã—ã¾ã™ï¼ã‚ˆã‚ã—ã„ã§ã™ã‹ï¼Ÿ", "ãƒ—ãƒ¬ã‚¤ãƒªã‚¹ãƒˆå†…ã®å…¨é …ç›®ã‚’å‰Šé™¤", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2)) {
 				case DialogResult.Yes:
 					PlayList.Instance.Clear();
 					break;
@@ -413,7 +413,7 @@ namespace Yusen.GExplorer {
 		}
 		#endregion
 		
-		#region ƒRƒ“ƒeƒLƒXƒgƒƒjƒ…[‚Ì€–Ú
+		#region ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®é …ç›®
 		private void tsmiPlay_Click(object sender, EventArgs e) {
 			ContentAdapter[] conts = this.SelectedContents;
 			if (conts.Length > 0) {
@@ -423,8 +423,8 @@ namespace Yusen.GExplorer {
 		private void tsmiSetComment_Click(object sender, EventArgs e) {
 			ContentAdapter[] conts = this.SelectedContents;
 			if (conts.Length > 0) {
-				this.inputBoxDialog1.Title = "ƒRƒƒ“ƒg‚ğ“ü—ÍD";
-				this.inputBoxDialog1.Message = "ƒRƒƒ“ƒg‚ğ“ü—Í‚µ‚Ä‚­‚¾‚³‚¢D";
+				this.inputBoxDialog1.Title = "ã‚³ãƒ¡ãƒ³ãƒˆã‚’å…¥åŠ›ï¼";
+				this.inputBoxDialog1.Message = "ã‚³ãƒ¡ãƒ³ãƒˆã‚’å…¥åŠ›ã—ã¦ãã ã•ã„ï¼";
 				this.inputBoxDialog1.Input = conts[0].Comment;
 				switch (this.inputBoxDialog1.ShowDialog()) {
 					case DialogResult.OK:

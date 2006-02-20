@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.ComponentModel;
@@ -121,9 +121,7 @@ namespace Yusen.GExplorer {
 					this.picboxImage.Load(uri.AbsoluteUri);
 				} catch(Exception e) {
 					this.picboxImage.Image = this.picboxImage.ErrorImage;
-					if(null != this.ImageLoadError) {
-						this.ImageLoadError(this, new ImageLoadErrorEventArgs(e));
-					}
+					this.OnImageLoadError(new ImageLoadErrorEventArgs(e));
 				}
 			}
 		}
@@ -133,6 +131,12 @@ namespace Yusen.GExplorer {
 				this.picboxImage.Image = null;
 			} else {
 				this.picboxImage.LoadAsync(uri.AbsoluteUri);
+			}
+		}
+		private void OnImageLoadError(ImageLoadErrorEventArgs e) {
+			EventHandler<ImageLoadErrorEventArgs> handler = this.ImageLoadError;
+			if(null != handler) {
+				handler(this, e);
 			}
 		}
 		private void ChangeEnabilityOfCmsItems() {
@@ -230,6 +234,12 @@ namespace Yusen.GExplorer {
 		}
 		private void tsmiTestCancelAsync_Click(object sender, EventArgs e) {
 			this.picboxImage.CancelAsync();
+		}
+
+		private void picboxImage_LoadCompleted(object sender, AsyncCompletedEventArgs e) {
+			if(null != e.Error) {
+				this.OnImageLoadError(new ImageLoadErrorEventArgs(e.Error));
+			}
 		}
 	}
 	

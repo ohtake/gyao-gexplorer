@@ -1,4 +1,4 @@
-namespace Yusen.GExplorer {
+ï»¿namespace Yusen.GExplorer {
 	partial class ContentDetailView {
 		/// <summary> 
 		/// Required designer variable.
@@ -101,6 +101,7 @@ namespace Yusen.GExplorer {
 			this.picboxImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
 			this.picboxImage.TabIndex = 1;
 			this.picboxImage.TabStop = false;
+			this.picboxImage.LoadCompleted += new System.ComponentModel.AsyncCompletedEventHandler(this.picboxImage_LoadCompleted);
 			// 
 			// cmsImage
 			// 
@@ -122,21 +123,21 @@ namespace Yusen.GExplorer {
 			// 
 			this.tsmiCopyImageUri.Name = "tsmiCopyImageUri";
 			this.tsmiCopyImageUri.Size = new System.Drawing.Size(248, 22);
-			this.tsmiCopyImageUri.Text = "‰æ‘œURI‚ğƒRƒs[(&C)";
+			this.tsmiCopyImageUri.Text = "ç”»åƒURIã‚’ã‚³ãƒ”ãƒ¼(&C)";
 			this.tsmiCopyImageUri.Click += new System.EventHandler(this.tsmiCopyImageUri_Click);
 			// 
 			// tsmiCopyNameAndImageUri
 			// 
 			this.tsmiCopyNameAndImageUri.Name = "tsmiCopyNameAndImageUri";
 			this.tsmiCopyNameAndImageUri.Size = new System.Drawing.Size(248, 22);
-			this.tsmiCopyNameAndImageUri.Text = "–¼‘O‚Æ‰æ‘œURI‚ğƒRƒs[(&B)";
+			this.tsmiCopyNameAndImageUri.Text = "åå‰ã¨ç”»åƒURIã‚’ã‚³ãƒ”ãƒ¼(&B)";
 			this.tsmiCopyNameAndImageUri.Click += new System.EventHandler(this.tsmiCopyNameAndImageUri_Click);
 			// 
 			// tsmiCopyNameDetailImageUri
 			// 
 			this.tsmiCopyNameDetailImageUri.Name = "tsmiCopyNameDetailImageUri";
 			this.tsmiCopyNameDetailImageUri.Size = new System.Drawing.Size(248, 22);
-			this.tsmiCopyNameDetailImageUri.Text = "–¼‘OCÚ×URIC‰æ‘œURI‚ğƒRƒs[(&A)";
+			this.tsmiCopyNameDetailImageUri.Text = "åå‰ï¼Œè©³ç´°URIï¼Œç”»åƒURIã‚’ã‚³ãƒ”ãƒ¼(&A)";
 			this.tsmiCopyNameDetailImageUri.Click += new System.EventHandler(this.tsmiCopyNameDetailImageUri_Click);
 			// 
 			// toolStripSeparator2
@@ -148,7 +149,7 @@ namespace Yusen.GExplorer {
 			// 
 			this.tsmiCopyImage.Name = "tsmiCopyImage";
 			this.tsmiCopyImage.Size = new System.Drawing.Size(248, 22);
-			this.tsmiCopyImage.Text = "‰æ‘œ‚ğƒRƒs[(&I)";
+			this.tsmiCopyImage.Text = "ç”»åƒã‚’ã‚³ãƒ”ãƒ¼(&I)";
 			this.tsmiCopyImage.Click += new System.EventHandler(this.tsmiCopyImage_Click);
 			// 
 			// toolStripMenuItem2
@@ -164,7 +165,7 @@ namespace Yusen.GExplorer {
             this.tsmiTestCancelAsync});
 			this.tsmiTest.Name = "tsmiTest";
 			this.tsmiTest.Size = new System.Drawing.Size(248, 22);
-			this.tsmiTest.Text = "ƒeƒXƒg(&T)";
+			this.tsmiTest.Text = "ãƒ†ã‚¹ãƒˆ(&T)";
 			// 
 			// tsmiTestLoad
 			// 
@@ -201,19 +202,19 @@ namespace Yusen.GExplorer {
             this.tsmiSyncronizeToCurrentContent});
 			this.tsmiSettings.Name = "tsmiSettings";
 			this.tsmiSettings.Size = new System.Drawing.Size(248, 22);
-			this.tsmiSettings.Text = "İ’è(&S)";
+			this.tsmiSettings.Text = "è¨­å®š(&S)";
 			// 
 			// tsmiImageSize
 			// 
 			this.tsmiImageSize.Name = "tsmiImageSize";
 			this.tsmiImageSize.Size = new System.Drawing.Size(189, 22);
-			this.tsmiImageSize.Text = "‰æ‘œ‚Ì•\¦‚ÆƒTƒCƒY(&S)";
+			this.tsmiImageSize.Text = "ç”»åƒã®è¡¨ç¤ºã¨ã‚µã‚¤ã‚º(&S)";
 			// 
 			// tsmiSizeMode
 			// 
 			this.tsmiSizeMode.Name = "tsmiSizeMode";
 			this.tsmiSizeMode.Size = new System.Drawing.Size(189, 22);
-			this.tsmiSizeMode.Text = "‰æ‘œ‚ÌƒŠƒTƒCƒY•û–@(&R)";
+			this.tsmiSizeMode.Text = "ç”»åƒã®ãƒªã‚µã‚¤ã‚ºæ–¹æ³•(&R)";
 			// 
 			// toolStripMenuItem1
 			// 
@@ -227,7 +228,7 @@ namespace Yusen.GExplorer {
 			this.tsmiSyncronizeToCurrentContent.CheckState = System.Windows.Forms.CheckState.Checked;
 			this.tsmiSyncronizeToCurrentContent.Name = "tsmiSyncronizeToCurrentContent";
 			this.tsmiSyncronizeToCurrentContent.Size = new System.Drawing.Size(189, 22);
-			this.tsmiSyncronizeToCurrentContent.Text = "Ä¶’†‚Ì€–Ú‚É“¯Šú(&C)";
+			this.tsmiSyncronizeToCurrentContent.Text = "å†ç”Ÿä¸­ã®é …ç›®ã«åŒæœŸ(&C)";
 			// 
 			// tabControl1
 			// 
@@ -247,7 +248,7 @@ namespace Yusen.GExplorer {
 			this.tabpSummary2.Name = "tabpSummary2";
 			this.tabpSummary2.Size = new System.Drawing.Size(216, 201);
 			this.tabpSummary2.TabIndex = 0;
-			this.tabpSummary2.Text = "ŠÈˆÕ";
+			this.tabpSummary2.Text = "ç°¡æ˜“";
 			this.tabpSummary2.UseVisualStyleBackColor = true;
 			// 
 			// tableLayoutPanel2
@@ -300,7 +301,7 @@ namespace Yusen.GExplorer {
 			this.label2.Name = "label2";
 			this.label2.Size = new System.Drawing.Size(40, 12);
 			this.label2.TabIndex = 1;
-			this.label2.Text = "ƒ^ƒCƒgƒ‹";
+			this.label2.Text = "ã‚¿ã‚¤ãƒˆãƒ«";
 			// 
 			// label3
 			// 
@@ -310,7 +311,7 @@ namespace Yusen.GExplorer {
 			this.label3.Name = "label3";
 			this.label3.Size = new System.Drawing.Size(29, 12);
 			this.label3.TabIndex = 2;
-			this.label3.Text = "˜b”";
+			this.label3.Text = "è©±æ•°";
 			// 
 			// label4
 			// 
@@ -320,7 +321,7 @@ namespace Yusen.GExplorer {
 			this.label4.Name = "label4";
 			this.label4.Size = new System.Drawing.Size(41, 12);
 			this.label4.TabIndex = 3;
-			this.label4.Text = "ƒTƒuƒ^ƒC";
+			this.label4.Text = "ã‚µãƒ–ã‚¿ã‚¤";
 			// 
 			// txtId
 			// 
@@ -366,7 +367,7 @@ namespace Yusen.GExplorer {
 			this.label5.Name = "label5";
 			this.label5.Size = new System.Drawing.Size(29, 12);
 			this.label5.TabIndex = 4;
-			this.label5.Text = "ŠÔ";
+			this.label5.Text = "æ™‚é–“";
 			// 
 			// txtDuration
 			// 
@@ -397,7 +398,7 @@ namespace Yusen.GExplorer {
 			this.label6.Name = "label6";
 			this.label6.Size = new System.Drawing.Size(29, 12);
 			this.label6.TabIndex = 5;
-			this.label6.Text = "ŠúŒÀ";
+			this.label6.Text = "æœŸé™";
 			// 
 			// txtDeadline
 			// 
@@ -415,7 +416,7 @@ namespace Yusen.GExplorer {
 			this.tabpDetail.Name = "tabpDetail";
 			this.tabpDetail.Size = new System.Drawing.Size(216, 201);
 			this.tabpDetail.TabIndex = 1;
-			this.tabpDetail.Text = "Ú×";
+			this.tabpDetail.Text = "è©³ç´°";
 			this.tabpDetail.UseVisualStyleBackColor = true;
 			// 
 			// propgDetail

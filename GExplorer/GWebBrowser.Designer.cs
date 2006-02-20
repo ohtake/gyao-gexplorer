@@ -1,4 +1,4 @@
-namespace Yusen.GExplorer {
+ï»¿namespace Yusen.GExplorer {
 	partial class GWebBrowser {
 		/// <summary>
 		/// Required designer variable.
@@ -69,7 +69,7 @@ namespace Yusen.GExplorer {
 			// 
 			this.tsmiContentOpenDetail.Name = "tsmiContentOpenDetail";
 			this.tsmiContentOpenDetail.Size = new System.Drawing.Size(203, 22);
-			this.tsmiContentOpenDetail.Text = "Ú×ƒy[ƒW‚ğŠJ‚­(&O)";
+			this.tsmiContentOpenDetail.Text = "è©³ç´°ãƒšãƒ¼ã‚¸ã‚’é–‹ã(&O)";
 			// 
 			// toolStripSeparator1
 			// 
@@ -80,19 +80,19 @@ namespace Yusen.GExplorer {
 			// 
 			this.tsmiContentAddToPlayList.Name = "tsmiContentAddToPlayList";
 			this.tsmiContentAddToPlayList.Size = new System.Drawing.Size(203, 22);
-			this.tsmiContentAddToPlayList.Text = "ƒvƒŒƒCƒŠƒXƒg‚É’Ç‰Á(&A)";
+			this.tsmiContentAddToPlayList.Text = "ãƒ—ãƒ¬ã‚¤ãƒªã‚¹ãƒˆã«è¿½åŠ (&A)";
 			// 
 			// tsmiContentAddToPlayListWithComment
 			// 
 			this.tsmiContentAddToPlayListWithComment.Name = "tsmiContentAddToPlayListWithComment";
 			this.tsmiContentAddToPlayListWithComment.Size = new System.Drawing.Size(203, 22);
-			this.tsmiContentAddToPlayListWithComment.Text = "ƒRƒƒ“ƒg•t‚«‚Å’Ç‰Á(&L)...";
+			this.tsmiContentAddToPlayListWithComment.Text = "ã‚³ãƒ¡ãƒ³ãƒˆä»˜ãã§è¿½åŠ (&L)...";
 			// 
 			// tsmiContentPlayWithoutAdding
 			// 
 			this.tsmiContentPlayWithoutAdding.Name = "tsmiContentPlayWithoutAdding";
 			this.tsmiContentPlayWithoutAdding.Size = new System.Drawing.Size(203, 22);
-			this.tsmiContentPlayWithoutAdding.Text = "’Ç‰Á‚¹‚¸‚ÉÄ¶(&P)";
+			this.tsmiContentPlayWithoutAdding.Text = "è¿½åŠ ã›ãšã«å†ç”Ÿ(&P)";
 			// 
 			// toolStripSeparator2
 			// 
@@ -103,13 +103,13 @@ namespace Yusen.GExplorer {
 			// 
 			this.tsmiContentPlayWmp.Name = "tsmiContentPlayWmp";
 			this.tsmiContentPlayWmp.Size = new System.Drawing.Size(203, 22);
-			this.tsmiContentPlayWmp.Text = "WMP‚ÅÄ¶(&W)";
+			this.tsmiContentPlayWmp.Text = "WMPã§å†ç”Ÿ(&W)";
 			// 
 			// tsmiContentPlayBrowser
 			// 
 			this.tsmiContentPlayBrowser.Name = "tsmiContentPlayBrowser";
 			this.tsmiContentPlayBrowser.Size = new System.Drawing.Size(203, 22);
-			this.tsmiContentPlayBrowser.Text = "ƒuƒ‰ƒEƒU‚ÅÄ¶(&B)";
+			this.tsmiContentPlayBrowser.Text = "ãƒ–ãƒ©ã‚¦ã‚¶ã§å†ç”Ÿ(&B)";
 			// 
 			// toolStripSeparator8
 			// 
@@ -120,7 +120,7 @@ namespace Yusen.GExplorer {
 			// 
 			this.tsmiContentCommands.Name = "tsmiContentCommands";
 			this.tsmiContentCommands.Size = new System.Drawing.Size(203, 22);
-			this.tsmiContentCommands.Text = "ŠO•”ƒRƒ}ƒ“ƒh(&C)";
+			this.tsmiContentCommands.Text = "å¤–éƒ¨ã‚³ãƒãƒ³ãƒ‰(&C)";
 			// 
 			// toolStripSeparator6
 			// 
@@ -131,7 +131,7 @@ namespace Yusen.GExplorer {
 			// 
 			this.tsmiContentCancel.Name = "tsmiContentCancel";
 			this.tsmiContentCancel.Size = new System.Drawing.Size(203, 22);
-			this.tsmiContentCancel.Text = "ƒeƒBƒbƒv‚âƒƒjƒ…[‚ª×–‚(&D)...";
+			this.tsmiContentCancel.Text = "ãƒ†ã‚£ãƒƒãƒ—ã‚„ãƒ¡ãƒ‹ãƒ¥ãƒ¼ãŒé‚ªé­”(&D)...";
 			// 
 			// cmsPackage
 			// 
@@ -146,7 +146,7 @@ namespace Yusen.GExplorer {
 			// 
 			this.tsmiPackageOpen.Name = "tsmiPackageOpen";
 			this.tsmiPackageOpen.Size = new System.Drawing.Size(203, 22);
-			this.tsmiPackageOpen.Text = "ƒpƒbƒP[ƒWƒy[ƒW‚ğŠJ‚­(&O)";
+			this.tsmiPackageOpen.Text = "ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸ãƒšãƒ¼ã‚¸ã‚’é–‹ã(&O)";
 			// 
 			// toolStripSeparator5
 			// 
@@ -157,7 +157,7 @@ namespace Yusen.GExplorer {
 			// 
 			this.tsmiPackageCancel.Name = "tsmiPackageCancel";
 			this.tsmiPackageCancel.Size = new System.Drawing.Size(203, 22);
-			this.tsmiPackageCancel.Text = "ƒeƒBƒbƒv‚âƒƒjƒ…[‚ª×–‚(&D)...";
+			this.tsmiPackageCancel.Text = "ãƒ†ã‚£ãƒƒãƒ—ã‚„ãƒ¡ãƒ‹ãƒ¥ãƒ¼ãŒé‚ªé­”(&D)...";
 			// 
 			// ttId
 			// 

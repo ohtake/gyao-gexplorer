@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -54,7 +54,7 @@ namespace Yusen.GCrawler {
 				string line;
 				bool isInComment = false;
 				while (null != (line = reader.ReadLine())) {
-				processComment://ƒRƒƒ“ƒg‚Í“Ç‚İ”ò‚Î‚·
+				processComment://ã‚³ãƒ¡ãƒ³ãƒˆã¯èª­ã¿é£›ã°ã™
 					if (isInComment) {
 						int end = line.IndexOf(HtmlParserRegex.endComment);
 						if (end >= 0) {
@@ -72,7 +72,7 @@ namespace Yusen.GCrawler {
 							goto processComment;
 						}
 					}
-					//ƒŠƒ“ƒN‚Æ‰æ‘œ‚Ì’Šo
+					//ãƒªãƒ³ã‚¯ã¨ç”»åƒã®æŠ½å‡º
 					for(Match m = HtmlParserRegex.regexLinks.Match(line); m.Success; m = m.NextMatch()) {
 						try {
 							links.Add(new UriLinkTypePair(new Uri(uri, m.Groups[1].Value), LinkType.AnchorOrFrame));

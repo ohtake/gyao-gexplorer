@@ -1,4 +1,4 @@
-namespace Yusen.GExplorer {
+ï»¿namespace Yusen.GExplorer {
 	partial class MainForm {
 		/// <summary>
 		/// Required designer variable.
@@ -295,27 +295,27 @@ namespace Yusen.GExplorer {
             this.tsmiQuit});
 			this.tsmiFile.Name = "tsmiFile";
 			this.tsmiFile.Size = new System.Drawing.Size(66, 16);
-			this.tsmiFile.Text = "ƒtƒ@ƒCƒ‹(&F)";
+			this.tsmiFile.Text = "ãƒ•ã‚¡ã‚¤ãƒ«(&F)";
 			// 
 			// tsmiBrowseTop
 			// 
 			this.tsmiBrowseTop.Name = "tsmiBrowseTop";
 			this.tsmiBrowseTop.Size = new System.Drawing.Size(221, 22);
-			this.tsmiBrowseTop.Text = "ƒgƒbƒvƒy[ƒW‚ğŠJ‚­(&T)";
+			this.tsmiBrowseTop.Text = "ãƒˆãƒƒãƒ—ãƒšãƒ¼ã‚¸ã‚’é–‹ã(&T)";
 			this.tsmiBrowseTop.Click += new System.EventHandler(this.tsmiBrowseTop_Click);
 			// 
 			// tsmiBrowsePackage
 			// 
 			this.tsmiBrowsePackage.Name = "tsmiBrowsePackage";
 			this.tsmiBrowsePackage.Size = new System.Drawing.Size(221, 22);
-			this.tsmiBrowsePackage.Text = "ƒpƒbƒP[ƒWID‚ğw’è‚µ‚ÄŠJ‚­(&P) ...";
+			this.tsmiBrowsePackage.Text = "ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸IDã‚’æŒ‡å®šã—ã¦é–‹ã(&P) ...";
 			this.tsmiBrowsePackage.Click += new System.EventHandler(this.tsmiBrowsePackage_Click);
 			// 
 			// tsmiBrowseContent
 			// 
 			this.tsmiBrowseContent.Name = "tsmiBrowseContent";
 			this.tsmiBrowseContent.Size = new System.Drawing.Size(221, 22);
-			this.tsmiBrowseContent.Text = "ƒRƒ“ƒeƒ“ƒcID‚ğw’è‚µ‚ÄŠJ‚­(&C) ...";
+			this.tsmiBrowseContent.Text = "ã‚³ãƒ³ãƒ†ãƒ³ãƒ„IDã‚’æŒ‡å®šã—ã¦é–‹ã(&C) ...";
 			this.tsmiBrowseContent.Click += new System.EventHandler(this.tsmiBrowseContent_Click);
 			// 
 			// toolStripSeparator1
@@ -328,14 +328,14 @@ namespace Yusen.GExplorer {
 			this.tsmiQuit.Name = "tsmiQuit";
 			this.tsmiQuit.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Q)));
 			this.tsmiQuit.Size = new System.Drawing.Size(221, 22);
-			this.tsmiQuit.Text = "I—¹(&Q)";
+			this.tsmiQuit.Text = "çµ‚äº†(&Q)";
 			this.tsmiQuit.Click += new System.EventHandler(this.tsmiQuit_Click);
 			// 
 			// tsmiUncrawlableGenres
 			// 
 			this.tsmiUncrawlableGenres.Name = "tsmiUncrawlableGenres";
 			this.tsmiUncrawlableGenres.Size = new System.Drawing.Size(106, 16);
-			this.tsmiUncrawlableGenres.Text = "–¢‘Î‰ƒWƒƒƒ“ƒ‹(&U)";
+			this.tsmiUncrawlableGenres.Text = "æœªå¯¾å¿œã‚¸ãƒ£ãƒ³ãƒ«(&U)";
 			// 
 			// tsmiSettings
 			// 
@@ -350,27 +350,27 @@ namespace Yusen.GExplorer {
             this.tsmiSettingsDetailView});
 			this.tsmiSettings.Name = "tsmiSettings";
 			this.tsmiSettings.Size = new System.Drawing.Size(56, 16);
-			this.tsmiSettings.Text = "İ’è(&S)";
+			this.tsmiSettings.Text = "è¨­å®š(&S)";
 			// 
 			// tsmiGlobalSettingsEditor
 			// 
 			this.tsmiGlobalSettingsEditor.Name = "tsmiGlobalSettingsEditor";
 			this.tsmiGlobalSettingsEditor.Size = new System.Drawing.Size(221, 22);
-			this.tsmiGlobalSettingsEditor.Text = "ƒOƒ[ƒoƒ‹İ’èƒGƒfƒBƒ^(&G)";
+			this.tsmiGlobalSettingsEditor.Text = "ã‚°ãƒ­ãƒ¼ãƒãƒ«è¨­å®šã‚¨ãƒ‡ã‚£ã‚¿(&G)";
 			this.tsmiGlobalSettingsEditor.Click += new System.EventHandler(this.tsmiGlobalSettingsEditor_Click);
 			// 
 			// tsmiUserCommandsEditor
 			// 
 			this.tsmiUserCommandsEditor.Name = "tsmiUserCommandsEditor";
 			this.tsmiUserCommandsEditor.Size = new System.Drawing.Size(221, 22);
-			this.tsmiUserCommandsEditor.Text = "ŠO•”ƒRƒ}ƒ“ƒhƒGƒfƒBƒ^(&C)";
+			this.tsmiUserCommandsEditor.Text = "å¤–éƒ¨ã‚³ãƒãƒ³ãƒ‰ã‚¨ãƒ‡ã‚£ã‚¿(&C)";
 			this.tsmiUserCommandsEditor.Click += new System.EventHandler(this.tsmiUserCommandsEditor_Click);
 			// 
 			// tsmiNgContentsEditor
 			// 
 			this.tsmiNgContentsEditor.Name = "tsmiNgContentsEditor";
 			this.tsmiNgContentsEditor.Size = new System.Drawing.Size(221, 22);
-			this.tsmiNgContentsEditor.Text = "NGƒRƒ“ƒeƒ“ƒcƒGƒfƒBƒ^(&N)";
+			this.tsmiNgContentsEditor.Text = "NGã‚³ãƒ³ãƒ†ãƒ³ãƒ„ã‚¨ãƒ‡ã‚£ã‚¿(&N)";
 			this.tsmiNgContentsEditor.Click += new System.EventHandler(this.tsmiNgContentsEditor_Click);
 			// 
 			// toolStripSeparator5
@@ -385,25 +385,25 @@ namespace Yusen.GExplorer {
 			this.tsmiFocusOnResultAfterTabChanged.CheckState = System.Windows.Forms.CheckState.Checked;
 			this.tsmiFocusOnResultAfterTabChanged.Name = "tsmiFocusOnResultAfterTabChanged";
 			this.tsmiFocusOnResultAfterTabChanged.Size = new System.Drawing.Size(221, 22);
-			this.tsmiFocusOnResultAfterTabChanged.Text = "ƒ^ƒuØ‚è‘Ö‚¦‚ÅƒtƒH[ƒJƒXˆÚ“®(&F)";
+			this.tsmiFocusOnResultAfterTabChanged.Text = "ã‚¿ãƒ–åˆ‡ã‚Šæ›¿ãˆã§ãƒ•ã‚©ãƒ¼ã‚«ã‚¹ç§»å‹•(&F)";
 			// 
 			// tsmiSettingsCrawlResultView
 			// 
 			this.tsmiSettingsCrawlResultView.Name = "tsmiSettingsCrawlResultView";
 			this.tsmiSettingsCrawlResultView.Size = new System.Drawing.Size(221, 22);
-			this.tsmiSettingsCrawlResultView.Text = "ƒNƒ[ƒ‹Œ‹‰Êƒrƒ…[(&R)";
+			this.tsmiSettingsCrawlResultView.Text = "ã‚¯ãƒ­ãƒ¼ãƒ«çµæœãƒ“ãƒ¥ãƒ¼(&R)";
 			// 
 			// tsmiSettingsPlaylistView
 			// 
 			this.tsmiSettingsPlaylistView.Name = "tsmiSettingsPlaylistView";
 			this.tsmiSettingsPlaylistView.Size = new System.Drawing.Size(221, 22);
-			this.tsmiSettingsPlaylistView.Text = "ƒvƒŒƒCƒŠƒXƒgƒrƒ…[(&P)";
+			this.tsmiSettingsPlaylistView.Text = "ãƒ—ãƒ¬ã‚¤ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼(&P)";
 			// 
 			// tsmiSettingsDetailView
 			// 
 			this.tsmiSettingsDetailView.Name = "tsmiSettingsDetailView";
 			this.tsmiSettingsDetailView.Size = new System.Drawing.Size(221, 22);
-			this.tsmiSettingsDetailView.Text = "Ú×ƒrƒ…[(&D)";
+			this.tsmiSettingsDetailView.Text = "è©³ç´°ãƒ“ãƒ¥ãƒ¼(&D)";
 			// 
 			// tsmiTools
 			// 
@@ -420,13 +420,13 @@ namespace Yusen.GExplorer {
             this.tsmiUserCommands});
 			this.tsmiTools.Name = "tsmiTools";
 			this.tsmiTools.Size = new System.Drawing.Size(61, 16);
-			this.tsmiTools.Text = "ƒc[ƒ‹(&T)";
+			this.tsmiTools.Text = "ãƒ„ãƒ¼ãƒ«(&T)";
 			// 
 			// tsmiMergeResults
 			// 
 			this.tsmiMergeResults.Name = "tsmiMergeResults";
 			this.tsmiMergeResults.Size = new System.Drawing.Size(269, 22);
-			this.tsmiMergeResults.Text = "Šù“¾ƒWƒƒƒ“ƒ‹‚ğŒ‹‡‚µ‚Ä•\¦(&M)";
+			this.tsmiMergeResults.Text = "æ—¢å¾—ã‚¸ãƒ£ãƒ³ãƒ«ã‚’çµåˆã—ã¦è¡¨ç¤º(&M)";
 			this.tsmiMergeResults.Click += new System.EventHandler(this.tsmiMergeResults_Click);
 			// 
 			// toolStripMenuItem1
@@ -438,7 +438,7 @@ namespace Yusen.GExplorer {
 			// 
 			this.tsmiClearCrawlResults.Name = "tsmiClearCrawlResults";
 			this.tsmiClearCrawlResults.Size = new System.Drawing.Size(269, 22);
-			this.tsmiClearCrawlResults.Text = "ƒNƒ[ƒ‹Œ‹‰Ê‚Ì”jŠü(&D) ...";
+			this.tsmiClearCrawlResults.Text = "ã‚¯ãƒ­ãƒ¼ãƒ«çµæœã®ç ´æ£„(&D) ...";
 			this.tsmiClearCrawlResults.Click += new System.EventHandler(this.tsmiClearCrawlResults_Click);
 			// 
 			// tsmiRemoveCaches
@@ -448,20 +448,20 @@ namespace Yusen.GExplorer {
             this.tsmiRemoveCachesAll});
 			this.tsmiRemoveCaches.Name = "tsmiRemoveCaches";
 			this.tsmiRemoveCaches.Size = new System.Drawing.Size(269, 22);
-			this.tsmiRemoveCaches.Text = "ƒLƒƒƒbƒVƒ…‚Ìíœ(&R)";
+			this.tsmiRemoveCaches.Text = "ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã®å‰Šé™¤(&R)";
 			// 
 			// tsmiRemoveCachesUnreachable
 			// 
 			this.tsmiRemoveCachesUnreachable.Name = "tsmiRemoveCachesUnreachable";
 			this.tsmiRemoveCachesUnreachable.Size = new System.Drawing.Size(210, 22);
-			this.tsmiRemoveCachesUnreachable.Text = "“’B•s‰ÂƒLƒƒƒbƒVƒ…‚ğíœ(&U)";
+			this.tsmiRemoveCachesUnreachable.Text = "åˆ°é”ä¸å¯ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã‚’å‰Šé™¤(&U)";
 			this.tsmiRemoveCachesUnreachable.Click += new System.EventHandler(this.tsmiRemoveCachesUnreachable_Click);
 			// 
 			// tsmiRemoveCachesAll
 			// 
 			this.tsmiRemoveCachesAll.Name = "tsmiRemoveCachesAll";
 			this.tsmiRemoveCachesAll.Size = new System.Drawing.Size(210, 22);
-			this.tsmiRemoveCachesAll.Text = "‘S‚Ä‚ÌƒLƒƒƒbƒVƒ…‚ğíœ(&A)...";
+			this.tsmiRemoveCachesAll.Text = "å…¨ã¦ã®ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã‚’å‰Šé™¤(&A)...";
 			this.tsmiRemoveCachesAll.Click += new System.EventHandler(this.tsmiRemoveCachesAll_Click);
 			// 
 			// tsmiRemoveDeadlineEntries
@@ -471,20 +471,20 @@ namespace Yusen.GExplorer {
             this.tsmiRemoveDeadlineEntriesAll});
 			this.tsmiRemoveDeadlineEntries.Name = "tsmiRemoveDeadlineEntries";
 			this.tsmiRemoveDeadlineEntries.Size = new System.Drawing.Size(269, 22);
-			this.tsmiRemoveDeadlineEntries.Text = "”zMŠúŒÀ«‘‚Ì®—(&L)";
+			this.tsmiRemoveDeadlineEntries.Text = "é…ä¿¡æœŸé™è¾æ›¸ã®æ•´ç†(&L)";
 			// 
 			// tsmiRemoveDeadlineEntriesUnreacheable
 			// 
 			this.tsmiRemoveDeadlineEntriesUnreacheable.Name = "tsmiRemoveDeadlineEntriesUnreacheable";
 			this.tsmiRemoveDeadlineEntriesUnreacheable.Size = new System.Drawing.Size(210, 22);
-			this.tsmiRemoveDeadlineEntriesUnreacheable.Text = "“’B•s‰ÂƒGƒ“ƒgƒŠ[‚ğíœ(&U)";
+			this.tsmiRemoveDeadlineEntriesUnreacheable.Text = "åˆ°é”ä¸å¯ã‚¨ãƒ³ãƒˆãƒªãƒ¼ã‚’å‰Šé™¤(&U)";
 			this.tsmiRemoveDeadlineEntriesUnreacheable.Click += new System.EventHandler(this.tsmiRemoveDeadlineEntriesUnreacheable_Click);
 			// 
 			// tsmiRemoveDeadlineEntriesAll
 			// 
 			this.tsmiRemoveDeadlineEntriesAll.Name = "tsmiRemoveDeadlineEntriesAll";
 			this.tsmiRemoveDeadlineEntriesAll.Size = new System.Drawing.Size(210, 22);
-			this.tsmiRemoveDeadlineEntriesAll.Text = "‘S‚Ä‚ÌƒGƒ“ƒgƒŠ[‚ğíœ(&A)...";
+			this.tsmiRemoveDeadlineEntriesAll.Text = "å…¨ã¦ã®ã‚¨ãƒ³ãƒˆãƒªãƒ¼ã‚’å‰Šé™¤(&A)...";
 			this.tsmiRemoveDeadlineEntriesAll.Click += new System.EventHandler(this.tsmiRemoveDeadlineEntriesAll_Click);
 			// 
 			// tsmiRemoveNgContents
@@ -494,20 +494,20 @@ namespace Yusen.GExplorer {
             this.tsmiDeleteNgContentsAll});
 			this.tsmiRemoveNgContents.Name = "tsmiRemoveNgContents";
 			this.tsmiRemoveNgContents.Size = new System.Drawing.Size(269, 22);
-			this.tsmiRemoveNgContents.Text = "NGƒRƒ“ƒeƒ“ƒc‚Ìíœ(&N)";
+			this.tsmiRemoveNgContents.Text = "NGã‚³ãƒ³ãƒ†ãƒ³ãƒ„ã®å‰Šé™¤(&N)";
 			// 
 			// tsmiDeleteNgContentsWeek
 			// 
 			this.tsmiDeleteNgContentsWeek.Name = "tsmiDeleteNgContentsWeek";
 			this.tsmiDeleteNgContentsWeek.Size = new System.Drawing.Size(284, 22);
-			this.tsmiDeleteNgContentsWeek.Text = "ÅING‚©‚ç1TŠÔˆÈãŒo‰ß‚µ‚½‚Ì‚ğíœ(&W)";
+			this.tsmiDeleteNgContentsWeek.Text = "æœ€çµ‚NGã‹ã‚‰1é€±é–“ä»¥ä¸ŠçµŒéã—ãŸã®ã‚’å‰Šé™¤(&W)";
 			this.tsmiDeleteNgContentsWeek.Click += new System.EventHandler(this.tsmiDeleteNgContentsWeek_Click);
 			// 
 			// tsmiDeleteNgContentsAll
 			// 
 			this.tsmiDeleteNgContentsAll.Name = "tsmiDeleteNgContentsAll";
 			this.tsmiDeleteNgContentsAll.Size = new System.Drawing.Size(284, 22);
-			this.tsmiDeleteNgContentsAll.Text = "‘S‚Ä‚ÌNG‚ğíœ(&A)...";
+			this.tsmiDeleteNgContentsAll.Text = "å…¨ã¦ã®NGã‚’å‰Šé™¤(&A)...";
 			this.tsmiDeleteNgContentsAll.Click += new System.EventHandler(this.tsmiDeleteNgContentsAll_Click);
 			// 
 			// toolStripSeparator4
@@ -519,7 +519,7 @@ namespace Yusen.GExplorer {
 			// 
 			this.tsmiGetProfile.Name = "tsmiGetProfile";
 			this.tsmiGetProfile.Size = new System.Drawing.Size(269, 22);
-			this.tsmiGetProfile.Text = "ƒ†[ƒUID‚É‘Î‰‚·‚éƒvƒƒtƒ@ƒCƒ‹‚ğæ“¾(&P)...";
+			this.tsmiGetProfile.Text = "ãƒ¦ãƒ¼ã‚¶IDã«å¯¾å¿œã™ã‚‹ãƒ—ãƒ­ãƒ•ã‚¡ã‚¤ãƒ«ã‚’å–å¾—(&P)...";
 			this.tsmiGetProfile.Click += new System.EventHandler(this.tsmiGetProfile_Click);
 			// 
 			// toolStripSeparator2
@@ -531,14 +531,14 @@ namespace Yusen.GExplorer {
 			// 
 			this.tsmiUserCommands.Name = "tsmiUserCommands";
 			this.tsmiUserCommands.Size = new System.Drawing.Size(269, 22);
-			this.tsmiUserCommands.Text = "ŠO•”ƒRƒ}ƒ“ƒh(&U)";
+			this.tsmiUserCommands.Text = "å¤–éƒ¨ã‚³ãƒãƒ³ãƒ‰(&U)";
 			// 
 			// tsmiAbortCrawling
 			// 
 			this.tsmiAbortCrawling.Enabled = false;
 			this.tsmiAbortCrawling.Name = "tsmiAbortCrawling";
 			this.tsmiAbortCrawling.Size = new System.Drawing.Size(118, 16);
-			this.tsmiAbortCrawling.Text = "<<ƒNƒ[ƒ‹’†~(&A)>>";
+			this.tsmiAbortCrawling.Text = "<<ã‚¯ãƒ­ãƒ¼ãƒ«ä¸­æ­¢(&A)>>";
 			this.tsmiAbortCrawling.Click += new System.EventHandler(this.tsmiAbortCrawling_Click);
 			// 
 			// inputBoxDialog1

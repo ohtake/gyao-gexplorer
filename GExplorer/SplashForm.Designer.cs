@@ -1,4 +1,4 @@
-namespace Yusen.GExplorer {
+Ôªønamespace Yusen.GExplorer {
 	partial class SplashForm {
 		/// <summary>
 		/// Required designer variable.
@@ -77,7 +77,7 @@ namespace Yusen.GExplorer {
 			this.btnAbort.Name = "btnAbort";
 			this.btnAbort.Size = new System.Drawing.Size(82, 22);
 			this.btnAbort.TabIndex = 2;
-			this.btnAbort.Text = "ã≠êßèIóπ(&A)";
+			this.btnAbort.Text = "Âº∑Âà∂ÁµÇ‰∫Ü(&A)";
 			this.btnAbort.UseVisualStyleBackColor = true;
 			this.btnAbort.Click += new System.EventHandler(this.btnAbort_Click);
 			// 

@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Forms;
@@ -10,6 +10,31 @@ using Yusen.GCrawler;
 
 namespace Yusen.GExplorer {
 	sealed partial class CrawlResultView : UserControl, IHasSettings<GenreListViewSettings>{
+		private sealed class ContentListViewItem : ListViewItem {
+			public ContentListViewItem(ContentAdapter ca, ListViewGroup packageGroup)
+				: base(new string[] { ca.ContentId, ca.Title, ca.EpisodeNumber, ca.SubTitle, ca.GTimeSpan.ToString(), ca.Deadline, ca.LongDescription, ca.Attributes }) {
+				this.contentAdapter = ca;
+				this.packageGroup = packageGroup;
+				this.RefreshNgCached();
+			}
+			private ContentAdapter contentAdapter;
+			public ContentAdapter ContentAdapter {
+				get { return this.contentAdapter; }
+			}
+			private bool isNgCached;
+			public bool IsNgCached {
+				get { return this.isNgCached; }
+			}
+			private ListViewGroup packageGroup;
+			public ListViewGroup PackageGroup {
+				get { return this.packageGroup; }
+			}
+
+			public void RefreshNgCached() {
+				this.isNgCached = NgContentsManager.Instance.IsNgContent(this.ContentAdapter);
+			}
+		}
+		
 		public event EventHandler<ContentSelectionChangedEventArgs> ContentSelectionChanged;
 		public event EventHandler<ManuallyCacheDeletedEventArgs> ManuallyCacheDeleted;
 		
@@ -21,7 +46,7 @@ namespace Yusen.GExplorer {
 		private int maxExceptionMenuItems = 16;
 		
 		private List<ListViewGroup> allLvgs = new List<ListViewGroup>();
-		private Dictionary<ListViewItem, ListViewGroup> allLvis = new Dictionary<ListViewItem, ListViewGroup>();
+		private List<ContentListViewItem> allClvis = new List<ContentListViewItem>();
 		
 		private Migemo migemo = null;
 		private Regex filterRegex = null;
@@ -38,7 +63,7 @@ namespace Yusen.GExplorer {
 			this.tsmiFilterType.DropDown.Closing += Utility.ToolStripDropDown_CancelClosingOnClick;
 			this.tsddbFilterTarget.DropDown.Closing += Utility.ToolStripDropDown_CancelClosingOnClick;
 			
-			//Migemo‰Šú‰»
+			//MigemoåˆæœŸåŒ–
 			try {
 				this.migemo = new Migemo(GlobalSettings.Instance.MigemoDictionaryFilename);
 				this.Disposed += delegate {
@@ -49,7 +74,7 @@ namespace Yusen.GExplorer {
 				this.tstbAnswer.Text = ex.Message;
 			}
 			
-			//‚ ‚Ú`‚ñ•û–@‚Ìƒƒjƒ…[ì¬
+			//ã‚ã¼ï½ã‚“æ–¹æ³•ã®ãƒ¡ãƒ‹ãƒ¥ãƒ¼ä½œæˆ
 			this.tsmiAboneType.DropDownItems.Clear();
 			foreach (AboneType atype in Enum.GetValues(typeof(AboneType))) {
 				ToolStripMenuItem tsmi = new ToolStripMenuItem(atype.ToString());
@@ -61,7 +86,7 @@ namespace Yusen.GExplorer {
 			}
 			this.AboneType = this.AboneType;
 			
-			//ƒtƒBƒ‹ƒ^—p‚Ìƒƒjƒ…[ì¬
+			//ãƒ•ã‚£ãƒ«ã‚¿ç”¨ã®ãƒ¡ãƒ‹ãƒ¥ãƒ¼ä½œæˆ
 			this.tsmiFilterType.DropDownItems.Clear();
 			foreach (FilterType ftype in Enum.GetValues(typeof(FilterType))) {
 				ToolStripMenuItem tsmi = new ToolStripMenuItem(ftype.ToString());
@@ -69,7 +94,7 @@ namespace Yusen.GExplorer {
 				tsmi.Click += delegate(object sender2, EventArgs e2) {
 					this.FilterType = (FilterType)(sender2 as ToolStripMenuItem).Tag;
 				};
-				//Migemo‚ªg—p•s‰Â‚Ìê‡‚Í‘I‘ğ•s‰Â‚É
+				//MigemoãŒä½¿ç”¨ä¸å¯ã®å ´åˆã¯é¸æŠä¸å¯ã«
 				if (FilterType.Migemo == ftype && !this.CanUseMigemo) {
 					tsmi.Enabled = false;
 					this.tsbOneFTypeMigemo.Enabled = false;
@@ -78,7 +103,7 @@ namespace Yusen.GExplorer {
 			}
 			this.FilterType = this.FilterType;
 			
-			//ƒtƒBƒ‹ƒ^‚Ì‘ÎÛ‚Ìƒƒjƒ…[‚ğì¬
+			//ãƒ•ã‚£ãƒ«ã‚¿ã®å¯¾è±¡ã®ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚’ä½œæˆ
 			foreach(ColumnHeader ch in this.listView1.Columns) {
 				ToolStripMenuItem tsmi = new ToolStripMenuItem(ch.Text);
 				tsmi.Checked = true;
@@ -130,15 +155,15 @@ namespace Yusen.GExplorer {
 		public ContentAdapter[] SelectedContents {
 			get {
 				List<ContentAdapter> conts = new List<ContentAdapter>();
-				foreach (ListViewItem lvi in this.listView1.SelectedItems) {
-					conts.Add(lvi.Tag as ContentAdapter);
+				foreach (ContentListViewItem clvi in this.listView1.SelectedItems) {
+					conts.Add(clvi.ContentAdapter);
 				}
 				return conts.ToArray();
 			}
 			private set {
 				List<ContentAdapter> conts = new List<ContentAdapter>(value);
-				foreach (ListViewItem lvi in this.listView1.Items) {
-					lvi.Selected = conts.Contains(lvi.Tag as ContentAdapter);
+				foreach(ContentListViewItem clvi in this.listView1.Items) {
+					clvi.Selected = conts.Contains(clvi.ContentAdapter);
 				}
 			}
 		}
@@ -162,11 +187,11 @@ namespace Yusen.GExplorer {
 		public FilterType FilterType {
 			get { return this.filterType; }
 			set {
-				//Migemoƒ`ƒFƒbƒN
+				//Migemoãƒã‚§ãƒƒã‚¯
 				if (FilterType.Migemo == value && !this.CanUseMigemo) {
 					value = FilterType.Normal;
 				}
-				//ƒ{ƒ^ƒ“‚È‚Ç‚ÌXV
+				//ãƒœã‚¿ãƒ³ãªã©ã®æ›´æ–°
 				foreach(ToolStripMenuItem tsmi in this.tsmiFilterType.DropDownItems) {
 					bool active = value == (FilterType)tsmi.Tag;
 					tsmi.Checked = active;
@@ -185,7 +210,7 @@ namespace Yusen.GExplorer {
 						this.tsbOneFTypeRegex.Checked = true;
 						break;
 				}
-				//ƒtƒBƒ‹ƒ^“K—p
+				//ãƒ•ã‚£ãƒ«ã‚¿é©ç”¨
 				if(value != this.filterType) {
 					this.filterType = value;
 					this.CreateAndSetFilterRegex();
@@ -331,7 +356,7 @@ namespace Yusen.GExplorer {
 		}
 		private void ClearAllItems() {
 			this.allLvgs.Clear();
-			this.allLvis.Clear();
+			this.allClvis.Clear();
 
 			this.listView1.Items.Clear();
 			this.listView1.Groups.Clear();
@@ -347,15 +372,17 @@ namespace Yusen.GExplorer {
 				this.allLvgs.Add(group);
 				foreach (GContent c in p.Contents) {
 					ContentAdapter ca = new ContentAdapter(c);
-					ListViewItem item = new ListViewItem(
-						new string[]{ca.ContentId, ca.Title, ca.EpisodeNumber, ca.SubTitle, ca.GTimeSpan.ToString(), ca.Deadline, ca.LongDescription, ca.Attributes});
-					item.Tag = ca;
-					this.allLvis.Add(item, group);
+					this.allClvis.Add(new ContentListViewItem(ca, group));
 				}
 			}
 			
 			this.tslGenre.ForeColor = this.Genre.GenreColor;
 			this.tslGenre.Text = "[" + this.Genre.GenreName + "]";
+		}
+		private void RefreshAllNgCached() {
+			foreach(ContentListViewItem clvi in this.allClvis) {
+				clvi.RefreshNgCached();
+			}
 		}
 		private void DisplayItems(){
 			if (null == this.CrawlResult) return;
@@ -368,12 +395,10 @@ namespace Yusen.GExplorer {
 			int filtered = 0;
 			Regex filter = this.FilterEnabled ? this.FilterRegex : null;
 			List<bool> filterTarges = this.GetFilterTargetList();
-			foreach (KeyValuePair<ListViewItem, ListViewGroup> pair in this.allLvis) {
-				ListViewItem lvi = pair.Key;
-				ContentAdapter cont = lvi.Tag as ContentAdapter;
-				
-				//NGˆ—
-				bool isNg = NgContentsManager.Instance.IsNgContent(cont);
+			
+			foreach (ContentListViewItem clvi in this.allClvis) {
+				//NGå‡¦ç†
+				bool isNg = clvi.IsNgCached;
 				switch (this.AboneType) {
 					case AboneType.Hakidame:
 						isNg = !isNg;
@@ -385,12 +410,12 @@ namespace Yusen.GExplorer {
 						}
 						break;
 				}
-				//ƒtƒBƒ‹ƒ^ˆ—
+				//ãƒ•ã‚£ãƒ«ã‚¿å‡¦ç†
 				if (null != filter) {
 					Match match;
 					for(int i=0; i<filterTarges.Count; i++) {
 						if(filterTarges[i]) {
-							match = filter.Match(lvi.SubItems[i].Text);
+							match = filter.Match(clvi.SubItems[i].Text);
 							if(match.Success) goto unfiltered;
 						}
 					}
@@ -399,17 +424,17 @@ namespace Yusen.GExplorer {
 				}
 			unfiltered:
 
-				//F‚Ã‚¯
-				lvi.ForeColor = SystemColors.WindowText;
-				if (! cont.FromCache) {
-					lvi.ForeColor = this.NewColor;
+				//è‰²ã¥ã‘
+				clvi.ForeColor = SystemColors.WindowText;
+				if (! clvi.ContentAdapter.FromCache) {
+					clvi.ForeColor = this.NewColor;
 				}
 				if (isNg && AboneType.Sabori == this.AboneType) {
-					lvi.ForeColor = SystemColors.GrayText;
+					clvi.ForeColor = SystemColors.GrayText;
 				}
 
-				lvi.Group = pair.Value;
-				this.listView1.Items.Add(lvi);
+				clvi.Group = clvi.PackageGroup;
+				this.listView1.Items.Add(clvi);
 			}
 
 			this.tslNumber.Text = this.listView1.Items.Count.ToString() + "+" + filtered.ToString() + "+" + aboned.ToString();
@@ -423,7 +448,7 @@ namespace Yusen.GExplorer {
 					if(!createAll && menuItems.Count == this.MaxPageMenuItems) {
 						menuItems.Add(new ToolStripSeparator());
 						menuItems.Add(new ToolStripMenuItem(
-							string.Format("È—ª‚¹‚¸‚É‘S{0}€–Ú‚ğ“WŠJ‚·‚é(&E)", this.CrawlResult.VisitedPages.Count),
+							string.Format("çœç•¥ã›ãšã«å…¨{0}é …ç›®ã‚’å±•é–‹ã™ã‚‹(&E)", this.CrawlResult.VisitedPages.Count),
 							null,
 							new EventHandler(delegate {
 							this.CreateNormalPagesMenuItems(true);
@@ -449,7 +474,7 @@ namespace Yusen.GExplorer {
 					if(!createAll && menuItems.Count == this.MaxPageMenuItems) {
 						menuItems.Add(new ToolStripSeparator());
 						menuItems.Add(new ToolStripMenuItem(
-							string.Format("È—ª‚¹‚¸‚É‘S{0}€–Ú‚ğ“WŠJ‚·‚é(&E)", this.CrawlResult.IgnoredExceptions.Count),
+							string.Format("çœç•¥ã›ãšã«å…¨{0}é …ç›®ã‚’å±•é–‹ã™ã‚‹(&E)", this.CrawlResult.IgnoredExceptions.Count),
 							null,
 							new EventHandler(delegate {
 							this.CreateExceptionsMenuItems(true);
@@ -548,12 +573,13 @@ namespace Yusen.GExplorer {
 			this.CreateUserCommandsMenuItems();
 		}
 		private void NgContentsManager_NgContentsChanged(object sender, EventArgs e) {
+			this.RefreshAllNgCached();
 			this.UpdateView();
 		}
 
 		private void listView1_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e) {
 			if (null != this.ContentSelectionChanged) {
-				this.ContentSelectionChanged(this, new ContentSelectionChangedEventArgs(e.Item.Tag as ContentAdapter, e.IsSelected));
+				this.ContentSelectionChanged(this, new ContentSelectionChangedEventArgs((e.Item as ContentListViewItem).ContentAdapter, e.IsSelected));
 			}
 		}
 		private void listView1_DoubleClick(object sender, EventArgs e) {
@@ -593,7 +619,7 @@ namespace Yusen.GExplorer {
 				e.Cancel = true;
 			}
 		}
-		#region ƒRƒ“ƒeƒLƒXƒgƒƒjƒ…[‚Ì€–Ú
+		#region ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®é …ç›®
 		private void tsmiAdd_Click(object sender, EventArgs e) {
 			PlayList.Instance.BeginUpdate();
 			foreach (ContentAdapter cont in this.SelectedContents) {
@@ -602,8 +628,8 @@ namespace Yusen.GExplorer {
 			PlayList.Instance.EndUpdate();
 		}
 		private void tsmiAddWithComment_Click(object sender, EventArgs e) {
-			this.inputBoxDialog1.Title = "ƒRƒƒ“ƒg‚ğ•t‚¯‚ÄƒvƒŒƒCƒŠƒXƒg‚É’Ç‰Á";
-			this.inputBoxDialog1.Message = "•t‰Á‚·‚éƒRƒƒ“ƒg‚ğ“ü—Í‚µ‚Ä‚­‚¾‚³‚¢D";
+			this.inputBoxDialog1.Title = "ã‚³ãƒ¡ãƒ³ãƒˆã‚’ä»˜ã‘ã¦ãƒ—ãƒ¬ã‚¤ãƒªã‚¹ãƒˆã«è¿½åŠ ";
+			this.inputBoxDialog1.Message = "ä»˜åŠ ã™ã‚‹ã‚³ãƒ¡ãƒ³ãƒˆã‚’å…¥åŠ›ã—ã¦ãã ã•ã„ï¼";
 			this.inputBoxDialog1.Input = string.Empty;
 			switch (this.inputBoxDialog1.ShowDialog()) {
 				case DialogResult.OK:
@@ -669,7 +695,7 @@ namespace Yusen.GExplorer {
 				}
 			}
 			List<NgContent> ngs = titles.ConvertAll<NgContent>(new Converter<string, NgContent>(delegate(string input) {
-				return new NgContent("ŠÈˆÕ’Ç‰Á", "Title", TwoStringsPredicateMethod.Equals, input);
+				return new NgContent("ç°¡æ˜“è¿½åŠ ", "Title", TwoStringsPredicateMethod.Equals, input);
 			}));
 			if(ngs.Count > 0) {
 				NgContentsManager.Instance.AddRange(ngs);
@@ -678,14 +704,14 @@ namespace Yusen.GExplorer {
 		private void tsmiAddNgWithId_Click(object sender, EventArgs e) {
 			List<NgContent> ngs = new List<NgContent>();
 			foreach(ContentAdapter cont in this.SelectedContents) {
-				ngs.Add(new NgContent("ŠÈˆÕ’Ç‰Á", "ContentId", TwoStringsPredicateMethod.Equals, cont.ContentId));
+				ngs.Add(new NgContent("ç°¡æ˜“è¿½åŠ ", "ContentId", TwoStringsPredicateMethod.Equals, cont.ContentId));
 			}
 			if(ngs.Count > 0) {
 				NgContentsManager.Instance.AddRange(ngs);
 			}
 		}
 		#endregion
-		#region ƒƒjƒ…[‚Ì€–Ú
+		#region ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®é …ç›®
 		private void tsmiShowPackages_Click(object sender, EventArgs e) {
 			switch(this.tsmiShowPackages.CheckState) {
 				case CheckState.Checked:
@@ -718,8 +744,8 @@ namespace Yusen.GExplorer {
 			}
 		}
 		private void tsmiMaxPageMenuItems_Click(object sender, EventArgs e) {
-			this.inputBoxDialog1.Title = "uƒy[ƒWvƒƒjƒ…[‚Ì€–Ú”‚ÌÅ‘å’l";
-			this.inputBoxDialog1.Message = "€–Ú”‚ÌÅ‘å’l‚ğ“ü—Í‚µ‚Ä‚­‚¾‚³‚¢D•‰”‚Å–³§ŒÀD";
+			this.inputBoxDialog1.Title = "ã€Œãƒšãƒ¼ã‚¸ã€ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®é …ç›®æ•°ã®æœ€å¤§å€¤";
+			this.inputBoxDialog1.Message = "é …ç›®æ•°ã®æœ€å¤§å€¤ã‚’å…¥åŠ›ã—ã¦ãã ã•ã„ï¼è² æ•°ã§ç„¡åˆ¶é™ï¼";
 			this.inputBoxDialog1.Input = this.MaxPageMenuItems.ToString();
 			switch(this.inputBoxDialog1.ShowDialog()) {
 				case DialogResult.OK:
@@ -733,8 +759,8 @@ namespace Yusen.GExplorer {
 			}
 		}
 		private void tsmiMaxExceptionMenuItems_Click(object sender, EventArgs e) {
-			this.inputBoxDialog1.Title = "u—áŠOvƒƒjƒ…[‚Ì€–Ú”‚ÌÅ‘å’l";
-			this.inputBoxDialog1.Message = "€–Ú”‚ÌÅ‘å’l‚ğ“ü—Í‚µ‚Ä‚­‚¾‚³‚¢D•‰”‚Å–³§ŒÀD";
+			this.inputBoxDialog1.Title = "ã€Œä¾‹å¤–ã€ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®é …ç›®æ•°ã®æœ€å¤§å€¤";
+			this.inputBoxDialog1.Message = "é …ç›®æ•°ã®æœ€å¤§å€¤ã‚’å…¥åŠ›ã—ã¦ãã ã•ã„ï¼è² æ•°ã§ç„¡åˆ¶é™ï¼";
 			this.inputBoxDialog1.Input = this.MaxPageMenuItems.ToString();
 			switch(this.inputBoxDialog1.ShowDialog()) {
 				case DialogResult.OK:
@@ -748,7 +774,7 @@ namespace Yusen.GExplorer {
 			}
 		}
 		#endregion
-		#region ƒtƒBƒ‹ƒ^ŠÖ˜A
+		#region ãƒ•ã‚£ãƒ«ã‚¿é–¢é€£
 		private void tsbShowFilter_Click(object sender, EventArgs e) {
 			this.FilterEnabled = this.FilterEnabled;
 			if (this.ClearFilterStringOnHideEnabled && !this.FilterEnabled) {
@@ -765,7 +791,7 @@ namespace Yusen.GExplorer {
 		}
 		#endregion
 		
-		#region ƒƒ“ƒNƒŠƒbƒN‚Å‚ÌØ‚è‘Ö‚¦
+		#region ãƒ¯ãƒ³ã‚¯ãƒªãƒƒã‚¯ã§ã®åˆ‡ã‚Šæ›¿ãˆ
 		private void tsbOneAboneToumei_Click(object sender, EventArgs e) {
 			this.AboneType = AboneType.Toumei;
 		}
@@ -786,7 +812,7 @@ namespace Yusen.GExplorer {
 		}
 		#endregion
 
-		#region ƒtƒBƒ‹ƒ^‘ÎÛ
+		#region ãƒ•ã‚£ãƒ«ã‚¿å¯¾è±¡
 		private List<bool> GetFilterTargetList() {
 			List<bool> targets = new List<bool>(this.listView1.Columns.Count);
 			bool afterSeparator = false;
@@ -949,7 +975,7 @@ namespace Yusen.GExplorer {
 			set { this.filterType = value; }
 		}
 		
-		[XmlIgnore] //Color‚ÍXMLƒVƒŠƒAƒ‰ƒCƒY‚Å‚«‚È‚¢H
+		[XmlIgnore] //Colorã¯XMLã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚ºã§ããªã„ï¼Ÿ
 		public Color? NewColor {
 			get { return this.newColor; }
 			set { this.newColor = value; }

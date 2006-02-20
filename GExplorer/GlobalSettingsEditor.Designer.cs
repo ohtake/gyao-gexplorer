@@ -1,4 +1,4 @@
-namespace Yusen.GExplorer {
+ï»¿namespace Yusen.GExplorer {
 	partial class GlobalSettingsEditor {
 		/// <summary>
 		/// Required designer variable.
@@ -43,7 +43,7 @@ namespace Yusen.GExplorer {
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
 			this.Name = "GlobalSettingsEditor";
 			this.ShowInTaskbar = false;
-			this.Text = "ƒOƒ[ƒoƒ‹İ’èƒGƒfƒBƒ^";
+			this.Text = "ã‚°ãƒ­ãƒ¼ãƒãƒ«è¨­å®šã‚¨ãƒ‡ã‚£ã‚¿";
 			this.Load += new System.EventHandler(this.GlobalSettingsEditor_Load);
 			this.ResumeLayout(false);
 

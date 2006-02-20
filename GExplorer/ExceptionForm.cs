@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
@@ -92,7 +92,7 @@ namespace Yusen.GExplorer {
 			values.Sort(ExceptionForm.ControlTopComparison);
 
 			if (names.Count != values.Count) {
-				throw new Exception("names ‚Æ values ‚ÌŒÂ”‚ª‡‚í‚È‚¢D");
+				throw new Exception("names ã¨ values ã®å€‹æ•°ãŒåˆã‚ãªã„ï¼");
 			}
 
 			StringBuilder sb = new StringBuilder();
@@ -107,7 +107,7 @@ namespace Yusen.GExplorer {
 		}
 		private void llblInnerException_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) {
 			using (ExceptionForm ef = new ExceptionForm(this.exception.InnerException, this.AllowAbort)) {
-				ef.Text = "“à•”—áŠO";
+				ef.Text = "å†…éƒ¨ä¾‹å¤–";
 				DialogResult result = ef.ShowDialog(this);
 				switch (result) {
 					case DialogResult.None:

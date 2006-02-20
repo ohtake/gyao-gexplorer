@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Forms;
@@ -113,7 +113,7 @@ namespace Yusen.GExplorer {
 			this.tsbStop.Enabled = true;
 		}
 		private void gwbMain_Navigated(object sender, WebBrowserNavigatedEventArgs e) {
-			//this.tscbAddress.Text = e.Url.AbsoluteUri; //ƒtƒŒ[ƒ€ƒy[ƒW‚Å‚àƒCƒxƒ“ƒg‚ª‹N‚«‚é‚Á‚Û‚¢
+			//this.tscbAddress.Text = e.Url.AbsoluteUri; //ãƒ•ãƒ¬ãƒ¼ãƒ ãƒšãƒ¼ã‚¸ã§ã‚‚ã‚¤ãƒ™ãƒ³ãƒˆãŒèµ·ãã‚‹ã£ã½ã„
 			this.tscbAddress.Text = this.gwbMain.Url.AbsoluteUri;
 		}
 		private void gwbMain_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e) {
@@ -143,7 +143,7 @@ namespace Yusen.GExplorer {
 			e.Handled = true;
 		}
 
-		#region ƒƒjƒ…[
+		#region ãƒ¡ãƒ‹ãƒ¥ãƒ¼
 		private void tsmiOpenTop_Click(object sender, EventArgs e) {
 			this.DocumentUri = new Uri("http://www.gyao.jp/");
 		}

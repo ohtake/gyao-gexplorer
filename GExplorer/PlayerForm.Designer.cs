@@ -1,4 +1,4 @@
-namespace Yusen.GExplorer {
+ï»¿namespace Yusen.GExplorer {
 	partial class PlayerForm {
 		/// <summary>
 		/// Required designer variable.
@@ -253,13 +253,13 @@ namespace Yusen.GExplorer {
             this.tsmiClose});
 			this.tsmiFile.Name = "tsmiFile";
 			this.tsmiFile.Size = new System.Drawing.Size(66, 16);
-			this.tsmiFile.Text = "ƒtƒ@ƒCƒ‹(&F)";
+			this.tsmiFile.Text = "ãƒ•ã‚¡ã‚¤ãƒ«(&F)";
 			// 
 			// tsmiPlayChapter
 			// 
 			this.tsmiPlayChapter.Name = "tsmiPlayChapter";
 			this.tsmiPlayChapter.Size = new System.Drawing.Size(263, 22);
-			this.tsmiPlayChapter.Text = "“Á’è‚Ìƒ`ƒƒƒvƒ^[‚©‚çÄ¶(&C)...";
+			this.tsmiPlayChapter.Text = "ç‰¹å®šã®ãƒãƒ£ãƒ—ã‚¿ãƒ¼ã‹ã‚‰å†ç”Ÿ(&C)...";
 			this.tsmiPlayChapter.Click += new System.EventHandler(this.tsmiPlayChapter_Click);
 			// 
 			// tsmiReload
@@ -267,7 +267,7 @@ namespace Yusen.GExplorer {
 			this.tsmiReload.Name = "tsmiReload";
 			this.tsmiReload.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.R)));
 			this.tsmiReload.Size = new System.Drawing.Size(263, 22);
-			this.tsmiReload.Text = "“®‰æ‚ÌÄ“Ç‚İ‚İ(&R)";
+			this.tsmiReload.Text = "å‹•ç”»ã®å†èª­ã¿è¾¼ã¿(&R)";
 			this.tsmiReload.Click += new System.EventHandler(this.tsmiReload_Click);
 			// 
 			// toolStripSeparator2
@@ -280,7 +280,7 @@ namespace Yusen.GExplorer {
 			this.tsmiRemoveAndClose.Name = "tsmiRemoveAndClose";
 			this.tsmiRemoveAndClose.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.E)));
 			this.tsmiRemoveAndClose.Size = new System.Drawing.Size(263, 22);
-			this.tsmiRemoveAndClose.Text = "ƒvƒŒƒCƒŠƒXƒg‚©‚çíœ‚µ‚Ä•Â‚¶‚é(&E)";
+			this.tsmiRemoveAndClose.Text = "ãƒ—ãƒ¬ã‚¤ãƒªã‚¹ãƒˆã‹ã‚‰å‰Šé™¤ã—ã¦é–‰ã˜ã‚‹(&E)";
 			this.tsmiRemoveAndClose.Click += new System.EventHandler(this.tsmiRemoveAndClose_Click);
 			// 
 			// tsmiClose
@@ -288,7 +288,7 @@ namespace Yusen.GExplorer {
 			this.tsmiClose.Name = "tsmiClose";
 			this.tsmiClose.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.W)));
 			this.tsmiClose.Size = new System.Drawing.Size(263, 22);
-			this.tsmiClose.Text = "•Â‚¶‚é(&W)";
+			this.tsmiClose.Text = "é–‰ã˜ã‚‹(&W)";
 			this.tsmiClose.Click += new System.EventHandler(this.tsmiClose_Click);
 			// 
 			// tsmiOperations
@@ -307,14 +307,14 @@ namespace Yusen.GExplorer {
             this.tsmiNextContentWithDelete});
 			this.tsmiOperations.Name = "tsmiOperations";
 			this.tsmiOperations.Size = new System.Drawing.Size(57, 16);
-			this.tsmiOperations.Text = "‘€ì(&O)";
+			this.tsmiOperations.Text = "æ“ä½œ(&O)";
 			// 
 			// tsmiPlayPause
 			// 
 			this.tsmiPlayPause.Name = "tsmiPlayPause";
 			this.tsmiPlayPause.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P)));
 			this.tsmiPlayPause.Size = new System.Drawing.Size(281, 22);
-			this.tsmiPlayPause.Text = "Ä¶/ˆê’â~(&P)";
+			this.tsmiPlayPause.Text = "å†ç”Ÿ/ä¸€æ™‚åœæ­¢(&P)";
 			this.tsmiPlayPause.Click += new System.EventHandler(this.tsmiPlayPause_Click);
 			// 
 			// tsmiStop
@@ -322,7 +322,7 @@ namespace Yusen.GExplorer {
 			this.tsmiStop.Name = "tsmiStop";
 			this.tsmiStop.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
 			this.tsmiStop.Size = new System.Drawing.Size(281, 22);
-			this.tsmiStop.Text = "’â~(&S)";
+			this.tsmiStop.Text = "åœæ­¢(&S)";
 			this.tsmiStop.Click += new System.EventHandler(this.tsmiStop_Click);
 			// 
 			// toolStripSeparator5
@@ -335,7 +335,7 @@ namespace Yusen.GExplorer {
 			this.tsmiPrevTrack.Name = "tsmiPrevTrack";
 			this.tsmiPrevTrack.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.B)));
 			this.tsmiPrevTrack.Size = new System.Drawing.Size(281, 22);
-			this.tsmiPrevTrack.Text = "‘O‚Ö(&B)";
+			this.tsmiPrevTrack.Text = "å‰ã¸(&B)";
 			this.tsmiPrevTrack.Click += new System.EventHandler(this.tsmiPrevTrack_Click);
 			// 
 			// tsmiNextTrack
@@ -343,7 +343,7 @@ namespace Yusen.GExplorer {
 			this.tsmiNextTrack.Name = "tsmiNextTrack";
 			this.tsmiNextTrack.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
 			this.tsmiNextTrack.Size = new System.Drawing.Size(281, 22);
-			this.tsmiNextTrack.Text = "Ÿ‚Ö(&F)";
+			this.tsmiNextTrack.Text = "æ¬¡ã¸(&F)";
 			this.tsmiNextTrack.Click += new System.EventHandler(this.tsmiNextTrack_Click);
 			// 
 			// tsmiFastReverse
@@ -352,7 +352,7 @@ namespace Yusen.GExplorer {
 			this.tsmiFastReverse.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.B)));
 			this.tsmiFastReverse.Size = new System.Drawing.Size(281, 22);
-			this.tsmiFastReverse.Text = "Šª‚«–ß‚µ(&R)";
+			this.tsmiFastReverse.Text = "å·»ãæˆ»ã—(&R)";
 			this.tsmiFastReverse.Click += new System.EventHandler(this.tsmiFastReverse_Click);
 			// 
 			// tsmiFastForward
@@ -361,7 +361,7 @@ namespace Yusen.GExplorer {
 			this.tsmiFastForward.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.F)));
 			this.tsmiFastForward.Size = new System.Drawing.Size(281, 22);
-			this.tsmiFastForward.Text = "‘‘—‚è(&A)";
+			this.tsmiFastForward.Text = "æ—©é€ã‚Š(&A)";
 			this.tsmiFastForward.Click += new System.EventHandler(this.tsmiFastForward_Click);
 			// 
 			// toolStripSeparator7
@@ -375,7 +375,7 @@ namespace Yusen.GExplorer {
 			this.tsmiPrevContent.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.P)));
 			this.tsmiPrevContent.Size = new System.Drawing.Size(281, 22);
-			this.tsmiPrevContent.Text = "ƒvƒŒƒCƒŠƒXƒg‚Å‘O‚ÌƒRƒ“ƒeƒ“ƒc(E)";
+			this.tsmiPrevContent.Text = "ãƒ—ãƒ¬ã‚¤ãƒªã‚¹ãƒˆã§å‰ã®ã‚³ãƒ³ãƒ†ãƒ³ãƒ„(E)";
 			this.tsmiPrevContent.Click += new System.EventHandler(this.tsmiPrevContent_Click);
 			// 
 			// tsmiNextContent
@@ -384,7 +384,7 @@ namespace Yusen.GExplorer {
 			this.tsmiNextContent.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.N)));
 			this.tsmiNextContent.Size = new System.Drawing.Size(281, 22);
-			this.tsmiNextContent.Text = "ƒvƒŒƒCƒŠƒXƒg‚ÅŸ‚ÌƒRƒ“ƒeƒ“ƒc(&N)";
+			this.tsmiNextContent.Text = "ãƒ—ãƒ¬ã‚¤ãƒªã‚¹ãƒˆã§æ¬¡ã®ã‚³ãƒ³ãƒ†ãƒ³ãƒ„(&N)";
 			this.tsmiNextContent.Click += new System.EventHandler(this.tsmiNextContent_Click);
 			// 
 			// tsmiNextContentWithDelete
@@ -393,7 +393,7 @@ namespace Yusen.GExplorer {
 			this.tsmiNextContentWithDelete.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.D)));
 			this.tsmiNextContentWithDelete.Size = new System.Drawing.Size(281, 22);
-			this.tsmiNextContentWithDelete.Text = "ƒvƒŒƒCƒŠƒXƒg‚©‚çíœ‚µ‚ÄŸ(&D)";
+			this.tsmiNextContentWithDelete.Text = "ãƒ—ãƒ¬ã‚¤ãƒªã‚¹ãƒˆã‹ã‚‰å‰Šé™¤ã—ã¦æ¬¡(&D)";
 			this.tsmiNextContentWithDelete.Click += new System.EventHandler(this.tsmiNextContentWithDelete_Click);
 			// 
 			// tsmiSettings
@@ -418,7 +418,7 @@ namespace Yusen.GExplorer {
             this.tsmiVolumeCf});
 			this.tsmiSettings.Name = "tsmiSettings";
 			this.tsmiSettings.Size = new System.Drawing.Size(56, 16);
-			this.tsmiSettings.Text = "İ’è(&S)";
+			this.tsmiSettings.Text = "è¨­å®š(&S)";
 			// 
 			// tsmiAlwaysOnTop
 			// 
@@ -426,7 +426,7 @@ namespace Yusen.GExplorer {
 			this.tsmiAlwaysOnTop.Name = "tsmiAlwaysOnTop";
 			this.tsmiAlwaysOnTop.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.T)));
 			this.tsmiAlwaysOnTop.Size = new System.Drawing.Size(260, 22);
-			this.tsmiAlwaysOnTop.Text = "í‚Éè‘O‚É•\¦(&T)";
+			this.tsmiAlwaysOnTop.Text = "å¸¸ã«æ‰‹å‰ã«è¡¨ç¤º(&T)";
 			this.tsmiAlwaysOnTop.Click += new System.EventHandler(this.tsmiAlwaysOnTop_Click);
 			// 
 			// tsmiHideUiOnDeactivated
@@ -437,7 +437,7 @@ namespace Yusen.GExplorer {
 			this.tsmiHideUiOnDeactivated.Name = "tsmiHideUiOnDeactivated";
 			this.tsmiHideUiOnDeactivated.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.H)));
 			this.tsmiHideUiOnDeactivated.Size = new System.Drawing.Size(260, 22);
-			this.tsmiHideUiOnDeactivated.Text = "”ñƒAƒNƒeƒBƒu‚ÉUI‚ğ‰B‚·(&H)";
+			this.tsmiHideUiOnDeactivated.Text = "éã‚¢ã‚¯ãƒ†ã‚£ãƒ–æ™‚ã«UIã‚’éš ã™(&H)";
 			// 
 			// toolStripMenuItem1
 			// 
@@ -449,7 +449,7 @@ namespace Yusen.GExplorer {
 			this.tsmiStrechToFit.CheckOnClick = true;
 			this.tsmiStrechToFit.Name = "tsmiStrechToFit";
 			this.tsmiStrechToFit.Size = new System.Drawing.Size(260, 22);
-			this.tsmiStrechToFit.Text = "ƒEƒBƒ“ƒhƒEƒTƒCƒY‚É‡‚í‚¹‚ÄŠg‘å(&F)";
+			this.tsmiStrechToFit.Text = "ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚µã‚¤ã‚ºã«åˆã‚ã›ã¦æ‹¡å¤§(&F)";
 			this.tsmiStrechToFit.Click += new System.EventHandler(this.tsmiStrechToFit_Click);
 			// 
 			// tsmiDisableScreenSaver
@@ -457,7 +457,7 @@ namespace Yusen.GExplorer {
 			this.tsmiDisableScreenSaver.CheckOnClick = true;
 			this.tsmiDisableScreenSaver.Name = "tsmiDisableScreenSaver";
 			this.tsmiDisableScreenSaver.Size = new System.Drawing.Size(260, 22);
-			this.tsmiDisableScreenSaver.Text = "ƒAƒNƒeƒBƒu‚ÉƒXƒNƒŠ[ƒ“ƒZ[ƒo—}~(&D)";
+			this.tsmiDisableScreenSaver.Text = "ã‚¢ã‚¯ãƒ†ã‚£ãƒ–æ™‚ã«ã‚¹ã‚¯ãƒªãƒ¼ãƒ³ã‚»ãƒ¼ãƒæŠ‘æ­¢(&D)";
 			this.tsmiDisableScreenSaver.Click += new System.EventHandler(this.tsmiDisableScreenSaver_Click);
 			// 
 			// toolStripMenuItem2
@@ -472,7 +472,7 @@ namespace Yusen.GExplorer {
 			this.tsmiAutoSizeOnNormal.CheckState = System.Windows.Forms.CheckState.Checked;
 			this.tsmiAutoSizeOnNormal.Name = "tsmiAutoSizeOnNormal";
 			this.tsmiAutoSizeOnNormal.Size = new System.Drawing.Size(260, 22);
-			this.tsmiAutoSizeOnNormal.Text = "–{•ÒŠJn‚É“®‰æ‰ğ‘œ“x‚ÉƒŠƒTƒCƒY(&R)";
+			this.tsmiAutoSizeOnNormal.Text = "æœ¬ç·¨é–‹å§‹æ™‚ã«å‹•ç”»è§£åƒåº¦ã«ãƒªã‚µã‚¤ã‚º(&R)";
 			// 
 			// tsmiAutoSizeOnCf
 			// 
@@ -481,13 +481,13 @@ namespace Yusen.GExplorer {
 			this.tsmiAutoSizeOnCf.CheckState = System.Windows.Forms.CheckState.Checked;
 			this.tsmiAutoSizeOnCf.Name = "tsmiAutoSizeOnCf";
 			this.tsmiAutoSizeOnCf.Size = new System.Drawing.Size(260, 22);
-			this.tsmiAutoSizeOnCf.Text = "CFŠJn‚É“®‰æ‰ğ‘œ“x‚ÉƒŠƒTƒCƒY(&E)";
+			this.tsmiAutoSizeOnCf.Text = "CFé–‹å§‹æ™‚ã«å‹•ç”»è§£åƒåº¦ã«ãƒªã‚µã‚¤ã‚º(&E)";
 			// 
 			// tsmiResizeZoomValue
 			// 
 			this.tsmiResizeZoomValue.Name = "tsmiResizeZoomValue";
 			this.tsmiResizeZoomValue.Size = new System.Drawing.Size(260, 22);
-			this.tsmiResizeZoomValue.Text = "ƒŠƒTƒCƒY‚Ì”{—¦(&Z)...";
+			this.tsmiResizeZoomValue.Text = "ãƒªã‚µã‚¤ã‚ºæ™‚ã®å€ç‡(&Z)...";
 			this.tsmiResizeZoomValue.Click += new System.EventHandler(this.tsmiResizeZoomValue_Click);
 			// 
 			// toolStripSeparator6
@@ -502,21 +502,21 @@ namespace Yusen.GExplorer {
 			this.tsmiSkipCmLicense.CheckState = System.Windows.Forms.CheckState.Checked;
 			this.tsmiSkipCmLicense.Name = "tsmiSkipCmLicense";
 			this.tsmiSkipCmLicense.Size = new System.Drawing.Size(260, 22);
-			this.tsmiSkipCmLicense.Text = "cm_license ‚Ì‘ŠúƒXƒLƒbƒv(&K)";
+			this.tsmiSkipCmLicense.Text = "cm_license ã®æ—©æœŸã‚¹ã‚­ãƒƒãƒ—(&K)";
 			// 
 			// tsmiChapterModeFromBegining
 			// 
 			this.tsmiChapterModeFromBegining.CheckOnClick = true;
 			this.tsmiChapterModeFromBegining.Name = "tsmiChapterModeFromBegining";
 			this.tsmiChapterModeFromBegining.Size = new System.Drawing.Size(260, 22);
-			this.tsmiChapterModeFromBegining.Text = "Ä¶ŠJn‚©‚çƒ`ƒƒƒvƒ^[ƒ‚[ƒh(&C)";
+			this.tsmiChapterModeFromBegining.Text = "å†ç”Ÿé–‹å§‹æ™‚ã‹ã‚‰ãƒãƒ£ãƒ—ã‚¿ãƒ¼ãƒ¢ãƒ¼ãƒ‰(&C)";
 			// 
 			// tsmiRemovePlayedContent
 			// 
 			this.tsmiRemovePlayedContent.CheckOnClick = true;
 			this.tsmiRemovePlayedContent.Name = "tsmiRemovePlayedContent";
 			this.tsmiRemovePlayedContent.Size = new System.Drawing.Size(260, 22);
-			this.tsmiRemovePlayedContent.Text = "Ä¶I—¹‚ÅƒvƒŒƒCƒŠƒXƒg‚©‚çíœ(&P)";
+			this.tsmiRemovePlayedContent.Text = "å†ç”Ÿçµ‚äº†ã§ãƒ—ãƒ¬ã‚¤ãƒªã‚¹ãƒˆã‹ã‚‰å‰Šé™¤(&P)";
 			// 
 			// toolStripSeparator4
 			// 
@@ -530,21 +530,21 @@ namespace Yusen.GExplorer {
 			this.tsmiAutoVolume.CheckState = System.Windows.Forms.CheckState.Checked;
 			this.tsmiAutoVolume.Name = "tsmiAutoVolume";
 			this.tsmiAutoVolume.Size = new System.Drawing.Size(260, 22);
-			this.tsmiAutoVolume.Text = "©“®‰¹—Ê’²®(&V)";
+			this.tsmiAutoVolume.Text = "è‡ªå‹•éŸ³é‡èª¿æ•´(&V)";
 			this.tsmiAutoVolume.Click += new System.EventHandler(this.tsmiAutoVolume_Click);
 			// 
 			// tsmiVolumeNormal
 			// 
 			this.tsmiVolumeNormal.Name = "tsmiVolumeNormal";
 			this.tsmiVolumeNormal.Size = new System.Drawing.Size(260, 22);
-			this.tsmiVolumeNormal.Text = "©“®‰¹—Ê’²®‚É‚¨‚¯‚é–{•Ò‚Ì‰¹—Ê(&O)...";
+			this.tsmiVolumeNormal.Text = "è‡ªå‹•éŸ³é‡èª¿æ•´ã«ãŠã‘ã‚‹æœ¬ç·¨ã®éŸ³é‡(&O)...";
 			this.tsmiVolumeNormal.Click += new System.EventHandler(this.tsmiVolumeNormal_Click);
 			// 
 			// tsmiVolumeCf
 			// 
 			this.tsmiVolumeCf.Name = "tsmiVolumeCf";
 			this.tsmiVolumeCf.Size = new System.Drawing.Size(260, 22);
-			this.tsmiVolumeCf.Text = "©“®‰¹—Ê’²®‚É‚¨‚¯‚éCF‚Ì‰¹—Ê(&M)...";
+			this.tsmiVolumeCf.Text = "è‡ªå‹•éŸ³é‡èª¿æ•´ã«ãŠã‘ã‚‹CFã®éŸ³é‡(&M)...";
 			this.tsmiVolumeCf.Click += new System.EventHandler(this.tsmiVolumeCf_Click);
 			// 
 			// tsmiTools
@@ -560,28 +560,28 @@ namespace Yusen.GExplorer {
             this.tsmiUserCommands});
 			this.tsmiTools.Name = "tsmiTools";
 			this.tsmiTools.Size = new System.Drawing.Size(61, 16);
-			this.tsmiTools.Text = "ƒc[ƒ‹(&T)";
+			this.tsmiTools.Text = "ãƒ„ãƒ¼ãƒ«(&T)";
 			// 
 			// tsmiFocusOnWmp
 			// 
 			this.tsmiFocusOnWmp.Name = "tsmiFocusOnWmp";
 			this.tsmiFocusOnWmp.ShortcutKeys = System.Windows.Forms.Keys.F6;
 			this.tsmiFocusOnWmp.Size = new System.Drawing.Size(241, 22);
-			this.tsmiFocusOnWmp.Text = "WMP ‚ÉƒtƒH[ƒJƒX‚ğ‘—‚é(&S)";
+			this.tsmiFocusOnWmp.Text = "WMP ã«ãƒ•ã‚©ãƒ¼ã‚«ã‚¹ã‚’é€ã‚‹(&S)";
 			this.tsmiFocusOnWmp.Click += new System.EventHandler(this.tsmiFocusOnWmp_Click);
 			// 
 			// tsmiResizeToVideoResolution
 			// 
 			this.tsmiResizeToVideoResolution.Name = "tsmiResizeToVideoResolution";
 			this.tsmiResizeToVideoResolution.Size = new System.Drawing.Size(241, 22);
-			this.tsmiResizeToVideoResolution.Text = "“®‰æ‚Ì‰ğ‘œ“x‚É‡‚í‚¹‚ÄƒŠƒTƒCƒY(&F)";
+			this.tsmiResizeToVideoResolution.Text = "å‹•ç”»ã®è§£åƒåº¦ã«åˆã‚ã›ã¦ãƒªã‚µã‚¤ã‚º(&F)";
 			this.tsmiResizeToVideoResolution.Click += new System.EventHandler(this.tsmiResizeToVideoResolution_Click);
 			// 
 			// tsmiShowItemInfo
 			// 
 			this.tsmiShowItemInfo.Name = "tsmiShowItemInfo";
 			this.tsmiShowItemInfo.Size = new System.Drawing.Size(241, 22);
-			this.tsmiShowItemInfo.Text = "ItemInfo ‚ğ•\¦(&I)...";
+			this.tsmiShowItemInfo.Text = "ItemInfo ã‚’è¡¨ç¤º(&I)...";
 			this.tsmiShowItemInfo.Click += new System.EventHandler(this.tsmiShowItemInfo_Click);
 			// 
 			// toolStripMenuItem3
@@ -593,14 +593,14 @@ namespace Yusen.GExplorer {
 			// 
 			this.tsmiBrowseDetail.Name = "tsmiBrowseDetail";
 			this.tsmiBrowseDetail.Size = new System.Drawing.Size(241, 22);
-			this.tsmiBrowseDetail.Text = "Ú×ƒy[ƒW‚ğ•\¦(&D)";
+			this.tsmiBrowseDetail.Text = "è©³ç´°ãƒšãƒ¼ã‚¸ã‚’è¡¨ç¤º(&D)";
 			this.tsmiBrowseDetail.Click += new System.EventHandler(this.tsmiBrowseDetail_Click);
 			// 
 			// tsmiBrowseRecommended
 			// 
 			this.tsmiBrowseRecommended.Name = "tsmiBrowseRecommended";
 			this.tsmiBrowseRecommended.Size = new System.Drawing.Size(241, 22);
-			this.tsmiBrowseRecommended.Text = "‚¨‚·‚·‚ßƒy[ƒW‚ğ•\¦(&R)";
+			this.tsmiBrowseRecommended.Text = "ãŠã™ã™ã‚ãƒšãƒ¼ã‚¸ã‚’è¡¨ç¤º(&R)";
 			this.tsmiBrowseRecommended.Click += new System.EventHandler(this.tsmiBrowseRecommended_Click);
 			// 
 			// toolStripSeparator1
@@ -612,7 +612,7 @@ namespace Yusen.GExplorer {
 			// 
 			this.tsmiUserCommands.Name = "tsmiUserCommands";
 			this.tsmiUserCommands.Size = new System.Drawing.Size(241, 22);
-			this.tsmiUserCommands.Text = "ŠO•”ƒRƒ}ƒ“ƒh(&C)";
+			this.tsmiUserCommands.Text = "å¤–éƒ¨ã‚³ãƒãƒ³ãƒ‰(&C)";
 			// 
 			// inputBoxDialog1
 			// 

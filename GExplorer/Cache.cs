@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
@@ -26,7 +26,7 @@ namespace Yusen.GExplorer {
 					oldResults = (Dictionary<GGenre, CrawlResult>)formatter.Deserialize(stream);
 				}
 				
-				//‚©‚Â‚Ä‚Ìƒo[ƒWƒ‡ƒ“‚Å‚Í‚ ‚Á‚½‚ªV‚µ‚¢ƒo[ƒWƒ‡ƒ“‚Å‚Í‚È‚­‚È‚Á‚½ƒWƒƒƒ“ƒ‹‚ğíœ
+				//ã‹ã¤ã¦ã®ãƒãƒ¼ã‚¸ãƒ§ãƒ³ã§ã¯ã‚ã£ãŸãŒæ–°ã—ã„ãƒãƒ¼ã‚¸ãƒ§ãƒ³ã§ã¯ãªããªã£ãŸã‚¸ãƒ£ãƒ³ãƒ«ã‚’å‰Šé™¤
 				Dictionary<GGenre, CrawlResult> newResults = new Dictionary<GGenre, CrawlResult>();
 				foreach (GGenre genre in GGenre.AllGenres) {
 					CrawlResult result;
@@ -50,7 +50,7 @@ namespace Yusen.GExplorer {
 			}
 		}
 		public static void Serialize() {
-			//this.cacheCtl ‚É‚Í‰½‚à‚µ‚È‚¢
+			//this.cacheCtl ã«ã¯ä½•ã‚‚ã—ãªã„
 			
 			using (Stream stream = new FileStream(Path.Combine(Cache.CacheDir, Cache.ResultsFilename), FileMode.Create)) {
 				IFormatter formatter = new BinaryFormatter();
@@ -107,7 +107,7 @@ namespace Yusen.GExplorer {
 			int numResults = Cache.Instance.ResultsDictionary.Count;
 			Cache.Instance.ResultsDictionary.Clear();
 			this.OnCacheRearranged(new CacheEventArgs(
-				string.Format("ƒNƒ[ƒ‹Œ‹‰Ê‚Ì”jŠü    ”jŠü”: {0}", numResults)));
+				string.Format("ã‚¯ãƒ­ãƒ¼ãƒ«çµæœã®ç ´æ£„    ç ´æ£„æ•°: {0}", numResults)));
 		}
 		public void RemoveCachesUnreachable() {
 			List<string> reachable = this.GetSortedReachableContentIds();
@@ -127,7 +127,7 @@ namespace Yusen.GExplorer {
 				}
 			}
 			this.OnCacheRearranged(new CacheEventArgs(
-				string.Format("ƒLƒƒƒbƒVƒ…‚Ìíœ    “’B‰Â‚É‚æ‚è–³‹: {0}    íœ¬Œ÷: {1}    íœ¸”s: {2}",
+				string.Format("ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã®å‰Šé™¤    åˆ°é”å¯ã«ã‚ˆã‚Šç„¡è¦–: {0}    å‰Šé™¤æˆåŠŸ: {1}    å‰Šé™¤å¤±æ•—: {2}",
 					ignored, success, failed)));
 		}
 		public void RemoveCachesAll() {
@@ -141,7 +141,7 @@ namespace Yusen.GExplorer {
 				}
 			}
 			this.OnCacheRearranged(new CacheEventArgs(
-				string.Format("ƒLƒƒƒbƒVƒ…‚Ìíœ    íœ¬Œ÷: {0}    íœ¸”s: {1}",
+				string.Format("ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã®å‰Šé™¤    å‰Šé™¤æˆåŠŸ: {0}    å‰Šé™¤å¤±æ•—: {1}",
 					success, failed)));
 		}
 		public void RemoveDeadlineEntriesUnreacheable() {
@@ -162,14 +162,14 @@ namespace Yusen.GExplorer {
 				}
 			}
 			this.OnCacheRearranged(new CacheEventArgs(
-				string.Format("”zMŠúŒÀƒGƒ“ƒgƒŠ[‚Ì®—    “’B‰Â‚É‚æ‚è–³‹: {0}    íœ¬Œ÷: {1}    íœ¸”s: {2}",
+				string.Format("é…ä¿¡æœŸé™ã‚¨ãƒ³ãƒˆãƒªãƒ¼ã®æ•´ç†    åˆ°é”å¯ã«ã‚ˆã‚Šç„¡è¦–: {0}    å‰Šé™¤æˆåŠŸ: {1}    å‰Šé™¤å¤±æ•—: {2}",
 					ignored, success, failed)));
 		}
 		public void RemoveDeadlineEntriesAll() {
 			int count = this.DeadlineTable.Count;
 			this.DeadlineTable.ClearDeadlines();
 			this.OnCacheRearranged(new CacheEventArgs(
-				string.Format("”zMŠúŒÀƒGƒ“ƒgƒŠ[‚Ì®—    íœ¬Œ÷: {0}" + count)));
+				string.Format("é…ä¿¡æœŸé™ã‚¨ãƒ³ãƒˆãƒªãƒ¼ã®æ•´ç†    å‰Šé™¤æˆåŠŸ: {0}" + count)));
 		}
 	}
 

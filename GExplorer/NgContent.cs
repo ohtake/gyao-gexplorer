@@ -1,10 +1,10 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Reflection;
 
 namespace Yusen.GExplorer {
-	/// <summary>2‚Â‚Ì<see cref="string"/>‚ğ”äŠr‚µ‚Ä^‹U’l‚ğ•Ô‚·ƒƒ\ƒbƒh‚Ì–¼ÌD</summary>
+	/// <summary>2ã¤ã®<see cref="string"/>ã‚’æ¯”è¼ƒã—ã¦çœŸå½å€¤ã‚’è¿”ã™ãƒ¡ã‚½ãƒƒãƒ‰ã®åç§°ï¼</summary>
 	public enum TwoStringsPredicateMethod {
 		Equals,
 		Contains,
@@ -12,7 +12,7 @@ namespace Yusen.GExplorer {
 		EndsWith,
 	}
 	
-	/// <summary>NGƒRƒ“ƒeƒ“ƒcD<see cref="ContentAdapter"/>‚É‘Î‚µ‚ÄNG‚Ì”»’è‚ğs‚¤D</summary>
+	/// <summary>NGã‚³ãƒ³ãƒ†ãƒ³ãƒ„ï¼<see cref="ContentAdapter"/>ã«å¯¾ã—ã¦NGã®åˆ¤å®šã‚’è¡Œã†ï¼</summary>
 	public class NgContent {
 		private string comment;
 		private string propertyName;
@@ -34,58 +34,54 @@ namespace Yusen.GExplorer {
 			this.Created = DateTime.Now;
 			this.LastAbone = DateTime.MinValue;
 		}
-		/// <summary>ƒRƒƒ“ƒgDˆÓ–¡‚È‚µD</summary>
+		/// <summary>ã‚³ãƒ¡ãƒ³ãƒˆï¼æ„å‘³ãªã—ï¼</summary>
 		public string Comment {
 			get { return this.comment; }
 			set { this.comment = value; }
 		}
-		/// <summary>NGˆ—‚ÅåŒê‚Æ‚È‚é<see cref="ContentAdapter"/>‚ÌƒvƒƒpƒeƒB–¼D</summary>
+		/// <summary>NGå‡¦ç†ã§ä¸»èªã¨ãªã‚‹<see cref="ContentAdapter"/>ã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£åï¼</summary>
 		public string PropertyName {
 			get { return this.propertyName; }
 			set {
 				this.propertyName = value;
 				this.objInfo = typeof(ContentAdapter).GetProperty(value);
 				if (null == this.objInfo) {
-					throw new ArgumentException("‘¶İ‚µ‚È‚¢ƒvƒƒpƒeƒB–¼: " + value);
+					throw new ArgumentException("å­˜åœ¨ã—ãªã„ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£å: " + value);
 				}
 			}
 		}
-		/// <summary>NGˆ—‚ÅqŒê‚Æ‚È‚é<see cref="string"/>‚Ìƒƒ\ƒbƒh–¼D</summary>
+		/// <summary>NGå‡¦ç†ã§è¿°èªã¨ãªã‚‹<see cref="string"/>ã®ãƒ¡ã‚½ãƒƒãƒ‰åï¼</summary>
 		public TwoStringsPredicateMethod Method {
 			get { return this.method; }
 			set {
 				this.method = value;
 				this.predInfo = typeof(string).GetMethod(value.ToString(), new Type[] { typeof(string)});
 				if (null == this.predInfo) {
-					throw new ArgumentException("‘¶İ‚µ‚È‚¢ƒƒ\ƒbƒh–¼: " + value.ToString());
+					throw new ArgumentException("å­˜åœ¨ã—ãªã„ãƒ¡ã‚½ãƒƒãƒ‰å: " + value.ToString());
 				}
 			}
 		}
-		/// <summary>NGˆ—‚Å–Ú“IŒê‚Æ‚È‚éNGƒ[ƒhD</summary>
+		/// <summary>NGå‡¦ç†ã§ç›®çš„èªã¨ãªã‚‹NGãƒ¯ãƒ¼ãƒ‰ï¼</summary>
 		public string Word {
 			get { return this.word; }
 			set { this.word = value; }
 		}
-		/// <summary>NGƒRƒ“ƒeƒ“ƒc‚Ìì¬“úD</summary>
+		/// <summary>NGã‚³ãƒ³ãƒ†ãƒ³ãƒ„ã®ä½œæˆæ—¥æ™‚ï¼</summary>
 		public DateTime Created {
 			get { return this.created; }
 			set { this.created = value; }
 		}
-		/// <summary>ÅING“úD</summary>
+		/// <summary>æœ€çµ‚NGæ—¥æ™‚ï¼</summary>
 		public DateTime LastAbone {
 			get { return this.lastAbone; }
 			set { this.lastAbone = value; }
 		}
-		/// <summary>NG‚©”Û‚©‚ğ”»’è‚·‚éDNG‚Å‚ ‚Á‚½ê‡‚É‚Í<see cref="LastAbone"/>‚ªXV‚³‚ê‚éD</summary>
-		/// <param name="p">”»’è‘ÎÛ‚Ì<see cref="GPackage"/>D</param>
-		/// <returns>NG‚Å‚ ‚Á‚½‚çtrue‚ª•Ô‚éD</returns>
+		/// <summary>NGã‹å¦ã‹ã‚’åˆ¤å®šã™ã‚‹ï¼NGã§ã‚ã£ãŸå ´åˆã«ã¯<see cref="LastAbone"/>ãŒæ›´æ–°ã•ã‚Œã‚‹ï¼</summary>
+		/// <param name="p">åˆ¤å®šå¯¾è±¡ã®<see cref="GPackage"/>ï¼</param>
+		/// <returns>NGã§ã‚ã£ãŸã‚‰trueãŒè¿”ã‚‹ï¼</returns>
 		internal bool IsNgContent(ContentAdapter cont) {
 			string propValue = this.objInfo.GetValue(cont, null).ToString();
-			bool isNg = (bool)this.predInfo.Invoke(propValue, new object[] { this.word });
-			if(isNg) {
-				this.lastAbone = DateTime.Now;
-			}
-			return isNg;
+			return (bool)this.predInfo.Invoke(propValue, new object[] { this.word });
 		}
 	}
 	
@@ -112,6 +108,7 @@ namespace Yusen.GExplorer {
 		public bool IsNgContent(ContentAdapter cont) {
 			foreach(NgContent nc in base.items) {
 				if (nc.IsNgContent(cont)) {
+					nc.LastAbone = DateTime.Now;
 					if(null != this.LastAboneChanged) {
 						this.LastAboneChanged(this, EventArgs.Empty);
 					}

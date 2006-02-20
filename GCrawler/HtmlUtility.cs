@@ -1,4 +1,4 @@
-using System;
+Ôªøusing System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -17,7 +17,7 @@ namespace Yusen.GCrawler {
 			input = HtmlUtility.regexTabParaBegin.Replace(input, "\n\n");
 			input = HtmlUtility.regexTabParaEnd.Replace(input, "\n");
 			input = HtmlUtility.regexTabBreak.Replace(input, "\n");
-			input = HtmlUtility.regexTab.Replace(input, "");//System.Web.RegularExpression ÇÕÇ§Ç‹Ç≠Ç¢Ç©Ç»Ç¢ÅH
+			input = HtmlUtility.regexTab.Replace(input, "");//System.Web.RegularExpression „ÅØ„ÅÜ„Åæ„Åè„ÅÑ„Åã„Å™„ÅÑÔºü
 			input = HttpUtility.HtmlDecode(input);
 			return input;
 		}

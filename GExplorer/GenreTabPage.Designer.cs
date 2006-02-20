@@ -1,4 +1,4 @@
-namespace Yusen.GExplorer {
+ï»¿namespace Yusen.GExplorer {
 	partial class GenreTabPage {
 		/// <summary>
 		/// Required designer variable.
@@ -56,7 +56,7 @@ namespace Yusen.GExplorer {
 			// 
 			this.tsmiReload.Name = "tsmiReload";
 			this.tsmiReload.Size = new System.Drawing.Size(190, 22);
-			this.tsmiReload.Text = "ÄƒNƒ[ƒ‹(&R)";
+			this.tsmiReload.Text = "å†ã‚¯ãƒ­ãƒ¼ãƒ«(&R)";
 			// 
 			// toolStripSeparator1
 			// 
@@ -67,20 +67,20 @@ namespace Yusen.GExplorer {
 			// 
 			this.tsmiBrowseTop.Name = "tsmiBrowseTop";
 			this.tsmiBrowseTop.Size = new System.Drawing.Size(190, 22);
-			this.tsmiBrowseTop.Text = "ƒWƒƒƒ“ƒ‹ƒgƒbƒv(&T)";
+			this.tsmiBrowseTop.Text = "ã‚¸ãƒ£ãƒ³ãƒ«ãƒˆãƒƒãƒ—(&T)";
 			// 
 			// tsmiBrowseTimetableRecentlyUpdatedFirst
 			// 
 			this.tsmiBrowseTimetableRecentlyUpdatedFirst.Name = "tsmiBrowseTimetableRecentlyUpdatedFirst";
 			this.tsmiBrowseTimetableRecentlyUpdatedFirst.Size = new System.Drawing.Size(190, 22);
-			this.tsmiBrowseTimetableRecentlyUpdatedFirst.Text = "XV“ú—Dæ”Ô‘g•\(&U)";
+			this.tsmiBrowseTimetableRecentlyUpdatedFirst.Text = "æ›´æ–°æ—¥å„ªå…ˆç•ªçµ„è¡¨(&U)";
 			// 
 			// tsmiBrowseTimetableDeadlineNearFirst
 			// 
 			this.tsmiBrowseTimetableDeadlineNearFirst.Enabled = false;
 			this.tsmiBrowseTimetableDeadlineNearFirst.Name = "tsmiBrowseTimetableDeadlineNearFirst";
 			this.tsmiBrowseTimetableDeadlineNearFirst.Size = new System.Drawing.Size(190, 22);
-			this.tsmiBrowseTimetableDeadlineNearFirst.Text = "c‚è“ú”—Dæ”Ô‘g•\(&D)";
+			this.tsmiBrowseTimetableDeadlineNearFirst.Text = "æ®‹ã‚Šæ—¥æ•°å„ªå…ˆç•ªçµ„è¡¨(&D)";
 			// 
 			// toolStripSeparator2
 			// 
@@ -91,19 +91,19 @@ namespace Yusen.GExplorer {
 			// 
 			this.tsmiCopyGenreName.Name = "tsmiCopyGenreName";
 			this.tsmiCopyGenreName.Size = new System.Drawing.Size(190, 22);
-			this.tsmiCopyGenreName.Text = "–¼‘O‚ğƒRƒs[(&N)";
+			this.tsmiCopyGenreName.Text = "åå‰ã‚’ã‚³ãƒ”ãƒ¼(&N)";
 			// 
 			// tsmiCopyUri
 			// 
 			this.tsmiCopyUri.Name = "tsmiCopyUri";
 			this.tsmiCopyUri.Size = new System.Drawing.Size(190, 22);
-			this.tsmiCopyUri.Text = "URI‚ğƒRƒs[(&U)";
+			this.tsmiCopyUri.Text = "URIã‚’ã‚³ãƒ”ãƒ¼(&U)";
 			// 
 			// tsmiCopyGenreNameAndUri
 			// 
 			this.tsmiCopyGenreNameAndUri.Name = "tsmiCopyGenreNameAndUri";
 			this.tsmiCopyGenreNameAndUri.Size = new System.Drawing.Size(190, 22);
-			this.tsmiCopyGenreNameAndUri.Text = "–¼‘O‚ÆURI‚ğƒRƒs[(&B)";
+			this.tsmiCopyGenreNameAndUri.Text = "åå‰ã¨URIã‚’ã‚³ãƒ”ãƒ¼(&B)";
 			// 
 			// GenreTabPage
 			// 

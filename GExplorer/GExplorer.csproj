@@ -73,6 +73,12 @@
       <DependentUpon>ContentDetailView.cs</DependentUpon>
     </Compile>
     <Compile Include="ContentAdapter.cs" />
+    <Compile Include="DoubleBufferedListView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="DoubleBufferedListView.Designer.cs">
+      <DependentUpon>DoubleBufferedListView.cs</DependentUpon>
+    </Compile>
     <Compile Include="ExceptionDialog.cs">
       <SubType>Component</SubType>
     </Compile>

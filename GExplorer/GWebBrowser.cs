@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Forms;
@@ -17,7 +17,7 @@ namespace Yusen.GExplorer {
 		public GWebBrowser() {
 			InitializeComponent();
 			
-			//ƒRƒ“ƒeƒLƒXƒgƒƒjƒ…[
+			//ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆãƒ¡ãƒ‹ãƒ¥ãƒ¼
 			this.tsmiPackageOpen.Click += new EventHandler(tsmiPackageOpen_Click);
 			this.tsmiPackageCancel.Click += new EventHandler(tsmiPackageCancel_Click);
 			this.tsmiContentOpenDetail.Click += new EventHandler(tsmiContentOpenDetail_Click);
@@ -28,7 +28,7 @@ namespace Yusen.GExplorer {
 			this.tsmiContentPlayBrowser.Click += new EventHandler(tsmiContentPlayBrowser_Click);
 			this.tsmiContentCancel.Click += new EventHandler(tsmiContentCancel_Click);
 
-			//ŠO•”ƒRƒ}ƒ“ƒh
+			//å¤–éƒ¨ã‚³ãƒãƒ³ãƒ‰
 			this.UserCommandsManager_UserCommandsChanged(null, EventArgs.Empty);
 			UserCommandsManager.Instance.UserCommandsChanged += new EventHandler(this.UserCommandsManager_UserCommandsChanged);
 			this.Disposed += delegate {
@@ -40,10 +40,10 @@ namespace Yusen.GExplorer {
 			this.dicPackage.Clear();
 			this.dicContent.Clear();
 
-			//ƒpƒbƒP[ƒW‚ÆƒRƒ“ƒeƒ“ƒc‚Éƒƒjƒ…[‚ğ‚­‚Á‚Â‚¯‚é
+			//ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸ã¨ã‚³ãƒ³ãƒ†ãƒ³ãƒ„ã«ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚’ãã£ã¤ã‘ã‚‹
 			foreach (HtmlElement elem in (sender as WebBrowser).Document.Body.All) {
 				string strUri;
-				//URI‘I‘ğ
+				//URIé¸æŠ
 				switch (elem.TagName) {
 					case "IMG":
 						strUri = elem.GetAttribute("src");
@@ -61,13 +61,13 @@ namespace Yusen.GExplorer {
 				} catch(UriFormatException){
 					continue;
 				}
-				//ƒpƒbƒP[ƒW”»’è
+				//ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸åˆ¤å®š
 				string packageId;
 				if (GPackage.TryExtractPackageId(uri, out packageId)) {
 					this.AddToPackages(elem, packageId);
 					continue;
 				}
-				//ƒRƒ“ƒeƒ“ƒc”»’è
+				//ã‚³ãƒ³ãƒ†ãƒ³ãƒ„åˆ¤å®š
 				string contentId;
 				if (GContent.TryExtractContentId(uri, out contentId)) {
 					this.AddToContents(elem, contentId);
@@ -82,7 +82,7 @@ namespace Yusen.GExplorer {
 		private void Package_Click(object sender, HtmlElementEventArgs e) {
 			this.ttId.Hide(this);
 			if (Keys.None == (Keys.Alt & Control.ModifierKeys)) {
-				//Tag‚ÉID‚ğd‚ñ‚Å‚¨‚­
+				//Tagã«IDã‚’ä»•è¾¼ã‚“ã§ãŠã
 				this.cmsPackage.Tag = this.dicPackage[sender as HtmlElement];
 				this.cmsPackage.Show(Control.MousePosition);
 				e.BubbleEvent = false;
@@ -93,7 +93,7 @@ namespace Yusen.GExplorer {
 			if (Keys.None == (Keys.Alt & Control.ModifierKeys)) {
 				HtmlElement elem = sender as HtmlElement;
 				this.ttId.ToolTipTitle = this.dicPackage[elem];
-				//êŠ‚ª‚¤‚Ü‚­æ‚ê‚È‚¢‚Ì‚Å MousePosition ‚Å
+				//å ´æ‰€ãŒã†ã¾ãå–ã‚Œãªã„ã®ã§ MousePosition ã§
 				this.ttId.Show(" ", this, this.PointToClient(Control.MousePosition));
 			}
 		}
@@ -111,7 +111,7 @@ namespace Yusen.GExplorer {
 		private void Content_Click(object sender, HtmlElementEventArgs e) {
 			this.ttId.Hide(this);
 			if (Keys.None == (Keys.Alt & Control.ModifierKeys)) {
-				//Tag‚ÉID‚ğd‚ñ‚Å‚¨‚­
+				//Tagã«IDã‚’ä»•è¾¼ã‚“ã§ãŠã
 				this.cmsContent.Tag = this.dicContent[sender as HtmlElement];
 				this.cmsContent.Show(Control.MousePosition);
 				e.BubbleEvent = false;
@@ -126,7 +126,7 @@ namespace Yusen.GExplorer {
 				ContentCache cache;
 				if (Cache.Instance.ContentCacheController.TryGetCache(id, out cache)) {
 					ContentAdapter ca = new ContentAdapter(cache.Content);
-					this.ttId.ToolTipTitle = id + " ‚ÌƒLƒƒƒbƒVƒ…";
+					this.ttId.ToolTipTitle = id + " ã®ã‚­ãƒ£ãƒƒã‚·ãƒ¥";
 					tipText =
 						cache.LastWriteTime.ToString() + Environment.NewLine
 						+ ca.GenreName + Environment.NewLine
@@ -139,7 +139,7 @@ namespace Yusen.GExplorer {
 					this.ttId.ToolTipTitle = id;
 					tipText = " ";
 				}
-				//êŠ‚ª‚¤‚Ü‚­æ‚ê‚È‚¢‚Ì‚Å MousePosition ‚Å
+				//å ´æ‰€ãŒã†ã¾ãå–ã‚Œãªã„ã®ã§ MousePosition ã§
 				this.ttId.Show(tipText, this, this.PointToClient(Control.MousePosition));
 			}
 		}
@@ -154,7 +154,7 @@ namespace Yusen.GExplorer {
 			elem.MouseLeave += new HtmlElementEventHandler(this.Content_MouseLeave);
 		}
 		private void ShowHelpOnHowToCancelMenu() {
-			MessageBox.Show("AltƒL[‚ğ‰Ÿ‚µ‚Ä‚¢‚ê‚Î‰½‚ào‚Ü‚¹‚ñD", "ƒeƒBƒbƒv‚âƒƒjƒ…[‚ª×–‚", MessageBoxButtons.OK, MessageBoxIcon.Information);
+			MessageBox.Show("Altã‚­ãƒ¼ã‚’æŠ¼ã—ã¦ã„ã‚Œã°ä½•ã‚‚å‡ºã¾ã›ã‚“ï¼", "ãƒ†ã‚£ãƒƒãƒ—ã‚„ãƒ¡ãƒ‹ãƒ¥ãƒ¼ãŒé‚ªé­”", MessageBoxButtons.OK, MessageBoxIcon.Information);
 		}
 
 		private void tsmiPackageOpen_Click(object sender, EventArgs e) {
@@ -178,8 +178,8 @@ namespace Yusen.GExplorer {
 			GContent cont = GContent.DoDownload(contId);
 			ContentAdapter ca = new ContentAdapter(cont);
 			this.inputBoxDialog1.Input = string.Empty;
-			this.inputBoxDialog1.Message = "ƒRƒƒ“ƒg‚ğ“ü—Í‚µ‚Ä‚­‚¾‚³‚¢D";
-			this.inputBoxDialog1.Title = "ƒRƒƒ“ƒg‚Ì“ü—Í";
+			this.inputBoxDialog1.Message = "ã‚³ãƒ¡ãƒ³ãƒˆã‚’å…¥åŠ›ã—ã¦ãã ã•ã„ï¼";
+			this.inputBoxDialog1.Title = "ã‚³ãƒ¡ãƒ³ãƒˆã®å…¥åŠ›";
 			switch (this.inputBoxDialog1.ShowDialog()) {
 				case DialogResult.OK:
 					ca.Comment = this.inputBoxDialog1.Input;

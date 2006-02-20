@@ -1,4 +1,4 @@
-namespace Yusen.GExplorer {
+ï»¿namespace Yusen.GExplorer {
 	partial class InputBoxForm {
 		/// <summary>
 		/// Required designer variable.
@@ -62,7 +62,7 @@ namespace Yusen.GExplorer {
 			this.btnCancel.Name = "btnCancel";
 			this.btnCancel.Size = new System.Drawing.Size(90, 23);
 			this.btnCancel.TabIndex = 3;
-			this.btnCancel.Text = "ƒLƒƒƒ“ƒZƒ‹(&C)";
+			this.btnCancel.Text = "ã‚­ãƒ£ãƒ³ã‚»ãƒ«(&C)";
 			// 
 			// InputBoxForm
 			// 

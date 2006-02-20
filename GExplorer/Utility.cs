@@ -1,4 +1,4 @@
-using System;
+Ôªøusing System;
 using System.Windows.Forms;
 using System.IO;
 using System.Diagnostics;
@@ -54,7 +54,7 @@ namespace Yusen.GExplorer {
 				}),
 				Keys.Shift | Keys.F1);
 			ToolStripMenuItem about = new ToolStripMenuItem(
-				"ÉoÅ[ÉWÉáÉìèÓïÒ(&A)...", null,
+				"„Éê„Éº„Ç∏„Éß„É≥ÊÉÖÂ†±(&A)...", null,
 				new EventHandler(delegate(object sender, EventArgs e) {
 					using (AboutBox abox = new AboutBox()) {
 						abox.ShowDialog((sender as ToolStripMenuItem).Tag as Form);
@@ -63,7 +63,7 @@ namespace Yusen.GExplorer {
 			about.Tag = menuStrip.FindForm();
 			
 			ToolStripMenuItem help = new ToolStripMenuItem(
-				"ÉwÉãÉv(&H)", null,
+				"„Éò„É´„Éó(&H)", null,
 				read, change, new ToolStripSeparator(), about);
 			
 			menuStrip.Items.Add(help);
@@ -131,7 +131,7 @@ namespace Yusen.GExplorer {
 
 		public static bool TryGetUserProfileOf(int userNo, out string profile) {
 			try {
-				HttpWebRequest req = WebRequest.Create("http://www.gyao.jp/sityou/movie/contentsId/cnt0000000/rateId/bit0000001/login_from/shityou/") as HttpWebRequest;
+				HttpWebRequest req = WebRequest.Create("http://www.gyao.jp/sityou/movie/contentsId/cnt0000000/rateId/bit0000002/login_from/shityou/") as HttpWebRequest;
 				CookieContainer cc = new CookieContainer();
 				cc.Add(new Cookie("Cookie_UserId", userNo.ToString(), "/", "www.gyao.jp"));
 				cc.Add(new Cookie("Cookie_CookieId", "0", "/", "www.gyao.jp"));

@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Reflection;
@@ -6,10 +6,10 @@ using Process = System.Diagnostics.Process;
 using StringBuilder = System.Text.StringBuilder;
 
 namespace Yusen.GExplorer {
-	/// <summary>ŠO•”ƒRƒ}ƒ“ƒhD</summary>
+	/// <summary>å¤–éƒ¨ã‚³ãƒãƒ³ãƒ‰ï¼</summary>
 	/// <remarks>
-	/// ƒ†[ƒU‚ª“Æ©‚ÌƒRƒ}ƒ“ƒh‚ğ’è‹`‚·‚é‚±‚Æ‚Å
-	/// ŠÈ’P‚ÉƒAƒvƒŠƒP[ƒVƒ‡ƒ“‚ÌŠg’£‚ğs‚¦‚é‚æ‚¤‚É‚·‚éD
+	/// ãƒ¦ãƒ¼ã‚¶ãŒç‹¬è‡ªã®ã‚³ãƒãƒ³ãƒ‰ã‚’å®šç¾©ã™ã‚‹ã“ã¨ã§
+	/// ç°¡å˜ã«ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³ã®æ‹¡å¼µã‚’è¡Œãˆã‚‹ã‚ˆã†ã«ã™ã‚‹ï¼
 	/// </remarks>
 	public class UserCommand : IComparable<UserCommand> {
 		public static IEnumerable<string> GetEscapedLiterals() {
@@ -75,8 +75,8 @@ namespace Yusen.GExplorer {
 		}
 		
 		/// <summary>
-		/// ŠO•”ƒRƒ}ƒ“ƒh‚Ì–¼ÌD
-		/// ƒƒjƒ…[‚Ì€–Ú–¼‚É‚È‚é‚Ì‚Å &amp; ‚ÅƒAƒNƒZƒXƒL[‚Ìİ’è‚ª‚Å‚«‚éD
+		/// å¤–éƒ¨ã‚³ãƒãƒ³ãƒ‰ã®åç§°ï¼
+		/// ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®é …ç›®åã«ãªã‚‹ã®ã§ &amp; ã§ã‚¢ã‚¯ã‚»ã‚¹ã‚­ãƒ¼ã®è¨­å®šãŒã§ãã‚‹ï¼
 		/// </summary>
 		public string Title {
 			get {
@@ -84,13 +84,13 @@ namespace Yusen.GExplorer {
 			}
 			set {
 				if(null != this.title) throw new InvalidOperationException();
-				if(string.IsNullOrEmpty(value)) throw new ArgumentException("‹ó”’‚Ì•\¦–¼‚Í‘Ê–ÚD");
+				if(string.IsNullOrEmpty(value)) throw new ArgumentException("ç©ºç™½ã®è¡¨ç¤ºåã¯é§„ç›®ï¼");
 				this.title = value;
 			}
 		}
 		
 		/// <summary>
-		/// ŠO•”ƒRƒ}ƒ“ƒh‚ğÀs‚·‚éÛ‚ÌÀsƒtƒ@ƒCƒ‹–¼D
+		/// å¤–éƒ¨ã‚³ãƒãƒ³ãƒ‰ã‚’å®Ÿè¡Œã™ã‚‹éš›ã®å®Ÿè¡Œãƒ•ã‚¡ã‚¤ãƒ«åï¼
 		/// </summary>
 		public string FileName{
 			get {
@@ -98,16 +98,16 @@ namespace Yusen.GExplorer {
 			}
 			set {
 				if(null != this.fileName) throw new InvalidOperationException();
-				if(string.IsNullOrEmpty(value)) throw new ArgumentException("‹ó”’‚Ìƒtƒ@ƒCƒ‹–¼‚Í‘Ê–ÚD");
+				if(string.IsNullOrEmpty(value)) throw new ArgumentException("ç©ºç™½ã®ãƒ•ã‚¡ã‚¤ãƒ«åã¯é§„ç›®ï¼");
 				this.fileName = value;
 			}
 		}
 		
 		/// <summary>
-		/// ŠO•”ƒvƒƒOƒ‰ƒ€‚ğŒÄ‚Ño‚·‚Ìˆø”D
-		/// { ‚Æ } ‚ÅˆÍ‚Ü‚ê‚Ä‚¢‚é‰ÓŠ‚É‚Í‘I‘ğ’†‚Ì<see cref="ContentAdapter"/>‚É‰‚¶‚Ä
-		/// •Ê‚Ì•¶š—ñ‚É’uŠ·‚³‚ê‚éD
-		/// ’uŠ·‚Ì–@‘¥‚É‚Â‚¢‚Ä‚Í ReadMe.txt “™‚ğQÆ‚Ì‚±‚ÆD
+		/// å¤–éƒ¨ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã‚’å‘¼ã³å‡ºã™æ™‚ã®å¼•æ•°ï¼
+		/// { ã¨ } ã§å›²ã¾ã‚Œã¦ã„ã‚‹ç®‡æ‰€ã«ã¯é¸æŠä¸­ã®<see cref="ContentAdapter"/>ã«å¿œã˜ã¦
+		/// åˆ¥ã®æ–‡å­—åˆ—ã«ç½®æ›ã•ã‚Œã‚‹ï¼
+		/// ç½®æ›ã®æ³•å‰‡ã«ã¤ã„ã¦ã¯ ReadMe.txt ç­‰ã‚’å‚ç…§ã®ã“ã¨ï¼
 		/// </summary>
 		public string Arguments {
 			get {
@@ -116,7 +116,7 @@ namespace Yusen.GExplorer {
 			set {
 				if(null != this.arguments) throw new InvalidOperationException();
 				if(null == value) throw new ArgumentNullException();
-				if (!UserCommand.regexArgValidator.Match(value).Success) throw new ArgumentException("ˆø”‚Ì‘®‚ªŠÔˆá‚Á‚Ä‚éD");
+				if (!UserCommand.regexArgValidator.Match(value).Success) throw new ArgumentException("å¼•æ•°ã®æ›¸å¼ãŒé–“é•ã£ã¦ã‚‹ï¼");
 				this.arguments = value;
 			}
 		}

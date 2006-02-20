@@ -1,4 +1,4 @@
-namespace Yusen.GExplorer {
+ï»¿namespace Yusen.GExplorer {
 	partial class ExceptionForm {
 		/// <summary>
 		/// Required designer variable.
@@ -89,7 +89,7 @@ namespace Yusen.GExplorer {
 			this.lblProdVer.Name = "lblProdVer";
 			this.lblProdVer.Size = new System.Drawing.Size(74, 12);
 			this.lblProdVer.TabIndex = 10;
-			this.lblProdVer.Text = "»•iƒo[ƒWƒ‡ƒ“";
+			this.lblProdVer.Text = "è£½å“ãƒãƒ¼ã‚¸ãƒ§ãƒ³";
 			// 
 			// lblClrVer
 			// 
@@ -99,7 +99,7 @@ namespace Yusen.GExplorer {
 			this.lblClrVer.Name = "lblClrVer";
 			this.lblClrVer.Size = new System.Drawing.Size(72, 12);
 			this.lblClrVer.TabIndex = 12;
-			this.lblClrVer.Text = "CLRƒo[ƒWƒ‡ƒ“";
+			this.lblClrVer.Text = "CLRãƒãƒ¼ã‚¸ãƒ§ãƒ³";
 			// 
 			// lblOsVer
 			// 
@@ -109,7 +109,7 @@ namespace Yusen.GExplorer {
 			this.lblOsVer.Name = "lblOsVer";
 			this.lblOsVer.Size = new System.Drawing.Size(65, 12);
 			this.lblOsVer.TabIndex = 14;
-			this.lblOsVer.Text = "OSƒo[ƒWƒ‡ƒ“";
+			this.lblOsVer.Text = "OSãƒãƒ¼ã‚¸ãƒ§ãƒ³";
 			// 
 			// lblExceptionType
 			// 
@@ -119,7 +119,7 @@ namespace Yusen.GExplorer {
 			this.lblExceptionType.Name = "lblExceptionType";
 			this.lblExceptionType.Size = new System.Drawing.Size(51, 12);
 			this.lblExceptionType.TabIndex = 16;
-			this.lblExceptionType.Text = "—áŠO‚ÌŒ^";
+			this.lblExceptionType.Text = "ä¾‹å¤–ã®å‹";
 			// 
 			// lblExceptionMessage
 			// 
@@ -129,7 +129,7 @@ namespace Yusen.GExplorer {
 			this.lblExceptionMessage.Name = "lblExceptionMessage";
 			this.lblExceptionMessage.Size = new System.Drawing.Size(84, 12);
 			this.lblExceptionMessage.TabIndex = 18;
-			this.lblExceptionMessage.Text = "—áŠO‚ÌƒƒbƒZ[ƒW";
+			this.lblExceptionMessage.Text = "ä¾‹å¤–ã®ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸";
 			// 
 			// lblStackTrace
 			// 
@@ -139,7 +139,7 @@ namespace Yusen.GExplorer {
 			this.lblStackTrace.Name = "lblStackTrace";
 			this.lblStackTrace.Size = new System.Drawing.Size(73, 12);
 			this.lblStackTrace.TabIndex = 19;
-			this.lblStackTrace.Text = "ƒXƒ^ƒbƒNƒgƒŒ[ƒX";
+			this.lblStackTrace.Text = "ã‚¹ã‚¿ãƒƒã‚¯ãƒˆãƒ¬ãƒ¼ã‚¹";
 			// 
 			// lblInnerException
 			// 
@@ -149,7 +149,7 @@ namespace Yusen.GExplorer {
 			this.lblInnerException.Name = "lblInnerException";
 			this.lblInnerException.Size = new System.Drawing.Size(53, 12);
 			this.lblInnerException.TabIndex = 21;
-			this.lblInnerException.Text = "“à•”—áŠO";
+			this.lblInnerException.Text = "å†…éƒ¨ä¾‹å¤–";
 			// 
 			// txtProdVer
 			// 
@@ -241,7 +241,7 @@ namespace Yusen.GExplorer {
 			this.btnContinue.Name = "btnContinue";
 			this.btnContinue.Size = new System.Drawing.Size(99, 23);
 			this.btnContinue.TabIndex = 1;
-			this.btnContinue.Text = "–³‹‚µ‚Ä‘±s(&C)";
+			this.btnContinue.Text = "ç„¡è¦–ã—ã¦ç¶šè¡Œ(&C)";
 			// 
 			// btnAbort
 			// 
@@ -251,7 +251,7 @@ namespace Yusen.GExplorer {
 			this.btnAbort.Name = "btnAbort";
 			this.btnAbort.Size = new System.Drawing.Size(88, 23);
 			this.btnAbort.TabIndex = 2;
-			this.btnAbort.Text = "‹­§I—¹(&A)";
+			this.btnAbort.Text = "å¼·åˆ¶çµ‚äº†(&A)";
 			// 
 			// btnCopy
 			// 
@@ -259,7 +259,7 @@ namespace Yusen.GExplorer {
 			this.btnCopy.Name = "btnCopy";
 			this.btnCopy.Size = new System.Drawing.Size(130, 23);
 			this.btnCopy.TabIndex = 3;
-			this.btnCopy.Text = "ƒNƒŠƒbƒvƒ{[ƒh‚ÉƒRƒs[(&L)";
+			this.btnCopy.Text = "ã‚¯ãƒªãƒƒãƒ—ãƒœãƒ¼ãƒ‰ã«ã‚³ãƒ”ãƒ¼(&L)";
 			this.btnCopy.Click += new System.EventHandler(this.btnCopy_Click);
 			// 
 			// ExceptionForm

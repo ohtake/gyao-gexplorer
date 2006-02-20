@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Text;
@@ -30,7 +30,7 @@ namespace Yusen.GCrawler {
 			if (GPackage.TryExtractPackageId(uri, out id)) {
 				return id;
 			} else {
-				throw new ArgumentException("ˆø”‚ÌURI‚©‚çƒpƒbƒP[ƒW‚ÌID‚ğæ“¾‚Å‚«‚È‚©‚Á‚½Dˆø”‚ÌURI: " + uri.AbsoluteUri);
+				throw new ArgumentException("å¼•æ•°ã®URIã‹ã‚‰ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸ã®IDã‚’å–å¾—ã§ããªã‹ã£ãŸï¼å¼•æ•°ã®URI: " + uri.AbsoluteUri);
 			}
 		}
 		public static bool CanExtractPackageId(Uri uri) {
@@ -47,7 +47,7 @@ namespace Yusen.GCrawler {
 			using (TextReader reader = new StreamReader(new WebClient().OpenRead(uri), Encoding.GetEncoding("Shift_JIS"))) {
 				string line;
 				string packageName = "";
-				//ƒpƒbƒP[ƒW–¼‚Ìæ“¾
+				//ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸åã®å–å¾—
 				while (null != (line = reader.ReadLine())) {
 					Match match = GPackage.regexPackageName.Match(line);
 					if (match.Success) {
@@ -55,10 +55,10 @@ namespace Yusen.GCrawler {
 						break;
 					}
 				}
-				if (null == line) {//ƒpƒbƒP[ƒW–¼‚Ìæ“¾ƒ~ƒX
-					throw new Exception("ƒpƒbƒP[ƒW–¼‚Ìæ“¾ƒ~ƒXD <" + uri.AbsoluteUri + ">");
+				if (null == line) {//ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸åã®å–å¾—ãƒŸã‚¹
+					throw new Exception("ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸åã®å–å¾—ãƒŸã‚¹ï¼ <" + uri.AbsoluteUri + ">");
 				}
-				//ƒRƒ“ƒeƒ“ƒcID‚ÆŠúŒÀ‚Ì’Šo
+				//ã‚³ãƒ³ãƒ†ãƒ³ãƒ„IDã¨æœŸé™ã®æŠ½å‡º
 				List<string> contentIds = new List<string>();
 				string deadline = null;
 				while (null != (line = reader.ReadLine())) {
@@ -85,7 +85,7 @@ namespace Yusen.GCrawler {
 			
 		}
 		internal static GPackage CreateDummyPackage() {
-			return new GPackage("pac???????", "(•s–¾‚ÈƒpƒbƒP[ƒW)");
+			return new GPackage("pac???????", "(ä¸æ˜ãªãƒ‘ãƒƒã‚±ãƒ¼ã‚¸)");
 		}
 
 		private readonly string packageId;

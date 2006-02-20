@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -78,17 +78,17 @@ namespace Yusen.GCrawler {
 				this.ignoredExceptions.Add(e);
 			}
 			/// <summary>
-			/// ƒpƒbƒP[ƒW‚ÆƒRƒ“ƒeƒ“ƒcˆÈŠO‚Ìƒy[ƒW‚ğƒNƒ[ƒ‹‚µC
-			/// ƒpƒbƒP[ƒW‚ÆƒRƒ“ƒeƒ“ƒc‚ÌID‚ğæ“¾‚·‚éD
+			/// ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸ã¨ã‚³ãƒ³ãƒ†ãƒ³ãƒ„ä»¥å¤–ã®ãƒšãƒ¼ã‚¸ã‚’ã‚¯ãƒ­ãƒ¼ãƒ«ã—ï¼Œ
+			/// ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸ã¨ã‚³ãƒ³ãƒ†ãƒ³ãƒ„ã®IDã‚’å–å¾—ã™ã‚‹ï¼
 			/// </summary>
 			private void CrawlPages() {
 				while (this.waitingPages.Count > 0) {
 					if(this.visitedPages.Count >= this.settings.MaxPages) {
-						this.OnIgnoringException(new Exception(string.Format("ƒNƒ[ƒ‹‚·‚éˆê”Êƒy[ƒW‚ÌãŒÀ”‚É’B‚µ‚½D ({0}/{1})", this.settings.MaxPages, this.visitedPages.Count + this.waitingPages.Count)));
+						this.OnIgnoringException(new Exception(string.Format("ã‚¯ãƒ­ãƒ¼ãƒ«ã™ã‚‹ä¸€èˆ¬ãƒšãƒ¼ã‚¸ã®ä¸Šé™æ•°ã«é”ã—ãŸï¼ ({0}/{1})", this.settings.MaxPages, this.visitedPages.Count + this.waitingPages.Count)));
 						this.waitingPages.Clear();
 						return;
 					}
-					this.OnCrawlProgress(string.Format("ƒtƒF[ƒY 1/4: ˆê”Êƒy[ƒW‚ğæ“¾’† ({0}/{1}) {2}",
+					this.OnCrawlProgress(string.Format("ãƒ•ã‚§ãƒ¼ã‚º 1/4: ä¸€èˆ¬ãƒšãƒ¼ã‚¸ã‚’å–å¾—ä¸­ ({0}/{1}) {2}",
 						this.visitedPages.Count,
 						this.visitedPages.Count + this.waitingPages.Count,
 						this.waitingPages.Peek().PathAndQuery));
@@ -99,7 +99,7 @@ namespace Yusen.GCrawler {
 					try {
 						links = this.parser.ExtractLinks(uri);
 					} catch(Exception e) {
-						this.OnIgnoringException(new Exception("ˆê”Êƒy[ƒW‚Ìæ“¾¸”sD <" + uri.AbsoluteUri + ">", e));
+						this.OnIgnoringException(new Exception("ä¸€èˆ¬ãƒšãƒ¼ã‚¸ã®å–å¾—å¤±æ•—ï¼ <" + uri.AbsoluteUri + ">", e));
 						continue;
 					}
 					
@@ -131,12 +131,12 @@ namespace Yusen.GCrawler {
 				}
 			}
 			/// <summary>
-			/// ƒpƒbƒP[ƒWƒy[ƒW‚ğ“Ç‚İ‚ñ‚ÅƒRƒ“ƒeƒ“ƒc‚ÌID‚ğæ“¾‚·‚éD
+			/// ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸ãƒšãƒ¼ã‚¸ã‚’èª­ã¿è¾¼ã‚“ã§ã‚³ãƒ³ãƒ†ãƒ³ãƒ„ã®IDã‚’å–å¾—ã™ã‚‹ï¼
 			/// </summary>
 			private void FetchPackages() {
 				while(this.waitingPackages.Count > 0){
 					string packId = this.waitingPackages.Dequeue();
-					this.OnCrawlProgress(string.Format("ƒtƒF[ƒY 2/4: ƒpƒbƒP[ƒWƒy[ƒW‚ğæ“¾’† ({0}/{1}) {2}",
+					this.OnCrawlProgress(string.Format("ãƒ•ã‚§ãƒ¼ã‚º 2/4: ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸ãƒšãƒ¼ã‚¸ã‚’å–å¾—ä¸­ ({0}/{1}) {2}",
 						this.visitedPackages.Count,
 						this.visitedPackages.Count + this.waitingPackages.Count,
 						packId));
@@ -159,8 +159,8 @@ namespace Yusen.GCrawler {
 				}
 			}
 			/// <summary>
-			/// ƒRƒ“ƒeƒ“ƒcƒy[ƒW‚ğ“Ç‚İ‚ñ‚Åî•ñ‚ğæ“¾‚·‚éD
-			/// ‚à‚µƒLƒƒƒbƒVƒ…‚ª‚ ‚ê‚ÎƒLƒƒƒbƒVƒ…‚ğ—˜—p‚·‚éD
+			/// ã‚³ãƒ³ãƒ†ãƒ³ãƒ„ãƒšãƒ¼ã‚¸ã‚’èª­ã¿è¾¼ã‚“ã§æƒ…å ±ã‚’å–å¾—ã™ã‚‹ï¼
+			/// ã‚‚ã—ã‚­ãƒ£ãƒƒã‚·ãƒ¥ãŒã‚ã‚Œã°ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã‚’åˆ©ç”¨ã™ã‚‹ï¼
 			/// </summary>
 			private void FetchContents() {
 				while(this.waitingContents.Count > 0){
@@ -170,7 +170,7 @@ namespace Yusen.GCrawler {
 					if (this.cacheController.TryGetCache(contId, out cache)) {
 						content = cache.Content;
 						content.FromCache = true;
-						this.OnCrawlProgress(string.Format("ƒtƒF[ƒY 3/4: Ú×ƒy[ƒW‚ÌƒLƒƒƒbƒVƒ…‚Éƒqƒbƒg ({0}/{1}) {2}",
+						this.OnCrawlProgress(string.Format("ãƒ•ã‚§ãƒ¼ã‚º 3/4: è©³ç´°ãƒšãƒ¼ã‚¸ã®ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã«ãƒ’ãƒƒãƒˆ ({0}/{1}) {2}",
 							this.visitedContents.Count,
 							this.visitedContents.Count + this.waitingContents.Count,
 							contId));
@@ -178,19 +178,19 @@ namespace Yusen.GCrawler {
 						this.contentsCached.Add(contId, true);
 						continue;
 					}
-					this.OnCrawlProgress(string.Format("ƒtƒF[ƒY 3/4: Ú×ƒy[ƒW‚Ìæ“¾’† ({0}/{1}) {2}",
+					this.OnCrawlProgress(string.Format("ãƒ•ã‚§ãƒ¼ã‚º 3/4: è©³ç´°ãƒšãƒ¼ã‚¸ã®å–å¾—ä¸­ ({0}/{1}) {2}",
 						this.visitedContents.Count,
 						this.visitedContents.Count + this.waitingContents.Count,
 						contId));
 					try {
 						content = GContent.DoDownload(contId);
-						//ƒ_ƒEƒ“ƒ[ƒh¬Œ÷
+						//ãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰æˆåŠŸ
 						this.visitedContents.Add(contId, content);
 						this.contentsCached.Add(contId, false);
 						this.cacheController.AddCache(content);
 						continue;
 					} catch (ContentDownloadException e) {
-						//ƒ_ƒEƒ“ƒ[ƒh¸”s
+						//ãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰å¤±æ•—
 						this.OnIgnoringException(e);
 						content = GContent.CreateDummyContent(contId, this.genre, e.Message);
 						this.visitedContents.Add(contId, content);
@@ -200,11 +200,11 @@ namespace Yusen.GCrawler {
 				}
 			}
 			/// <summary>
-			/// ƒNƒ[ƒ‹Œ‹‰Ê‚©‚çƒWƒƒƒ“ƒ‹CƒpƒbƒP[ƒWCƒRƒ“ƒeƒ“ƒc‚Ì–Ø\‘¢‚ğì‚éD
+			/// ã‚¯ãƒ­ãƒ¼ãƒ«çµæœã‹ã‚‰ã‚¸ãƒ£ãƒ³ãƒ«ï¼Œãƒ‘ãƒƒã‚±ãƒ¼ã‚¸ï¼Œã‚³ãƒ³ãƒ†ãƒ³ãƒ„ã®æœ¨æ§‹é€ ã‚’ä½œã‚‹ï¼
 			/// </summary>
 			private ReadOnlyCollection<GPackage> BuildGpcTree() {
-				this.OnCrawlProgress("ƒtƒF[ƒY 4/4: ƒf[ƒ^\‘¢‚Ì‰ğÍ’†");
-				//ƒpƒbƒP[ƒW‚ÉŠÜ‚Ü‚ê‚éƒRƒ“ƒeƒ“ƒc
+				this.OnCrawlProgress("ãƒ•ã‚§ãƒ¼ã‚º 4/4: ãƒ‡ãƒ¼ã‚¿æ§‹é€ ã®è§£æä¸­");
+				//ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸ã«å«ã¾ã‚Œã‚‹ã‚³ãƒ³ãƒ†ãƒ³ãƒ„
 				List<GPackage> packages = new List<GPackage>();
 				foreach (KeyValuePair<string, GPackage> packPair in this.visitedPackages) {
 					packages.Add(packPair.Value);
@@ -216,7 +216,7 @@ namespace Yusen.GCrawler {
 					}
 					packPair.Value.Contents = contents.AsReadOnly();
 				}
-				//‚Ç‚ÌƒpƒbƒP[ƒW‚ÉŠÜ‚Ü‚ê‚Ä‚¢‚é‚©•s–¾‚ÈƒRƒ“ƒeƒ“ƒc
+				//ã©ã®ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸ã«å«ã¾ã‚Œã¦ã„ã‚‹ã‹ä¸æ˜ãªã‚³ãƒ³ãƒ†ãƒ³ãƒ„
 				GPackage dummyPackage = GPackage.CreateDummyPackage();
 				List<GContent> contentsWithoutPack = new List<GContent>();
 				foreach (KeyValuePair<string, GContent> contPair in this.visitedContents) {
@@ -263,7 +263,7 @@ namespace Yusen.GCrawler {
 		
 		public CrawlResult Crawl(CrawlSettings settings, GGenre genre) {
 			if (!genre.IsCrawlable) {
-				throw new ArgumentException("ƒWƒƒƒ“ƒ‹u" + genre.GenreName + "v‚ÍƒNƒ[ƒ‹‚Å‚«‚È‚¢D");
+				throw new ArgumentException("ã‚¸ãƒ£ãƒ³ãƒ«ã€Œ" + genre.GenreName + "ã€ã¯ã‚¯ãƒ­ãƒ¼ãƒ«ã§ããªã„ï¼");
 			}
 
 			CrawlerHelper helper = new CrawlerHelper(settings, genre, this.parser, this.cacheController, this.deadLineDic);
@@ -329,7 +329,7 @@ namespace Yusen.GCrawler {
 	public class CrawlResult {
 		public static CrawlResult Merge(GGenre genre, CrawlResult x, CrawlResult y) {
 			if (!x.Success ||  !y.Success) {
-				throw new ArgumentException("Success‚ªfalse‚Ì‚Íƒ}[ƒW•s‰ÂD");
+				throw new ArgumentException("SuccessãŒfalseã®ã¯ãƒãƒ¼ã‚¸ä¸å¯ï¼");
 			}
 			List<GPackage> packages = new List<GPackage>();
 			packages.AddRange(x.Packages);
@@ -368,7 +368,7 @@ namespace Yusen.GCrawler {
 		private readonly DateTime time;
 		
 		/// <summary>
-		/// ƒNƒ[ƒ‹¬Œ÷‚ÌƒNƒ[ƒ‹Œ‹‰Ê
+		/// ã‚¯ãƒ­ãƒ¼ãƒ«æˆåŠŸæ™‚ã®ã‚¯ãƒ­ãƒ¼ãƒ«çµæœ
 		/// </summary>
 		/// <param name="genre"></param>
 		/// <param name="packages"></param>

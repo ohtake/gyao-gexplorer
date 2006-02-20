@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using GBitRate = Yusen.GCrawler.GBitRate;
@@ -34,7 +34,7 @@ namespace Yusen.GExplorer {
 		[XmlIgnore]
 		[Category("GyaO")]
 		[DisplayName("Cookie_UserId")]
-		[Description("ƒNƒbƒL[‚É•Û‘¶‚³‚ê‚Ä‚¢‚é Cookie_UserId ‚Ì’lD")]
+		[Description("ã‚¯ãƒƒã‚­ãƒ¼ã«ä¿å­˜ã•ã‚Œã¦ã„ã‚‹ Cookie_UserId ã®å€¤ï¼")]
 		[DefaultValue(GlobalSettings.InvalidUserNo)]
 		public int UserNo {
 			get { return this.userNo; }
@@ -43,8 +43,8 @@ namespace Yusen.GExplorer {
 		
 		private GBitRate bitRate = GBitRate.SuperFine;
 		[Category("GyaO")]
-		[DisplayName("ƒrƒbƒgƒŒ[ƒg")]
-		[Description("Ä¶‚·‚é“®‰æ‚ÌƒrƒbƒgƒŒ[ƒgDê—pƒvƒŒ[ƒ„‚¾‚¯‚Å‚È‚­WMP‚Å‚ÌÄ¶‚à‚±‚Ìİ’è‚Ì‰e‹¿‚ğó‚¯‚éD")]
+		[DisplayName("ãƒ“ãƒƒãƒˆãƒ¬ãƒ¼ãƒˆ")]
+		[Description("å†ç”Ÿã™ã‚‹å‹•ç”»ã®ãƒ“ãƒƒãƒˆãƒ¬ãƒ¼ãƒˆï¼å°‚ç”¨ãƒ—ãƒ¬ãƒ¼ãƒ¤ã ã‘ã§ãªãWMPã§ã®å†ç”Ÿã‚‚ã“ã®è¨­å®šã®å½±éŸ¿ã‚’å—ã‘ã‚‹ï¼")]
 		[DefaultValue(GBitRate.SuperFine)]
 		public GBitRate BitRate {
 			get {return this.bitRate;}
@@ -52,7 +52,7 @@ namespace Yusen.GExplorer {
 		}
 
 		/// <summary>
-		/// İ’èƒtƒ@ƒCƒ‹‚É userNo ‚ª•Û‘¶‚³‚ê‚Ä‚È‚©‚Á‚½‚çæ“¾‚Ì•K—v‚ª‚ ‚è true ‚ª•Ô‚éD
+		/// è¨­å®šãƒ•ã‚¡ã‚¤ãƒ«ã« userNo ãŒä¿å­˜ã•ã‚Œã¦ãªã‹ã£ãŸã‚‰å–å¾—ã®å¿…è¦ãŒã‚ã‚Š true ãŒè¿”ã‚‹ï¼
 		/// </summary>
 		[Browsable(false)]
 		internal bool IsCookieRequired {
@@ -62,9 +62,9 @@ namespace Yusen.GExplorer {
 		}
 		
 		private CrawlOrder crawlOrder = CrawlOrder.TimetableFirst;
-		[Category("ƒNƒ[ƒ‰")]
-		[DisplayName("ƒNƒ[ƒ‹‚Ì‡˜")]
-		[Description("ƒgƒbƒvƒy[ƒW‚Æ”Ô‘g•\‚Ì‚Ç‚¿‚ç‚ğæ‚ÉƒNƒ[ƒ‹‚·‚é‚©w’è‚µ‚Ü‚·Dæ‚ÉƒNƒ[ƒ‹‚µ‚½ƒy[ƒW‚Å‚ÌƒpƒbƒP[ƒW‚ÌoŒ»‡˜‚ªƒNƒ[ƒ‹Œ‹‰Ê‚É‹­‚­‰e‹¿‚³‚ê‚Ü‚·D")]
+		[Category("ã‚¯ãƒ­ãƒ¼ãƒ©")]
+		[DisplayName("ã‚¯ãƒ­ãƒ¼ãƒ«ã®é †åº")]
+		[Description("ãƒˆãƒƒãƒ—ãƒšãƒ¼ã‚¸ã¨ç•ªçµ„è¡¨ã®ã©ã¡ã‚‰ã‚’å…ˆã«ã‚¯ãƒ­ãƒ¼ãƒ«ã™ã‚‹ã‹æŒ‡å®šã—ã¾ã™ï¼å…ˆã«ã‚¯ãƒ­ãƒ¼ãƒ«ã—ãŸãƒšãƒ¼ã‚¸ã§ã®ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸ã®å‡ºç¾é †åºãŒã‚¯ãƒ­ãƒ¼ãƒ«çµæœã«å¼·ãå½±éŸ¿ã•ã‚Œã¾ã™ï¼")]
 		[DefaultValue(CrawlOrder.TimetableFirst)]
 		public CrawlOrder CrawlOrder {
 			get { return this.crawlOrder; }
@@ -72,18 +72,18 @@ namespace Yusen.GExplorer {
 		}
 		private TimetableSortType timetableSortType = TimetableSortType.RecentlyUpdatedFirst;
 		[XmlIgnore]
-		[Category("ƒNƒ[ƒ‰")]
-		[DisplayName("”Ô‘g•\‚Ìƒ\[ƒg‘ÎÛ")]
-		[Description("ƒNƒ[ƒ‹‚É—˜—p‚·‚é”Ô‘g•\‚ğXV“ú—Dæ‚É‚·‚é‚©c‚è“ú”—Dæ‚É‚·‚é‚©‚ğw’è‚µ‚Ü‚·DuƒNƒ[ƒ‹‚Ì‡˜v‚Å”Ô‘g•\‚ğæ‚É“Ç‚Şİ’è‚É‚µ‚Ä‚¨‚©‚È‚¢‚Æ‚Ù‚Æ‚ñ‚ÇˆÓ–¡‚ª‚ ‚è‚Ü‚¹‚ñD")]
+		[Category("ã‚¯ãƒ­ãƒ¼ãƒ©")]
+		[DisplayName("ç•ªçµ„è¡¨ã®ã‚½ãƒ¼ãƒˆå¯¾è±¡")]
+		[Description("ã‚¯ãƒ­ãƒ¼ãƒ«æ™‚ã«åˆ©ç”¨ã™ã‚‹ç•ªçµ„è¡¨ã‚’æ›´æ–°æ—¥å„ªå…ˆã«ã™ã‚‹ã‹æ®‹ã‚Šæ—¥æ•°å„ªå…ˆã«ã™ã‚‹ã‹ã‚’æŒ‡å®šã—ã¾ã™ï¼ã€Œã‚¯ãƒ­ãƒ¼ãƒ«ã®é †åºã€ã§ç•ªçµ„è¡¨ã‚’å…ˆã«èª­ã‚€è¨­å®šã«ã—ã¦ãŠã‹ãªã„ã¨ã»ã¨ã‚“ã©æ„å‘³ãŒã‚ã‚Šã¾ã›ã‚“ï¼")]
 		[DefaultValue(TimetableSortType.RecentlyUpdatedFirst)]
 		public TimetableSortType TimetableSortType {
 			get { return this.timetableSortType; }
 			//set { this.timetableSortType = value; }
 		}
 		private int maxCrawlPages = 256;
-		[Category("ƒNƒ[ƒ‰")]
-		[DisplayName("ˆê”Êƒy[ƒW‚ÌÅ‘å”")]
-		[Description("ƒNƒ[ƒ‹‚·‚éˆê”Êƒy[ƒW‚ÌÅ‘å”‚ğw’è‚µ‚Ü‚·Dw’è‚³‚ê‚½’lˆÈã‚É‚È‚Á‚½‚çƒNƒ[ƒ‹‚ğ‘Å‚¿Ø‚è‚Ü‚·D’l‚ğ¬‚³‚­‚µ‚Ä‚àƒNƒ[ƒ‹Œ‹‰Ê‚Ì¸“x‚É‚Í‘å‚«‚Èˆ«‰e‹¿‚ğ‹y‚Ú‚³‚È‚¢‚Ì‚ÅC’l‚ğ¬‚³‚­‚µ‚Ä“®ì‘¬“x‚ÆƒT[ƒo‚Ö‚Ì•‰‰×‚ğ‰ü‘P‚·‚é‚Ì‚àˆê‹»‚Å‚·D")]
+		[Category("ã‚¯ãƒ­ãƒ¼ãƒ©")]
+		[DisplayName("ä¸€èˆ¬ãƒšãƒ¼ã‚¸ã®æœ€å¤§æ•°")]
+		[Description("ã‚¯ãƒ­ãƒ¼ãƒ«ã™ã‚‹ä¸€èˆ¬ãƒšãƒ¼ã‚¸ã®æœ€å¤§æ•°ã‚’æŒ‡å®šã—ã¾ã™ï¼æŒ‡å®šã•ã‚ŒãŸå€¤ä»¥ä¸Šã«ãªã£ãŸã‚‰ã‚¯ãƒ­ãƒ¼ãƒ«ã‚’æ‰“ã¡åˆ‡ã‚Šã¾ã™ï¼å€¤ã‚’å°ã•ãã—ã¦ã‚‚ã‚¯ãƒ­ãƒ¼ãƒ«çµæœã®ç²¾åº¦ã«ã¯å¤§ããªæ‚ªå½±éŸ¿ã‚’åŠã¼ã•ãªã„ã®ã§ï¼Œå€¤ã‚’å°ã•ãã—ã¦å‹•ä½œé€Ÿåº¦ã¨ã‚µãƒ¼ãƒã¸ã®è² è·ã‚’æ”¹å–„ã™ã‚‹ã®ã‚‚ä¸€èˆˆã§ã™ï¼")]
 		[DefaultValue(256)]
 		public int MaxCrawlPages {
 			get { return this.maxCrawlPages; }
@@ -91,8 +91,8 @@ namespace Yusen.GExplorer {
 		}
 
 		[Category("GUI")]
-		[DisplayName("ƒrƒWƒ…ƒAƒ‹ƒXƒ^ƒCƒ‹")]
-		[Description("ƒrƒWƒ…ƒAƒ‹ƒXƒ^ƒCƒ‹‚Ì“K—p—Ìˆæ‚Ìw’èDØ‚è‘Ö‚¦‚ÉŠÔ‚ª‚©‚©‚éê‡‚ª‚ ‚è‚Ü‚·D")]
+		[DisplayName("ãƒ“ã‚¸ãƒ¥ã‚¢ãƒ«ã‚¹ã‚¿ã‚¤ãƒ«")]
+		[Description("ãƒ“ã‚¸ãƒ¥ã‚¢ãƒ«ã‚¹ã‚¿ã‚¤ãƒ«ã®é©ç”¨é ˜åŸŸã®æŒ‡å®šï¼åˆ‡ã‚Šæ›¿ãˆã«æ™‚é–“ãŒã‹ã‹ã‚‹å ´åˆãŒã‚ã‚Šã¾ã™ï¼")]
 		[DefaultValue(VisualStyleState.ClientAndNonClientAreasEnabled)]
 		public VisualStyleState VisualStyle {
 			get {return Application.VisualStyleState;}
@@ -104,18 +104,27 @@ namespace Yusen.GExplorer {
 		}
 		private string iconFile = "";
 		[Category("GUI")]
-		[DisplayName("ƒAƒCƒRƒ“‚Ìƒtƒ@ƒCƒ‹–¼")]
-		[Description("ƒAƒCƒRƒ“‚Ìƒtƒ@ƒCƒ‹–¼‚ğw’èD–³w’è‚Ìê‡‚ÍÀsƒtƒ@ƒCƒ‹–¼‚Æ“¯–¼‚ÌƒAƒCƒRƒ“ƒtƒ@ƒCƒ‹‚ªw’è‚³‚ê‚Ä‚¢‚é‚à‚Ì‚Æ‚·‚éDÄ‹N“®Œã‚É—LŒøD")]
+		[DisplayName("ã‚¢ã‚¤ã‚³ãƒ³ã®ãƒ•ã‚¡ã‚¤ãƒ«å")]
+		[Description("ã‚¢ã‚¤ã‚³ãƒ³ã®ãƒ•ã‚¡ã‚¤ãƒ«åã‚’æŒ‡å®šï¼ç„¡æŒ‡å®šã®å ´åˆã¯å®Ÿè¡Œãƒ•ã‚¡ã‚¤ãƒ«åã¨åŒåã®ã‚¢ã‚¤ã‚³ãƒ³ãƒ•ã‚¡ã‚¤ãƒ«ãŒæŒ‡å®šã•ã‚Œã¦ã„ã‚‹ã‚‚ã®ã¨ã™ã‚‹ï¼å†èµ·å‹•å¾Œã«æœ‰åŠ¹ï¼")]
 		[DefaultValue("")]
 		public string IconFile {
 			get { return this.iconFile; }
 			set { this.iconFile = value; }
 		}
+		private bool listViewDoubleBufferEnabled = true;
+		[Category("GUI")]
+		[DisplayName("ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã®ãƒ€ãƒ–ãƒ«ãƒãƒƒãƒ•ã‚¡")]
+		[Description("ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã®ãƒ€ãƒ–ãƒ«ãƒãƒƒãƒ•ã‚¡ã‚’æœ‰åŠ¹ã«ã—ã¦è¡¨ç¤ºã®ã¡ã‚‰ã¤ãã‚’æŠ‘ãˆã¾ã™ï¼ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã®å†ç”Ÿæˆå¾Œã«æœ‰åŠ¹ï¼")]
+		[DefaultValue(true)]
+		public bool ListViewDoubleBufferEnabled {
+			get { return this.listViewDoubleBufferEnabled; }
+			set { this.listViewDoubleBufferEnabled = value; }
+		}
 		
 		private string migemoDictionaryFilename = @"dict\migemo-dict";
 		[Category("migemo")]
-		[DisplayName("«‘ƒtƒ@ƒCƒ‹")]
-		[Description("migemo‚Ì«‘ƒtƒ@ƒCƒ‹DÄ‹N“®Œã‚É—LŒøD")]
+		[DisplayName("è¾æ›¸ãƒ•ã‚¡ã‚¤ãƒ«")]
+		[Description("migemoã®è¾æ›¸ãƒ•ã‚¡ã‚¤ãƒ«ï¼å†èµ·å‹•å¾Œã«æœ‰åŠ¹ï¼")]
 		[DefaultValue(@"dict\migemo-dict")]
 		public string MigemoDictionaryFilename {
 			get { return this.migemoDictionaryFilename; }
@@ -123,9 +132,9 @@ namespace Yusen.GExplorer {
 		}
 		
 		private bool useGBrowser = true;
-		[Category("ƒEƒFƒuƒuƒ‰ƒEƒU")]
-		[DisplayName("“à‘ ƒuƒ‰ƒEƒU‚ğg‚¤")]
-		[Description("GExplorer“à‘ ‚Ìƒuƒ‰ƒEƒU‚ğg—p‚·‚éê‡‚É‚Í True ‚É‚·‚éD")]
+		[Category("ã‚¦ã‚§ãƒ–ãƒ–ãƒ©ã‚¦ã‚¶")]
+		[DisplayName("å†…è”µãƒ–ãƒ©ã‚¦ã‚¶ã‚’ä½¿ã†")]
+		[Description("GExplorerå†…è”µã®ãƒ–ãƒ©ã‚¦ã‚¶ã‚’ä½¿ç”¨ã™ã‚‹å ´åˆã«ã¯ True ã«ã™ã‚‹ï¼")]
 		[DefaultValue(true)]
 		public bool UseGBrowser {
 			get { return this.useGBrowser; }
@@ -133,9 +142,9 @@ namespace Yusen.GExplorer {
 		}
 		
 		private string browserPath = "";
-		[Category("ƒEƒFƒuƒuƒ‰ƒEƒU")]
-		[DisplayName("ƒpƒX")]
-		[Description("“à‘ ‚Ìƒuƒ‰ƒEƒU‚ğ—p‚¢‚È‚¢ê‡‚Ég—p‚·‚éƒEƒFƒuƒuƒ‰ƒEƒU‚ÌƒpƒX‚ğw’è‚·‚éD–¢w’è‚Ìê‡‚ÍƒfƒtƒHƒ‹ƒg‚ÌƒEƒFƒuƒuƒ‰ƒEƒU‚ğ—p‚¢‚éD")]
+		[Category("ã‚¦ã‚§ãƒ–ãƒ–ãƒ©ã‚¦ã‚¶")]
+		[DisplayName("ãƒ‘ã‚¹")]
+		[Description("å†…è”µã®ãƒ–ãƒ©ã‚¦ã‚¶ã‚’ç”¨ã„ãªã„å ´åˆã«ä½¿ç”¨ã™ã‚‹ã‚¦ã‚§ãƒ–ãƒ–ãƒ©ã‚¦ã‚¶ã®ãƒ‘ã‚¹ã‚’æŒ‡å®šã™ã‚‹ï¼æœªæŒ‡å®šã®å ´åˆã¯ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®ã‚¦ã‚§ãƒ–ãƒ–ãƒ©ã‚¦ã‚¶ã‚’ç”¨ã„ã‚‹ï¼")]
 		[DefaultValue("")]
 		public string BrowserPath {
 			get { return this.browserPath; }
@@ -144,7 +153,7 @@ namespace Yusen.GExplorer {
 
 		internal bool TryGetUserNumber() {
 			this.UserNo = GlobalSettings.InvalidUserNo;
-			//ƒŒƒWƒXƒgƒŠ‚©‚ç‚Ìæ“¾‚ğ‚İ‚é
+			//ãƒ¬ã‚¸ã‚¹ãƒˆãƒªã‹ã‚‰ã®å–å¾—ã‚’è©¦ã¿ã‚‹
 			try {
 				using (RegistryKey cu = Registry.CurrentUser)
 				using (RegistryKey software = cu.OpenSubKey("SOFTWARE"))
@@ -157,7 +166,7 @@ namespace Yusen.GExplorer {
 			if (!this.IsCookieRequired) {
 				return true;
 			}
-			//ƒtƒ@ƒCƒ‹ƒVƒXƒeƒ€ã‚ÌƒNƒbƒL[‚©‚çæ“¾‚ğ‚İ‚é
+			//ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ ä¸Šã®ã‚¯ãƒƒã‚­ãƒ¼ã‹ã‚‰å–å¾—ã‚’è©¦ã¿ã‚‹
 			try {
 				DirectoryInfo cookieDir = new DirectoryInfo(Environment.GetFolderPath(Environment.SpecialFolder.Cookies));
 				if (cookieDir.Exists) {

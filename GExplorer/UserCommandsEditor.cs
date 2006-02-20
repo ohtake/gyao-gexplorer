@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Reflection;
@@ -45,7 +45,7 @@ namespace Yusen.GExplorer {
 			this.lboxCommands.EndUpdate();
 			
 			int itemCount = this.lboxCommands.Items.Count;
-			//ˆÊ’u•œŒ³‚Ì‚Â‚à‚è
+			//ä½ç½®å¾©å…ƒã®ã¤ã‚‚ã‚Š
 			this.lboxCommands.SelectedIndex = oldSelIndex < itemCount ? oldSelIndex : itemCount - 1;
 			
 			this.btnSort.Enabled = 0 != this.lboxCommands.Items.Count;
@@ -53,22 +53,22 @@ namespace Yusen.GExplorer {
 			foreach(Button b in this.btnsNeedingSelection) {
 				b.Enabled = hasItem;
 			}
-			this.lboxCommands_SelectedIndexChanged(this, EventArgs.Empty);//–³—‚â‚è‘I‘ğ‚µ‚È‚¨‚µ‚½‚±‚Æ‚É‚µ‚Æ‚­
+			this.lboxCommands_SelectedIndexChanged(this, EventArgs.Empty);//ç„¡ç†ã‚„ã‚Šé¸æŠã—ãªãŠã—ãŸã“ã¨ã«ã—ã¨ã
 		}
 
 		private void UserCommandsEditor_Load(object sender, EventArgs e) {
 			this.btnsNeedingSelection = new Button[]{
 				this.btnUp, this.btnDown, this.btnDelete, this.btnModify,};
 			
-			//ŠÈˆÕ’Ç‰Á‹@”\‚Ìƒƒjƒ…[‚ğì¬
+			//ç°¡æ˜“è¿½åŠ æ©Ÿèƒ½ã®ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚’ä½œæˆ
 			Dictionary<string, ToolStripMenuItem> menus = new Dictionary<string, ToolStripMenuItem>();
 			foreach (PropertyInfo pi in typeof(ContentAdapter).GetProperties(BindingFlags.Instance | BindingFlags.GetProperty | BindingFlags.Public)) {
-				//Browsable‚Ì‚à‚Ì‚Ì‚İ
+				//Browsableã®ã‚‚ã®ã®ã¿
 				object[] bAttribs = pi.GetCustomAttributes(typeof(BrowsableAttribute), false);
 				if (bAttribs.Length > 0 && !(bAttribs[0] as BrowsableAttribute).Browsable) {
 					continue;
 				}
-				//ƒJƒeƒSƒŠ‚²‚Æ‚ÉƒTƒuƒƒjƒ…[‰»
+				//ã‚«ãƒ†ã‚´ãƒªã”ã¨ã«ã‚µãƒ–ãƒ¡ãƒ‹ãƒ¥ãƒ¼åŒ–
 				string category = string.Empty;
 				object[] cAttribs = pi.GetCustomAttributes(typeof(CategoryAttribute), false);
 				if(cAttribs.Length > 0){
@@ -77,7 +77,7 @@ namespace Yusen.GExplorer {
 				if (! menus.ContainsKey(category)) {
 					menus.Add(category, new ToolStripMenuItem(category));
 				}
-				//ƒƒjƒ…[‚Ìì¬‚Æ’Ç‰Á
+				//ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®ä½œæˆã¨è¿½åŠ 
 				ToolStripMenuItem mi = new ToolStripMenuItem();
 				mi.Text = pi.Name;
 				mi.Tag = "{" + pi.Name + "}";
@@ -87,9 +87,9 @@ namespace Yusen.GExplorer {
 			foreach(ToolStripMenuItem tsmi in menus.Values){
 				this.cmsArgs.Items.Add(tsmi);
 			}
-			{//ƒŠƒeƒ‰ƒ‹•¶š
+			{//ãƒªãƒ†ãƒ©ãƒ«æ–‡å­—
 				this.cmsArgs.Items.Add(new ToolStripSeparator());
-				ToolStripMenuItem tsmiLiterals = new ToolStripMenuItem("ƒŠƒeƒ‰ƒ‹•¶š");
+				ToolStripMenuItem tsmiLiterals = new ToolStripMenuItem("ãƒªãƒ†ãƒ©ãƒ«æ–‡å­—");
 				foreach (string escaped in UserCommand.GetEscapedLiterals()) {
 					ToolStripMenuItem tsmi = new ToolStripMenuItem(UserCommand.UnescapeLiteral(escaped));
 					tsmi.Tag = escaped;
@@ -99,7 +99,7 @@ namespace Yusen.GExplorer {
 				this.cmsArgs.Items.Add(tsmiLiterals);
 			}
 			
-			//ƒRƒ}ƒ“ƒh
+			//ã‚³ãƒãƒ³ãƒ‰
 			UserCommandsManager.Instance.UserCommandsChanged
 				+= new EventHandler(this.UserCommandsManager_UserCommandsChanged);
 			this.FormClosing += delegate {
@@ -166,7 +166,7 @@ namespace Yusen.GExplorer {
 			try {
 				uc = new UserCommand(this.txtTitle.Text, this.txtFile.Text, this.txtArg.Text);
 			} catch (Exception ex) {
-				MessageBox.Show(ex.Message, "ŠO•”ƒRƒ}ƒ“ƒh‚Ì‘}“ü", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				MessageBox.Show(ex.Message, "å¤–éƒ¨ã‚³ãƒãƒ³ãƒ‰ã®æŒ¿å…¥", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				return;
 			}
 			
@@ -183,7 +183,7 @@ namespace Yusen.GExplorer {
 			try {
 				uc = new UserCommand(this.txtTitle.Text, this.txtFile.Text, this.txtArg.Text);
 			} catch (Exception ex) {
-				MessageBox.Show(ex.Message, "ŠO•”ƒRƒ}ƒ“ƒh‚Ì•ÏX", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				MessageBox.Show(ex.Message, "å¤–éƒ¨ã‚³ãƒãƒ³ãƒ‰ã®å¤‰æ›´", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				return;
 			}
 			UserCommandsManager.Instance[this.lboxCommands.SelectedIndex] = uc;

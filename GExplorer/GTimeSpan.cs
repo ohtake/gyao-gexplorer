@@ -1,11 +1,11 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 
 namespace Yusen.GExplorer {
 	public struct GTimeSpan {
-		private static readonly Regex regex = new Regex("^((?<h>[0-9]+)ŽžŠÔ)?((?<m>[0-9]+)•ª)?((?<s>[0-9]+)•b)?$", RegexOptions.ExplicitCapture | RegexOptions.Compiled);
+		private static readonly Regex regex = new Regex("^((?<h>[0-9]+)æ™‚é–“)?((?<m>[0-9]+)åˆ†)?((?<s>[0-9]+)ç§’)?$", RegexOptions.ExplicitCapture | RegexOptions.Compiled);
 		
 		private TimeSpan? timeSpan;
 		private string original;

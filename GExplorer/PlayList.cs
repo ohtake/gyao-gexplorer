@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -47,7 +47,7 @@ namespace Yusen.GExplorer {
 
 		public ContentAdapter NextContentOf(ContentAdapter cont) {
 			int contIdx = this.items.IndexOf(cont);
-			//ƒŠƒXƒg‚É‚È‚¢
+			//ãƒªã‚¹ãƒˆã«ãªã„
 			if (contIdx < 0) {
 				if (this.items.Count > 0) {
 					return this.items[0];
@@ -55,7 +55,7 @@ namespace Yusen.GExplorer {
 					return null;
 				}
 			}
-			//ƒŠƒXƒg––”ö
+			//ãƒªã‚¹ãƒˆæœ«å°¾
 			if (contIdx+1 == this.items.Count) {
 				return null;
 			}
@@ -63,7 +63,7 @@ namespace Yusen.GExplorer {
 		}
 		public ContentAdapter PrevContentOf(ContentAdapter cont) {
 			int contIdx = this.items.IndexOf(cont);
-			//ƒŠƒXƒg‚É‚È‚¢
+			//ãƒªã‚¹ãƒˆã«ãªã„
 			if (contIdx < 0) {
 				if (this.items.Count > 0) {
 					return this.items[this.items.Count -1];
@@ -71,7 +71,7 @@ namespace Yusen.GExplorer {
 					return null;
 				}
 			}
-			//ƒŠƒXƒgæ“ª
+			//ãƒªã‚¹ãƒˆå…ˆé ­
 			if (0 == contIdx) {
 				return null;
 			}
@@ -80,14 +80,14 @@ namespace Yusen.GExplorer {
 		
 		public void BeginUpdate() {
 			lock (this) {
-				if (this.updating) throw new InvalidOperationException("updating‚È‚Ì‚ÉBeginUpdateŒÄ‚Ño‚µ");
+				if (this.updating) throw new InvalidOperationException("updatingãªã®ã«BeginUpdateå‘¼ã³å‡ºã—");
 				this.updating = true;
 				this.updated = false;
 			}
 		}
 		public void EndUpdate() {
 			lock (this) {
-				if (!this.updating) throw new InvalidOperationException("”ñupdating‚È‚Ì‚ÉEndUpdateŒÄ‚Ño‚µ");
+				if (!this.updating) throw new InvalidOperationException("éupdatingãªã®ã«EndUpdateå‘¼ã³å‡ºã—");
 				this.updating = false;
 				if (this.updated) this.OnChanged();
 			}

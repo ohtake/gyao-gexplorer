@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using Color = System.Drawing.Color;
 
@@ -8,18 +8,19 @@ namespace Yusen.GCrawler {
 		private static readonly GGenre[] allGenres;
 		static GGenre() {
 			GGenre.allGenres = new GGenre[]{
-				new GGenre200509(22, "news", "ƒjƒ…[ƒXEƒrƒWƒlƒX", Color.FromArgb(0xCC, 0x00, 0xFF)),
-				new GGenre200509( 1, "cinema", "‰f‰æ", Color.FromArgb(0x99, 0x00, 0xFF)),
-				new GGenre200509( 3, "music", "‰¹Šy", Color.FromArgb(0x66, 0x00, 0xFF)),
-				new GGenre200509Drama( 2, "drama", "ƒhƒ‰ƒ}", Color.FromArgb(0x33, 0x00, 0xFF)),
-				new GGenre200509( 9, "sports", "ƒXƒ|[ƒc", Color.FromArgb(0x00, 0x66, 0xFF)),
-				new GGenre200509(10, "documentary", "ƒhƒLƒ…ƒƒ“ƒ^ƒŠ[", Color.FromArgb(0x00, 0xCC, 0xFF)),
-				new GGenre200509(21, "beauty", "ƒrƒ…[ƒeƒB[•ƒwƒ‹ƒX", Color.FromArgb(0x00, 0xFF, 0xFF)),
-				new GGenre200509(20, "life", "ƒ‰ƒCƒt•ƒJƒ‹ƒ`ƒƒ[", Color.FromArgb(0x00, 0xFF, 0x99)),
-				new GGenre200509( 6, "anime", "ƒAƒjƒ", Color.FromArgb(0x00, 0xFF, 0x33)),
-				new GGenre200509( 5, "variety", "ƒoƒ‰ƒGƒeƒB", Color.FromArgb(0x99, 0xFF, 0x00)),
-				new GGenre200509( 4, "idol", "ƒAƒCƒhƒ‹EƒOƒ‰ƒrƒA", Color.FromArgb(0xFF, 0xFF, 0x00)),
-				new GGenre200509VideoBlog(12, "blog", "‰f‘œƒuƒƒO", Color.FromArgb(0xFF, 0x99, 0x00)),
+				new GGenre200509(22, "news", "ãƒ‹ãƒ¥ãƒ¼ã‚¹ãƒ»ãƒ“ã‚¸ãƒã‚¹", Color.FromArgb(0x00, 0x33, 0x99)),
+				new GGenre200509( 1, "cinema", "æ˜ ç”»", Color.FromArgb(0xCC, 0x00, 0x00)),
+				new GGenre200509( 3, "music", "éŸ³æ¥½", Color.FromArgb(0x99, 0x33, 0xCC)),
+				new GGenre200509Drama( 2, "drama", "ãƒ‰ãƒ©ãƒ", Color.FromArgb(0xFF, 0x99, 0x66)),
+				new GGenre200509( 9, "sports", "ã‚¹ãƒãƒ¼ãƒ„", Color.FromArgb(0x00, 0x66, 0xFF)),
+				new GGenre200509(10, "documentary", "ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ã‚¿ãƒªãƒ¼", Color.FromArgb(0x00, 0x99, 0x33)),
+				new GGenre200509(21, "beauty", "ãƒ“ãƒ¥ãƒ¼ãƒ†ã‚£ãƒ¼ï¼†ãƒ˜ãƒ«ã‚¹", Color.FromArgb(0xFF, 0x99, 0xCC)),
+				new GGenre200509(20, "life", "ãƒ©ã‚¤ãƒ•ï¼†ã‚«ãƒ«ãƒãƒ£ãƒ¼", Color.FromArgb(0x99, 0x66, 0x33)),
+				new GGenre200509( 6, "anime", "ã‚¢ãƒ‹ãƒ¡", Color.FromArgb(0x00, 0x99, 0xFF)),
+				new GGenre200509( 5, "variety", "ãƒãƒ©ã‚¨ãƒ†ã‚£", Color.FromArgb(0x66, 0xCC, 0x33)),
+				new GGenre200509( 4, "idol", "ã‚¢ã‚¤ãƒ‰ãƒ«ãƒ»ã‚°ãƒ©ãƒ“ã‚¢", Color.FromArgb(0xFF, 0x66, 0xCC)),
+				new GGenre200509VideoBlog(12, "blog", "æ˜ åƒãƒ–ãƒ­ã‚°", Color.FromArgb(0xFF, 0x99, 0x99)),
+				new GGenre200509(24, "shopping", "ã‚·ãƒ§ãƒƒãƒ”ãƒ³ã‚°", Color.FromArgb(0xFF, 0x66, 0x00)),
 			};
 		}
 		public static IEnumerable<GGenre> AllGenres {
@@ -78,7 +79,7 @@ namespace Yusen.GCrawler {
 		}
 		public Uri TimetableDeadlineNearFirstUri {
 			get {
-				//GET‚Å‚Íæ‚ê‚È‚¢‚Á‚Û‚¢
+				//GETã§ã¯å–ã‚Œãªã„ã£ã½ã„
 				return null;
 				//return new Uri("http://www.gyao.jp/timetable/index.php?genre_id=" + this.GenreId + "&sort_flag1=" + ((int)TimetableSortType.DeadlineNearFirst).ToString());
 			}
@@ -116,7 +117,7 @@ namespace Yusen.GCrawler {
 		private sealed class GGenre200509Drama : GGenre200509 {
 			public GGenre200509Drama(int keyNo, string dir, string name, Color color)
 				: base(keyNo, dir, name, color) { }
-			// GyaO ‘¤‚ÌƒXƒyƒ‹ƒ~ƒX‚Ö‚Ì‘Î‰
+			// GyaO å´ã®ã‚¹ãƒšãƒ«ãƒŸã‚¹ã¸ã®å¯¾å¿œ
 			public override string ImageDirName {
 				get { return "dorama"; }
 			}
@@ -126,8 +127,8 @@ namespace Yusen.GCrawler {
 			public GGenre200509VideoBlog(int keyNo, string dir, string name, Color color)
 				: base(keyNo, dir, name, color) { }
 			public override Uri RootUri {
-				// blog ‚Ì“®“I‚Èƒy[ƒW‚É‚æ‚èƒgƒ‰ƒbƒv‚É‚Í‚Ü‚é‚Ì‚Å
-				// ƒgƒbƒv‚Æ”Ô‘g•\‚Ì‚İ‚µ‚©“Ç‚Ü‚È‚¢‚æ‚¤‚É‚·‚é
+				// blog ã®å‹•çš„ãªãƒšãƒ¼ã‚¸ã«ã‚ˆã‚Šãƒˆãƒ©ãƒƒãƒ—ã«ã¯ã¾ã‚‹ã®ã§
+				// ãƒˆãƒƒãƒ—ã¨ç•ªçµ„è¡¨ã®ã¿ã—ã‹èª­ã¾ãªã„ã‚ˆã†ã«ã™ã‚‹
 				get { return new Uri("http://www.gyao.jp/dummy/"); }
 			}
 		}

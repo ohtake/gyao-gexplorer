@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Drawing;
 using System.Collections.Generic;
 using System.Windows.Forms;
@@ -92,7 +92,7 @@ namespace Yusen.GExplorer {
 			}
 			this.wmpMain.currentPlaylist.appendItem(media);
 			if(WMPPlayState.wmppsMediaEnded != this.wmpMain.playState) {
-				//è“®‚ÅØ‚è‘Ö‚¦‚½ê‡‚Å‚Í‹­§“I‚ÉÄ¶‚³‚¹‚é
+				//æ‰‹å‹•ã§åˆ‡ã‚Šæ›¿ãˆãŸå ´åˆã§ã¯å¼·åˆ¶çš„ã«å†ç”Ÿã•ã›ã‚‹
 				this.wmpMain.currentMedia = media;
 				this.wmpMain.Ctlcontrols.play();
 			}
@@ -123,8 +123,8 @@ namespace Yusen.GExplorer {
 				IWMPMedia curMedia = this.wmpMain.currentMedia;
 				this.tsslId.Text = this.CurrentContent.ContentId;
 				this.tsslChapter.Text = this.CurrentChapter.HasValue ?
-					"ƒ`ƒƒƒvƒ^[" + this.CurrentChapter.Value.ToString() + "(endFlag=" + this.endFlag.ToString() + ")"
-					: "’Êí";
+					"ãƒãƒ£ãƒ—ã‚¿ãƒ¼" + this.CurrentChapter.Value.ToString() + "(endFlag=" + this.endFlag.ToString() + ")"
+					: "é€šå¸¸";
 				this.tsslSize.Text = curMedia.imageSourceWidth.ToString() + "x" + curMedia.imageSourceHeight.ToString();
 				this.tsslDuration.Text = new TimeSpan((long)(10000000 * curMedia.duration)).ToString();
 				this.tsslTitle.Text = curMedia.name;
@@ -137,15 +137,15 @@ namespace Yusen.GExplorer {
 			}
 		}
 		private void HideUi() {
-			//WMP‚ÌÀ•WŒvZ
+			//WMPã®åº§æ¨™è¨ˆç®—
 			Point loc = this.PointToClient(this.splitContainer1.PointToScreen(new Point()));
 			loc.X += SystemInformation.SizingBorderWidth;
 			loc.Y += SystemInformation.SizingBorderWidth + SystemInformation.CaptionHeight;
 			loc += PlayerForm.WmpMarginSize;
-			//WMP‚ÌƒrƒfƒI•”•ª‚ÌƒTƒCƒYŒvZ
+			//WMPã®ãƒ“ãƒ‡ã‚ªéƒ¨åˆ†ã®ã‚µã‚¤ã‚ºè¨ˆç®—
 			Size size = this.splitContainer1.ClientSize;
 			size -= PlayerForm.WmpUiSize;
-			//ƒŠ[ƒWƒ‡ƒ“İ’è
+			//ãƒªãƒ¼ã‚¸ãƒ§ãƒ³è¨­å®š
 			DRegion oldRegion = this.Region;
 			this.Region = new Region(new Rectangle(loc, size));
 			if(null != oldRegion) {
@@ -212,7 +212,7 @@ namespace Yusen.GExplorer {
 				} else {
 					this.Text = value.DisplayName;
 					this.OpenVideo();
-					//this.wmpMain.Ctlcontrols.play();//”O‚Ì‚½‚ß
+					//this.wmpMain.Ctlcontrols.play();//å¿µã®ãŸã‚
 				}
 				PlayList.Instance.CurrentContent = value;
 			}
@@ -388,11 +388,11 @@ namespace Yusen.GExplorer {
 				e.Cancel = true;
 			}
 		}
-		#region ƒƒCƒ“ƒƒjƒ…[
+		#region ãƒ¡ã‚¤ãƒ³ãƒ¡ãƒ‹ãƒ¥ãƒ¼
 		private void tsmiPlayChapter_Click(object sender, EventArgs e) {
-			string title =  "“Á’è‚Ìƒ`ƒƒƒvƒ^[‚©‚çÄ¶";
+			string title =  "ç‰¹å®šã®ãƒãƒ£ãƒ—ã‚¿ãƒ¼ã‹ã‚‰å†ç”Ÿ";
 			this.inputBoxDialog1.Title =title;
-			this.inputBoxDialog1.Message = "ƒ`ƒƒƒvƒ^[”Ô†‚Ì“ü—ÍD‹ó”’‚Ìê‡‚Í’ÊíÄ¶D";
+			this.inputBoxDialog1.Message = "ãƒãƒ£ãƒ—ã‚¿ãƒ¼ç•ªå·ã®å…¥åŠ›ï¼ç©ºç™½ã®å ´åˆã¯é€šå¸¸å†ç”Ÿï¼";
 			this.inputBoxDialog1.Input = this.CurrentChapter.HasValue ? this.CurrentChapter.Value.ToString() : string.Empty;
 			switch (this.inputBoxDialog1.ShowDialog()) {
 				case DialogResult.OK:
@@ -480,9 +480,9 @@ namespace Yusen.GExplorer {
 			this.DisableScreenSaverEnabled = this.DisableScreenSaverEnabled;
 		}
 		private void tsmiResizeZoomValue_Click(object sender, EventArgs e) {
-			string title = "ƒŠƒTƒCƒY‚Ì”{—¦";
+			string title = "ãƒªã‚µã‚¤ã‚ºæ™‚ã®å€ç‡";
 			this.inputBoxDialog1.Title =title;
-			this.inputBoxDialog1.Message = "ƒTƒCƒY‚Ì”{—¦‚ğ“ü—Í‚µ‚Ä‚­‚¾‚³‚¢D" + "[" + PlayerForm.ZoomMin.ToString() + "-" + PlayerForm.ZoomMax.ToString() + "]";
+			this.inputBoxDialog1.Message = "ã‚µã‚¤ã‚ºã®å€ç‡ã‚’å…¥åŠ›ã—ã¦ãã ã•ã„ï¼" + "[" + PlayerForm.ZoomMin.ToString() + "-" + PlayerForm.ZoomMax.ToString() + "]";
 			this.inputBoxDialog1.Input = this.ZoomRatioOnResize.ToString();
 			switch(this.inputBoxDialog1.ShowDialog()) {
 				case DialogResult.OK:
@@ -498,9 +498,9 @@ namespace Yusen.GExplorer {
 			this.AutoVolumeEnabled = this.AutoVolumeEnabled;
 		}
 		private void tsmiVolumeNormal_Click(object sender, EventArgs e) {
-			string title = "©“®‰¹—Ê’²®‚É‚¨‚¯‚é–{•Ò‚Ì‰¹—Ê";
+			string title = "è‡ªå‹•éŸ³é‡èª¿æ•´ã«ãŠã‘ã‚‹æœ¬ç·¨ã®éŸ³é‡";
 			this.inputBoxDialog1.Title =title;
-			this.inputBoxDialog1.Message = "–{•Ò‚Ì‰¹—Ê‚ğ“ü—Í‚µ‚Ä‚­‚¾‚³‚¢D" + "[" + PlayerForm.VolumeMin.ToString() + "-" + PlayerForm.VolumeMax.ToString() + "]";
+			this.inputBoxDialog1.Message = "æœ¬ç·¨ã®éŸ³é‡ã‚’å…¥åŠ›ã—ã¦ãã ã•ã„ï¼" + "[" + PlayerForm.VolumeMin.ToString() + "-" + PlayerForm.VolumeMax.ToString() + "]";
 			this.inputBoxDialog1.Input = this.VolumeNormal.ToString();
 			switch (this.inputBoxDialog1.ShowDialog()) {
 				case DialogResult.OK:
@@ -513,9 +513,9 @@ namespace Yusen.GExplorer {
 			}
 		}
 		private void tsmiVolumeCf_Click(object sender, EventArgs e) {
-			string title = "©“®‰¹—Ê’²®‚É‚¨‚¯‚éCF‚Ì‰¹—Ê";
+			string title = "è‡ªå‹•éŸ³é‡èª¿æ•´ã«ãŠã‘ã‚‹CFã®éŸ³é‡";
 			this.inputBoxDialog1.Title = title;
-			this.inputBoxDialog1.Message = "CF‚Ì‰¹—Ê‚ğ“ü—Í‚µ‚Ä‚­‚¾‚³‚¢D" + "[" + PlayerForm.VolumeMin.ToString() + "-" + PlayerForm.VolumeMax.ToString() + "]";
+			this.inputBoxDialog1.Message = "CFã®éŸ³é‡ã‚’å…¥åŠ›ã—ã¦ãã ã•ã„ï¼" + "[" + PlayerForm.VolumeMin.ToString() + "-" + PlayerForm.VolumeMax.ToString() + "]";
 			this.inputBoxDialog1.Input = this.VolumeCf.ToString();
 			switch (this.inputBoxDialog1.ShowDialog()) {
 				case DialogResult.OK:
@@ -535,8 +535,8 @@ namespace Yusen.GExplorer {
 			Size videoSize = new Size(this.wmpMain.currentMedia.imageSourceWidth, this.wmpMain.currentMedia.imageSourceHeight);
 			Size distSize = new Size(videoSize.Width*this.ZoomRatioOnResize/100, videoSize.Height*this.ZoomRatioOnResize/100);
 			for(int i=0; i<2; i++) {
-				//ƒŠƒTƒCƒY‚É‚æ‚Á‚Äƒƒjƒ…[ƒo[‚âƒXƒe[ƒ^ƒXƒo[‚Ì‚‚³‚ª•Ï‚í‚é‚±‚Æ‚ª‚ ‚é‚Ì‚Å
-				//2‰ñƒŠƒTƒCƒY‚ğ‚İ‚é
+				//ãƒªã‚µã‚¤ã‚ºã«ã‚ˆã£ã¦ãƒ¡ãƒ‹ãƒ¥ãƒ¼ãƒãƒ¼ã‚„ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ãƒãƒ¼ã®é«˜ã•ãŒå¤‰ã‚ã‚‹ã“ã¨ãŒã‚ã‚‹ã®ã§
+				//2å›ãƒªã‚µã‚¤ã‚ºã‚’è©¦ã¿ã‚‹
 				Size delta = distSize + PlayerForm.WmpUiSize - this.wmpMain.Size;
 				this.Size += delta;
 			}
@@ -549,7 +549,7 @@ namespace Yusen.GExplorer {
 				}
 				sb.Append(attrib.Key + "\t" + attrib.Value);
 			}
-			MessageBox.Show(sb.ToString(), "ItemInfo ‚Ì•\¦", MessageBoxButtons.OK, MessageBoxIcon.Information);
+			MessageBox.Show(sb.ToString(), "ItemInfo ã®è¡¨ç¤º", MessageBoxButtons.OK, MessageBoxIcon.Information);
 		}
 		private void tsmiBrowseDetail_Click(object sender, EventArgs e) {
 			Utility.Browse(this.CurrentContent.DetailPageUri);
@@ -558,28 +558,28 @@ namespace Yusen.GExplorer {
 			Utility.Browse(this.CurrentContent.RecommendPageUri);
 		}
 		#endregion
-		#region WMP‚ÌƒCƒxƒ“ƒg
+		#region WMPã®ã‚¤ãƒ™ãƒ³ãƒˆ
 		private void wmpMain_OpenStateChange(object sender, _WMPOCXEvents_OpenStateChangeEvent e) {
 			switch ((WMPOpenState)e.newState) {
 				case WMPOpenState.wmposMediaOpen:
-					// ItemInfo ‚Ì“Ç‚İæ‚è
+					// ItemInfo ã®èª­ã¿å–ã‚Š
 					this.currentAttribs.Clear();
 					int attribCount = this.wmpMain.currentMedia.attributeCount;
 					for (int i=0; i<attribCount; i++) {
 						string attribName = this.wmpMain.currentMedia.getAttributeName(i);
 						this.currentAttribs.Add(attribName, this.wmpMain.currentMedia.getItemInfo(attribName));
 					}
-					// entry url ‚Ì‚æ‚İ‚Æ‚è
+					// entry url ã®ã‚ˆã¿ã¨ã‚Š
 					string entryUrl = this.currentAttribs[PlayerForm.AttribNameEntryUrl];
-					//‰¹—Ê’²®
-					//THANKSTO: http://pc8.2ch.net/test/read.cgi/esite/1116115226/81 ‚Ì_
+					//éŸ³é‡èª¿æ•´
+					//THANKSTO: http://pc8.2ch.net/test/read.cgi/esite/1116115226/81 ã®ç¥
 					if (this.tsmiAutoVolume.Checked && !this.wmpMain.settings.mute) {
-						//ˆê’U‰¹—Ê‚ğ‘ã“ü
+						//ä¸€æ—¦éŸ³é‡ã‚’ä»£å…¥
 						this.ModifyVolume();
-						//‰¹—Ê‚ª•Ï‚í‚ç‚È‚¢‚±‚Æ‚ª‚ ‚é‚Ì‚Åƒ^ƒCƒ}[‚ÅŒã‚©‚çÄ‘ã“ü
+						//éŸ³é‡ãŒå¤‰ã‚ã‚‰ãªã„ã“ã¨ãŒã‚ã‚‹ã®ã§ã‚¿ã‚¤ãƒãƒ¼ã§å¾Œã‹ã‚‰å†ä»£å…¥
 						this.timerAutoVolume.Start();
 					}
-					//endFlag ‚Ì“Ç‚İæ‚è
+					//endFlag ã®èª­ã¿å–ã‚Š
 					Match endFlagMatch = PlayerForm.regexEndFlag.Match(entryUrl);
 					if (endFlagMatch.Success) {
 						switch (endFlagMatch.Groups[1].Value) {
@@ -591,7 +591,7 @@ namespace Yusen.GExplorer {
 								break;
 						}
 					}
-					//ƒoƒi[•\¦
+					//ãƒãƒŠãƒ¼è¡¨ç¤º
 					Match dartTagMatch = PlayerForm.regexDartTag.Match(entryUrl);
 					if (dartTagMatch.Success && !string.IsNullOrEmpty(dartTagMatch.Groups[1].Value)) {
 						BannerTag bt = new BannerTag(dartTagMatch.Groups[1].Value);
@@ -601,13 +601,13 @@ namespace Yusen.GExplorer {
 						this.splitContainer1.Panel2Collapsed = true;
 						this.wbBanner.Navigate("about:blank");
 					}
-					//cm_license‚Ì‘ŠúƒXƒLƒbƒv
+					//cm_licenseã®æ—©æœŸã‚¹ã‚­ãƒƒãƒ—
 					if (this.SkipCmLicenseEnabled && this.IsCmLicense) {
 						this.timerSkipCmLisence.Start();
 					}
-					//ƒXƒe[ƒ^ƒXƒo[XV
+					//ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ãƒãƒ¼æ›´æ–°
 					this.UpdateStatusbatText();
-					//ƒŠƒTƒCƒY
+					//ãƒªã‚µã‚¤ã‚º
 					if(this.IsCf.HasValue && FormWindowState.Normal == this.WindowState) {
 						if(this.IsCf.Value) {
 							if(this.AutoSizeOnCfEnabled) {
@@ -626,11 +626,11 @@ namespace Yusen.GExplorer {
 			switch((WMPPlayState)e.newState){
 				case WMPPlayState.wmppsMediaEnded:
 					if(this.IsCmLicense){
-						//cm_license‚È‚ç–³‹
+						//cm_licenseãªã‚‰ç„¡è¦–
 						break;
 					}
 					if (this.CurrentChapter.HasValue && (!this.endFlag.HasValue || !this.endFlag.Value)) {
-						//ƒ`ƒƒƒvƒ^[ƒ‚[ƒh‚ÅƒGƒ“ƒhƒtƒ‰ƒO‚ª•s–¾‚©False
+						//ãƒãƒ£ãƒ—ã‚¿ãƒ¼ãƒ¢ãƒ¼ãƒ‰ã§ã‚¨ãƒ³ãƒ‰ãƒ•ãƒ©ã‚°ãŒä¸æ˜ã‹False
 						this.CurrentChapter++;
 					} else {
 						if (this.RemovePlayedContentEnabled) {

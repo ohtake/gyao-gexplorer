@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
@@ -88,14 +88,14 @@ namespace Yusen.GExplorer {
 			}
 		}
 		[ReadOnly(true)]
-		[Category("êƒuƒ‰‚ª•t‰Á‚µ‚½î•ñ")]
-		[Description("”zMŠúŒÀD‚©‚È‚è“K“–‚È‚Ì‚Å•K‚¸‚µ‚àM—p‚Å‚«‚é‚í‚¯‚¶‚á‚È‚¢D")]
+		[Category("å°‚ãƒ–ãƒ©ãŒä»˜åŠ ã—ãŸæƒ…å ±")]
+		[Description("é…ä¿¡æœŸé™ï¼ã‹ãªã‚Šé©å½“ãªã®ã§å¿…ãšã—ã‚‚ä¿¡ç”¨ã§ãã‚‹ã‚ã‘ã˜ã‚ƒãªã„ï¼")]
 		public string Deadline {
 			get { return this.deadline; }
 			set { this.deadline = value; }
 		}
-		[Category("ƒ†[ƒU‚ª“ü—Í‚·‚éî•ñ")]
-		[Description("ƒRƒƒ“ƒgDƒ†[ƒU‚ª©—R‚É“ü—Í‚Å‚«‚éD‚½‚¾‚µƒvƒŒƒCƒŠƒXƒg‚É“ü‚Á‚Ä‚¢‚é‚à‚Ì‚É‘Î‚µ‚Ä“ü—Í‚µ‚È‚¢‚Æ‚Ù‚Æ‚ñ‚ÇˆÓ–¡‚È‚¢D")]
+		[Category("ãƒ¦ãƒ¼ã‚¶ãŒå…¥åŠ›ã™ã‚‹æƒ…å ±")]
+		[Description("ã‚³ãƒ¡ãƒ³ãƒˆï¼ãƒ¦ãƒ¼ã‚¶ãŒè‡ªç”±ã«å…¥åŠ›ã§ãã‚‹ï¼ãŸã ã—ãƒ—ãƒ¬ã‚¤ãƒªã‚¹ãƒˆã«å…¥ã£ã¦ã„ã‚‹ã‚‚ã®ã«å¯¾ã—ã¦å…¥åŠ›ã—ãªã„ã¨ã»ã¨ã‚“ã©æ„å‘³ãªã„ï¼")]
 		public string Comment {
 			get { return this.comment; }
 			set { this.comment = value; }
@@ -103,56 +103,56 @@ namespace Yusen.GExplorer {
 		
 		
 		[XmlIgnore]
-		[Category("ƒL[")]
-		[Description("ƒRƒ“ƒeƒ“ƒc‚ÌIDD")]
+		[Category("ã‚­ãƒ¼")]
+		[Description("ã‚³ãƒ³ãƒ†ãƒ³ãƒ„ã®IDï¼")]
 		public string ContentId {
 			get { return this.innerCont.ContentId; }
 		}
 		[XmlIgnore]
-		[Category("•tî•ñ")]
-		[Description("ƒWƒƒƒ“ƒ‹–¼D")]
+		[Category("ä»˜éšæƒ…å ±")]
+		[Description("ã‚¸ãƒ£ãƒ³ãƒ«åï¼")]
 		public string GenreName {
 			get { return this.innerCont.GenreName; }
 		}
 		[XmlIgnore]
-		[Category("•tî•ñ")]
-		[Description("ƒ^ƒCƒgƒ‹D")]
+		[Category("ä»˜éšæƒ…å ±")]
+		[Description("ã‚¿ã‚¤ãƒˆãƒ«ï¼")]
 		public string Title {
 			get { return this.innerCont.Title; }
 		}
 		[XmlIgnore]
-		[Category("•tî•ñ")]
-		[Description("ƒTƒuƒ^ƒCƒgƒ‹D")]
+		[Category("ä»˜éšæƒ…å ±")]
+		[Description("ã‚µãƒ–ã‚¿ã‚¤ãƒˆãƒ«ï¼")]
 		public string SubTitle {
 			get { return this.innerCont.SubTitle; }
 		}
 		[XmlIgnore]
-		[Category("•tî•ñ")]
-		[Description("˜b”D")]
+		[Category("ä»˜éšæƒ…å ±")]
+		[Description("è©±æ•°ï¼")]
 		public string EpisodeNumber {
 			get { return this.innerCont.EpisodeNumber; }
 		}
 		[XmlIgnore]
-		[Category("•tî•ñ")]
-		[Description("”Ô‘gŠÔ (CMŠÔ‚ğœ‚­)D")]
+		[Category("ä»˜éšæƒ…å ±")]
+		[Description("ç•ªçµ„æ™‚é–“ (CMæ™‚é–“ã‚’é™¤ã)ï¼")]
 		public string Duration {
 			get { return this.innerCont.Duration; }
 		}
 		[XmlIgnore]
-		[Category("•tî•ñ")]
-		[Description("Ú×‹Lq(’·)D")]
+		[Category("ä»˜éšæƒ…å ±")]
+		[Description("è©³ç´°è¨˜è¿°(é•·)ï¼")]
 		public string LongDescription {
 			get { return this.innerCont.LongDescription; }
 		}
 		[XmlIgnore]
-		[Category("êƒuƒ‰‚ª•t‰Á‚µ‚½î•ñ")]
-		[Description("True‚Ìê‡‚ÍƒLƒƒƒbƒVƒ…‚©‚ç“Ç‚Ü‚ê‚½‚±‚Æ‚ğ¦‚·D")]
+		[Category("å°‚ãƒ–ãƒ©ãŒä»˜åŠ ã—ãŸæƒ…å ±")]
+		[Description("Trueã®å ´åˆã¯ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã‹ã‚‰èª­ã¾ã‚ŒãŸã“ã¨ã‚’ç¤ºã™ï¼")]
 		public bool FromCache {
 			get { return this.innerCont.FromCache; }
 		}
 		[XmlIgnore]
-		[Category("êƒuƒ‰‚ª•t‰Á‚µ‚½î•ñ")]
-		[Description("ƒWƒƒƒ“ƒ‹–¼‚âƒ^ƒCƒgƒ‹‚ğ“K“–‚É‘g‚İ‡‚í‚¹‚½•\¦–¼D")]
+		[Category("å°‚ãƒ–ãƒ©ãŒä»˜åŠ ã—ãŸæƒ…å ±")]
+		[Description("ã‚¸ãƒ£ãƒ³ãƒ«åã‚„ã‚¿ã‚¤ãƒˆãƒ«ã‚’é©å½“ã«çµ„ã¿åˆã‚ã›ãŸè¡¨ç¤ºåï¼")]
 		public string DisplayName{
 			get {
 				StringBuilder sb = new StringBuilder();
@@ -168,22 +168,22 @@ namespace Yusen.GExplorer {
 			}
 		}
 		[XmlIgnore]
-		[Category("êƒuƒ‰‚ª•t‰Á‚µ‚½î•ñ")]
-		[Description("ŠÔ‚Ìƒp[ƒYŒ‹‰ÊD")]
+		[Category("å°‚ãƒ–ãƒ©ãŒä»˜åŠ ã—ãŸæƒ…å ±")]
+		[Description("æ™‚é–“ã®ãƒ‘ãƒ¼ã‚ºçµæœï¼")]
 		public GTimeSpan GTimeSpan {
 			get {
 				return this.gTimeSpan;
 			}
 		}
 		[XmlIgnore]
-		[Category("êƒuƒ‰‚ª•t‰Á‚µ‚½î•ñ")]
-		[Description("ƒ_ƒ~[‚©‚Ç‚¤‚©‚Ìƒtƒ‰ƒOD")]
+		[Category("å°‚ãƒ–ãƒ©ãŒä»˜åŠ ã—ãŸæƒ…å ±")]
+		[Description("ãƒ€ãƒŸãƒ¼ã‹ã©ã†ã‹ã®ãƒ•ãƒ©ã‚°ï¼")]
 		public bool IsDummy {
 			get { return this.InnerContent.IsDummy; }
 		}
 		[XmlIgnore]
-		[Category("êƒuƒ‰‚ª•t‰Á‚µ‚½î•ñ")]
-		[Description("‘®«•¶š—ñD")]
+		[Category("å°‚ãƒ–ãƒ©ãŒä»˜åŠ ã—ãŸæƒ…å ±")]
+		[Description("å±æ€§æ–‡å­—åˆ—ï¼")]
 		public string Attributes{
 			get {
 				if(this.IsDummy) {
@@ -196,13 +196,13 @@ namespace Yusen.GExplorer {
 		
 		[XmlIgnore]
 		[Category("URI")]
-		[Description("Ú×ƒy[ƒW‚ÌURID")]
+		[Description("è©³ç´°ãƒšãƒ¼ã‚¸ã®URIï¼")]
 		public Uri DetailPageUri {
 			get { return this.innerCont.DetailPageUri; }
 		}
 		[XmlIgnore]
 		[Category("URI")]
-		[Description("IE‚Å³‹K‚ÉÄ¶‚·‚éê‡‚ÌURID(ƒOƒ[ƒoƒ‹İ’è‚ÌƒrƒbƒgƒŒ[ƒg‚Ì‰e‹¿‚ğó‚¯‚éD)")]
+		[Description("IEã§æ­£è¦ã«å†ç”Ÿã™ã‚‹å ´åˆã®URIï¼(ã‚°ãƒ­ãƒ¼ãƒãƒ«è¨­å®šã®ãƒ“ãƒƒãƒˆãƒ¬ãƒ¼ãƒˆã®å½±éŸ¿ã‚’å—ã‘ã‚‹ï¼)")]
 		public Uri PlayerPageUri {
 			get {
 				return GContent.CreatePlayerPageUri(this.ContentId, GlobalSettings.Instance.BitRate);
@@ -210,7 +210,7 @@ namespace Yusen.GExplorer {
 		}
 		[XmlIgnore]
 		[Category("URI")]
-		[Description("ƒvƒŒƒCƒŠƒXƒg‚ÌURID(ƒOƒ[ƒoƒ‹İ’è‚ÌƒrƒbƒgƒŒ[ƒg‚Ì‰e‹¿‚ğó‚¯‚éDƒ†[ƒUID‚ğŠÜ‚ŞD)")]
+		[Description("ãƒ—ãƒ¬ã‚¤ãƒªã‚¹ãƒˆã®URIï¼(ã‚°ãƒ­ãƒ¼ãƒãƒ«è¨­å®šã®ãƒ“ãƒƒãƒˆãƒ¬ãƒ¼ãƒˆã®å½±éŸ¿ã‚’å—ã‘ã‚‹ï¼ãƒ¦ãƒ¼ã‚¶IDã‚’å«ã‚€ï¼)")]
 		public Uri PlayListUri {
 			get {
 				return GContent.CreatePlayListUri(this.ContentId, GlobalSettings.Instance.UserNo, GlobalSettings.Instance.BitRate);
@@ -218,19 +218,19 @@ namespace Yusen.GExplorer {
 		}
 		[XmlIgnore]
 		[Category("URI")]
-		[Description("ƒRƒ“ƒeƒ“ƒc‚Ì‰æ‘œ(‘å)‚ÌURID")]
+		[Description("ã‚³ãƒ³ãƒ†ãƒ³ãƒ„ã®ç”»åƒ(å¤§)ã®URIï¼")]
 		public Uri ImageLargeUri {
 			get {return this.innerCont.ImageLargeUri;}
 		}
 		[XmlIgnore]
 		[Category("URI")]
-		[Description("ƒRƒ“ƒeƒ“ƒc‚Ì‰æ‘œ(¬)‚ÌURID")]
+		[Description("ã‚³ãƒ³ãƒ†ãƒ³ãƒ„ã®ç”»åƒ(å°)ã®URIï¼")]
 		public Uri ImageSmallUri {
 			get { return this.innerCont.ImageSmallUri; }
 		}
 		[XmlIgnore]
 		[Category("URI")]
-		[Description("‚¨Š©‚ß”Ô‘g‚ÌˆÄ“àƒy[ƒW‚ÌURID (ƒOƒ[ƒoƒ‹İ’è‚ÌƒrƒbƒgƒŒ[ƒg‚Ì‰e‹¿‚ğó‚¯‚éD)")]
+		[Description("ãŠå‹§ã‚ç•ªçµ„ã®æ¡ˆå†…ãƒšãƒ¼ã‚¸ã®URIï¼ (ã‚°ãƒ­ãƒ¼ãƒãƒ«è¨­å®šã®ãƒ“ãƒƒãƒˆãƒ¬ãƒ¼ãƒˆã®å½±éŸ¿ã‚’å—ã‘ã‚‹ï¼)")]
 		public Uri RecommendPageUri {
 			get {
 				return GContent.CreateRecommendPageUri(this.ContentId, GlobalSettings.Instance.BitRate);

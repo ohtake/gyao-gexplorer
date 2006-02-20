@@ -1,4 +1,4 @@
-using System.Reflection;
+Ôªøusing System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("GExplorer")]
-[assembly: AssemblyDescription("GyaO êÍópÉuÉâÉEÉU")]
+[assembly: AssemblyDescription("GyaO Â∞ÇÁî®„Éñ„É©„Ç¶„Ç∂")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("YUSEN")]
 [assembly: AssemblyProduct("GExplorer")]
-[assembly: AssemblyCopyright("Copyright (c) 2005, 2006.")]
+[assembly: AssemblyCopyright("Copyright ¬© 2005, 2006.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -29,6 +29,6 @@ using System.Runtime.InteropServices;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("2.0.1.5")]
-[assembly: AssemblyFileVersion("2.0.1.5")]
+[assembly: AssemblyVersion("2.0.2.0")]
+[assembly: AssemblyFileVersion("2.0.2.0")]
 

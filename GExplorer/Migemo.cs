@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Runtime.InteropServices;
@@ -43,14 +43,14 @@ namespace Yusen.GExplorer{
 				this.migemoObj = Migemo.MigemoOpen(dicFileName);
 				Migemo.MigemoSetOperator(this.migemoObj, OperatorIndex.NestIn, "(?:");
 				if (!Migemo.MigemoIsEnable(this.migemoObj)) {
-					throw new MigemoException("‚¨‚»‚ç‚­migemo‚Ì«‘‚ªŒ©‚Â‚©‚ç‚È‚©‚Á‚½D");
+					throw new MigemoException("ãŠãã‚‰ãmigemoã®è¾æ›¸ãŒè¦‹ã¤ã‹ã‚‰ãªã‹ã£ãŸï¼");
 				}
 			}catch(DllNotFoundException e){
-				throw new MigemoException("migemo‚Ìdll‚ªŒ©‚Â‚©‚ç‚È‚©‚Á‚½D", e);
+				throw new MigemoException("migemoã®dllãŒè¦‹ã¤ã‹ã‚‰ãªã‹ã£ãŸï¼", e);
 			}catch(MigemoException){
 				throw;
 			} catch(Exception e) {
-				throw new MigemoException("•s–¾‚È——R‚Åmigemo‚Ì‰Šú‰»¸”sD", e);
+				throw new MigemoException("ä¸æ˜ãªç†ç”±ã§migemoã®åˆæœŸåŒ–å¤±æ•—ï¼", e);
 			}
 		}
 
@@ -67,7 +67,7 @@ namespace Yusen.GExplorer{
 					try {
 						Migemo.MigemoRelease(this.migemoObj, ans);
 					} catch(AccessViolationException) {
-						//ŠÂ‹«‚É‚æ‚Á‚Ä‚Í‚¨‚«‚é‚±‚Æ‚ª‚ ‚é‚ç‚µ‚¢
+						//ç’°å¢ƒã«ã‚ˆã£ã¦ã¯ãŠãã‚‹ã“ã¨ãŒã‚ã‚‹ã‚‰ã—ã„
 					}
 				}
 			}

@@ -1,4 +1,4 @@
-using System.Reflection;
+Ôªøusing System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("GCrawler")]
-[assembly: AssemblyDescription("GExplorer ópÇÃ GyaO ÉNÉçÅ[Éâ")]
+[assembly: AssemblyDescription("GExplorer Áî®„ÅÆ GyaO „ÇØ„É≠„Éº„É©")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Yusen")]
 [assembly: AssemblyProduct("GCrawler")]
-[assembly: AssemblyCopyright("Copyright (c) 2005")]
+[assembly: AssemblyCopyright("Copyright ¬© 2005")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -31,5 +31,5 @@ using System.Runtime.InteropServices;
 //
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
-[assembly: AssemblyVersion("2.0.1.2")]
-[assembly: AssemblyFileVersion("2.0.1.2")]
+[assembly: AssemblyVersion("2.0.2.0")]
+[assembly: AssemblyFileVersion("2.0.2.0")]

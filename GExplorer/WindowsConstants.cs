@@ -1,4 +1,4 @@
-namespace Yusen.GExplorer {
+﻿namespace Yusen.GExplorer {
 	/// <summary>Window Messages</summary>
 	enum WM{
 		// http://216.26.160.137/Forums/AspNetForums20/ShowPost.aspx?PostID=13135

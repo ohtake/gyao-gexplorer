@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.IO;
@@ -16,11 +16,12 @@ namespace Yusen.GCrawler {
 
 		private static readonly Regex regexBreadGenre = new Regex(@"^<a href=""[^""]*"">(.*)</a> &gt; $", RegexOptions.Compiled);
 		private static readonly Regex regexTitle = new Regex(@"<td class=""title12b"">(.*)</td>", RegexOptions.Compiled);
-		private static readonly Regex regexSubtitle = new Regex(@"<td class=""title12"">(.*)</td><!--ƒTƒuƒ^ƒCƒgƒ‹-->", RegexOptions.Compiled);
-		private static readonly Regex regexImageDir = new Regex(@"<img src=""(/img/info/[a-z0-9]+/{1,2})cnt[0-9]+_[0-9a-z]*\.(?:jpg|gif)""", RegexOptions.Compiled); // ‘ºã‚³‚ñ‚Í‚È‚º‚© / ‚ª2‚Â
+		private static readonly Regex regexSubtitle = new Regex(@"<td class=""title12"">(.*)</td><!--ã‚µãƒ–ã‚¿ã‚¤ãƒˆãƒ«-->", RegexOptions.Compiled);
+		private static readonly Regex regexImageDir = new Regex(@"<img src=""(/img/info/[a-z0-9]+/{1,2})cnt[0-9]+_[0-9a-z]*\.(?:jpg|gif)""", RegexOptions.Compiled); // æ‘ä¸Šã•ã‚“ã¯ãªãœã‹ / ãŒ2ã¤
 		private static readonly Regex regexEpisodeNum = new Regex(@"<td align=""left""><b>(.*)</b></td>", RegexOptions.Compiled);
-		private static readonly Regex regexDuration = new Regex(@"<td align=""right""><b>[^:]*ŠÔ[^:]* : (.*)</b></td>", RegexOptions.Compiled);
-		private static readonly Regex regexDescription = new Regex(@"^\s*(?:<td align=""[^""]*"">)?((?:[^<]|<br */?>|<([abp]|font)(?:>| [^>]*>)|</(?:[abp]|font)>)+)</td>$", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+		private static readonly Regex regexDuration = new Regex(@"<td align=""right""><b>[^:]*æ™‚é–“[^:]* : (.*)</b></td>", RegexOptions.Compiled);
+		private static readonly Regex regexDescription = new Regex(@"^\s*(?:<td align=""[^""]*"">)?(.+)</td>$", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+		//new Regex(@"^\s*(?:<td align=""[^""]*"">)?((?:[^<]|<br */?>|<([abp]|font)(?:>| [^>]*>)|</(?:[abp]|font)>)+)</td>$", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 		private const string endOfDescription = @"<table width=""770"" border=""0"" cellspacing=""0"" cellpadding=""0"">";
 		
 		public static void Serialize(string filename, GContent cont){
@@ -53,7 +54,7 @@ namespace Yusen.GCrawler {
 			if (GContent.TryExtractContentId(uri, out id)) {
 				return id;
 			} else {
-				throw new ArgumentException("ˆø”‚ÌURI‚©‚çƒRƒ“ƒeƒ“ƒc‚ÌID‚ğæ“¾‚Å‚«‚È‚©‚Á‚½D\nˆø”‚ÌURI: " + uri.AbsoluteUri);
+				throw new ArgumentException("å¼•æ•°ã®URIã‹ã‚‰ã‚³ãƒ³ãƒ†ãƒ³ãƒ„ã®IDã‚’å–å¾—ã§ããªã‹ã£ãŸï¼\nå¼•æ•°ã®URI: " + uri.AbsoluteUri);
 			}
 		}
 		public static string[] ExtractContentIds(string text) {
@@ -119,22 +120,22 @@ namespace Yusen.GCrawler {
 				StringBuilder description = new StringBuilder();
 
 				if (!GContent.TryRegexForEachLine(reader, GContent.regexBreadGenre, out genre)) {
-					throw new ContentDownloadException("ƒWƒƒƒ“ƒ‹–¼‚Ì“Ç‚İæ‚è¸”s <" + uri.AbsoluteUri + ">");
+					throw new ContentDownloadException("ã‚¸ãƒ£ãƒ³ãƒ«åã®èª­ã¿å–ã‚Šå¤±æ•— <" + uri.AbsoluteUri + ">");
 				}
 				if (!GContent.TryRegexForEachLine(reader, GContent.regexTitle, out title)) {
-					throw new ContentDownloadException("ƒ^ƒCƒgƒ‹‚Ì“Ç‚İæ‚è¸”s <" + uri.AbsoluteUri + ">");
+					throw new ContentDownloadException("ã‚¿ã‚¤ãƒˆãƒ«ã®èª­ã¿å–ã‚Šå¤±æ•— <" + uri.AbsoluteUri + ">");
 				}
 				if (!GContent.TryRegexForEachLine(reader, GContent.regexSubtitle, out subtitle)) {
-					throw new ContentDownloadException("ƒTƒuƒ^ƒCƒgƒ‹‚Ì“Ç‚İæ‚è¸”s <" + uri.AbsoluteUri + ">");
+					throw new ContentDownloadException("ã‚µãƒ–ã‚¿ã‚¤ãƒˆãƒ«ã®èª­ã¿å–ã‚Šå¤±æ•— <" + uri.AbsoluteUri + ">");
 				}
 				if (!GContent.TryRegexForEachLine(reader, GContent.regexImageDir, out imageDir)) {
-					throw new ContentDownloadException("‰æ‘œ‚Ì‚ ‚éƒfƒBƒŒƒNƒgƒŠ–¼‚Ì“Ç‚İæ‚è¸”s <" + uri.AbsoluteUri + ">");
+					throw new ContentDownloadException("ç”»åƒã®ã‚ã‚‹ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªåã®èª­ã¿å–ã‚Šå¤±æ•— <" + uri.AbsoluteUri + ">");
 				}
 				if (!GContent.TryRegexForEachLine(reader, GContent.regexEpisodeNum, out episodeNum)) {
-					throw new ContentDownloadException("˜b”‚Ì“Ç‚İæ‚è¸”s <" + uri.AbsoluteUri + ">");
+					throw new ContentDownloadException("è©±æ•°ã®èª­ã¿å–ã‚Šå¤±æ•— <" + uri.AbsoluteUri + ">");
 				}
 				if (!GContent.TryRegexForEachLine(reader, GContent.regexDuration, out duration)) {
-					throw new ContentDownloadException("ŠÔ‚Ì“Ç‚İæ‚è¸”s <" + uri.AbsoluteUri + ">");
+					throw new ContentDownloadException("æ™‚é–“ã®èª­ã¿å–ã‚Šå¤±æ•— <" + uri.AbsoluteUri + ">");
 				}
 				string line;
 				while (null != (line = reader.ReadLine())) {
@@ -154,7 +155,7 @@ namespace Yusen.GCrawler {
 			} catch (ContentDownloadException) {
 				throw;
 			} catch(Exception e) {
-				throw new ContentDownloadException("•s–¾‚ÈƒGƒ‰[D“à•”—áŠO‚ğQÆD", e);
+				throw new ContentDownloadException("ä¸æ˜ãªã‚¨ãƒ©ãƒ¼ï¼å†…éƒ¨ä¾‹å¤–ã‚’å‚ç…§ï¼", e);
 			} finally {
 				if (null != reader) reader.Close();
 			}
@@ -172,7 +173,7 @@ namespace Yusen.GCrawler {
 			return false;
 		}
 		public static GContent CreateDummyContent(string contId, GGenre genre, string reason) {
-			return new GContent(contId, "(ƒ_ƒ~[)", "(ƒ_ƒ~[)", "(ƒ_ƒ~[)", "/img/info/"+genre.ImageDirName+"/", "(ƒ_ƒ~[)", "(ƒ_ƒ~[)", reason, true);
+			return new GContent(contId, "(ãƒ€ãƒŸãƒ¼)", "(ãƒ€ãƒŸãƒ¼)", "(ãƒ€ãƒŸãƒ¼)", "/img/info/"+genre.ImageDirName+"/", "(ãƒ€ãƒŸãƒ¼)", "(ãƒ€ãƒŸãƒ¼)", reason, true);
 		}
 
 		private string contentId;
@@ -184,7 +185,7 @@ namespace Yusen.GCrawler {
 		private string duration;
 		private string longDescription;
 		private bool fromCache;
-		[OptionalField]//2.0.1.1‚Å’Ç‰Á
+		[OptionalField]//2.0.1.1ã§è¿½åŠ 
 		private bool isDummy;
 
 		public GContent() {

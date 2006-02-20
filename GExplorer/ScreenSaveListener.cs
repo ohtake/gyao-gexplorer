@@ -1,4 +1,4 @@
-//#define SSL_DEBUG_PRINT
+ï»¿//#define SSL_DEBUG_PRINT
 
 using System;
 using System.ComponentModel;
@@ -11,9 +11,9 @@ using Timer=System.Timers.Timer;
 
 namespace Yusen.GExplorer {
 	/// <summary>
-	/// ƒtƒHƒAƒOƒ‰ƒEƒ“ƒhƒEƒBƒ“ƒhƒE‚ªŽ©ƒvƒƒZƒX‚ÌƒEƒBƒ“ƒhƒE‚È‚ç‚Î
-	/// ‚»‚ÌƒEƒBƒ“ƒhƒE‚Ö‚ÌƒƒbƒZ[ƒW‚ð•·‚¢‚Ä
-	/// ƒXƒNƒŠ[ƒ“ƒZ[ƒo‚ª—§‚¿ã‚ª‚è‚»‚¤‚É‚È‚Á‚½‚çƒCƒxƒ“ƒg‚ð”­¶‚³‚¹‚éƒNƒ‰ƒXD
+	/// ãƒ•ã‚©ã‚¢ã‚°ãƒ©ã‚¦ãƒ³ãƒ‰ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãŒè‡ªãƒ—ãƒ­ã‚»ã‚¹ã®ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãªã‚‰ã°
+	/// ãã®ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã¸ã®ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’èžã„ã¦
+	/// ã‚¹ã‚¯ãƒªãƒ¼ãƒ³ã‚»ãƒ¼ãƒãŒç«‹ã¡ä¸ŠãŒã‚Šãã†ã«ãªã£ãŸã‚‰ã‚¤ãƒ™ãƒ³ãƒˆã‚’ç™ºç”Ÿã•ã›ã‚‹ã‚¯ãƒ©ã‚¹ï¼Ž
 	/// </summary>
 	sealed class ScreenSaveListener : NativeWindow, IDisposable {
 		[DllImport("user32.dll")]

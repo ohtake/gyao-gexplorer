@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -9,7 +9,7 @@ using Yusen.GCrawler;
 namespace Yusen.GExplorer {
 	sealed partial class MainForm : FormSettingsBase, IFormWithSettings<MainFormSettings> {
 		private sealed class MergedGenre : GGenre {
-			public MergedGenre() : base(0, "dummy", "(Šù“¾ƒWƒƒƒ“ƒ‹)", Color.Black){
+			public MergedGenre() : base(0, "dummy", "(æ—¢å¾—ã‚¸ãƒ£ãƒ³ãƒ«)", Color.Black){
 			}
 			public override Uri TopPageUri {
 				get {return new Uri("about:blank");}
@@ -170,7 +170,7 @@ namespace Yusen.GExplorer {
 			switch (e.CloseReason) {
 				case CloseReason.UserClosing:
 					if (PlayList.Instance.HasCurrentContent) {
-						switch (MessageBox.Show("Ä¶’†‚Å‚·‚ªƒAƒvƒŠƒP[ƒVƒ‡ƒ“‚ğI—¹‚µ‚Ü‚·‚©H", Application.ProductName, MessageBoxButtons.YesNo, MessageBoxIcon.Question)) {
+						switch (MessageBox.Show("å†ç”Ÿä¸­ã§ã™ãŒã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³ã‚’çµ‚äº†ã—ã¾ã™ã‹ï¼Ÿ", Application.ProductName, MessageBoxButtons.YesNo, MessageBoxIcon.Question)) {
 							case DialogResult.No:
 								e.Cancel = true;
 								break;
@@ -196,7 +196,7 @@ namespace Yusen.GExplorer {
 		private void Program_ProgramSerializationProgress(object sender, ProgramSerializationProgressEventArgs e) {
 			this.tspbCrawl.Maximum = e.Max;
 			this.tspbCrawl.Value = e.Current;
-			this.tsslCrawl.Text = string.Format("I—¹ˆ— {0}/{1}: {2}", e.Current, e.Max, e.Message);
+			this.tsslCrawl.Text = string.Format("çµ‚äº†å‡¦ç† {0}/{1}: {2}", e.Current, e.Max, e.Message);
 			Application.DoEvents();
 		}
 		void Cache_CacheRearranged(object sender, CacheEventArgs e) {
@@ -223,7 +223,7 @@ namespace Yusen.GExplorer {
 				lock (this.crawler) {
 					if (null != this.threadCrawler) {
 						MessageBox.Show(
-							"‘½dƒNƒ[ƒ‹‚Í‹Ö~D", Application.ProductName,
+							"å¤šé‡ã‚¯ãƒ­ãƒ¼ãƒ«ã¯ç¦æ­¢ï¼", Application.ProductName,
 							MessageBoxButtons.OK, MessageBoxIcon.Stop);
 						return;
 					}
@@ -253,7 +253,7 @@ namespace Yusen.GExplorer {
 		}
 
 		private void crawlResultView1_ManuallyCacheDeleted(object sender, ManuallyCacheDeletedEventArgs e) {
-			this.SetStatutBarTextTemporary(string.Format("ƒLƒƒƒbƒVƒ…‚Ìíœ    ¬Œ÷: {0}    ¸”s: {1}", e.Succeeded, e.Failed));
+			this.SetStatutBarTextTemporary(string.Format("ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã®å‰Šé™¤    æˆåŠŸ: {0}    å¤±æ•—: {1}", e.Succeeded, e.Failed));
 		}
 		private void crawlResultView1_ContentSelectionChanged(object sender, ContentSelectionChangedEventArgs e) {
 			if (e.IsSelected) {
@@ -268,15 +268,15 @@ namespace Yusen.GExplorer {
 			}
 		}
 		private void contentDetailView1_ImageLoadError(object sender, ImageLoadErrorEventArgs e) {
-			this.SetStatutBarTextTemporary("Ú×ƒrƒ…[‚Å‚Ì‰æ‘œ“Ç‚İ‚İƒGƒ‰[: " + e.Exception.Message);
+			this.SetStatutBarTextTemporary("è©³ç´°ãƒ“ãƒ¥ãƒ¼ã§ã®ç”»åƒèª­ã¿è¾¼ã¿ã‚¨ãƒ©ãƒ¼: " + e.Exception.Message);
 		}
 		
 		private void tsmiBrowseTop_Click(object sender, EventArgs e) {
 			Utility.Browse(new Uri("http://www.gyao.jp/"));
 		}
 		private void tsmiBrowsePackage_Click(object sender, EventArgs e) {
-			this.inputBoxDialog1.Title = "ƒpƒbƒP[ƒWID‚ğw’è‚µ‚ÄƒEƒFƒuƒuƒ‰ƒEƒU‚ÅŠJ‚­";
-			this.inputBoxDialog1.Message = "ƒpƒbƒP[ƒWID‚ğ“ü—Í‚µ‚Ä‚­‚¾‚³‚¢D";
+			this.inputBoxDialog1.Title = "ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸IDã‚’æŒ‡å®šã—ã¦ã‚¦ã‚§ãƒ–ãƒ–ãƒ©ã‚¦ã‚¶ã§é–‹ã";
+			this.inputBoxDialog1.Message = "ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸IDã‚’å…¥åŠ›ã—ã¦ãã ã•ã„ï¼";
 			this.inputBoxDialog1.Input = "pac0000000";
 			switch (this.inputBoxDialog1.ShowDialog()) {
 				case DialogResult.OK:
@@ -285,8 +285,8 @@ namespace Yusen.GExplorer {
 			}
 		}
 		private void tsmiBrowseContent_Click(object sender, EventArgs e) {
-			this.inputBoxDialog1.Title = "ƒRƒ“ƒeƒ“ƒcID‚ğw’è‚µ‚ÄƒEƒFƒuƒuƒ‰ƒEƒU‚ÅŠJ‚­";
-			this.inputBoxDialog1.Message = "ƒRƒ“ƒeƒ“ƒcID‚ğ“ü—Í‚µ‚Ä‚­‚¾‚³‚¢D";
+			this.inputBoxDialog1.Title = "ã‚³ãƒ³ãƒ†ãƒ³ãƒ„IDã‚’æŒ‡å®šã—ã¦ã‚¦ã‚§ãƒ–ãƒ–ãƒ©ã‚¦ã‚¶ã§é–‹ã";
+			this.inputBoxDialog1.Message = "ã‚³ãƒ³ãƒ†ãƒ³ãƒ„IDã‚’å…¥åŠ›ã—ã¦ãã ã•ã„ï¼";
 			this.inputBoxDialog1.Input = "cnt0000000";
 			switch (this.inputBoxDialog1.ShowDialog()) {
 				case DialogResult.OK:
@@ -322,7 +322,7 @@ namespace Yusen.GExplorer {
 		}
 		private void tsmiClearCrawlResults_Click(object sender, EventArgs e) {
 			switch (MessageBox.Show(
-					"‘SƒWƒƒƒ“ƒ‹‚ÌƒNƒ[ƒ‹Œ‹‰Ê‚ğ”jŠü‚µ‚Ü‚·D‚æ‚ë‚µ‚¢‚Å‚·‚©H", "ƒNƒ[ƒ‹Œ‹‰Ê‚Ì”jŠü",
+					"å…¨ã‚¸ãƒ£ãƒ³ãƒ«ã®ã‚¯ãƒ­ãƒ¼ãƒ«çµæœã‚’ç ´æ£„ã—ã¾ã™ï¼ã‚ˆã‚ã—ã„ã§ã™ã‹ï¼Ÿ", "ã‚¯ãƒ­ãƒ¼ãƒ«çµæœã®ç ´æ£„",
 					MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2)) {
 				case DialogResult.Yes:
 					Cache.Instance.ClearCrawlResults();
@@ -334,8 +334,8 @@ namespace Yusen.GExplorer {
 		}
 		private void tsmiRemoveCachesAll_Click(object sender, EventArgs e) {
 			switch (MessageBox.Show(
-					"‘S‚Ä‚ÌƒLƒƒƒbƒVƒ…‚ğíœ‚µ‚Ü‚·D‚æ‚ë‚µ‚¢‚Å‚·‚©H",
-					"‘S‚Ä‚ÌƒLƒƒƒbƒVƒ…‚ğíœ", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2)) {
+					"å…¨ã¦ã®ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã‚’å‰Šé™¤ã—ã¾ã™ï¼ã‚ˆã‚ã—ã„ã§ã™ã‹ï¼Ÿ",
+					"å…¨ã¦ã®ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã‚’å‰Šé™¤", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2)) {
 				case DialogResult.Yes:
 					Cache.Instance.RemoveCachesAll();
 					break;
@@ -346,8 +346,8 @@ namespace Yusen.GExplorer {
 		}
 		private void tsmiRemoveDeadlineEntriesAll_Click(object sender, EventArgs e) {
 			switch (MessageBox.Show(
-					"‘S‚Ä‚ÌƒGƒ“ƒgƒŠ[‚ğíœ‚µ‚Ü‚·D\n‚æ‚ë‚µ‚¢‚Å‚·‚©H",
-					"‘S‚Ä‚ÌƒGƒ“ƒgƒŠ[‚ğíœ", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2)) {
+					"å…¨ã¦ã®ã‚¨ãƒ³ãƒˆãƒªãƒ¼ã‚’å‰Šé™¤ã—ã¾ã™ï¼\nã‚ˆã‚ã—ã„ã§ã™ã‹ï¼Ÿ",
+					"å…¨ã¦ã®ã‚¨ãƒ³ãƒˆãƒªãƒ¼ã‚’å‰Šé™¤", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2)) {
 				case DialogResult.Yes:
 					Cache.Instance.RemoveDeadlineEntriesAll();
 					break;
@@ -360,26 +360,26 @@ namespace Yusen.GExplorer {
 				return ng.LastAbone < DateTime.Now.AddDays(-7);
 			}));
 			int cntLast = manager.Count;
-			this.SetStatutBarTextTemporary(string.Format("NGƒRƒ“ƒeƒ“ƒc‚Ìíœ    íœ”: {0}    c‚è: {1}", cntAll - cntLast, cntLast));
+			this.SetStatutBarTextTemporary(string.Format("NGã‚³ãƒ³ãƒ†ãƒ³ãƒ„ã®å‰Šé™¤    å‰Šé™¤æ•°: {0}    æ®‹ã‚Š: {1}", cntAll - cntLast, cntLast));
 		}
 		private void tsmiDeleteNgContentsAll_Click(object sender, EventArgs e) {
 			switch(MessageBox.Show(
-				"‘S‚Ä‚ÌNGƒRƒ“ƒeƒ“ƒc‚ğíœ‚µ‚Ü‚·D\n‚æ‚ë‚µ‚¢‚Å‚·‚©H",
-				"‘S‚Ä‚ÌNGƒRƒ“ƒeƒ“ƒc‚ğíœ", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2)) {
+				"å…¨ã¦ã®NGã‚³ãƒ³ãƒ†ãƒ³ãƒ„ã‚’å‰Šé™¤ã—ã¾ã™ï¼\nã‚ˆã‚ã—ã„ã§ã™ã‹ï¼Ÿ",
+				"å…¨ã¦ã®NGã‚³ãƒ³ãƒ†ãƒ³ãƒ„ã‚’å‰Šé™¤", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2)) {
 				case DialogResult.Yes:
 					int num = NgContentsManager.Instance.Count;
 					NgContentsManager.Instance.Clear();
-					this.SetStatutBarTextTemporary(string.Format("NGƒRƒ“ƒeƒ“ƒc‚Ìíœ    íœ”: {0}", num));
+					this.SetStatutBarTextTemporary(string.Format("NGã‚³ãƒ³ãƒ†ãƒ³ãƒ„ã®å‰Šé™¤    å‰Šé™¤æ•°: {0}", num));
 					break;
 			}
 		}
 		private void tsmiGetProfile_Click(object sender, EventArgs e) {
-			string title = "ƒ†[ƒUID‚É‘Î‰‚·‚éƒvƒƒtƒ@ƒCƒ‹‚ğæ“¾";
+			string title = "ãƒ¦ãƒ¼ã‚¶IDã«å¯¾å¿œã™ã‚‹ãƒ—ãƒ­ãƒ•ã‚¡ã‚¤ãƒ«ã‚’å–å¾—";
 			string profile;
 			if(Utility.TryGetUserProfileOf(GlobalSettings.Instance.UserNo, out profile)) {
 				MessageBox.Show(profile, title, MessageBoxButtons.OK, MessageBoxIcon.Information);
 			} else {
-				MessageBox.Show("ƒ†[ƒUƒvƒƒtƒ@ƒCƒ‹‚Ìæ“¾‚É¸”s‚µ‚Ü‚µ‚½D", title, MessageBoxButtons.OK, MessageBoxIcon.Error);
+				MessageBox.Show("ãƒ¦ãƒ¼ã‚¶ãƒ—ãƒ­ãƒ•ã‚¡ã‚¤ãƒ«ã®å–å¾—ã«å¤±æ•—ã—ã¾ã—ãŸï¼", title, MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
 		}
 		private void tsmiAbortCrawling_Click(object sender, EventArgs e) {
@@ -391,7 +391,7 @@ namespace Yusen.GExplorer {
 					
 					this.crawlProgressEventArgs = null;
 					this.ClearStatusBarInfo();
-					this.SetStatutBarTextTemporary("ƒNƒ[ƒ‹‚ğ’†~‚µ‚Ü‚µ‚½D");
+					this.SetStatutBarTextTemporary("ã‚¯ãƒ­ãƒ¼ãƒ«ã‚’ä¸­æ­¢ã—ã¾ã—ãŸï¼");
 				}
 			}
 		}

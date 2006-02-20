@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -57,30 +57,30 @@ namespace Yusen.GExplorer {
 		private bool? topMost;
 		private bool? isMaximized;
 		
-		[Category("ƒtƒH[ƒ€‚ÌŠî–{İ’è")]
-		[DisplayName("’Êí‚ÌƒTƒCƒY")]
-		[Description("Å‘å‰»‚âÅ¬‰»‚Ì‚³‚ê‚Ä‚¢‚È‚¢ê‡‚Å‚ÌƒEƒBƒ“ƒhƒE‚ÌƒTƒCƒYD")]
+		[Category("ãƒ•ã‚©ãƒ¼ãƒ ã®åŸºæœ¬è¨­å®š")]
+		[DisplayName("é€šå¸¸æ™‚ã®ã‚µã‚¤ã‚º")]
+		[Description("æœ€å¤§åŒ–ã‚„æœ€å°åŒ–ã®ã•ã‚Œã¦ã„ãªã„å ´åˆã§ã®ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ã‚µã‚¤ã‚ºï¼")]
 		public Size? NormalSize {
 			get { return this.normalSize; }
 			set { this.normalSize = value; }
 		}
-		[Category("ƒtƒH[ƒ€‚ÌŠî–{İ’è")]
-		[DisplayName("’Êí‚ÌˆÊ’u")]
-		[Description("Å‘å‰»‚âÅ¬‰»‚Ì‚³‚ê‚Ä‚¢‚È‚¢ê‡‚Å‚ÌƒEƒBƒ“ƒhƒE‚ÌˆÊ’uD")]
+		[Category("ãƒ•ã‚©ãƒ¼ãƒ ã®åŸºæœ¬è¨­å®š")]
+		[DisplayName("é€šå¸¸æ™‚ã®ä½ç½®")]
+		[Description("æœ€å¤§åŒ–ã‚„æœ€å°åŒ–ã®ã•ã‚Œã¦ã„ãªã„å ´åˆã§ã®ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ä½ç½®ï¼")]
 		public Point? NormalLocation {
 			get { return this.normalLocation; }
 			set { this.normalLocation = value; }
 		}
-		[Category("ƒtƒH[ƒ€‚ÌŠî–{İ’è")]
-		[DisplayName("Å‘O–Ê")]
-		[Description("True‚É‚·‚é‚ÆÅ‘O–Ê‚Å•\¦‚·‚éD")]
+		[Category("ãƒ•ã‚©ãƒ¼ãƒ ã®åŸºæœ¬è¨­å®š")]
+		[DisplayName("æœ€å‰é¢")]
+		[Description("Trueã«ã™ã‚‹ã¨æœ€å‰é¢ã§è¡¨ç¤ºã™ã‚‹ï¼")]
 		public bool? TopMost {
 			get { return this.topMost; }
 			set { this.topMost = value; }
 		}
-		[Category("ƒtƒH[ƒ€‚ÌŠî–{İ’è")]
-		[DisplayName("Å‘å‰»")]
-		[Description("Å‘å‰»‚³‚ê‚Ä‚¢‚éê‡‚ÍTrueD")]
+		[Category("ãƒ•ã‚©ãƒ¼ãƒ ã®åŸºæœ¬è¨­å®š")]
+		[DisplayName("æœ€å¤§åŒ–")]
+		[Description("æœ€å¤§åŒ–ã•ã‚Œã¦ã„ã‚‹å ´åˆã¯Trueï¼")]
 		public bool? IsMaximized {
 			get { return this.isMaximized; }
 			set { this.isMaximized = value; }

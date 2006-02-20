@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Forms;
@@ -128,7 +128,7 @@ namespace Yusen.GExplorer {
 						typeof(TwoStringsPredicateMethod), this.comboMethod.Text),
 					this.txtWord.Text);
 			}catch(Exception ex){
-				MessageBox.Show(ex.Message, "NGƒRƒ“ƒeƒ“ƒc‚Ì’Ç‰Á", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				MessageBox.Show(ex.Message, "NGã‚³ãƒ³ãƒ†ãƒ³ãƒ„ã®è¿½åŠ ", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				return;
 			}
 			NgContentsManager.Instance.Add(ng);

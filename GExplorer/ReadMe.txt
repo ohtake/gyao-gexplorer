@@ -1,197 +1,197 @@
-GyaO ��p�u���E�U GExplorer 2.0.1.5
+﻿GyaO 専用ブラウザ GExplorer 2.0.2.0
 
-���T�v
-�������USEN�ɂ��u�p�\�R���e���rGyaO�v���{�����邽�߂̃u���E�U�ł��D
-�E�W���������Ƃ̃R���e���c�̈ꗗ���擾�ł��܂��D
-�E�v���C���X�g��������R���e���c��A���Đ����ł��܂��D
-�E�����̃v���[���ŉ��K�ɍĐ��ł��܂��D
+◆概要
+株式会社USENによる「パソコンテレビGyaO」を閲覧するためのブラウザです．
+・ジャンルごとのコンテンツの一覧を取得できます．
+・プレイリストを内蔵しコンテンツを連続再生ができます．
+・内蔵のプレーヤで快適に再生できます．
 
-���K�v�Ȋ�
-.NET Framework 2.0 ���K�v�ł��D
+◆必要な環境
+.NET Framework 2.0 が必要です．
 
-Microsoft Update �� Windows Update �Ȃǂœ���ł��܂���
-�f�t�H���g�ł͑I������܂���D
-�u�����v�ł͂Ȃ��u�J�X�^���v��I������悤�ɂ�
-�u�ǉ��I��(�\�t�g�E�F�A)�v�� .NET Framework 2.0 ��ǉ����Ă��������D
+Microsoft Update や Windows Update などで入手できますが
+デフォルトでは選択されません．
+「高速」ではなく「カスタム」を選択するようにし
+「追加選択(ソフトウェア)」で .NET Framework 2.0 を追加してください．
 
-���ƂŃC���X�g�[��������@������܂���
-CPU���ƂɕʁX�̃C���X�g�[�����p�ӂ���Ă���̂Œ��ӂ��Ă��������D
-Microsoft .NET Framework Version 2.0 �ĔЕz�\�p�b�P�[�W (x86)
+手作業でインストールする方法もありますが
+CPUごとに別々のインストーラが用意されているので注意してください．
+Microsoft .NET Framework Version 2.0 再頒布可能パッケージ (x86)
 http://www.microsoft.com/downloads/details.aspx?FamilyID=0856eacb-4362-4b0d-8edd-aab15c5e04f5&DisplayLang=ja
-Microsoft .NET Framework Version 2.0 �ĔЕz�\�p�b�P�[�W (x64)
+Microsoft .NET Framework Version 2.0 再頒布可能パッケージ (x64)
 http://www.microsoft.com/downloads/details.aspx?FamilyID=b44a0000-acf8-4fa1-affb-40e78d788b00&DisplayLang=ja
-Microsoft .NET Framework Version 2.0 �ĔЕz�\�p�b�P�[�W (IA64)
+Microsoft .NET Framework Version 2.0 再頒布可能パッケージ (IA64)
 http://www.microsoft.com/downloads/details.aspx?FamilyID=53c2548b-bec7-4ab4-8cbe-33e07cfc83a7&DisplayLang=ja
 
-��Windows�̃o�[�W�����ɂ��@�\�̐���
-Windows 98, Me, 2000 �ł͈ȉ��̋@�\�����p�ł��܂���D
-�E�N���[�����ʃr���[ > �ݒ� > �p�b�P�[�W���Ƃɕ���
-�E�O���[�o���ݒ� > GUI > �r�W���A���X�^�C��
-�E�f�t�H���g�̃A�C�R���̐���ȕ\��
+◆Windowsのバージョンによる機能の制限
+Windows 98, Me, 2000 では以下の機能が利用できません．
+・クロール結果ビュー > 設定 > パッケージごとに分類
+・グローバル設定 > GUI > ビジュアルスタイル
+・デフォルトのアイコンの正常な表示
 
-���C���X�g�[���Ǝ��s
-GExplorer-x_x_x_x.zip ���܂邲�ƓW�J���Ă��������D
-�����f�B���N�g���ɓ�������Ă��� dll ���K�{�ł��D
-���s�t�@�C���̂���f�B���N�g���ɐݒ�t�@�C������ۑ����邽�߁C
-�f�B���N�g���ɏ������ތ��������邱�Ƃ��K�v�ł��D
-�W�J��� GExplorer.exe �����s����΋N���ł��܂��D
+◆インストールと実行
+GExplorer-x_x_x_x.zip をまるごと展開してください．
+同じディレクトリに同梱されている dll も必須です．
+実行ファイルのあるディレクトリに設定ファイル等を保存するため，
+ディレクトリに書き込む権限があることも必要です．
+展開後に GExplorer.exe を実行すれば起動できます．
 
-���A���C���X�g�[��
-�f�B���N�g�����ƍ폜�����OK�ł��D
-GExplorer���g�̓��W�X�g���ɏ������݂��s���܂���D
+◆アンインストール
+ディレクトリごと削除すればOKです．
+GExplorer自身はレジストリに書き込みを行いません．
 
-���o�[�W�����A�b�v
-GExplorer-x_x_x_x.zip �Ȃ��̑S�t�@�C�������o�[�W�����̃t�@�C����
-�㏑�����Ă��������D
-���o�[�W�����̐ݒ�t�@�C����L���b�V���͂Ȃ�ׂ��ǂݍ��߂�悤��
-�w�͂͂��Ă��܂��D
+◆バージョンアップ
+GExplorer-x_x_x_x.zip ないの全ファイルを旧バージョンのファイルに
+上書きしてください．
+旧バージョンの設定ファイルやキャッシュはなるべく読み込めるように
+努力はしています．
 
-�����X�̃����e�i���X
-�T��1����x�ł悢�̂ŁC���L�̃��j���[�����s����
-�p�t�H�[�}���X�̒ቺ��h���ł��������D
-�E�c�[�� > �L���b�V���̍폜 > ���B�s�L���b�V���̍폜
-�E�c�[�� > �z�M���������̐��� > ���B�s�G���g���[�̍폜
-�E�c�[�� > NG�R���e���c�̍폜 > �ŏING����1�T�Ԉȏ�o�߂����̂��폜
+◆日々のメンテナンス
+週に1回程度でよいので，下記のメニューを実行して
+パフォーマンスの低下を防いでください．
+・ツール > キャッシュの削除 > 到達不可キャッシュの削除
+・ツール > 配信期限辞書の整理 > 到達不可エントリーの削除
+・ツール > NGコンテンツの削除 > 最終NGから1週間以上経過したのを削除
 
-��C/Migemo
-�N���[�����ʂ̃t�B���^�������s�����߂� C/Migemo �𗘗p�ł��܂��D
-C/Migemo ���Ȃ��Ă� GExplorer �͓��삵�܂����C�������ق����֗��ł��D
+◆C/Migemo
+クロール結果のフィルタ処理を行うために C/Migemo を利用できます．
+C/Migemo がなくても GExplorer は動作しますが，あったほうが便利です．
 
 KaoriYa.net
 http://www.kaoriya.net/#CMIGEMO
 
-��L�T�C�g����u�o�C�i��(DLL)�����[�X�� for Windows�v���_�E�����[�h�D
-�K�{�t�@�C���� migemo.dll �� dict �f�B���N�g�����̑S�����t�@�C���D
-migemo.dll �� dict �� GExplorer.exe �Ɠ����f�B���N�g���ɂ����Ă��������D
+上記サイトから「バイナリ(DLL)リリース版 for Windows」をダウンロード．
+必須ファイルは migemo.dll と dict ディレクトリ内の全辞書ファイル．
+migemo.dll と dict を GExplorer.exe と同じディレクトリにおいてください．
 
-��������@
-�����[�UID�̓ǂݎ��
-GyaO�𗘗p����ۂɂ̓��[�UID���K�v�ƂȂ邽��
-GExplrer�͋N�����Ƀ��[�UID��ǂ݂ɂ����܂��D
-�N���O�� IE �ł̃��[�U�o�^���ς܂��Ă����Ă��������D
-�ȉ��̏����œǂݎ������݂܂��D
-�EActiveX �� GyaOTool �����p���Ă��郌�W�X�g����ǂ�
-�E�t�@�C���V�X�e������N�b�L�[��ǂ�
+◆操作方法
+◇ユーザIDの読み取り
+GyaOを利用する際にはユーザIDが必要となるため
+GExplrerは起動時にユーザIDを読みにいきます．
+起動前に IE でのユーザ登録を済ませておいてください．
+以下の順序で読み取りを試みます．
+・ActiveX の GyaOTool が利用しているレジストリを読む
+・ファイルシステムからクッキーを読む
 
-���W�������^�u (���C����ʂ̏㕔)
-GyaO�̃W�������̈ꗗ�ł��D
-�ǂݍ���ł��Ȃ��W�������̃^�u��I������Ɠǂݍ��݂܂��D
-�^�u���_�u���N���b�N����Ƌ����I�ɓǂݍ��݂Ȃ����܂��D
-�^�u���E�N���b�N���邱���ł��܂��D
+◇ジャンルタブ (メイン画面の上部)
+GyaOのジャンルの一覧です．
+読み込んでいないジャンルのタブを選択すると読み込みます．
+タブをダブルクリックすると強制的に読み込みなおします．
+タブを右クリックするこもできます．
 
-���N���[�����ʃr���[ (���C����ʂ̍���)
-�R���e���c�̈ꗗ��\�����܂��D
-�_�u���N���b�N��Enter�L�[�ɂ��v���C���X�g�ɒǉ��ł��܂��D
-�R���e���c��I�����Ă��炷��Α��̑�����s���܂��D
-�E�N���b�N��h���b�O���\�ł��D
+◇クロール結果ビュー (メイン画面の左中)
+コンテンツの一覧を表示します．
+ダブルクリックやEnterキーによりプレイリストに追加できます．
+コンテンツを選択してからすれば他の操作も行えます．
+右クリックやドラッグも可能です．
 
-���v���C���X�g�r���[ (���C����ʂ̍���)
-�_�u���N���b�N��Enter�L�[�ɂ���p�v���[���ōĐ����܂��D
-�E�N���b�N�C�h���b�O�C�h���b�v���\�ł��D
+◇プレイリストビュー (メイン画面の左下)
+ダブルクリックやEnterキーにより専用プレーヤで再生します．
+右クリック，ドラッグ，ドロップも可能です．
 
-���ڍ׃r���[ (���C����ʂ̉E)
-���X�g�r���[�őI���������ڂ̉摜�����\�����܂��D
-�摜�����͉E�N���b�N�\�ł��D
+◇詳細ビュー (メイン画面の右)
+リストビューで選択した項目の画像や情報を表示します．
+画像部分は右クリック可能です．
 
-����p�v���[��
-GyaO�̓���̍Đ��ɓ�������WMP�x�[�X�̃v���[���ł��D
+◇専用プレーヤ
+GyaOの動画の再生に特化したWMPベースのプレーヤです．
 
-���E�F�u�u���E�U
-GyaO�̉{���ɓ�������IE�x�[�X�̃E�F�u�u���E�U��������Ă��܂��D
-�_���ň͂܂ꂽ�ӏ����N���b�N����ƃ��j���[���o�܂��D
-�O���[�o���ݒ�œ����̃E�F�u�u���E�U�𖳌��ɂł��܂��D
+◇ウェブブラウザ
+GyaOの閲覧に特化したIEベースのウェブブラウザを内蔵しています．
+点線で囲まれた箇所をクリックするとメニューが出ます．
+グローバル設定で内蔵のウェブブラウザを無効にできます．
 
-���O���[�o���ݒ�G�f�B�^
-GExplorer�̑S�̓I�Ȑݒ��ύX���邽�߂̃G�f�B�^�ł��D
-�ꕔ�̐ݒ荀�ڂ�GExplorer�̍ċN�����K�v�ɂȂ�܂��D
+◇グローバル設定エディタ
+GExplorerの全体的な設定を変更するためのエディタです．
+一部の設定項目はGExplorerの再起動が必要になります．
 
-���O���R�}���h�G�f�B�^
-���̃v���O�����Ɉ�����n�����ƂŃ��[�U�����R�ɓ�����g���ł��܂��D
-�E�\����
-�@�@�K���ɓ��͂��Ă��������D
-�@�@&���g���Ǝ��̕������i�r�Q�[�V�����L�[�ɂȂ�܂��D
-�E���s�t�@�C��
-�@�@���s����v���O�����̃t�@�C��������͂��܂��D
-�@�@%ProgramFiles% �Ȃǂ̊��ϐ����g���܂��D
-�E����
-�@�@�����Ŏw�肵�������񂪃v���O���������s���鎞�̈����Ɏg���܂��D
-�@�@�����Ŏw�肷�镶����ł� { �� } �ň͂܂��ӏ��ɒu�����N���܂��D
-�@�@{ �� } �ň͂܂ꂽ�ӏ��ɂ̓R���e���c�̃v���p�e�B�����w�肵�܂��D
-�@�@�v���p�e�B���͏ڍ׃r���[�̏ڍ׃^�u�Ŋm�F���邱�Ƃ��o���܂��D
-�@�@��Ƃ��� {ContentId} �� cnt0123456 �Ƃ�����������ɒu������܂��D
-�@�@�������ڂ�I��������ԂŊO���R�}���h�����s�����ꍇ�ł́C
-�@�@�e�v���p�e�B�l���X�y�[�X��؂�Œu������܂��D
-�@�@�����Ƀ��e���������Ƃ��Ă� { �� } ���w�肷��ɂ�
-�@�@{{ �܂��� }} �Ɠ��͂��Ă��������D
-�E�g�p��
-�@�@�\����:       �^�C�g����Google����(&T)
-�@�@���s�t�@�C��: %ProgramFiles%\Internet Explorer\iexplore.exe
-�@�@����:         http://www.google.com/search?ie=Shift_JIS&q={Title}
+◇外部コマンドエディタ
+他のプログラムに引数を渡すことでユーザが自由に動作を拡張できます．
+・表示名
+　　適当に入力してください．
+　　&を使うと次の文字がナビゲーションキーになります．
+・実行ファイル
+　　実行するプログラムのファイル名を入力します．
+　　%ProgramFiles% などの環境変数も使えます．
+・引数
+　　ここで指定した文字列がプログラムを実行する時の引数に使われます．
+　　引数で指定する文字列では { と } で囲まれる箇所に置換が起きます．
+　　{ と } で囲まれた箇所にはコンテンツのプロパティ名を指定します．
+　　プロパティ名は詳細ビューの詳細タブで確認することが出来ます．
+　　例として {ContentId} は cnt0123456 といった文字列に置換されます．
+　　複数項目を選択した状態で外部コマンドを実行した場合では，
+　　各プロパティ値がスペース区切りで置換されます．
+　　引数にリテラル文字としての { や } を指定するには
+　　{{ または }} と入力してください．
+・使用例
+　　表示名:       タイトルでGoogle検索(&T)
+　　実行ファイル: %ProgramFiles%\Internet Explorer\iexplore.exe
+　　引数:         http://www.google.com/search?ie=Shift_JIS&q={Title}
 
-��NG�R���e���c�G�f�B�^
-NG��o�^���邱�ƂŌ������Ȃ��R���e���c���\���ɏo���܂��D
-�N���[�����ʃr���[���E�N���b�N���邱�ƂŊȒP��NG��ǉ��ł��܂����C
-���G�f�B�^���g�����ƂŒǉ����邱�Ƃ��o���܂��D
-�E�R�����g
-�@�@�Ӗ��Ȃ��ł��D������₷�������ł����Ă���Ă��������D
-�E�v���p�e�B��(���)
-�@�@�R���e���c�̃v���p�e�B����I�����܂��D
-�@�@�w�肵���v���p�e�B�̒l�ɑ΂���NG�����������܂��D
-�@�@�e�v���p�e�B�̐����͏ڍ׃r���[�̏ڍ׃^�u�Ŋm�F���Ă��������D
-�E��r���@(�q��)
-�@�@Equals:     �v���p�e�B�̒l��NG���[�h�Ɗ��S��v������NG
-�@�@Contains:   �v���p�e�B�̒l��NG���[�h���܂�ł�����NG
-�@�@StartsWith: �v���p�e�B�̒l��NG���[�h�Ŏn�܂�����NG
-�@�@EndsWith:   �v���p�e�B�̒l��NG���[�h�ŏI�������NG
-�ENG���[�h(�ړI��)
-�@�@���̌����܂�ł����肷��R���e���c��NG�ɂ��܂��D
-�E�g�p��
-�@�@�R�����g:     �f���u���O�A���Đ��p
-�@�@�v���p�e�B��: Title
-�@�@��r���@:     EndsWith
-�@�@NG���[�h:     �A���Đ��p
+◇NGコンテンツエディタ
+NGを登録することで見たくないコンテンツを非表示に出来ます．
+クロール結果ビューを右クリックすることで簡単にNGを追加できますが，
+当エディタを使うことで追加することも出来ます．
+・コメント
+　　意味ないです．分かりやすい説明でもつけてやってください．
+・プロパティ名(主語)
+　　コンテンツのプロパティ名を選択します．
+　　指定したプロパティの値に対してNG処理をかけます．
+　　各プロパティの説明は詳細ビューの詳細タブで確認してください．
+・比較方法(述語)
+　　Equals:     プロパティの値がNGワードと完全一致したらNG
+　　Contains:   プロパティの値がNGワードを含んでいたらNG
+　　StartsWith: プロパティの値がNGワードで始まったらNG
+　　EndsWith:   プロパティの値がNGワードで終わったらNG
+・NGワード(目的語)
+　　この語句を含んでいたりするコンテンツをNGにします．
+・使用例
+　　コメント:     連続再生用
+　　プロパティ名: Title
+　　比較方法:     Contains
+　　NGワード:     連続再生用
 
-���e��ݒ�t�@�C��
-�e��ݒ�t�@�C���� UserSettings �f�B���N�g���ɐݒ��ۑ����Ă��܂��D
-�o�[�W�����A�b�v��ɓǂݍ��񂾂�ȑO�̐ݒ肪�����邱�Ƃ����邩������܂���D
-�������܂��ǂݍ��߂Ȃ��Ȃ��Ă��܂�����ݒ�t�@�C�����폜���Ă��������D
+◆各種設定ファイル
+各種設定ファイルは UserSettings ディレクトリに設定を保存しています．
+バージョンアップ後に読み込んだら以前の設定が消えることがあるかもしれません．
+もしうまく読み込めなくなってしまったら設定ファイルを削除してください．
 
-���L���b�V��
-Cache �f�B���N�g���ɃL���b�V����u�����ƂŒʐM�ʂ̍팸��}���Ă��܂��D
-�ĕ������n�܂������ɌÂ��L���b�V�����c�����܂܂���
-�\�����e���Â��܂܂̂��Ƃ�����܂��D
+◆キャッシュ
+Cache ディレクトリにキャッシュを置くことで通信量の削減を図っています．
+再放送が始まった時に古いキャッシュが残ったままだと
+表示内容が古いままのことがあります．
 
-�����m�̕s� (�������@�s��)
-�E�v���[���t�H�[���������ɓ��삪�s����ɂȂ肪���D
-�@�Đ����~�����Ă���E�B���h�E�����Ƃ悢�D
-�E���ɂ���Ă͓���̍Đ��������I�Ɏn�܂�Ȃ�������C
-�@�v���C���X�g���ł̐��ڂ����܂������Ȃ������肷����ۂ��D
-�E�}���`���j�^���ł̓��삪���������炵��
-�E[��ʂ̃v���p�e�B] [�X�N���[���Z�[�o�[] [�p�X���[�h�ɂ��ی�] ���L������
-�@�X�N���[���Z�[�o�̗}�~���o���Ȃ����Ƃ�����
-�E�ʏ�Ȃ��WMP�_�u���N���b�N�őS��ʂɈڂ邱�Ƃ��o������ɂ����āC
-�@�_�u���N���b�N���Ă��S��ʂɍs���Ȃ����Ƃ�����D
-�@�E�N���b�N����̃R���e�L�X�g���j���[�ň�U�S��ʂɂ���΂��̌�͉�������D
-�E�S��ʂł̍Đ����ɉE��́~�������Ă������Ȃ�
-�E����������
+◆既知の不具合 (解決方法不明)
+・プレーヤフォームを閉じた後に動作が不安定になりがち．
+　再生を停止させてからウィンドウを閉じるとよい．
+・環境によっては動画の再生が自動的に始まらなかったり，
+　プレイリスト内での推移がうまくいかなかったりするっぽい．
+・マルチモニタ環境での動作がおかしいらしい
+・[画面のプロパティ] [スクリーンセーバー] [パスワードによる保護] が有効だと
+　スクリーンセーバの抑止が出来ないことがある
+・通常ならばWMPダブルクリックで全画面に移ることが出来る環境において，
+　ダブルクリックしても全画面に行かないことがある．
+　右クリックからのコンテキストメニューで一旦全画面にすればその後は解決する．
+・全画面での再生時に右上の×を押しても閉じられない
+・他たくさん
 
-�����m�̕s� (�ʓ|��������u)
-�EWMP��IE�Ƀt�H�[�J�X������ƃ��j���[�̃V���[�g�J�b�g�L�[���E���Ȃ�
+◆既知の不具合 (面倒だから放置)
+・WMPやIEにフォーカスがあるとメニューのショートカットキーが拾えない
 
-���s���Ȏ���
-�E64bit�ł̓���
-�E����������
+◆不明な事項
+・64bitでの動作
+・他たくさん
 
-���ӎ�
-CM���ۂ��̔�����s���̂ɎQ�l�ɂ����_�\�[�X
+◆謝辞
+CMか否かの判定を行うのに参考にした神ソース
 http://pc8.2ch.net/test/read.cgi/esite/1116115226/81
-�A�C�R����
+アイコン提供
 http://pc8.2ch.net/test/read.cgi/esite/1118420039/13
 http://pc8.2ch.net/test/read.cgi/esite/1126011881/756
 
-�����񑩂̕���
-�v���O�����̍쐬�Ɣz�z�ɂ��Ċ������USEN���狖�͓��Ă��܂���D
-�v���O�����̎��s�ɂ���đ��Q�����N���Ă����ȐӔC�ł��D
-�I�̕��ׂƂȂ肤��K�v�ȏ�̃N���[���͎��l���܂��傤�D
-�\�[�X�̎�舵���ɂ��Ă͖ʓ|�Ȃ��Ƃ��N���Ȃ����x�œK���ɂǂ����D
-�o�C�i���̎�舵�������l�ł��D
+◆お約束の文章
+プログラムの作成と配布について株式会社USENから許可は得ていません．
+プログラムの実行によって損害等が起きても自己責任です．
+鯖の負荷となりうる必要以上のクロールは自粛しましょう．
+ソースの取り扱いについては面倒なことが起きない程度で適当にどうぞ．
+バイナリの取り扱いも同様です．

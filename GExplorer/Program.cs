@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Threading;
@@ -18,15 +18,15 @@ namespace Yusen.GExplorer {
 		/// <summary>The main entry point for the application.</summary>
 		[STAThread]
 		private static void Main() {
-			//‚¨‚Ü‚¶‚È‚¢
+			//ãŠã¾ã˜ãªã„
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
-			//ƒLƒƒƒbƒ`‚³‚ê‚È‚¢—áŠO‚ğƒLƒƒƒbƒ`
+			//ã‚­ãƒ£ãƒƒãƒã•ã‚Œãªã„ä¾‹å¤–ã‚’ã‚­ãƒ£ãƒƒãƒ
 			Application.ThreadException += new ThreadExceptionEventHandler(Application_ThreadException);
 			AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
-			//‘½d‹N“®ƒ`ƒFƒbƒN
+			//å¤šé‡èµ·å‹•ãƒã‚§ãƒƒã‚¯
 			while(Program.CheckMultipleExecution()) {
-				switch(MessageBox.Show("‘½d‹N“®‚Æv‚í‚ê‚Ü‚·D‚Ç‚¤‚µ‚Ü‚·‚©H", Application.ProductName + " " + Application.ProductVersion, MessageBoxButtons.AbortRetryIgnore, MessageBoxIcon.Warning)) {
+				switch(MessageBox.Show("å¤šé‡èµ·å‹•ã¨æ€ã‚ã‚Œã¾ã™ï¼ã©ã†ã—ã¾ã™ã‹ï¼Ÿ", Application.ProductName + " " + Application.ProductVersion, MessageBoxButtons.AbortRetryIgnore, MessageBoxIcon.Warning)) {
 					case DialogResult.Abort:
 						return;
 					case DialogResult.Retry:
@@ -36,11 +36,11 @@ namespace Yusen.GExplorer {
 				}
 				break;
 			}
-			//ƒJƒŒƒ“ƒgƒfƒBƒŒƒNƒgƒŠ‚ğƒXƒ^[ƒgƒAƒbƒvƒpƒX‚É‚ ‚í‚¹‚é
+			//ã‚«ãƒ¬ãƒ³ãƒˆãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã‚’ã‚¹ã‚¿ãƒ¼ãƒˆã‚¢ãƒƒãƒ—ãƒ‘ã‚¹ã«ã‚ã‚ã›ã‚‹
 			Environment.CurrentDirectory = Application.StartupPath;
 			
 			Program.splashInit = new SplashForm();
-			Program.splashInit.Initialize("‹N“®’†‚Å‚·DDD", Program.InitializationSteps +1);
+			Program.splashInit.Initialize("èµ·å‹•ä¸­ã§ã™ï¼ï¼ï¼", Program.InitializationSteps +1);
 			Program.InitializeProgram();
 			Program.mainForm.Load += delegate {
 				Program.splashInit.EndProgress();
@@ -67,19 +67,19 @@ namespace Yusen.GExplorer {
 		}
 
 		private static void InitializeProgram() {
-			//ƒOƒ[ƒoƒ‹İ’è
-			Program.splashInit.StepProgress("ƒOƒ[ƒoƒ‹İ’è‚Ì“Ç‚İ‚İ");
+			//ã‚°ãƒ­ãƒ¼ãƒãƒ«è¨­å®š
+			Program.splashInit.StepProgress("ã‚°ãƒ­ãƒ¼ãƒãƒ«è¨­å®šã®èª­ã¿è¾¼ã¿");
 			GlobalSettings.TryDeserialize();
-			//ƒ†[ƒUID
-			Program.splashInit.StepProgress("ƒ†[ƒUID‚Ì“Ç‚İæ‚è");
+			//ãƒ¦ãƒ¼ã‚¶ID
+			Program.splashInit.StepProgress("ãƒ¦ãƒ¼ã‚¶IDã®èª­ã¿å–ã‚Š");
 			if(!GlobalSettings.Instance.TryGetUserNumber()) {
 				MessageBox.Show(
-					"ƒ†[ƒUID‚ªæ“¾‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½DƒOƒ[ƒoƒ‹İ’è‚ÅID‚Ìİ’è‚ğ‚µ‚Ä‚­‚¾‚³‚¢D",
+					"ãƒ¦ãƒ¼ã‚¶IDãŒå–å¾—ã§ãã¾ã›ã‚“ã§ã—ãŸï¼ã‚°ãƒ­ãƒ¼ãƒãƒ«è¨­å®šã§IDã®è¨­å®šã‚’ã—ã¦ãã ã•ã„ï¼",
 					Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
 
-			//ƒAƒCƒRƒ“‚Ì“Ç‚İ‚İ
-			Program.splashInit.StepProgress("ƒAƒCƒRƒ“‚Ì“Ç‚İ‚İ");
+			//ã‚¢ã‚¤ã‚³ãƒ³ã®èª­ã¿è¾¼ã¿
+			Program.splashInit.StepProgress("ã‚¢ã‚¤ã‚³ãƒ³ã®èª­ã¿è¾¼ã¿");
 			try {
 				string iconFileName = GlobalSettings.Instance.IconFile;
 				if(string.IsNullOrEmpty(iconFileName)) {
@@ -89,16 +89,16 @@ namespace Yusen.GExplorer {
 			} catch {
 			}
 
-			Program.splashInit.StepProgress("ƒLƒƒƒbƒVƒ…‚Ì‰Šú‰»");
+			Program.splashInit.StepProgress("ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã®åˆæœŸåŒ–");
 			Cache.Initialize();
-			Program.splashInit.StepProgress("ŠO•”ƒRƒ}ƒ“ƒh‚Ì“Ç‚İæ‚è");
+			Program.splashInit.StepProgress("å¤–éƒ¨ã‚³ãƒãƒ³ãƒ‰ã®èª­ã¿å–ã‚Š");
 			UserCommandsManager.Instance.DeserializeItems();
-			Program.splashInit.StepProgress("NGƒRƒ“ƒeƒ“ƒc‚Ì“Ç‚İæ‚è");
+			Program.splashInit.StepProgress("NGã‚³ãƒ³ãƒ†ãƒ³ãƒ„ã®èª­ã¿å–ã‚Š");
 			NgContentsManager.Instance.DeserializeItems();
-			Program.splashInit.StepProgress("ƒvƒŒƒCƒŠƒXƒg‚Ì“Ç‚İæ‚è");
+			Program.splashInit.StepProgress("ãƒ—ãƒ¬ã‚¤ãƒªã‚¹ãƒˆã®èª­ã¿å–ã‚Š");
 			PlayList.Instance.DeserializeItems();
 
-			Program.splashInit.StepProgress("ƒƒCƒ“ƒtƒH[ƒ€‚Ìì¬");
+			Program.splashInit.StepProgress("ãƒ¡ã‚¤ãƒ³ãƒ•ã‚©ãƒ¼ãƒ ã®ä½œæˆ");
 			Program.mainForm = new MainForm();
 		}
 		private static void OnProgramSerializationProgress(int current, string message) {
@@ -108,15 +108,15 @@ namespace Yusen.GExplorer {
 		}
 		internal static void SerializeSettings() {
 			int step = 0;
-			Program.OnProgramSerializationProgress(step++, "ƒvƒŒƒCƒŠƒXƒg‚Ì•Û‘¶");
+			Program.OnProgramSerializationProgress(step++, "ãƒ—ãƒ¬ã‚¤ãƒªã‚¹ãƒˆã®ä¿å­˜");
 			PlayList.Instance.SerializeItems();
-			Program.OnProgramSerializationProgress(step++, "NGƒRƒ“ƒeƒ“ƒc‚Ì•Û‘¶");
+			Program.OnProgramSerializationProgress(step++, "NGã‚³ãƒ³ãƒ†ãƒ³ãƒ„ã®ä¿å­˜");
 			NgContentsManager.Instance.SerializeItems();
-			Program.OnProgramSerializationProgress(step++, "ŠO•”ƒRƒ}ƒ“ƒh‚Ì•Û‘¶");
+			Program.OnProgramSerializationProgress(step++, "å¤–éƒ¨ã‚³ãƒãƒ³ãƒ‰ã®ä¿å­˜");
 			UserCommandsManager.Instance.SerializeItems();
-			Program.OnProgramSerializationProgress(step++, "ƒLƒƒƒbƒVƒ…‚Ì•Û‘¶");
+			Program.OnProgramSerializationProgress(step++, "ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã®ä¿å­˜");
 			Cache.Serialize();
-			Program.OnProgramSerializationProgress(step++, "ƒOƒ[ƒoƒ‹İ’è‚Ì•Û‘¶");
+			Program.OnProgramSerializationProgress(step++, "ã‚°ãƒ­ãƒ¼ãƒãƒ«è¨­å®šã®ä¿å­˜");
 			GlobalSettings.Serialize();
 		}
 
