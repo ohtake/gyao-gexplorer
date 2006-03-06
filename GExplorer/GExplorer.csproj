@@ -59,6 +59,12 @@
     <Compile Include="AboutBox.Designer.cs">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </Compile>
+    <Compile Include="BitRateForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BitRateForm.Designer.cs">
+      <DependentUpon>BitRateForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="BrowserForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -167,6 +173,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="AboutBox.resx">
       <DependentUpon>AboutBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BitRateForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>BitRateForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="BrowserForm.resx">
       <DependentUpon>BrowserForm.cs</DependentUpon>
@@ -311,14 +321,6 @@
       <VersionMinor>0</VersionMinor>
       <Lcid>0</Lcid>
       <WrapperTool>aximp</WrapperTool>
-      <Isolated>False</Isolated>
-    </COMReference>
-    <COMReference Include="stdole">
-      <Guid>{00020430-0000-0000-C000-000000000046}</Guid>
-      <VersionMajor>2</VersionMajor>
-      <VersionMinor>0</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>primary</WrapperTool>
       <Isolated>False</Isolated>
     </COMReference>
     <COMReference Include="WMPLib">

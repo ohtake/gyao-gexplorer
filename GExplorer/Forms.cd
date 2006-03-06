@@ -2,21 +2,10 @@
 <ClassDiagram MajorVersion="1" MinorVersion="1" GroupingSetting="Access">
   <Font Name="MS UI Gothic" Size="9" />
   <Class Name="Yusen.GExplorer.FormBase">
-    <Position X="14.5" Y="2" Width="1.5" />
+    <Position X="14.5" Y="1.5" Width="1.5" />
     <TypeIdentifier>
       <FileName>FormBase.cs</FileName>
       <HashCode>AAAAAAAAACAAAAAAAACAAAACAAAAAACAAAAAgAAAAAA=</HashCode>
-    </TypeIdentifier>
-    <Compartments>
-      <Compartment Name="Protected" Collapsed="true" />
-      <Compartment Name="Private" Collapsed="true" />
-    </Compartments>
-  </Class>
-  <Class Name="Yusen.GExplorer.CookieFetchForm">
-    <Position X="11.25" Y="4.5" Width="1.5" />
-    <TypeIdentifier>
-      <FileName>CookieFetchForm.cs</FileName>
-      <HashCode>AACAAGAAACBgAAAAAACAAAACAAAAAAAACAAAAAAAAAA=</HashCode>
     </TypeIdentifier>
     <Compartments>
       <Compartment Name="Protected" Collapsed="true" />
@@ -38,7 +27,7 @@
     <Position X="4" Y="8.25" Width="1.75" />
     <TypeIdentifier>
       <FileName>MainForm.cs</FileName>
-      <HashCode>BQDAEjmAITQBQbR0AADQM0ATAYibCgImsAQRBSAJN6E=</HashCode>
+      <HashCode>BQnBkjmAITcBQbR2ABDwO0ATEYibCgKmsAwRBSAJN6E=</HashCode>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Field Name="genreTabControl1" />
@@ -62,13 +51,18 @@
           <NewMemberFileName>MainForm.cs</NewMemberFileName>
         </TypeIdentifier>
       </Delegate>
+      <Delegate Name="Yusen.GExplorer.MainForm.SetStatusBarTextDelegate" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>MainForm.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
     </NestedTypes>
     <AssociationLine Name="crawlResultView1" Type="Yusen.GExplorer.CrawlResultView" FixedFromPoint="true" FixedToPoint="true">
       <Path>
         <Point X="4" Y="8.375" />
-        <Point X="3.625" Y="8.375" />
-        <Point X="3.625" Y="6.956" />
-        <Point X="2.5" Y="6.956" />
+        <Point X="2.875" Y="8.375" />
+        <Point X="2.875" Y="5.956" />
+        <Point X="2.5" Y="5.956" />
       </Path>
     </AssociationLine>
     <Lollipop Position="0.2" />
@@ -77,12 +71,8 @@
     <Position X="14.25" Y="8.25" Width="1.75" />
     <TypeIdentifier>
       <FileName>PlayerForm.cs</FileName>
-      <HashCode>kUQCD90KASdiIOUnIEKCkUhyQqHeKUD25QgCNqIwB+c=</HashCode>
+      <HashCode>gUwCDf0IAz/iBOUnMkPuoUpzwIHOqUD34QhKNiKQC2s=</HashCode>
     </TypeIdentifier>
-    <ShowAsAssociation>
-      <Field Name="gwbDetail" />
-      <Field Name="gwbRecommend" />
-    </ShowAsAssociation>
     <Compartments>
       <Compartment Name="Protected" Collapsed="true" />
       <Compartment Name="Private" Collapsed="true" />
@@ -136,7 +126,7 @@
     <Position X="6.5" Y="8.25" Width="1.75" />
     <TypeIdentifier>
       <FileName>NgContentsEditor.cs</FileName>
-      <HashCode>BgIBERAQACIgIAAAAAGQAEQCAgBUkABAYABEAAAAEmI=</HashCode>
+      <HashCode>hhIRERAQACIgIAAAAAGQAEQCEgBUkAFIYABEAAAAEmI=</HashCode>
     </TypeIdentifier>
     <Compartments>
       <Compartment Name="Protected" Collapsed="true" />
@@ -145,10 +135,10 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="Yusen.GExplorer.ContentDetailView">
-    <Position X="1" Y="12" Width="1.5" />
+    <Position X="1" Y="13" Width="1.5" />
     <TypeIdentifier>
       <FileName>ContentDetailView.cs</FileName>
-      <HashCode>AAACgolQM7AAQBAAABiwAAEiAIMEASiCJgABAEAABgA=</HashCode>
+      <HashCode>AAACgohwN/gAYFACAhiwAgEiCIMFASjCJwABAEAANwA=</HashCode>
     </TypeIdentifier>
     <Compartments>
       <Compartment Name="Protected" Collapsed="true" />
@@ -157,10 +147,10 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="Yusen.GExplorer.PlayListView">
-    <Position X="1" Y="8.75" Width="1.5" />
+    <Position X="1" Y="9" Width="1.5" />
     <TypeIdentifier>
       <FileName>PlayListView.cs</FileName>
-      <HashCode>kKYgE/0aBDACQAQgBNCouBTCmysxyMRFKAA0IogtMhA=</HashCode>
+      <HashCode>kKcgE/0aBDACQAQoBFCouBTCm6sxyMBHKAE0oogtMhA=</HashCode>
     </TypeIdentifier>
     <Compartments>
       <Compartment Name="Protected" Collapsed="true" />
@@ -169,15 +159,22 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="Yusen.GExplorer.CrawlResultView">
-    <Position X="1" Y="3.75" Width="1.5" />
+    <Position X="1" Y="2.75" Width="1.5" />
     <TypeIdentifier>
       <FileName>CrawlResultView.cs</FileName>
-      <HashCode>NqCgi/1qIrWQZERQYiamDIJCkwgRjxYMqAYhO6giSgY=</HashCode>
+      <HashCode>tqCwy/9qK/3UdkUSYzemHIJCs40xjxYOqA8hO6giSgY=</HashCode>
     </TypeIdentifier>
     <Compartments>
       <Compartment Name="Protected" Collapsed="true" />
       <Compartment Name="Private" Collapsed="true" />
     </Compartments>
+    <NestedTypes>
+      <Class Name="Yusen.GExplorer.CrawlResultView.ContentListViewItem" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>CrawlResultView.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="Yusen.GExplorer.GenreTabControl">
@@ -209,7 +206,7 @@
     <Position X="16.75" Y="8.25" Width="1.75" />
     <TypeIdentifier>
       <FileName>BrowserForm.cs</FileName>
-      <HashCode>AyACQj4AADASQiQQAICEwMASgCJLAGgBeAAMAgNIIhk=</HashCode>
+      <HashCode>AzACQjwAADCSQiQyAICEwMASgCJLAGgBeCEMAgNIYhk=</HashCode>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Field Name="gwbMain" />
@@ -218,6 +215,13 @@
       <Compartment Name="Protected" Collapsed="true" />
       <Compartment Name="Private" Collapsed="true" />
     </Compartments>
+    <NestedTypes>
+      <Class Name="Yusen.GExplorer.BrowserForm.ImageCatalogStream" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>BrowserForm.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
     <AssociationLine Name="gwbMain" Type="Yusen.GExplorer.GWebBrowser" FixedFromPoint="true" FixedToPoint="true">
       <Path>
         <Point X="18.5" Y="8.844" />
@@ -232,7 +236,7 @@
     <Position X="19.5" Y="11.5" Width="1.5" />
     <TypeIdentifier>
       <FileName>GWebBrowser.cs</FileName>
-      <HashCode>MAAAAp0AQCAMAAKAAACQCgAKClAADgIGAVAMAAUAEAA=</HashCode>
+      <HashCode>MAAAAr0BUCINACLAgACQDgAKC9AADgJGAVAMAAUAUoA=</HashCode>
     </TypeIdentifier>
     <Compartments>
       <Compartment Name="Protected" Collapsed="true" />
@@ -269,6 +273,26 @@
     <TypeIdentifier>
       <FileName>ExceptionForm.cs</FileName>
       <HashCode>BBQAAIAAMCAAAASAAACABQRiAoAAAEQCABFAACICAOA=</HashCode>
+    </TypeIdentifier>
+    <Compartments>
+      <Compartment Name="Protected" Collapsed="true" />
+      <Compartment Name="Private" Collapsed="true" />
+    </Compartments>
+    <InheritanceLine Type="Yusen.GExplorer.FormBase" ManuallyRouted="true" FixedToPoint="true">
+      <Path>
+        <Point X="15.25" Y="3.36" />
+        <Point X="15.25" Y="4.126" />
+        <Point X="21.796" Y="4.126" />
+        <Point X="21.796" Y="4.5" />
+        <Point X="21.75" Y="4.5" />
+      </Path>
+    </InheritanceLine>
+  </Class>
+  <Class Name="Yusen.GExplorer.SplashForm">
+    <Position X="17.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>SplashForm.cs</FileName>
+      <HashCode>AAAAAAAAgCAAAQAAABCAAAACAIAAACAAEACAEAAGACA=</HashCode>
     </TypeIdentifier>
     <Compartments>
       <Compartment Name="Protected" Collapsed="true" />

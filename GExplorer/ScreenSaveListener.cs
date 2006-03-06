@@ -7,7 +7,7 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using NativeWindow=System.Windows.Forms.NativeWindow;
 using Message=System.Windows.Forms.Message;
-using Timer=System.Timers.Timer;
+using System.Timers;
 
 namespace Yusen.GExplorer {
 	/// <summary>
@@ -39,7 +39,7 @@ namespace Yusen.GExplorer {
 #endif
 		}
 		
-		void timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e) {
+		private void timer_Elapsed(object sender, ElapsedEventArgs e) {
 			IntPtr fgw = ScreenSaveListener.GetForegroundWindow();
 			int pid;
 			ScreenSaveListener.GetWindowThreadProcessId(fgw, out pid);
@@ -83,16 +83,7 @@ namespace Yusen.GExplorer {
 			}
 			base.WndProc(ref m);
 		}
-		
-		public void Dispose() {
-#if SSL_DEBUG_PRINT
-			Console.WriteLine("{0} dispose", DateTime.Now.ToLongTimeString());
-#endif
-			this.timer.Stop();
-			this.timer.Dispose();
-			base.ReleaseHandle();
-		}
-		
+
 		[DefaultValue(false)]
 		public bool Enabled {
 			get { return this.enabled; }
@@ -108,6 +99,26 @@ namespace Yusen.GExplorer {
 					this.timer.Stop();
 				}
 			}
+		}
+
+		private void Dispose(bool disposing) {
+			if (disposing) {
+				this.timer.Stop();
+				this.timer.Dispose();
+			}
+			base.ReleaseHandle();
+		}
+
+		public void Dispose() {
+#if SSL_DEBUG_PRINT
+			Console.WriteLine("{0} dispose", DateTime.Now.ToLongTimeString());
+#endif
+			this.Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+
+		~ScreenSaveListener() {
+			this.Dispose(false);
 		}
 	}
 }

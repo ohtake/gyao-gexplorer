@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Drawing;
 using System.Collections.Generic;
 using System.Windows.Forms;
@@ -212,7 +213,6 @@ namespace Yusen.GExplorer {
 				} else {
 					this.Text = value.DisplayName;
 					this.OpenVideo();
-					//this.wmpMain.Ctlcontrols.play();//念のため
 				}
 				PlayList.Instance.CurrentContent = value;
 			}
@@ -383,7 +383,7 @@ namespace Yusen.GExplorer {
 		private void UserCommandsManager_UserCommandsChanged(object sender, EventArgs e) {
 			this.CreateUserCommandsMenuItems();
 		}
-		private void ssl_ScreenSaverRaising(object sender, System.ComponentModel.CancelEventArgs e) {
+		private void ssl_ScreenSaverRaising(object sender, CancelEventArgs e) {
 			if (this.DisableScreenSaverEnabled) {
 				e.Cancel = true;
 			}
@@ -557,6 +557,12 @@ namespace Yusen.GExplorer {
 		private void tsmiBrowseRecommended_Click(object sender, EventArgs e) {
 			Utility.Browse(this.CurrentContent.RecommendPageUri);
 		}
+		private void tsmiFullScreen_Click(object sender, EventArgs e) {
+			try {
+				this.wmpMain.fullScreen = true;
+			} catch {
+			}
+		}
 		#endregion
 		#region WMPのイベント
 		private void wmpMain_OpenStateChange(object sender, _WMPOCXEvents_OpenStateChangeEvent e) {
@@ -572,7 +578,6 @@ namespace Yusen.GExplorer {
 					// entry url のよみとり
 					string entryUrl = this.currentAttribs[PlayerForm.AttribNameEntryUrl];
 					//音量調整
-					//THANKSTO: http://pc8.2ch.net/test/read.cgi/esite/1116115226/81 の神
 					if (this.tsmiAutoVolume.Checked && !this.wmpMain.settings.mute) {
 						//一旦音量を代入
 						this.ModifyVolume();
@@ -658,7 +663,6 @@ namespace Yusen.GExplorer {
 #if false
 	public enum PlayMode {
 		Playlist,
-		PlaylistLoop,
 		SingleRepeat,
 		Shuffle,
 	}

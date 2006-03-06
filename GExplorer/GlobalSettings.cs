@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using GBitRate = Yusen.GCrawler.GBitRate;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
 using Microsoft.Win32;
@@ -32,17 +31,51 @@ namespace Yusen.GExplorer {
 		
 		private int userNo = GlobalSettings.InvalidUserNo;
 		[XmlIgnore]
-		[Category("GyaO")]
+		[Category("ユーザ情報")]
 		[DisplayName("Cookie_UserId")]
-		[Description("クッキーに保存されている Cookie_UserId の値．")]
+		[Description("クッキーに保存されている Cookie_UserId の値．この設定は設定ファイルに保存されません．起動時毎にクッキーから読み取ります．")]
 		[DefaultValue(GlobalSettings.InvalidUserNo)]
 		public int UserNo {
 			get { return this.userNo; }
 			set { this.userNo = value; }
 		}
+		private string nameFamily = string.Empty;
+		[Category("ユーザ情報")]
+		[DisplayName("氏名(姓)")]
+		[Description("応募フォームのフィルに使います．注意: この設定は設定ファイルに保存されます．")]
+		[DefaultValue("")]
+		public string NameFamily {
+			get { return this.nameFamily; }
+			set { this.nameFamily = value; }
+		}
+		private string nameFirst = string.Empty;
+		[Category("ユーザ情報")]
+		[DisplayName("氏名(名)")]
+		[Description("応募フォームのフィルに使います．注意: この設定は設定ファイルに保存されます．")]
+		[DefaultValue("")]
+		public string NameFirst {
+			get { return this.nameFirst; }
+			set { this.nameFirst = value; }
+		}
+		private string emailAddress = string.Empty;
+		[Category("ユーザ情報")]
+		[DisplayName("Eメールアドレス")]
+		[Description("応募フォームのフィルに使います．注意: この設定は設定ファイルに保存されます．")]
+		[DefaultValue("")]
+		public string EmailAddress {
+			get { return this.emailAddress; }
+			set { this.emailAddress = value; }
+		}
+		[XmlIgnore]
+		[Browsable(false)]
+		public bool IsValidFormData {
+			get {
+				return !string.IsNullOrEmpty(this.NameFamily) && !string.IsNullOrEmpty(this.NameFirst) && !string.IsNullOrEmpty(this.EmailAddress);
+			}
+		}
 		
 		private GBitRate bitRate = GBitRate.SuperFine;
-		[Category("GyaO")]
+		[Category("ビットレート")]
 		[DisplayName("ビットレート")]
 		[Description("再生する動画のビットレート．専用プレーヤだけでなくWMPでの再生もこの設定の影響を受ける．")]
 		[DefaultValue(GBitRate.SuperFine)]
@@ -50,10 +83,20 @@ namespace Yusen.GExplorer {
 			get {return this.bitRate;}
 			set {this.bitRate = value;}
 		}
-
+		private bool promptBitrateOnStartup = true;
+		[Category("ビットレート")]
+		[DisplayName("起動時に確認する")]
+		[Description("起動時にビットレートを確認します．")]
+		[DefaultValue(true)]
+		public bool PromptBitrateOnStartup {
+			get { return this.promptBitrateOnStartup; }
+			set { this.promptBitrateOnStartup = value; }
+		}
+		
 		/// <summary>
 		/// 設定ファイルに userNo が保存されてなかったら取得の必要があり true が返る．
 		/// </summary>
+		[XmlIgnore]
 		[Browsable(false)]
 		internal bool IsCookieRequired {
 			get {

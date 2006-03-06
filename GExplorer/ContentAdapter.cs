@@ -54,7 +54,7 @@ namespace Yusen.GExplorer {
 			total = TimeSpan.Zero;
 			isExact = true;
 			foreach (ContentAdapter cont in conts) {
-				if (cont.GTimeSpan.CanParse) {
+				if (cont.GTimeSpan.HasTimeSpan) {
 					total += cont.GTimeSpan.TimeSpan;
 				} else {
 					isExact = false;
@@ -69,6 +69,8 @@ namespace Yusen.GExplorer {
 		private GTimeSpan gTimeSpan;
 		private string deadline = string.Empty;
 		private string comment = string.Empty;
+		private string displayName = null;
+		private string attributes = null;
 
 		public ContentAdapter() {
 		}
@@ -76,7 +78,27 @@ namespace Yusen.GExplorer {
 			this.InnerContent = innerCont;
 			this.TryResetDeadline();
 		}
-		
+
+		private string CreateDisplayName() {
+			StringBuilder sb = new StringBuilder();
+			sb.Append("["+ this.GenreName + "]");
+			sb.Append(" " + this.Title);
+			if (!string.IsNullOrEmpty(this.EpisodeNumber) && !this.EpisodeNumber.Equals(this.Title)) {
+				sb.Append(" / " + this.EpisodeNumber);
+			}
+			if (!string.IsNullOrEmpty(this.SubTitle) && !this.SubTitle.Equals(this.Title) && !this.SubTitle.Equals(this.EpisodeNumber)) {
+				sb.Append(" / " + this.SubTitle);
+			}
+			return sb.ToString();
+		}
+		private string CreateAttributes() {
+			if (this.IsDummy) {
+				return this.FromCache ? "D" : "DN";
+			} else {
+				return this.FromCache ? string.Empty : "N";
+			}
+		}
+
 		[Browsable(false)]
 		public GContent InnerContent {
 			get {
@@ -153,18 +175,12 @@ namespace Yusen.GExplorer {
 		[XmlIgnore]
 		[Category("専ブラが付加した情報")]
 		[Description("ジャンル名やタイトルを適当に組み合わせた表示名．")]
-		public string DisplayName{
+		public string DisplayName {
 			get {
-				StringBuilder sb = new StringBuilder();
-				sb.Append("[" + this.GenreName + "]");
-				sb.Append(" " + this.Title);
-				if (! string.IsNullOrEmpty(this.EpisodeNumber)) {
-					sb.Append(" / " + this.EpisodeNumber);
+				if (null == this.displayName) {
+					this.displayName = this.CreateDisplayName();
 				}
-				if (! string.IsNullOrEmpty(this.SubTitle) && this.Title != this.SubTitle && this.EpisodeNumber != this.SubTitle) {
-					sb.Append(" / " + this.SubTitle);
-				}
-				return sb.ToString();
+				return this.displayName;
 			}
 		}
 		[XmlIgnore]
@@ -186,11 +202,10 @@ namespace Yusen.GExplorer {
 		[Description("属性文字列．")]
 		public string Attributes{
 			get {
-				if(this.IsDummy) {
-					return this.FromCache ? "D" : "DN";
-				} else {
-					return this.FromCache ? string.Empty : "N";
+				if (null == this.attributes) {
+					this.attributes = this.CreateAttributes();
 				}
+				return this.attributes;
 			}
 		}
 		

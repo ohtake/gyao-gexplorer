@@ -18,7 +18,7 @@ namespace Yusen.GCrawler {
 			input = HtmlUtility.regexTabParaEnd.Replace(input, "\n");
 			input = HtmlUtility.regexTabBreak.Replace(input, "\n");
 			input = HtmlUtility.regexTab.Replace(input, "");//System.Web.RegularExpression はうまくいかない？
-			input = HttpUtility.HtmlDecode(input);
+			input = HttpUtility.HtmlDecode(input);//実態参照などの解決
 			return input;
 		}
 	}

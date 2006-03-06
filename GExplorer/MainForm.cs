@@ -87,9 +87,9 @@ namespace Yusen.GExplorer {
 			this.FocusOnResultAfterGenreChanged = settings.FocusOnResultAfterGenreChanged ?? this.FocusOnResultAfterGenreChanged;
 			this.scListsAndDetail.SplitterDistance = settings.ListViewWidth ?? this.scListsAndDetail.SplitterDistance;
 			this.scLists.SplitterDistance = settings.ListViewHeight ?? this.scLists.SplitterDistance;
-			this.crawlResultView1.ApplySettings(settings.GenreListViewSettings);
-			this.playListView1.ApplySettings(settings.PlayListViewSettings);
-			this.contentDetailView1.ApplySettings(settings.ContentDetailViewSettings);
+			if (null != settings.GenreListViewSettings) this.crawlResultView1.ApplySettings(settings.GenreListViewSettings);
+			if (null != settings.PlayListViewSettings) this.playListView1.ApplySettings(settings.PlayListViewSettings);
+			if (null != settings.ContentDetailViewSettings) this.contentDetailView1.ApplySettings(settings.ContentDetailViewSettings);
 		}
 		public string FilenameForSettings {
 			get { return @"MainFormSettings.xml"; }
@@ -124,7 +124,7 @@ namespace Yusen.GExplorer {
 		private void MainForm_Load(object sender, EventArgs e) {
 			this.crawler = new Crawler(new HtmlParserRegex(), Cache.Instance.ContentCacheController, Cache.Instance.DeadlineTable);
 			
-			this.Text = Application.ProductName + " " + Application.ProductVersion;
+			this.Text = Program.ApplicationName;
 			Utility.AppendHelpMenu(this.menuStrip1);
 			this.tsmiSettings.DropDown.Closing += Utility.ToolStripDropDown_CancelClosingOnClick;
 
@@ -170,7 +170,7 @@ namespace Yusen.GExplorer {
 			switch (e.CloseReason) {
 				case CloseReason.UserClosing:
 					if (PlayList.Instance.HasCurrentContent) {
-						switch (MessageBox.Show("再生中ですがアプリケーションを終了しますか？", Application.ProductName, MessageBoxButtons.YesNo, MessageBoxIcon.Question)) {
+						switch (MessageBox.Show("再生中ですがアプリケーションを終了しますか？", Program.ApplicationName, MessageBoxButtons.YesNo, MessageBoxIcon.Question)) {
 							case DialogResult.No:
 								e.Cancel = true;
 								break;
@@ -223,7 +223,7 @@ namespace Yusen.GExplorer {
 				lock (this.crawler) {
 					if (null != this.threadCrawler) {
 						MessageBox.Show(
-							"多重クロールは禁止．", Application.ProductName,
+							"多重クロールは禁止．", Program.ApplicationName,
 							MessageBoxButtons.OK, MessageBoxIcon.Stop);
 						return;
 					}

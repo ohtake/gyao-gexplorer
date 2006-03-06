@@ -77,26 +77,6 @@ namespace Yusen.GExplorer {
 				}
 			}
 		}
-		public ContentAdapter FocusedContent {
-			get {
-				ListViewItem lvi = this.listView1.FocusedItem;
-				if (null != lvi) {
-					return lvi.Tag as ContentAdapter;
-				}
-				return null;
-			}
-			set {
-				if (null != value) {
-					foreach (ListViewItem lvi in this.listView1.Items) {
-						if (value.Equals(lvi.Tag)) {
-							this.listView1.FocusedItem = lvi;
-							return;
-						}
-					}
-				}
-				this.listView1.FocusedItem = null;
-			}
-		}
 		public bool MultiSelectEnabled {
 			get { return this.tsmiMultiSelectEnabled.Checked; }
 			set {
@@ -441,40 +421,77 @@ namespace Yusen.GExplorer {
 		private void tsmiMoveToTop_Click(object sender, EventArgs e) {
 			List<ContentAdapter> conts = new List<ContentAdapter>(this.SelectedContents);
 			conts.Reverse();
+			this.listView1.BeginUpdate();
 			PlayList.Instance.BeginUpdate();
 			conts.ForEach(PlayList.Instance.MoveToTop);
 			PlayList.Instance.EndUpdate();
 			this.SelectedContents = conts.ToArray();
-			this.ScrollToTop();
+			if (conts.Count > 0) {
+				int idx = PlayList.Instance.IndexOf(conts[0]);
+				this.listView1.Items[idx].Focused = true;
+				this.ScrollToTop();
+			}
+			this.listView1.EndUpdate();
 		}
 		private void tsmiMoveUp_Click(object sender, EventArgs e) {
+			int? ensVis = null;
 			List<ContentAdapter> conts = new List<ContentAdapter>(this.SelectedContents);
+			this.listView1.BeginUpdate();
 			PlayList.Instance.BeginUpdate();
 			conts.ForEach(PlayList.Instance.MoveUp);
 			PlayList.Instance.EndUpdate();
 			this.SelectedContents = conts.ToArray();
+			if (conts.Count > 0) {
+				int idx = PlayList.Instance.IndexOf(conts[0]);
+				this.listView1.Items[idx].Focused = true;
+				ensVis = (0 <= idx - 1) ? idx - 1 : 0;
+			}
+			this.listView1.EndUpdate();
+			if (ensVis.HasValue) {
+				this.listView1.EnsureVisible(ensVis.Value);
+			}
 		}
 		private void tsmiMoveDown_Click(object sender, EventArgs e) {
+			int? ensVis = null;
 			List<ContentAdapter> conts = new List<ContentAdapter>(this.SelectedContents);
 			conts.Reverse();
+			this.listView1.BeginUpdate();
 			PlayList.Instance.BeginUpdate();
 			conts.ForEach(PlayList.Instance.MoveDown);
 			PlayList.Instance.EndUpdate();
 			this.SelectedContents = conts.ToArray();
+			if (conts.Count > 0) {
+				int idx = PlayList.Instance.IndexOf(conts[0]);
+				this.listView1.Items[idx].Focused = true;
+				ensVis = (this.listView1.Items.Count > idx + 1) ? idx + 1 : idx;
+			}
+			this.listView1.EndUpdate();
+			if (ensVis.HasValue) {
+				this.listView1.EnsureVisible(ensVis.Value);
+			}
 		}
 		private void tsmiMoveToBottom_Click(object sender, EventArgs e) {
 			List<ContentAdapter> conts = new List<ContentAdapter>(this.SelectedContents);
+			this.listView1.BeginUpdate();
 			PlayList.Instance.BeginUpdate();
 			conts.ForEach(PlayList.Instance.MoveToBottom);
 			PlayList.Instance.EndUpdate();
 			this.SelectedContents = conts.ToArray();
-			this.ScrollToBottom();
+			if (conts.Count > 0) {
+				int idx = PlayList.Instance.IndexOf(conts[0]);
+				this.listView1.Items[idx].Focused = true;
+				this.ScrollToBottom();
+			}
+			this.listView1.EndUpdate();
 		}
 		private void tsmiRemoveItem_Click(object sender, EventArgs e) {
 			List<ContentAdapter> conts = new List<ContentAdapter>(this.SelectedContents);
+			this.listView1.BeginUpdate();
 			PlayList.Instance.BeginUpdate();
 			conts.ForEach(PlayList.Instance.Remove);
 			PlayList.Instance.EndUpdate();
+			this.SelectedContents = new ContentAdapter[] { };
+			this.listView1.EndUpdate();
 		}
 		private void tsmiPlayWithWmp_Click(object sender, EventArgs e) {
 			foreach (ContentAdapter cont in this.SelectedContents) {

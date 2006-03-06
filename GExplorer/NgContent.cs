@@ -21,7 +21,7 @@ namespace Yusen.GExplorer {
 		private DateTime created;
 		private DateTime lastAbone;
 
-		private PropertyInfo objInfo;
+		private PropertyInfo subjInfo;
 		private MethodInfo predInfo;
 		
 		public NgContent(){
@@ -44,8 +44,8 @@ namespace Yusen.GExplorer {
 			get { return this.propertyName; }
 			set {
 				this.propertyName = value;
-				this.objInfo = typeof(ContentAdapter).GetProperty(value);
-				if (null == this.objInfo) {
+				this.subjInfo = typeof(ContentAdapter).GetProperty(value);
+				if (null == this.subjInfo) {
 					throw new ArgumentException("存在しないプロパティ名: " + value);
 				}
 			}
@@ -76,11 +76,11 @@ namespace Yusen.GExplorer {
 			get { return this.lastAbone; }
 			set { this.lastAbone = value; }
 		}
-		/// <summary>NGか否かを判定する．NGであった場合には<see cref="LastAbone"/>が更新される．</summary>
+		/// <summary>NGか否かを判定する．</summary>
 		/// <param name="p">判定対象の<see cref="GPackage"/>．</param>
 		/// <returns>NGであったらtrueが返る．</returns>
 		internal bool IsNgContent(ContentAdapter cont) {
-			string propValue = this.objInfo.GetValue(cont, null).ToString();
+			string propValue = this.subjInfo.GetValue(cont, null).ToString();
 			return (bool)this.predInfo.Invoke(propValue, new object[] { this.word });
 		}
 	}
@@ -116,6 +116,17 @@ namespace Yusen.GExplorer {
 				}
 			}
 			return false;
+		}
+
+		public NgContent[] EnumerateNgsTo(ContentAdapter cont) {
+			List<NgContent> ngs = new List<NgContent>();
+			foreach (NgContent nc in base.items) {
+				if (nc.IsNgContent(cont)) {
+					ngs.Add(nc);
+					//最終あぼーん日時の更新はとりあえずやらないでおく
+				}
+			}
+			return ngs.ToArray();
 		}
 		
 		protected override string FilenameForSerialization {

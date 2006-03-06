@@ -10,7 +10,7 @@ namespace Yusen.GExplorer {
 
 		public SplashForm() {
 			InitializeComponent();
-			this.Text = Application.ProductName + " " + Application.ProductVersion;
+			this.Text = Program.ApplicationName;
 		}
 		
 		public void Initialize(string message, int maxProg) {

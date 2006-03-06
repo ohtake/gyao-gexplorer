@@ -61,6 +61,8 @@
 			this.txtDeadline = new System.Windows.Forms.TextBox();
 			this.tabpDetail = new System.Windows.Forms.TabPage();
 			this.propgDetail = new System.Windows.Forms.PropertyGrid();
+			this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
+			this.tsmiTestNewPictureBox = new System.Windows.Forms.ToolStripMenuItem();
 			this.splitContainer1.Panel1.SuspendLayout();
 			this.splitContainer1.Panel2.SuspendLayout();
 			this.splitContainer1.SuspendLayout();
@@ -116,7 +118,7 @@
             this.tssSettings,
             this.tsmiSettings});
 			this.cmsImage.Name = "cmsImage";
-			this.cmsImage.Size = new System.Drawing.Size(249, 154);
+			this.cmsImage.Size = new System.Drawing.Size(249, 176);
 			this.cmsImage.Opening += new System.ComponentModel.CancelEventHandler(this.cmsImage_Opening);
 			// 
 			// tsmiCopyImageUri
@@ -162,7 +164,9 @@
 			this.tsmiTest.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiTestLoad,
             this.tsmiTestLoadAsync,
-            this.tsmiTestCancelAsync});
+            this.tsmiTestCancelAsync,
+            this.toolStripMenuItem3,
+            this.tsmiTestNewPictureBox});
 			this.tsmiTest.Name = "tsmiTest";
 			this.tsmiTest.Size = new System.Drawing.Size(248, 22);
 			this.tsmiTest.Text = "テスト(&T)";
@@ -170,21 +174,21 @@
 			// tsmiTestLoad
 			// 
 			this.tsmiTestLoad.Name = "tsmiTestLoad";
-			this.tsmiTestLoad.Size = new System.Drawing.Size(137, 22);
+			this.tsmiTestLoad.Size = new System.Drawing.Size(152, 22);
 			this.tsmiTestLoad.Text = "&Load";
 			this.tsmiTestLoad.Click += new System.EventHandler(this.tsmiTestLoad_Click);
 			// 
 			// tsmiTestLoadAsync
 			// 
 			this.tsmiTestLoadAsync.Name = "tsmiTestLoadAsync";
-			this.tsmiTestLoadAsync.Size = new System.Drawing.Size(137, 22);
+			this.tsmiTestLoadAsync.Size = new System.Drawing.Size(152, 22);
 			this.tsmiTestLoadAsync.Text = "Load&Async";
 			this.tsmiTestLoadAsync.Click += new System.EventHandler(this.tsmiTestLoadAsync_Click);
 			// 
 			// tsmiTestCancelAsync
 			// 
 			this.tsmiTestCancelAsync.Name = "tsmiTestCancelAsync";
-			this.tsmiTestCancelAsync.Size = new System.Drawing.Size(137, 22);
+			this.tsmiTestCancelAsync.Size = new System.Drawing.Size(152, 22);
 			this.tsmiTestCancelAsync.Text = "&CancelAsync";
 			this.tsmiTestCancelAsync.Click += new System.EventHandler(this.tsmiTestCancelAsync_Click);
 			// 
@@ -427,6 +431,18 @@
 			this.propgDetail.Size = new System.Drawing.Size(216, 201);
 			this.propgDetail.TabIndex = 0;
 			// 
+			// toolStripMenuItem3
+			// 
+			this.toolStripMenuItem3.Name = "toolStripMenuItem3";
+			this.toolStripMenuItem3.Size = new System.Drawing.Size(149, 6);
+			// 
+			// tsmiTestNewPictureBox
+			// 
+			this.tsmiTestNewPictureBox.Name = "tsmiTestNewPictureBox";
+			this.tsmiTestNewPictureBox.Size = new System.Drawing.Size(152, 22);
+			this.tsmiTestNewPictureBox.Text = "&new PictureBox";
+			this.tsmiTestNewPictureBox.Click += new System.EventHandler(this.tsmiTestNewPictureBox_Click);
+			// 
 			// ContentDetailView
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -488,5 +504,7 @@
 		private System.Windows.Forms.ToolStripMenuItem tsmiTestLoad;
 		private System.Windows.Forms.ToolStripMenuItem tsmiTestLoadAsync;
 		private System.Windows.Forms.ToolStripMenuItem tsmiTestCancelAsync;
+		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
+		private System.Windows.Forms.ToolStripMenuItem tsmiTestNewPictureBox;
 	}
 }

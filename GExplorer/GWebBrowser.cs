@@ -13,13 +13,20 @@ namespace Yusen.GExplorer {
 		
 		private Dictionary<HtmlElement, string> dicPackage = new Dictionary<HtmlElement, string>();
 		private Dictionary<HtmlElement, string> dicContent = new Dictionary<HtmlElement, string>();
+
+		private HtmlElement clickedPackage;
+		private HtmlElement clickedContent;
+		
+		private bool ignoreMenuFlag = false;
 		
 		public GWebBrowser() {
 			InitializeComponent();
 			
 			//コンテキストメニュー
+			this.tsmiPackagePerformClick.Click += new EventHandler(tsmiPackagePerformClick_Click);
 			this.tsmiPackageOpen.Click += new EventHandler(tsmiPackageOpen_Click);
 			this.tsmiPackageCancel.Click += new EventHandler(tsmiPackageCancel_Click);
+			this.tsmiContentPerformClick.Click += new EventHandler(tsmiContentPerformClick_Click);
 			this.tsmiContentOpenDetail.Click += new EventHandler(tsmiContentOpenDetail_Click);
 			this.tsmiContentAddToPlayList.Click += new EventHandler(tsmiContentAddToPlayList_Click);
 			this.tsmiContentAddToPlayListWithComment.Click += new EventHandler(tsmiContentAddToPlayListWithComment_Click);
@@ -35,7 +42,7 @@ namespace Yusen.GExplorer {
 				UserCommandsManager.Instance.UserCommandsChanged -= new EventHandler(this.UserCommandsManager_UserCommandsChanged);
 			};
 		}
-		
+
 		private void GWebBrowser_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e) {
 			this.dicPackage.Clear();
 			this.dicContent.Clear();
@@ -61,16 +68,16 @@ namespace Yusen.GExplorer {
 				} catch(UriFormatException){
 					continue;
 				}
-				//パッケージ判定
-				string packageId;
-				if (GPackage.TryExtractPackageId(uri, out packageId)) {
-					this.AddToPackages(elem, packageId);
-					continue;
-				}
 				//コンテンツ判定
 				string contentId;
 				if (GContent.TryExtractContentId(uri, out contentId)) {
 					this.AddToContents(elem, contentId);
+					continue;
+				}
+				//パッケージ判定
+				string packageId;
+				if (GPackage.TryExtractPackageId(uri, out packageId)) {
+					this.AddToPackages(elem, packageId);
 					continue;
 				}
 			}
@@ -78,12 +85,17 @@ namespace Yusen.GExplorer {
 		private void GWebBrowser_Navigating(object sender, WebBrowserNavigatingEventArgs e) {
 			this.ttId.Hide(this);
 		}
+		private void GWebBrowser_Navigated(object sender, WebBrowserNavigatedEventArgs e) {
+			this.ttId.Hide(this);
+		}
 
 		private void Package_Click(object sender, HtmlElementEventArgs e) {
 			this.ttId.Hide(this);
+			if (this.ignoreMenuFlag) {
+				return;
+			}
 			if (Keys.None == (Keys.Alt & Control.ModifierKeys)) {
-				//TagにIDを仕込んでおく
-				this.cmsPackage.Tag = this.dicPackage[sender as HtmlElement];
+				this.clickedPackage = sender as HtmlElement;
 				this.cmsPackage.Show(Control.MousePosition);
 				e.BubbleEvent = false;
 				e.ReturnValue = false;
@@ -110,9 +122,11 @@ namespace Yusen.GExplorer {
 		
 		private void Content_Click(object sender, HtmlElementEventArgs e) {
 			this.ttId.Hide(this);
+			if (this.ignoreMenuFlag) {
+				return;
+			}
 			if (Keys.None == (Keys.Alt & Control.ModifierKeys)) {
-				//TagにIDを仕込んでおく
-				this.cmsContent.Tag = this.dicContent[sender as HtmlElement];
+				this.clickedContent = sender as HtmlElement;
 				this.cmsContent.Show(Control.MousePosition);
 				e.BubbleEvent = false;
 				e.ReturnValue = false;
@@ -154,27 +168,37 @@ namespace Yusen.GExplorer {
 			elem.MouseLeave += new HtmlElementEventHandler(this.Content_MouseLeave);
 		}
 		private void ShowHelpOnHowToCancelMenu() {
-			MessageBox.Show("Altキーを押していれば何も出ません．", "ティップやメニューが邪魔", MessageBoxButtons.OK, MessageBoxIcon.Information);
+			MessageBox.Show("Altキーを押していれば，\nマウスオーバーしてもティップが出ませんし，\nクリックしてもメニューが出ずに通常のクリックとして扱われます．", "ティップやメニューが邪魔", MessageBoxButtons.OK, MessageBoxIcon.Information);
 		}
 
+		private void tsmiPackagePerformClick_Click(object sender, EventArgs e) {
+			this.ignoreMenuFlag = true;
+			this.timerIgnoreMenu.Start();
+			this.clickedPackage.InvokeMember("click");
+		}
 		private void tsmiPackageOpen_Click(object sender, EventArgs e) {
-			this.Url = GPackage.CreatePackagePageUri(this.cmsPackage.Tag as string);
+			this.Url = GPackage.CreatePackagePageUri(this.dicPackage[this.clickedPackage]);
 		}
 		private void tsmiPackageCancel_Click(object sender, EventArgs e) {
 			this.ShowHelpOnHowToCancelMenu();
 		}
 
+		private void tsmiContentPerformClick_Click(object sender, EventArgs e) {
+			this.ignoreMenuFlag = true;
+			this.timerIgnoreMenu.Start();
+			this.clickedContent.InvokeMember("click");
+		}
 		private void tsmiContentOpenDetail_Click(object sender, EventArgs e) {
-			this.Url = GContent.CreateDetailPageUri(this.cmsContent.Tag as string);
+			this.Url = GContent.CreateDetailPageUri(this.dicContent[this.clickedContent]);
 		}
 		private void tsmiContentAddToPlayList_Click(object sender, EventArgs e) {
-			string contId = this.cmsContent.Tag as string;
+			string contId = this.dicContent[this.clickedContent];
 			GContent cont = GContent.DoDownload(contId);
 			ContentAdapter ca = new ContentAdapter(cont);
 			PlayList.Instance.AddIfNotExists(ca);
 		}
 		private void tsmiContentAddToPlayListWithComment_Click(object sender, EventArgs e) {
-			string contId = this.cmsContent.Tag as string;
+			string contId = this.dicContent[this.clickedContent];
 			GContent cont = GContent.DoDownload(contId);
 			ContentAdapter ca = new ContentAdapter(cont);
 			this.inputBoxDialog1.Input = string.Empty;
@@ -188,16 +212,16 @@ namespace Yusen.GExplorer {
 			}
 		}
 		private void tsmiContentPlayWithoutAdding_Click(object sender, EventArgs e) {
-			string contId = this.cmsContent.Tag as string;
+			string contId = this.dicContent[this.clickedContent];
 			GContent cont = GContent.DoDownload(contId);
 			ContentAdapter ca = new ContentAdapter(cont);
 			PlayerForm.Play(ca);
 		}
 		private void tsmiContentPlayWmp_Click(object sender, EventArgs e) {
-			Utility.PlayWithWMP(GContent.CreatePlayListUri(this.cmsContent.Tag as string, GlobalSettings.Instance.UserNo, GlobalSettings.Instance.BitRate));
+			Utility.PlayWithWMP(GContent.CreatePlayListUri(this.dicContent[this.clickedContent], GlobalSettings.Instance.UserNo, GlobalSettings.Instance.BitRate));
 		}
 		private void tsmiContentPlayBrowser_Click(object sender, EventArgs e) {
-			Utility.Browse(GContent.CreatePlayerPageUri(this.cmsContent.Tag as string, GlobalSettings.Instance.BitRate));
+			Utility.Browse(GContent.CreatePlayerPageUri(this.dicContent[this.clickedContent], GlobalSettings.Instance.BitRate));
 		}
 		private void tsmiContentCancel_Click(object sender, EventArgs e) {
 			this.ShowHelpOnHowToCancelMenu();
@@ -210,7 +234,7 @@ namespace Yusen.GExplorer {
 				ToolStripMenuItem mi = new ToolStripMenuItem(
 					uc.Title, null,
 					new EventHandler(delegate(object sender2, EventArgs e2) {
-					string contId = this.cmsContent.Tag as string;
+					string contId = this.dicContent[this.clickedContent];
 					GContent cont = GContent.DoDownload(contId);
 					ContentAdapter ca = new ContentAdapter(cont);
 					((sender2 as ToolStripMenuItem).Tag as UserCommand).Execute(
@@ -227,6 +251,13 @@ namespace Yusen.GExplorer {
 			if(null != this.Document) {
 				this.Document.InvokeScript("gotoCampaign");
 			}
+		}
+
+		private void timerIgnoreMenu_Tick(object sender, EventArgs e) {
+			this.timerIgnoreMenu.Stop();
+			//クリックイベントが複数起きることがあるので
+			//フラグではなくタイマーでお茶を濁す
+			this.ignoreMenuFlag = false;
 		}
 
 #if false

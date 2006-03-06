@@ -47,7 +47,7 @@
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 28F));
-			this.tableLayoutPanel1.Size = new System.Drawing.Size(257, 131);
+			this.tableLayoutPanel1.Size = new System.Drawing.Size(257, 138);
 			this.tableLayoutPanel1.TabIndex = 0;
 			// 
 			// txtLog
@@ -59,13 +59,13 @@
 			this.txtLog.Name = "txtLog";
 			this.txtLog.ReadOnly = true;
 			this.txtLog.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-			this.txtLog.Size = new System.Drawing.Size(251, 77);
+			this.txtLog.Size = new System.Drawing.Size(251, 84);
 			this.txtLog.TabIndex = 0;
 			// 
 			// progbTotal
 			// 
 			this.progbTotal.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.progbTotal.Location = new System.Drawing.Point(3, 106);
+			this.progbTotal.Location = new System.Drawing.Point(3, 113);
 			this.progbTotal.Name = "progbTotal";
 			this.progbTotal.Size = new System.Drawing.Size(151, 22);
 			this.progbTotal.TabIndex = 1;
@@ -73,7 +73,7 @@
 			// btnAbort
 			// 
 			this.btnAbort.Anchor = System.Windows.Forms.AnchorStyles.None;
-			this.btnAbort.Location = new System.Drawing.Point(166, 106);
+			this.btnAbort.Location = new System.Drawing.Point(166, 113);
 			this.btnAbort.Name = "btnAbort";
 			this.btnAbort.Size = new System.Drawing.Size(82, 22);
 			this.btnAbort.TabIndex = 2;
@@ -96,7 +96,7 @@
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(257, 131);
+			this.ClientSize = new System.Drawing.Size(257, 138);
 			this.Controls.Add(this.tableLayoutPanel1);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
 			this.MaximizeBox = false;

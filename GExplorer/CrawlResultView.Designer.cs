@@ -24,15 +24,6 @@
 		/// </summary>
 		private void InitializeComponent() {
 			this.components = new System.ComponentModel.Container();
-			this.listView1 = new Yusen.GExplorer.DoubleBufferedListView();
-			this.chId = new System.Windows.Forms.ColumnHeader();
-			this.chTitle = new System.Windows.Forms.ColumnHeader();
-			this.chEpisode = new System.Windows.Forms.ColumnHeader();
-			this.chSubTitle = new System.Windows.Forms.ColumnHeader();
-			this.chDuration = new System.Windows.Forms.ColumnHeader();
-			this.chDeadline = new System.Windows.Forms.ColumnHeader();
-			this.chDescription = new System.Windows.Forms.ColumnHeader();
-			this.chAttribs = new System.Windows.Forms.ColumnHeader();
 			this.cmsContent = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.tsmiAdd = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiAddWithComment = new System.Windows.Forms.ToolStripMenuItem();
@@ -46,14 +37,27 @@
 			this.tsmiCopyDetailUri = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiCopyNameAndDetailUri = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-			this.tsmiRemoveCache = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiAddNg = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiViewImages = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
+			this.tsmiNg = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiAddNgWithTitle = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiAddNgWithId = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
+			this.tsmiNgTest = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiRemoveCache = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiUserCommands = new System.Windows.Forms.ToolStripMenuItem();
 			this.colorDialog1 = new System.Windows.Forms.ColorDialog();
 			this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
+			this.listView1 = new Yusen.GExplorer.DoubleBufferedListView();
+			this.chId = new System.Windows.Forms.ColumnHeader();
+			this.chTitle = new System.Windows.Forms.ColumnHeader();
+			this.chEpisode = new System.Windows.Forms.ColumnHeader();
+			this.chSubTitle = new System.Windows.Forms.ColumnHeader();
+			this.chDuration = new System.Windows.Forms.ColumnHeader();
+			this.chDeadline = new System.Windows.Forms.ColumnHeader();
+			this.chDescription = new System.Windows.Forms.ColumnHeader();
+			this.chAttribs = new System.Windows.Forms.ColumnHeader();
 			this.tsMain = new System.Windows.Forms.ToolStrip();
 			this.tslTitle = new System.Windows.Forms.ToolStripLabel();
 			this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
@@ -100,6 +104,8 @@
 			this.timerFilter = new System.Windows.Forms.Timer(this.components);
 			this.inputBoxDialog1 = new Yusen.GExplorer.InputBoxDialog();
 			this.exceptionDialog1 = new Yusen.GExplorer.ExceptionDialog();
+			this.tsmiViewImagesSmall = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiViewImagesLarge = new System.Windows.Forms.ToolStripMenuItem();
 			this.cmsContent.SuspendLayout();
 			this.toolStripContainer1.ContentPanel.SuspendLayout();
 			this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
@@ -107,75 +113,6 @@
 			this.tsMain.SuspendLayout();
 			this.tsFilter.SuspendLayout();
 			this.SuspendLayout();
-			// 
-			// listView1
-			// 
-			this.listView1.AllowDrop = true;
-			this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.chId,
-            this.chTitle,
-            this.chEpisode,
-            this.chSubTitle,
-            this.chDuration,
-            this.chDeadline,
-            this.chDescription,
-            this.chAttribs});
-			this.listView1.ContextMenuStrip = this.cmsContent;
-			this.listView1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.listView1.FullRowSelect = true;
-			this.listView1.HideSelection = false;
-			this.listView1.Location = new System.Drawing.Point(0, 0);
-			this.listView1.Name = "listView1";
-			this.listView1.ShowItemToolTips = true;
-			this.listView1.Size = new System.Drawing.Size(550, 158);
-			this.listView1.TabIndex = 0;
-			this.listView1.UseCompatibleStateImageBehavior = false;
-			this.listView1.View = System.Windows.Forms.View.Details;
-			this.listView1.DoubleClick += new System.EventHandler(this.listView1_DoubleClick);
-			this.listView1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.listView1_KeyDown);
-			this.listView1.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.listView1_ColumnClick);
-			this.listView1.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.listView1_ItemSelectionChanged);
-			this.listView1.ItemDrag += new System.Windows.Forms.ItemDragEventHandler(this.listView1_ItemDrag);
-			// 
-			// chId
-			// 
-			this.chId.Text = "contents_id";
-			this.chId.Width = 74;
-			// 
-			// chTitle
-			// 
-			this.chTitle.Text = "タイトル";
-			this.chTitle.Width = 74;
-			// 
-			// chEpisode
-			// 
-			this.chEpisode.Text = "話数";
-			this.chEpisode.Width = 53;
-			// 
-			// chSubTitle
-			// 
-			this.chSubTitle.Text = "サブタイトル";
-			this.chSubTitle.Width = 55;
-			// 
-			// chDuration
-			// 
-			this.chDuration.Text = "番組時間";
-			this.chDuration.Width = 56;
-			// 
-			// chDeadline
-			// 
-			this.chDeadline.Text = "配信期限";
-			this.chDeadline.Width = 70;
-			// 
-			// chDescription
-			// 
-			this.chDescription.Text = "説明";
-			this.chDescription.Width = 100;
-			// 
-			// chAttribs
-			// 
-			this.chAttribs.Text = "属性";
-			this.chAttribs.Width = 34;
 			// 
 			// cmsContent
 			// 
@@ -192,12 +129,14 @@
             this.tsmiCopyDetailUri,
             this.tsmiCopyNameAndDetailUri,
             this.toolStripSeparator2,
+            this.tsmiViewImages,
+            this.toolStripMenuItem4,
+            this.tsmiNg,
             this.tsmiRemoveCache,
-            this.tsmiAddNg,
             this.toolStripSeparator3,
             this.tsmiUserCommands});
 			this.cmsContent.Name = "contextMenuStrip1";
-			this.cmsContent.Size = new System.Drawing.Size(215, 292);
+			this.cmsContent.Size = new System.Drawing.Size(215, 342);
 			this.cmsContent.Opening += new System.ComponentModel.CancelEventHandler(this.cmsContent_Opening);
 			// 
 			// tsmiAdd
@@ -281,35 +220,63 @@
 			this.toolStripSeparator2.Name = "toolStripSeparator2";
 			this.toolStripSeparator2.Size = new System.Drawing.Size(211, 6);
 			// 
+			// tsmiViewImages
+			// 
+			this.tsmiViewImages.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiViewImagesSmall,
+            this.tsmiViewImagesLarge});
+			this.tsmiViewImages.Name = "tsmiViewImages";
+			this.tsmiViewImages.Size = new System.Drawing.Size(214, 22);
+			this.tsmiViewImages.Text = "画像一覧(&M)";
+			// 
+			// toolStripMenuItem4
+			// 
+			this.toolStripMenuItem4.Name = "toolStripMenuItem4";
+			this.toolStripMenuItem4.Size = new System.Drawing.Size(211, 6);
+			// 
+			// tsmiNg
+			// 
+			this.tsmiNg.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiAddNgWithTitle,
+            this.tsmiAddNgWithId,
+            this.toolStripMenuItem3,
+            this.tsmiNgTest});
+			this.tsmiNg.Name = "tsmiNg";
+			this.tsmiNg.Size = new System.Drawing.Size(214, 22);
+			this.tsmiNg.Text = "NG関連(&G)";
+			// 
+			// tsmiAddNgWithTitle
+			// 
+			this.tsmiAddNgWithTitle.Name = "tsmiAddNgWithTitle";
+			this.tsmiAddNgWithTitle.Size = new System.Drawing.Size(188, 22);
+			this.tsmiAddNgWithTitle.Text = "タイトルで簡易NG(&T)";
+			this.tsmiAddNgWithTitle.Click += new System.EventHandler(this.tsmiAddNgWithTitle_Click);
+			// 
+			// tsmiAddNgWithId
+			// 
+			this.tsmiAddNgWithId.Name = "tsmiAddNgWithId";
+			this.tsmiAddNgWithId.Size = new System.Drawing.Size(188, 22);
+			this.tsmiAddNgWithId.Text = "contents_idで簡易NG(&I)";
+			this.tsmiAddNgWithId.Click += new System.EventHandler(this.tsmiAddNgWithId_Click);
+			// 
+			// toolStripMenuItem3
+			// 
+			this.toolStripMenuItem3.Name = "toolStripMenuItem3";
+			this.toolStripMenuItem3.Size = new System.Drawing.Size(185, 6);
+			// 
+			// tsmiNgTest
+			// 
+			this.tsmiNgTest.Name = "tsmiNgTest";
+			this.tsmiNgTest.Size = new System.Drawing.Size(188, 22);
+			this.tsmiNgTest.Text = "NGテスト(&E)...";
+			this.tsmiNgTest.Click += new System.EventHandler(this.tsmiNgTest_Click);
+			// 
 			// tsmiRemoveCache
 			// 
 			this.tsmiRemoveCache.Name = "tsmiRemoveCache";
 			this.tsmiRemoveCache.Size = new System.Drawing.Size(214, 22);
 			this.tsmiRemoveCache.Text = "キャッシュを削除(&R)";
 			this.tsmiRemoveCache.Click += new System.EventHandler(this.tsmiRemoveCache_Click);
-			// 
-			// tsmiAddNg
-			// 
-			this.tsmiAddNg.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiAddNgWithTitle,
-            this.tsmiAddNgWithId});
-			this.tsmiAddNg.Name = "tsmiAddNg";
-			this.tsmiAddNg.Size = new System.Drawing.Size(214, 22);
-			this.tsmiAddNg.Text = "NGコンテンツに簡易追加(&G)";
-			// 
-			// tsmiAddNgWithTitle
-			// 
-			this.tsmiAddNgWithTitle.Name = "tsmiAddNgWithTitle";
-			this.tsmiAddNgWithTitle.Size = new System.Drawing.Size(164, 22);
-			this.tsmiAddNgWithTitle.Text = "タイトルでNG(&T)";
-			this.tsmiAddNgWithTitle.Click += new System.EventHandler(this.tsmiAddNgWithTitle_Click);
-			// 
-			// tsmiAddNgWithId
-			// 
-			this.tsmiAddNgWithId.Name = "tsmiAddNgWithId";
-			this.tsmiAddNgWithId.Size = new System.Drawing.Size(164, 22);
-			this.tsmiAddNgWithId.Text = "contents_idでNG(&I)";
-			this.tsmiAddNgWithId.Click += new System.EventHandler(this.tsmiAddNgWithId_Click);
 			// 
 			// toolStripSeparator3
 			// 
@@ -333,11 +300,11 @@
 			// toolStripContainer1.ContentPanel
 			// 
 			this.toolStripContainer1.ContentPanel.Controls.Add(this.listView1);
-			this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(550, 158);
+			this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(625, 196);
 			this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.toolStripContainer1.Location = new System.Drawing.Point(0, 0);
 			this.toolStripContainer1.Name = "toolStripContainer1";
-			this.toolStripContainer1.Size = new System.Drawing.Size(550, 208);
+			this.toolStripContainer1.Size = new System.Drawing.Size(625, 246);
 			this.toolStripContainer1.TabIndex = 2;
 			this.toolStripContainer1.Text = "toolStripContainer1";
 			// 
@@ -345,6 +312,75 @@
 			// 
 			this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.tsMain);
 			this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.tsFilter);
+			// 
+			// listView1
+			// 
+			this.listView1.AllowDrop = true;
+			this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.chId,
+            this.chTitle,
+            this.chEpisode,
+            this.chSubTitle,
+            this.chDuration,
+            this.chDeadline,
+            this.chDescription,
+            this.chAttribs});
+			this.listView1.ContextMenuStrip = this.cmsContent;
+			this.listView1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.listView1.FullRowSelect = true;
+			this.listView1.HideSelection = false;
+			this.listView1.Location = new System.Drawing.Point(0, 0);
+			this.listView1.Name = "listView1";
+			this.listView1.ShowItemToolTips = true;
+			this.listView1.Size = new System.Drawing.Size(625, 196);
+			this.listView1.TabIndex = 0;
+			this.listView1.UseCompatibleStateImageBehavior = false;
+			this.listView1.View = System.Windows.Forms.View.Details;
+			this.listView1.DoubleClick += new System.EventHandler(this.listView1_DoubleClick);
+			this.listView1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.listView1_KeyDown);
+			this.listView1.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.listView1_ColumnClick);
+			this.listView1.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.listView1_ItemSelectionChanged);
+			this.listView1.ItemDrag += new System.Windows.Forms.ItemDragEventHandler(this.listView1_ItemDrag);
+			// 
+			// chId
+			// 
+			this.chId.Text = "contents_id";
+			this.chId.Width = 74;
+			// 
+			// chTitle
+			// 
+			this.chTitle.Text = "タイトル";
+			this.chTitle.Width = 100;
+			// 
+			// chEpisode
+			// 
+			this.chEpisode.Text = "話数";
+			this.chEpisode.Width = 55;
+			// 
+			// chSubTitle
+			// 
+			this.chSubTitle.Text = "サブタイトル";
+			this.chSubTitle.Width = 70;
+			// 
+			// chDuration
+			// 
+			this.chDuration.Text = "番組時間";
+			this.chDuration.Width = 56;
+			// 
+			// chDeadline
+			// 
+			this.chDeadline.Text = "配信期限";
+			this.chDeadline.Width = 70;
+			// 
+			// chDescription
+			// 
+			this.chDescription.Text = "説明";
+			this.chDescription.Width = 100;
+			// 
+			// chAttribs
+			// 
+			this.chAttribs.Text = "属性";
+			this.chAttribs.Width = 34;
 			// 
 			// tsMain
 			// 
@@ -369,7 +405,7 @@
             this.tslTime});
 			this.tsMain.Location = new System.Drawing.Point(0, 0);
 			this.tsMain.Name = "tsMain";
-			this.tsMain.Size = new System.Drawing.Size(550, 25);
+			this.tsMain.Size = new System.Drawing.Size(625, 25);
 			this.tsMain.Stretch = true;
 			this.tsMain.TabIndex = 2;
 			this.tsMain.Text = "toolStrip1";
@@ -608,7 +644,7 @@
             this.tstbAnswer});
 			this.tsFilter.Location = new System.Drawing.Point(0, 25);
 			this.tsFilter.Name = "tsFilter";
-			this.tsFilter.Size = new System.Drawing.Size(550, 25);
+			this.tsFilter.Size = new System.Drawing.Size(625, 25);
 			this.tsFilter.Stretch = true;
 			this.tsFilter.TabIndex = 3;
 			this.tsFilter.Text = "tsFilter";
@@ -729,13 +765,27 @@
 			this.exceptionDialog1.Exception = null;
 			this.exceptionDialog1.Title = "クロール時に無視した例外";
 			// 
+			// tsmiViewImagesSmall
+			// 
+			this.tsmiViewImagesSmall.Name = "tsmiViewImagesSmall";
+			this.tsmiViewImagesSmall.Size = new System.Drawing.Size(152, 22);
+			this.tsmiViewImagesSmall.Text = "小(&S)";
+			this.tsmiViewImagesSmall.Click += new System.EventHandler(this.tsmiViewImagesSmall_Click);
+			// 
+			// tsmiViewImagesLarge
+			// 
+			this.tsmiViewImagesLarge.Name = "tsmiViewImagesLarge";
+			this.tsmiViewImagesLarge.Size = new System.Drawing.Size(152, 22);
+			this.tsmiViewImagesLarge.Text = "大(&L)";
+			this.tsmiViewImagesLarge.Click += new System.EventHandler(this.tsmiViewImagesLarge_Click);
+			// 
 			// CrawlResultView
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.Controls.Add(this.toolStripContainer1);
 			this.Name = "CrawlResultView";
-			this.Size = new System.Drawing.Size(550, 208);
+			this.Size = new System.Drawing.Size(625, 246);
 			this.Load += new System.EventHandler(this.CrawlResultView_Load);
 			this.cmsContent.ResumeLayout(false);
 			this.toolStripContainer1.ContentPanel.ResumeLayout(false);
@@ -772,7 +822,7 @@
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
 		private System.Windows.Forms.ToolStripMenuItem tsmiUserCommands;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
-		private System.Windows.Forms.ToolStripMenuItem tsmiAddNg;
+		private System.Windows.Forms.ToolStripMenuItem tsmiNg;
 		private System.Windows.Forms.ToolStripMenuItem tsmiAddNgWithId;
 		private System.Windows.Forms.ToolStripMenuItem tsmiAddNgWithTitle;
 		private System.Windows.Forms.ColorDialog colorDialog1;
@@ -829,5 +879,11 @@
 		private System.Windows.Forms.ToolStripMenuItem tsmiFilterTargetToggleAll;
 		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator13;
+		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
+		private System.Windows.Forms.ToolStripMenuItem tsmiNgTest;
+		private System.Windows.Forms.ToolStripMenuItem tsmiViewImages;
+		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem4;
+		private System.Windows.Forms.ToolStripMenuItem tsmiViewImagesSmall;
+		private System.Windows.Forms.ToolStripMenuItem tsmiViewImagesLarge;
 	}
 }

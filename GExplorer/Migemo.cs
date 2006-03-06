@@ -36,7 +36,7 @@ namespace Yusen.GExplorer{
 		[DllImport("migemo.dll", EntryPoint="migemo_set_operator")]
 		private static extern int MigemoSetOperator(IntPtr migemoObj, OperatorIndex opIndex, string opString);
 
-		private IntPtr migemoObj;
+		private IntPtr migemoObj = IntPtr.Zero;
 
 		public Migemo(string dicFileName) {
 			try {
@@ -73,12 +73,23 @@ namespace Yusen.GExplorer{
 			}
 			return ansStr;
 		}
-		
-		public void Dispose() {
-			if (Migemo.MigemoIsEnable(this.migemoObj)) {
+
+		private void Dispose(bool disposing) {
+			if (disposing) {
+			}
+			if (IntPtr.Zero != this.migemoObj && Migemo.MigemoIsEnable(this.migemoObj)) {
 				Migemo.MigemoClose(this.migemoObj);
 				this.migemoObj = IntPtr.Zero;
 			}
+		}
+		
+		public void Dispose() {
+			this.Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+
+		~Migemo(){
+			this.Dispose(false);
 		}
 	}
 

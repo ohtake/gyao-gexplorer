@@ -25,7 +25,6 @@
 		private void InitializeComponent() {
 			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PlayerForm));
-			this.wmpMain = new AxWMPLib.AxWindowsMediaPlayer();
 			this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
 			this.statusStrip1 = new System.Windows.Forms.StatusStrip();
 			this.tsslId = new System.Windows.Forms.ToolStripStatusLabel();
@@ -34,6 +33,7 @@
 			this.tsslDuration = new System.Windows.Forms.ToolStripStatusLabel();
 			this.tsslTitle = new System.Windows.Forms.ToolStripStatusLabel();
 			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+			this.wmpMain = new AxWMPLib.AxWindowsMediaPlayer();
 			this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
 			this.wbBanner = new System.Windows.Forms.WebBrowser();
 			this.menuStrip1 = new System.Windows.Forms.MenuStrip();
@@ -82,10 +82,10 @@
 			this.tsmiBrowseRecommended = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiUserCommands = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiFullScreen = new System.Windows.Forms.ToolStripMenuItem();
 			this.inputBoxDialog1 = new Yusen.GExplorer.InputBoxDialog();
 			this.timerAutoVolume = new System.Windows.Forms.Timer(this.components);
 			this.timerSkipCmLisence = new System.Windows.Forms.Timer(this.components);
-			((System.ComponentModel.ISupportInitialize)(this.wmpMain)).BeginInit();
 			this.toolStripContainer1.BottomToolStripPanel.SuspendLayout();
 			this.toolStripContainer1.ContentPanel.SuspendLayout();
 			this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
@@ -94,22 +94,10 @@
 			this.splitContainer1.Panel1.SuspendLayout();
 			this.splitContainer1.Panel2.SuspendLayout();
 			this.splitContainer1.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.wmpMain)).BeginInit();
 			this.tableLayoutPanel1.SuspendLayout();
 			this.menuStrip1.SuspendLayout();
 			this.SuspendLayout();
-			// 
-			// wmpMain
-			// 
-			this.wmpMain.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.wmpMain.Enabled = true;
-			this.wmpMain.Location = new System.Drawing.Point(0, 0);
-			this.wmpMain.Name = "wmpMain";
-			this.wmpMain.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("wmpMain.OcxState")));
-			this.wmpMain.Size = new System.Drawing.Size(644, 548);
-			this.wmpMain.TabIndex = 0;
-			this.wmpMain.Text = "axWindowsMediaPlayer1";
-			this.wmpMain.PlayStateChange += new AxWMPLib._WMPOCXEvents_PlayStateChangeEventHandler(this.wmpMain_PlayStateChange);
-			this.wmpMain.OpenStateChange += new AxWMPLib._WMPOCXEvents_OpenStateChangeEventHandler(this.wmpMain_OpenStateChange);
 			// 
 			// toolStripContainer1
 			// 
@@ -202,6 +190,19 @@
 			this.splitContainer1.SplitterWidth = 1;
 			this.splitContainer1.TabIndex = 1;
 			// 
+			// wmpMain
+			// 
+			this.wmpMain.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.wmpMain.Enabled = true;
+			this.wmpMain.Location = new System.Drawing.Point(0, 0);
+			this.wmpMain.Name = "wmpMain";
+			this.wmpMain.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("wmpMain.OcxState")));
+			this.wmpMain.Size = new System.Drawing.Size(644, 548);
+			this.wmpMain.TabIndex = 0;
+			this.wmpMain.Text = "axWindowsMediaPlayer1";
+			this.wmpMain.PlayStateChange += new AxWMPLib._WMPOCXEvents_PlayStateChangeEventHandler(this.wmpMain_PlayStateChange);
+			this.wmpMain.OpenStateChange += new AxWMPLib._WMPOCXEvents_OpenStateChangeEventHandler(this.wmpMain_OpenStateChange);
+			// 
 			// tableLayoutPanel1
 			// 
 			this.tableLayoutPanel1.ColumnCount = 1;
@@ -235,7 +236,8 @@
             this.tsmiFile,
             this.tsmiOperations,
             this.tsmiSettings,
-            this.tsmiTools});
+            this.tsmiTools,
+            this.tsmiFullScreen});
 			this.menuStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
@@ -349,8 +351,8 @@
 			// tsmiFastReverse
 			// 
 			this.tsmiFastReverse.Name = "tsmiFastReverse";
-			this.tsmiFastReverse.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
-            | System.Windows.Forms.Keys.B)));
+			this.tsmiFastReverse.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift)
+						| System.Windows.Forms.Keys.B)));
 			this.tsmiFastReverse.Size = new System.Drawing.Size(281, 22);
 			this.tsmiFastReverse.Text = "巻き戻し(&R)";
 			this.tsmiFastReverse.Click += new System.EventHandler(this.tsmiFastReverse_Click);
@@ -358,8 +360,8 @@
 			// tsmiFastForward
 			// 
 			this.tsmiFastForward.Name = "tsmiFastForward";
-			this.tsmiFastForward.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
-            | System.Windows.Forms.Keys.F)));
+			this.tsmiFastForward.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift)
+						| System.Windows.Forms.Keys.F)));
 			this.tsmiFastForward.Size = new System.Drawing.Size(281, 22);
 			this.tsmiFastForward.Text = "早送り(&A)";
 			this.tsmiFastForward.Click += new System.EventHandler(this.tsmiFastForward_Click);
@@ -372,8 +374,8 @@
 			// tsmiPrevContent
 			// 
 			this.tsmiPrevContent.Name = "tsmiPrevContent";
-			this.tsmiPrevContent.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
-            | System.Windows.Forms.Keys.P)));
+			this.tsmiPrevContent.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift)
+						| System.Windows.Forms.Keys.P)));
 			this.tsmiPrevContent.Size = new System.Drawing.Size(281, 22);
 			this.tsmiPrevContent.Text = "プレイリストで前のコンテンツ(E)";
 			this.tsmiPrevContent.Click += new System.EventHandler(this.tsmiPrevContent_Click);
@@ -381,8 +383,8 @@
 			// tsmiNextContent
 			// 
 			this.tsmiNextContent.Name = "tsmiNextContent";
-			this.tsmiNextContent.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
-            | System.Windows.Forms.Keys.N)));
+			this.tsmiNextContent.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift)
+						| System.Windows.Forms.Keys.N)));
 			this.tsmiNextContent.Size = new System.Drawing.Size(281, 22);
 			this.tsmiNextContent.Text = "プレイリストで次のコンテンツ(&N)";
 			this.tsmiNextContent.Click += new System.EventHandler(this.tsmiNextContent_Click);
@@ -390,8 +392,8 @@
 			// tsmiNextContentWithDelete
 			// 
 			this.tsmiNextContentWithDelete.Name = "tsmiNextContentWithDelete";
-			this.tsmiNextContentWithDelete.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
-            | System.Windows.Forms.Keys.D)));
+			this.tsmiNextContentWithDelete.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift)
+						| System.Windows.Forms.Keys.D)));
 			this.tsmiNextContentWithDelete.Size = new System.Drawing.Size(281, 22);
 			this.tsmiNextContentWithDelete.Text = "プレイリストから削除して次(&D)";
 			this.tsmiNextContentWithDelete.Click += new System.EventHandler(this.tsmiNextContentWithDelete_Click);
@@ -431,9 +433,7 @@
 			// 
 			// tsmiHideUiOnDeactivated
 			// 
-			this.tsmiHideUiOnDeactivated.Checked = true;
 			this.tsmiHideUiOnDeactivated.CheckOnClick = true;
-			this.tsmiHideUiOnDeactivated.CheckState = System.Windows.Forms.CheckState.Checked;
 			this.tsmiHideUiOnDeactivated.Name = "tsmiHideUiOnDeactivated";
 			this.tsmiHideUiOnDeactivated.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.H)));
 			this.tsmiHideUiOnDeactivated.Size = new System.Drawing.Size(260, 22);
@@ -614,6 +614,13 @@
 			this.tsmiUserCommands.Size = new System.Drawing.Size(241, 22);
 			this.tsmiUserCommands.Text = "外部コマンド(&C)";
 			// 
+			// tsmiFullScreen
+			// 
+			this.tsmiFullScreen.Name = "tsmiFullScreen";
+			this.tsmiFullScreen.Size = new System.Drawing.Size(93, 16);
+			this.tsmiFullScreen.Text = "<<全画面(&U)>>";
+			this.tsmiFullScreen.Click += new System.EventHandler(this.tsmiFullScreen_Click);
+			// 
 			// inputBoxDialog1
 			// 
 			this.inputBoxDialog1.Input = null;
@@ -643,7 +650,6 @@
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.PlayerForm_FormClosing);
 			this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.PlayerForm_KeyDown);
 			this.Load += new System.EventHandler(this.PlayerForm_Load);
-			((System.ComponentModel.ISupportInitialize)(this.wmpMain)).EndInit();
 			this.toolStripContainer1.BottomToolStripPanel.ResumeLayout(false);
 			this.toolStripContainer1.BottomToolStripPanel.PerformLayout();
 			this.toolStripContainer1.ContentPanel.ResumeLayout(false);
@@ -656,6 +662,7 @@
 			this.splitContainer1.Panel1.ResumeLayout(false);
 			this.splitContainer1.Panel2.ResumeLayout(false);
 			this.splitContainer1.ResumeLayout(false);
+			((System.ComponentModel.ISupportInitialize)(this.wmpMain)).EndInit();
 			this.tableLayoutPanel1.ResumeLayout(false);
 			this.menuStrip1.ResumeLayout(false);
 			this.menuStrip1.PerformLayout();
@@ -665,7 +672,6 @@
 
 		#endregion
 
-		private AxWMPLib.AxWindowsMediaPlayer wmpMain;
 		private System.Windows.Forms.ToolStripContainer toolStripContainer1;
 		private System.Windows.Forms.MenuStrip menuStrip1;
 		private System.Windows.Forms.ToolStripMenuItem tsmiFile;
@@ -725,5 +731,7 @@
 		private System.Windows.Forms.ToolStripMenuItem tsmiBrowseDetail;
 		private System.Windows.Forms.ToolStripMenuItem tsmiBrowseRecommended;
 		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+		private System.Windows.Forms.ToolStripMenuItem tsmiFullScreen;
+		private AxWMPLib.AxWindowsMediaPlayer wmpMain;
 	}
 }

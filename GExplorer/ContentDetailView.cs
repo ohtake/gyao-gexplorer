@@ -10,7 +10,9 @@ namespace Yusen.GExplorer {
 
 		private ContentAdapter contAd;
 		private ContentImageSize imgSize = ContentImageSize.Large;
-		
+
+		private object objSetContentAdapter = new object();
+
 		public ContentDetailView() {
 			InitializeComponent();
 		}
@@ -20,27 +22,29 @@ namespace Yusen.GExplorer {
 				return this.contAd;
 			}
 			set {
-				if (this.contAd == value) {
-					return;
-				}
-				this.contAd = value;
-				if (null == value) {
-					this.ClearDisplayedInfo();
-					return;
-				}
-				this.txtId.Text = value.ContentId;
-				this.txtTitle.Text = value.Title;
-				this.txtEpisode.Text = value.EpisodeNumber;
-				this.txtSubtitle.Text = value.SubTitle;
-				this.txtDuration.Text = value.Duration;
-				this.txtDeadline.Text = value.Deadline;
-				this.txtDescription.Text = value.LongDescription.Replace("\n", "\r\n");
-				this.propgDetail.SelectedObject = value;
+				lock (this.objSetContentAdapter) {
+					if (this.contAd == value) {
+						return;
+					}
+					this.contAd = value;
+					if (null == value) {
+						this.ClearDisplayedInfo();
+						return;
+					}
+					this.txtId.Text = value.ContentId;
+					this.txtTitle.Text = value.Title;
+					this.txtEpisode.Text = value.EpisodeNumber;
+					this.txtSubtitle.Text = value.SubTitle;
+					this.txtDuration.Text = value.Duration;
+					this.txtDeadline.Text = value.Deadline;
+					this.txtDescription.Text = value.LongDescription.Replace("\n", "\r\n");
+					this.propgDetail.SelectedObject = value;
 #if false
-				this.LoadImage();
+					this.LoadImage();
 #else
-				this.LoadImageAsync();
+					this.LoadImageAsync();
 #endif
+				}
 			}
 		}
 		[DefaultValue(ContentImageSize.Large)]
@@ -235,7 +239,23 @@ namespace Yusen.GExplorer {
 		private void tsmiTestCancelAsync_Click(object sender, EventArgs e) {
 			this.picboxImage.CancelAsync();
 		}
-
+		private void tsmiTestNewPictureBox_Click(object sender, EventArgs e) {
+			PictureBoxSizeMode sizeMode = this.picboxImage.SizeMode;
+			ContentImageSize imgSize = this.ImageSize;
+			
+			this.splitContainer1.Panel1.Controls.Remove(this.picboxImage);
+			this.picboxImage.Dispose();
+			
+			this.picboxImage = new PictureBox();
+			this.picboxImage.Dock = DockStyle.Fill;
+			this.picboxImage.ContextMenuStrip = this.cmsImage;
+			this.splitContainer1.Panel1.Controls.Add(this.picboxImage);
+			
+			this.picboxImage.SizeMode = sizeMode;
+			this.ImageSize = ContentImageSize.None;
+			this.ImageSize = imgSize;
+		}
+		
 		private void picboxImage_LoadCompleted(object sender, AsyncCompletedEventArgs e) {
 			if(null != e.Error) {
 				this.OnImageLoadError(new ImageLoadErrorEventArgs(e.Error));

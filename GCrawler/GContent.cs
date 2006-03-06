@@ -21,8 +21,6 @@ namespace Yusen.GCrawler {
 		private static readonly Regex regexEpisodeNum = new Regex(@"<td align=""left""><b>(.*)</b></td>", RegexOptions.Compiled);
 		private static readonly Regex regexDuration = new Regex(@"<td align=""right""><b>[^:]*時間[^:]* : (.*)</b></td>", RegexOptions.Compiled);
 		private static readonly Regex regexDescription = new Regex(@"^\s*(?:<td align=""[^""]*"">)?(.+)</td>$", RegexOptions.IgnoreCase | RegexOptions.Compiled);
-		//new Regex(@"^\s*(?:<td align=""[^""]*"">)?((?:[^<]|<br */?>|<([abp]|font)(?:>| [^>]*>)|</(?:[abp]|font)>)+)</td>$", RegexOptions.IgnoreCase | RegexOptions.Compiled);
-		private const string endOfDescription = @"<table width=""770"" border=""0"" cellspacing=""0"" cellpadding=""0"">";
 		
 		public static void Serialize(string filename, GContent cont){
 			using (TextWriter writer = new StreamWriter(filename)) {
@@ -137,9 +135,11 @@ namespace Yusen.GCrawler {
 				if (!GContent.TryRegexForEachLine(reader, GContent.regexDuration, out duration)) {
 					throw new ContentDownloadException("時間の読み取り失敗 <" + uri.AbsoluteUri + ">");
 				}
-				string line;
-				while (null != (line = reader.ReadLine())) {
-					if (GContent.endOfDescription == line) break;
+				while (true) {
+					string line = reader.ReadLine();
+					if (string.IsNullOrEmpty(line)) {
+						break;//ファイル末尾か空行で説明文終わりとする
+					}
 					Match match = GContent.regexDescription.Match(line);
 					if (match.Success) {
 						string desc = HtmlUtility.HtmlToText(match.Groups[1].Value).Trim();

@@ -42,6 +42,11 @@
 			this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiPackageCancel = new System.Windows.Forms.ToolStripMenuItem();
 			this.ttId = new System.Windows.Forms.ToolTip(this.components);
+			this.timerIgnoreMenu = new System.Windows.Forms.Timer(this.components);
+			this.tsmiContentPerformClick = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+			this.tsmiPackagePerformClick = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
 			this.inputBoxDialog1 = new Yusen.GExplorer.InputBoxDialog();
 			this.cmsContent.SuspendLayout();
 			this.cmsPackage.SuspendLayout();
@@ -50,6 +55,8 @@
 			// cmsContent
 			// 
 			this.cmsContent.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiContentPerformClick,
+            this.toolStripSeparator3,
             this.tsmiContentOpenDetail,
             this.toolStripSeparator1,
             this.tsmiContentAddToPlayList,
@@ -63,7 +70,7 @@
             this.toolStripSeparator6,
             this.tsmiContentCancel});
 			this.cmsContent.Name = "cmsContent";
-			this.cmsContent.Size = new System.Drawing.Size(204, 204);
+			this.cmsContent.Size = new System.Drawing.Size(204, 232);
 			// 
 			// tsmiContentOpenDetail
 			// 
@@ -136,11 +143,13 @@
 			// cmsPackage
 			// 
 			this.cmsPackage.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiPackagePerformClick,
+            this.toolStripSeparator4,
             this.tsmiPackageOpen,
             this.toolStripSeparator5,
             this.tsmiPackageCancel});
 			this.cmsPackage.Name = "cmsPackage";
-			this.cmsPackage.Size = new System.Drawing.Size(204, 54);
+			this.cmsPackage.Size = new System.Drawing.Size(204, 82);
 			// 
 			// tsmiPackageOpen
 			// 
@@ -164,6 +173,32 @@
 			this.ttId.IsBalloon = true;
 			this.ttId.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
 			// 
+			// timerIgnoreMenu
+			// 
+			this.timerIgnoreMenu.Tick += new System.EventHandler(this.timerIgnoreMenu_Tick);
+			// 
+			// tsmiContentPerformClick
+			// 
+			this.tsmiContentPerformClick.Name = "tsmiContentPerformClick";
+			this.tsmiContentPerformClick.Size = new System.Drawing.Size(203, 22);
+			this.tsmiContentPerformClick.Text = "通常のクリックとして扱う(&C)";
+			// 
+			// toolStripSeparator3
+			// 
+			this.toolStripSeparator3.Name = "toolStripSeparator3";
+			this.toolStripSeparator3.Size = new System.Drawing.Size(200, 6);
+			// 
+			// tsmiPackagePerformClick
+			// 
+			this.tsmiPackagePerformClick.Name = "tsmiPackagePerformClick";
+			this.tsmiPackagePerformClick.Size = new System.Drawing.Size(203, 22);
+			this.tsmiPackagePerformClick.Text = "通常のクリックとして扱う(&C)";
+			// 
+			// toolStripSeparator4
+			// 
+			this.toolStripSeparator4.Name = "toolStripSeparator4";
+			this.toolStripSeparator4.Size = new System.Drawing.Size(200, 6);
+			// 
 			// inputBoxDialog1
 			// 
 			this.inputBoxDialog1.Input = null;
@@ -172,6 +207,7 @@
 			// 
 			// GWebBrowser
 			// 
+			this.Navigated += new System.Windows.Forms.WebBrowserNavigatedEventHandler(this.GWebBrowser_Navigated);
 			this.Navigating += new System.Windows.Forms.WebBrowserNavigatingEventHandler(this.GWebBrowser_Navigating);
 			this.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.GWebBrowser_DocumentCompleted);
 			this.cmsContent.ResumeLayout(false);
@@ -201,6 +237,11 @@
 		private System.Windows.Forms.ToolStripMenuItem tsmiContentAddToPlayListWithComment;
 		private System.Windows.Forms.ToolTip ttId;
 		private InputBoxDialog inputBoxDialog1;
+		private System.Windows.Forms.Timer timerIgnoreMenu;
+		private System.Windows.Forms.ToolStripMenuItem tsmiContentPerformClick;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+		private System.Windows.Forms.ToolStripMenuItem tsmiPackagePerformClick;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
 
 	}
 }

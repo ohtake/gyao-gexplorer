@@ -26,7 +26,7 @@ namespace Yusen.GExplorer {
 			}
 		}
 
-		public bool CanParse {
+		public bool HasTimeSpan {
 			get { return this.timeSpan.HasValue; }
 		}
 		public TimeSpan TimeSpan {
@@ -37,7 +37,7 @@ namespace Yusen.GExplorer {
 		}
 
 		public override string ToString() {
-			if (this.CanParse) {
+			if (this.HasTimeSpan) {
 				return this.TimeSpan.ToString();
 			} else {
 				return "? \"" + this.Original + "\"";

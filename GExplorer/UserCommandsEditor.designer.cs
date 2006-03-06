@@ -66,7 +66,7 @@
 			this.grpDetail.Size = new System.Drawing.Size(346, 139);
 			this.grpDetail.TabIndex = 200;
 			this.grpDetail.TabStop = false;
-			this.grpDetail.Text = "外部コマンドの挿入と変更 (&E)";
+			this.grpDetail.Text = "外部コマンドの挿入と変更(&E)";
 			// 
 			// btnInsert
 			// 
@@ -114,11 +114,11 @@
 			// 
 			this.lblTitle.Anchor = System.Windows.Forms.AnchorStyles.Right;
 			this.lblTitle.AutoSize = true;
-			this.lblTitle.Location = new System.Drawing.Point(29, 9);
+			this.lblTitle.Location = new System.Drawing.Point(31, 9);
 			this.lblTitle.Name = "lblTitle";
-			this.lblTitle.Size = new System.Drawing.Size(58, 12);
+			this.lblTitle.Size = new System.Drawing.Size(56, 12);
 			this.lblTitle.TabIndex = 211;
-			this.lblTitle.Text = "表示名 (&T)";
+			this.lblTitle.Text = "表示名(&T)";
 			// 
 			// txtTitle
 			// 
@@ -132,11 +132,11 @@
 			// 
 			this.lblFile.Anchor = System.Windows.Forms.AnchorStyles.Right;
 			this.lblFile.AutoSize = true;
-			this.lblFile.Location = new System.Drawing.Point(7, 39);
+			this.lblFile.Location = new System.Drawing.Point(9, 39);
 			this.lblFile.Name = "lblFile";
-			this.lblFile.Size = new System.Drawing.Size(80, 12);
+			this.lblFile.Size = new System.Drawing.Size(78, 12);
 			this.lblFile.TabIndex = 213;
-			this.lblFile.Text = "実行ファイル (&F)";
+			this.lblFile.Text = "実行ファイル(&F)";
 			// 
 			// txtFile
 			// 
@@ -162,11 +162,11 @@
 			// 
 			this.lblArg.Anchor = System.Windows.Forms.AnchorStyles.Right;
 			this.lblArg.AutoSize = true;
-			this.lblArg.Location = new System.Drawing.Point(40, 69);
+			this.lblArg.Location = new System.Drawing.Point(42, 69);
 			this.lblArg.Name = "lblArg";
-			this.lblArg.Size = new System.Drawing.Size(47, 12);
+			this.lblArg.Size = new System.Drawing.Size(45, 12);
 			this.lblArg.TabIndex = 216;
-			this.lblArg.Text = "引数 (&A)";
+			this.lblArg.Text = "引数(&A)";
 			// 
 			// txtArg
 			// 
@@ -183,16 +183,12 @@
 			this.btnArg.Name = "btnArg";
 			this.btnArg.Size = new System.Drawing.Size(89, 23);
 			this.btnArg.TabIndex = 218;
-			this.btnArg.Text = "簡易入力(&U)";
+			this.btnArg.Text = "簡易入力(&U)>>";
 			this.btnArg.Click += new System.EventHandler(this.btnArg_Click);
 			// 
 			// cmsArgs
 			// 
-			this.cmsArgs.Enabled = true;
-			this.cmsArgs.GripMargin = new System.Windows.Forms.Padding(2);
-			this.cmsArgs.Location = new System.Drawing.Point(25, 58);
 			this.cmsArgs.Name = "cmsArgs";
-			this.cmsArgs.RightToLeft = System.Windows.Forms.RightToLeft.No;
 			this.cmsArgs.Size = new System.Drawing.Size(61, 4);
 			// 
 			// btnUp
@@ -252,7 +248,7 @@
 			this.grpList.Size = new System.Drawing.Size(346, 163);
 			this.grpList.TabIndex = 100;
 			this.grpList.TabStop = false;
-			this.grpList.Text = "外部コマンド一覧 (&L)";
+			this.grpList.Text = "外部コマンド一覧(&L)";
 			// 
 			// tableLayoutPanel2
 			// 

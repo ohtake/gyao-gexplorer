@@ -6,10 +6,13 @@ using System.IO;
 using System.Drawing;
 using System.Media;
 using System.Diagnostics;
+using Yusen.GCrawler;
 
 namespace Yusen.GExplorer {
 	static class Program {
-		private const int InitializationSteps = 8;
+		internal static readonly string ApplicationName = Application.ProductName + " " + Application.ProductVersion;
+		
+		private const int InitializationSteps = 9;
 		private const int SerializationSteps = 5;
 		private static SplashForm splashInit;
 		private static MainForm mainForm;
@@ -26,7 +29,7 @@ namespace Yusen.GExplorer {
 			AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
 			//多重起動チェック
 			while(Program.CheckMultipleExecution()) {
-				switch(MessageBox.Show("多重起動と思われます．どうしますか？", Application.ProductName + " " + Application.ProductVersion, MessageBoxButtons.AbortRetryIgnore, MessageBoxIcon.Warning)) {
+				switch(MessageBox.Show("多重起動と思われます．どうしますか？", Program.ApplicationName, MessageBoxButtons.AbortRetryIgnore, MessageBoxIcon.Warning)) {
 					case DialogResult.Abort:
 						return;
 					case DialogResult.Retry:
@@ -44,6 +47,7 @@ namespace Yusen.GExplorer {
 			Program.InitializeProgram();
 			Program.mainForm.Load += delegate {
 				Program.splashInit.EndProgress();
+				Program.splashInit.Dispose();
 				Program.splashInit = null;
 			};
 			
@@ -70,25 +74,39 @@ namespace Yusen.GExplorer {
 			//グローバル設定
 			Program.splashInit.StepProgress("グローバル設定の読み込み");
 			GlobalSettings.TryDeserialize();
-			//ユーザID
-			Program.splashInit.StepProgress("ユーザIDの読み取り");
-			if(!GlobalSettings.Instance.TryGetUserNumber()) {
-				MessageBox.Show(
-					"ユーザIDが取得できませんでした．グローバル設定でIDの設定をしてください．",
-					Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
-			}
 
 			//アイコンの読み込み
 			Program.splashInit.StepProgress("アイコンの読み込み");
 			try {
 				string iconFileName = GlobalSettings.Instance.IconFile;
-				if(string.IsNullOrEmpty(iconFileName)) {
+				if (string.IsNullOrEmpty(iconFileName)) {
 					iconFileName = Path.GetFileNameWithoutExtension(Application.ExecutablePath) + ".ico";
 				}
 				FormBase.CustomIcon = new Icon(iconFileName);
 			} catch {
 			}
 
+			//ユーザID
+			Program.splashInit.StepProgress("ユーザIDの読み取り");
+			if(!GlobalSettings.Instance.TryGetUserNumber()) {
+				MessageBox.Show(
+					"ユーザIDが取得できませんでした．グローバル設定でIDの設定をしてください．",
+					Program.ApplicationName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+			}
+			//ビットレートの設定
+			Program.splashInit.StepProgress("ビットレートの設定");
+			if (GlobalSettings.Instance.PromptBitrateOnStartup) {
+				using (BitRateForm brf = new BitRateForm()) {
+					brf.BitRate = GlobalSettings.Instance.BitRate;
+					switch (brf.ShowDialog()) {
+						case DialogResult.OK:
+							GlobalSettings.Instance.BitRate = brf.BitRate;
+							GlobalSettings.Instance.PromptBitrateOnStartup = !brf.SkipNextTimeEnabled;
+							break;
+					}
+				}
+			}
+			
 			Program.splashInit.StepProgress("キャッシュの初期化");
 			Cache.Initialize();
 			Program.splashInit.StepProgress("外部コマンドの読み取り");
@@ -167,5 +185,4 @@ namespace Yusen.GExplorer {
 			get { return this.message; }
 		}
 	}
-
 }

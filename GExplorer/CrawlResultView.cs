@@ -672,19 +672,17 @@ namespace Yusen.GExplorer {
 		private void tsmiCopyNameAndDetailUri_Click(object sender, EventArgs e) {
 			ContentAdapter.CopyNamesAndUris(this.SelectedContents);
 		}
-		private void tsmiRemoveCache_Click(object sender, EventArgs e) {
-			int succeeded = 0;
-			int failed = 0;
-			foreach (ContentAdapter cont in this.SelectedContents) {
-				if (Cache.Instance.ContentCacheController.RemoveCache(cont.ContentId)) {
-					succeeded++;
-				} else {
-					failed++;
-				}
-			}
-			if(null != this.ManuallyCacheDeleted) {
-				this.ManuallyCacheDeleted(this, new ManuallyCacheDeletedEventArgs(succeeded, failed));
-			}
+		private void tsmiViewImagesSmall_Click(object sender, EventArgs e) {
+			Uri[] images = Array.ConvertAll<ContentAdapter, Uri>(this.SelectedContents, new Converter<ContentAdapter, Uri>(delegate(ContentAdapter input) {
+				return input.ImageSmallUri;
+			}));
+			BrowserForm.Browse(images);
+		}
+		private void tsmiViewImagesLarge_Click(object sender, EventArgs e) {
+			Uri[] images = Array.ConvertAll<ContentAdapter, Uri>(this.SelectedContents, new Converter<ContentAdapter, Uri>(delegate(ContentAdapter input) {
+				return input.ImageLargeUri;
+			}));
+			BrowserForm.Browse(images);
 		}
 		private void tsmiAddNgWithTitle_Click(object sender, EventArgs e) {
 			List<string> titles = new List<string>();
@@ -708,6 +706,49 @@ namespace Yusen.GExplorer {
 			}
 			if(ngs.Count > 0) {
 				NgContentsManager.Instance.AddRange(ngs);
+			}
+		}
+		private void tsmiNgTest_Click(object sender, EventArgs e) {
+			List<NgContent> ngs = new List<NgContent>();
+			NgContentsManager manager = NgContentsManager.Instance;
+			foreach (ContentAdapter cont in this.SelectedContents) {
+				foreach (NgContent ng in manager.EnumerateNgsTo(cont)) {
+					if (!ngs.Contains(ng)) {
+						ngs.Add(ng);
+					}
+				}
+			}
+			if (0 == ngs.Count) {
+				MessageBox.Show("該当するNGコンテンツはありません．", "NGテスト", MessageBoxButtons.OK, MessageBoxIcon.Information);
+			} else {
+				string separator = "-------------------------------------------------";
+				StringBuilder sb = new StringBuilder();
+				sb.AppendLine(separator);
+				sb.AppendLine("コメント\t主語\t述語\t目的語\t作成日時");
+				sb.AppendLine(separator);
+				foreach (NgContent ng in ngs) {
+					sb.AppendLine(string.Format("{0}\t{1}\t{2}\t{3}\t{4}", ng.Comment, ng.PropertyName, ng.Method.ToString(), ng.Word, ng.Created.ToString()));
+				}
+				sb.AppendLine(separator);
+				switch (MessageBox.Show("以下のNGコンテンツに該当します．\n\n"+ sb.ToString() + "\n該当するNGコンテンツをすべて削除しますか？", "NGテスト", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2)) {
+					case DialogResult.Yes:
+						manager.RemoveAll(ngs.Contains);
+						break;
+				}
+			}
+		}
+		private void tsmiRemoveCache_Click(object sender, EventArgs e) {
+			int succeeded = 0;
+			int failed = 0;
+			foreach (ContentAdapter cont in this.SelectedContents) {
+				if (Cache.Instance.ContentCacheController.RemoveCache(cont.ContentId)) {
+					succeeded++;
+				} else {
+					failed++;
+				}
+			}
+			if (null != this.ManuallyCacheDeleted) {
+				this.ManuallyCacheDeleted(this, new ManuallyCacheDeletedEventArgs(succeeded, failed));
 			}
 		}
 		#endregion
@@ -790,7 +831,6 @@ namespace Yusen.GExplorer {
 			this.CreateAndSetFilterRegex();
 		}
 		#endregion
-		
 		#region ワンクリックでの切り替え
 		private void tsbOneAboneToumei_Click(object sender, EventArgs e) {
 			this.AboneType = AboneType.Toumei;
@@ -811,7 +851,6 @@ namespace Yusen.GExplorer {
 			this.FilterType = FilterType.Regex;
 		}
 		#endregion
-
 		#region フィルタ対象
 		private List<bool> GetFilterTargetList() {
 			List<bool> targets = new List<bool>(this.listView1.Columns.Count);
@@ -868,6 +907,7 @@ namespace Yusen.GExplorer {
 			get { return this.tsddbSettings.Visible; }
 			set { this.tsddbSettings.Visible = value; }
 		}
+
 	}
 
 	public enum AboneType {

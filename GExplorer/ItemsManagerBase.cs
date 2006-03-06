@@ -83,6 +83,9 @@ namespace Yusen.GExplorer {
 			this.items.Insert(idx, item);
 			this.OnChanged();
 		}
+		public int IndexOf(T item) {
+			return this.items.IndexOf(item);
+		}
 		public void Swap(int x, int y) {
 			T cx = this.items[x];
 			this.items[x] = this.items[y];
