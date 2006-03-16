@@ -237,7 +237,7 @@ namespace Yusen.GExplorer {
 			return false;
 		}
 		
-		internal CrawlSettings GetCrawlSettings() {
+		internal CrawlSettings CreateCrawlSettings() {
 			return new CrawlSettings(this.maxCrawlPages, this.crawlOrder, this.timetableSortType);
 		}
 	}

@@ -76,6 +76,7 @@
 			this.timerViewDetail = new System.Windows.Forms.Timer(this.components);
 			this.timerCrawlProgress = new System.Windows.Forms.Timer(this.components);
 			this.timerClearStatusText = new System.Windows.Forms.Timer(this.components);
+			this.bwCrawl = new System.ComponentModel.BackgroundWorker();
 			this.statusStrip1.SuspendLayout();
 			this.toolStripContainer1.BottomToolStripPanel.SuspendLayout();
 			this.toolStripContainer1.ContentPanel.SuspendLayout();
@@ -167,7 +168,7 @@
 			this.genreTabControl1.SelectedIndex = 0;
 			this.genreTabControl1.Size = new System.Drawing.Size(872, 20);
 			this.genreTabControl1.TabIndex = 0;
-			this.genreTabControl1.GenreSelected += new System.EventHandler<Yusen.GExplorer.GenreTabPageEventArgs>(this.genreTabControl1_GenreSelected);
+			this.genreTabControl1.GenreSelected += new System.EventHandler<Yusen.GExplorer.GenreSelectedEventArgs>(this.genreTabControl1_GenreSelected);
 			// 
 			// tabPage1
 			// 
@@ -183,7 +184,7 @@
 			this.tabPage2.Location = new System.Drawing.Point(4, 21);
 			this.tabPage2.Name = "tabPage2";
 			this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage2.Size = new System.Drawing.Size(832, -5);
+			this.tabPage2.Size = new System.Drawing.Size(864, -5);
 			this.tabPage2.TabIndex = 1;
 			this.tabPage2.Text = "tabPage2";
 			// 
@@ -437,7 +438,7 @@
 			// 
 			this.tsmiClearCrawlResults.Name = "tsmiClearCrawlResults";
 			this.tsmiClearCrawlResults.Size = new System.Drawing.Size(269, 22);
-			this.tsmiClearCrawlResults.Text = "クロール結果の破棄(&D) ...";
+			this.tsmiClearCrawlResults.Text = "全クロール結果の破棄(&D)...";
 			this.tsmiClearCrawlResults.Click += new System.EventHandler(this.tsmiClearCrawlResults_Click);
 			// 
 			// tsmiRemoveCaches
@@ -561,6 +562,14 @@
 			this.timerClearStatusText.Interval = 10000;
 			this.timerClearStatusText.Tick += new System.EventHandler(this.timerClearStatusText_Tick);
 			// 
+			// bwCrawl
+			// 
+			this.bwCrawl.WorkerReportsProgress = true;
+			this.bwCrawl.WorkerSupportsCancellation = true;
+			this.bwCrawl.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bwCrawl_DoWork);
+			this.bwCrawl.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bwCrawl_RunWorkerCompleted);
+			this.bwCrawl.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.bwCrawl_ProgressChanged);
+			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -651,6 +660,7 @@
 		private System.Windows.Forms.ToolStripMenuItem tsmiRemoveNgContents;
 		private System.Windows.Forms.ToolStripMenuItem tsmiDeleteNgContentsWeek;
 		private System.Windows.Forms.ToolStripMenuItem tsmiDeleteNgContentsAll;
+		private System.ComponentModel.BackgroundWorker bwCrawl;
 
 
 	}

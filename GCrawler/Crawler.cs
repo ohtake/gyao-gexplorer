@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Runtime.Serialization;
 
 namespace Yusen.GCrawler {
 	public class Crawler {
@@ -14,7 +15,7 @@ namespace Yusen.GCrawler {
 				}
 			}
 			
-			public event EventHandler<CrawlProgressEventArgs> CrawlProgress;
+			private BackgroundWorker bw;
 
 			private CrawlSettings settings;
 			private GGenre genre;
@@ -31,7 +32,8 @@ namespace Yusen.GCrawler {
 			private Dictionary<string, string> contPackRelations = new Dictionary<string, string>();
 			private List<Exception> ignoredExceptions = new List<Exception>();
 
-			public CrawlerHelper(CrawlSettings settings, GGenre genre, IHtmlParser parser, IContentCacheController cacheController, IDeadlineTable deadLineDic) {
+			public CrawlerHelper(CrawlSettings settings, GGenre genre, IHtmlParser parser, IContentCacheController cacheController, IDeadlineTable deadLineDic, BackgroundWorker bw) {
+				this.bw = bw;
 				this.settings = settings;
 				this.genre = genre;
 				this.parser = parser;
@@ -61,18 +63,20 @@ namespace Yusen.GCrawler {
 			}
 			
 			public CrawlResult StartCrawling() {
+				if (this.bw.CancellationPending) return null;
 				this.CrawlPages();
+				if (this.bw.CancellationPending) return null;
 				this.FetchPackages();
+				if (this.bw.CancellationPending) return null;
 				this.FetchContents();
+				if (this.bw.CancellationPending) return null;
 				return this.CreateCrawlResult(this.BuildGpcTree());
 			}
-			private void OnCrawlProgress(string message) {
-				if (null != this.CrawlProgress) {
-					this.CrawlProgress(this, new CrawlProgressEventArgs(
-						message,
-						this.visitedPages.Count + this.visitedPackages.Count + this.visitedContents.Count,
-						this.waitingPages.Count + this.waitingPackages.Count + this.waitingContents.Count));
-				}
+			private void ReportProgressToBackgroundWorker(string message) {
+				int visited = this.visitedPages.Count + this.visitedPackages.Count + this.visitedContents.Count;
+				int waiting = this.waitingPages.Count + this.waitingPackages.Count + this.waitingContents.Count;
+				CrawlProgressEventArgs e = new CrawlProgressEventArgs(message, visited, waiting);
+				this.bw.ReportProgress(100*visited/(visited + waiting), e);
 			}
 			private void OnIgnoringException(Exception e) {
 				this.ignoredExceptions.Add(e);
@@ -83,12 +87,14 @@ namespace Yusen.GCrawler {
 			/// </summary>
 			private void CrawlPages() {
 				while (this.waitingPages.Count > 0) {
+					if (this.bw.CancellationPending) return;
+					
 					if(this.visitedPages.Count >= this.settings.MaxPages) {
 						this.OnIgnoringException(new Exception(string.Format("クロールする一般ページの上限数に達した． ({0}/{1})", this.settings.MaxPages, this.visitedPages.Count + this.waitingPages.Count)));
 						this.waitingPages.Clear();
 						return;
 					}
-					this.OnCrawlProgress(string.Format("フェーズ 1/4: 一般ページを取得中 ({0}/{1}) {2}",
+					this.ReportProgressToBackgroundWorker(string.Format("フェーズ 1/4: 一般ページを取得中 ({0}/{1}) {2}",
 						this.visitedPages.Count,
 						this.visitedPages.Count + this.waitingPages.Count,
 						this.waitingPages.Peek().PathAndQuery));
@@ -135,8 +141,10 @@ namespace Yusen.GCrawler {
 			/// </summary>
 			private void FetchPackages() {
 				while(this.waitingPackages.Count > 0){
+					if (this.bw.CancellationPending) return;
+
 					string packId = this.waitingPackages.Dequeue();
-					this.OnCrawlProgress(string.Format("フェーズ 2/4: パッケージページを取得中 ({0}/{1}) {2}",
+					this.ReportProgressToBackgroundWorker(string.Format("フェーズ 2/4: パッケージページを取得中 ({0}/{1}) {2}",
 						this.visitedPackages.Count,
 						this.visitedPackages.Count + this.waitingPackages.Count,
 						packId));
@@ -164,13 +172,15 @@ namespace Yusen.GCrawler {
 			/// </summary>
 			private void FetchContents() {
 				while(this.waitingContents.Count > 0){
+					if (this.bw.CancellationPending) return;
+					
 					string contId = this.waitingContents.Dequeue();
 					ContentCache cache;
 					GContent content;
 					if (this.cacheController.TryGetCache(contId, out cache)) {
 						content = cache.Content;
 						content.FromCache = true;
-						this.OnCrawlProgress(string.Format("フェーズ 3/4: 詳細ページのキャッシュにヒット ({0}/{1}) {2}",
+						this.ReportProgressToBackgroundWorker(string.Format("フェーズ 3/4: 詳細ページのキャッシュにヒット ({0}/{1}) {2}",
 							this.visitedContents.Count,
 							this.visitedContents.Count + this.waitingContents.Count,
 							contId));
@@ -178,7 +188,7 @@ namespace Yusen.GCrawler {
 						this.contentsCached.Add(contId, true);
 						continue;
 					}
-					this.OnCrawlProgress(string.Format("フェーズ 3/4: 詳細ページの取得中 ({0}/{1}) {2}",
+					this.ReportProgressToBackgroundWorker(string.Format("フェーズ 3/4: 詳細ページの取得中 ({0}/{1}) {2}",
 						this.visitedContents.Count,
 						this.visitedContents.Count + this.waitingContents.Count,
 						contId));
@@ -203,7 +213,7 @@ namespace Yusen.GCrawler {
 			/// クロール結果からジャンル，パッケージ，コンテンツの木構造を作る．
 			/// </summary>
 			private ReadOnlyCollection<GPackage> BuildGpcTree() {
-				this.OnCrawlProgress("フェーズ 4/4: データ構造の解析中");
+				this.ReportProgressToBackgroundWorker("フェーズ 4/4: データ構造の解析中");
 				//パッケージに含まれるコンテンツ
 				List<GPackage> packages = new List<GPackage>();
 				foreach (KeyValuePair<string, GPackage> packPair in this.visitedPackages) {
@@ -250,7 +260,6 @@ namespace Yusen.GCrawler {
 			}
 		}
 		
-		public event EventHandler<CrawlProgressEventArgs> CrawlProgress;
 		private readonly IHtmlParser parser;
 		private readonly IContentCacheController cacheController;
 		private readonly IDeadlineTable deadLineDic;
@@ -261,18 +270,14 @@ namespace Yusen.GCrawler {
 			this.deadLineDic = deadLineDic;
 		}
 		
-		public CrawlResult Crawl(CrawlSettings settings, GGenre genre) {
+		public CrawlResult Crawl(CrawlSettings settings, GGenre genre, BackgroundWorker bw) {
 			if (!genre.IsCrawlable) {
 				throw new ArgumentException("ジャンル「" + genre.GenreName + "」はクロールできない．");
 			}
-
-			CrawlerHelper helper = new CrawlerHelper(settings, genre, this.parser, this.cacheController, this.deadLineDic);
-			helper.CrawlProgress += delegate(object sender, CrawlProgressEventArgs e) {
-				if (null != this.CrawlProgress) {
-					this.CrawlProgress(sender, e);
-				}
-			};
-			return helper.StartCrawling();
+			
+			CrawlerHelper helper = new CrawlerHelper(settings, genre, this.parser, this.cacheController, this.deadLineDic, bw);
+			CrawlResult result = helper.StartCrawling();
+			return result;
 		}
 	}
 
@@ -288,6 +293,7 @@ namespace Yusen.GCrawler {
 		private int maxPages;
 		private CrawlOrder crawlOrder;
 		private TimetableSortType timeTableSortType;
+
 		public CrawlSettings(int maxPages, CrawlOrder crawlOrder, TimetableSortType timeTableSortType) {
 			this.maxPages = maxPages;
 			this.crawlOrder = crawlOrder;
@@ -328,9 +334,6 @@ namespace Yusen.GCrawler {
 	[Serializable]
 	public class CrawlResult {
 		public static CrawlResult Merge(GGenre genre, CrawlResult x, CrawlResult y) {
-			if (!x.Success ||  !y.Success) {
-				throw new ArgumentException("Successがfalseのはマージ不可．");
-			}
 			List<GPackage> packages = new List<GPackage>();
 			packages.AddRange(x.Packages);
 			packages.AddRange(y.Packages);
@@ -358,7 +361,6 @@ namespace Yusen.GCrawler {
 			return seed;
 		}
 
-		private readonly bool success;
 		private readonly GGenre genre;
 		private readonly ReadOnlyCollection<GPackage> packages;
 		private readonly ReadOnlyCollection<Uri> visitedPages;
@@ -367,20 +369,11 @@ namespace Yusen.GCrawler {
 		private readonly int contentsCached;
 		private readonly DateTime time;
 		
-		/// <summary>
-		/// クロール成功時のクロール結果
-		/// </summary>
-		/// <param name="genre"></param>
-		/// <param name="packages"></param>
-		/// <param name="vPages"></param>
-		/// <param name="cDown"></param>
-		/// <param name="cCache"></param>
 		internal CrawlResult(
 				GGenre genre,
 				ReadOnlyCollection<GPackage> packages, ReadOnlyCollection<Uri> vPages,
 				ReadOnlyCollection<Exception> ignoredExceptions,
 				int cDown, int cCache) {
-			this.success = true;
 			this.genre = genre;
 			this.packages = packages;
 			this.visitedPages = vPages;
@@ -407,9 +400,6 @@ namespace Yusen.GCrawler {
 		}
 		public int ContentsCached {
 			get { return this.contentsCached; }
-		}
-		public bool Success {
-			get { return this.success; }
 		}
 		public DateTime Time {
 			get { return this.time; }

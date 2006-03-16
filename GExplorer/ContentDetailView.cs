@@ -249,6 +249,7 @@ namespace Yusen.GExplorer {
 			this.picboxImage = new PictureBox();
 			this.picboxImage.Dock = DockStyle.Fill;
 			this.picboxImage.ContextMenuStrip = this.cmsImage;
+			this.picboxImage.LoadCompleted += new AsyncCompletedEventHandler(this.picboxImage_LoadCompleted);
 			this.splitContainer1.Panel1.Controls.Add(this.picboxImage);
 			
 			this.picboxImage.SizeMode = sizeMode;

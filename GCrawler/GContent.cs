@@ -6,6 +6,7 @@ using System.Xml.Serialization;
 using System.Text;
 using System.Net;
 using System.Runtime.Serialization;
+using System.ComponentModel;
 
 namespace Yusen.GCrawler {
 	[Serializable]
@@ -204,6 +205,7 @@ namespace Yusen.GCrawler {
 			this.fromCache = false;
 			this.isDummy = isDummy;
 		}
+
 		public string ContentId {
 			get { return this.contentId; }
 			set { this.contentId = value; }
@@ -236,6 +238,7 @@ namespace Yusen.GCrawler {
 			get { return this.longDescription; }
 			set { this.longDescription = value; }
 		}
+
 		[XmlIgnore]
 		public Uri DetailPageUri {
 			get { return GContent.CreateDetailPageUri(this.ContentId); }

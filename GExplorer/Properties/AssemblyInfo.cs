@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("GExplorer")]
-[assembly: AssemblyDescription("GyaO 専用ブラウザ")]
+[assembly: AssemblyDescription("パソコンテレビ GyaO 専用ブラウザ")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("YUSEN")]
 [assembly: AssemblyProduct("GExplorer")]
@@ -29,6 +29,6 @@ using System.Runtime.InteropServices;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("2.0.2.1")]
-[assembly: AssemblyFileVersion("2.0.2.1")]
+[assembly: AssemblyVersion("2.0.2.2")]
+[assembly: AssemblyFileVersion("2.0.2.2")]
 

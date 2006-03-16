@@ -44,6 +44,7 @@ namespace Yusen.GExplorer {
 		private static readonly Size WmpMarginSize = new Size(3, 3);
 		private static readonly Regex regexEndFlag = new Regex(":endFlg=([^:=]*)");
 		private static readonly Regex regexDartTag = new Regex(":dartTag=([^:=]*)");
+		private static readonly Regex regexClipNo = new Regex(":clipNo=([^:]*)");
 
 		private static PlayerForm instance = null;
 		public static PlayerForm Instance {
@@ -122,7 +123,15 @@ namespace Yusen.GExplorer {
 		private void UpdateStatusbatText() {
 			if(null != this.CurrentContent) {
 				IWMPMedia curMedia = this.wmpMain.currentMedia;
-				this.tsslId.Text = this.CurrentContent.ContentId;
+				string entryUrl;
+				Match matchClipNo = null;
+				if (this.currentAttribs.TryGetValue(PlayerForm.AttribNameEntryUrl, out entryUrl)) {
+					matchClipNo = PlayerForm.regexClipNo.Match(this.currentAttribs[PlayerForm.AttribNameEntryUrl]);
+				}
+				
+				this.tsslIdAndClipNo.Text = this.CurrentContent.ContentId + 
+					((null!=matchClipNo && matchClipNo.Success) ?
+						"(clipNo="+matchClipNo.Groups[1].Value+")" : string.Empty);
 				this.tsslChapter.Text = this.CurrentChapter.HasValue ?
 					"チャプター" + this.CurrentChapter.Value.ToString() + "(endFlag=" + this.endFlag.ToString() + ")"
 					: "通常";

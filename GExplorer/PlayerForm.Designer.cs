@@ -27,7 +27,7 @@
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PlayerForm));
 			this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
 			this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-			this.tsslId = new System.Windows.Forms.ToolStripStatusLabel();
+			this.tsslIdAndClipNo = new System.Windows.Forms.ToolStripStatusLabel();
 			this.tsslChapter = new System.Windows.Forms.ToolStripStatusLabel();
 			this.tsslSize = new System.Windows.Forms.ToolStripStatusLabel();
 			this.tsslDuration = new System.Windows.Forms.ToolStripStatusLabel();
@@ -109,7 +109,7 @@
 			// toolStripContainer1.ContentPanel
 			// 
 			this.toolStripContainer1.ContentPanel.Controls.Add(this.splitContainer1);
-			this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(644, 548);
+			this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(644, 546);
 			this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.toolStripContainer1.Location = new System.Drawing.Point(0, 0);
 			this.toolStripContainer1.Name = "toolStripContainer1";
@@ -125,7 +125,7 @@
 			// 
 			this.statusStrip1.Dock = System.Windows.Forms.DockStyle.None;
 			this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsslId,
+            this.tsslIdAndClipNo,
             this.tsslChapter,
             this.tsslSize,
             this.tsslDuration,
@@ -134,14 +134,14 @@
 			this.statusStrip1.Location = new System.Drawing.Point(0, 0);
 			this.statusStrip1.Name = "statusStrip1";
 			this.statusStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.ManagerRenderMode;
-			this.statusStrip1.Size = new System.Drawing.Size(644, 17);
+			this.statusStrip1.Size = new System.Drawing.Size(644, 19);
 			this.statusStrip1.TabIndex = 0;
 			// 
-			// tsslId
+			// tsslIdAndClipNo
 			// 
-			this.tsslId.Name = "tsslId";
-			this.tsslId.Size = new System.Drawing.Size(33, 12);
-			this.tsslId.Text = "tsslId";
+			this.tsslIdAndClipNo.Name = "tsslIdAndClipNo";
+			this.tsslIdAndClipNo.Size = new System.Drawing.Size(87, 12);
+			this.tsslIdAndClipNo.Text = "tsslIdAndClipNo";
 			// 
 			// tsslChapter
 			// 
@@ -185,7 +185,7 @@
 			this.splitContainer1.Panel2.Controls.Add(this.tableLayoutPanel1);
 			this.splitContainer1.Panel2Collapsed = true;
 			this.splitContainer1.Panel2MinSize = 120;
-			this.splitContainer1.Size = new System.Drawing.Size(644, 548);
+			this.splitContainer1.Size = new System.Drawing.Size(644, 546);
 			this.splitContainer1.SplitterDistance = 523;
 			this.splitContainer1.SplitterWidth = 1;
 			this.splitContainer1.TabIndex = 1;
@@ -197,7 +197,7 @@
 			this.wmpMain.Location = new System.Drawing.Point(0, 0);
 			this.wmpMain.Name = "wmpMain";
 			this.wmpMain.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("wmpMain.OcxState")));
-			this.wmpMain.Size = new System.Drawing.Size(644, 548);
+			this.wmpMain.Size = new System.Drawing.Size(644, 546);
 			this.wmpMain.TabIndex = 0;
 			this.wmpMain.Text = "axWindowsMediaPlayer1";
 			this.wmpMain.PlayStateChange += new AxWMPLib._WMPOCXEvents_PlayStateChangeEventHandler(this.wmpMain_PlayStateChange);
@@ -711,7 +711,7 @@
 		private System.Windows.Forms.ToolStripMenuItem tsmiStrechToFit;
 		private System.Windows.Forms.ToolStripMenuItem tsmiResizeToVideoResolution;
 		private System.Windows.Forms.StatusStrip statusStrip1;
-		private System.Windows.Forms.ToolStripStatusLabel tsslId;
+		private System.Windows.Forms.ToolStripStatusLabel tsslIdAndClipNo;
 		private System.Windows.Forms.ToolStripStatusLabel tsslSize;
 		private System.Windows.Forms.ToolStripStatusLabel tsslDuration;
 		private System.Windows.Forms.ToolStripStatusLabel tsslChapter;

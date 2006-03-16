@@ -32,9 +32,6 @@
 			this.ClientSize = new System.Drawing.Size(292, 266);
 			this.Name = "FormSettingsBase";
 			this.Text = "FormSettingsBase";
-			this.Resize += new System.EventHandler(this.FormSettingsBase_Resize);
-			this.Layout += new System.Windows.Forms.LayoutEventHandler(this.FormSettingsBase_Layout);
-			this.Move += new System.EventHandler(this.FormSettingsBase_Move);
 			this.ResumeLayout(false);
 
 		}

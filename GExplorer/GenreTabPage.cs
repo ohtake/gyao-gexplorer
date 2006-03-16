@@ -7,15 +7,16 @@ using GGenre = Yusen.GCrawler.GGenre;
 
 namespace Yusen.GExplorer {
 	partial class GenreTabPage : TabPage {
-		public event EventHandler<GenreReloadRequestedEventArgs> ReloadRequested;
+		public event EventHandler CrawlRequested;
+		public event EventHandler ResultRemoved;
 		private GGenre genre = null;
 		
 		public GenreTabPage() {
 			InitializeComponent();
-			this.tsmiReload.Font = new Font(this.tsmiReload.Font, FontStyle.Bold);
-			this.tsmiReload.Click += delegate {
-				if (null != this.ReloadRequested) {
-					this.ReloadRequested(this, new GenreReloadRequestedEventArgs(this.genre));
+			this.tsmiCrawl.Font = new Font(this.tsmiCrawl.Font, FontStyle.Bold);
+			this.tsmiCrawl.Click += delegate {
+				if (null != this.CrawlRequested) {
+					this.CrawlRequested(this, EventArgs.Empty);
 				}
 			};
 			this.tsmiBrowseTop.Click += delegate {
@@ -36,6 +37,12 @@ namespace Yusen.GExplorer {
 			this.tsmiCopyGenreNameAndUri.Click += delegate{
 				Clipboard.SetText(this.Genre.GenreName + Environment.NewLine + this.Genre.TopPageUri.AbsoluteUri);
 			};
+			this.tsmiRemoveCrawlResult.Click += delegate {
+				Cache.Instance.ResultsDictionary.Remove(this.Genre);
+				if (null != this.ResultRemoved) {
+					this.ResultRemoved(this, EventArgs.Empty);
+				}
+			};
 		}
 		public GenreTabPage(GGenre genre) : this() {
 			this.genre = genre;
@@ -54,15 +61,9 @@ namespace Yusen.GExplorer {
 				this.cmsGenre.Show(location);
 			}
 		}
-	}
 
-	class GenreReloadRequestedEventArgs : EventArgs {
-		private readonly GGenre genre;
-		public GenreReloadRequestedEventArgs(GGenre genre) {
-			this.genre = genre;
-		}
-		public GGenre Genre {
-			get { return this.genre; }
+		private void cmsGenre_Opening(object sender, CancelEventArgs e) {
+			this.tsmiRemoveCrawlResult.Enabled = Cache.Instance.ResultsDictionary.ContainsKey(this.Genre);
 		}
 	}
 }

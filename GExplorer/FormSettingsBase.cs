@@ -6,16 +6,20 @@ using System.Windows.Forms;
 
 namespace Yusen.GExplorer {
 	partial class FormSettingsBase : FormBase, IHasSettings<FormSettingsBaseSettings>{
-		private Size normalSize;
-		private Point normalLocation;
-		
 		public FormSettingsBase() : base(){
 			InitializeComponent();
 		}
 		
 		public void FillSettings(FormSettingsBaseSettings settings) {
-			settings.NormalSize = this.normalSize;
-			settings.NormalLocation = this.normalLocation;
+			Rectangle rect;
+			if (FormWindowState.Normal == this.WindowState) {
+				rect = new Rectangle(this.Location, this.Size);
+			} else {
+				rect = this.RestoreBounds;
+			}
+
+			settings.NormalSize = rect.Size;
+			settings.NormalLocation = rect.Location;
 			settings.TopMost = this.TopMost;
 			settings.IsMaximized = this.WindowState == FormWindowState.Maximized;
 		}
@@ -30,24 +34,6 @@ namespace Yusen.GExplorer {
 			if(settings.IsMaximized.HasValue && settings.IsMaximized.Value) {
 				this.WindowState = FormWindowState.Maximized;
 			}
-		}
-		private void SaveNormalSizeAndLocation() {
-			switch (this.WindowState) {
-				case FormWindowState.Normal:
-					this.normalSize = this.Size;
-					this.normalLocation = this.Location;
-					break;
-			}
-		}
-
-		private void FormSettingsBase_Layout(object sender, LayoutEventArgs e) {
-			this.SaveNormalSizeAndLocation();
-		}
-		private void FormSettingsBase_Move(object sender, EventArgs e) {
-			this.SaveNormalSizeAndLocation();
-		}
-		private void FormSettingsBase_Resize(object sender, EventArgs e) {
-			this.SaveNormalSizeAndLocation();
 		}
 	}
 	

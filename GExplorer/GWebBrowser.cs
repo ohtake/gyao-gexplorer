@@ -142,7 +142,7 @@ namespace Yusen.GExplorer {
 					ContentAdapter ca = new ContentAdapter(cache.Content);
 					this.ttId.ToolTipTitle = id + " のキャッシュ";
 					tipText =
-						cache.LastWriteTime.ToString() + Environment.NewLine
+						cache.LastWrittenTime.ToString() + Environment.NewLine
 						+ ca.GenreName + Environment.NewLine
 						+ ca.Title + Environment.NewLine
 						+ ca.EpisodeNumber + Environment.NewLine

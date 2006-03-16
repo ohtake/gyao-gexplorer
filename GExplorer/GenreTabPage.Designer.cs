@@ -25,7 +25,7 @@
 		private void InitializeComponent() {
 			this.components = new System.ComponentModel.Container();
 			this.cmsGenre = new System.Windows.Forms.ContextMenuStrip(this.components);
-			this.tsmiReload = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiCrawl = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiBrowseTop = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiBrowseTimetableRecentlyUpdatedFirst = new System.Windows.Forms.ToolStripMenuItem();
@@ -34,13 +34,15 @@
 			this.tsmiCopyGenreName = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiCopyUri = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiCopyGenreNameAndUri = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+			this.tsmiRemoveCrawlResult = new System.Windows.Forms.ToolStripMenuItem();
 			this.cmsGenre.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// cmsGenre
 			// 
 			this.cmsGenre.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiReload,
+            this.tsmiCrawl,
             this.toolStripSeparator1,
             this.tsmiBrowseTop,
             this.tsmiBrowseTimetableRecentlyUpdatedFirst,
@@ -48,15 +50,18 @@
             this.toolStripSeparator2,
             this.tsmiCopyGenreName,
             this.tsmiCopyUri,
-            this.tsmiCopyGenreNameAndUri});
+            this.tsmiCopyGenreNameAndUri,
+            this.toolStripSeparator3,
+            this.tsmiRemoveCrawlResult});
 			this.cmsGenre.Name = "cmsGenre";
-			this.cmsGenre.Size = new System.Drawing.Size(191, 170);
+			this.cmsGenre.Size = new System.Drawing.Size(191, 198);
+			this.cmsGenre.Opening += new System.ComponentModel.CancelEventHandler(this.cmsGenre_Opening);
 			// 
-			// tsmiReload
+			// tsmiCrawl
 			// 
-			this.tsmiReload.Name = "tsmiReload";
-			this.tsmiReload.Size = new System.Drawing.Size(190, 22);
-			this.tsmiReload.Text = "再クロール(&R)";
+			this.tsmiCrawl.Name = "tsmiCrawl";
+			this.tsmiCrawl.Size = new System.Drawing.Size(190, 22);
+			this.tsmiCrawl.Text = "クロール実行(&C)";
 			// 
 			// toolStripSeparator1
 			// 
@@ -105,6 +110,17 @@
 			this.tsmiCopyGenreNameAndUri.Size = new System.Drawing.Size(190, 22);
 			this.tsmiCopyGenreNameAndUri.Text = "名前とURIをコピー(&B)";
 			// 
+			// toolStripSeparator3
+			// 
+			this.toolStripSeparator3.Name = "toolStripSeparator3";
+			this.toolStripSeparator3.Size = new System.Drawing.Size(187, 6);
+			// 
+			// tsmiRemoveCrawlResult
+			// 
+			this.tsmiRemoveCrawlResult.Name = "tsmiRemoveCrawlResult";
+			this.tsmiRemoveCrawlResult.Size = new System.Drawing.Size(190, 22);
+			this.tsmiRemoveCrawlResult.Text = "クロール結果を破棄(&R)";
+			// 
 			// GenreTabPage
 			// 
 			this.ContextMenuStrip = this.cmsGenre;
@@ -123,8 +139,10 @@
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
 		private System.Windows.Forms.ToolStripMenuItem tsmiBrowseTop;
 		private System.Windows.Forms.ToolStripMenuItem tsmiBrowseTimetableDeadlineNearFirst;
-		private System.Windows.Forms.ToolStripMenuItem tsmiReload;
+		private System.Windows.Forms.ToolStripMenuItem tsmiCrawl;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
 		private System.Windows.Forms.ToolStripMenuItem tsmiBrowseTimetableRecentlyUpdatedFirst;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+		private System.Windows.Forms.ToolStripMenuItem tsmiRemoveCrawlResult;
 	}
 }

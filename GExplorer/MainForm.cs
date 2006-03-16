@@ -18,19 +18,16 @@ namespace Yusen.GExplorer {
 				get { return false;}
 			}
 		}
-		private delegate void ViewCrawlResultDelegate(CrawlResult result);
-		private delegate void SetStatusBarTextDelegate(string text);
-
+		
 		private Crawler crawler;
-		private Thread threadCrawler = null;
-
+		
 		private ContentAdapter seletedCont = null;
 		private CrawlProgressEventArgs crawlProgressEventArgs = null;
-
+		
 		public MainForm() {
 			InitializeComponent();
 		}
-
+		
 		private void ClearStatusBarInfo() {
 			if (this.InvokeRequired) {
 				this.Invoke(new MethodInvoker(delegate {
@@ -43,9 +40,9 @@ namespace Yusen.GExplorer {
 		}
 		private void SetStatutBarTextTemporary(string text) {
 			if(this.InvokeRequired) {
-				this.Invoke(new SetStatusBarTextDelegate(delegate(string text2) {
-					this.SetStatutBarTextTemporary(text2);
-				}));
+				this.Invoke(new ParameterizedThreadStart(delegate(object param) {
+					this.SetStatutBarTextTemporary(param as string);
+				}), text);
 			} else {
 				this.timerClearStatusText.Stop();
 				this.tsslCrawl.Text = text;
@@ -53,24 +50,32 @@ namespace Yusen.GExplorer {
 			}
 		}
 		
-		private void DisableTsmiAbortCrawling() {
+		private void ChangeEnabilityOfTsmiAbortCrawling(bool enabled) {
 			if (this.InvokeRequired) {
-				this.Invoke(new ThreadStart(delegate {
-					this.DisableTsmiAbortCrawling();
-				}));
+				this.Invoke(new ParameterizedThreadStart(delegate(object param) {
+					this.ChangeEnabilityOfTsmiAbortCrawling((bool)param);
+				}), enabled);
 			} else {
-				this.tsmiAbortCrawling.Enabled = false;
+				this.tsmiAbortCrawling.Enabled = enabled;
 			}
 		}
 		private void ViewCrawlResult(CrawlResult result) {
 			if (this.InvokeRequired) {
-				this.Invoke(new ViewCrawlResultDelegate(this.ViewCrawlResult), result);
+				this.Invoke(new ParameterizedThreadStart(delegate(object param){
+					this.ViewCrawlResult(param as CrawlResult);
+				}), result);
 			} else {
+				DateTime begin = DateTime.Now;
 				this.crawlResultView1.CrawlResult = result;
+				DateTime end = DateTime.Now;
+				if (null == result) {
+					this.SetStatutBarTextTemporary("選択されたジャンルはまだクロールされていません．タブをダブルクリックするとクロールを実行します．");
+				} else {
+					this.ClearStatusBarInfo();
+				}
 				if (this.FocusOnResultAfterGenreChanged) {
 					this.crawlResultView1.Focus();
 				}
-				this.genreTabControl1.SelectedGenre = result.Genre;
 			}
 		}
 		public void FillSettings(MainFormSettings settings) {
@@ -153,8 +158,6 @@ namespace Yusen.GExplorer {
 			this.tsmiSettingsDetailView.DropDown = this.contentDetailView1.SettingsDropDown;
 			this.contentDetailView1.SettingsVisible = false;
 			
-			this.crawler.CrawlProgress += new EventHandler<CrawlProgressEventArgs>(crawler_CrawlProgress);
-			
 			UserCommandsManager.Instance.UserCommandsChanged += new EventHandler(UserCommandsManager_UserCommandsChanged);
 			this.CreateUserCommandsMenuItems();
 			
@@ -199,56 +202,25 @@ namespace Yusen.GExplorer {
 			this.tsslCrawl.Text = string.Format("終了処理 {0}/{1}: {2}", e.Current, e.Max, e.Message);
 			Application.DoEvents();
 		}
-		void Cache_CacheRearranged(object sender, CacheEventArgs e) {
+		private void Cache_CacheRearranged(object sender, CacheEventArgs e) {
 			this.SetStatutBarTextTemporary(e.Message);
 		}
 
-		private void crawler_CrawlProgress(object sender, CrawlProgressEventArgs e) {
-			if (this.InvokeRequired) {
-				this.Invoke(
-					new EventHandler<CrawlProgressEventArgs>(this.crawler_CrawlProgress),
-					new object[] { sender, e });
-			} else {
-				this.timerCrawlProgress.Start();
-				this.crawlProgressEventArgs = e;
-			}
-		}
-
-		private void genreTabControl1_GenreSelected(object sender, GenreTabPageEventArgs e) {
+		private void genreTabControl1_GenreSelected(object sender, GenreSelectedEventArgs e) {
 			GGenre genre = e.Genre;
 			if (null == genre) return;
-			CrawlResult result;
-			if (e.ForceReload || !Cache.Instance.ResultsDictionary.TryGetValue(genre, out result)) {
-				Thread t;
-				lock (this.crawler) {
-					if (null != this.threadCrawler) {
-						MessageBox.Show(
-							"多重クロールは禁止．", Program.ApplicationName,
-							MessageBoxButtons.OK, MessageBoxIcon.Stop);
-						return;
-					}
-					t = new Thread(new ThreadStart(delegate {
-						try {
-							result = this.crawler.Crawl(GlobalSettings.Instance.GetCrawlSettings(), genre);
-						} finally {
-							lock (this.crawler) {
-								this.threadCrawler = null;
-								this.DisableTsmiAbortCrawling();
-							}
-						}
-						if (result.Success) {
-							this.crawlProgressEventArgs = null;
-							this.ClearStatusBarInfo();
-							Cache.Instance.ResultsDictionary[genre] = result;
-							this.ViewCrawlResult(result);
-						}
-					}));
-					this.threadCrawler = t;
-					this.tsmiAbortCrawling.Enabled = true;
-					t.Start();
+			CrawlResult result = null;
+			if (e.ForceReload) {
+				if (this.bwCrawl.IsBusy) {
+					MessageBox.Show("多重クロールは禁止．", Program.ApplicationName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+					return;
+				} else {
+					this.bwCrawl.RunWorkerAsync(genre);
 				}
-			} else {
+			} else if (Cache.Instance.ResultsDictionary.TryGetValue(genre, out result)) {
 				this.ViewCrawlResult(result);
+			} else {
+				this.ViewCrawlResult(null);
 			}
 		}
 
@@ -319,6 +291,7 @@ namespace Yusen.GExplorer {
 			GGenre mergedGenre = new MergedGenre();
 			CrawlResult mergedResult = CrawlResult.Merge(mergedGenre, Cache.Instance.ResultsDictionary.Values);
 			this.ViewCrawlResult(mergedResult);
+			this.genreTabControl1.SelectedGenre = null;
 		}
 		private void tsmiClearCrawlResults_Click(object sender, EventArgs e) {
 			switch (MessageBox.Show(
@@ -383,17 +356,7 @@ namespace Yusen.GExplorer {
 			}
 		}
 		private void tsmiAbortCrawling_Click(object sender, EventArgs e) {
-			lock (this.crawler) {
-				if (null != this.threadCrawler) {
-					this.threadCrawler.Abort();
-					this.tsmiAbortCrawling.Enabled = false;
-					this.threadCrawler = null;
-					
-					this.crawlProgressEventArgs = null;
-					this.ClearStatusBarInfo();
-					this.SetStatutBarTextTemporary("クロールを中止しました．");
-				}
-			}
+			this.bwCrawl.CancelAsync();
 		}
 
 		private void timerViewDetail_Tick(object sender, EventArgs e) {
@@ -414,8 +377,35 @@ namespace Yusen.GExplorer {
 			this.timerClearStatusText.Stop();
 			this.tsslCrawl.Text = string.Empty;
 		}
-	}
 
+		private void bwCrawl_DoWork(object sender, DoWorkEventArgs e) {
+			this.ChangeEnabilityOfTsmiAbortCrawling(true);
+			e.Result = this.crawler.Crawl(GlobalSettings.Instance.CreateCrawlSettings(), e.Argument as GGenre, this.bwCrawl);
+			if (null == e.Result) {
+				e.Cancel = true;
+			}
+		}
+		private void bwCrawl_ProgressChanged(object sender, ProgressChangedEventArgs e) {
+			this.timerCrawlProgress.Start();
+			this.crawlProgressEventArgs = e.UserState as CrawlProgressEventArgs;
+		}
+		private void bwCrawl_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e) {
+			this.ChangeEnabilityOfTsmiAbortCrawling(false);
+			this.timerCrawlProgress.Stop();
+			this.ClearStatusBarInfo();
+			if (e.Cancelled) {
+				this.SetStatutBarTextTemporary("クロールを中止しました．");
+				return;
+			}
+			if (null != e.Error) {
+				throw e.Error;
+			}
+			CrawlResult result = e.Result as CrawlResult;
+			Cache.Instance.ResultsDictionary[result.Genre] = result;
+			this.ViewCrawlResult(result);
+		}
+	}
+	
 	public class MainFormSettings : FormSettingsBaseSettings {
 		private bool? focusOnResultAfterGenreChanged;
 		private int? listViewWidth;

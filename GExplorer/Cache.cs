@@ -5,11 +5,14 @@ using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using Yusen.GCrawler;
+using System.Collections.ObjectModel;
 
 namespace Yusen.GExplorer {
 	sealed class Cache {
 		private const string CacheDir = @"Cache";
-		private const string DeadlineFilename = @"Deadlines.bin";
+		private const string ContentsFilename = @"Contents.xml";
+		private const string DeadlineFilenameXml = @"Deadlines.xml";
+		private const string DeadlineFilenameBin = @"Deadlines.bin";
 		private const string ResultsFilename = @"CrawlResults.bin";
 		
 		private static Cache instance = new Cache();
@@ -17,8 +20,22 @@ namespace Yusen.GExplorer {
 			get { return Cache.instance; }
 		}
 		public static void Initialize() {
-			Cache.Instance.cacheCtl = new ContentCacheControllerXml(Cache.CacheDir);
-			
+			DirectoryInfo di = new DirectoryInfo(Cache.CacheDir);
+			if (!di.Exists) di.Create();
+
+			Cache.Instance.cacheCtl = new ContentCacheControllerSortedDic(Cache.CacheDir);
+			Cache.instance.cacheCtl.DeserializeContents(Path.Combine(Cache.CacheDir, Cache.ContentsFilename));
+
+			try {
+				using (Stream stream = new FileStream(Path.Combine(Cache.CacheDir, Cache.DeadlineFilenameBin), FileMode.Open)) {
+					IFormatter formatter = new BinaryFormatter();
+					Cache.Instance.deadlineTable = (DeadlineTableSortedDic)formatter.Deserialize(stream);
+				}
+			} catch {
+				Cache.Instance.deadlineTable = new DeadlineTableSortedDic();
+			}
+			Cache.Instance.deadlineTable.DeserializeDeadlineTableFromXml(Path.Combine(Cache.CacheDir, Cache.DeadlineFilenameXml));
+
 			try {
 				Dictionary<GGenre, CrawlResult> oldResults = null;
 				using (Stream stream = new FileStream(Path.Combine(Cache.CacheDir, Cache.ResultsFilename), FileMode.Open)) {
@@ -39,32 +56,24 @@ namespace Yusen.GExplorer {
 			} catch {
 				Cache.Instance.resultsDic = new Dictionary<GGenre, CrawlResult>();
 			}
-			
-			try {
-				using (Stream stream = new FileStream(Path.Combine(Cache.CacheDir, Cache.DeadlineFilename), FileMode.Open)) {
-					IFormatter formatter = new BinaryFormatter();
-					Cache.Instance.deadlineTable = (DeadlineTableSortedDic)formatter.Deserialize(stream);
-				}
-			} catch {
-				Cache.Instance.deadlineTable = new DeadlineTableSortedDic();
-			}
 		}
 		public static void Serialize() {
-			//this.cacheCtl には何もしない
-			
+			Cache.Instance.cacheCtl.SerializeContentes(Path.Combine(Cache.CacheDir, Cache.ContentsFilename));
+			Cache.Instance.cacheCtl.DeleteTempCachesRead();
+
+			Cache.Instance.deadlineTable.SerializeDeadlineTableInXml(Path.Combine(Cache.CacheDir, Cache.DeadlineFilenameXml));
+			FileInfo fiDeadlineBinary = new FileInfo(Path.Combine(Cache.CacheDir, Cache.DeadlineFilenameBin));
+			if (fiDeadlineBinary.Exists) fiDeadlineBinary.Delete();
+
 			using (Stream stream = new FileStream(Path.Combine(Cache.CacheDir, Cache.ResultsFilename), FileMode.Create)) {
 				IFormatter formatter = new BinaryFormatter();
 				formatter.Serialize(stream, Cache.Instance.resultsDic);
-			}
-			using (Stream stream = new FileStream(Path.Combine(Cache.CacheDir, Cache.DeadlineFilename), FileMode.Create)) {
-				IFormatter formatter = new BinaryFormatter();
-				formatter.Serialize(stream, Cache.Instance.deadlineTable);
 			}
 		}
 
 		public event EventHandler<CacheEventArgs> CacheRearranged;
 
-		private ContentCacheControllerXml cacheCtl;
+		private ContentCacheControllerSortedDic cacheCtl;
 		private DeadlineTableSortedDic deadlineTable;
 		private Dictionary<GGenre, CrawlResult> resultsDic;
 		

@@ -7,8 +7,8 @@ using GGenre = Yusen.GCrawler.GGenre;
 using Yusen.GCrawler;
 
 namespace Yusen.GExplorer {
-	partial class GenreTabControl : TabControl {
-		public event EventHandler<GenreTabPageEventArgs> GenreSelected;
+	sealed partial class GenreTabControl : TabControl {
+		public event EventHandler<GenreSelectedEventArgs> GenreSelected;
 
 		public GenreTabControl() {
 			InitializeComponent();
@@ -16,10 +16,11 @@ namespace Yusen.GExplorer {
 
 		public void AddGenre(GGenre genre) {
 			GenreTabPage gtp = new GenreTabPage(genre);
-			gtp.ReloadRequested += new EventHandler<GenreReloadRequestedEventArgs>(gtp_ReloadRequested);
+			gtp.CrawlRequested += new EventHandler(gtp_ReloadRequested);
+			gtp.ResultRemoved += new EventHandler(gtp_ResultRemoved);
 			base.TabPages.Add(gtp);
 		}
-		
+
 		public GGenre SelectedGenre {
 			get {
 				GenreTabPage selGtp = base.SelectedTab as GenreTabPage;
@@ -64,39 +65,37 @@ namespace Yusen.GExplorer {
 		}
 
 		private void GenreTabControl_DoubleClick(object sender, EventArgs e) {
-			if (null != this.GenreSelected) {
-				GGenre genre = this.SelectedGenre;
-				if (null != genre) {
-					this.GenreSelected(this, new GenreTabPageEventArgs(genre, true));
-				}
-			}
+			this.OnGenreSelected(true);
 		}
 		
 		private void GenreTabControl_SelectedIndexChanged(object sender, EventArgs e) {
-			if (null != this.GenreSelected) {
-				GGenre genre = this.SelectedGenre;
-				if (null != genre) {
-					this.GenreSelected(this, new GenreTabPageEventArgs(genre, false));
-				}
-			}
+			this.OnGenreSelected(false);
 		}
-		
-		private void gtp_ReloadRequested(object sender, GenreReloadRequestedEventArgs e) {
-			this.SelectedGenre = e.Genre;
+
+		private void gtp_ReloadRequested(object sender, EventArgs e) {
+			this.SelectedGenre = (sender as GenreTabPage).Genre;
+			this.OnGenreSelected(true);
+		}
+		private void gtp_ResultRemoved(object sender, EventArgs e) {
+			this.SelectedGenre = (sender as GenreTabPage).Genre;
+			this.OnGenreSelected(false);
+		}
+
+		private void OnGenreSelected(bool forceReload) {
 			if (null != this.GenreSelected) {
 				GGenre genre = this.SelectedGenre;
 				if (null != genre) {
-					this.GenreSelected(this, new GenreTabPageEventArgs(genre, true));
+					this.GenreSelected(this, new GenreSelectedEventArgs(genre, forceReload));
 				}
 			}
 		}
 	}
 
-	class GenreTabPageEventArgs : EventArgs {
+	class GenreSelectedEventArgs : EventArgs {
 		private readonly GGenre genre;
 		private readonly bool forceReload;
-		
-		public GenreTabPageEventArgs(GGenre genre, bool forceReload){
+
+		public GenreSelectedEventArgs(GGenre genre, bool forceReload) {
 			this.genre = genre;
 			this.forceReload = forceReload;
 		}
