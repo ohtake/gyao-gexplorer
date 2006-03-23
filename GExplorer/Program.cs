@@ -107,13 +107,13 @@ namespace Yusen.GExplorer {
 				}
 			}
 			
-			Program.splashInit.StepProgress("キャッシュの初期化");
+			Program.splashInit.StepProgress("キャッシュの読み込み");
 			Cache.Initialize();
-			Program.splashInit.StepProgress("外部コマンドの読み取り");
+			Program.splashInit.StepProgress("外部コマンドの読み込み");
 			UserCommandsManager.Instance.DeserializeItems();
-			Program.splashInit.StepProgress("NGコンテンツの読み取り");
+			Program.splashInit.StepProgress("NGコンテンツの読み込み");
 			NgContentsManager.Instance.DeserializeItems();
-			Program.splashInit.StepProgress("プレイリストの読み取り");
+			Program.splashInit.StepProgress("プレイリストの読み込み");
 			PlayList.Instance.DeserializeItems();
 
 			Program.splashInit.StepProgress("メインフォームの作成");
@@ -149,7 +149,7 @@ namespace Yusen.GExplorer {
 			}
 		}
 		
-		private static void DisplayException(string title, Exception e) {
+		internal static void DisplayException(string title, Exception e) {
 			SystemSounds.Exclamation.Play();
 			using (ExceptionDialog ed = new ExceptionDialog()) {
 				ed.AllowAbort = true;

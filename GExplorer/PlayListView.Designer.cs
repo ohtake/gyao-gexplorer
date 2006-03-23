@@ -49,8 +49,9 @@
 			this.tsmiCopyName = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiCopyUri = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiCopyNameAndUri = new System.Windows.Forms.ToolStripMenuItem();
+			this.tscapmiCopyProperty = new Yusen.GExplorer.ToolStripCAPropertyMenuItem();
 			this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
-			this.tsmiCommands = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsucmiCommand = new Yusen.GExplorer.ToolStripUserCommandMenuItem();
 			this.toolStrip1 = new System.Windows.Forms.ToolStrip();
 			this.tslTitle = new System.Windows.Forms.ToolStripLabel();
 			this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
@@ -66,8 +67,6 @@
 			this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiRemoveUnreachables = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiClearPlayList = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsddbSettings = new System.Windows.Forms.ToolStripDropDownButton();
-			this.tsmiMultiSelectEnabled = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
 			this.tslMessage = new System.Windows.Forms.ToolStripLabel();
 			this.sfdAsx = new System.Windows.Forms.SaveFileDialog();
@@ -170,10 +169,11 @@
             this.tsmiCopyName,
             this.tsmiCopyUri,
             this.tsmiCopyNameAndUri,
+            this.tscapmiCopyProperty,
             this.toolStripSeparator4,
-            this.tsmiCommands});
+            this.tsucmiCommand});
 			this.cmsPlayListItem.Name = "cmsPlayListItem";
-			this.cmsPlayListItem.Size = new System.Drawing.Size(212, 270);
+			this.cmsPlayListItem.Size = new System.Drawing.Size(212, 292);
 			this.cmsPlayListItem.Opening += new System.ComponentModel.CancelEventHandler(this.cmsPlayListItem_Opening);
 			// 
 			// tsmiPlay
@@ -265,14 +265,14 @@
 			// 
 			this.tsmiPlayWithBrowser.Name = "tsmiPlayWithBrowser";
 			this.tsmiPlayWithBrowser.Size = new System.Drawing.Size(211, 22);
-			this.tsmiPlayWithBrowser.Text = "ウェブブラウザで再生ページ(&I)";
+			this.tsmiPlayWithBrowser.Text = "ウェブブラウザで再生ページ(&V)";
 			this.tsmiPlayWithBrowser.Click += new System.EventHandler(this.tsmiPlayWithBrowser_Click);
 			// 
 			// tsmiBrowseDetail
 			// 
 			this.tsmiBrowseDetail.Name = "tsmiBrowseDetail";
 			this.tsmiBrowseDetail.Size = new System.Drawing.Size(211, 22);
-			this.tsmiBrowseDetail.Text = "ウェブブラウザで詳細ページ(&E)";
+			this.tsmiBrowseDetail.Text = "ウェブブラウザで詳細ページ(&D)";
 			this.tsmiBrowseDetail.Click += new System.EventHandler(this.tsmiBrowseDetail_Click);
 			// 
 			// toolStripSeparator3
@@ -291,7 +291,7 @@
 			// 
 			this.tsmiCopyUri.Name = "tsmiCopyUri";
 			this.tsmiCopyUri.Size = new System.Drawing.Size(211, 22);
-			this.tsmiCopyUri.Text = "URIをコピー(&D)";
+			this.tsmiCopyUri.Text = "URIをコピー(&U)";
 			this.tsmiCopyUri.Click += new System.EventHandler(this.tsmiCopyUri_Click);
 			// 
 			// tsmiCopyNameAndUri
@@ -302,16 +302,25 @@
 			this.tsmiCopyNameAndUri.Text = "名前とURIをコピー(&B)";
 			this.tsmiCopyNameAndUri.Click += new System.EventHandler(this.tsmiCopyNameAndUri_Click);
 			// 
+			// tscapmiCopyProperty
+			// 
+			this.tscapmiCopyProperty.Name = "tscapmiCopyProperty";
+			this.tscapmiCopyProperty.Size = new System.Drawing.Size(211, 22);
+			this.tscapmiCopyProperty.Text = "その他のコピー(&O)";
+			this.tscapmiCopyProperty.PropertySelected += new System.EventHandler<Yusen.GExplorer.CAPropertySelectedEventArgs>(this.tscapmiCopyProperty_PropertySelected);
+			// 
 			// toolStripSeparator4
 			// 
 			this.toolStripSeparator4.Name = "toolStripSeparator4";
 			this.toolStripSeparator4.Size = new System.Drawing.Size(208, 6);
 			// 
-			// tsmiCommands
+			// tsucmiCommand
 			// 
-			this.tsmiCommands.Name = "tsmiCommands";
-			this.tsmiCommands.Size = new System.Drawing.Size(211, 22);
-			this.tsmiCommands.Text = "外部コマンド(&C)";
+			this.tsucmiCommand.Enabled = false;
+			this.tsucmiCommand.Name = "tsucmiCommand";
+			this.tsucmiCommand.Size = new System.Drawing.Size(211, 22);
+			this.tsucmiCommand.Text = "外部コマンド(&C)";
+			this.tsucmiCommand.UserCommandSelected += new System.EventHandler<Yusen.GExplorer.UserCommandSelectedEventArgs>(this.tsucmiCommand_UserCommandSelected);
 			// 
 			// toolStrip1
 			// 
@@ -322,7 +331,6 @@
             this.tslTitle,
             this.toolStripSeparator6,
             this.tsddbOperation,
-            this.tsddbSettings,
             this.toolStripSeparator7,
             this.tslMessage});
 			this.toolStrip1.Location = new System.Drawing.Point(0, 0);
@@ -437,27 +445,6 @@
 			this.tsmiClearPlayList.Text = "プレイリストの全項目を削除(&C)...";
 			this.tsmiClearPlayList.Click += new System.EventHandler(this.tsmiClearPlayList_Click);
 			// 
-			// tsddbSettings
-			// 
-			this.tsddbSettings.AutoToolTip = false;
-			this.tsddbSettings.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-			this.tsddbSettings.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiMultiSelectEnabled});
-			this.tsddbSettings.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.tsddbSettings.Name = "tsddbSettings";
-			this.tsddbSettings.Size = new System.Drawing.Size(56, 22);
-			this.tsddbSettings.Text = "設定(&L)";
-			// 
-			// tsmiMultiSelectEnabled
-			// 
-			this.tsmiMultiSelectEnabled.Checked = true;
-			this.tsmiMultiSelectEnabled.CheckOnClick = true;
-			this.tsmiMultiSelectEnabled.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.tsmiMultiSelectEnabled.Name = "tsmiMultiSelectEnabled";
-			this.tsmiMultiSelectEnabled.Size = new System.Drawing.Size(168, 22);
-			this.tsmiMultiSelectEnabled.Text = "複数選択を有効(&M)";
-			this.tsmiMultiSelectEnabled.Click += new System.EventHandler(this.tsmiMultiSelectEnabled_Click);
-			// 
 			// toolStripSeparator7
 			// 
 			this.toolStripSeparator7.Name = "toolStripSeparator7";
@@ -543,7 +530,6 @@
 		private System.Windows.Forms.ToolStripMenuItem tsmiCopyUri;
 		private System.Windows.Forms.ToolStripMenuItem tsmiCopyNameAndUri;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
-		private System.Windows.Forms.ToolStripMenuItem tsmiCommands;
 		private System.Windows.Forms.ToolStrip toolStrip1;
 		private System.Windows.Forms.ToolStripLabel tslTitle;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
@@ -551,11 +537,9 @@
 		private System.Windows.Forms.ToolStripMenuItem tsmiSerializePlayListNow;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
 		private System.Windows.Forms.ToolStripMenuItem tsmiClearPlayList;
-		private System.Windows.Forms.ToolStripDropDownButton tsddbSettings;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
 		private System.Windows.Forms.ToolStripLabel tslMessage;
 		private System.Windows.Forms.SaveFileDialog sfdAsx;
-		private System.Windows.Forms.ToolStripMenuItem tsmiMultiSelectEnabled;
 		private System.Windows.Forms.ToolStripMenuItem tsmiAddById;
 		private System.Windows.Forms.ToolStripMenuItem tsmiExport;
 		private System.Windows.Forms.ToolStripMenuItem tsmiImportOverwrite;
@@ -571,5 +555,7 @@
 		private System.Windows.Forms.Timer timerSumSelected;
 		private System.Windows.Forms.ToolStripMenuItem tsmiRemoveUnreachables;
 		private InputBoxDialog inputBoxDialog1;
+		private ToolStripCAPropertyMenuItem tscapmiCopyProperty;
+		private ToolStripUserCommandMenuItem tsucmiCommand;
 	}
 }

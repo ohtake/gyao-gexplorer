@@ -9,7 +9,322 @@ using System.Text.RegularExpressions;
 using Yusen.GCrawler;
 
 namespace Yusen.GExplorer {
-	sealed partial class CrawlResultView : UserControl, IHasSettings<GenreListViewSettings>{
+	public sealed partial class CrawlResultView : UserControl, IHasNewSettings<CrawlResultView.CrawlResultViewSettings> {
+		public sealed class CrawlResultViewSettings : INewSettings<CrawlResultViewSettings> {
+			private const int MaxMenuItems = 16;
+
+			private readonly CrawlResultView owner;
+			public CrawlResultViewSettings() : this(null) {
+			}
+			internal CrawlResultViewSettings(CrawlResultView owner) {
+				this.owner = owner;
+			}
+			
+			[XmlIgnore]
+			[Browsable(false)]
+			private bool HasOwner {
+				get { return null != this.owner; }
+			}
+			
+			[Category("カラム幅")]
+			[DisplayName("[0] contents_id")]
+			[Description("'contents_id'カラムの幅をピクセルで指定します．")]
+			[DefaultValue(null)]
+			public int? ColWidthId {
+				get {
+					if (this.HasOwner) return this.owner.chId.Width;
+					else return this.colWidthId;
+				}
+				set {
+					if (this.HasOwner && value.HasValue) this.owner.chId.Width = value.Value;
+					else this.colWidthId = value;
+				}
+			}
+			private int? colWidthId;
+
+			[Category("カラム幅")]
+			[DisplayName("[1] タイトル")]
+			[Description("'タイトル'カラムの幅をピクセルで指定します．")]
+			[DefaultValue(null)]
+			public int? ColWidthTitle {
+				get {
+					if (this.HasOwner) return this.owner.chTitle.Width;
+					else return this.colWidthTitle;
+				}
+				set {
+					if (this.HasOwner && value.HasValue) this.owner.chTitle.Width = value.Value;
+					else this.colWidthTitle = value;
+				}
+			}
+			private int? colWidthTitle;
+
+			[Category("カラム幅")]
+			[DisplayName("[2] 話数")]
+			[Description("'話数'カラムの幅をピクセルで指定します．")]
+			[DefaultValue(null)]
+			public int? ColWidthEpisode {
+				get {
+					if (this.HasOwner) return this.owner.chEpisode.Width;
+					else return this.colWidthEpisode;
+				}
+				set {
+					if (this.HasOwner && value.HasValue) this.owner.chEpisode.Width = value.Value;
+					else this.colWidthEpisode = value;
+				}
+			}
+			private int? colWidthEpisode;
+
+			[Category("カラム幅")]
+			[DisplayName("[3] サブタイトル")]
+			[Description("'サブタイトル'カラムの幅をピクセルで指定します．")]
+			[DefaultValue(null)]
+			public int? ColWidthSubtitle {
+				get {
+					if (this.HasOwner) return this.owner.chSubTitle.Width;
+					else return this.colWidthSubtitle;
+				}
+				set {
+					if (this.HasOwner && value.HasValue) this.owner.chSubTitle.Width = value.Value;
+					else this.colWidthSubtitle = value;
+				}
+			}
+			private int? colWidthSubtitle;
+
+			[Category("カラム幅")]
+			[DisplayName("[4] 番組時間")]
+			[Description("'番組時間'カラムの幅をピクセルで指定します．")]
+			[DefaultValue(null)]
+			public int? ColWidthDuration {
+				get {
+					if (this.HasOwner) return this.owner.chDuration.Width;
+					else return this.colWidthDuration;
+				}
+				set {
+					if (this.HasOwner && value.HasValue) this.owner.chDuration.Width = value.Value;
+					else this.colWidthDuration = value;
+				}
+			}
+			private int? colWidthDuration;
+
+			[Category("カラム幅")]
+			[DisplayName("[5] 配信期限")]
+			[Description("'配信期限'カラムの幅をピクセルで指定します．")]
+			[DefaultValue(null)]
+			public int? ColWidthDeadline {
+				get {
+					if (this.HasOwner) return this.owner.chDeadline.Width;
+					else return this.colWidthDeadline;
+				}
+				set {
+					if (this.HasOwner && value.HasValue) this.owner.chDeadline.Width = value.Value;
+					else this.colWidthDeadline = value;
+				}
+			}
+			private int? colWidthDeadline;
+
+			[Category("カラム幅")]
+			[DisplayName("[6] 説明")]
+			[Description("'説明'カラムの幅をピクセルで指定します．")]
+			[DefaultValue(null)]
+			public int? ColWidthLongDesc {
+				get {
+					if (this.HasOwner) return this.owner.chDescription.Width;
+					else return this.colWidthLongDesc;
+				}
+				set {
+					if (this.HasOwner && value.HasValue) this.owner.chDescription.Width = value.Value;
+					else this.colWidthLongDesc = value;
+				}
+			}
+			private int? colWidthLongDesc;
+
+			[Category("カラム幅")]
+			[DisplayName("[7] 属性")]
+			[Description("'属性'カラムの幅をピクセルで指定します．")]
+			[DefaultValue(null)]
+			public int? ColWidthAttribs {
+				get {
+					if (this.HasOwner) return this.owner.chAttribs.Width;
+					else return this.colWidthAttribs;
+				}
+				set {
+					if (this.HasOwner && value.HasValue) this.owner.chAttribs.Width = value.Value;
+					else this.colWidthAttribs = value;
+				}
+			}
+			private int? colWidthAttribs;
+
+			[Category("表示")]
+			[DisplayName("あぼ～ん方法")]
+			[Description("あぼ～んする方法を指定します．「とうめい」ではNG対象は表示されません．「さぼり」ではNG対象がグレイで表示されます．「はきだめ」ではNG対象のみが表示されます．")]
+			[DefaultValue(AboneType.Toumei)]
+			public AboneType AboneType {
+				get {
+					if (this.HasOwner) return this.owner.AboneType;
+					else return this.aboneType;
+				}
+				set {
+					if (this.HasOwner) this.owner.AboneType = value;
+					else this.aboneType = value;
+				}
+			}
+			private AboneType aboneType = AboneType.Toumei;
+
+			[Category("表示")]
+			[DisplayName("パッケージでグループ化")]
+			[Description("パッケージごとにコンテンツをグループ化します．Windows XP 以降でのみ有効です．")]
+			[DefaultValue(true)]
+			public bool ShowPackages {
+				get {
+					if (this.HasOwner) return this.owner.ShowPackages;
+					else return this.showPackages;
+				}
+				set {
+					if (this.HasOwner) this.owner.ShowPackages = value;
+					else this.showPackages = value;
+				}
+			}
+			private bool showPackages = true;
+			
+			[Category("動作")]
+			[DisplayName("マウスホバーで選択")]
+			[Description("マウスホバーでリストビューの項目を選択できるようにします．")]
+			[DefaultValue(false)]
+			public bool HoverSelect {
+				get {
+					if (this.HasOwner) return this.owner.HoverSelect;
+					else return this.hoverSelect;
+				}
+				set {
+					if (this.HasOwner) this.owner.HoverSelect = value;
+					else this.hoverSelect = value;
+				}
+			}
+			private bool hoverSelect = false;
+
+			[Category("動作")]
+			[DisplayName("複数選択")]
+			[Description("リストビューで項目を複数選択できるようにします．")]
+			[DefaultValue(true)]
+			public bool MultiSelect {
+				get {
+					if (this.HasOwner) return this.owner.MultiSelect;
+					else return this.multiSelect;
+				}
+				set {
+					if (this.HasOwner) this.owner.MultiSelect = value;
+					else this.multiSelect = value;
+				}
+			}
+			private bool multiSelect = true;
+			
+			[Category("フィルタ")]
+			[DisplayName("フィルタ")]
+			[Description("フィルタツールバーを表示してフィルタをかけます．")]
+			[DefaultValue(false)]
+			public bool FilterEnabled {
+				get {
+					if (this.HasOwner) return this.owner.FilterEnabled;
+					else return this.filterEnabled;
+				}
+				set {
+					if (this.HasOwner) this.owner.FilterEnabled = value;
+					else this.filterEnabled = value;
+				}
+			}
+			private bool filterEnabled = false;
+
+			[Category("フィルタ")]
+			[DisplayName("フィルタ解除で文字列クリア")]
+			[Description("フィルタを解除したときに自動的にフィルタ文字列を空にします．")]
+			[DefaultValue(true)]
+			public bool ClearFilterStringOnHideEnabled {
+				get { return this.clearFilterStringOnHideEnabled; }
+				set { this.clearFilterStringOnHideEnabled = value; }
+			}
+			private bool clearFilterStringOnHideEnabled = true;
+
+			[Category("フィルタ")]
+			[DisplayName("フィルタの種類")]
+			[Description("フィルタの種類を指定します．「Normal」では文字列の単純な部分一致です．「Migemo」はC/Migemoによるフィルタで migemo.dll が必要です．「Regex」は任意の正規表現でフィルタをかけます．")]
+			[DefaultValue(FilterType.Normal)]
+			public FilterType FilterType {
+				get {
+					if (this.HasOwner) return this.owner.FilterType;
+					else return this.filterType;
+				}
+				set {
+					if (this.HasOwner) this.owner.FilterType = value;
+					else this.filterType = value;
+				}
+			}
+			private FilterType filterType = FilterType.Normal;
+
+			[XmlIgnore] //ColorはXMLシリアライズできない？
+			[Category("表示")]
+			[DisplayName("新着の色")]
+			[Description("新着コンテンツの色を指定します．")]
+			public Color NewColor {
+				get {
+					if (this.HasOwner) return this.owner.NewColor;
+					else return this.newColor;
+				}
+				set {
+					if (this.HasOwner) this.owner.NewColor = value;
+					else this.newColor = value;
+				}
+			}
+			private Color newColor = Color.Red;
+			
+			[Browsable(false)]
+			public int? NewColorArgb {
+				get {return this.NewColor.ToArgb();}
+				set {
+					if (value.HasValue) {
+						this.NewColor = Color.FromArgb(value.Value);
+					}
+				}
+			}
+
+			[Category("表示")]
+			[DisplayName("'ページ'メニューの最大値")]
+			[Description("'ページ'メニューに表示する項目の最大値を指定します．負数にすると無制限になります．")]
+			[DefaultValue(CrawlResultViewSettings.MaxMenuItems)]
+			public int MaxPageMenuItems {
+				get {
+					if (this.HasOwner) return this.owner.MaxPageMenuItems;
+					else return this.maxPageMenuItems;
+				}
+				set {
+					if (this.HasOwner) this.owner.MaxPageMenuItems = value;
+					else this.maxPageMenuItems = value;
+				}
+			}
+			private int maxPageMenuItems = CrawlResultViewSettings.MaxMenuItems;
+			
+			[Category("表示")]
+			[DisplayName("'例外'メニューの最大値")]
+			[Description("'例外'メニューに表示する項目の最大値を指定します．負数にすると無制限になります．")]
+			[DefaultValue(16)]
+			public int MaxExceptionMenuItems {
+				get {
+					if (this.HasOwner) return this.owner.MaxExceptionMenuItems;
+					else return this.maxExceptionMenuItems;
+				}
+				set {
+					if (this.HasOwner) this.owner.MaxExceptionMenuItems = value;
+					else this.maxExceptionMenuItems = value;
+				}
+			}
+			private int maxExceptionMenuItems = CrawlResultViewSettings.MaxMenuItems;
+
+			#region INewSettings<CrawlResultViewSettings> Members
+			public void ApplySettings(CrawlResultViewSettings newSettings) {
+				Utility.SubstituteAllPublicProperties(this, newSettings);
+			}
+			#endregion
+		}
+
 		private sealed class ContentListViewItem : ListViewItem {
 			public ContentListViewItem(ContentAdapter ca, ListViewGroup packageGroup)
 				: base(new string[] { ca.ContentId, ca.Title, ca.EpisodeNumber, ca.SubTitle, ca.GTimeSpan.ToString(), ca.Deadline, ca.LongDescription, ca.Attributes }) {
@@ -39,8 +354,9 @@ namespace Yusen.GExplorer {
 		public event EventHandler<ManuallyCacheDeletedEventArgs> ManuallyCacheDeleted;
 		
 		private CrawlResult crawlResult;
-		private AboneType aboneType = AboneType.Sabori;
-		private FilterType filterType = FilterType.Migemo;
+		private AboneType aboneType = AboneType.Toumei;
+		private FilterType filterType = FilterType.Normal;
+		private bool showPackages = true;
 		private Color newColor = Color.Red;
 		private int maxPageMenuItems = 16;
 		private int maxExceptionMenuItems = 16;
@@ -51,60 +367,16 @@ namespace Yusen.GExplorer {
 		private Migemo migemo = null;
 		private Regex filterRegex = null;
 
+		private readonly CrawlResultViewSettings settings;
+
 		public CrawlResultView() {
 			InitializeComponent();
-		}
-		
-		private void CrawlResultView_Load(object sender, EventArgs e) {
 			this.tslTitle.Font = new Font(this.tslTitle.Font, FontStyle.Bold);
 			this.tsmiAdd.Font = new Font(this.tsmiAdd.Font, FontStyle.Bold);
-			this.tsddbSettings.DropDown.Closing += Utility.ToolStripDropDown_CancelClosingOnClick;
-			this.tsmiAboneType.DropDown.Closing += Utility.ToolStripDropDown_CancelClosingOnClick;
-			this.tsmiFilterType.DropDown.Closing += Utility.ToolStripDropDown_CancelClosingOnClick;
 			this.tsddbFilterTarget.DropDown.Closing += Utility.ToolStripDropDown_CancelClosingOnClick;
-			
-			//Migemo初期化
-			try {
-				this.migemo = new Migemo(GlobalSettings.Instance.MigemoDictionaryFilename);
-				this.Disposed += delegate {
-					this.migemo.Dispose();
-				};
-			} catch (MigemoException ex) {
-				this.migemo = null;
-				this.tstbAnswer.Text = ex.Message;
-			}
-			
-			//あぼ～ん方法のメニュー作成
-			this.tsmiAboneType.DropDownItems.Clear();
-			foreach (AboneType atype in Enum.GetValues(typeof(AboneType))) {
-				ToolStripMenuItem tsmi = new ToolStripMenuItem(atype.ToString());
-				tsmi.Tag = atype;
-				tsmi.Click += delegate(object sender2, EventArgs e2) {
-					this.AboneType = (AboneType)(sender2 as ToolStripMenuItem).Tag;
-				};
-				this.tsmiAboneType.DropDownItems.Add(tsmi);
-			}
-			this.AboneType = this.AboneType;
-			
-			//フィルタ用のメニュー作成
-			this.tsmiFilterType.DropDownItems.Clear();
-			foreach (FilterType ftype in Enum.GetValues(typeof(FilterType))) {
-				ToolStripMenuItem tsmi = new ToolStripMenuItem(ftype.ToString());
-				tsmi.Tag = ftype;
-				tsmi.Click += delegate(object sender2, EventArgs e2) {
-					this.FilterType = (FilterType)(sender2 as ToolStripMenuItem).Tag;
-				};
-				//Migemoが使用不可の場合は選択不可に
-				if (FilterType.Migemo == ftype && !this.CanUseMigemo) {
-					tsmi.Enabled = false;
-					this.tsbOneFTypeMigemo.Enabled = false;
-				}
-				this.tsmiFilterType.DropDownItems.Add(tsmi);
-			}
-			this.FilterType = this.FilterType;
-			
+
 			//フィルタの対象のメニューを作成
-			foreach(ColumnHeader ch in this.listView1.Columns) {
+			foreach (ColumnHeader ch in this.listView1.Columns) {
 				ToolStripMenuItem tsmi = new ToolStripMenuItem(ch.Text);
 				tsmi.Checked = true;
 				tsmi.CheckOnClick = true;
@@ -114,11 +386,21 @@ namespace Yusen.GExplorer {
 				this.tsddbFilterTarget.DropDownItems.Add(tsmi);
 			}
 
-			this.CreateUserCommandsMenuItems();
-			UserCommandsManager.Instance.UserCommandsChanged += new EventHandler(UserCommandsManager_UserCommandsChanged);
-			this.Disposed += delegate {
-				UserCommandsManager.Instance.UserCommandsChanged -= new EventHandler(UserCommandsManager_UserCommandsChanged);
-			};
+			this.settings = new CrawlResultViewSettings(this);
+		}
+		
+		private void CrawlResultView_Load(object sender, EventArgs e) {
+			//Migemo初期化
+			try {
+				this.migemo = new Migemo(GlobalSettings.Instance.MigemoDictionaryFilename);
+				this.Disposed += delegate {
+					this.migemo.Dispose();
+				};
+			} catch (MigemoException ex) {
+				this.migemo = null;
+				this.tstbAnswer.Text = ex.Message;
+				this.tsbOneFTypeMigemo.Enabled = false;
+			}
 			
 			NgContentsManager.Instance.NgContentsChanged += new EventHandler(NgContentsManager_NgContentsChanged);
 			this.Disposed += delegate {
@@ -149,10 +431,10 @@ namespace Yusen.GExplorer {
 				}
 			}
 		}
-		public GGenre Genre {
+		private GGenre Genre {
 			get { return this.CrawlResult.Genre; }
 		}
-		public ContentAdapter[] SelectedContents {
+		private ContentAdapter[] SelectedContents {
 			get {
 				List<ContentAdapter> conts = new List<ContentAdapter>();
 				foreach (ContentListViewItem clvi in this.listView1.SelectedItems) {
@@ -160,7 +442,7 @@ namespace Yusen.GExplorer {
 				}
 				return conts.ToArray();
 			}
-			private set {
+			set {
 				List<ContentAdapter> conts = new List<ContentAdapter>(value);
 				foreach(ContentListViewItem clvi in this.listView1.Items) {
 					clvi.Selected = conts.Contains(clvi.ContentAdapter);
@@ -168,7 +450,7 @@ namespace Yusen.GExplorer {
 			}
 		}
 
-		public bool CanUseMigemo {
+		private bool CanUseMigemo {
 			get {
 				return null != this.migemo;
 			}
@@ -184,7 +466,7 @@ namespace Yusen.GExplorer {
 				this.CreateAndSetFilterRegex();
 			}
 		}
-		public FilterType FilterType {
+		private FilterType FilterType {
 			get { return this.filterType; }
 			set {
 				//Migemoチェック
@@ -192,10 +474,6 @@ namespace Yusen.GExplorer {
 					value = FilterType.Normal;
 				}
 				//ボタンなどの更新
-				foreach(ToolStripMenuItem tsmi in this.tsmiFilterType.DropDownItems) {
-					bool active = value == (FilterType)tsmi.Tag;
-					tsmi.Checked = active;
-				}
 				this.tsbOneFTypeNormal.Checked = false;
 				this.tsbOneFTypeMigemo.Checked = false;
 				this.tsbOneFTypeRegex.Checked = false;
@@ -227,12 +505,9 @@ namespace Yusen.GExplorer {
 			}
 		}
 		
-		public AboneType AboneType {
+		private AboneType AboneType {
 			get { return this.aboneType; }
 			set {
-				foreach(ToolStripMenuItem tsmi in this.tsmiAboneType.DropDownItems) {
-					tsmi.Checked = value == (AboneType)tsmi.Tag;
-				}
 				this.tsbOneAboneToumei.Checked = false;
 				this.tsbOneAboneSabori.Checked = false;
 				this.tsbOneAboneHakidame.Checked = false;
@@ -253,41 +528,32 @@ namespace Yusen.GExplorer {
 				}
 			}
 		}
-		public bool ShowPackages {
-			get { return this.tsmiShowPackages.Checked; }
+		private bool ShowPackages {
+			get { return this.showPackages; }
 			set {
-				this.tsmiShowPackages.CheckState = value ? CheckState.Checked : CheckState.Unchecked;
+				this.showPackages = value;
 				this.listView1.ShowGroups = value;
 			}
 		}
-		public bool HoverSelect {
-			get { return this.tsmiHoverSelect.Checked; }
+		private bool HoverSelect {
+			get { return this.listView1.HoverSelection; }
 			set {
-				this.tsmiHoverSelect.Checked = value;
 				this.listView1.HotTracking = value;
 				this.listView1.HoverSelection = value;
-				this.listView1.Activation = value ? ItemActivation.OneClick : ItemActivation.Standard;
 			}
 		}
-		public bool MultiSelect {
-			get { return this.tsmiMultiSelect.Checked; }
-			set {
-				this.tsmiMultiSelect.Checked = value;
-				this.listView1.MultiSelect = value;
-			}
+		private bool MultiSelect {
+			get { return this.listView1.MultiSelect; }
+			set { this.listView1.MultiSelect = value; }
 		}
-		public bool ClearFilterStringOnHideEnabled {
-			get { return this.tsmiClearFilterStringOnHide.Checked; }
-			set { this.tsmiClearFilterStringOnHide.Checked = value; }
-		}
-		public bool FilterEnabled {
+		private bool FilterEnabled {
 			get {return this.tsbShowFilter.Checked; }
 			set {
 				this.tsbShowFilter.Checked = value;
 				this.tsFilter.Visible = value;
 			}
 		}
-		public Color NewColor {
+		private Color NewColor {
 			get { return this.newColor; }
 			set {
 				if (value != this.newColor) {
@@ -296,7 +562,7 @@ namespace Yusen.GExplorer {
 				}
 			}
 		}
-		public int MaxPageMenuItems {
+		private int MaxPageMenuItems {
 			get { return this.maxPageMenuItems; }
 			set {
 				if(value != this.maxPageMenuItems) {
@@ -305,7 +571,7 @@ namespace Yusen.GExplorer {
 				}
 			}
 		}
-		public int MaxExceptionMenuItems {
+		private int MaxExceptionMenuItems {
 			get { return this.maxExceptionMenuItems; }
 			set {
 				if(value != this.maxExceptionMenuItems) {
@@ -313,46 +579,6 @@ namespace Yusen.GExplorer {
 					this.CreateExceptionsMenuItems(false);
 				}
 			}
-		}
-		public void FillSettings(GenreListViewSettings settings) {
-			settings.ColWidthId = this.chId.Width;
-			settings.ColWidthTitle = this.chTitle.Width;
-			settings.ColWidthEpisode = this.chEpisode.Width;
-			settings.ColWidthSubtitle = this.chSubTitle.Width;
-			settings.ColWidthDuration = this.chDuration.Width;
-			settings.ColWidthDeadline = this.chDeadline.Width;
-			settings.ColWidthLongDesc = this.chDescription.Width;
-			settings.ColWidthAttribs = this.chAttribs.Width;
-			settings.AboneType = this.AboneType;
-			settings.ShowPackages = this.ShowPackages;
-			settings.HoverSelect = this.HoverSelect;
-			settings.MultiSelect = this.MultiSelect;
-			settings.ClearFilterStringOnHideEnabled = this.ClearFilterStringOnHideEnabled;
-			settings.FilterEnabled = this.FilterEnabled;
-			settings.FilterType = this.FilterType;
-			settings.NewColor = this.NewColor;
-			settings.MaxPageMenuItems = this.MaxPageMenuItems;
-			settings.MaxExceptionMenuItems = this.MaxExceptionMenuItems;
-		}
-		public void ApplySettings(GenreListViewSettings settings) {
-			this.chId.Width = settings.ColWidthId ?? this.chId.Width;
-			this.chTitle.Width = settings.ColWidthTitle ?? this.chTitle.Width;
-			this.chEpisode.Width = settings.ColWidthEpisode ?? this.chEpisode.Width;
-			this.chSubTitle.Width = settings.ColWidthSubtitle ?? this.chSubTitle.Width;
-			this.chDuration.Width = settings.ColWidthDuration ?? this.chDuration.Width;
-			this.chDeadline.Width = settings.ColWidthDeadline ?? this.chDeadline.Width;
-			this.chDescription.Width = settings.ColWidthLongDesc ?? this.chDescription.Width;
-			this.chAttribs.Width = settings.ColWidthAttribs ?? this.chAttribs.Width;
-			this.AboneType = settings.AboneType ?? this.AboneType;
-			this.ShowPackages = settings.ShowPackages ?? this.ShowPackages;
-			this.HoverSelect = settings.HoverSelect ?? this.HoverSelect;
-			this.MultiSelect = settings.MultiSelect ?? this.MultiSelect;
-			this.ClearFilterStringOnHideEnabled = settings.ClearFilterStringOnHideEnabled ?? this.ClearFilterStringOnHideEnabled;
-			this.FilterEnabled = settings.FilterEnabled ?? this.FilterEnabled;
-			this.FilterType = settings.FilterType ?? this.FilterType;
-			this.NewColor = settings.NewColor ?? this.NewColor;
-			this.MaxPageMenuItems = settings.MaxPageMenuItems ?? this.MaxPageMenuItems;
-			this.MaxExceptionMenuItems = settings.MaxExceptionMenuItems ?? this.MaxExceptionMenuItems;
 		}
 		private void ClearAllItems() {
 			this.allLvgs.Clear();
@@ -538,26 +764,6 @@ namespace Yusen.GExplorer {
 			return;
 		}
 
-		private void CreateUserCommandsMenuItems() {
-			this.tsmiUserCommands.DropDownItems.Clear();
-			List<ToolStripMenuItem> menuItems = new List<ToolStripMenuItem>();
-			foreach (UserCommand uc in UserCommandsManager.Instance) {
-				ToolStripMenuItem tsmi = new ToolStripMenuItem(uc.Title);
-				tsmi.Tag = uc;
-				tsmi.Click += delegate(object sender, EventArgs e) {
-					ToolStripMenuItem tsmi2 = sender as ToolStripMenuItem;
-					if (null != tsmi2) {
-						UserCommand uc2 = tsmi2.Tag as UserCommand;
-						if (null != uc2) {
-							uc2.Execute(this.SelectedContents);
-						}
-					}
-				};
-				menuItems.Add(tsmi);
-			}
-			this.tsmiUserCommands.DropDownItems.AddRange(menuItems.ToArray());
-			this.tsmiUserCommands.Enabled = this.tsmiUserCommands.HasDropDownItems;
-		}
 		private void UpdateView() {
 			this.listView1.BeginUpdate();
 			this.DisplayItems();
@@ -569,9 +775,6 @@ namespace Yusen.GExplorer {
 			}
 		}
 
-		private void UserCommandsManager_UserCommandsChanged(object sender, EventArgs e) {
-			this.CreateUserCommandsMenuItems();
-		}
 		private void NgContentsManager_NgContentsChanged(object sender, EventArgs e) {
 			this.RefreshAllNgCached();
 			this.UpdateView();
@@ -595,7 +798,6 @@ namespace Yusen.GExplorer {
 		private void listView1_ColumnClick(object sender, ColumnClickEventArgs e) {
 			if(this.ShowPackages) {
 				this.listView1.ShowGroups = false;
-				this.tsmiShowPackages.CheckState = CheckState.Indeterminate;
 			}
 
 			ListViewItemComparer comparer = new ListViewItemComparer(e.Column);
@@ -664,13 +866,28 @@ namespace Yusen.GExplorer {
 			}
 		}
 		private void tsmiCopyName_Click(object sender, EventArgs e) {
-			ContentAdapter.CopyNames(this.SelectedContents);
+			string text = ContentAdapter.GetNames(this.SelectedContents);
+			if (!string.IsNullOrEmpty(text)) {
+				Clipboard.SetText(text);
+			}
 		}
 		private void tsmiCopyDetailUri_Click(object sender, EventArgs e) {
-			ContentAdapter.CopyUris(this.SelectedContents);
+			string text = ContentAdapter.GetUris(this.SelectedContents);
+			if (!string.IsNullOrEmpty(text)) {
+				Clipboard.SetText(text);
+			}
 		}
 		private void tsmiCopyNameAndDetailUri_Click(object sender, EventArgs e) {
-			ContentAdapter.CopyNamesAndUris(this.SelectedContents);
+			string text = ContentAdapter.GetNamesAndUris(this.SelectedContents);
+			if (!string.IsNullOrEmpty(text)) {
+				Clipboard.SetText(text);
+			}
+		}
+		private void tscapmiCopyProperty_PropertySelected(object sender, CAPropertySelectedEventArgs e) {
+			string text = ContentAdapter.GetPropertyValueLines(this.SelectedContents, e.PropertyInfo);
+			if (!string.IsNullOrEmpty(text)) {
+				Clipboard.SetText(text);
+			}
 		}
 		private void tsmiViewImagesSmall_Click(object sender, EventArgs e) {
 			Uri[] images = Array.ConvertAll<ContentAdapter, Uri>(this.SelectedContents, new Converter<ContentAdapter, Uri>(delegate(ContentAdapter input) {
@@ -751,74 +968,14 @@ namespace Yusen.GExplorer {
 				this.ManuallyCacheDeleted(this, new ManuallyCacheDeletedEventArgs(succeeded, failed));
 			}
 		}
-		#endregion
-		#region メニューの項目
-		private void tsmiShowPackages_Click(object sender, EventArgs e) {
-			switch(this.tsmiShowPackages.CheckState) {
-				case CheckState.Checked:
-					this.ShowPackages = false;
-					break;
-				case CheckState.Indeterminate:
-				case CheckState.Unchecked:
-					this.ShowPackages = true;
-					this.listView1.BeginUpdate();
-					this.ClearAllItems();
-					if(null != this.CrawlResult) {
-						this.CreateItems();
-						this.DisplayItems();
-					}
-					this.listView1.EndUpdate();
-					break;
-			}
-		}
-		private void tsmiHoverSelect_Click(object sender, EventArgs e) {
-			this.HoverSelect = this.HoverSelect;
-		}
-		private void tsmiMultiSelect_Click(object sender, EventArgs e) {
-			this.MultiSelect = this.MultiSelect;
-		}
-		private void tsmiNewColor_Click(object sender, EventArgs e) {
-			this.tsddbSettings.DropDown.Close();
-			this.colorDialog1.Color = this.NewColor;
-			if (DialogResult.OK == this.colorDialog1.ShowDialog()) {
-				this.NewColor = this.colorDialog1.Color;
-			}
-		}
-		private void tsmiMaxPageMenuItems_Click(object sender, EventArgs e) {
-			this.inputBoxDialog1.Title = "「ページ」メニューの項目数の最大値";
-			this.inputBoxDialog1.Message = "項目数の最大値を入力してください．負数で無制限．";
-			this.inputBoxDialog1.Input = this.MaxPageMenuItems.ToString();
-			switch(this.inputBoxDialog1.ShowDialog()) {
-				case DialogResult.OK:
-					string s = this.inputBoxDialog1.Input;
-					try {
-						this.MaxPageMenuItems = int.Parse(s);
-					} catch(Exception ex) {
-						MessageBox.Show(ex.Message, ex.GetType().ToString(), MessageBoxButtons.OK, MessageBoxIcon.Error);
-					}
-					break;
-			}
-		}
-		private void tsmiMaxExceptionMenuItems_Click(object sender, EventArgs e) {
-			this.inputBoxDialog1.Title = "「例外」メニューの項目数の最大値";
-			this.inputBoxDialog1.Message = "項目数の最大値を入力してください．負数で無制限．";
-			this.inputBoxDialog1.Input = this.MaxPageMenuItems.ToString();
-			switch(this.inputBoxDialog1.ShowDialog()) {
-				case DialogResult.OK:
-					string s = this.inputBoxDialog1.Input;
-					try {
-						this.MaxExceptionMenuItems = int.Parse(s);
-					} catch(Exception ex) {
-						MessageBox.Show(ex.Message, ex.GetType().ToString(), MessageBoxButtons.OK, MessageBoxIcon.Error);
-					}
-					break;
-			}
+		private void tsucmiCommandRoot_UserCommandSelected(object sender, UserCommandSelectedEventArgs e) {
+			e.UserCommand.Execute(this.SelectedContents);
 		}
 		#endregion
 		#region フィルタ関連
 		private void tsbShowFilter_Click(object sender, EventArgs e) {
 			this.FilterEnabled = this.FilterEnabled;
-			if (this.ClearFilterStringOnHideEnabled && !this.FilterEnabled) {
+			if (this.settings.ClearFilterStringOnHideEnabled && !this.FilterEnabled) {
 				this.FilterString = string.Empty;
 			}
 			this.UpdateView();
@@ -900,14 +1057,12 @@ namespace Yusen.GExplorer {
 		}
 		#endregion
 
-		internal ToolStripDropDown SettingsDropDown {
-			get { return this.tsddbSettings.DropDown; }
-		}
-		internal bool SettingsVisible {
-			get { return this.tsddbSettings.Visible; }
-			set { this.tsddbSettings.Visible = value; }
-		}
 
+		#region IHasNewSettings<CrawlResultViewSettings> Members
+		public CrawlResultView.CrawlResultViewSettings Settings {
+			get { return this.settings; }
+		}
+		#endregion
 	}
 
 	public enum AboneType {
@@ -920,7 +1075,7 @@ namespace Yusen.GExplorer {
 		Migemo,
 		Regex,
 	}
-	internal class ManuallyCacheDeletedEventArgs : EventArgs {
+	public class ManuallyCacheDeletedEventArgs : EventArgs {
 		private int succeeded;
 		private int failed;
 		internal ManuallyCacheDeletedEventArgs(int succeeded, int failed) {
@@ -932,118 +1087,6 @@ namespace Yusen.GExplorer {
 		}
 		public int Failed {
 			get { return this.failed; }
-		}
-	}
-	public class GenreListViewSettings {
-		private int? colWidthId;
-		private int? colWidthTitle;
-		private int? colWidthEpisode;
-		private int? colWidthSubtitle;
-		private int? colWidthDuration;
-		private int? colWidthDeadline;
-		private int? colWidthLongDesc;
-		private int? colWidthAttribs;
-		private AboneType? aboneType;
-		private bool? showPackages;
-		private bool? hoverSelect;
-		private bool? multiSelect;
-		private bool? clearFilterStringOnHideEnabled;
-		private bool? filterEnabled;
-		private FilterType? filterType;
-		private Color? newColor;
-		private int? maxPageMenuItems;
-		private int? maxExceptionMenuItems;
-		
-		public int? ColWidthId {
-			get { return this.colWidthId; }
-			set { this.colWidthId = value; }
-		}
-		public int? ColWidthTitle {
-			get { return this.colWidthTitle; }
-			set { this.colWidthTitle = value; }
-		}
-		public int? ColWidthEpisode {
-			get { return this.colWidthEpisode; }
-			set { this.colWidthEpisode = value; }
-		}
-		public int? ColWidthSubtitle {
-			get { return this.colWidthSubtitle; }
-			set { this.colWidthSubtitle = value; }
-		}
-		public int? ColWidthDuration {
-			get { return this.colWidthDuration; }
-			set { this.colWidthDuration = value; }
-		}
-		public int? ColWidthDeadline {
-			get { return this.colWidthDeadline; }
-			set { this.colWidthDeadline = value; }
-		}
-		public int? ColWidthLongDesc {
-			get { return this.colWidthLongDesc; }
-			set { this.colWidthLongDesc = value; }
-		}
-		public int? ColWidthAttribs {
-			get { return this.colWidthAttribs; }
-			set { this.colWidthAttribs = value; }
-		}
-		public AboneType? AboneType {
-			get { return this.aboneType; }
-			set { this.aboneType = value; }
-		}
-		public bool? ShowPackages {
-			get { return this.showPackages; }
-			set { this.showPackages = value; }
-		}
-		public bool? HoverSelect {
-			get { return this.hoverSelect; }
-			set { this.hoverSelect = value; }
-		}
-		public bool? MultiSelect {
-			get { return this.multiSelect; }
-			set { this.multiSelect = value; }
-		}
-		public bool? ClearFilterStringOnHideEnabled {
-			get { return this.clearFilterStringOnHideEnabled; }
-			set { this.clearFilterStringOnHideEnabled = value; }
-		}
-		public bool? FilterEnabled {
-			get { return this.filterEnabled; }
-			set { this.filterEnabled = value; }
-		}
-		public FilterType? FilterType {
-			get { return this.filterType; }
-			set { this.filterType = value; }
-		}
-		
-		[XmlIgnore] //ColorはXMLシリアライズできない？
-		public Color? NewColor {
-			get { return this.newColor; }
-			set { this.newColor = value; }
-		}
-		public int? NewColorArgb {
-			get {
-				if (this.NewColor.HasValue) {
-					return this.NewColor.Value.ToArgb();
-				} else {
-					return null;
-				}
-			}
-			set {
-				if (value.HasValue) {
-					this.NewColor = Color.FromArgb(value.Value);
-				} else {
-					this.NewColor = null;
-				}
-			}
-		}
-
-		public int? MaxPageMenuItems {
-			get { return this.maxPageMenuItems; }
-			set { this.maxPageMenuItems = value; }
-		}
-		public int? MaxExceptionMenuItems {
-			get { return this.maxExceptionMenuItems; }
-			set { this.maxExceptionMenuItems = value; }
 		}
 	}
 }

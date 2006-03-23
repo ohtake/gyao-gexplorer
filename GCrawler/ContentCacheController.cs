@@ -133,8 +133,11 @@ namespace Yusen.GCrawler {
 		}
 		public void DeleteTempCachesRead() {
 			lock (this.lockDic) {
-				foreach (string myId in this.dic.Keys) {
-					this.oldController.RemoveCache(myId);
+				List<string> myIds = new List<string>(this.dic.Keys);
+				List<string> oldIds = new List<string>(this.oldController.ListAllCacheKeys());
+				oldIds.RemoveAll(myIds.Contains);
+				foreach (string oldId in oldIds) {
+					this.oldController.RemoveCache(oldId);
 				}
 			}
 		}

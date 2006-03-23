@@ -47,12 +47,15 @@
 			this.lboxCommands = new System.Windows.Forms.ListBox();
 			this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
 			this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+			this.cmsDummy = new System.Windows.Forms.ContextMenuStrip(this.components);
+			this.tscapmiProperty = new Yusen.GExplorer.ToolStripCAPropertyMenuItem();
 			this.grpDetail.SuspendLayout();
 			this.tableLayoutPanel1.SuspendLayout();
 			this.panel1.SuspendLayout();
 			this.grpList.SuspendLayout();
 			this.tableLayoutPanel2.SuspendLayout();
 			this.tableLayoutPanel3.SuspendLayout();
+			this.cmsDummy.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// grpDetail
@@ -296,6 +299,20 @@
 			this.openFileDialog1.Filter = "実行ファイル (*.exe)|*.exe|全てのファイル|*.*";
 			this.openFileDialog1.RestoreDirectory = true;
 			// 
+			// cmsDummy
+			// 
+			this.cmsDummy.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tscapmiProperty});
+			this.cmsDummy.Name = "cmsDummy";
+			this.cmsDummy.Size = new System.Drawing.Size(225, 48);
+			// 
+			// tscapmiProperty
+			// 
+			this.tscapmiProperty.Name = "tscapmiProperty";
+			this.tscapmiProperty.Size = new System.Drawing.Size(224, 22);
+			this.tscapmiProperty.Text = "ToolStripCAPropertyMenuItem";
+			this.tscapmiProperty.PropertySelected += new System.EventHandler<Yusen.GExplorer.CAPropertySelectedEventArgs>(this.tscapmiProperty_PropertySelected);
+			// 
 			// UserCommandsEditor
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -315,6 +332,7 @@
 			this.grpList.ResumeLayout(false);
 			this.tableLayoutPanel2.ResumeLayout(false);
 			this.tableLayoutPanel3.ResumeLayout(false);
+			this.cmsDummy.ResumeLayout(false);
 			this.ResumeLayout(false);
 
 		}
@@ -344,5 +362,7 @@
 		private System.Windows.Forms.OpenFileDialog openFileDialog1;
 		private System.Windows.Forms.Button btnArg;
 		private System.Windows.Forms.ContextMenuStrip cmsArgs;
+		private System.Windows.Forms.ContextMenuStrip cmsDummy;
+		private ToolStripCAPropertyMenuItem tscapmiProperty;
 	}
 }

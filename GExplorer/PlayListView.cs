@@ -6,31 +6,153 @@ using System.Text;
 using System.Windows.Forms;
 using Yusen.GCrawler;
 using System.IO;
+using System.Xml.Serialization;
 
 namespace Yusen.GExplorer {
-	sealed partial class PlayListView : UserControl, IHasSettings<PlayListViewSettings> {
+	public sealed partial class PlayListView : UserControl, IHasNewSettings<PlayListView.PlayListViewSettings> {
+		public class PlayListViewSettings : INewSettings<PlayListViewSettings>{
+			private PlayListView owner;
+			public PlayListViewSettings() : this(null) {
+			}
+			internal PlayListViewSettings(PlayListView owner) {
+				this.owner = owner;
+			}
+			
+			[XmlIgnore]
+			[Browsable(false)]
+			private bool HasOwner {
+				get { return null != this.owner; }
+			}
+			
+			[Category("動作")]
+			[DisplayName("複数選択")]
+			[Description("リストビューでの複数選択を有効にする")]
+			[DefaultValue(true)]
+			public bool MultiSelectEnabled {
+				get {
+					if (this.HasOwner) return this.owner.listView1.MultiSelect;
+					else return this.multiSelectEnabled;
+				}
+				set {
+					if (this.HasOwner) this.owner.listView1.MultiSelect = value;
+					else this.multiSelectEnabled = value;
+				}
+			}
+			private bool multiSelectEnabled = true;
+			
+			[Category("カラム幅")]
+			[DisplayName("[0] contents_id")]
+			[Description("'contents_id'カラムの幅を指定します．")]
+			[DefaultValue(null)]
+			public int? ColWidthId {
+				get {
+					if (this.HasOwner) return this.owner.chId.Width;
+					else return this.colWidthId;
+				}
+				set {
+					if (this.HasOwner && value.HasValue) this.owner.chId.Width = value.Value;
+					else this.colWidthId = value;
+				}
+			}
+			private int? colWidthId;
+
+			[Category("カラム幅")]
+			[DisplayName("[1] コンテンツ名")]
+			[Description("'コンテンツ名'カラムの幅を指定します．")]
+			[DefaultValue(null)]
+			public int? ColWidthName {
+				get {
+					if (this.HasOwner) return this.owner.chName.Width;
+					else return this.colWidthName;
+				}
+				set {
+					if (this.HasOwner && value.HasValue) this.owner.chName.Width = value.Value;
+					else this.colWidthName = value;
+				}
+			}
+			private int? colWidthName;
+
+			[Category("カラム幅")]
+			[DisplayName("[2] 番組時間")]
+			[Description("'番組時間'カラムの幅を指定します．")]
+			[DefaultValue(null)]
+			public int? ColWidthDuration {
+				get {
+					if (this.HasOwner) return this.owner.chDuration.Width;
+					else return this.colWidthDuration;
+				}
+				set {
+					if (this.HasOwner && value.HasValue) this.owner.chDuration.Width = value.Value;
+					else this.colWidthDuration = value;
+				}
+			}
+			private int? colWidthDuration;
+
+			[Category("カラム幅")]
+			[DisplayName("[3] 配信期限")]
+			[Description("'配信期限'カラムの幅を指定します．")]
+			[DefaultValue(null)]
+			public int? ColWidthDeadline {
+				get {
+					if (this.HasOwner) return this.owner.chDeadline.Width;
+					else return this.colWidthDeadline;
+				}
+				set {
+					if (this.HasOwner && value.HasValue) this.owner.chDeadline.Width = value.Value;
+					else this.colWidthDeadline = value;
+				}
+			}
+			private int? colWidthDeadline;
+
+			[Category("カラム幅")]
+			[DisplayName("[4] コメント")]
+			[Description("'コメント'カラムの幅を指定します．")]
+			[DefaultValue(null)]
+			public int? ColWidthComment {
+				get {
+					if (this.HasOwner) return this.owner.chComment.Width;
+					else return this.colWidthComment;
+				}
+				set {
+					if (this.HasOwner && value.HasValue) this.owner.chComment.Width = value.Value;
+					else this.colWidthComment = value;
+				}
+			}
+			private int? colWidthComment;
+
+			#region INewSettings<PlayListViewSettings> Members
+			public void ApplySettings(PlayListViewSettings newSettings) {
+				Utility.SubstituteAllPublicProperties(this, newSettings);
+			}
+			#endregion
+		}
+
+
 		public event EventHandler<ContentSelectionChangedEventArgs> ContentSelectionChanged;
 
 		private bool dragging = false;
 		private string[] dropIds = null;
 		private ContentAdapter[] dropConts = null;
 
+		private PlayListViewSettings settings;
+
 		public PlayListView() {
 			InitializeComponent();
-		}
-		private void PlayListView_Load(object sender, EventArgs e) {
+			
 			this.tslTitle.Font = new Font(this.tslTitle.Font, FontStyle.Bold);
 			this.tsmiPlay.Font = new Font(this.tsmiPlay.Font, FontStyle.Bold);
-			this.tsddbSettings.DropDown.Closing += Utility.ToolStripDropDown_CancelClosingOnClick;
+
+			this.settings = new PlayListViewSettings();
+		}
+		private void PlayListView_Load(object sender, EventArgs e) {
 			
 			PlayList.Instance.PlayListChanged += new EventHandler(PlayList_PlayListChanged);
 			PlayList.Instance.CurrentContentChanged += new EventHandler(PlayList_CurrentContentChanged);
-			UserCommandsManager.Instance.UserCommandsChanged += new EventHandler(UserCommandsManager_UserCommandsChanged);
-
+			PlayList.Instance.AdditionRejected += new EventHandler(PlayList_AdditionRejected);
 			this.Disposed += delegate {
 				PlayList.Instance.PlayListChanged -= new EventHandler(PlayList_PlayListChanged);
 				PlayList.Instance.CurrentContentChanged -= new EventHandler(PlayList_CurrentContentChanged);
-				UserCommandsManager.Instance.UserCommandsChanged -= new EventHandler(UserCommandsManager_UserCommandsChanged);
+				PlayList.Instance.AdditionRejected -= new EventHandler(PlayList_AdditionRejected);
 			};
 
 			this.listView1.BeginUpdate();
@@ -39,30 +161,12 @@ namespace Yusen.GExplorer {
 			this.listView1.EndUpdate();
 
 			this.UpdateStatusBarText();
-			this.UpdateUserCommandsMenu();
 
 			//リスト先頭を表示
 			this.ScrollToTop();
 		}
 
-		public void FillSettings(PlayListViewSettings settings) {
-			settings.MultiSelectEnabled = this.MultiSelectEnabled;
-			settings.ColWidthId = this.chId.Width;
-			settings.ColWidthName = this.chName.Width;
-			settings.ColWidthDuration = this.chDuration.Width;
-			settings.ColWidthDeadline = this.chDeadline.Width;
-			settings.ColWidthComment = this.chComment.Width;
-		}
-		public void ApplySettings(PlayListViewSettings settings) {
-			this.MultiSelectEnabled = settings.MultiSelectEnabled ?? this.MultiSelectEnabled;
-			this.chId.Width = settings.ColWidthId ?? this.chId.Width;
-			this.chName.Width = settings.ColWidthName ?? this.chName.Width;
-			this.chDuration.Width = settings.ColWidthDuration ?? this.chDuration.Width;
-			this.chDeadline.Width = settings.ColWidthDeadline ?? this.chDeadline.Width;
-			this.chComment.Width = settings.ColWidthComment ?? this.chComment.Width;
-		}
-
-		public ContentAdapter[] SelectedContents {
+		private ContentAdapter[] SelectedContents {
 			get {
 				List<ContentAdapter> conts = new List<ContentAdapter>();
 				foreach (ListViewItem lvi in this.listView1.SelectedItems) {
@@ -70,27 +174,11 @@ namespace Yusen.GExplorer {
 				}
 				return conts.ToArray();
 			}
-			private set {
+			set {
 				List<ContentAdapter> conts = new List<ContentAdapter>(value);
 				foreach (ListViewItem lvi in this.listView1.Items) {
 					lvi.Selected = conts.Contains(lvi.Tag as ContentAdapter);
 				}
-			}
-		}
-		public bool MultiSelectEnabled {
-			get { return this.tsmiMultiSelectEnabled.Checked; }
-			set {
-				this.tsmiMultiSelectEnabled.Checked = value;
-				this.listView1.MultiSelect = value;
-			}
-		}
-
-		private bool CheckIfWholeUpdateItemsRequired() {
-			int len = PlayList.Instance.Count;
-			if (this.listView1.Items.Count != len) {
-				return true;
-			} else {
-				return false;
 			}
 		}
 
@@ -160,22 +248,8 @@ namespace Yusen.GExplorer {
 		}
 		private void ScrollToBottom() {
 			if (0 < this.listView1.Items.Count) {
-				this.listView1.TopItem = this.listView1.Items[this.listView1.Items.Count -1];
+				this.listView1.TopItem = this.listView1.Items[this.listView1.Items.Count - 1];
 			}
-		}
-
-		private void UpdateUserCommandsMenu() {
-			this.tsmiCommands.DropDownItems.Clear();
-			foreach (UserCommand uc in UserCommandsManager.Instance) {
-				ToolStripMenuItem tsmi = new ToolStripMenuItem(uc.Title);
-				tsmi.Tag = uc;
-				tsmi.Click += delegate(object sender, EventArgs e) {
-					UserCommand command = (sender as ToolStripMenuItem).Tag as UserCommand;
-					command.Execute(this.SelectedContents);
-				};
-				this.tsmiCommands.DropDownItems.Add(tsmi);
-			}
-			this.tsmiCommands.Enabled = this.tsmiCommands.HasDropDownItems;
 		}
 
 		private void PlayList_PlayListChanged(object sender, EventArgs e) {
@@ -190,8 +264,17 @@ namespace Yusen.GExplorer {
 			this.UpdateBoldness();
 			this.listView1.EndUpdate();
 		}
-		private void UserCommandsManager_UserCommandsChanged(object sender, EventArgs e) {
-			this.UpdateUserCommandsMenu();
+		private void PlayList_AdditionRejected(object sender, EventArgs e) {
+			ContentAdapter[] conts = PlayList.Instance.LastAdditionRejectedContents;
+			this.SelectedContents = conts;
+			if (conts.Length > 0) {
+				foreach (ListViewItem lvi in this.listView1.Items) {
+					if (lvi.Tag.Equals(conts[0])) {
+						this.listView1.TopItem = lvi;
+						break;
+					}
+				}
+			}
 		}
 
 		private void listView1_DoubleClick(object sender, EventArgs e) {
@@ -388,9 +471,6 @@ namespace Yusen.GExplorer {
 			}
 			
 		}
-		private void tsmiMultiSelectEnabled_Click(object sender, EventArgs e) {
-			this.listView1.MultiSelect = this.tsmiMultiSelectEnabled.Checked;
-		}
 		#endregion
 		
 		#region コンテキストメニューの項目
@@ -509,13 +589,31 @@ namespace Yusen.GExplorer {
 			}
 		}
 		private void tsmiCopyName_Click(object sender, EventArgs e) {
-			ContentAdapter.CopyNames(this.SelectedContents);
+			string text = ContentAdapter.GetNames(this.SelectedContents);
+			if (!string.IsNullOrEmpty(text)) {
+				Clipboard.SetText(text);
+			}
 		}
 		private void tsmiCopyUri_Click(object sender, EventArgs e) {
-			ContentAdapter.CopyUris(this.SelectedContents);
+			string text = ContentAdapter.GetUris(this.SelectedContents);
+			if (!string.IsNullOrEmpty(text)) {
+				Clipboard.SetText(text);
+			}
 		}
 		private void tsmiCopyNameAndUri_Click(object sender, EventArgs e) {
-			ContentAdapter.CopyNamesAndUris(this.SelectedContents);
+			string text = ContentAdapter.GetNamesAndUris(this.SelectedContents);
+			if (!string.IsNullOrEmpty(text)) {
+				Clipboard.SetText(text);
+			}
+		}
+		private void tscapmiCopyProperty_PropertySelected(object sender, CAPropertySelectedEventArgs e) {
+			string text = ContentAdapter.GetPropertyValueLines(this.SelectedContents, e.PropertyInfo);
+			if (!string.IsNullOrEmpty(text)) {
+				Clipboard.SetText(text);
+			}
+		}
+		private void tsucmiCommand_UserCommandSelected(object sender, UserCommandSelectedEventArgs e) {
+			e.UserCommand.Execute(this.SelectedContents);
 		}
 		#endregion
 
@@ -530,46 +628,10 @@ namespace Yusen.GExplorer {
 			this.UpdateStatusBarText();
 		}
 
-		internal ToolStripDropDown SettingsDropDown {
-			get { return this.tsddbSettings.DropDown; }
+		#region IHasNewSettings<PlayListViewSettings> Members
+		public PlayListView.PlayListViewSettings Settings {
+			get { return this.settings; }
 		}
-		internal bool SettingsVisible {
-			get { return this.tsddbSettings.Visible; }
-			set { this.tsddbSettings.Visible = value; }
-		}
-	}
-	
-	public class PlayListViewSettings {
-		private bool? multiSelectEnabled;
-		private int? colWidthId;
-		private int? colWidthName;
-		private int? colWidthDuration;
-		private int? colWidthDeadline;
-		private int? colWidthComment;
-
-		public bool? MultiSelectEnabled {
-			get { return this.multiSelectEnabled; }
-			set { this.multiSelectEnabled = value; }
-		}
-		public int? ColWidthId {
-			get { return this.colWidthId; }
-			set { this.colWidthId = value; }
-		}
-		public int? ColWidthName {
-			get { return this.colWidthName; }
-			set { this.colWidthName = value; }
-		}
-		public int? ColWidthDuration {
-			get { return this.colWidthDuration; }
-			set { this.colWidthDuration = value; }
-		}
-		public int? ColWidthDeadline {
-			get { return this.colWidthDeadline; }
-			set { this.colWidthDeadline = value; }
-		}
-		public int? ColWidthComment {
-			get { return this.colWidthComment; }
-			set { this.colWidthComment = value; }
-		}
+		#endregion
 	}
 }

@@ -55,24 +55,12 @@
 			this.tsmiPrevContent = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiNextContent = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiNextContentWithDelete = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiView = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiViewFullScreen = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiViewTopmost = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiViewAutoHide = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiSettings = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiAlwaysOnTop = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiHideUiOnDeactivated = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
-			this.tsmiStrechToFit = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiDisableScreenSaver = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
-			this.tsmiAutoSizeOnNormal = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiAutoSizeOnCf = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiResizeZoomValue = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
-			this.tsmiSkipCmLicense = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiChapterModeFromBegining = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiRemovePlayedContent = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
-			this.tsmiAutoVolume = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiVolumeNormal = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiVolumeCf = new System.Windows.Forms.ToolStripMenuItem();
+			this.tspgPlayerFormSettings = new Yusen.GExplorer.ToolStripPropertyGrid();
 			this.tsmiTools = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiFocusOnWmp = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiResizeToVideoResolution = new System.Windows.Forms.ToolStripMenuItem();
@@ -81,8 +69,7 @@
 			this.tsmiBrowseDetail = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiBrowseRecommended = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-			this.tsmiUserCommands = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiFullScreen = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsucmiCommand = new Yusen.GExplorer.ToolStripUserCommandMenuItem();
 			this.inputBoxDialog1 = new Yusen.GExplorer.InputBoxDialog();
 			this.timerAutoVolume = new System.Windows.Forms.Timer(this.components);
 			this.timerSkipCmLisence = new System.Windows.Forms.Timer(this.components);
@@ -109,7 +96,7 @@
 			// toolStripContainer1.ContentPanel
 			// 
 			this.toolStripContainer1.ContentPanel.Controls.Add(this.splitContainer1);
-			this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(644, 546);
+			this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(644, 548);
 			this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.toolStripContainer1.Location = new System.Drawing.Point(0, 0);
 			this.toolStripContainer1.Name = "toolStripContainer1";
@@ -134,7 +121,7 @@
 			this.statusStrip1.Location = new System.Drawing.Point(0, 0);
 			this.statusStrip1.Name = "statusStrip1";
 			this.statusStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.ManagerRenderMode;
-			this.statusStrip1.Size = new System.Drawing.Size(644, 19);
+			this.statusStrip1.Size = new System.Drawing.Size(644, 17);
 			this.statusStrip1.TabIndex = 0;
 			// 
 			// tsslIdAndClipNo
@@ -185,7 +172,7 @@
 			this.splitContainer1.Panel2.Controls.Add(this.tableLayoutPanel1);
 			this.splitContainer1.Panel2Collapsed = true;
 			this.splitContainer1.Panel2MinSize = 120;
-			this.splitContainer1.Size = new System.Drawing.Size(644, 546);
+			this.splitContainer1.Size = new System.Drawing.Size(644, 548);
 			this.splitContainer1.SplitterDistance = 523;
 			this.splitContainer1.SplitterWidth = 1;
 			this.splitContainer1.TabIndex = 1;
@@ -197,7 +184,7 @@
 			this.wmpMain.Location = new System.Drawing.Point(0, 0);
 			this.wmpMain.Name = "wmpMain";
 			this.wmpMain.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("wmpMain.OcxState")));
-			this.wmpMain.Size = new System.Drawing.Size(644, 546);
+			this.wmpMain.Size = new System.Drawing.Size(644, 548);
 			this.wmpMain.TabIndex = 0;
 			this.wmpMain.Text = "axWindowsMediaPlayer1";
 			this.wmpMain.PlayStateChange += new AxWMPLib._WMPOCXEvents_PlayStateChangeEventHandler(this.wmpMain_PlayStateChange);
@@ -235,9 +222,9 @@
 			this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiFile,
             this.tsmiOperations,
+            this.tsmiView,
             this.tsmiSettings,
-            this.tsmiTools,
-            this.tsmiFullScreen});
+            this.tsmiTools});
 			this.menuStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
@@ -398,154 +385,55 @@
 			this.tsmiNextContentWithDelete.Text = "プレイリストから削除して次(&D)";
 			this.tsmiNextContentWithDelete.Click += new System.EventHandler(this.tsmiNextContentWithDelete_Click);
 			// 
+			// tsmiView
+			// 
+			this.tsmiView.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiViewFullScreen,
+            this.tsmiViewTopmost,
+            this.tsmiViewAutoHide});
+			this.tsmiView.Name = "tsmiView";
+			this.tsmiView.Size = new System.Drawing.Size(57, 16);
+			this.tsmiView.Text = "表示(&V)";
+			// 
+			// tsmiViewFullScreen
+			// 
+			this.tsmiViewFullScreen.Name = "tsmiViewFullScreen";
+			this.tsmiViewFullScreen.Size = new System.Drawing.Size(241, 22);
+			this.tsmiViewFullScreen.Text = "フルスクリーン(&F)";
+			this.tsmiViewFullScreen.Click += new System.EventHandler(this.tsmiViewFullScreen_Click);
+			// 
+			// tsmiViewTopmost
+			// 
+			this.tsmiViewTopmost.Name = "tsmiViewTopmost";
+			this.tsmiViewTopmost.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.T)));
+			this.tsmiViewTopmost.Size = new System.Drawing.Size(241, 22);
+			this.tsmiViewTopmost.Text = "常に手前に表示(&T)";
+			this.tsmiViewTopmost.Click += new System.EventHandler(this.tsmiViewTopmost_Click);
+			// 
+			// tsmiViewAutoHide
+			// 
+			this.tsmiViewAutoHide.Name = "tsmiViewAutoHide";
+			this.tsmiViewAutoHide.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.H)));
+			this.tsmiViewAutoHide.Size = new System.Drawing.Size(241, 22);
+			this.tsmiViewAutoHide.Text = "非アクティブ時にUIを隠す(&H)";
+			this.tsmiViewAutoHide.Click += new System.EventHandler(this.tsmiViewAutoHide_Click);
+			// 
 			// tsmiSettings
 			// 
 			this.tsmiSettings.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiAlwaysOnTop,
-            this.tsmiHideUiOnDeactivated,
-            this.toolStripMenuItem1,
-            this.tsmiStrechToFit,
-            this.tsmiDisableScreenSaver,
-            this.toolStripMenuItem2,
-            this.tsmiAutoSizeOnNormal,
-            this.tsmiAutoSizeOnCf,
-            this.tsmiResizeZoomValue,
-            this.toolStripSeparator6,
-            this.tsmiSkipCmLicense,
-            this.tsmiChapterModeFromBegining,
-            this.tsmiRemovePlayedContent,
-            this.toolStripSeparator4,
-            this.tsmiAutoVolume,
-            this.tsmiVolumeNormal,
-            this.tsmiVolumeCf});
+            this.tspgPlayerFormSettings});
 			this.tsmiSettings.Name = "tsmiSettings";
 			this.tsmiSettings.Size = new System.Drawing.Size(56, 16);
 			this.tsmiSettings.Text = "設定(&S)";
+			this.tsmiSettings.DropDownOpened += new System.EventHandler(this.tsmiSettings_DropDownOpened);
 			// 
-			// tsmiAlwaysOnTop
+			// tspgPlayerFormSettings
 			// 
-			this.tsmiAlwaysOnTop.CheckOnClick = true;
-			this.tsmiAlwaysOnTop.Name = "tsmiAlwaysOnTop";
-			this.tsmiAlwaysOnTop.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.T)));
-			this.tsmiAlwaysOnTop.Size = new System.Drawing.Size(260, 22);
-			this.tsmiAlwaysOnTop.Text = "常に手前に表示(&T)";
-			this.tsmiAlwaysOnTop.Click += new System.EventHandler(this.tsmiAlwaysOnTop_Click);
-			// 
-			// tsmiHideUiOnDeactivated
-			// 
-			this.tsmiHideUiOnDeactivated.CheckOnClick = true;
-			this.tsmiHideUiOnDeactivated.Name = "tsmiHideUiOnDeactivated";
-			this.tsmiHideUiOnDeactivated.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.H)));
-			this.tsmiHideUiOnDeactivated.Size = new System.Drawing.Size(260, 22);
-			this.tsmiHideUiOnDeactivated.Text = "非アクティブ時にUIを隠す(&H)";
-			// 
-			// toolStripMenuItem1
-			// 
-			this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-			this.toolStripMenuItem1.Size = new System.Drawing.Size(257, 6);
-			// 
-			// tsmiStrechToFit
-			// 
-			this.tsmiStrechToFit.CheckOnClick = true;
-			this.tsmiStrechToFit.Name = "tsmiStrechToFit";
-			this.tsmiStrechToFit.Size = new System.Drawing.Size(260, 22);
-			this.tsmiStrechToFit.Text = "ウィンドウサイズに合わせて拡大(&F)";
-			this.tsmiStrechToFit.Click += new System.EventHandler(this.tsmiStrechToFit_Click);
-			// 
-			// tsmiDisableScreenSaver
-			// 
-			this.tsmiDisableScreenSaver.CheckOnClick = true;
-			this.tsmiDisableScreenSaver.Name = "tsmiDisableScreenSaver";
-			this.tsmiDisableScreenSaver.Size = new System.Drawing.Size(260, 22);
-			this.tsmiDisableScreenSaver.Text = "アクティブ時にスクリーンセーバ抑止(&D)";
-			this.tsmiDisableScreenSaver.Click += new System.EventHandler(this.tsmiDisableScreenSaver_Click);
-			// 
-			// toolStripMenuItem2
-			// 
-			this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-			this.toolStripMenuItem2.Size = new System.Drawing.Size(257, 6);
-			// 
-			// tsmiAutoSizeOnNormal
-			// 
-			this.tsmiAutoSizeOnNormal.Checked = true;
-			this.tsmiAutoSizeOnNormal.CheckOnClick = true;
-			this.tsmiAutoSizeOnNormal.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.tsmiAutoSizeOnNormal.Name = "tsmiAutoSizeOnNormal";
-			this.tsmiAutoSizeOnNormal.Size = new System.Drawing.Size(260, 22);
-			this.tsmiAutoSizeOnNormal.Text = "本編開始時に動画解像度にリサイズ(&R)";
-			// 
-			// tsmiAutoSizeOnCf
-			// 
-			this.tsmiAutoSizeOnCf.Checked = true;
-			this.tsmiAutoSizeOnCf.CheckOnClick = true;
-			this.tsmiAutoSizeOnCf.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.tsmiAutoSizeOnCf.Name = "tsmiAutoSizeOnCf";
-			this.tsmiAutoSizeOnCf.Size = new System.Drawing.Size(260, 22);
-			this.tsmiAutoSizeOnCf.Text = "CF開始時に動画解像度にリサイズ(&E)";
-			// 
-			// tsmiResizeZoomValue
-			// 
-			this.tsmiResizeZoomValue.Name = "tsmiResizeZoomValue";
-			this.tsmiResizeZoomValue.Size = new System.Drawing.Size(260, 22);
-			this.tsmiResizeZoomValue.Text = "リサイズ時の倍率(&Z)...";
-			this.tsmiResizeZoomValue.Click += new System.EventHandler(this.tsmiResizeZoomValue_Click);
-			// 
-			// toolStripSeparator6
-			// 
-			this.toolStripSeparator6.Name = "toolStripSeparator6";
-			this.toolStripSeparator6.Size = new System.Drawing.Size(257, 6);
-			// 
-			// tsmiSkipCmLicense
-			// 
-			this.tsmiSkipCmLicense.Checked = true;
-			this.tsmiSkipCmLicense.CheckOnClick = true;
-			this.tsmiSkipCmLicense.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.tsmiSkipCmLicense.Name = "tsmiSkipCmLicense";
-			this.tsmiSkipCmLicense.Size = new System.Drawing.Size(260, 22);
-			this.tsmiSkipCmLicense.Text = "cm_license の早期スキップ(&K)";
-			// 
-			// tsmiChapterModeFromBegining
-			// 
-			this.tsmiChapterModeFromBegining.CheckOnClick = true;
-			this.tsmiChapterModeFromBegining.Name = "tsmiChapterModeFromBegining";
-			this.tsmiChapterModeFromBegining.Size = new System.Drawing.Size(260, 22);
-			this.tsmiChapterModeFromBegining.Text = "再生開始時からチャプターモード(&C)";
-			// 
-			// tsmiRemovePlayedContent
-			// 
-			this.tsmiRemovePlayedContent.CheckOnClick = true;
-			this.tsmiRemovePlayedContent.Name = "tsmiRemovePlayedContent";
-			this.tsmiRemovePlayedContent.Size = new System.Drawing.Size(260, 22);
-			this.tsmiRemovePlayedContent.Text = "再生終了でプレイリストから削除(&P)";
-			// 
-			// toolStripSeparator4
-			// 
-			this.toolStripSeparator4.Name = "toolStripSeparator4";
-			this.toolStripSeparator4.Size = new System.Drawing.Size(257, 6);
-			// 
-			// tsmiAutoVolume
-			// 
-			this.tsmiAutoVolume.Checked = true;
-			this.tsmiAutoVolume.CheckOnClick = true;
-			this.tsmiAutoVolume.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.tsmiAutoVolume.Name = "tsmiAutoVolume";
-			this.tsmiAutoVolume.Size = new System.Drawing.Size(260, 22);
-			this.tsmiAutoVolume.Text = "自動音量調整(&V)";
-			this.tsmiAutoVolume.Click += new System.EventHandler(this.tsmiAutoVolume_Click);
-			// 
-			// tsmiVolumeNormal
-			// 
-			this.tsmiVolumeNormal.Name = "tsmiVolumeNormal";
-			this.tsmiVolumeNormal.Size = new System.Drawing.Size(260, 22);
-			this.tsmiVolumeNormal.Text = "自動音量調整における本編の音量(&O)...";
-			this.tsmiVolumeNormal.Click += new System.EventHandler(this.tsmiVolumeNormal_Click);
-			// 
-			// tsmiVolumeCf
-			// 
-			this.tsmiVolumeCf.Name = "tsmiVolumeCf";
-			this.tsmiVolumeCf.Size = new System.Drawing.Size(260, 22);
-			this.tsmiVolumeCf.Text = "自動音量調整におけるCFの音量(&M)...";
-			this.tsmiVolumeCf.Click += new System.EventHandler(this.tsmiVolumeCf_Click);
+			this.tspgPlayerFormSettings.BackColor = System.Drawing.Color.Transparent;
+			this.tspgPlayerFormSettings.Name = "tspgPlayerFormSettings";
+			this.tspgPlayerFormSettings.SelectedObject = null;
+			this.tspgPlayerFormSettings.Size = new System.Drawing.Size(200, 300);
+			this.tspgPlayerFormSettings.Text = "tspgPlayerFormSettings";
 			// 
 			// tsmiTools
 			// 
@@ -557,7 +445,7 @@
             this.tsmiBrowseDetail,
             this.tsmiBrowseRecommended,
             this.toolStripSeparator1,
-            this.tsmiUserCommands});
+            this.tsucmiCommand});
 			this.tsmiTools.Name = "tsmiTools";
 			this.tsmiTools.Size = new System.Drawing.Size(61, 16);
 			this.tsmiTools.Text = "ツール(&T)";
@@ -608,18 +496,13 @@
 			this.toolStripSeparator1.Name = "toolStripSeparator1";
 			this.toolStripSeparator1.Size = new System.Drawing.Size(238, 6);
 			// 
-			// tsmiUserCommands
+			// tsucmiCommand
 			// 
-			this.tsmiUserCommands.Name = "tsmiUserCommands";
-			this.tsmiUserCommands.Size = new System.Drawing.Size(241, 22);
-			this.tsmiUserCommands.Text = "外部コマンド(&C)";
-			// 
-			// tsmiFullScreen
-			// 
-			this.tsmiFullScreen.Name = "tsmiFullScreen";
-			this.tsmiFullScreen.Size = new System.Drawing.Size(93, 16);
-			this.tsmiFullScreen.Text = "<<全画面(&U)>>";
-			this.tsmiFullScreen.Click += new System.EventHandler(this.tsmiFullScreen_Click);
+			this.tsucmiCommand.Enabled = false;
+			this.tsucmiCommand.Name = "tsucmiCommand";
+			this.tsucmiCommand.Size = new System.Drawing.Size(241, 22);
+			this.tsucmiCommand.Text = "外部コマンド(&C)";
+			this.tsucmiCommand.UserCommandSelected += new System.EventHandler<Yusen.GExplorer.UserCommandSelectedEventArgs>(this.tsucmiCommand_UserCommandSelected);
 			// 
 			// inputBoxDialog1
 			// 
@@ -688,7 +571,6 @@
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
 		private System.Windows.Forms.ToolStripMenuItem tsmiFastReverse;
 		private System.Windows.Forms.ToolStripMenuItem tsmiFastForward;
-		private System.Windows.Forms.ToolStripMenuItem tsmiUserCommands;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
 		private System.Windows.Forms.ToolStripMenuItem tsmiNextContent;
@@ -698,17 +580,6 @@
 		private System.Windows.Forms.ToolStripMenuItem tsmiRemoveAndClose;
 		private InputBoxDialog inputBoxDialog1;
 		private System.Windows.Forms.ToolStripMenuItem tsmiShowItemInfo;
-		private System.Windows.Forms.ToolStripMenuItem tsmiSettings;
-		private System.Windows.Forms.ToolStripMenuItem tsmiAlwaysOnTop;
-		private System.Windows.Forms.ToolStripMenuItem tsmiDisableScreenSaver;
-		private System.Windows.Forms.ToolStripMenuItem tsmiRemovePlayedContent;
-		private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
-		private System.Windows.Forms.ToolStripMenuItem tsmiAutoVolume;
-		private System.Windows.Forms.ToolStripMenuItem tsmiVolumeNormal;
-		private System.Windows.Forms.ToolStripMenuItem tsmiVolumeCf;
-		private System.Windows.Forms.ToolStripMenuItem tsmiSkipCmLicense;
-		private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
-		private System.Windows.Forms.ToolStripMenuItem tsmiStrechToFit;
 		private System.Windows.Forms.ToolStripMenuItem tsmiResizeToVideoResolution;
 		private System.Windows.Forms.StatusStrip statusStrip1;
 		private System.Windows.Forms.ToolStripStatusLabel tsslIdAndClipNo;
@@ -716,22 +587,21 @@
 		private System.Windows.Forms.ToolStripStatusLabel tsslDuration;
 		private System.Windows.Forms.ToolStripStatusLabel tsslChapter;
 		private System.Windows.Forms.ToolStripStatusLabel tsslTitle;
-		private System.Windows.Forms.ToolStripMenuItem tsmiChapterModeFromBegining;
 		private System.Windows.Forms.Timer timerAutoVolume;
 		private System.Windows.Forms.Timer timerSkipCmLisence;
-		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
-		private System.Windows.Forms.ToolStripMenuItem tsmiHideUiOnDeactivated;
-		private System.Windows.Forms.ToolStripMenuItem tsmiAutoSizeOnNormal;
-		private System.Windows.Forms.ToolStripMenuItem tsmiAutoSizeOnCf;
-		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
-		private System.Windows.Forms.ToolStripMenuItem tsmiResizeZoomValue;
 		private System.Windows.Forms.SplitContainer splitContainer1;
 		private System.Windows.Forms.WebBrowser wbBanner;
 		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
 		private System.Windows.Forms.ToolStripMenuItem tsmiBrowseDetail;
 		private System.Windows.Forms.ToolStripMenuItem tsmiBrowseRecommended;
 		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-		private System.Windows.Forms.ToolStripMenuItem tsmiFullScreen;
 		private AxWMPLib.AxWindowsMediaPlayer wmpMain;
+		private System.Windows.Forms.ToolStripMenuItem tsmiSettings;
+		private ToolStripPropertyGrid tspgPlayerFormSettings;
+		private System.Windows.Forms.ToolStripMenuItem tsmiView;
+		private System.Windows.Forms.ToolStripMenuItem tsmiViewTopmost;
+		private System.Windows.Forms.ToolStripMenuItem tsmiViewFullScreen;
+		private System.Windows.Forms.ToolStripMenuItem tsmiViewAutoHide;
+		private ToolStripUserCommandMenuItem tsucmiCommand;
 	}
 }

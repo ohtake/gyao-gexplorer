@@ -3,9 +3,106 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.ComponentModel;
 using System.Windows.Forms;
+using System.Xml.Serialization;
 
 namespace Yusen.GExplorer {
-	sealed partial class ContentDetailView : UserControl , IHasSettings<ContentDetailViewSettings>{
+	public sealed partial class ContentDetailView : UserControl, IHasNewSettings<ContentDetailView.ContentDetailViewSettings> {
+		public sealed class ContentDetailViewSettings : INewSettings<ContentDetailViewSettings>{
+			private readonly ContentDetailView owner;
+
+			public ContentDetailViewSettings() : this(null){
+			}
+			internal ContentDetailViewSettings(ContentDetailView owner) {
+				this.owner = owner;
+			}
+
+			[XmlIgnore]
+			[Browsable(false)]
+			private bool HasOwner {
+				get { return null != this.owner; }
+			}
+
+			[Category("位置とサイズ")]
+			[DisplayName("画像の高さ")]
+			[Description("画像の高さをピクセルで指定します")]
+			[DefaultValue(null)]
+			public int? ImageHeight {
+				get {
+					if (this.HasOwner) return this.owner.splitContainer1.SplitterDistance;
+					return this.imageHeight;
+				}
+				set {
+					if (this.HasOwner && value.HasValue) this.owner.splitContainer1.SplitterDistance = value.Value;
+					else this.imageHeight = value;
+				}
+			}
+			private int? imageHeight;
+
+			[Category("画像")]
+			[DisplayName("画像の大きさ")]
+			[Description("表示する画像の大きさを指定します．表示しない設定も可能です．")]
+			[DefaultValue(ContentImageSize.Large)]
+			public ContentImageSize ContentImageSize {
+				get {
+					if (this.HasOwner) return this.owner.ImageSize;
+					else return this.contentImageSize;
+				}
+				set {
+					if (this.HasOwner) this.owner.ImageSize = value;
+					else this.contentImageSize = value; }
+			}
+			private ContentImageSize contentImageSize = ContentImageSize.Large;
+
+			[Category("画像")]
+			[DisplayName("リサイズ方法")]
+			[Description("画像を表示する際のリサイズ方法を指定します．")]
+			[DefaultValue(PictureBoxSizeMode.Zoom)]
+			public PictureBoxSizeMode ResizeMode {
+				get {
+					if (this.HasOwner) return this.owner.ResizeMode;
+					else return this.resizeMode;
+				}
+				set {
+					if (this.HasOwner) this.owner.ResizeMode = value;
+					else this.resizeMode = value;
+				}
+			}
+			private PictureBoxSizeMode resizeMode = PictureBoxSizeMode.Zoom;
+			
+			[ReadOnly(true)]
+			[Category("タブ")]
+			[DisplayName("インデックス")]
+			[Description("選択されているタブのインデックス番号を指定します．")]
+			[DefaultValue(null)]
+			public int? SelectedTabIndex {
+				get {
+					if (this.HasOwner) return this.owner.tabControl1.SelectedIndex;
+					else return this.selectedTabIndex;
+				}
+				set {
+					if (this.HasOwner && value.HasValue) this.owner.tabControl1.SelectedIndex = value.Value;
+					else this.selectedTabIndex = value;
+				}
+			}
+			private int? selectedTabIndex = null;
+			
+			[Category("動作")]
+			[DisplayName("再生中の項目にも同期")]
+			[Description("プレーヤで再生しているコンテンツが変化したら，詳細ビューで表示するコンテンツを追従させます．")]
+			[DefaultValue(true)]
+			public bool SyncronizeToCurrentContentEnabled {
+				get { return this.syncronizeToCurrentContentEnabled; }
+				set { this.syncronizeToCurrentContentEnabled = value; }
+			}
+			private bool syncronizeToCurrentContentEnabled = true;
+
+			#region INewSettings<ContentDetailViewSettings> Members
+			public void ApplySettings(ContentDetailViewSettings newSettings) {
+				Utility.SubstituteAllPublicProperties(this, newSettings);
+			}
+			#endregion
+		}
+		
 		public event EventHandler<ImageLoadErrorEventArgs> ImageLoadError;
 
 		private ContentAdapter contAd;
@@ -13,8 +110,11 @@ namespace Yusen.GExplorer {
 
 		private object objSetContentAdapter = new object();
 
+		private ContentDetailViewSettings settings;
+
 		public ContentDetailView() {
 			InitializeComponent();
+			this.settings = new ContentDetailViewSettings(this);
 		}
 		
 		public ContentAdapter Content {
@@ -47,49 +147,18 @@ namespace Yusen.GExplorer {
 				}
 			}
 		}
-		[DefaultValue(ContentImageSize.Large)]
-		public ContentImageSize ImageSize {
+		private ContentImageSize ImageSize {
 			get { return this.imgSize; }
 			set {
 				this.imgSize = value;
-				foreach (ToolStripMenuItem subitem in this.tsmiImageSize.DropDownItems) {
-					subitem.Checked = (value == (ContentImageSize)subitem.Tag);
-				}
 				this.LoadImage();
 			}
 		}
-		[DefaultValue(PictureBoxSizeMode.Zoom)]
-		public PictureBoxSizeMode ResizeMode {
+		private PictureBoxSizeMode ResizeMode {
 			get { return this.picboxImage.SizeMode; }
-			set {
-				this.picboxImage.SizeMode = value;
-				foreach (ToolStripMenuItem subitem in this.tsmiSizeMode.DropDownItems) {
-					subitem.Checked = (value == (PictureBoxSizeMode)subitem.Tag);
-				}
-			}
-		}
-		[DefaultValue(true)]
-		public bool SyncronizeToCurrentContentEnabled {
-			get { return this.tsmiSyncronizeToCurrentContent.Checked; }
-			set { this.tsmiSyncronizeToCurrentContent.Checked = value; }
+			set { this.picboxImage.SizeMode = value; }
 		}
 
-		public void FillSettings(ContentDetailViewSettings settings) {
-			settings.ContentImageSize = this.ImageSize;
-			settings.ResizeMode = this.ResizeMode;
-			settings.ImageHeight = this.splitContainer1.SplitterDistance;
-			settings.SelectedTabIndex = this.tabControl1.SelectedIndex;
-			settings.SyncronizeToCurrentContentEnabled = this.SyncronizeToCurrentContentEnabled;
-		}
-
-		public void ApplySettings(ContentDetailViewSettings settings) {
-			this.ImageSize = settings.ContentImageSize ?? this.ImageSize;
-			this.ResizeMode = settings.ResizeMode ?? this.ResizeMode;
-			this.splitContainer1.SplitterDistance = settings.ImageHeight ?? this.splitContainer1.SplitterDistance;
-			this.tabControl1.SelectedIndex = settings.SelectedTabIndex ?? this.tabControl1.SelectedIndex;
-			this.SyncronizeToCurrentContentEnabled = settings.SyncronizeToCurrentContentEnabled ?? this.SyncronizeToCurrentContentEnabled;
-		}
-		
 		private Uri ImageUri {
 			get {
 				if (null == this.Content) {
@@ -152,45 +221,13 @@ namespace Yusen.GExplorer {
 			this.tsmiCopyImage.Enabled = hasContent & showImage;
 		}
 		private void ContentDetailView_Load(object sender, EventArgs e) {
-			this.tsmiImageSize.DropDownItems.Clear();
-			foreach (ContentImageSize cis in Enum.GetValues(typeof(ContentImageSize))) {
-				ToolStripMenuItem tsmi = new ToolStripMenuItem(cis.ToString());
-				tsmi.Tag = cis;
-				tsmi.Click += new EventHandler(delegate(object sender2, EventArgs e2) {
-					ToolStripMenuItem selMenu = sender2 as ToolStripMenuItem;
-					ContentImageSize selSize = (ContentImageSize)selMenu.Tag;
-					this.ImageSize = selSize;
-					this.ChangeEnabilityOfCmsItems();
-					
-				});
-				this.tsmiImageSize.DropDownItems.Add(tsmi);
-			}
-			this.tsmiImageSize.DropDown.Closing += Utility.ToolStripDropDown_CancelClosingOnClick;
-			this.ImageSize = this.ImageSize;
-
-			this.tsmiSizeMode.DropDownItems.Clear();
-			foreach (PictureBoxSizeMode sizeMode in Enum.GetValues(typeof(PictureBoxSizeMode))) {
-				ToolStripMenuItem tsmi = new ToolStripMenuItem(sizeMode.ToString());
-				tsmi.Tag = sizeMode;
-				tsmi.Click += new EventHandler(delegate(object sender2, EventArgs e2) {
-					ToolStripMenuItem selMenu = sender2 as ToolStripMenuItem;
-					PictureBoxSizeMode selSize = (PictureBoxSizeMode)selMenu.Tag;
-					this.ResizeMode = selSize;
-				});
-				this.tsmiSizeMode.DropDownItems.Add(tsmi);
-			}
-			this.tsmiSizeMode.DropDown.Closing += Utility.ToolStripDropDown_CancelClosingOnClick;
-			this.ResizeMode = this.ResizeMode;
-
-			this.tsmiSettings.DropDown.Closing += Utility.ToolStripDropDown_CancelClosingOnClick;
-
 			PlayList.Instance.CurrentContentChanged += new EventHandler(this.PlayList_CurrentContentChanged);
 			this.Disposed += delegate {
 				PlayList.Instance.CurrentContentChanged -= new EventHandler(this.PlayList_CurrentContentChanged);
 			};
 		}
 		private void PlayList_CurrentContentChanged(object sender, EventArgs e) {
-			if(this.SyncronizeToCurrentContentEnabled) {
+			if(this.settings.SyncronizeToCurrentContentEnabled) {
 				if(PlayList.Instance.HasCurrentContent) {
 					this.Content = PlayList.Instance.CurrentContent;
 				}
@@ -217,17 +254,6 @@ namespace Yusen.GExplorer {
 		}
 		private void cmsImage_Opening(object sender, CancelEventArgs e) {
 			this.ChangeEnabilityOfCmsItems();
-		}
-
-		internal ToolStripDropDown SettingsDropDown{
-			get { return this.tsmiSettings.DropDown; }
-		}
-		internal bool SettingsVisible{
-			get { return this.tsmiSettings.Visible; }
-			set{
-				this.tsmiSettings.Visible = value;
-				this.tssSettings.Visible = value;
-			}
 		}
 
 		private void tsmiTestLoad_Click(object sender, EventArgs e) {
@@ -262,6 +288,12 @@ namespace Yusen.GExplorer {
 				this.OnImageLoadError(new ImageLoadErrorEventArgs(e.Error));
 			}
 		}
+
+		#region IHasNewSettings<ContentDetailViewSettings> Members
+		public ContentDetailView.ContentDetailViewSettings Settings {
+			get { return this.settings; }
+		}
+		#endregion
 	}
 	
 	public enum ContentImageSize {
@@ -270,36 +302,7 @@ namespace Yusen.GExplorer {
 		Large,
 	}
 
-	public class ContentDetailViewSettings {
-		private int? imageHeight;
-		private ContentImageSize? contentImageSize;
-		private PictureBoxSizeMode? resizeMode;
-		private int? selectedTabIndex;
-		private bool? syncronizeToCurrentContentEnabled;
-		
-		public int? ImageHeight {
-			get { return this.imageHeight; }
-			set { this.imageHeight = value; }
-		}
-		public ContentImageSize? ContentImageSize {
-			get { return this.contentImageSize; }
-			set { this.contentImageSize = value; }
-		}
-		public PictureBoxSizeMode? ResizeMode {
-			get { return this.resizeMode; }
-			set { this.resizeMode = value; }
-		}
-		public int? SelectedTabIndex {
-			get { return this.selectedTabIndex; }
-			set { this.selectedTabIndex = value; }
-		}
-		public bool? SyncronizeToCurrentContentEnabled {
-			get { return this.syncronizeToCurrentContentEnabled; }
-			set { this.syncronizeToCurrentContentEnabled = value; }
-		}
-	}
-
-	class ImageLoadErrorEventArgs : EventArgs {
+	public sealed class ImageLoadErrorEventArgs : EventArgs {
 		private Exception exception;
 		public ImageLoadErrorEventArgs(Exception ex) {
 			this.exception = ex;

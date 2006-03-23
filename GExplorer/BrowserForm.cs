@@ -5,9 +5,44 @@ using System.Windows.Forms;
 using Yusen.GCrawler;
 using System.IO;
 using System.Text;
+using System.Xml.Serialization;
 
 namespace Yusen.GExplorer {
-	sealed partial class BrowserForm : FormSettingsBase, IFormWithSettings<BrowserFormSettings>{
+	public sealed partial class BrowserForm : FormSettingsBase, IFormWithNewSettings<BrowserForm.BrowserFormSettings> {
+		public sealed class BrowserFormSettings : INewSettings<BrowserFormSettings> {
+			private readonly BrowserForm owner;
+
+			public BrowserFormSettings()
+				: this(null) {
+			}
+			internal BrowserFormSettings(BrowserForm owner) {
+				this.owner = owner;
+				this.formSettingsBaseSettings = new FormSettingsBaseSettings(owner);
+			}
+
+			[XmlIgnore]
+			[Browsable(false)]
+			private bool HasOwner {
+				get { return null != this.owner; }
+			}
+
+			[ReadOnly(true)]
+			[Category("位置とサイズ")]
+			[DisplayName("フォームの基本設定")]
+			[Description("フォームの基本的な設定です．")]
+			public FormSettingsBaseSettings FormSettingsBaseSettings {
+				get { return this.formSettingsBaseSettings; }
+				set { this.FormSettingsBaseSettings.ApplySettings(value); }
+			}
+			private FormSettingsBaseSettings formSettingsBaseSettings;
+
+			#region INewSettings<BrowserFormSettings> Members
+			public void ApplySettings(BrowserFormSettings newSettings) {
+				Utility.SubstituteAllPublicProperties(this, newSettings);
+			}
+			#endregion
+		}
+		
 		private sealed class ImageCatalogStream : Stream {
 			private MemoryStream memStream;
 
@@ -90,11 +125,11 @@ namespace Yusen.GExplorer {
 			BrowserForm.Instance.Focus();
 			BrowserForm.Instance.gwbMain.DocumentStream = new ImageCatalogStream(images);
 		}
-		
+
+		private BrowserFormSettings settings;
+
 		private BrowserForm() {
 			InitializeComponent();
-		}
-		private void BrowserForm_Load(object sender, EventArgs e) {
 			Utility.AppendHelpMenu(this.menuStrip1);
 			
 			this.tsmiGenres.DropDownItems.Clear();
@@ -102,7 +137,7 @@ namespace Yusen.GExplorer {
 			this.tscbAddress.Items.Clear();
 			foreach (GGenre g in GGenre.AllGenres) {
 				ToolStripMenuItem mi;
-				
+
 				mi = new ToolStripMenuItem(g.GenreName);
 				mi.Tag = g;
 				mi.Click += new EventHandler(delegate(object sender2, EventArgs e2) {
@@ -126,20 +161,16 @@ namespace Yusen.GExplorer {
 					this.DocumentUri = genre.TimetableDeadlineNearFirstUri;
 				});
 				this.tsmiTimeTablesDeadline.DropDownItems.Add(mi);
-				
+
 				this.tscbAddress.Items.Add(g.TopPageUri);
 			}
-			
-			Utility.LoadSettingsAndEnableSaveOnClosed(this);
+		}
+		private void BrowserForm_Load(object sender, EventArgs e) {
+			this.settings = new BrowserFormSettings(this);
+			Utility.LoadSettingsAndEnableSaveOnClosedNew(this);
 		}
 		public string FilenameForSettings {
 			get { return @"BrowserFormSettings.xml"; }
-		}
-		public void FillSettings(BrowserFormSettings settings) {
-			base.FillSettings(settings);
-		}
-		public void ApplySettings(BrowserFormSettings settings) {
-			base.ApplySettings(settings);
 		}
 		
 		public Uri DocumentUri {
@@ -253,7 +284,7 @@ namespace Yusen.GExplorer {
 		private void tsmiFillCampaignForm_Click(object sender, EventArgs e) {
 			GlobalSettings gs = GlobalSettings.Instance;
 			if (!gs.IsValidFormData) {
-				MessageBox.Show("ユーザ情報が設定されていません．\nグローバル設定エディタでユーザ情報を入力してから実行してください．", "応募フォームのフィル", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				MessageBox.Show("ユーザ情報が設定されていません．\nグローバル設定でユーザ情報を入力してから実行してください．", "応募フォームのフィル", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				return;
 			}
 			try {
@@ -274,8 +305,11 @@ namespace Yusen.GExplorer {
 			}
 			elem.InnerText = innerText;
 		}
-	}
 
-	public class BrowserFormSettings : FormSettingsBaseSettings {
+		#region IHasNewSettings<BrowserFormSettings> Members
+		public BrowserForm.BrowserFormSettings Settings {
+			get { return this.settings; }
+		}
+		#endregion
 	}
 }

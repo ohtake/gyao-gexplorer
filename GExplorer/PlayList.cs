@@ -11,10 +11,13 @@ namespace Yusen.GExplorer {
 		
 		public event EventHandler PlayListChanged;
 		public event EventHandler CurrentContentChanged;
+		public event EventHandler AdditionRejected;
 
 		private bool updating = false;
 		private bool updated = false;
+		private bool rejectedWhileUpdating = false;
 		private ContentAdapter currentContent = null;
+		private List<ContentAdapter> lastAdditionRejectedContents = new List<ContentAdapter>();
 
 		public void MoveToTop(ContentAdapter cont) {
 			int contIdx = this.items.IndexOf(cont);
@@ -83,6 +86,8 @@ namespace Yusen.GExplorer {
 				if (this.updating) throw new InvalidOperationException("updatingなのにBeginUpdate呼び出し");
 				this.updating = true;
 				this.updated = false;
+				this.rejectedWhileUpdating = false;
+				this.lastAdditionRejectedContents.Clear();
 			}
 		}
 		public void EndUpdate() {
@@ -90,6 +95,7 @@ namespace Yusen.GExplorer {
 				if (!this.updating) throw new InvalidOperationException("非updatingなのにEndUpdate呼び出し");
 				this.updating = false;
 				if (this.updated) this.OnChanged();
+				if (this.rejectedWhileUpdating) this.OnAdditionRejectedBecauseOfExisting();
 			}
 		}
 		public ContentAdapter CurrentContent {
@@ -101,6 +107,10 @@ namespace Yusen.GExplorer {
 				}
 			}
 		}
+		public ContentAdapter[] LastAdditionRejectedContents {
+			get { return this.lastAdditionRejectedContents.ToArray(); }
+		}
+		
 		public bool HasCurrentContent {
 			get {
 				return null != this.currentContent;
@@ -110,8 +120,15 @@ namespace Yusen.GExplorer {
 			return cont.Equals(this.currentContent);
 		}
 		private void OnCurrentContentChanged() {
-			if (null != this.CurrentContentChanged) {
-				this.CurrentContentChanged(this, EventArgs.Empty);
+			EventHandler handler = this.CurrentContentChanged;
+			if (null != handler) {
+				handler(this, EventArgs.Empty);
+			}
+		}
+		private void OnAdditionRejectedBecauseOfExisting() {
+			EventHandler handler = this.AdditionRejected;
+			if (null != handler) {
+				handler(this, EventArgs.Empty);
 			}
 		}
 		protected override void OnChanged() {
@@ -123,7 +140,18 @@ namespace Yusen.GExplorer {
 				this.PlayListChanged(this, EventArgs.Empty);
 			}
 		}
-		
+		protected override void OnAdditionRejectedBecauseOfExisting(ContentAdapter rejectedItem) {
+			if (this.updating) {
+				this.lastAdditionRejectedContents.Add(rejectedItem);
+				this.rejectedWhileUpdating = true;
+			} else {
+				this.lastAdditionRejectedContents.Clear();
+				this.lastAdditionRejectedContents.Add(rejectedItem);
+				this.OnAdditionRejectedBecauseOfExisting();
+			}
+			base.OnAdditionRejectedBecauseOfExisting(rejectedItem);
+		}
+
 		protected override string FilenameForSerialization {
 			get { return @"PlayList.xml"; }
 		}

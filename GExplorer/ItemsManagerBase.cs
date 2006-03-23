@@ -29,7 +29,9 @@ namespace Yusen.GExplorer {
 			Utility.SerializeSettings(filename, this.items);
 		}
 		
-		abstract protected void OnChanged();
+		protected abstract void OnChanged();
+		protected virtual void OnAdditionRejectedBecauseOfExisting(T rejectedItem) {
+		}
 		
 		public T this[int idx] {
 			get {
@@ -69,6 +71,8 @@ namespace Yusen.GExplorer {
 			if (!this.items.Contains(item)) {
 				this.items.Add(item);
 				this.OnChanged();
+			} else {
+				this.OnAdditionRejectedBecauseOfExisting(item);
 			}
 		}
 		public void Add(T item) {

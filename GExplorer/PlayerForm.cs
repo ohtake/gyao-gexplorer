@@ -8,9 +8,217 @@ using System.Text.RegularExpressions;
 using AxWMPLib;
 using WMPLib;
 using DRegion=System.Drawing.Region;
+using System.Xml.Serialization;
 
 namespace Yusen.GExplorer {
-	sealed partial class PlayerForm : FormSettingsBase, IFormWithSettings<PlayerFormSettings>{
+	public sealed partial class PlayerForm : FormSettingsBase, IFormWithNewSettings<PlayerForm.PlayerFormSettings> {
+		public sealed class PlayerFormSettings : INewSettings<PlayerFormSettings>{
+			private const int VolumeMin = 0;
+			private const int VolumeMax = 100;
+			private const int ZoomMin = 25;
+			private const int ZoomMax = 200;
+			private const string VolumeRangeMessage = "[0-100]";
+			private const string ZoomRangeMessage = "[25-200]";
+
+			private PlayerForm owner;
+			
+			public PlayerFormSettings() : this(null){
+			}
+			internal PlayerFormSettings(PlayerForm owner){
+				this.owner = owner;
+				this.formSettingsBaseSettings = new FormSettingsBaseSettings(owner);
+			}
+
+			[Browsable(false)]
+			[XmlIgnore]
+			private bool HasOwner {
+				get { return null != this.owner; }
+			}
+
+			[ReadOnly(true)]
+			[Category("位置やサイズ")]
+			[DisplayName("フォームの基本設定")]
+			[Description("フォームの基本的な設定です．")]
+			public FormSettingsBaseSettings FormSettingsBaseSettings {
+				get { return this.formSettingsBaseSettings; }
+				set { this.formSettingsBaseSettings.ApplySettings(value); }
+			}
+			private FormSettingsBaseSettings formSettingsBaseSettings;
+
+			[Category("表示")]
+			[DisplayName("最前面")]
+			[Description("フォームを最前面に表示します．")]
+			[DefaultValue(false)]
+			public bool TopmostForm {
+				get { return this.topmost;}
+				set {
+					this.topmost = value;
+					if (this.HasOwner) {
+						this.owner.TopMost = value;
+						this.owner.tsmiViewTopmost.Checked = value;
+					}
+				}
+			}
+			private bool topmost = false;
+
+			[Category("表示")]
+			[DisplayName("非アクティブ時にUI非表示")]
+			[Description("プレーヤフォームがアクティブでないときにUIを非表示にします．")]
+			[DefaultValue(false)]
+			public bool HideUiOnDeactivatedEnabled {
+				get { return this.hideUiOnDeactivatedEnabled; }
+				set {
+					this.hideUiOnDeactivatedEnabled = value;
+					if(this.HasOwner) this.owner.tsmiViewAutoHide.Checked = value;
+				}
+			}
+			private bool hideUiOnDeactivatedEnabled = false;
+
+			[Category("表示")]
+			[DisplayName("表示領域にあわせて拡大")]
+			[Description("動画解像度が表示領域よりも小さい場合に動画を拡大します．")]
+			[DefaultValue(false)]
+			public bool StrechToFitEnabled {
+				get {
+					if (this.HasOwner) return this.owner.wmpMain.stretchToFit;
+					else return this.strechToFitEnabled;
+				}
+				set {
+					if (this.HasOwner) this.owner.wmpMain.stretchToFit = value;
+					else this.strechToFitEnabled = value;
+					if (this.HasOwner) this.owner.wmpMain.stretchToFit = value;
+				}
+			}
+			private bool strechToFitEnabled = false;
+
+			[Category("表示")]
+			[DisplayName("スクリーンセーバ抑止")]
+			[Description("本アプリケーションがアクティブのときにスクリーンセーバが立ち上がらないようにします．")]
+			[DefaultValue(false)]
+			public bool SuspendScreenSaveEnabled {
+				get {
+					if (this.HasOwner) return this.owner.SuspendScreenSaveEnabled;
+					else return this.suspendScreenSaveEnabled;
+				}
+				set {
+					if (this.HasOwner) this.owner.SuspendScreenSaveEnabled = value;
+					else this.suspendScreenSaveEnabled = value;
+				}
+			}
+			private bool suspendScreenSaveEnabled = false;
+
+			[Category("自動リサイズ")]
+			[DisplayName("本編で自動リサイズ")]
+			[Description("本編の動画が始まったときにウィンドウのサイズを動画の解像度に合わせます．")]
+			[DefaultValue(true)]
+			public bool AutoSizeOnNormalEnabled {
+				get { return this.autoSizeOnNormalEnabled; }
+				set { this.autoSizeOnNormalEnabled = value; }
+			}
+			private bool autoSizeOnNormalEnabled = true;
+
+			[Category("自動リサイズ")]
+			[DisplayName("CFで自動リサイズ")]
+			[Description("CFの動画が始まったときにウィンドウのサイズを動画の解像度に合わせます．")]
+			[DefaultValue(true)]
+			public bool AutoSizeOnCfEnabled {
+				get { return this.autoSizeOnCfEnabled; }
+				set { this.autoSizeOnCfEnabled = value; }
+			}
+			private bool autoSizeOnCfEnabled = true;
+
+			[Category("自動リサイズ")]
+			[DisplayName("自動リサイズの倍率")]
+			[Description("ウィンドウの自動リサイズを行うときの動画解像度に対する倍率をパーセント値で指定します．" + PlayerFormSettings.ZoomRangeMessage)]
+			[DefaultValue(100)]
+			public int ZoomRatioOnResize {
+				get { return this.zoomRatioOnResize; }
+				set {
+					if (value < PlayerFormSettings.ZoomMin || PlayerFormSettings.ZoomMax < value) {
+						throw new ArgumentOutOfRangeException("ZoomRatioOnResize");
+					}
+					this.zoomRatioOnResize = value;
+				}
+			}
+			private int zoomRatioOnResize = 100;
+
+			[Category("再生")]
+			[DisplayName("再生終了でリストから削除")]
+			[Description("再生の終了したコンテンツをプレイリストから削除します．")]
+			[DefaultValue(false)]
+			public bool RemovePlayedContentEnabled {
+				get { return this.removePlayedContentEnabled; }
+				set { this.removePlayedContentEnabled = value; }
+			}
+			private bool removePlayedContentEnabled = false;
+
+			[Category("再生")]
+			[DisplayName("cm_licenseの早期スキップ")]
+			[Description("cm_licenseを再生直後にスキップすることでステーションコールまでの待ち時間を短くします．")]
+			[DefaultValue(true)]
+			public bool SkipCmLicenseEnabled {
+				get { return this.skipCmLicenseEnabled; }
+				set { this.skipCmLicenseEnabled = value; }
+			}
+			private bool skipCmLicenseEnabled = true;
+
+			[Category("再生")]
+			[DisplayName("最初からチャプターモード")]
+			[Description("再生開始時から常にチャプターモードで再生を開始します．")]
+			[DefaultValue(false)]
+			public bool ChapterModeFromBegining {
+				get { return this.chapterModeFromBegining; }
+				set { this.chapterModeFromBegining = value; }
+			}
+			private bool chapterModeFromBegining = false;
+
+			[Category("自動音量調整")]
+			[DisplayName("自動音量調整")]
+			[Description("本編やCFに切り替わったときに音量を自動的に調節します．設定の如何によらずミュートの時には音量調整は行いません．")]
+			[DefaultValue(true)]
+			public bool AutoVolumeEnabled {
+				get { return this.autoVolumeEnabled; }
+				set { this.autoVolumeEnabled = value; }
+			}
+			private bool autoVolumeEnabled = true;
+
+			[Category("自動音量調整")]
+			[DisplayName("本編の音量")]
+			[Description("自動音量調節を有効にしている場合で，本編に切り替わったときに音量を設定します．" + PlayerFormSettings.VolumeRangeMessage)]
+			[DefaultValue(100)]
+			public int VolumeNormal {
+				get { return this.volumeNormal; }
+				set {
+					if (value < PlayerFormSettings.VolumeMin || PlayerFormSettings.VolumeMax < value) {
+						throw new ArgumentOutOfRangeException("VolumeNormal");
+					}
+					this.volumeNormal = value;
+				}
+			}
+			private int volumeNormal = 100;
+
+			[Category("自動音量調整")]
+			[DisplayName("CFの音量")]
+			[Description("自動音量調節を有効にしている場合で，CFに切り替わったときに音量を設定します．" + PlayerFormSettings.VolumeRangeMessage)]
+			[DefaultValue(20)]
+			public int VolumeCf {
+				get { return this.volumeCf; }
+				set {
+					if (value < PlayerFormSettings.VolumeMin || PlayerFormSettings.VolumeMax < value) {
+						throw new ArgumentOutOfRangeException("VolumeCf");
+					}
+					this.volumeCf = value;
+				}
+			}
+			private int volumeCf = 20;
+			
+			#region INewSettings<PlayerFormSettings> Members
+			public void ApplySettings(PlayerFormSettings newSettings) {
+				Utility.SubstituteAllPublicProperties(this, newSettings);
+			}
+			#endregion
+		}
+		
 		private sealed class BannerTag {
 			private const long OrdMax = 10000000000000000;
 			private static readonly Random rand = new Random();
@@ -45,7 +253,7 @@ namespace Yusen.GExplorer {
 		private static readonly Regex regexEndFlag = new Regex(":endFlg=([^:=]*)");
 		private static readonly Regex regexDartTag = new Regex(":dartTag=([^:=]*)");
 		private static readonly Regex regexClipNo = new Regex(":clipNo=([^:]*)");
-
+		
 		private static PlayerForm instance = null;
 		public static PlayerForm Instance {
 			get {
@@ -70,14 +278,16 @@ namespace Yusen.GExplorer {
 		private Dictionary<string, string> currentAttribs = new Dictionary<string, string>();
 		private bool? endFlag = null;
 
-		private int zoomRatioOnResize = 100;
-		private int volumeNormal = 100;
-		private int volumeCf = 20;
-
 		private ScreenSaveListener ssl;
 
+		private PlayerFormSettings settings;
+		
 		private PlayerForm() {
 			InitializeComponent();
+			this.tsmiViewFullScreen.ShortcutKeys = Keys.Alt | Keys.Enter;
+			Utility.AppendHelpMenu(this.menuStrip1);
+			
+			this.tsmiSettings.DropDown.Closing += ToolStripPropertyGrid.CancelDropDownClosingIfEditingPropertyGrid;
 		}
 
 		private void OpenVideo() {
@@ -99,26 +309,6 @@ namespace Yusen.GExplorer {
 				this.wmpMain.Ctlcontrols.play();
 			}
 			this.UpdateStatusbatText();
-		}
-		private void CreateUserCommandsMenuItems() {
-			this.tsmiUserCommands.DropDownItems.Clear();
-			List<ToolStripMenuItem> menuItems = new List<ToolStripMenuItem>();
-			foreach (UserCommand uc in UserCommandsManager.Instance) {
-				ToolStripMenuItem tsmi = new ToolStripMenuItem(uc.Title);
-				tsmi.Tag = uc;
-				tsmi.Click += delegate(object sender, EventArgs e) {
-					ToolStripMenuItem tsmi2 = sender as ToolStripMenuItem;
-					if (null != tsmi2) {
-						UserCommand uc2 = tsmi2.Tag as UserCommand;
-						if (null != uc2) {
-							uc2.Execute(new ContentAdapter[] { this.CurrentContent });
-						}
-					}
-				};
-				menuItems.Add(tsmi);
-			}
-			this.tsmiUserCommands.DropDownItems.AddRange(menuItems.ToArray());
-			this.tsmiUserCommands.Enabled = this.tsmiUserCommands.HasDropDownItems;
 		}
 		private void UpdateStatusbatText() {
 			if(null != this.CurrentContent) {
@@ -143,7 +333,7 @@ namespace Yusen.GExplorer {
 		private void ModifyVolume() {
 			bool? isCf = this.IsCf;
 			if(isCf.HasValue) {
-				this.wmpMain.settings.volume = isCf.Value ? this.VolumeCf : this.VolumeNormal;
+				this.wmpMain.settings.volume = isCf.Value ? this.settings.VolumeCf : this.settings.VolumeNormal;
 			}
 		}
 		private void HideUi() {
@@ -169,39 +359,6 @@ namespace Yusen.GExplorer {
 				oldRegion.Dispose();
 			}
 		}
-		public void FillSettings(PlayerFormSettings settings) {
-			base.FillSettings(settings);
-			settings.HideUiOnDeactivatedEnabled = this.HideUiOnDeactivatedEnabled;
-			settings.AutoSizeOnNormalEnabled = this.AutoSizeOnNormalEnabled;
-			settings.AutoSizeOnCfEnabled = this.AutoSizeOnCfEnabled;
-			settings.StrechToFitEnabled = this.StreachToFitEnabled;
-			settings.DisableScreenSaverEnabled = this.DisableScreenSaverEnabled;
-			settings.RemovePlayedContentEnabled = this.RemovePlayedContentEnabled;
-			settings.SkipCmLicenseEnabled = this.SkipCmLicenseEnabled;
-			settings.ChapterModeFromBegining = this.ChapterModeFromBegining;
-			settings.AutoVolumeEnabled = this.AutoVolumeEnabled;
-			settings.ZoomRatioOnResize = this.ZoomRatioOnResize;
-			settings.VolumeNormal = this.VolumeNormal;
-			settings.VolumeCf = this.VolumeCf;
-		}
-		
-		public void ApplySettings(PlayerFormSettings settings) {
-			base.ApplySettings(settings);
-			this.HideUiOnDeactivatedEnabled = settings.HideUiOnDeactivatedEnabled ?? this.HideUiOnDeactivatedEnabled;
-			this.AutoSizeOnNormalEnabled = settings.AutoSizeOnNormalEnabled ?? this.AutoSizeOnNormalEnabled;
-			this.AutoSizeOnCfEnabled = settings.AutoSizeOnCfEnabled ?? this.AutoSizeOnCfEnabled;
-			this.StreachToFitEnabled = settings.StrechToFitEnabled ?? this.StreachToFitEnabled;
-			this.DisableScreenSaverEnabled = settings.DisableScreenSaverEnabled ?? this.DisableScreenSaverEnabled;
-			this.RemovePlayedContentEnabled = settings.RemovePlayedContentEnabled ?? this.RemovePlayedContentEnabled;
-			this.SkipCmLicenseEnabled = settings.SkipCmLicenseEnabled ?? this.SkipCmLicenseEnabled;
-			this.ChapterModeFromBegining = settings.ChapterModeFromBegining ?? this.ChapterModeFromBegining;
-			this.AutoVolumeEnabled = settings.AutoVolumeEnabled ?? this.AutoVolumeEnabled;
-			this.ZoomRatioOnResize = settings.ZoomRatioOnResize ?? this.ZoomRatioOnResize;
-			this.VolumeNormal = settings.VolumeNormal ?? this.VolumeNormal;
-			this.VolumeCf = settings.VolumeCf ?? this.VolumeCf;
-			
-			this.tsmiAlwaysOnTop.Checked = this.TopMost;
-		}
 
 		public string FilenameForSettings {
 			get { return @"PlayerFormSettings.xml"; }
@@ -213,7 +370,7 @@ namespace Yusen.GExplorer {
 			}
 			private set {
 				this.currentContent = value;
-				this.currentChapter = this.ChapterModeFromBegining ? 1 : (int?)null;
+				this.currentChapter = this.settings.ChapterModeFromBegining ? 1 : (int?)null;
 				this.endFlag = null;
 				
 				if (null == value) {
@@ -238,82 +395,6 @@ namespace Yusen.GExplorer {
 				}
 			}
 		}
-		public bool HideUiOnDeactivatedEnabled {
-			get { return this.tsmiHideUiOnDeactivated.Checked; }
-			set { this.tsmiHideUiOnDeactivated.Checked = value; }
-		}
-		public bool AutoSizeOnNormalEnabled {
-			get { return this.tsmiAutoSizeOnNormal.Checked; }
-			set { this.tsmiAutoSizeOnNormal.Checked = value; }
-		}
-		public bool AutoSizeOnCfEnabled {
-			get { return this.tsmiAutoSizeOnCf.Checked; }
-			set { this.tsmiAutoSizeOnCf.Checked = value; }
-		}
-		public bool StreachToFitEnabled {
-			get { return this.tsmiStrechToFit.Checked; }
-			set {
-				this.tsmiStrechToFit.Checked = value;
-				this.wmpMain.stretchToFit = value;
-			}
-		}
-		public bool DisableScreenSaverEnabled {
-			get { return this.tsmiDisableScreenSaver.Checked; }
-			set {
-				this.tsmiDisableScreenSaver.Checked = value;
-				this.ssl.Enabled = value;
-			}
-		}
-		public bool RemovePlayedContentEnabled {
-			get { return this.tsmiRemovePlayedContent.Checked; }
-			set { this.tsmiRemovePlayedContent.Checked = value; }
-		}
-		public bool SkipCmLicenseEnabled {
-			get { return this.tsmiSkipCmLicense.Checked; }
-			set { this.tsmiSkipCmLicense.Checked = value; }
-		}
-		public bool ChapterModeFromBegining {
-			get { return this.tsmiChapterModeFromBegining.Checked; }
-			set { this.tsmiChapterModeFromBegining.Checked = value; }
-		}
-		public int ZoomRatioOnResize {
-			get { return this.zoomRatioOnResize; }
-			set {
-				if(PlayerForm.ZoomMin <= value && value <= PlayerForm.ZoomMax) {
-					this.zoomRatioOnResize = value;
-				} else {
-					throw new ArgumentOutOfRangeException("ZoomRatioOnResize");
-				}
-			}
-		}
-		public bool AutoVolumeEnabled {
-			get { return this.tsmiAutoVolume.Checked; }
-			set {
-				this.tsmiAutoVolume.Checked = value;
-				this.tsmiVolumeNormal.Enabled = value;
-				this.tsmiVolumeCf.Enabled = value;
-			}
-		}
-		public int VolumeNormal {
-			get { return this.volumeNormal; }
-			set {
-				if (PlayerForm.VolumeMin <= value && value <= PlayerForm.VolumeMax) {
-					this.volumeNormal = value;
-				} else {
-					throw new ArgumentOutOfRangeException("VolumeNormal");
-				}
-			}
-		}
-		public int VolumeCf {
-			get { return this.volumeCf; }
-			set {
-				if (PlayerForm.VolumeMin <= value && value <= PlayerForm.VolumeMax) {
-					this.volumeCf = value;
-				} else {
-					throw new ArgumentOutOfRangeException("VolumeCf");
-				}
-			}
-		}
 		private bool IsCmLicense {
 			get {
 				return this.wmpMain.currentMedia.sourceURL.Contains("cm_license");
@@ -331,17 +412,12 @@ namespace Yusen.GExplorer {
 				}
 			}
 		}
+		private bool SuspendScreenSaveEnabled {
+			get { return this.ssl.Enabled; }
+			set { this.ssl.Enabled = value; }
+		}
 
 		private void PlayerForm_Load(object sender, EventArgs e) {
-			Utility.AppendHelpMenu(this.menuStrip1);
-			this.tsmiSettings.DropDown.Closing += Utility.ToolStripDropDown_CancelClosingOnClick;
-
-			this.CreateUserCommandsMenuItems();
-			UserCommandsManager.Instance.UserCommandsChanged += new EventHandler(UserCommandsManager_UserCommandsChanged);
-			this.FormClosed += delegate {
-				UserCommandsManager.Instance.UserCommandsChanged -= new EventHandler(UserCommandsManager_UserCommandsChanged);
-			};
-			
 			this.ssl = new ScreenSaveListener();
 			this.ssl.ScreenSaverRaising += this.ssl_ScreenSaverRaising;
 			this.FormClosed += delegate {
@@ -349,7 +425,10 @@ namespace Yusen.GExplorer {
 				this.ssl.Dispose();
 			};
 			
-			Utility.LoadSettingsAndEnableSaveOnClosed(this);
+			this.settings = new PlayerFormSettings(this);
+			Utility.LoadSettingsAndEnableSaveOnClosedNew(this);
+			
+			this.tspgPlayerFormSettings.SelectedObject = this.settings;
 		}
 		private void PlayerForm_FormClosing(object sender, FormClosingEventArgs e) {
 			this.CurrentContent = null;
@@ -358,7 +437,7 @@ namespace Yusen.GExplorer {
 			this.ShowUi();
 		}
 		private void PlayerForm_Deactivate(object sender, EventArgs e) {
-			if(this.HideUiOnDeactivatedEnabled) {
+			if(this.settings.HideUiOnDeactivatedEnabled) {
 				this.HideUi();
 			}
 		}
@@ -389,11 +468,8 @@ namespace Yusen.GExplorer {
 			e.Handled = true;
 		}
 		
-		private void UserCommandsManager_UserCommandsChanged(object sender, EventArgs e) {
-			this.CreateUserCommandsMenuItems();
-		}
 		private void ssl_ScreenSaverRaising(object sender, CancelEventArgs e) {
-			if (this.DisableScreenSaverEnabled) {
+			if (this.settings.SuspendScreenSaveEnabled) {
 				e.Cancel = true;
 			}
 		}
@@ -479,70 +555,13 @@ namespace Yusen.GExplorer {
 			}
 			this.CurrentContent = prevCont;
 		}
-		private void tsmiAlwaysOnTop_Click(object sender, EventArgs e) {
-			this.TopMost = this.tsmiAlwaysOnTop.Checked;
-		}
-		private void tsmiStrechToFit_Click(object sender, EventArgs e) {
-			this.StreachToFitEnabled = this.StreachToFitEnabled;
-		}
-		private void tsmiDisableScreenSaver_Click(object sender, EventArgs e) {
-			this.DisableScreenSaverEnabled = this.DisableScreenSaverEnabled;
-		}
-		private void tsmiResizeZoomValue_Click(object sender, EventArgs e) {
-			string title = "リサイズ時の倍率";
-			this.inputBoxDialog1.Title =title;
-			this.inputBoxDialog1.Message = "サイズの倍率を入力してください．" + "[" + PlayerForm.ZoomMin.ToString() + "-" + PlayerForm.ZoomMax.ToString() + "]";
-			this.inputBoxDialog1.Input = this.ZoomRatioOnResize.ToString();
-			switch(this.inputBoxDialog1.ShowDialog()) {
-				case DialogResult.OK:
-					try {
-						this.ZoomRatioOnResize = int.Parse(this.inputBoxDialog1.Input);
-					} catch(Exception ex) {
-						MessageBox.Show(ex.Message, title, MessageBoxButtons.OK, MessageBoxIcon.Error);
-					}
-					break;
-			}
-		}
-		private void tsmiAutoVolume_Click(object sender, EventArgs e) {
-			this.AutoVolumeEnabled = this.AutoVolumeEnabled;
-		}
-		private void tsmiVolumeNormal_Click(object sender, EventArgs e) {
-			string title = "自動音量調整における本編の音量";
-			this.inputBoxDialog1.Title =title;
-			this.inputBoxDialog1.Message = "本編の音量を入力してください．" + "[" + PlayerForm.VolumeMin.ToString() + "-" + PlayerForm.VolumeMax.ToString() + "]";
-			this.inputBoxDialog1.Input = this.VolumeNormal.ToString();
-			switch (this.inputBoxDialog1.ShowDialog()) {
-				case DialogResult.OK:
-					try {
-						this.VolumeNormal = int.Parse(this.inputBoxDialog1.Input);
-					} catch (Exception ex) {
-						MessageBox.Show(ex.Message, title, MessageBoxButtons.OK, MessageBoxIcon.Error);
-					}
-					break;
-			}
-		}
-		private void tsmiVolumeCf_Click(object sender, EventArgs e) {
-			string title = "自動音量調整におけるCFの音量";
-			this.inputBoxDialog1.Title = title;
-			this.inputBoxDialog1.Message = "CFの音量を入力してください．" + "[" + PlayerForm.VolumeMin.ToString() + "-" + PlayerForm.VolumeMax.ToString() + "]";
-			this.inputBoxDialog1.Input = this.VolumeCf.ToString();
-			switch (this.inputBoxDialog1.ShowDialog()) {
-				case DialogResult.OK:
-					try{
-						this.VolumeCf = int.Parse(this.inputBoxDialog1.Input);
-					} catch (Exception ex) {
-						MessageBox.Show(ex.Message, title, MessageBoxButtons.OK, MessageBoxIcon.Error);
-					}
-					break;
-			}
-		}
 		private void tsmiFocusOnWmp_Click(object sender, EventArgs e) {
 			this.wmpMain.Focus();
 		}
 		private void tsmiResizeToVideoResolution_Click(object sender, EventArgs e) {
 			this.WindowState = FormWindowState.Normal;
 			Size videoSize = new Size(this.wmpMain.currentMedia.imageSourceWidth, this.wmpMain.currentMedia.imageSourceHeight);
-			Size distSize = new Size(videoSize.Width*this.ZoomRatioOnResize/100, videoSize.Height*this.ZoomRatioOnResize/100);
+			Size distSize = new Size(videoSize.Width*this.settings.ZoomRatioOnResize/100, videoSize.Height*this.settings.ZoomRatioOnResize/100);
 			for(int i=0; i<2; i++) {
 				//リサイズによってメニューバーやステータスバーの高さが変わることがあるので
 				//2回リサイズを試みる
@@ -566,12 +585,6 @@ namespace Yusen.GExplorer {
 		private void tsmiBrowseRecommended_Click(object sender, EventArgs e) {
 			Utility.Browse(this.CurrentContent.RecommendPageUri);
 		}
-		private void tsmiFullScreen_Click(object sender, EventArgs e) {
-			try {
-				this.wmpMain.fullScreen = true;
-			} catch {
-			}
-		}
 		#endregion
 		#region WMPのイベント
 		private void wmpMain_OpenStateChange(object sender, _WMPOCXEvents_OpenStateChangeEvent e) {
@@ -587,7 +600,7 @@ namespace Yusen.GExplorer {
 					// entry url のよみとり
 					string entryUrl = this.currentAttribs[PlayerForm.AttribNameEntryUrl];
 					//音量調整
-					if (this.tsmiAutoVolume.Checked && !this.wmpMain.settings.mute) {
+					if (this.settings.AutoVolumeEnabled && !this.wmpMain.settings.mute) {
 						//一旦音量を代入
 						this.ModifyVolume();
 						//音量が変わらないことがあるのでタイマーで後から再代入
@@ -616,7 +629,7 @@ namespace Yusen.GExplorer {
 						this.wbBanner.Navigate("about:blank");
 					}
 					//cm_licenseの早期スキップ
-					if (this.SkipCmLicenseEnabled && this.IsCmLicense) {
+					if (this.settings.SkipCmLicenseEnabled && this.IsCmLicense) {
 						this.timerSkipCmLisence.Start();
 					}
 					//ステータスバー更新
@@ -624,11 +637,11 @@ namespace Yusen.GExplorer {
 					//リサイズ
 					if(this.IsCf.HasValue && FormWindowState.Normal == this.WindowState) {
 						if(this.IsCf.Value) {
-							if(this.AutoSizeOnCfEnabled) {
+							if(this.settings.AutoSizeOnCfEnabled) {
 								this.tsmiResizeToVideoResolution.PerformClick();
 							}
 						} else {
-							if(this.AutoSizeOnNormalEnabled) {
+							if(this.settings.AutoSizeOnNormalEnabled) {
 								this.tsmiResizeToVideoResolution.PerformClick();
 							}
 						}
@@ -647,7 +660,7 @@ namespace Yusen.GExplorer {
 						//チャプターモードでエンドフラグが不明かFalse
 						this.CurrentChapter++;
 					} else {
-						if (this.RemovePlayedContentEnabled) {
+						if (this.settings.RemovePlayedContentEnabled) {
 							this.tsmiNextContentWithDelete.PerformClick();
 						} else {
 							this.tsmiNextContent.PerformClick();
@@ -658,6 +671,15 @@ namespace Yusen.GExplorer {
 			}
 		}
 		#endregion
+
+		private void tsmiSettings_DropDownOpened(object sender, EventArgs e) {
+			this.tspgPlayerFormSettings.RefreshPropertyGrid();
+		}
+		private void tsucmiCommand_UserCommandSelected(object sender, UserCommandSelectedEventArgs e) {
+			if (null != this.CurrentContent) {
+				e.UserCommand.Execute(new ContentAdapter[] { this.CurrentContent });
+			}
+		}
 		
 		private void timerAutoVolume_Tick(object sender, EventArgs e) {
 			this.timerAutoVolume.Stop();
@@ -667,6 +689,27 @@ namespace Yusen.GExplorer {
 			this.timerSkipCmLisence.Stop();
 			this.tsmiNextTrack.PerformClick();
 		}
+
+		private void tsmiViewFullScreen_Click(object sender, EventArgs e) {
+			try {
+				this.wmpMain.fullScreen = true;
+			} catch {
+			}
+		}
+
+		private void tsmiViewTopmost_Click(object sender, EventArgs e) {
+			this.settings.TopmostForm = !this.settings.TopmostForm;
+		}
+
+		private void tsmiViewAutoHide_Click(object sender, EventArgs e) {
+			this.settings.HideUiOnDeactivatedEnabled = !this.settings.HideUiOnDeactivatedEnabled;
+		}
+
+		#region IHasNewSettings<PlayerFormSettings> Members
+		public PlayerFormSettings Settings {
+			get { return this.settings; }
+		}
+		#endregion
 	}
 
 #if false
@@ -677,67 +720,4 @@ namespace Yusen.GExplorer {
 	}
 #endif
 
-	public class PlayerFormSettings : FormSettingsBaseSettings {
-		private bool? hideUiOnDeactivatedEnabled;
-		private bool? autoSizeOnNormalEnabled;
-		private bool? autoSizeOnCfEnabled;
-		private bool? strechToFitEnabled;
-		private bool? disableScreenSaverEnabled;
-		private bool? removePlayedContentEnabled;
-		private bool? skipCmLicenseEnabled;
-		private bool? chapterModeFromBegining;
-		private bool? autoVolumeEnabled;
-		private int? zoomRatioOnResize;
-		private int? volumeNormal;
-		private int? volumeCf;
-
-		public bool? HideUiOnDeactivatedEnabled {
-			get { return this.hideUiOnDeactivatedEnabled; }
-			set { this.hideUiOnDeactivatedEnabled = value; }
-		}
-		public bool? AutoSizeOnNormalEnabled {
-			get { return this.autoSizeOnNormalEnabled; }
-			set { this.autoSizeOnNormalEnabled = value; }
-		}
-		public bool? AutoSizeOnCfEnabled {
-			get { return this.autoSizeOnCfEnabled; }
-			set { this.autoSizeOnCfEnabled = value; }
-		}
-		public bool? StrechToFitEnabled {
-			get { return this.strechToFitEnabled; }
-			set { this.strechToFitEnabled = value; }
-		}
-		public bool? DisableScreenSaverEnabled {
-			get { return this.disableScreenSaverEnabled; }
-			set { this.disableScreenSaverEnabled = value; }
-		}
-		public bool? RemovePlayedContentEnabled {
-			get { return this.removePlayedContentEnabled; }
-			set { this.removePlayedContentEnabled = value; }
-		}
-		public bool? SkipCmLicenseEnabled {
-			get { return this.skipCmLicenseEnabled; }
-			set { this.skipCmLicenseEnabled = value; }
-		}
-		public bool? ChapterModeFromBegining {
-			get { return this.chapterModeFromBegining; }
-			set { this.chapterModeFromBegining = value; }
-		}
-		public bool? AutoVolumeEnabled {
-			get { return this.autoVolumeEnabled; }
-			set { this.autoVolumeEnabled = value; }
-		}
-		public int? ZoomRatioOnResize {
-			get { return this.zoomRatioOnResize; }
-			set { this.zoomRatioOnResize = value; }
-		}
-		public int? VolumeNormal {
-			get { return this.volumeNormal; }
-			set { this.volumeNormal = value; }
-		}
-		public int? VolumeCf {
-			get { return this.volumeCf; }
-			set { this.volumeCf = value; }
-		}
-	}
 }

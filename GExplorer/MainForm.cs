@@ -5,9 +5,115 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.Threading;
 using Yusen.GCrawler;
+using System.Xml.Serialization;
 
 namespace Yusen.GExplorer {
-	sealed partial class MainForm : FormSettingsBase, IFormWithSettings<MainFormSettings> {
+	public sealed partial class MainForm : FormSettingsBase, IFormWithNewSettings<MainForm.MainFormSettings> {
+		public sealed class MainFormSettings : INewSettings<MainFormSettings> {
+			private readonly MainForm owner;
+			
+			public MainFormSettings() : this(null) {
+			}
+			internal MainFormSettings(MainForm owner) {
+				this.owner = owner;
+				this.formSettingsBaseSettings = new FormSettingsBaseSettings(owner);
+				if (this.HasOwner) {
+					this.crawlResultViewSettings = new CrawlResultView.CrawlResultViewSettings(owner.crawlResultView1);
+					this.playListViewSettings = new PlayListView.PlayListViewSettings(owner.playListView1);
+					this.contentDetailViewSettings = new ContentDetailView.ContentDetailViewSettings(owner.contentDetailView1);
+				} else {
+					this.crawlResultViewSettings = new CrawlResultView.CrawlResultViewSettings();
+					this.playListViewSettings = new PlayListView.PlayListViewSettings();
+					this.contentDetailViewSettings = new ContentDetailView.ContentDetailViewSettings();
+				}
+			}
+
+			[Browsable(false)]
+			[XmlIgnore]
+			private bool HasOwner {
+				get { return null != this.owner; }
+			}
+			
+			[ReadOnly(true)]
+			[Category("位置とサイズ")]
+			[DisplayName("フォームの基本設定")]
+			[Description("フォームの基本的な設定です．")]
+			public FormSettingsBaseSettings FormSettingsBaseSettings {
+				get { return this.formSettingsBaseSettings; }
+				set { this.FormSettingsBaseSettings.ApplySettings(value); }
+			}
+			private readonly FormSettingsBaseSettings formSettingsBaseSettings;
+			
+			[Category("動作")]
+			[DisplayName("タブ切り替えでフォーカス移動")]
+			[Description("ジャンルタブでタブを切り替えるとクロール結果ビューにフォーカスを移動させます．")]
+			[DefaultValue(true)]
+			public bool FocusOnResultAfterGenreChanged {
+				get { return this.focusOnResultAfterGenreChanged; }
+				set { this.focusOnResultAfterGenreChanged = value; }
+			}
+			private bool focusOnResultAfterGenreChanged = true;
+			
+			[Category("位置とサイズ")]
+			[DisplayName("クロール結果ビューの幅")]
+			[Description("クロール結果ビューの幅をピクセルで指定します．")]
+			[DefaultValue(null)]
+			public int? ListViewWidth {
+				get {
+					if (this.HasOwner) return this.owner.scListsAndDetail.SplitterDistance;
+					else return this.listViewWidth;
+				}
+				set {
+					if (this.HasOwner && value.HasValue) this.owner.scListsAndDetail.SplitterDistance = value.Value;
+					else this.listViewWidth = value;
+				}
+			}
+			private int? listViewWidth;
+
+			[Category("位置とサイズ")]
+			[DisplayName("クロール結果ビューの高さ")]
+			[Description("クロール結果ビューの高さをピクセルで指定します．")]
+			[DefaultValue(null)]
+			public int? ListViewHeight {
+				get {
+					if (this.HasOwner) return this.owner.scLists.SplitterDistance;
+					else return this.listViewHeight;
+				}
+				set {
+					if (this.HasOwner && value.HasValue) this.owner.scLists.SplitterDistance = value.Value;
+					else this.listViewHeight = value;
+				}
+			}
+			private int? listViewHeight;
+
+			[Browsable(false)]
+			public CrawlResultView.CrawlResultViewSettings CrawlResultViewSettings {
+				get { return this.crawlResultViewSettings; }
+				set { this.crawlResultViewSettings.ApplySettings(value); }
+			}
+			private readonly CrawlResultView.CrawlResultViewSettings crawlResultViewSettings;
+
+			[Browsable(false)]
+			public PlayListView.PlayListViewSettings PlayListViewSettings {
+				get { return this.playListViewSettings; }
+				set { this.playListViewSettings.ApplySettings(value); }
+			}
+			private readonly PlayListView.PlayListViewSettings playListViewSettings;
+			
+			[Browsable(false)]
+			public ContentDetailView.ContentDetailViewSettings ContentDetailViewSettings {
+				get { return this.contentDetailViewSettings; }
+				set { this.contentDetailViewSettings.ApplySettings(value); }
+			}
+			private readonly ContentDetailView.ContentDetailViewSettings contentDetailViewSettings;
+
+			#region INewSettings<MainFormSettings> Members
+			public void ApplySettings(MainFormSettings newSettings) {
+				Utility.SubstituteAllPublicProperties(this, newSettings);
+			}
+			#endregion
+		}
+
 		private sealed class MergedGenre : GGenre {
 			public MergedGenre() : base(0, "dummy", "(既得ジャンル)", Color.Black){
 			}
@@ -23,9 +129,38 @@ namespace Yusen.GExplorer {
 		
 		private ContentAdapter seletedCont = null;
 		private CrawlProgressEventArgs crawlProgressEventArgs = null;
-		
+
+		private MainFormSettings settings;
+
 		public MainForm() {
 			InitializeComponent();
+			
+			this.Text = Program.ApplicationName;
+			Utility.AppendHelpMenu(this.menuStrip1);
+			this.tsmiSettingsGlobal.DropDown.Closing += ToolStripPropertyGrid.CancelDropDownClosingIfEditingPropertyGrid;
+			this.tsmiSettingsMainForm.DropDown.Closing += ToolStripPropertyGrid.CancelDropDownClosingIfEditingPropertyGrid;
+			this.tsmiSettingsResultView.DropDown.Closing += ToolStripPropertyGrid.CancelDropDownClosingIfEditingPropertyGrid;
+			this.tsmiSettingsPlaylistView.DropDown.Closing += ToolStripPropertyGrid.CancelDropDownClosingIfEditingPropertyGrid;
+			this.tsmiSettingsDetailView.DropDown.Closing += ToolStripPropertyGrid.CancelDropDownClosingIfEditingPropertyGrid;
+			
+			this.genreTabControl1.TabPages.Clear();
+			this.tsmiUncrawlableGenres.DropDownItems.Clear();
+			foreach (GGenre genre in GGenre.AllGenres) {
+				if (genre.IsCrawlable) {
+					this.genreTabControl1.AddGenre(genre);
+				} else {
+					ToolStripMenuItem tsmi = new ToolStripMenuItem(genre.GenreName);
+					tsmi.Tag = genre;
+					tsmi.Click += delegate(object sender2, EventArgs e2) {
+						Utility.Browse(((sender2 as ToolStripMenuItem).Tag as GGenre).TopPageUri);
+					};
+					this.tsmiUncrawlableGenres.DropDownItems.Add(tsmi);
+				}
+			}
+			this.genreTabControl1.SelectedGenre = null;
+			this.tsmiUncrawlableGenres.Enabled = this.tsmiUncrawlableGenres.HasDropDownItems;
+			this.tsmiUncrawlableGenres.Visible = this.tsmiUncrawlableGenres.HasDropDownItems;
+			
 		}
 		
 		private void ClearStatusBarInfo() {
@@ -73,102 +208,32 @@ namespace Yusen.GExplorer {
 				} else {
 					this.ClearStatusBarInfo();
 				}
-				if (this.FocusOnResultAfterGenreChanged) {
+				if (this.settings.FocusOnResultAfterGenreChanged) {
 					this.crawlResultView1.Focus();
 				}
 			}
-		}
-		public void FillSettings(MainFormSettings settings) {
-			base.FillSettings(settings);
-			settings.FocusOnResultAfterGenreChanged = this.FocusOnResultAfterGenreChanged;
-			settings.ListViewWidth = this.scListsAndDetail.SplitterDistance;
-			settings.ListViewHeight = this.scLists.SplitterDistance;
-			this.crawlResultView1.FillSettings(settings.GenreListViewSettings);
-			this.playListView1.FillSettings(settings.PlayListViewSettings);
-			this.contentDetailView1.FillSettings(settings.ContentDetailViewSettings);
-		}
-		public void ApplySettings(MainFormSettings settings) {
-			base.ApplySettings(settings);
-			this.FocusOnResultAfterGenreChanged = settings.FocusOnResultAfterGenreChanged ?? this.FocusOnResultAfterGenreChanged;
-			this.scListsAndDetail.SplitterDistance = settings.ListViewWidth ?? this.scListsAndDetail.SplitterDistance;
-			this.scLists.SplitterDistance = settings.ListViewHeight ?? this.scLists.SplitterDistance;
-			if (null != settings.GenreListViewSettings) this.crawlResultView1.ApplySettings(settings.GenreListViewSettings);
-			if (null != settings.PlayListViewSettings) this.playListView1.ApplySettings(settings.PlayListViewSettings);
-			if (null != settings.ContentDetailViewSettings) this.contentDetailView1.ApplySettings(settings.ContentDetailViewSettings);
 		}
 		public string FilenameForSettings {
 			get { return @"MainFormSettings.xml"; }
 		}
 
-		public bool FocusOnResultAfterGenreChanged {
-			get { return this.tsmiFocusOnResultAfterTabChanged.Checked; }
-			set { this.tsmiFocusOnResultAfterTabChanged.Checked = value; }
-		}
-		
-		private void CreateUserCommandsMenuItems() {
-			this.tsmiUserCommands.DropDownItems.Clear();
-			List<ToolStripMenuItem> menuItems = new List<ToolStripMenuItem>();
-			foreach (UserCommand uc in UserCommandsManager.Instance) {
-				ToolStripMenuItem tsmi = new ToolStripMenuItem(uc.Title);
-				tsmi.Tag = uc;
-				tsmi.Click += delegate(object sender, EventArgs e) {
-					ToolStripMenuItem tsmi2 = sender as ToolStripMenuItem;
-					if (null != tsmi2) {
-						UserCommand uc2 = tsmi2.Tag as UserCommand;
-						if (null != uc2) {
-							uc2.Execute(new ContentAdapter[] { });
-						}
-					}
-				};
-				menuItems.Add(tsmi);
-			}
-			this.tsmiUserCommands.DropDownItems.AddRange(menuItems.ToArray());
-			this.tsmiUserCommands.Enabled = this.tsmiUserCommands.HasDropDownItems;
-		}
-		
 		private void MainForm_Load(object sender, EventArgs e) {
 			this.crawler = new Crawler(new HtmlParserRegex(), Cache.Instance.ContentCacheController, Cache.Instance.DeadlineTable);
 			
-			this.Text = Program.ApplicationName;
-			Utility.AppendHelpMenu(this.menuStrip1);
-			this.tsmiSettings.DropDown.Closing += Utility.ToolStripDropDown_CancelClosingOnClick;
-
-			this.genreTabControl1.TabPages.Clear();
-			this.tsmiUncrawlableGenres.DropDownItems.Clear();
-			foreach (GGenre genre in GGenre.AllGenres) {
-				if (genre.IsCrawlable) {
-					this.genreTabControl1.AddGenre(genre);
-				} else {
-					ToolStripMenuItem tsmi = new ToolStripMenuItem(genre.GenreName);
-					tsmi.Tag = genre;
-					tsmi.Click += delegate(object sender2, EventArgs e2) {
-						Utility.Browse(((sender2 as ToolStripMenuItem).Tag as GGenre).TopPageUri);
-					};
-					this.tsmiUncrawlableGenres.DropDownItems.Add(tsmi);
-				}
-			}
-			this.genreTabControl1.SelectedGenre = null;
-			this.tsmiUncrawlableGenres.Enabled = this.tsmiUncrawlableGenres.HasDropDownItems;
-			this.tsmiUncrawlableGenres.Visible = this.tsmiUncrawlableGenres.HasDropDownItems;
-
-			this.tsmiSettingsCrawlResultView.DropDown = this.crawlResultView1.SettingsDropDown;
-			this.crawlResultView1.SettingsVisible = false;
-			this.tsmiSettingsPlaylistView.DropDown = this.playListView1.SettingsDropDown;
-			this.playListView1.SettingsVisible = false;
-			this.tsmiSettingsDetailView.DropDown = this.contentDetailView1.SettingsDropDown;
-			this.contentDetailView1.SettingsVisible = false;
-			
-			UserCommandsManager.Instance.UserCommandsChanged += new EventHandler(UserCommandsManager_UserCommandsChanged);
-			this.CreateUserCommandsMenuItems();
-			
-			Utility.LoadSettingsAndEnableSaveOnClosed(this);
-			this.ClearStatusBarInfo();
-
 			Cache.Instance.CacheRearranged += new EventHandler<CacheEventArgs>(Cache_CacheRearranged);
 			Program.ProgramSerializationProgress += new EventHandler<ProgramSerializationProgressEventArgs>(this.Program_ProgramSerializationProgress);
+
+			this.settings = new MainFormSettings(this);
+			this.tspgGlobal.SelectedObject = GlobalSettings.Instance;
+			this.tspgMainForm.SelectedObject = this.settings;
+			this.tspgResultView.SelectedObject = this.settings.CrawlResultViewSettings;
+			this.tspgPlaylistView.SelectedObject = this.settings.PlayListViewSettings;
+			this.tspgDetailView.SelectedObject = this.settings.ContentDetailViewSettings;
+			Utility.LoadSettingsAndEnableSaveOnClosedNew(this);
+
+			this.ClearStatusBarInfo();
 		}
-
-
+		
 		private void MainForm_FormClosing(object sender, FormClosingEventArgs e) {
 			switch (e.CloseReason) {
 				case CloseReason.UserClosing:
@@ -183,8 +248,6 @@ namespace Yusen.GExplorer {
 			}
 		}
 		private void MainForm_FormClosed(object sender, FormClosedEventArgs e) {
-			UserCommandsManager.Instance.UserCommandsChanged -= new EventHandler(UserCommandsManager_UserCommandsChanged);
-			
 			this.tsmiAbortCrawling.PerformClick();
 			
 			this.Enabled = false;
@@ -192,9 +255,6 @@ namespace Yusen.GExplorer {
 			if(BrowserForm.HasInstance) BrowserForm.Instance.Close();
 			
 			Program.SerializeSettings();
-		}
-		private void UserCommandsManager_UserCommandsChanged(object sender, EventArgs e) {
-			this.CreateUserCommandsMenuItems();
 		}
 		private void Program_ProgramSerializationProgress(object sender, ProgramSerializationProgressEventArgs e) {
 			this.tspbCrawl.Maximum = e.Max;
@@ -268,12 +328,6 @@ namespace Yusen.GExplorer {
 		}
 		private void tsmiQuit_Click(object sender, EventArgs e) {
 			this.Close();
-		}
-		private void tsmiGlobalSettingsEditor_Click(object sender, EventArgs e) {
-			GlobalSettingsEditor gse = GlobalSettingsEditor.Instance;
-			gse.Owner = this;
-			gse.Show();
-			gse.Focus();
 		}
 		private void tsmiUserCommandsEditor_Click(object sender, EventArgs e) {
 			UserCommandsEditor uce = UserCommandsEditor.Instance;
@@ -355,9 +409,29 @@ namespace Yusen.GExplorer {
 				MessageBox.Show("ユーザプロファイルの取得に失敗しました．", title, MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
 		}
+		private void tsucmiCommand_UserCommandSelected(object sender, UserCommandSelectedEventArgs e) {
+			e.UserCommand.Execute(new ContentAdapter[] { });
+		}
 		private void tsmiAbortCrawling_Click(object sender, EventArgs e) {
 			this.bwCrawl.CancelAsync();
 		}
+
+		private void tsmiSettingsGlobal_DropDownOpened(object sender, EventArgs e) {
+			this.tspgGlobal.RefreshPropertyGrid();
+		}
+		private void tsmiSettingsMainForm_DropDownOpened(object sender, EventArgs e) {
+			this.tspgMainForm.RefreshPropertyGrid();
+		}
+		private void tsmiSettingsResultView_DropDownOpened(object sender, EventArgs e) {
+			this.tspgResultView.RefreshPropertyGrid();
+		}
+		private void tsmiSettingsPlaylistView_DropDownOpened(object sender, EventArgs e) {
+			this.tspgPlaylistView.RefreshPropertyGrid();
+		}
+		private void tsmiSettingsDetailView_DropDownOpened(object sender, EventArgs e) {
+			this.tspgDetailView.RefreshPropertyGrid();
+		}
+
 
 		private void timerViewDetail_Tick(object sender, EventArgs e) {
 			this.timerViewDetail.Stop();
@@ -404,39 +478,11 @@ namespace Yusen.GExplorer {
 			Cache.Instance.ResultsDictionary[result.Genre] = result;
 			this.ViewCrawlResult(result);
 		}
-	}
-	
-	public class MainFormSettings : FormSettingsBaseSettings {
-		private bool? focusOnResultAfterGenreChanged;
-		private int? listViewWidth;
-		private int? listViewHeight;
-		private GenreListViewSettings genreListViewSettings = new GenreListViewSettings();
-		private PlayListViewSettings playListViewSettings = new PlayListViewSettings();
-		private ContentDetailViewSettings contentDetailViewSettings = new ContentDetailViewSettings();
 
-		public bool? FocusOnResultAfterGenreChanged {
-			get { return this.focusOnResultAfterGenreChanged; }
-			set { this.focusOnResultAfterGenreChanged = value; }
+		#region IHasNewSettings<MainFormSettings> Members
+		public MainForm.MainFormSettings Settings {
+			get { return this.settings; }
 		}
-		public int? ListViewWidth {
-			get { return this.listViewWidth; }
-			set { this.listViewWidth = value; }
-		}
-		public int? ListViewHeight {
-			get { return this.listViewHeight; }
-			set { this.listViewHeight = value; }
-		}
-		public GenreListViewSettings GenreListViewSettings {
-			get { return this.genreListViewSettings; }
-			set { this.genreListViewSettings = value; }
-		}
-		public PlayListViewSettings PlayListViewSettings {
-			get { return this.playListViewSettings; }
-			set { this.playListViewSettings = value; }
-		}
-		public ContentDetailViewSettings ContentDetailViewSettings {
-			get { return this.contentDetailViewSettings; }
-			set { this.contentDetailViewSettings = value; }
-		}
+		#endregion
 	}
 }

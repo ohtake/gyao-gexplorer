@@ -57,15 +57,15 @@
 			this.chkSkipNextTime.CheckState = System.Windows.Forms.CheckState.Checked;
 			this.chkSkipNextTime.Location = new System.Drawing.Point(12, 90);
 			this.chkSkipNextTime.Name = "chkSkipNextTime";
-			this.chkSkipNextTime.Size = new System.Drawing.Size(153, 16);
+			this.chkSkipNextTime.Size = new System.Drawing.Size(169, 16);
 			this.chkSkipNextTime.TabIndex = 2;
-			this.chkSkipNextTime.Text = "次回起動からは表示しない";
+			this.chkSkipNextTime.Text = "次回起動からは表示しない(&D)";
 			this.chkSkipNextTime.UseVisualStyleBackColor = true;
 			// 
 			// btnOK
 			// 
 			this.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-			this.btnOK.Location = new System.Drawing.Point(177, 83);
+			this.btnOK.Location = new System.Drawing.Point(185, 83);
 			this.btnOK.Name = "btnOK";
 			this.btnOK.Size = new System.Drawing.Size(75, 23);
 			this.btnOK.TabIndex = 3;
@@ -86,7 +86,7 @@
 			this.AcceptButton = this.btnOK;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(264, 119);
+			this.ClientSize = new System.Drawing.Size(267, 119);
 			this.Controls.Add(this.label1);
 			this.Controls.Add(this.btnOK);
 			this.Controls.Add(this.chkSkipNextTime);

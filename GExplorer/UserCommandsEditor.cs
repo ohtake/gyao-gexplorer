@@ -4,9 +4,44 @@ using System.Windows.Forms;
 using System.Reflection;
 using System.Drawing;
 using System.ComponentModel;
+using System.Xml.Serialization;
 
 namespace Yusen.GExplorer {
-	sealed partial class UserCommandsEditor : FormSettingsBase, IFormWithSettings<UserCommandsEditorSettings>{
+	public sealed partial class UserCommandsEditor : FormSettingsBase, IFormWithNewSettings<UserCommandsEditor.UserCommandsEditorSettings> {
+		public sealed class UserCommandsEditorSettings : INewSettings<UserCommandsEditorSettings> {
+			private readonly UserCommandsEditor owner;
+
+			public UserCommandsEditorSettings()
+				: this(null) {
+			}
+			internal UserCommandsEditorSettings(UserCommandsEditor owner) {
+				this.owner = owner;
+				this.formSettingsBaseSettings = new FormSettingsBaseSettings(owner);
+			}
+
+			[XmlIgnore]
+			[Browsable(false)]
+			private bool HasOwner {
+				get { return null != this.owner; }
+			}
+
+			[ReadOnly(true)]
+			[Category("位置とサイズ")]
+			[DisplayName("フォームの基本設定")]
+			[Description("フォームの基本的な設定です．")]
+			public FormSettingsBaseSettings FormSettingsBaseSettings {
+				get { return this.formSettingsBaseSettings; }
+				set { this.FormSettingsBaseSettings.ApplySettings(value); }
+			}
+			private FormSettingsBaseSettings formSettingsBaseSettings;
+
+			#region INewSettings<UserCommandsEditorSettings> Members
+			public void ApplySettings(UserCommandsEditorSettings newSettings) {
+				Utility.SubstituteAllPublicProperties(this, newSettings);
+			}
+			#endregion
+		}
+		
 		private static UserCommandsEditor instance = null;
 		public static UserCommandsEditor Instance {
 			get {
@@ -17,18 +52,34 @@ namespace Yusen.GExplorer {
 			}
 		}
 		
-		private Button[] btnsNeedingSelection;
-		
+		private readonly Button[] btnsNeedingSelection;
+		private UserCommandsEditorSettings settings;
+
 		private UserCommandsEditor() {
 			InitializeComponent();
-		}
+			
+			this.btnsNeedingSelection = new Button[]{
+				this.btnUp, this.btnDown, this.btnDelete, this.btnModify,};
 
-		public void FillSettings(UserCommandsEditorSettings settings) {
-			base.FillSettings(settings);
-		}
-
-		public void ApplySettings(UserCommandsEditorSettings settings) {
-			base.ApplySettings(settings);
+			//簡易追加機能のメニューを作成
+			while (this.tscapmiProperty.HasDropDownItems) {
+				ToolStripItem tsi = this.tscapmiProperty.DropDownItems[0];
+				this.tscapmiProperty.DropDownItems.Remove(tsi);
+				this.cmsArgs.Items.Add(tsi);
+			}
+			{//リテラル文字
+				this.cmsArgs.Items.Add(new ToolStripSeparator());
+				ToolStripMenuItem tsmiLiterals = new ToolStripMenuItem("リテラル文字");
+				foreach (string escaped in UserCommand.GetEscapedLiterals()) {
+					ToolStripMenuItem tsmi = new ToolStripMenuItem(UserCommand.UnescapeLiteral(escaped));
+					tsmi.Tag = escaped;
+					tsmi.Click += delegate(object sender2, EventArgs e2) {
+						this.AppendArg((sender2 as ToolStripMenuItem).Tag as string);
+					};
+					tsmiLiterals.DropDownItems.Add(tsmi);
+				}
+				this.cmsArgs.Items.Add(tsmiLiterals);
+			}
 		}
 
 		public string FilenameForSettings {
@@ -57,48 +108,6 @@ namespace Yusen.GExplorer {
 		}
 
 		private void UserCommandsEditor_Load(object sender, EventArgs e) {
-			this.btnsNeedingSelection = new Button[]{
-				this.btnUp, this.btnDown, this.btnDelete, this.btnModify,};
-			
-			//簡易追加機能のメニューを作成
-			Dictionary<string, ToolStripMenuItem> menus = new Dictionary<string, ToolStripMenuItem>();
-			foreach (PropertyInfo pi in typeof(ContentAdapter).GetProperties(BindingFlags.Instance | BindingFlags.GetProperty | BindingFlags.Public)) {
-				//Browsableのもののみ
-				object[] bAttribs = pi.GetCustomAttributes(typeof(BrowsableAttribute), false);
-				if (bAttribs.Length > 0 && !(bAttribs[0] as BrowsableAttribute).Browsable) {
-					continue;
-				}
-				//カテゴリごとにサブメニュー化
-				string category = string.Empty;
-				object[] cAttribs = pi.GetCustomAttributes(typeof(CategoryAttribute), false);
-				if(cAttribs.Length > 0){
-					category = (cAttribs[0] as CategoryAttribute).Category;
-				}
-				if (! menus.ContainsKey(category)) {
-					menus.Add(category, new ToolStripMenuItem(category));
-				}
-				//メニューの作成と追加
-				ToolStripMenuItem mi = new ToolStripMenuItem();
-				mi.Text = pi.Name;
-				mi.Tag = "{" + pi.Name + "}";
-				mi.Click += new EventHandler(this.AppendArgWithMenuItemTagText);
-				menus[category].DropDownItems.Add(mi);
-			}
-			foreach(ToolStripMenuItem tsmi in menus.Values){
-				this.cmsArgs.Items.Add(tsmi);
-			}
-			{//リテラル文字
-				this.cmsArgs.Items.Add(new ToolStripSeparator());
-				ToolStripMenuItem tsmiLiterals = new ToolStripMenuItem("リテラル文字");
-				foreach (string escaped in UserCommand.GetEscapedLiterals()) {
-					ToolStripMenuItem tsmi = new ToolStripMenuItem(UserCommand.UnescapeLiteral(escaped));
-					tsmi.Tag = escaped;
-					tsmi.Click += this.AppendArgWithMenuItemTagText;
-					tsmiLiterals.DropDownItems.Add(tsmi);
-				}
-				this.cmsArgs.Items.Add(tsmiLiterals);
-			}
-			
 			//コマンド
 			UserCommandsManager.Instance.UserCommandsChanged
 				+= new EventHandler(this.UserCommandsManager_UserCommandsChanged);
@@ -107,8 +116,9 @@ namespace Yusen.GExplorer {
 					new EventHandler(this.UserCommandsManager_UserCommandsChanged);
 			};
 			this.UserCommandsManager_UserCommandsChanged(null, EventArgs.Empty);
-			
-			Utility.LoadSettingsAndEnableSaveOnClosed(this);
+
+			this.settings = new UserCommandsEditorSettings(this);
+			Utility.LoadSettingsAndEnableSaveOnClosedNew(this);
 		}
 		private void lboxCommands_SelectedIndexChanged(object sender, EventArgs e) {
 			if(this.lboxCommands.SelectedIndex < 0) {
@@ -189,17 +199,23 @@ namespace Yusen.GExplorer {
 			UserCommandsManager.Instance[this.lboxCommands.SelectedIndex] = uc;
 		}
 
-		void AppendArgWithMenuItemTagText(object sender, EventArgs e) {
-			string tagText = (sender as ToolStripMenuItem).Tag as string;
+		private void tscapmiProperty_PropertySelected(object sender, CAPropertySelectedEventArgs e) {
+			this.AppendArg("{" + e.PropertyInfo.Name + "}");
+		}
+		
+		private void AppendArg(string arg) {
 			string beforeCarret = this.txtArg.Text.Substring(0, this.txtArg.SelectionStart);
 			string afterCarret = this.txtArg.Text.Substring(this.txtArg.SelectionStart + this.txtArg.SelectionLength);
 
-			this.txtArg.Text = beforeCarret + tagText + afterCarret;
+			this.txtArg.Text = beforeCarret + arg + afterCarret;
 			this.txtArg.SelectionLength = 0;
-			this.txtArg.SelectionStart = beforeCarret.Length + tagText.Length;
+			this.txtArg.SelectionStart = beforeCarret.Length + arg.Length;
 		}
-	}
-	
-	public class UserCommandsEditorSettings : FormSettingsBaseSettings{
+
+		#region IHasNewSettings<UserCommandsEditorSettings> Members
+		public UserCommandsEditor.UserCommandsEditorSettings Settings {
+			get { return this.settings; }
+		}
+		#endregion
 	}
 }

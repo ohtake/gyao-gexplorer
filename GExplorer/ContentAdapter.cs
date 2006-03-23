@@ -4,11 +4,11 @@ using System.ComponentModel;
 using System.Text;
 using System.Xml.Serialization;
 using Yusen.GCrawler;
-using Clipboard=System.Windows.Forms.Clipboard;
+using System.Reflection;
 
 namespace Yusen.GExplorer {
 	public class ContentAdapter : IEquatable<ContentAdapter>{
-		internal static void CopyNames(IEnumerable<ContentAdapter> conts) {
+		internal static string GetNames(IEnumerable<ContentAdapter> conts) {
 			StringBuilder sb = new StringBuilder();
 			foreach (ContentAdapter cont in conts) {
 				if (sb.Length > 0) {
@@ -16,11 +16,9 @@ namespace Yusen.GExplorer {
 				}
 				sb.Append(cont.DisplayName);
 			}
-			if (sb.Length > 0) {
-				Clipboard.SetText(sb.ToString());
-			}
+			return sb.ToString();
 		}
-		internal static void CopyUris(IEnumerable<ContentAdapter> conts) {
+		internal static string GetUris(IEnumerable<ContentAdapter> conts) {
 			StringBuilder sb = new StringBuilder();
 			foreach (ContentAdapter cont in conts) {
 				if (sb.Length > 0) {
@@ -28,15 +26,7 @@ namespace Yusen.GExplorer {
 				}
 				sb.Append(cont.DetailPageUri.AbsoluteUri);
 			}
-			if (sb.Length > 0) {
-				Clipboard.SetText(sb.ToString());
-			}
-		}
-		internal static void CopyNamesAndUris(IEnumerable<ContentAdapter> conts) {
-			string text = ContentAdapter.GetNamesAndUris(conts);
-			if (!string.IsNullOrEmpty(text)) {
-				Clipboard.SetText(text);
-			}
+			return sb.ToString();
 		}
 		internal static string GetNamesAndUris(IEnumerable<ContentAdapter> conts) {
 			StringBuilder sb = new StringBuilder();
@@ -47,6 +37,16 @@ namespace Yusen.GExplorer {
 				sb.Append(cont.DisplayName);
 				sb.Append(Environment.NewLine);
 				sb.Append(cont.DetailPageUri.AbsoluteUri);
+			}
+			return sb.ToString();
+		}
+		internal static string GetPropertyValueLines(IEnumerable<ContentAdapter> conts, PropertyInfo pi) {
+			StringBuilder sb = new StringBuilder();
+			foreach (ContentAdapter cont in conts) {
+				if (sb.Length > 0) {
+					sb.Append(Environment.NewLine);
+				}
+				sb.Append(pi.GetValue(cont, null).ToString());
 			}
 			return sb.ToString();
 		}
@@ -287,7 +287,7 @@ namespace Yusen.GExplorer {
 		}
 	}
 
-	class ContentSelectionChangedEventArgs : EventArgs {
+	public sealed class ContentSelectionChangedEventArgs : EventArgs {
 		private readonly ContentAdapter content;
 		private readonly bool isSelected;
 		public ContentSelectionChangedEventArgs(ContentAdapter content, bool isSelected) {

@@ -5,7 +5,7 @@ using System.Drawing;
 using System.Windows.Forms;
 
 namespace Yusen.GExplorer {
-	partial class FormBase : Form {
+	public partial class FormBase : Form {
 		private static Icon customIcon = null;
 		public static Icon CustomIcon {
 			set { FormBase.customIcon = value; }

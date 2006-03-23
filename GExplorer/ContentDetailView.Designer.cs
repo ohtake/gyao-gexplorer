@@ -37,12 +37,8 @@
 			this.tsmiTestLoad = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiTestLoadAsync = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiTestCancelAsync = new System.Windows.Forms.ToolStripMenuItem();
-			this.tssSettings = new System.Windows.Forms.ToolStripSeparator();
-			this.tsmiSettings = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiImageSize = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiSizeMode = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
-			this.tsmiSyncronizeToCurrentContent = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
+			this.tsmiTestNewPictureBox = new System.Windows.Forms.ToolStripMenuItem();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabpSummary2 = new System.Windows.Forms.TabPage();
 			this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
@@ -61,8 +57,6 @@
 			this.txtDeadline = new System.Windows.Forms.TextBox();
 			this.tabpDetail = new System.Windows.Forms.TabPage();
 			this.propgDetail = new System.Windows.Forms.PropertyGrid();
-			this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
-			this.tsmiTestNewPictureBox = new System.Windows.Forms.ToolStripMenuItem();
 			this.splitContainer1.Panel1.SuspendLayout();
 			this.splitContainer1.Panel2.SuspendLayout();
 			this.splitContainer1.SuspendLayout();
@@ -114,11 +108,9 @@
             this.toolStripSeparator2,
             this.tsmiCopyImage,
             this.toolStripMenuItem2,
-            this.tsmiTest,
-            this.tssSettings,
-            this.tsmiSettings});
+            this.tsmiTest});
 			this.cmsImage.Name = "cmsImage";
-			this.cmsImage.Size = new System.Drawing.Size(249, 176);
+			this.cmsImage.Size = new System.Drawing.Size(249, 148);
 			this.cmsImage.Opening += new System.ComponentModel.CancelEventHandler(this.cmsImage_Opening);
 			// 
 			// tsmiCopyImageUri
@@ -174,65 +166,35 @@
 			// tsmiTestLoad
 			// 
 			this.tsmiTestLoad.Name = "tsmiTestLoad";
-			this.tsmiTestLoad.Size = new System.Drawing.Size(152, 22);
+			this.tsmiTestLoad.Size = new System.Drawing.Size(150, 22);
 			this.tsmiTestLoad.Text = "&Load";
 			this.tsmiTestLoad.Click += new System.EventHandler(this.tsmiTestLoad_Click);
 			// 
 			// tsmiTestLoadAsync
 			// 
 			this.tsmiTestLoadAsync.Name = "tsmiTestLoadAsync";
-			this.tsmiTestLoadAsync.Size = new System.Drawing.Size(152, 22);
+			this.tsmiTestLoadAsync.Size = new System.Drawing.Size(150, 22);
 			this.tsmiTestLoadAsync.Text = "Load&Async";
 			this.tsmiTestLoadAsync.Click += new System.EventHandler(this.tsmiTestLoadAsync_Click);
 			// 
 			// tsmiTestCancelAsync
 			// 
 			this.tsmiTestCancelAsync.Name = "tsmiTestCancelAsync";
-			this.tsmiTestCancelAsync.Size = new System.Drawing.Size(152, 22);
+			this.tsmiTestCancelAsync.Size = new System.Drawing.Size(150, 22);
 			this.tsmiTestCancelAsync.Text = "&CancelAsync";
 			this.tsmiTestCancelAsync.Click += new System.EventHandler(this.tsmiTestCancelAsync_Click);
 			// 
-			// tssSettings
+			// toolStripMenuItem3
 			// 
-			this.tssSettings.Name = "tssSettings";
-			this.tssSettings.Size = new System.Drawing.Size(245, 6);
+			this.toolStripMenuItem3.Name = "toolStripMenuItem3";
+			this.toolStripMenuItem3.Size = new System.Drawing.Size(147, 6);
 			// 
-			// tsmiSettings
+			// tsmiTestNewPictureBox
 			// 
-			this.tsmiSettings.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiImageSize,
-            this.tsmiSizeMode,
-            this.toolStripMenuItem1,
-            this.tsmiSyncronizeToCurrentContent});
-			this.tsmiSettings.Name = "tsmiSettings";
-			this.tsmiSettings.Size = new System.Drawing.Size(248, 22);
-			this.tsmiSettings.Text = "設定(&S)";
-			// 
-			// tsmiImageSize
-			// 
-			this.tsmiImageSize.Name = "tsmiImageSize";
-			this.tsmiImageSize.Size = new System.Drawing.Size(189, 22);
-			this.tsmiImageSize.Text = "画像の表示とサイズ(&S)";
-			// 
-			// tsmiSizeMode
-			// 
-			this.tsmiSizeMode.Name = "tsmiSizeMode";
-			this.tsmiSizeMode.Size = new System.Drawing.Size(189, 22);
-			this.tsmiSizeMode.Text = "画像のリサイズ方法(&R)";
-			// 
-			// toolStripMenuItem1
-			// 
-			this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-			this.toolStripMenuItem1.Size = new System.Drawing.Size(186, 6);
-			// 
-			// tsmiSyncronizeToCurrentContent
-			// 
-			this.tsmiSyncronizeToCurrentContent.Checked = true;
-			this.tsmiSyncronizeToCurrentContent.CheckOnClick = true;
-			this.tsmiSyncronizeToCurrentContent.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.tsmiSyncronizeToCurrentContent.Name = "tsmiSyncronizeToCurrentContent";
-			this.tsmiSyncronizeToCurrentContent.Size = new System.Drawing.Size(189, 22);
-			this.tsmiSyncronizeToCurrentContent.Text = "再生中の項目に同期(&C)";
+			this.tsmiTestNewPictureBox.Name = "tsmiTestNewPictureBox";
+			this.tsmiTestNewPictureBox.Size = new System.Drawing.Size(150, 22);
+			this.tsmiTestNewPictureBox.Text = "&new PictureBox";
+			this.tsmiTestNewPictureBox.Click += new System.EventHandler(this.tsmiTestNewPictureBox_Click);
 			// 
 			// tabControl1
 			// 
@@ -431,18 +393,6 @@
 			this.propgDetail.Size = new System.Drawing.Size(216, 201);
 			this.propgDetail.TabIndex = 0;
 			// 
-			// toolStripMenuItem3
-			// 
-			this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-			this.toolStripMenuItem3.Size = new System.Drawing.Size(149, 6);
-			// 
-			// tsmiTestNewPictureBox
-			// 
-			this.tsmiTestNewPictureBox.Name = "tsmiTestNewPictureBox";
-			this.tsmiTestNewPictureBox.Size = new System.Drawing.Size(152, 22);
-			this.tsmiTestNewPictureBox.Text = "&new PictureBox";
-			this.tsmiTestNewPictureBox.Click += new System.EventHandler(this.tsmiTestNewPictureBox_Click);
-			// 
 			// ContentDetailView
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -493,12 +443,6 @@
 		private System.Windows.Forms.Label label6;
 		private System.Windows.Forms.TextBox txtDeadline;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
-		private System.Windows.Forms.ToolStripSeparator tssSettings;
-		private System.Windows.Forms.ToolStripMenuItem tsmiSettings;
-		private System.Windows.Forms.ToolStripMenuItem tsmiImageSize;
-		private System.Windows.Forms.ToolStripMenuItem tsmiSizeMode;
-		private System.Windows.Forms.ToolStripMenuItem tsmiSyncronizeToCurrentContent;
-		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
 		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
 		private System.Windows.Forms.ToolStripMenuItem tsmiTest;
 		private System.Windows.Forms.ToolStripMenuItem tsmiTestLoad;

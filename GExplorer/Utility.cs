@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Text.RegularExpressions;
 using System.Text;
+using System.Reflection;
 
 namespace Yusen.GExplorer {
 	static class Utility{
@@ -77,6 +78,8 @@ namespace Yusen.GExplorer {
 				if (!di.Exists) di.Create();
 				tw = new StreamWriter(Path.Combine(Utility.UserSettingsDir, filename));
 				xs.Serialize(tw, settings);
+			}catch(Exception e){
+				Program.DisplayException(string.Format("設定ファイル '{0}' の書き出し", filename), e);
 			} finally {
 				if (null != tw) tw.Close();
 			}
@@ -90,26 +93,31 @@ namespace Yusen.GExplorer {
 				XmlSerializer xs = new XmlSerializer(typeof(T));
 				settings = (T)xs.Deserialize(tr);
 				return true;
-			} catch (FileNotFoundException) {
-				settings = default(T);
-				return false;
+			} catch(FileNotFoundException) {
+			}catch(Exception e){
+				Program.DisplayException(string.Format("設定ファイル '{0}'  の読み取り", filename), e);
 			} finally {
 				if (null != tr) tr.Close();
 			}
+			settings = default(T);
+			return false;
 		}
 		
-		public static void LoadSettingsAndEnableSaveOnClosed<TSettings>(IFormWithSettings<TSettings> form) where TSettings : new(){
+		public static void LoadSettingsAndEnableSaveOnClosedNew<TSettings>(IFormWithNewSettings<TSettings> form) where TSettings : INewSettings<TSettings>, new() {
 			form.FormClosed += delegate {
-				TSettings settings2 = new TSettings();
-				form.FillSettings(settings2);
-				Utility.SerializeSettings(form.FilenameForSettings, settings2);
+				TSettings settingsSave = form.Settings;
+				Utility.SerializeSettings(form.FilenameForSettings, settingsSave);
 			};
-			TSettings settings;
-			if (Utility.TryDeserializeSettings(form.FilenameForSettings, out settings)) {
-				try {
-					form.ApplySettings(settings);
-				} catch {
-				}
+			TSettings settingsLoad;
+			if (!Utility.TryDeserializeSettings(form.FilenameForSettings, out settingsLoad)) {
+				settingsLoad = new TSettings();
+			}
+			form.Settings.ApplySettings(settingsLoad);
+		}
+		public static void SubstituteAllPublicProperties<TNewSettings>(TNewSettings left, TNewSettings right) where TNewSettings : INewSettings<TNewSettings>, new() {
+			Type type = typeof(TNewSettings);
+			foreach (PropertyInfo pi in typeof(TNewSettings).GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.GetProperty | BindingFlags.SetProperty)) {
+				pi.SetValue(left, pi.GetValue(right, null), null);
 			}
 		}
 
@@ -155,12 +163,14 @@ namespace Yusen.GExplorer {
 			}
 		}
 	}
-	
-	interface IHasSettings<TSettings> where TSettings : new() {
-		void FillSettings(TSettings settings);
-		void ApplySettings(TSettings settings);
+
+	interface INewSettings<TNewSettings> where TNewSettings : new() {
+		void ApplySettings(TNewSettings newSettings);
 	}
-	interface IFormWithSettings<TSettings> : IHasSettings<TSettings> where TSettings : new() {
+	interface IHasNewSettings<TNewSettings> where TNewSettings : new() {
+		TNewSettings Settings { get;}
+	}
+	interface IFormWithNewSettings<TNewSettings> : IHasNewSettings<TNewSettings> where TNewSettings : new() {
 		string FilenameForSettings { get;}
 		event FormClosedEventHandler FormClosed;
 	}

@@ -11,6 +11,8 @@
     <AssemblyName>GExplorer</AssemblyName>
     <ApplicationIcon>Icons\GExplorer_16-32-48_XP.ico</ApplicationIcon>
     <IsWebBootstrapper>true</IsWebBootstrapper>
+    <StartupObject>
+    </StartupObject>
     <PublishUrl>http://localhost/GExplorer/</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Web</InstallFrom>
@@ -21,10 +23,8 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationVersion>1.0.0.*</ApplicationVersion>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <StartupObject>
-    </StartupObject>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -112,12 +112,6 @@
     <Compile Include="GenreTabPage.Designer.cs">
       <DependentUpon>GenreTabPage.cs</DependentUpon>
     </Compile>
-    <Compile Include="GlobalSettingsEditor.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="GlobalSettingsEditor.Designer.cs">
-      <DependentUpon>GlobalSettingsEditor.cs</DependentUpon>
-    </Compile>
     <Compile Include="GTimeSpan.cs" />
     <Compile Include="GWebBrowser.cs">
       <SubType>Component</SubType>
@@ -203,9 +197,6 @@
       <DependentUpon>GenreTabPage.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="GlobalSettingsEditor.resx">
-      <DependentUpon>GlobalSettingsEditor.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="GWebBrowser.resx">
       <DependentUpon>GWebBrowser.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -238,6 +229,10 @@
       <DependentUpon>CrawlResultView.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="PropertyGridContainer.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>PropertyGridContainer.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="SplashForm.resx">
       <SubType>Designer</SubType>
       <DependentUpon>SplashForm.cs</DependentUpon>
@@ -267,12 +262,27 @@
     <Compile Include="CrawlResultView.Designer.cs">
       <DependentUpon>CrawlResultView.cs</DependentUpon>
     </Compile>
+    <Compile Include="PropertyGridContainer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PropertyGridContainer.Designer.cs">
+      <DependentUpon>PropertyGridContainer.cs</DependentUpon>
+    </Compile>
     <Compile Include="ScreenSaveListener.cs" />
     <Compile Include="SplashForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="SplashForm.Designer.cs">
       <DependentUpon>SplashForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ToolStripCAPropertyMenuItem.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ToolStripPropertyGrid.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ToolStripUserCommandMenuItem.cs">
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="UserCommand.cs" />
     <Compile Include="UserCommandsEditor.cs">
@@ -303,8 +313,8 @@
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
-      <InProject>False</InProject>
-      <ProductName>.NET Framework 2.0 Beta</ProductName>
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>

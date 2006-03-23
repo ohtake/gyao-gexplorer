@@ -3,9 +3,43 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Forms;
 using System.Reflection;
+using System.Xml.Serialization;
 
 namespace Yusen.GExplorer {
-	sealed partial class NgContentsEditor : FormSettingsBase, IFormWithSettings<NgContentsEditorSettings> {
+	public sealed partial class NgContentsEditor : FormSettingsBase, IFormWithNewSettings<NgContentsEditor.NgContentsEditorSettings> {
+		public sealed class NgContentsEditorSettings : INewSettings<NgContentsEditorSettings>{
+			private readonly NgContentsEditor owner;
+
+			public NgContentsEditorSettings() : this(null) {
+			}
+			internal NgContentsEditorSettings(NgContentsEditor owner) {
+				this.owner = owner;
+				this.formSettingsBaseSettings = new FormSettingsBaseSettings(owner);
+			}
+
+			[XmlIgnore]
+			[Browsable(false)]
+			private bool HasOwner {
+				get { return null != this.owner; }
+			}
+
+			[ReadOnly(true)]
+			[Category("位置とサイズ")]
+			[DisplayName("フォームの基本設定")]
+			[Description("フォームの基本的な設定です．")]
+			public FormSettingsBaseSettings FormSettingsBaseSettings {
+				get { return this.formSettingsBaseSettings; }
+				set { this.FormSettingsBaseSettings.ApplySettings(value); }
+			}
+			private FormSettingsBaseSettings formSettingsBaseSettings;
+
+			#region INewSettings<NgContentsEditorSettings> Members
+			public void ApplySettings(NgContentsEditorSettings newSettings) {
+				Utility.SubstituteAllPublicProperties(this, newSettings);
+			}
+			#endregion
+		}
+
 		private static NgContentsEditor instance = null;
 		public static NgContentsEditor Instance {
 			get {
@@ -17,15 +51,21 @@ namespace Yusen.GExplorer {
 		}
 
 		private volatile NgContent selNg = null;
+		private NgContentsEditorSettings settings;
 
 		private NgContentsEditor() {
 			InitializeComponent();
-		}
-		public void FillSettings(NgContentsEditorSettings settings) {
-			base.FillSettings(settings);
-		}
-		public void ApplySettings(NgContentsEditorSettings settings) {
-			base.ApplySettings(settings);
+			
+			foreach (PropertyInfo pi in typeof(ContentAdapter).GetProperties()) {
+				object[] attribs = pi.GetCustomAttributes(typeof(BrowsableAttribute), false);
+				if (attribs.Length > 0 && !(attribs[0] as BrowsableAttribute).Browsable) {
+					continue;
+				}
+				this.comboProperty.Items.Add(pi.Name);
+			}
+			foreach (TwoStringsPredicateMethod m in Enum.GetValues(typeof(TwoStringsPredicateMethod))) {
+				this.comboMethod.Items.Add(m);
+			}
 		}
 		public string FilenameForSettings {
 			get { return @"NgContentsEditorSettings.xml"; }
@@ -47,18 +87,8 @@ namespace Yusen.GExplorer {
 		}
 		
 		private void NgContentsEditor_Load(object sender, EventArgs e) {
-			Utility.LoadSettingsAndEnableSaveOnClosed(this);
-
-			foreach (PropertyInfo pi in typeof(ContentAdapter).GetProperties()) {
-				object[] attribs = pi.GetCustomAttributes(typeof(BrowsableAttribute), false);
-				if (attribs.Length > 0 && !(attribs[0] as BrowsableAttribute).Browsable) {
-					continue;
-				}
-				this.comboProperty.Items.Add(pi.Name);
-			}
-			foreach (TwoStringsPredicateMethod m in Enum.GetValues(typeof(TwoStringsPredicateMethod))) {
-				this.comboMethod.Items.Add(m);
-			}
+			this.settings = new NgContentsEditorSettings(this);
+			Utility.LoadSettingsAndEnableSaveOnClosedNew(this);
 
 			NgContentsManager.Instance.NgContentsChanged +=
 				new EventHandler(this.NgContentsManager_NgContentsChanged);
@@ -151,8 +181,11 @@ namespace Yusen.GExplorer {
 				this.txtWord.Text = ng.Word;
 			}
 		}
-	}
 
-	public class NgContentsEditorSettings : FormSettingsBaseSettings {
+		#region IHasNewSettings<NgContentsEditorSettings> Members
+		public NgContentsEditor.NgContentsEditorSettings Settings {
+			get { return this.settings; }
+		}
+		#endregion
 	}
 }

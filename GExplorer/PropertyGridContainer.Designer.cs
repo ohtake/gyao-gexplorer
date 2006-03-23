@@ -1,11 +1,11 @@
 ﻿namespace Yusen.GExplorer {
-	partial class GlobalSettingsEditor {
-		/// <summary>
+	partial class PropertyGridContainer {
+		/// <summary> 
 		/// Required designer variable.
 		/// </summary>
 		private System.ComponentModel.IContainer components = null;
 
-		/// <summary>
+		/// <summary> 
 		/// Clean up any resources being used.
 		/// </summary>
 		/// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
@@ -16,10 +16,10 @@
 			base.Dispose(disposing);
 		}
 
-		#region Windows Form Designer generated code
+		#region Component Designer generated code
 
-		/// <summary>
-		/// Required method for Designer support - do not modify
+		/// <summary> 
+		/// Required method for Designer support - do not modify 
 		/// the contents of this method with the code editor.
 		/// </summary>
 		private void InitializeComponent() {
@@ -28,23 +28,19 @@
 			// 
 			// propertyGrid1
 			// 
-			this.propertyGrid1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.propertyGrid1.Location = new System.Drawing.Point(0, 0);
+			this.propertyGrid1.Margin = new System.Windows.Forms.Padding(0);
 			this.propertyGrid1.Name = "propertyGrid1";
-			this.propertyGrid1.Size = new System.Drawing.Size(232, 269);
-			this.propertyGrid1.TabIndex = 1;
+			this.propertyGrid1.Size = new System.Drawing.Size(200, 300);
+			this.propertyGrid1.TabIndex = 0;
 			// 
-			// GlobalSettingsEditor
+			// PropertyGridContainer
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(232, 269);
 			this.Controls.Add(this.propertyGrid1);
-			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
-			this.Name = "GlobalSettingsEditor";
-			this.ShowInTaskbar = false;
-			this.Text = "グローバル設定エディタ";
-			this.Load += new System.EventHandler(this.GlobalSettingsEditor_Load);
+			this.Name = "PropertyGridContainer";
+			this.Size = new System.Drawing.Size(263, 357);
 			this.ResumeLayout(false);
 
 		}
