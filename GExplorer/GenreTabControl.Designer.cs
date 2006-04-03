@@ -27,7 +27,12 @@
 			// 
 			// GenreTabControl
 			// 
+			this.Appearance = System.Windows.Forms.TabAppearance.FlatButtons;
+			this.DrawMode = System.Windows.Forms.TabDrawMode.OwnerDrawFixed;
+			this.HotTrack = true;
+			this.ShowToolTips = true;
 			this.DoubleClick += new System.EventHandler(this.GenreTabControl_DoubleClick);
+			this.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.GenreTabControl_DrawItem);
 			this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.GenreTabControl_MouseClick);
 			this.SelectedIndexChanged += new System.EventHandler(this.GenreTabControl_SelectedIndexChanged);
 			this.ResumeLayout(false);

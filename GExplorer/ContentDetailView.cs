@@ -215,12 +215,18 @@ namespace Yusen.GExplorer {
 		private void ChangeEnabilityOfCmsItems() {
 			bool hasContent = (null != this.Content);
 			bool showImage = (null != this.picboxImage.Image);
+			
 			this.tsmiCopyImageUri.Enabled = hasContent & showImage;
 			this.tsmiCopyNameAndImageUri.Enabled = hasContent & showImage;
 			this.tsmiCopyNameDetailImageUri.Enabled = hasContent  & showImage;
 			this.tsmiCopyImage.Enabled = hasContent & showImage;
+			
+			this.tsucmiCommand.Enabled = hasContent;
 		}
 		private void ContentDetailView_Load(object sender, EventArgs e) {
+			
+			if (base.DesignMode) return;
+
 			PlayList.Instance.CurrentContentChanged += new EventHandler(this.PlayList_CurrentContentChanged);
 			this.Disposed += delegate {
 				PlayList.Instance.CurrentContentChanged -= new EventHandler(this.PlayList_CurrentContentChanged);
@@ -252,6 +258,10 @@ namespace Yusen.GExplorer {
 				Clipboard.SetImage(this.picboxImage.Image);
 			}
 		}
+		private void tsucmiCommand_UserCommandSelected(object sender, UserCommandSelectedEventArgs e) {
+			e.UserCommand.Execute(new ContentAdapter[] { this.contAd });
+		}
+
 		private void cmsImage_Opening(object sender, CancelEventArgs e) {
 			this.ChangeEnabilityOfCmsItems();
 		}
@@ -294,6 +304,7 @@ namespace Yusen.GExplorer {
 			get { return this.settings; }
 		}
 		#endregion
+
 	}
 	
 	public enum ContentImageSize {

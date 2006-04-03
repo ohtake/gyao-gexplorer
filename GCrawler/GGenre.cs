@@ -21,6 +21,7 @@ namespace Yusen.GCrawler {
 				new GGenre200509( 4, "idol", "アイドル・グラビア", Color.FromArgb(0xFF, 0x66, 0xCC)),
 				new GGenre200509VideoBlog(12, "blog", "映像ブログ", Color.FromArgb(0xFF, 0x99, 0x99)),
 				new GGenre200509(24, "shopping", "ショッピング", Color.FromArgb(0xFF, 0x66, 0x00)),
+				new GGenre200509(25, "game", "ゲーム", Color.FromArgb(0x00, 0x99, 0x66)),
 			};
 		}
 		public static IEnumerable<GGenre> AllGenres {

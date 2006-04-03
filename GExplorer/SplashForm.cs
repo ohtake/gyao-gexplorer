@@ -5,7 +5,7 @@ using System.Text;
 using System.Windows.Forms;
 
 namespace Yusen.GExplorer {
-	public partial class SplashForm : Form {
+	sealed partial class SplashForm : Form {
 		private bool endFlag = false;
 
 		public SplashForm() {

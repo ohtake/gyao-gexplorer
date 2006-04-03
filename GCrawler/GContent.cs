@@ -80,21 +80,6 @@ namespace Yusen.GCrawler {
 				+ "&recommend="
 				+ "&contents_id=");
 		}
-		public static Uri CreatePlayListUri(string contId, int userNo, GBitRate bitrate) {
-			return new Uri(
-				"http://www.gyao.jp/sityou/asx.php?"
-				+ "contentsId=" + contId
-				+ "&userNo=" + userNo
-				+ "&rateId=" + "bit" + ((int)bitrate).ToString("0000000"));
-		}
-		public static Uri CreatePlayListUri(string contId, int userNo, GBitRate bitrate, int chapterNo) {
-			return new Uri(
-				"http://www.gyao.jp/sityou/asx.php?"
-				+ "contentsId=" + contId
-				+ "&userNo=" + userNo
-				+ "&rateId=" + "bit" + ((int)bitrate).ToString("0000000")
-				+ "&chapterNo=" + chapterNo.ToString());
-		}
 		public static Uri CreateRecommendPageUri(string contId, GBitRate bitrate) {
 			return new Uri(
 				"http://www.gyao.jp/sityou/catedetail/?"
@@ -105,6 +90,32 @@ namespace Yusen.GCrawler {
 				+ "&recommend=1"
 				+ "&contents_id=" + contId);
 		}
+		public static Uri CreatePlaylistUri(string contId, int userNo, GBitRate bitrate) {
+			return new Uri(
+				"http://www.gyao.jp/sityou/asx.php?"
+				+ "contentsId=" + contId
+				+ "&userNo=" + userNo
+				+ "&rateId=" + "bit" + ((int)bitrate).ToString("0000000"));
+		}
+		public static Uri CreatePlaylistUri(string contId, int userNo, GBitRate bitrate, int chapterNo) {
+			return new Uri(
+				"http://www.gyao.jp/sityou/asx.php?"
+				+ "contentsId=" + contId
+				+ "&userNo=" + userNo
+				+ "&rateId=" + "bit" + ((int)bitrate).ToString("0000000")
+				+ "&chapterNo=" + chapterNo.ToString());
+		}
+#if CLIP_RESUME
+		public static Uri CreatePlaylistUri(string contId, int userNo, GBitRate bitrate, ClipResumeInfo resumeInfo) {
+			return new Uri(
+				"http://www.gyao.jp/sityou/asx.php?"
+				+ "contentsId=" + contId
+				+ "&userNo=" + userNo
+				+ "&rateId=" + "bit" + ((int)bitrate).ToString("0000000")
+				+ "&clipBegin=" + resumeInfo.ClipBegin.ToString()
+				+ "&clipNo=" + resumeInfo.ClipNo.ToString());
+		}
+#endif
 		public static GContent DoDownload(string contId) {
 			Uri uri = GContent.CreateDetailPageUri(contId);
 			TextReader reader = null;

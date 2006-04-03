@@ -8,8 +8,7 @@ using System.Xml.Serialization;
 
 namespace Yusen.GExplorer {
 	public partial class FormSettingsBase : FormBase{
-		public FormSettingsBase()
-			: base() {
+		public FormSettingsBase() : base() {
 			InitializeComponent();
 		}
 	}
@@ -51,7 +50,7 @@ namespace Yusen.GExplorer {
 					this.owner.StartPosition = FormStartPosition.Manual;
 					this.owner.Location = value.Value.Location;
 					this.owner.Size = value.Value.Size;
-					this.owner.WindowState = FormWindowState.Normal;
+					//this.owner.WindowState = FormWindowState.Normal;
 				} else {
 					this.restoreBounds = value;
 				}
@@ -80,10 +79,9 @@ namespace Yusen.GExplorer {
 
 		#region INewSettings<FormSettingsBaseSettings> Members
 		public void ApplySettings(FormSettingsBaseSettings newSettings) {
-			//this.owner.Visible = false;
+			//順番指定で
 			this.RestoreBounds = newSettings.RestoreBounds;
 			this.IsMaximized = newSettings.IsMaximized;
-			//this.owner.Visible = true;
 		}
 		#endregion
 	}

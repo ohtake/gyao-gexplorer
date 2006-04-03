@@ -24,8 +24,8 @@ namespace Yusen.GExplorer {
 		public event EventHandler<CAPropertySelectedEventArgs> PropertySelected;
 
 		public ToolStripCAPropertyMenuItem() : base("ToolStripCAPropertyMenuItem") {
+			if (base.DesignMode) return;
 			this.CreateSubMenus();
-			
 		}
 		
 		private void CreateSubMenus() {
@@ -60,16 +60,6 @@ namespace Yusen.GExplorer {
 			}
 			
 			base.DropDownItems.AddRange(new List<ToolStripItem>(categories.Values).ToArray());
-		}
-	}
-	
-	public sealed class CAPropertySelectedEventArgs : EventArgs {
-		private PropertyInfo pi;
-		public CAPropertySelectedEventArgs(PropertyInfo pi) {
-			this.pi = pi;
-		}
-		public PropertyInfo PropertyInfo {
-			get { return this.pi; }
 		}
 	}
 }

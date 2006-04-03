@@ -73,7 +73,6 @@
 			this.tsddbNormalPages = new System.Windows.Forms.ToolStripDropDownButton();
 			this.tsddbExceptions = new System.Windows.Forms.ToolStripDropDownButton();
 			this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
-			this.tslGenre = new System.Windows.Forms.ToolStripLabel();
 			this.tslNumber = new System.Windows.Forms.ToolStripLabel();
 			this.tslTime = new System.Windows.Forms.ToolStripLabel();
 			this.tsFilter = new System.Windows.Forms.ToolStrip();
@@ -410,7 +409,6 @@
             this.tsddbNormalPages,
             this.tsddbExceptions,
             this.toolStripSeparator11,
-            this.tslGenre,
             this.tslNumber,
             this.tslTime});
 			this.tsMain.Location = new System.Drawing.Point(0, 0);
@@ -507,12 +505,6 @@
 			// 
 			this.toolStripSeparator11.Name = "toolStripSeparator11";
 			this.toolStripSeparator11.Size = new System.Drawing.Size(6, 25);
-			// 
-			// tslGenre
-			// 
-			this.tslGenre.Name = "tslGenre";
-			this.tslGenre.Size = new System.Drawing.Size(33, 22);
-			this.tslGenre.Text = "genre";
 			// 
 			// tslNumber
 			// 
@@ -716,7 +708,6 @@
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
 		private System.Windows.Forms.ToolStripMenuItem tsmiPlay;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
-		private System.Windows.Forms.ToolStripLabel tslGenre;
 		private System.Windows.Forms.ToolStrip tsFilter;
 		private System.Windows.Forms.ToolStripTextBox tstbFilter;
 		private System.Windows.Forms.ToolStripButton tsbShowFilter;

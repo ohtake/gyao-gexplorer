@@ -6,7 +6,7 @@ using System.Drawing;
 using GGenre = Yusen.GCrawler.GGenre;
 
 namespace Yusen.GExplorer {
-	partial class GenreTabPage : TabPage {
+	public sealed partial class GenreTabPage : TabPage {
 		public event EventHandler CrawlRequested;
 		public event EventHandler ResultRemoved;
 		private GGenre genre = null;
@@ -44,10 +44,13 @@ namespace Yusen.GExplorer {
 				}
 			};
 		}
-		public GenreTabPage(GGenre genre) : this() {
+		
+		public GenreTabPage(GGenre genre) : this(genre, genre.GenreName, string.Empty) {
+		}
+		public GenreTabPage(GGenre genre, string displayText, string tooltipText) : this() {
 			this.genre = genre;
-			base.Text = genre.GenreName;
-			//base.ToolTipText = genre.GenreName + Environment.NewLine + genre.TopPageUri.AbsoluteUri;
+			base.Text = displayText;
+			base.ToolTipText = tooltipText;
 		}
 		
 		public GGenre Genre {

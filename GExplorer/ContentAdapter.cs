@@ -71,6 +71,14 @@ namespace Yusen.GExplorer {
 		private string comment = string.Empty;
 		private string displayName = null;
 		private string attributes = null;
+		
+#if CLIP_RESUME
+		private ClipResumeInfo resumeInfo;
+		public ClipResumeInfo ResumeInfo {
+			get { return this.resumeInfo; }
+			set { this.resumeInfo = value; }
+		}
+#endif
 
 		public ContentAdapter() {
 		}
@@ -228,7 +236,7 @@ namespace Yusen.GExplorer {
 		[Description("プレイリストのURI．(グローバル設定のビットレートの影響を受ける．ユーザIDを含む．)")]
 		public Uri PlayListUri {
 			get {
-				return GContent.CreatePlayListUri(this.ContentId, GlobalSettings.Instance.UserNo, GlobalSettings.Instance.BitRate);
+				return GContent.CreatePlaylistUri(this.ContentId, GlobalSettings.Instance.UserNo, GlobalSettings.Instance.BitRate);
 			}
 		}
 		[XmlIgnore]
@@ -251,10 +259,19 @@ namespace Yusen.GExplorer {
 				return GContent.CreateRecommendPageUri(this.ContentId, GlobalSettings.Instance.BitRate);
 			}
 		}
+#if CLIP_RESUME
+		[XmlIgnore]
+		[Category("URI")]
+		[Description("中断位置を保持したプレイリストのURI． (ResumeInfo プロパティの影響を受ける．)")]
+		public Uri ResumedPlaylistUri {
+			get {
+				return GContent.CreatePlaylistUri(this.ContentId, GlobalSettings.Instance.UserNo, GlobalSettings.Instance.BitRate, this.ResumeInfo);
+			}
+		}
+#endif
 		
-		
-		public Uri ChapterPlayListUriOf(int chapterNo) {
-			return GContent.CreatePlayListUri(this.ContentId, GlobalSettings.Instance.UserNo, GlobalSettings.Instance.BitRate, chapterNo);
+		public Uri ChapterPlaylistUriOf(int chapterNo) {
+			return GContent.CreatePlaylistUri(this.ContentId, GlobalSettings.Instance.UserNo, GlobalSettings.Instance.BitRate, chapterNo);
 		}
 		public bool TryResetDeadline() {
 			if (Cache.Instance.DeadlineTableReadOnly.TryGetDeadline(this.ContentId, out this.deadline)) {
@@ -301,4 +318,15 @@ namespace Yusen.GExplorer {
 			get { return this.isSelected; }
 		}
 	}
+
+	public sealed class CAPropertySelectedEventArgs : EventArgs {
+		private PropertyInfo pi;
+		public CAPropertySelectedEventArgs(PropertyInfo pi) {
+			this.pi = pi;
+		}
+		public PropertyInfo PropertyInfo {
+			get { return this.pi; }
+		}
+	}
+
 }

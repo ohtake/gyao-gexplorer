@@ -264,6 +264,7 @@ namespace Yusen.GExplorer {
 			[Category("表示")]
 			[DisplayName("新着の色")]
 			[Description("新着コンテンツの色を指定します．")]
+			[DefaultValue(typeof(Color), "Red")]
 			public Color NewColor {
 				get {
 					if (this.HasOwner) return this.owner.NewColor;
@@ -385,11 +386,13 @@ namespace Yusen.GExplorer {
 				};
 				this.tsddbFilterTarget.DropDownItems.Add(tsmi);
 			}
-
+			
 			this.settings = new CrawlResultViewSettings(this);
 		}
 		
 		private void CrawlResultView_Load(object sender, EventArgs e) {
+			if (base.DesignMode) return;
+			
 			//Migemo初期化
 			try {
 				this.migemo = new Migemo(GlobalSettings.Instance.MigemoDictionaryFilename);
@@ -588,7 +591,6 @@ namespace Yusen.GExplorer {
 			this.listView1.Groups.Clear();
 			this.listView1.ListViewItemSorter = null;
 			
-			this.tslGenre.Text = string.Empty;
 			this.tslNumber.Text = string.Empty;
 			this.tslTime.Text = string.Empty;
 		}
@@ -601,9 +603,6 @@ namespace Yusen.GExplorer {
 					this.allClvis.Add(new ContentListViewItem(ca, group));
 				}
 			}
-			
-			this.tslGenre.ForeColor = this.Genre.GenreColor;
-			this.tslGenre.Text = "[" + this.Genre.GenreName + "]";
 		}
 		private void RefreshAllNgCached() {
 			foreach(ContentListViewItem clvi in this.allClvis) {

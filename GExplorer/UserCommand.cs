@@ -135,7 +135,7 @@ namespace Yusen.GExplorer {
 		}
 	}
 	
-	class UserCommandsManager : ItemsManagerBase<UserCommand>{
+	sealed class UserCommandsManager : ItemsManagerBase<UserCommand>{
 		private static UserCommandsManager instance = new UserCommandsManager();
 		public static UserCommandsManager Instance {
 			get {
@@ -162,4 +162,15 @@ namespace Yusen.GExplorer {
 			get { return "UserCommands.xml"; }
 		}
 	}
+
+	public sealed class UserCommandSelectedEventArgs : EventArgs {
+		private UserCommand command;
+		public UserCommandSelectedEventArgs(UserCommand command) {
+			this.command = command;
+		}
+		public UserCommand UserCommand {
+			get { return this.command; }
+		}
+	}
+
 }

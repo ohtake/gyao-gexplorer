@@ -54,6 +54,8 @@
 			this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiSettingsMainForm = new System.Windows.Forms.ToolStripMenuItem();
 			this.tspgMainForm = new Yusen.GExplorer.ToolStripPropertyGrid();
+			this.tsmiSettingsGenreTab = new System.Windows.Forms.ToolStripMenuItem();
+			this.tspgGenreTab = new Yusen.GExplorer.ToolStripPropertyGrid();
 			this.tsmiSettingsResultView = new System.Windows.Forms.ToolStripMenuItem();
 			this.tspgResultView = new Yusen.GExplorer.ToolStripPropertyGrid();
 			this.tsmiSettingsPlaylistView = new System.Windows.Forms.ToolStripMenuItem();
@@ -105,6 +107,7 @@
 			this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tspbCrawl,
             this.tsslCrawl});
+			this.statusStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
 			this.statusStrip1.Location = new System.Drawing.Point(0, 0);
 			this.statusStrip1.Name = "statusStrip1";
 			this.statusStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.ManagerRenderMode;
@@ -120,7 +123,7 @@
 			// tsslCrawl
 			// 
 			this.tsslCrawl.Name = "tsslCrawl";
-			this.tsslCrawl.Size = new System.Drawing.Size(53, 17);
+			this.tsslCrawl.Size = new System.Drawing.Size(53, 12);
 			this.tsslCrawl.Text = "tsslCrawl";
 			// 
 			// toolStripContainer1
@@ -163,22 +166,25 @@
 			// 
 			// genreTabControl1
 			// 
+			this.genreTabControl1.Appearance = System.Windows.Forms.TabAppearance.FlatButtons;
 			this.genreTabControl1.Controls.Add(this.tabPage1);
 			this.genreTabControl1.Controls.Add(this.tabPage2);
 			this.genreTabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.genreTabControl1.DrawMode = System.Windows.Forms.TabDrawMode.OwnerDrawFixed;
 			this.genreTabControl1.HotTrack = true;
 			this.genreTabControl1.Location = new System.Drawing.Point(0, 0);
 			this.genreTabControl1.Margin = new System.Windows.Forms.Padding(0);
 			this.genreTabControl1.Name = "genreTabControl1";
 			this.genreTabControl1.SelectedGenre = null;
 			this.genreTabControl1.SelectedIndex = 0;
+			this.genreTabControl1.ShowToolTips = true;
 			this.genreTabControl1.Size = new System.Drawing.Size(872, 20);
 			this.genreTabControl1.TabIndex = 0;
 			this.genreTabControl1.GenreSelected += new System.EventHandler<Yusen.GExplorer.GenreSelectedEventArgs>(this.genreTabControl1_GenreSelected);
 			// 
 			// tabPage1
 			// 
-			this.tabPage1.Location = new System.Drawing.Point(4, 21);
+			this.tabPage1.Location = new System.Drawing.Point(4, 24);
 			this.tabPage1.Name = "tabPage1";
 			this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
 			this.tabPage1.Size = new System.Drawing.Size(864, 0);
@@ -187,10 +193,10 @@
 			// 
 			// tabPage2
 			// 
-			this.tabPage2.Location = new System.Drawing.Point(4, 21);
+			this.tabPage2.Location = new System.Drawing.Point(4, 24);
 			this.tabPage2.Name = "tabPage2";
 			this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage2.Size = new System.Drawing.Size(864, -5);
+			this.tabPage2.Size = new System.Drawing.Size(864, -8);
 			this.tabPage2.TabIndex = 1;
 			this.tabPage2.Text = "tabPage2";
 			// 
@@ -341,6 +347,7 @@
             this.tsmiNgContentsEditor,
             this.toolStripMenuItem3,
             this.tsmiSettingsMainForm,
+            this.tsmiSettingsGenreTab,
             this.tsmiSettingsResultView,
             this.tsmiSettingsPlaylistView,
             this.tsmiSettingsDetailView});
@@ -403,6 +410,21 @@
 			this.tspgMainForm.SelectedObject = null;
 			this.tspgMainForm.Size = new System.Drawing.Size(200, 300);
 			this.tspgMainForm.Text = "toolStripPropertyGrid1";
+			// 
+			// tsmiSettingsGenreTab
+			// 
+			this.tsmiSettingsGenreTab.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tspgGenreTab});
+			this.tsmiSettingsGenreTab.Name = "tsmiSettingsGenreTab";
+			this.tsmiSettingsGenreTab.Size = new System.Drawing.Size(180, 22);
+			this.tsmiSettingsGenreTab.Text = "ジャンルタブ(&T)";
+			// 
+			// tspgGenreTab
+			// 
+			this.tspgGenreTab.Name = "tspgGenreTab";
+			this.tspgGenreTab.SelectedObject = null;
+			this.tspgGenreTab.Size = new System.Drawing.Size(200, 300);
+			this.tspgGenreTab.Text = "toolStripPropertyGrid1";
 			// 
 			// tsmiSettingsResultView
 			// 
@@ -579,7 +601,7 @@
 			this.tsucmiCommand.Enabled = false;
 			this.tsucmiCommand.Name = "tsucmiCommand";
 			this.tsucmiCommand.Size = new System.Drawing.Size(269, 22);
-			this.tsucmiCommand.Text = "外部コマンド(&C)";
+			this.tsucmiCommand.Text = "引数置換なしの外部コマンド(&C)";
 			this.tsucmiCommand.UserCommandSelected += new System.EventHandler<Yusen.GExplorer.UserCommandSelectedEventArgs>(this.tsucmiCommand_UserCommandSelected);
 			// 
 			// tsmiAbortCrawling
@@ -716,6 +738,8 @@
 		private ToolStripPropertyGrid tspgDetailView;
 		private ToolStripUserCommandMenuItem tsucmiCommand;
 		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
+		private System.Windows.Forms.ToolStripMenuItem tsmiSettingsGenreTab;
+		private ToolStripPropertyGrid tspgGenreTab;
 
 
 	}

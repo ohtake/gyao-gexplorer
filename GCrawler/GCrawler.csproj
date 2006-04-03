@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.50215</ProductVersion>
+    <ProductVersion>8.0.50727</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{2169861A-96F9-42F6-8CE9-7819F62BED6E}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -34,6 +34,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClipResumeInfo.cs" />
     <Compile Include="ContentCacheController.cs" />
     <Compile Include="DeadlineTable.cs" />
     <Compile Include="GBitRate.cs" />

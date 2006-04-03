@@ -141,10 +141,11 @@ namespace Yusen.GExplorer {
 			
 			this.tslTitle.Font = new Font(this.tslTitle.Font, FontStyle.Bold);
 			this.tsmiPlay.Font = new Font(this.tsmiPlay.Font, FontStyle.Bold);
-
-			this.settings = new PlayListViewSettings();
+			
+			this.settings = new PlayListViewSettings(this);
 		}
 		private void PlayListView_Load(object sender, EventArgs e) {
+			if (base.DesignMode) return;
 			
 			PlayList.Instance.PlayListChanged += new EventHandler(PlayList_PlayListChanged);
 			PlayList.Instance.CurrentContentChanged += new EventHandler(PlayList_CurrentContentChanged);

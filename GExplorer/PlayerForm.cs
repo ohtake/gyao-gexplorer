@@ -250,9 +250,9 @@ namespace Yusen.GExplorer {
 		private const int ZoomMin = 25;
 		private static readonly Size WmpUiSize = new Size(0, 64);
 		private static readonly Size WmpMarginSize = new Size(3, 3);
-		private static readonly Regex regexEndFlag = new Regex(":endFlg=([^:=]*)");
 		private static readonly Regex regexDartTag = new Regex(":dartTag=([^:=]*)");
 		private static readonly Regex regexClipNo = new Regex(":clipNo=([^:]*)");
+		private static readonly Regex regexClipBegin = new Regex(":clipBegin=([^:]*)");
 		
 		private static PlayerForm instance = null;
 		public static PlayerForm Instance {
@@ -276,7 +276,6 @@ namespace Yusen.GExplorer {
 		private ContentAdapter currentContent = null;
 		private int? currentChapter = null;
 		private Dictionary<string, string> currentAttribs = new Dictionary<string, string>();
-		private bool? endFlag = null;
 
 		private ScreenSaveListener ssl;
 
@@ -298,7 +297,7 @@ namespace Yusen.GExplorer {
 			}
 			IWMPMedia media;
 			if(this.CurrentChapter.HasValue) {
-				media = this.wmpMain.newMedia(this.CurrentContent.ChapterPlayListUriOf(this.CurrentChapter.Value).AbsoluteUri);
+				media = this.wmpMain.newMedia(this.CurrentContent.ChapterPlaylistUriOf(this.CurrentChapter.Value).AbsoluteUri);
 			} else {
 				media = this.wmpMain.newMedia(this.CurrentContent.PlayListUri.AbsoluteUri);
 			}
@@ -315,18 +314,23 @@ namespace Yusen.GExplorer {
 				IWMPMedia curMedia = this.wmpMain.currentMedia;
 				string entryUrl;
 				Match matchClipNo = null;
+				Match matchClipBegin = null;
 				if (this.currentAttribs.TryGetValue(PlayerForm.AttribNameEntryUrl, out entryUrl)) {
-					matchClipNo = PlayerForm.regexClipNo.Match(this.currentAttribs[PlayerForm.AttribNameEntryUrl]);
+					matchClipNo = PlayerForm.regexClipNo.Match(entryUrl);
+					matchClipBegin = PlayerForm.regexClipBegin.Match(entryUrl);
 				}
-				
-				this.tsslIdAndClipNo.Text = this.CurrentContent.ContentId + 
-					((null!=matchClipNo && matchClipNo.Success) ?
-						"(clipNo="+matchClipNo.Groups[1].Value+")" : string.Empty);
+
+				this.tsslId.Text = this.CurrentContent.ContentId;
+				this.tsslClipInfo.Text = 
+					((null != matchClipNo && matchClipNo.Success) ?
+						"clipNo="+matchClipNo.Groups[1].Value : string.Empty)
+					+ ((null != matchClipBegin && matchClipBegin.Success) ?
+						"&&clipBegin=" + matchClipBegin.Groups[1].Value : string.Empty);
 				this.tsslChapter.Text = this.CurrentChapter.HasValue ?
-					"チャプター" + this.CurrentChapter.Value.ToString() + "(endFlag=" + this.endFlag.ToString() + ")"
+					"チャプター" + this.CurrentChapter.Value.ToString()
 					: "通常";
-				this.tsslSize.Text = curMedia.imageSourceWidth.ToString() + "x" + curMedia.imageSourceHeight.ToString();
 				this.tsslDuration.Text = new TimeSpan((long)(10000000 * curMedia.duration)).ToString();
+				this.tsslSize.Text = curMedia.imageSourceWidth.ToString() + "x" + curMedia.imageSourceHeight.ToString();
 				this.tsslTitle.Text = curMedia.name;
 			}
 		}
@@ -371,7 +375,6 @@ namespace Yusen.GExplorer {
 			private set {
 				this.currentContent = value;
 				this.currentChapter = this.settings.ChapterModeFromBegining ? 1 : (int?)null;
-				this.endFlag = null;
 				
 				if (null == value) {
 					this.Text = "PlayerForm";
@@ -390,7 +393,6 @@ namespace Yusen.GExplorer {
 			private set {
 				if (! value.Equals(this.currentChapter)) {
 					this.currentChapter = value;
-					this.endFlag = null;
 					this.OpenVideo();
 				}
 			}
@@ -496,7 +498,6 @@ namespace Yusen.GExplorer {
 			}
 		}
 		private void tsmiReload_Click(object sender, EventArgs e) {
-			this.endFlag = null;
 			this.OpenVideo();
 			this.wmpMain.Ctlcontrols.play();
 		}
@@ -606,18 +607,6 @@ namespace Yusen.GExplorer {
 						//音量が変わらないことがあるのでタイマーで後から再代入
 						this.timerAutoVolume.Start();
 					}
-					//endFlag の読み取り
-					Match endFlagMatch = PlayerForm.regexEndFlag.Match(entryUrl);
-					if (endFlagMatch.Success) {
-						switch (endFlagMatch.Groups[1].Value) {
-							case "0":
-								this.endFlag = false;
-								break;
-							case "1":
-								this.endFlag = true;
-								break;
-						}
-					}
 					//バナー表示
 					Match dartTagMatch = PlayerForm.regexDartTag.Match(entryUrl);
 					if (dartTagMatch.Success && !string.IsNullOrEmpty(dartTagMatch.Groups[1].Value)) {
@@ -656,8 +645,8 @@ namespace Yusen.GExplorer {
 						//cm_licenseなら無視
 						break;
 					}
-					if (this.CurrentChapter.HasValue && (!this.endFlag.HasValue || !this.endFlag.Value)) {
-						//チャプターモードでエンドフラグが不明かFalse
+					if (this.CurrentChapter.HasValue) {
+						//チャプターモードなら次のチャプター
 						this.CurrentChapter++;
 					} else {
 						if (this.settings.RemovePlayedContentEnabled) {
@@ -666,7 +655,6 @@ namespace Yusen.GExplorer {
 							this.tsmiNextContent.PerformClick();
 						}
 					}
-					this.endFlag = null;
 					break;
 			}
 		}
@@ -719,5 +707,4 @@ namespace Yusen.GExplorer {
 		Shuffle,
 	}
 #endif
-
 }

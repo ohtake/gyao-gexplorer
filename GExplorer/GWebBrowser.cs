@@ -218,7 +218,7 @@ namespace Yusen.GExplorer {
 			PlayerForm.Play(ca);
 		}
 		private void tsmiContentPlayWmp_Click(object sender, EventArgs e) {
-			Utility.PlayWithWMP(GContent.CreatePlayListUri(this.dicContent[this.clickedContent], GlobalSettings.Instance.UserNo, GlobalSettings.Instance.BitRate));
+			Utility.PlayWithWMP(GContent.CreatePlaylistUri(this.dicContent[this.clickedContent], GlobalSettings.Instance.UserNo, GlobalSettings.Instance.BitRate));
 		}
 		private void tsmiContentPlayBrowser_Click(object sender, EventArgs e) {
 			Utility.Browse(GContent.CreatePlayerPageUri(this.dicContent[this.clickedContent], GlobalSettings.Instance.BitRate));

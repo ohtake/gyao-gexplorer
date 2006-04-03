@@ -158,8 +158,10 @@ namespace Yusen.GExplorer {
 					profile = null;
 					return false;
 				}
-			} catch {
-				throw;
+			} catch(Exception e) {
+				Program.DisplayException("Utility.TryGetUserProfileOf", e);
+				profile = null;
+				return false;
 			}
 		}
 	}

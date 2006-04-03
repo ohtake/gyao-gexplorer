@@ -39,31 +39,31 @@
 			this.tsmiTimeTablesUpdated = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiTimeTablesDeadline = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiTools = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiGotoCampaign = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiExtractImages = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+			this.tsmiGotoCampaign = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiFillCampaignForm = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
 			this.statusStrip1 = new System.Windows.Forms.StatusStrip();
 			this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
 			this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
 			this.gwbMain = new Yusen.GExplorer.GWebBrowser();
-			this.tsAddress = new System.Windows.Forms.ToolStrip();
-			this.tslAddress = new System.Windows.Forms.ToolStripLabel();
-			this.tscbAddress = new System.Windows.Forms.ToolStripComboBox();
-			this.tsbGo = new System.Windows.Forms.ToolStripButton();
 			this.tsStandard = new System.Windows.Forms.ToolStrip();
 			this.tsbBack = new System.Windows.Forms.ToolStripButton();
 			this.tsbForward = new System.Windows.Forms.ToolStripButton();
 			this.tsbStop = new System.Windows.Forms.ToolStripButton();
-			this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
-			this.tsmiFillCampaignForm = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsAddress = new System.Windows.Forms.ToolStrip();
+			this.tslAddress = new System.Windows.Forms.ToolStripLabel();
+			this.tscbAddress = new System.Windows.Forms.ToolStripComboBox();
+			this.tsbGo = new System.Windows.Forms.ToolStripButton();
 			this.menuStrip1.SuspendLayout();
 			this.toolStripContainer1.BottomToolStripPanel.SuspendLayout();
 			this.toolStripContainer1.ContentPanel.SuspendLayout();
 			this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
 			this.toolStripContainer1.SuspendLayout();
 			this.statusStrip1.SuspendLayout();
-			this.tsAddress.SuspendLayout();
 			this.tsStandard.SuspendLayout();
+			this.tsAddress.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// menuStrip1
@@ -79,7 +79,7 @@
 			this.menuStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
-			this.menuStrip1.Size = new System.Drawing.Size(842, 23);
+			this.menuStrip1.Size = new System.Drawing.Size(842, 20);
 			this.menuStrip1.TabIndex = 0;
 			this.menuStrip1.Text = "menuStrip1";
 			// 
@@ -192,6 +192,18 @@
 			this.tsmiTools.Size = new System.Drawing.Size(61, 16);
 			this.tsmiTools.Text = "ツール(&T)";
 			// 
+			// tsmiExtractImages
+			// 
+			this.tsmiExtractImages.Name = "tsmiExtractImages";
+			this.tsmiExtractImages.Size = new System.Drawing.Size(243, 22);
+			this.tsmiExtractImages.Text = "画像の抽出(&I)";
+			this.tsmiExtractImages.Click += new System.EventHandler(this.tsmiExtractImages_Click);
+			// 
+			// toolStripMenuItem1
+			// 
+			this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+			this.toolStripMenuItem1.Size = new System.Drawing.Size(240, 6);
+			// 
 			// tsmiGotoCampaign
 			// 
 			this.tsmiGotoCampaign.Name = "tsmiGotoCampaign";
@@ -199,12 +211,12 @@
 			this.tsmiGotoCampaign.Text = "gotoCampaign関数をInvokeする(&G)";
 			this.tsmiGotoCampaign.Click += new System.EventHandler(this.tsmiGotoCampaign_Click);
 			// 
-			// tsmiExtractImages
+			// tsmiFillCampaignForm
 			// 
-			this.tsmiExtractImages.Name = "tsmiExtractImages";
-			this.tsmiExtractImages.Size = new System.Drawing.Size(243, 22);
-			this.tsmiExtractImages.Text = "画像の抽出(&I)";
-			this.tsmiExtractImages.Click += new System.EventHandler(this.tsmiExtractImages_Click);
+			this.tsmiFillCampaignForm.Name = "tsmiFillCampaignForm";
+			this.tsmiFillCampaignForm.Size = new System.Drawing.Size(243, 22);
+			this.tsmiFillCampaignForm.Text = "応募フォームにフィル(&F)";
+			this.tsmiFillCampaignForm.Click += new System.EventHandler(this.tsmiFillCampaignForm_Click);
 			// 
 			// toolStripContainer1
 			// 
@@ -216,7 +228,7 @@
 			// toolStripContainer1.ContentPanel
 			// 
 			this.toolStripContainer1.ContentPanel.Controls.Add(this.gwbMain);
-			this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(842, 526);
+			this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(842, 529);
 			this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.toolStripContainer1.Location = new System.Drawing.Point(0, 0);
 			this.toolStripContainer1.Name = "toolStripContainer1";
@@ -237,6 +249,7 @@
 			this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripProgressBar1,
             this.toolStripStatusLabel1});
+			this.statusStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
 			this.statusStrip1.Location = new System.Drawing.Point(0, 0);
 			this.statusStrip1.Name = "statusStrip1";
 			this.statusStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.ManagerRenderMode;
@@ -252,7 +265,7 @@
 			// toolStripStatusLabel1
 			// 
 			this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-			this.toolStripStatusLabel1.Size = new System.Drawing.Size(114, 17);
+			this.toolStripStatusLabel1.Size = new System.Drawing.Size(114, 12);
 			this.toolStripStatusLabel1.Text = "toolStripStatusLabel1";
 			// 
 			// gwbMain
@@ -260,7 +273,7 @@
 			this.gwbMain.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.gwbMain.Location = new System.Drawing.Point(0, 0);
 			this.gwbMain.Name = "gwbMain";
-			this.gwbMain.Size = new System.Drawing.Size(842, 526);
+			this.gwbMain.Size = new System.Drawing.Size(842, 529);
 			this.gwbMain.TabIndex = 0;
 			this.gwbMain.StatusTextChanged += new System.EventHandler(this.gwbMain_StatusTextChanged);
 			this.gwbMain.CanGoForwardChanged += new System.EventHandler(this.gwbMain_CanGoForwardChanged);
@@ -271,46 +284,6 @@
 			this.gwbMain.DocumentTitleChanged += new System.EventHandler(this.gwbMain_DocumentTitleChanged);
 			this.gwbMain.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.gwbMain_DocumentCompleted);
 			// 
-			// tsAddress
-			// 
-			this.tsAddress.AllowItemReorder = true;
-			this.tsAddress.Dock = System.Windows.Forms.DockStyle.None;
-			this.tsAddress.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tslAddress,
-            this.tscbAddress,
-            this.tsbGo});
-			this.tsAddress.Location = new System.Drawing.Point(203, 23);
-			this.tsAddress.Name = "tsAddress";
-			this.tsAddress.Size = new System.Drawing.Size(586, 25);
-			this.tsAddress.TabIndex = 1;
-			this.tsAddress.Text = "アドレスバー";
-			// 
-			// tslAddress
-			// 
-			this.tslAddress.Name = "tslAddress";
-			this.tslAddress.Size = new System.Drawing.Size(57, 22);
-			this.tslAddress.Text = "アドレス(&D)";
-			// 
-			// tscbAddress
-			// 
-			this.tscbAddress.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
-			this.tscbAddress.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.AllUrl;
-			this.tscbAddress.Name = "tscbAddress";
-			this.tscbAddress.Size = new System.Drawing.Size(450, 25);
-			this.tscbAddress.Text = "tscbAddress";
-			this.tscbAddress.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tscbAddress_KeyDown);
-			this.tscbAddress.SelectedIndexChanged += new System.EventHandler(this.GoToAddressBarUri);
-			// 
-			// tsbGo
-			// 
-			this.tsbGo.AutoToolTip = false;
-			this.tsbGo.Image = ((System.Drawing.Image)(resources.GetObject("tsbGo.Image")));
-			this.tsbGo.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.tsbGo.Name = "tsbGo";
-			this.tsbGo.Size = new System.Drawing.Size(65, 22);
-			this.tsbGo.Text = "移動(&G)";
-			this.tsbGo.Click += new System.EventHandler(this.GoToAddressBarUri);
-			// 
 			// tsStandard
 			// 
 			this.tsStandard.AllowItemReorder = true;
@@ -319,7 +292,7 @@
             this.tsbBack,
             this.tsbForward,
             this.tsbStop});
-			this.tsStandard.Location = new System.Drawing.Point(3, 23);
+			this.tsStandard.Location = new System.Drawing.Point(3, 20);
 			this.tsStandard.Name = "tsStandard";
 			this.tsStandard.Size = new System.Drawing.Size(200, 25);
 			this.tsStandard.TabIndex = 3;
@@ -358,17 +331,45 @@
 			this.tsbStop.Text = "中止(&S)";
 			this.tsbStop.Click += new System.EventHandler(this.tsbStop_Click);
 			// 
-			// toolStripMenuItem1
+			// tsAddress
 			// 
-			this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-			this.toolStripMenuItem1.Size = new System.Drawing.Size(240, 6);
+			this.tsAddress.AllowItemReorder = true;
+			this.tsAddress.Dock = System.Windows.Forms.DockStyle.None;
+			this.tsAddress.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tslAddress,
+            this.tscbAddress,
+            this.tsbGo});
+			this.tsAddress.Location = new System.Drawing.Point(203, 20);
+			this.tsAddress.Name = "tsAddress";
+			this.tsAddress.Size = new System.Drawing.Size(586, 25);
+			this.tsAddress.TabIndex = 1;
+			this.tsAddress.Text = "アドレスバー";
 			// 
-			// tsmiFillCampaignForm
+			// tslAddress
 			// 
-			this.tsmiFillCampaignForm.Name = "tsmiFillCampaignForm";
-			this.tsmiFillCampaignForm.Size = new System.Drawing.Size(243, 22);
-			this.tsmiFillCampaignForm.Text = "応募フォームにフィル(&F)";
-			this.tsmiFillCampaignForm.Click += new System.EventHandler(this.tsmiFillCampaignForm_Click);
+			this.tslAddress.Name = "tslAddress";
+			this.tslAddress.Size = new System.Drawing.Size(57, 22);
+			this.tslAddress.Text = "アドレス(&D)";
+			// 
+			// tscbAddress
+			// 
+			this.tscbAddress.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
+			this.tscbAddress.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.AllUrl;
+			this.tscbAddress.Name = "tscbAddress";
+			this.tscbAddress.Size = new System.Drawing.Size(450, 25);
+			this.tscbAddress.Text = "tscbAddress";
+			this.tscbAddress.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tscbAddress_KeyDown);
+			this.tscbAddress.SelectedIndexChanged += new System.EventHandler(this.GoToAddressBarUri);
+			// 
+			// tsbGo
+			// 
+			this.tsbGo.AutoToolTip = false;
+			this.tsbGo.Image = ((System.Drawing.Image)(resources.GetObject("tsbGo.Image")));
+			this.tsbGo.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.tsbGo.Name = "tsbGo";
+			this.tsbGo.Size = new System.Drawing.Size(65, 22);
+			this.tsbGo.Text = "移動(&G)";
+			this.tsbGo.Click += new System.EventHandler(this.GoToAddressBarUri);
 			// 
 			// BrowserForm
 			// 
@@ -391,10 +392,10 @@
 			this.toolStripContainer1.PerformLayout();
 			this.statusStrip1.ResumeLayout(false);
 			this.statusStrip1.PerformLayout();
-			this.tsAddress.ResumeLayout(false);
-			this.tsAddress.PerformLayout();
 			this.tsStandard.ResumeLayout(false);
 			this.tsStandard.PerformLayout();
+			this.tsAddress.ResumeLayout(false);
+			this.tsAddress.PerformLayout();
 			this.ResumeLayout(false);
 
 		}

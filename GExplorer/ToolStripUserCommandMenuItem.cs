@@ -19,17 +19,16 @@ namespace Yusen.GExplorer {
 			}
 		}
 
-		[Description("サブメニューの外部コマンドが選択された")]
+		[Description("サブメニューの外部コマンドが選択された．")]
 		public event EventHandler<UserCommandSelectedEventArgs> UserCommandSelected;
 
 		public ToolStripUserCommandMenuItem() : base("ToolStripUserCommandMenuItem"){
+			if (base.DesignMode) return;
+			
 			UserCommandsManager.Instance.UserCommandsChanged += new EventHandler(UserCommandsManager_UserCommandsChanged);
-			this.CreateSubMenuItems();
-			base.EnabledChanged += delegate {//デザイナが勝手に Enable = false にしてしまうことへの対策
-				this.CreateSubMenuItems();
-			};
+			this.RecreateSubMenuItems();
 		}
-		private void CreateSubMenuItems() {
+		private void RecreateSubMenuItems() {
 			List<ToolStripItem> items = new List<ToolStripItem>();
 
 			foreach (UserCommand command in UserCommandsManager.Instance) {
@@ -50,7 +49,7 @@ namespace Yusen.GExplorer {
 			base.Enabled = base.HasDropDownItems;
 		}
 		private void UserCommandsManager_UserCommandsChanged(object sender, EventArgs e) {
-			this.CreateSubMenuItems();
+			this.RecreateSubMenuItems();
 		}
 		
 		protected override void Dispose(bool disposing) {
@@ -58,16 +57,6 @@ namespace Yusen.GExplorer {
 				UserCommandsManager.Instance.UserCommandsChanged -= new EventHandler(UserCommandsManager_UserCommandsChanged);
 			}
 			base.Dispose(disposing);
-		}
-	}
-
-	public sealed class UserCommandSelectedEventArgs : EventArgs {
-		private UserCommand command;
-		public UserCommandSelectedEventArgs(UserCommand command) {
-			this.command = command;
-		}
-		public UserCommand UserCommand {
-			get { return this.command; }
 		}
 	}
 }

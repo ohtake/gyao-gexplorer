@@ -90,8 +90,19 @@ namespace Yusen.GCrawler {
 			return links;
 		}
 
+		protected virtual void Dispose(bool disposing) {
+			if (disposing) {
+				this.wc.Dispose();
+			}
+		}
+
 		public void Dispose() {
-			this.wc.Dispose();
+			this.Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+
+		~HtmlParserRegex() {
+			this.Dispose(false);
 		}
 	}
 }

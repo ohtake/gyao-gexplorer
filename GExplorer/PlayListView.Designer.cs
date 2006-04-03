@@ -173,7 +173,7 @@
             this.toolStripSeparator4,
             this.tsucmiCommand});
 			this.cmsPlayListItem.Name = "cmsPlayListItem";
-			this.cmsPlayListItem.Size = new System.Drawing.Size(212, 292);
+			this.cmsPlayListItem.Size = new System.Drawing.Size(212, 314);
 			this.cmsPlayListItem.Opening += new System.ComponentModel.CancelEventHandler(this.cmsPlayListItem_Opening);
 			// 
 			// tsmiPlay
@@ -316,7 +316,6 @@
 			// 
 			// tsucmiCommand
 			// 
-			this.tsucmiCommand.Enabled = false;
 			this.tsucmiCommand.Name = "tsucmiCommand";
 			this.tsucmiCommand.Size = new System.Drawing.Size(211, 22);
 			this.tsucmiCommand.Text = "外部コマンド(&C)";

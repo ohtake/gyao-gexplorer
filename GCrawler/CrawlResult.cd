@@ -5,7 +5,7 @@
     <Position X="2.5" Y="2.75" Width="1.5" />
     <TypeIdentifier>
       <FileName>GGenre.cs</FileName>
-      <HashCode>AAAASAAAICAAIABEgAAAQAIAAAQEAICgAAAAAAgAAAI=</HashCode>
+      <HashCode>AAAACCAAKCAAIABEgAAAQACAAAQEAICgAAAAAAgAEAI=</HashCode>
     </TypeIdentifier>
     <ShowAsCollectionAssociation>
       <Property Name="AllGenres" />
@@ -15,33 +15,29 @@
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
     <NestedTypes>
-      <Class Name="Yusen.GCrawler.GGenre.GGenre200505" Collapsed="true">
+      <Class Name="Yusen.GCrawler.GGenre.GGenre200509" Collapsed="true">
         <TypeIdentifier>
           <NewMemberFileName>GGenre.cs</NewMemberFileName>
         </TypeIdentifier>
       </Class>
-      <Class Name="Yusen.GCrawler.GGenre.GGenre200505Drama" Collapsed="true">
+      <Class Name="Yusen.GCrawler.GGenre.GGenre200509Drama" Collapsed="true">
         <TypeIdentifier>
           <NewMemberFileName>GGenre.cs</NewMemberFileName>
         </TypeIdentifier>
       </Class>
-      <Class Name="Yusen.GCrawler.GGenre.GGenre200507" Collapsed="true">
-        <TypeIdentifier>
-          <NewMemberFileName>GGenre.cs</NewMemberFileName>
-        </TypeIdentifier>
-      </Class>
-      <Class Name="Yusen.GCrawler.GGenre.GGenre200507VideoBlog" Collapsed="true">
+      <Class Name="Yusen.GCrawler.GGenre.GGenre200509VideoBlog" Collapsed="true">
         <TypeIdentifier>
           <NewMemberFileName>GGenre.cs</NewMemberFileName>
         </TypeIdentifier>
       </Class>
     </NestedTypes>
+    <Lollipop Position="0.2" />
   </Class>
   <Class Name="Yusen.GCrawler.GPackage">
     <Position X="4.5" Y="2.75" Width="1.5" />
     <TypeIdentifier>
       <FileName>GPackage.cs</FileName>
-      <HashCode>gEDAACAMACAEAAAEAAAQABAIAAAQAAIAAAgAAABAgQA=</HashCode>
+      <HashCode>gEDAACEIADAEAAAEAAAQABAAAAAQAAAAAAAAAABAgQA=</HashCode>
     </TypeIdentifier>
     <ShowAsCollectionAssociation>
       <Property Name="Contents" />
@@ -55,7 +51,7 @@
     <Position X="6.5" Y="2.75" Width="1.5" />
     <TypeIdentifier>
       <FileName>GContent.cs</FileName>
-      <HashCode>AJAAAQIMYCQrgMAFgAEAAMAOCDsQAgAgEAiAIABAgAo=</HashCode>
+      <HashCode>ANAAAQMAYEQrgMAFgAEAAMAGCCsQAgAiEACAIgBAgAI=</HashCode>
     </TypeIdentifier>
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
@@ -66,14 +62,14 @@
     <Position X="0.5" Y="1.5" Width="1.5" />
     <TypeIdentifier>
       <FileName>Crawler.cs</FileName>
-      <HashCode>AAABAAAAAABAAIAAAAKAAAACAgQAAgIAAAAABAAAAQQ=</HashCode>
+      <HashCode>AAABAAAAAABAAIEAAAKAAAACAQQAAwAAAAAABAAAAQQ=</HashCode>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="Genre" />
     </ShowAsAssociation>
     <ShowAsCollectionAssociation>
       <Property Name="Packages" />
-      <Property Name="IgnorableErrors" />
+      <Property Name="IgnoredExceptions" />
     </ShowAsCollectionAssociation>
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
@@ -81,21 +77,15 @@
     </Compartments>
     <AssociationLine Name="Packages" Type="Yusen.GCrawler.GPackage" FixedFromPoint="true" FixedToPoint="true">
       <Path>
-        <Point X="2" Y="2.5" />
-        <Point X="5.25" Y="2.5" />
+        <Point X="2" Y="2.42" />
+        <Point X="5.25" Y="2.42" />
         <Point X="5.25" Y="2.75" />
       </Path>
     </AssociationLine>
   </Class>
-  <Class Name="Yusen.GCrawler.IgnorableErrorOccuredEventArgs">
-    <Position X="0.5" Y="4.75" Width="1.5" />
-    <TypeIdentifier>
-      <FileName>Crawler.cs</FileName>
-      <HashCode>AAAAAAAACAAAAAgAAAAAAAAAAAAAAAAAAAAAIAAAACA=</HashCode>
-    </TypeIdentifier>
-    <Compartments>
-      <Compartment Name="Fields" Collapsed="true" />
-      <Compartment Name="Methods" Collapsed="true" />
-    </Compartments>
+  <Class Name="System.Exception" Collapsed="true">
+    <Position X="4" Y="1.5" Width="1.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
   </Class>
 </ClassDiagram>

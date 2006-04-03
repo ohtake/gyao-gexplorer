@@ -57,6 +57,7 @@
 			this.txtDeadline = new System.Windows.Forms.TextBox();
 			this.tabpDetail = new System.Windows.Forms.TabPage();
 			this.propgDetail = new System.Windows.Forms.PropertyGrid();
+			this.tsucmiCommand = new Yusen.GExplorer.ToolStripUserCommandMenuItem();
 			this.splitContainer1.Panel1.SuspendLayout();
 			this.splitContainer1.Panel2.SuspendLayout();
 			this.splitContainer1.SuspendLayout();
@@ -105,19 +106,20 @@
             this.tsmiCopyImageUri,
             this.tsmiCopyNameAndImageUri,
             this.tsmiCopyNameDetailImageUri,
-            this.toolStripSeparator2,
             this.tsmiCopyImage,
+            this.toolStripSeparator2,
+            this.tsucmiCommand,
             this.toolStripMenuItem2,
             this.tsmiTest});
 			this.cmsImage.Name = "cmsImage";
-			this.cmsImage.Size = new System.Drawing.Size(249, 148);
+			this.cmsImage.Size = new System.Drawing.Size(249, 170);
 			this.cmsImage.Opening += new System.ComponentModel.CancelEventHandler(this.cmsImage_Opening);
 			// 
 			// tsmiCopyImageUri
 			// 
 			this.tsmiCopyImageUri.Name = "tsmiCopyImageUri";
 			this.tsmiCopyImageUri.Size = new System.Drawing.Size(248, 22);
-			this.tsmiCopyImageUri.Text = "画像URIをコピー(&C)";
+			this.tsmiCopyImageUri.Text = "画像URIをコピー(&U)";
 			this.tsmiCopyImageUri.Click += new System.EventHandler(this.tsmiCopyImageUri_Click);
 			// 
 			// tsmiCopyNameAndImageUri
@@ -166,33 +168,33 @@
 			// tsmiTestLoad
 			// 
 			this.tsmiTestLoad.Name = "tsmiTestLoad";
-			this.tsmiTestLoad.Size = new System.Drawing.Size(150, 22);
+			this.tsmiTestLoad.Size = new System.Drawing.Size(152, 22);
 			this.tsmiTestLoad.Text = "&Load";
 			this.tsmiTestLoad.Click += new System.EventHandler(this.tsmiTestLoad_Click);
 			// 
 			// tsmiTestLoadAsync
 			// 
 			this.tsmiTestLoadAsync.Name = "tsmiTestLoadAsync";
-			this.tsmiTestLoadAsync.Size = new System.Drawing.Size(150, 22);
+			this.tsmiTestLoadAsync.Size = new System.Drawing.Size(152, 22);
 			this.tsmiTestLoadAsync.Text = "Load&Async";
 			this.tsmiTestLoadAsync.Click += new System.EventHandler(this.tsmiTestLoadAsync_Click);
 			// 
 			// tsmiTestCancelAsync
 			// 
 			this.tsmiTestCancelAsync.Name = "tsmiTestCancelAsync";
-			this.tsmiTestCancelAsync.Size = new System.Drawing.Size(150, 22);
+			this.tsmiTestCancelAsync.Size = new System.Drawing.Size(152, 22);
 			this.tsmiTestCancelAsync.Text = "&CancelAsync";
 			this.tsmiTestCancelAsync.Click += new System.EventHandler(this.tsmiTestCancelAsync_Click);
 			// 
 			// toolStripMenuItem3
 			// 
 			this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-			this.toolStripMenuItem3.Size = new System.Drawing.Size(147, 6);
+			this.toolStripMenuItem3.Size = new System.Drawing.Size(149, 6);
 			// 
 			// tsmiTestNewPictureBox
 			// 
 			this.tsmiTestNewPictureBox.Name = "tsmiTestNewPictureBox";
-			this.tsmiTestNewPictureBox.Size = new System.Drawing.Size(150, 22);
+			this.tsmiTestNewPictureBox.Size = new System.Drawing.Size(152, 22);
 			this.tsmiTestNewPictureBox.Text = "&new PictureBox";
 			this.tsmiTestNewPictureBox.Click += new System.EventHandler(this.tsmiTestNewPictureBox_Click);
 			// 
@@ -393,6 +395,13 @@
 			this.propgDetail.Size = new System.Drawing.Size(216, 201);
 			this.propgDetail.TabIndex = 0;
 			// 
+			// tsucmiCommand
+			// 
+			this.tsucmiCommand.Name = "tsucmiCommand";
+			this.tsucmiCommand.Size = new System.Drawing.Size(248, 22);
+			this.tsucmiCommand.Text = "外部コマンド(&C)";
+			this.tsucmiCommand.UserCommandSelected += new System.EventHandler<Yusen.GExplorer.UserCommandSelectedEventArgs>(this.tsucmiCommand_UserCommandSelected);
+			// 
 			// ContentDetailView
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -450,5 +459,6 @@
 		private System.Windows.Forms.ToolStripMenuItem tsmiTestCancelAsync;
 		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
 		private System.Windows.Forms.ToolStripMenuItem tsmiTestNewPictureBox;
+		private ToolStripUserCommandMenuItem tsucmiCommand;
 	}
 }
