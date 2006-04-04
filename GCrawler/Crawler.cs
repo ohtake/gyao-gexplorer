@@ -137,14 +137,14 @@ namespace Yusen.GCrawler {
 				}
 			}
 			/// <summary>
-			/// パッケージページを読み込んでコンテンツのIDを取得する．
+			/// シリーズ一覧ページを読み込んでコンテンツのIDを取得する．
 			/// </summary>
 			private void FetchPackages() {
 				while(this.waitingPackages.Count > 0){
 					if (this.bw.CancellationPending) return;
 
 					string packId = this.waitingPackages.Dequeue();
-					this.ReportProgressToBackgroundWorker(string.Format("フェーズ 2/4: パッケージページを取得中 ({0}/{1}) {2}",
+					this.ReportProgressToBackgroundWorker(string.Format("フェーズ 2/4: シリーズ一覧ページを取得中 ({0}/{1}) {2}",
 						this.visitedPackages.Count,
 						this.visitedPackages.Count + this.waitingPackages.Count,
 						packId));

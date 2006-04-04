@@ -33,14 +33,8 @@ namespace Yusen.GExplorer {
 			this.tsmiContentPlayWithoutAdding.Click += new EventHandler(tsmiContentPlayWithoutAdding_Click);
 			this.tsmiContentPlayWmp.Click += new EventHandler(tsmiContentPlayWmp_Click);
 			this.tsmiContentPlayBrowser.Click += new EventHandler(tsmiContentPlayBrowser_Click);
+			this.tsucmiContentCommand.UserCommandSelected += new EventHandler<UserCommandSelectedEventArgs>(tsucmiContentCommand_UserCommandSelected);
 			this.tsmiContentCancel.Click += new EventHandler(tsmiContentCancel_Click);
-
-			//外部コマンド
-			this.UserCommandsManager_UserCommandsChanged(null, EventArgs.Empty);
-			UserCommandsManager.Instance.UserCommandsChanged += new EventHandler(this.UserCommandsManager_UserCommandsChanged);
-			this.Disposed += delegate {
-				UserCommandsManager.Instance.UserCommandsChanged -= new EventHandler(this.UserCommandsManager_UserCommandsChanged);
-			};
 		}
 
 		private void GWebBrowser_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e) {
@@ -145,7 +139,7 @@ namespace Yusen.GExplorer {
 						cache.LastWrittenTime.ToString() + Environment.NewLine
 						+ ca.GenreName + Environment.NewLine
 						+ ca.Title + Environment.NewLine
-						+ ca.EpisodeNumber + Environment.NewLine
+						+ ca.SeriesNumber + Environment.NewLine
 						+ ca.SubTitle + Environment.NewLine
 						+ ca.Duration + Environment.NewLine
 						+ ca.Deadline;
@@ -223,28 +217,14 @@ namespace Yusen.GExplorer {
 		private void tsmiContentPlayBrowser_Click(object sender, EventArgs e) {
 			Utility.Browse(GContent.CreatePlayerPageUri(this.dicContent[this.clickedContent], GlobalSettings.Instance.BitRate));
 		}
+		private void tsucmiContentCommand_UserCommandSelected(object sender, UserCommandSelectedEventArgs e) {
+			string contId = this.dicContent[this.clickedContent];
+			GContent cont = GContent.DoDownload(contId);
+			ContentAdapter ca = new ContentAdapter(cont);
+			e.UserCommand.Execute(new ContentAdapter[] { ca });
+		}
 		private void tsmiContentCancel_Click(object sender, EventArgs e) {
 			this.ShowHelpOnHowToCancelMenu();
-		}
-
-		private void UserCommandsManager_UserCommandsChanged(object sender, EventArgs e) {
-			this.tsmiContentCommands.DropDownItems.Clear();
-			List<ToolStripMenuItem> menuItems = new List<ToolStripMenuItem>();
-			foreach (UserCommand uc in UserCommandsManager.Instance) {
-				ToolStripMenuItem mi = new ToolStripMenuItem(
-					uc.Title, null,
-					new EventHandler(delegate(object sender2, EventArgs e2) {
-					string contId = this.dicContent[this.clickedContent];
-					GContent cont = GContent.DoDownload(contId);
-					ContentAdapter ca = new ContentAdapter(cont);
-					((sender2 as ToolStripMenuItem).Tag as UserCommand).Execute(
-						new ContentAdapter[] { ca });
-				}));
-				mi.Tag = uc;
-				menuItems.Add(mi);
-			}
-			this.tsmiContentCommands.DropDownItems.AddRange(menuItems.ToArray());
-			this.tsmiContentCommands.Enabled = this.tsmiContentCommands.HasDropDownItems;
 		}
 
 		public void GotoCampaign() {

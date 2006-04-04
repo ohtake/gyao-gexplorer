@@ -91,10 +91,10 @@ namespace Yusen.GExplorer {
 			StringBuilder sb = new StringBuilder();
 			sb.Append("["+ this.GenreName + "]");
 			sb.Append(" " + this.Title);
-			if (!string.IsNullOrEmpty(this.EpisodeNumber) && !this.EpisodeNumber.Equals(this.Title)) {
-				sb.Append(" / " + this.EpisodeNumber);
+			if (!string.IsNullOrEmpty(this.SeriesNumber) && !this.SeriesNumber.Equals(this.Title)) {
+				sb.Append(" / " + this.SeriesNumber);
 			}
-			if (!string.IsNullOrEmpty(this.SubTitle) && !this.SubTitle.Equals(this.Title) && !this.SubTitle.Equals(this.EpisodeNumber)) {
+			if (!string.IsNullOrEmpty(this.SubTitle) && !this.SubTitle.Equals(this.Title) && !this.SubTitle.Equals(this.SeriesNumber)) {
 				sb.Append(" / " + this.SubTitle);
 			}
 			return sb.ToString();
@@ -152,15 +152,15 @@ namespace Yusen.GExplorer {
 		}
 		[XmlIgnore]
 		[Category("付随情報")]
-		[Description("サブタイトル．")]
-		public string SubTitle {
-			get { return this.innerCont.SubTitle; }
+		[Description("シリーズ番号．")]
+		public string SeriesNumber {
+			get { return this.innerCont.SeriesNumber; }
 		}
 		[XmlIgnore]
 		[Category("付随情報")]
-		[Description("話数．")]
-		public string EpisodeNumber {
-			get { return this.innerCont.EpisodeNumber; }
+		[Description("サブタイトル．")]
+		public string SubTitle {
+			get { return this.innerCont.SubTitle; }
 		}
 		[XmlIgnore]
 		[Category("付随情報")]

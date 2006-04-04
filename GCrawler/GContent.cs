@@ -16,11 +16,10 @@ namespace Yusen.GCrawler {
 		private static readonly Regex regexId = new Regex("cnt[0-9]{7}", RegexOptions.Compiled);
 
 		private static readonly Regex regexBreadGenre = new Regex(@"^<a href=""[^""]*"">(.*)</a> &gt; $", RegexOptions.Compiled);
-		private static readonly Regex regexTitle = new Regex(@"<td class=""title12b"">(.*)</td>", RegexOptions.Compiled);
-		private static readonly Regex regexSubtitle = new Regex(@"<td class=""title12"">(.*)</td><!--サブタイトル-->", RegexOptions.Compiled);
+		private static readonly Regex regexTitle = new Regex(@"^<td width=""459"" class=""title12b"">(.*)</td>$", RegexOptions.Compiled);
+		private static readonly Regex regexSeriesAndSubtitle = new Regex(@"^(?:(.+)<!-- シリーズ番号 -->&nbsp;&nbsp;&nbsp;)?(.*)<!-- サブタイトル -->$", RegexOptions.Compiled);
+		private static readonly Regex regexDuration = new Regex(@"^<b>[^:]*時間[^:]* : (.*)</b>$", RegexOptions.Compiled);
 		private static readonly Regex regexImageDir = new Regex(@"<img src=""(/img/info/[a-z0-9]+/{1,2})cnt[0-9]+_[0-9a-z]*\.(?:jpg|gif)""", RegexOptions.Compiled); // 村上さんはなぜか / が2つ
-		private static readonly Regex regexEpisodeNum = new Regex(@"<td align=""left""><b>(.*)</b></td>", RegexOptions.Compiled);
-		private static readonly Regex regexDuration = new Regex(@"<td align=""right""><b>[^:]*時間[^:]* : (.*)</b></td>", RegexOptions.Compiled);
 		private static readonly Regex regexDescription = new Regex(@"^\s*(?:<td align=""[^""]*"">)?(.+)</td>$", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 		
 		public static void Serialize(string filename, GContent cont){
@@ -123,10 +122,10 @@ namespace Yusen.GCrawler {
 				reader = new StreamReader(new WebClient().OpenRead(uri), Encoding.GetEncoding("Shift_JIS"));
 				string genre;
 				string title;
+				string seriesNum;
 				string subtitle;
-				string imageDir;
-				string episodeNum;
 				string duration;
+				string imageDir;
 				StringBuilder description = new StringBuilder();
 
 				if (!GContent.TryRegexForEachLine(reader, GContent.regexBreadGenre, out genre)) {
@@ -135,22 +134,23 @@ namespace Yusen.GCrawler {
 				if (!GContent.TryRegexForEachLine(reader, GContent.regexTitle, out title)) {
 					throw new ContentDownloadException("タイトルの読み取り失敗 <" + uri.AbsoluteUri + ">");
 				}
-				if (!GContent.TryRegexForEachLine(reader, GContent.regexSubtitle, out subtitle)) {
-					throw new ContentDownloadException("サブタイトルの読み取り失敗 <" + uri.AbsoluteUri + ">");
-				}
-				if (!GContent.TryRegexForEachLine(reader, GContent.regexImageDir, out imageDir)) {
-					throw new ContentDownloadException("画像のあるディレクトリ名の読み取り失敗 <" + uri.AbsoluteUri + ">");
-				}
-				if (!GContent.TryRegexForEachLine(reader, GContent.regexEpisodeNum, out episodeNum)) {
-					throw new ContentDownloadException("話数の読み取り失敗 <" + uri.AbsoluteUri + ">");
+				if (!GContent.TryRegexForEachLine(reader, GContent.regexSeriesAndSubtitle, out seriesNum, out subtitle)) {
+					throw new ContentDownloadException("シリーズ番号とサブタイトルの読み取り失敗 <" + uri.AbsoluteUri + ">");
 				}
 				if (!GContent.TryRegexForEachLine(reader, GContent.regexDuration, out duration)) {
 					throw new ContentDownloadException("時間の読み取り失敗 <" + uri.AbsoluteUri + ">");
 				}
+				if (!GContent.TryRegexForEachLine(reader, GContent.regexImageDir, out imageDir)) {
+					throw new ContentDownloadException("画像のあるディレクトリ名の読み取り失敗 <" + uri.AbsoluteUri + ">");
+				}
+				int emptyLineCount = 0;
 				while (true) {
 					string line = reader.ReadLine();
 					if (string.IsNullOrEmpty(line)) {
-						break;//ファイル末尾か空行で説明文終わりとする
+						emptyLineCount++;
+						if (emptyLineCount >= 2) {
+							break;//2度目の空行で終了
+						}
 					}
 					Match match = GContent.regexDescription.Match(line);
 					if (match.Success) {
@@ -163,7 +163,7 @@ namespace Yusen.GCrawler {
 						}
 					}
 				}
-				return new GContent(contId, genre.Trim(), title.Trim(), subtitle.Trim(), imageDir, episodeNum.Trim(), duration.Trim(), description.ToString().Trim(), false);
+				return new GContent(contId, genre.Trim(), title.Trim(), seriesNum.Trim(), subtitle.Trim(), duration.Trim(), description.ToString().Trim(), imageDir, false);
 			} catch (ContentDownloadException) {
 				throw;
 			} catch(Exception e) {
@@ -184,8 +184,21 @@ namespace Yusen.GCrawler {
 			group1 = null;
 			return false;
 		}
+		private static bool TryRegexForEachLine(TextReader reader, Regex regex, out string group1, out string group2) {
+			string line;
+			while (null != (line = reader.ReadLine())) {
+				Match match = regex.Match(line);
+				if (match.Success) {
+					group1 = HtmlUtility.HtmlToText(match.Groups[1].Value);
+					group2 = HtmlUtility.HtmlToText(match.Groups[2].Value);
+					return true;
+				}
+			}
+			group1 = group2 = null;
+			return false;
+		}
 		public static GContent CreateDummyContent(string contId, GGenre genre, string reason) {
-			return new GContent(contId, "(ダミー)", "(ダミー)", "(ダミー)", "/img/info/"+genre.ImageDirName+"/", "(ダミー)", "(ダミー)", reason, true);
+			return new GContent(contId, "(ダミー)", "(ダミー)", "(ダミー)", "(ダミー)", "(ダミー)", reason, "/img/info/" + genre.ImageDirName + "/", true);
 		}
 
 		private string contentId;
@@ -193,26 +206,43 @@ namespace Yusen.GCrawler {
 		private string title;
 		private string subtitle;
 		private string imageDir;
+		
+		[Obsolete("seriesNumberに名称変更"), OptionalField]
 		private string episodeNumber;
+		[OptionalField]
+		private string seriesNumber;
+		
 		private string duration;
 		private string longDescription;
 		private bool fromCache;
 		[OptionalField]//2.0.1.1で追加
 		private bool isDummy;
-
+		
+		[OnDeserialized]
+		private void EpisodeNumber2SeriesNumber(StreamingContext context) {//2.0.3.3における episodeNumber -> seriesNumber
+			if (null == this.seriesNumber) {
+				if (null == this.episodeNumber) {
+					this.seriesNumber = string.Empty;
+				} else {
+					this.seriesNumber = this.episodeNumber;
+				}
+			} else {
+				this.episodeNumber = null;
+			}
+		}
+		
 		public GContent() {
 			this.fromCache = true;
 		}
-		private GContent(string contentId, string genre, string title, string subtitle, string imageDir, string episodeNumber, string duration, string longDescription, bool isDummy) {
+		private GContent(string contentId, string genre, string title, string seriesNumber, string subtitle, string duration, string longDescription, string imageDir, bool isDummy) {
 			this.contentId = contentId;
 			this.genre = genre;
 			this.title = title;
-			this.contentId = contentId;
 			this.subtitle = subtitle;
-			this.imageDir = imageDir;
-			this.episodeNumber = episodeNumber;
+			this.seriesNumber = seriesNumber;
 			this.duration  =duration;
 			this.longDescription = longDescription;
+			this.imageDir = imageDir;
 			this.fromCache = false;
 			this.isDummy = isDummy;
 		}
@@ -229,6 +259,17 @@ namespace Yusen.GCrawler {
 			get { return this.title; }
 			set { this.title = value; }
 		}
+		
+		[Obsolete("SeriesNumberに名称変更")]
+		public string EpisodeNumber {
+			get { return this.episodeNumber; }
+			set { this.seriesNumber = value; }
+		}
+		public string SeriesNumber {
+			get { return this.seriesNumber; }
+			set { this.seriesNumber = value; }
+		}
+
 		public string SubTitle {
 			get { return this.subtitle; }
 			set { this.subtitle = value; }
@@ -237,10 +278,7 @@ namespace Yusen.GCrawler {
 			get { return this.imageDir; }
 			set { this.imageDir = value; }
 		}
-		public string EpisodeNumber {
-			get { return this.episodeNumber; }
-			set { this.episodeNumber = value; }
-		}
+		
 		public string Duration {
 			get { return this.duration; }
 			set { this.duration = value; }

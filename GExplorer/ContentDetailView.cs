@@ -133,7 +133,7 @@ namespace Yusen.GExplorer {
 					}
 					this.txtId.Text = value.ContentId;
 					this.txtTitle.Text = value.Title;
-					this.txtEpisode.Text = value.EpisodeNumber;
+					this.txtEpisode.Text = value.SeriesNumber;
 					this.txtSubtitle.Text = value.SubTitle;
 					this.txtDuration.Text = value.Duration;
 					this.txtDeadline.Text = value.Deadline;

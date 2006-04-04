@@ -277,6 +277,9 @@
     <Compile Include="ToolStripCAPropertyMenuItem.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="ToolStripGenreMenuItem.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="ToolStripPropertyGrid.cs">
       <SubType>Component</SubType>
     </Compile>

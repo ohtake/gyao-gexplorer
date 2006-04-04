@@ -304,7 +304,7 @@
 			this.cmsDummy.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tscapmiProperty});
 			this.cmsDummy.Name = "cmsDummy";
-			this.cmsDummy.Size = new System.Drawing.Size(225, 48);
+			this.cmsDummy.Size = new System.Drawing.Size(225, 26);
 			// 
 			// tscapmiProperty
 			// 

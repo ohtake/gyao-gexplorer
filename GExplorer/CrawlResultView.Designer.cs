@@ -55,7 +55,7 @@
 			this.listView1 = new Yusen.GExplorer.DoubleBufferedListView();
 			this.chId = new System.Windows.Forms.ColumnHeader();
 			this.chTitle = new System.Windows.Forms.ColumnHeader();
-			this.chEpisode = new System.Windows.Forms.ColumnHeader();
+			this.chSeriesNumber = new System.Windows.Forms.ColumnHeader();
 			this.chSubTitle = new System.Windows.Forms.ColumnHeader();
 			this.chDuration = new System.Windows.Forms.ColumnHeader();
 			this.chDeadline = new System.Windows.Forms.ColumnHeader();
@@ -123,7 +123,7 @@
             this.toolStripSeparator3,
             this.tsucmiCommandRoot});
 			this.cmsContent.Name = "contextMenuStrip1";
-			this.cmsContent.Size = new System.Drawing.Size(215, 342);
+			this.cmsContent.Size = new System.Drawing.Size(215, 364);
 			this.cmsContent.Opening += new System.ComponentModel.CancelEventHandler(this.cmsContent_Opening);
 			// 
 			// tsmiAdd
@@ -293,7 +293,6 @@
 			// 
 			// tsucmiCommandRoot
 			// 
-			this.tsucmiCommandRoot.Enabled = false;
 			this.tsucmiCommandRoot.Name = "tsucmiCommandRoot";
 			this.tsucmiCommandRoot.Size = new System.Drawing.Size(214, 22);
 			this.tsucmiCommandRoot.Text = "外部コマンド(&C)";
@@ -329,7 +328,7 @@
 			this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.chId,
             this.chTitle,
-            this.chEpisode,
+            this.chSeriesNumber,
             this.chSubTitle,
             this.chDuration,
             this.chDeadline,
@@ -362,10 +361,10 @@
 			this.chTitle.Text = "タイトル";
 			this.chTitle.Width = 100;
 			// 
-			// chEpisode
+			// chSeriesNumber
 			// 
-			this.chEpisode.Text = "話数";
-			this.chEpisode.Width = 55;
+			this.chSeriesNumber.Text = "シリーズ番号";
+			this.chSeriesNumber.Width = 55;
 			// 
 			// chSubTitle
 			// 
@@ -682,7 +681,7 @@
 		private Yusen.GExplorer.DoubleBufferedListView listView1;
 		private System.Windows.Forms.ColumnHeader chId;
 		private System.Windows.Forms.ColumnHeader chTitle;
-		private System.Windows.Forms.ColumnHeader chEpisode;
+		private System.Windows.Forms.ColumnHeader chSeriesNumber;
 		private System.Windows.Forms.ColumnHeader chSubTitle;
 		private System.Windows.Forms.ColumnHeader chDuration;
 		private System.Windows.Forms.ColumnHeader chDescription;

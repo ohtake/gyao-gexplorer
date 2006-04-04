@@ -123,11 +123,11 @@ namespace Yusen.GExplorer {
 			get { return this.timetableSortType; }
 			//set { this.timetableSortType = value; }
 		}
-		private int maxCrawlPages = 256;
+		private int maxCrawlPages = 32;
 		[Category("クローラ")]
 		[DisplayName("一般ページの最大数")]
 		[Description("クロールする一般ページの最大数を指定します．指定された値以上になったらクロールを打ち切ります．値を小さくしてもクロール結果の精度には大きな悪影響を及ぼさないので，値を小さくして動作速度とサーバへの負荷を改善するのも一興です．")]
-		[DefaultValue(256)]
+		[DefaultValue(32)]
 		public int MaxCrawlPages {
 			get { return this.maxCrawlPages; }
 			set { this.maxCrawlPages = value; }

@@ -35,8 +35,8 @@
 			this.tsmiPrintPreview = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiClose = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiGenres = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiTimeTablesUpdated = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsgmiGenreTop = new Yusen.GExplorer.ToolStripGenreMenuItem();
+			this.tsgmiTimetableUpdate = new Yusen.GExplorer.ToolStripGenreMenuItem();
 			this.tsmiTimeTablesDeadline = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiTools = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiExtractImages = new System.Windows.Forms.ToolStripMenuItem();
@@ -72,8 +72,8 @@
 			this.menuStrip1.Dock = System.Windows.Forms.DockStyle.None;
 			this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiFile,
-            this.tsmiGenres,
-            this.tsmiTimeTablesUpdated,
+            this.tsgmiGenreTop,
+            this.tsgmiTimetableUpdate,
             this.tsmiTimeTablesDeadline,
             this.tsmiTools});
 			this.menuStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
@@ -162,17 +162,21 @@
 			this.tsmiClose.Text = "閉じる(&W)";
 			this.tsmiClose.Click += new System.EventHandler(this.tsmiClose_Click);
 			// 
-			// tsmiGenres
+			// tsgmiGenreTop
 			// 
-			this.tsmiGenres.Name = "tsmiGenres";
-			this.tsmiGenres.Size = new System.Drawing.Size(93, 16);
-			this.tsmiGenres.Text = "ジャンルトップ(&T)";
+			this.tsgmiGenreTop.MenuVisibility = ((Yusen.GExplorer.GenreMenuVisibility)((Yusen.GExplorer.GenreMenuVisibility.Crawlable | Yusen.GExplorer.GenreMenuVisibility.UnCrawlable)));
+			this.tsgmiGenreTop.Name = "tsgmiGenreTop";
+			this.tsgmiGenreTop.Size = new System.Drawing.Size(93, 16);
+			this.tsgmiGenreTop.Text = "ジャンルトップ(&T)";
+			this.tsgmiGenreTop.GenreSelected += new System.EventHandler<Yusen.GExplorer.GenreMenuItemSelectedEventArgs>(this.tsgmiGenreTop_GenreSelected);
 			// 
-			// tsmiTimeTablesUpdated
+			// tsgmiTimetableUpdate
 			// 
-			this.tsmiTimeTablesUpdated.Name = "tsmiTimeTablesUpdated";
-			this.tsmiTimeTablesUpdated.Size = new System.Drawing.Size(129, 16);
-			this.tsmiTimeTablesUpdated.Text = "更新日優先番組表(&U)";
+			this.tsgmiTimetableUpdate.MenuVisibility = ((Yusen.GExplorer.GenreMenuVisibility)((Yusen.GExplorer.GenreMenuVisibility.Crawlable | Yusen.GExplorer.GenreMenuVisibility.UnCrawlable)));
+			this.tsgmiTimetableUpdate.Name = "tsgmiTimetableUpdate";
+			this.tsgmiTimetableUpdate.Size = new System.Drawing.Size(129, 16);
+			this.tsgmiTimetableUpdate.Text = "更新日優先番組表(&R)";
+			this.tsgmiTimetableUpdate.GenreSelected += new System.EventHandler<Yusen.GExplorer.GenreMenuItemSelectedEventArgs>(this.tsgmiTimetableUpdate_GenreSelected);
 			// 
 			// tsmiTimeTablesDeadline
 			// 
@@ -415,7 +419,6 @@
 		private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
 		private System.Windows.Forms.ToolStripProgressBar toolStripProgressBar1;
 		private System.Windows.Forms.ToolStripMenuItem tsmiClose;
-		private System.Windows.Forms.ToolStripMenuItem tsmiGenres;
 		private System.Windows.Forms.ToolStripButton tsbStop;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
 		private System.Windows.Forms.ToolStripMenuItem tsmiOpenTop;
@@ -426,7 +429,6 @@
 		private System.Windows.Forms.ToolStripMenuItem tsmiSaveAs;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
 		private System.Windows.Forms.ToolStripComboBox tscbAddress;
-		private System.Windows.Forms.ToolStripMenuItem tsmiTimeTablesUpdated;
 		private GWebBrowser gwbMain;
 		private System.Windows.Forms.ToolStripMenuItem tsmiTimeTablesDeadline;
 		private System.Windows.Forms.ToolStripMenuItem tsmiTools;
@@ -434,5 +436,7 @@
 		private System.Windows.Forms.ToolStripMenuItem tsmiExtractImages;
 		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
 		private System.Windows.Forms.ToolStripMenuItem tsmiFillCampaignForm;
+		private ToolStripGenreMenuItem tsgmiGenreTop;
+		private ToolStripGenreMenuItem tsgmiTimetableUpdate;
 	}
 }

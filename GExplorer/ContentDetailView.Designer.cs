@@ -30,8 +30,9 @@
 			this.tsmiCopyImageUri = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiCopyNameAndImageUri = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiCopyNameDetailImageUri = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiCopyImage = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+			this.tsucmiCommand = new Yusen.GExplorer.ToolStripUserCommandMenuItem();
 			this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiTest = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiTestLoad = new System.Windows.Forms.ToolStripMenuItem();
@@ -57,7 +58,6 @@
 			this.txtDeadline = new System.Windows.Forms.TextBox();
 			this.tabpDetail = new System.Windows.Forms.TabPage();
 			this.propgDetail = new System.Windows.Forms.PropertyGrid();
-			this.tsucmiCommand = new Yusen.GExplorer.ToolStripUserCommandMenuItem();
 			this.splitContainer1.Panel1.SuspendLayout();
 			this.splitContainer1.Panel2.SuspendLayout();
 			this.splitContainer1.SuspendLayout();
@@ -136,17 +136,24 @@
 			this.tsmiCopyNameDetailImageUri.Text = "名前，詳細URI，画像URIをコピー(&A)";
 			this.tsmiCopyNameDetailImageUri.Click += new System.EventHandler(this.tsmiCopyNameDetailImageUri_Click);
 			// 
-			// toolStripSeparator2
-			// 
-			this.toolStripSeparator2.Name = "toolStripSeparator2";
-			this.toolStripSeparator2.Size = new System.Drawing.Size(245, 6);
-			// 
 			// tsmiCopyImage
 			// 
 			this.tsmiCopyImage.Name = "tsmiCopyImage";
 			this.tsmiCopyImage.Size = new System.Drawing.Size(248, 22);
 			this.tsmiCopyImage.Text = "画像をコピー(&I)";
 			this.tsmiCopyImage.Click += new System.EventHandler(this.tsmiCopyImage_Click);
+			// 
+			// toolStripSeparator2
+			// 
+			this.toolStripSeparator2.Name = "toolStripSeparator2";
+			this.toolStripSeparator2.Size = new System.Drawing.Size(245, 6);
+			// 
+			// tsucmiCommand
+			// 
+			this.tsucmiCommand.Name = "tsucmiCommand";
+			this.tsucmiCommand.Size = new System.Drawing.Size(248, 22);
+			this.tsucmiCommand.Text = "外部コマンド(&C)";
+			this.tsucmiCommand.UserCommandSelected += new System.EventHandler<Yusen.GExplorer.UserCommandSelectedEventArgs>(this.tsucmiCommand_UserCommandSelected);
 			// 
 			// toolStripMenuItem2
 			// 
@@ -168,33 +175,33 @@
 			// tsmiTestLoad
 			// 
 			this.tsmiTestLoad.Name = "tsmiTestLoad";
-			this.tsmiTestLoad.Size = new System.Drawing.Size(152, 22);
+			this.tsmiTestLoad.Size = new System.Drawing.Size(150, 22);
 			this.tsmiTestLoad.Text = "&Load";
 			this.tsmiTestLoad.Click += new System.EventHandler(this.tsmiTestLoad_Click);
 			// 
 			// tsmiTestLoadAsync
 			// 
 			this.tsmiTestLoadAsync.Name = "tsmiTestLoadAsync";
-			this.tsmiTestLoadAsync.Size = new System.Drawing.Size(152, 22);
+			this.tsmiTestLoadAsync.Size = new System.Drawing.Size(150, 22);
 			this.tsmiTestLoadAsync.Text = "Load&Async";
 			this.tsmiTestLoadAsync.Click += new System.EventHandler(this.tsmiTestLoadAsync_Click);
 			// 
 			// tsmiTestCancelAsync
 			// 
 			this.tsmiTestCancelAsync.Name = "tsmiTestCancelAsync";
-			this.tsmiTestCancelAsync.Size = new System.Drawing.Size(152, 22);
+			this.tsmiTestCancelAsync.Size = new System.Drawing.Size(150, 22);
 			this.tsmiTestCancelAsync.Text = "&CancelAsync";
 			this.tsmiTestCancelAsync.Click += new System.EventHandler(this.tsmiTestCancelAsync_Click);
 			// 
 			// toolStripMenuItem3
 			// 
 			this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-			this.toolStripMenuItem3.Size = new System.Drawing.Size(149, 6);
+			this.toolStripMenuItem3.Size = new System.Drawing.Size(147, 6);
 			// 
 			// tsmiTestNewPictureBox
 			// 
 			this.tsmiTestNewPictureBox.Name = "tsmiTestNewPictureBox";
-			this.tsmiTestNewPictureBox.Size = new System.Drawing.Size(152, 22);
+			this.tsmiTestNewPictureBox.Size = new System.Drawing.Size(150, 22);
 			this.tsmiTestNewPictureBox.Text = "&new PictureBox";
 			this.tsmiTestNewPictureBox.Click += new System.EventHandler(this.tsmiTestNewPictureBox_Click);
 			// 
@@ -255,11 +262,11 @@
 			// 
 			this.label1.Anchor = System.Windows.Forms.AnchorStyles.Right;
 			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(30, 6);
+			this.label1.Location = new System.Drawing.Point(28, 6);
 			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(14, 12);
+			this.label1.Size = new System.Drawing.Size(16, 12);
 			this.label1.TabIndex = 0;
-			this.label1.Text = "id";
+			this.label1.Text = "ID";
 			// 
 			// label2
 			// 
@@ -275,11 +282,11 @@
 			// 
 			this.label3.Anchor = System.Windows.Forms.AnchorStyles.Right;
 			this.label3.AutoSize = true;
-			this.label3.Location = new System.Drawing.Point(15, 54);
+			this.label3.Location = new System.Drawing.Point(10, 54);
 			this.label3.Name = "label3";
-			this.label3.Size = new System.Drawing.Size(29, 12);
+			this.label3.Size = new System.Drawing.Size(34, 12);
 			this.label3.TabIndex = 2;
-			this.label3.Text = "話数";
+			this.label3.Text = "シリ番";
 			// 
 			// label4
 			// 
@@ -394,13 +401,6 @@
 			this.propgDetail.Name = "propgDetail";
 			this.propgDetail.Size = new System.Drawing.Size(216, 201);
 			this.propgDetail.TabIndex = 0;
-			// 
-			// tsucmiCommand
-			// 
-			this.tsucmiCommand.Name = "tsucmiCommand";
-			this.tsucmiCommand.Size = new System.Drawing.Size(248, 22);
-			this.tsucmiCommand.Text = "外部コマンド(&C)";
-			this.tsucmiCommand.UserCommandSelected += new System.EventHandler<Yusen.GExplorer.UserCommandSelectedEventArgs>(this.tsucmiCommand_UserCommandSelected);
 			// 
 			// ContentDetailView
 			// 

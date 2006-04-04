@@ -12,8 +12,7 @@ namespace Yusen.GExplorer {
 		public sealed class BrowserFormSettings : INewSettings<BrowserFormSettings> {
 			private readonly BrowserForm owner;
 
-			public BrowserFormSettings()
-				: this(null) {
+			public BrowserFormSettings() : this(null) {
 			}
 			internal BrowserFormSettings(BrowserForm owner) {
 				this.owner = owner;
@@ -131,37 +130,11 @@ namespace Yusen.GExplorer {
 		private BrowserForm() {
 			InitializeComponent();
 			Utility.AppendHelpMenu(this.menuStrip1);
-			
-			this.tsmiGenres.DropDownItems.Clear();
-			this.tsmiTimeTablesUpdated.DropDownItems.Clear();
+
+			if (base.DesignMode) return;
+
 			this.tscbAddress.Items.Clear();
 			foreach (GGenre g in GGenre.AllGenres) {
-				ToolStripMenuItem mi;
-
-				mi = new ToolStripMenuItem(g.GenreName);
-				mi.Tag = g;
-				mi.Click += new EventHandler(delegate(object sender2, EventArgs e2) {
-					GGenre genre = (sender2 as ToolStripMenuItem).Tag as GGenre;
-					this.DocumentUri = genre.TopPageUri;
-				});
-				this.tsmiGenres.DropDownItems.Add(mi);
-
-				mi = new ToolStripMenuItem(g.GenreName);
-				mi.Tag = g;
-				mi.Click += new EventHandler(delegate(object sender2, EventArgs e2) {
-					GGenre genre = (sender2 as ToolStripMenuItem).Tag as GGenre;
-					this.DocumentUri = genre.TimetableRecentlyUpdatedFirstUri;
-				});
-				this.tsmiTimeTablesUpdated.DropDownItems.Add(mi);
-
-				mi = new ToolStripMenuItem(g.GenreName);
-				mi.Tag = g;
-				mi.Click += new EventHandler(delegate(object sender2, EventArgs e2) {
-					GGenre genre = (sender2 as ToolStripMenuItem).Tag as GGenre;
-					this.DocumentUri = genre.TimetableDeadlineNearFirstUri;
-				});
-				this.tsmiTimeTablesDeadline.DropDownItems.Add(mi);
-
 				this.tscbAddress.Items.Add(g.TopPageUri);
 			}
 		}
@@ -219,7 +192,7 @@ namespace Yusen.GExplorer {
 		private void gwbMain_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e) {
 			this.tsbStop.Enabled = false;
 		}
-		
+
 		private void tsbBack_Click(object sender, EventArgs e) {
 			this.gwbMain.GoBack();
 		}
@@ -264,6 +237,12 @@ namespace Yusen.GExplorer {
 		}
 		private void tsmiClose_Click(object sender, EventArgs e) {
 			this.Close();
+		}
+		private void tsgmiGenreTop_GenreSelected(object sender, GenreMenuItemSelectedEventArgs e) {
+			this.DocumentUri = e.SelectedGenre.TopPageUri;
+		}
+		private void tsgmiTimetableUpdate_GenreSelected(object sender, GenreMenuItemSelectedEventArgs e) {
+			this.DocumentUri = e.SelectedGenre.TimetableRecentlyUpdatedFirstUri;
 		}
 		private void tsmiGotoCampaign_Click(object sender, EventArgs e) {
 			this.gwbMain.GotoCampaign();

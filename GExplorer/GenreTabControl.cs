@@ -81,7 +81,7 @@ namespace Yusen.GExplorer {
 			#endregion
 		}
 
-		public event EventHandler<GenreSelectedEventArgs> GenreSelected;
+		public event EventHandler<GenreTabSelectedEventArgs> GenreSelected;
 
 		private GenreTabControlSettings settings;
 
@@ -187,11 +187,11 @@ namespace Yusen.GExplorer {
 		}
 
 		private void OnGenreSelected(bool forceReload) {
-			EventHandler<GenreSelectedEventArgs> handler = this.GenreSelected;
+			EventHandler<GenreTabSelectedEventArgs> handler = this.GenreSelected;
 			if (null != handler) {
 				GGenre genre = this.SelectedGenre;
 				if (null != genre) {
-					handler(this, new GenreSelectedEventArgs(genre, forceReload));
+					handler(this, new GenreTabSelectedEventArgs(genre, forceReload));
 				}
 			}
 		}
@@ -254,11 +254,11 @@ namespace Yusen.GExplorer {
 
 	}
 
-	public sealed class GenreSelectedEventArgs : EventArgs {
+	public sealed class GenreTabSelectedEventArgs : EventArgs {
 		private readonly GGenre genre;
 		private readonly bool forceReload;
 
-		public GenreSelectedEventArgs(GGenre genre, bool forceReload) {
+		public GenreTabSelectedEventArgs(GGenre genre, bool forceReload) {
 			this.genre = genre;
 			this.forceReload = forceReload;
 		}

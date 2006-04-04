@@ -44,7 +44,14 @@
 			this.tsmiBrowseContent = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiQuit = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiUncrawlableGenres = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsgmiSelectGenre = new Yusen.GExplorer.ToolStripGenreMenuItem();
+			this.tsgmiCrawlGenre = new Yusen.GExplorer.ToolStripGenreMenuItem();
+			this.tsmiAbortCrawling = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsgmiUncrawlables = new Yusen.GExplorer.ToolStripGenreMenuItem();
+			this.tsmiTools = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiMergeResults = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiGetProfile = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsucmiCommand = new Yusen.GExplorer.ToolStripUserCommandMenuItem();
 			this.tsmiSettings = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiSettingsGlobal = new System.Windows.Forms.ToolStripMenuItem();
 			this.tspgGlobal = new Yusen.GExplorer.ToolStripPropertyGrid();
@@ -62,24 +69,6 @@
 			this.tspgPlaylistView = new Yusen.GExplorer.ToolStripPropertyGrid();
 			this.tsmiSettingsDetailView = new System.Windows.Forms.ToolStripMenuItem();
 			this.tspgDetailView = new Yusen.GExplorer.ToolStripPropertyGrid();
-			this.tsmiTools = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiMergeResults = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
-			this.tsmiClearCrawlResults = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiRemoveCaches = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiRemoveCachesUnreachable = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiRemoveCachesAll = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiRemoveDeadlineEntries = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiRemoveDeadlineEntriesUnreacheable = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiRemoveDeadlineEntriesAll = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiRemoveNgContents = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiDeleteNgContentsWeek = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiDeleteNgContentsAll = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
-			this.tsmiGetProfile = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-			this.tsucmiCommand = new Yusen.GExplorer.ToolStripUserCommandMenuItem();
-			this.tsmiAbortCrawling = new System.Windows.Forms.ToolStripMenuItem();
 			this.inputBoxDialog1 = new Yusen.GExplorer.InputBoxDialog();
 			this.timerViewDetail = new System.Windows.Forms.Timer(this.components);
 			this.timerCrawlProgress = new System.Windows.Forms.Timer(this.components);
@@ -180,7 +169,7 @@
 			this.genreTabControl1.ShowToolTips = true;
 			this.genreTabControl1.Size = new System.Drawing.Size(872, 20);
 			this.genreTabControl1.TabIndex = 0;
-			this.genreTabControl1.GenreSelected += new System.EventHandler<Yusen.GExplorer.GenreSelectedEventArgs>(this.genreTabControl1_GenreSelected);
+			this.genreTabControl1.GenreSelected += new System.EventHandler<Yusen.GExplorer.GenreTabSelectedEventArgs>(this.genreTabControl1_GenreSelected);
 			// 
 			// tabPage1
 			// 
@@ -234,7 +223,7 @@
 			// 
 			this.scLists.Panel2.Controls.Add(this.playListView1);
 			this.scLists.Size = new System.Drawing.Size(586, 524);
-			this.scLists.SplitterDistance = 331;
+			this.scLists.SplitterDistance = 330;
 			this.scLists.TabIndex = 2;
 			this.scLists.Text = "splitContainer2";
 			// 
@@ -245,7 +234,7 @@
 			this.crawlResultView1.Location = new System.Drawing.Point(0, 0);
 			this.crawlResultView1.Margin = new System.Windows.Forms.Padding(0);
 			this.crawlResultView1.Name = "crawlResultView1";
-			this.crawlResultView1.Size = new System.Drawing.Size(586, 331);
+			this.crawlResultView1.Size = new System.Drawing.Size(586, 330);
 			this.crawlResultView1.TabIndex = 1;
 			this.crawlResultView1.ContentSelectionChanged += new System.EventHandler<Yusen.GExplorer.ContentSelectionChangedEventArgs>(this.crawlResultView1_ContentSelectionChanged);
 			this.crawlResultView1.ManuallyCacheDeleted += new System.EventHandler<Yusen.GExplorer.ManuallyCacheDeletedEventArgs>(this.crawlResultView1_ManuallyCacheDeleted);
@@ -255,7 +244,7 @@
 			this.playListView1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.playListView1.Location = new System.Drawing.Point(0, 0);
 			this.playListView1.Name = "playListView1";
-			this.playListView1.Size = new System.Drawing.Size(586, 189);
+			this.playListView1.Size = new System.Drawing.Size(586, 190);
 			this.playListView1.TabIndex = 0;
 			this.playListView1.ContentSelectionChanged += new System.EventHandler<Yusen.GExplorer.ContentSelectionChangedEventArgs>(this.playListView1_ContentSelectionChanged);
 			// 
@@ -275,10 +264,12 @@
 			this.menuStrip1.Dock = System.Windows.Forms.DockStyle.None;
 			this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiFile,
-            this.tsmiUncrawlableGenres,
-            this.tsmiSettings,
+            this.tsgmiSelectGenre,
+            this.tsgmiCrawlGenre,
+            this.tsmiAbortCrawling,
+            this.tsgmiUncrawlables,
             this.tsmiTools,
-            this.tsmiAbortCrawling});
+            this.tsmiSettings});
 			this.menuStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
@@ -332,11 +323,67 @@
 			this.tsmiQuit.Text = "終了(&Q)";
 			this.tsmiQuit.Click += new System.EventHandler(this.tsmiQuit_Click);
 			// 
-			// tsmiUncrawlableGenres
+			// tsgmiSelectGenre
 			// 
-			this.tsmiUncrawlableGenres.Name = "tsmiUncrawlableGenres";
-			this.tsmiUncrawlableGenres.Size = new System.Drawing.Size(106, 16);
-			this.tsmiUncrawlableGenres.Text = "未対応ジャンル(&U)";
+			this.tsgmiSelectGenre.MenuVisibility = Yusen.GExplorer.GenreMenuVisibility.Crawlable;
+			this.tsgmiSelectGenre.Name = "tsgmiSelectGenre";
+			this.tsgmiSelectGenre.Size = new System.Drawing.Size(94, 16);
+			this.tsgmiSelectGenre.Text = "ジャンル選択(&G)";
+			this.tsgmiSelectGenre.GenreSelected += new System.EventHandler<Yusen.GExplorer.GenreMenuItemSelectedEventArgs>(this.tsgmiSelectGenre_GenreSelected);
+			// 
+			// tsgmiCrawlGenre
+			// 
+			this.tsgmiCrawlGenre.MenuVisibility = Yusen.GExplorer.GenreMenuVisibility.Crawlable;
+			this.tsgmiCrawlGenre.Name = "tsgmiCrawlGenre";
+			this.tsgmiCrawlGenre.Size = new System.Drawing.Size(70, 16);
+			this.tsgmiCrawlGenre.Text = "クロール(&R)";
+			this.tsgmiCrawlGenre.GenreSelected += new System.EventHandler<Yusen.GExplorer.GenreMenuItemSelectedEventArgs>(this.tsgmiCrawlGenre_GenreSelected);
+			// 
+			// tsmiAbortCrawling
+			// 
+			this.tsmiAbortCrawling.Name = "tsmiAbortCrawling";
+			this.tsmiAbortCrawling.Size = new System.Drawing.Size(118, 16);
+			this.tsmiAbortCrawling.Text = "<<クロール中止(&A)>>";
+			this.tsmiAbortCrawling.Click += new System.EventHandler(this.tsmiAbortCrawling_Click);
+			// 
+			// tsgmiUncrawlables
+			// 
+			this.tsgmiUncrawlables.MenuVisibility = Yusen.GExplorer.GenreMenuVisibility.UnCrawlable;
+			this.tsgmiUncrawlables.Name = "tsgmiUncrawlables";
+			this.tsgmiUncrawlables.Size = new System.Drawing.Size(106, 16);
+			this.tsgmiUncrawlables.Text = "未対応ジャンル(&U)";
+			this.tsgmiUncrawlables.GenreSelected += new System.EventHandler<Yusen.GExplorer.GenreMenuItemSelectedEventArgs>(this.tsgmiUncrawlables_GenreSelected);
+			// 
+			// tsmiTools
+			// 
+			this.tsmiTools.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiMergeResults,
+            this.tsmiGetProfile,
+            this.tsucmiCommand});
+			this.tsmiTools.Name = "tsmiTools";
+			this.tsmiTools.Size = new System.Drawing.Size(61, 16);
+			this.tsmiTools.Text = "ツール(&T)";
+			// 
+			// tsmiMergeResults
+			// 
+			this.tsmiMergeResults.Name = "tsmiMergeResults";
+			this.tsmiMergeResults.Size = new System.Drawing.Size(269, 22);
+			this.tsmiMergeResults.Text = "既得ジャンルを結合して表示(&M)";
+			this.tsmiMergeResults.Click += new System.EventHandler(this.tsmiMergeResults_Click);
+			// 
+			// tsmiGetProfile
+			// 
+			this.tsmiGetProfile.Name = "tsmiGetProfile";
+			this.tsmiGetProfile.Size = new System.Drawing.Size(269, 22);
+			this.tsmiGetProfile.Text = "ユーザIDに対応するプロファイルを取得(&P)...";
+			this.tsmiGetProfile.Click += new System.EventHandler(this.tsmiGetProfile_Click);
+			// 
+			// tsucmiCommand
+			// 
+			this.tsucmiCommand.Name = "tsucmiCommand";
+			this.tsucmiCommand.Size = new System.Drawing.Size(269, 22);
+			this.tsucmiCommand.Text = "引数置換なしの外部コマンド(&C)";
+			this.tsucmiCommand.UserCommandSelected += new System.EventHandler<Yusen.GExplorer.UserCommandSelectedEventArgs>(this.tsucmiCommand_UserCommandSelected);
 			// 
 			// tsmiSettings
 			// 
@@ -474,144 +521,6 @@
 			this.tspgDetailView.Size = new System.Drawing.Size(200, 300);
 			this.tspgDetailView.Text = "toolStripPropertyGrid1";
 			// 
-			// tsmiTools
-			// 
-			this.tsmiTools.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiMergeResults,
-            this.toolStripMenuItem1,
-            this.tsmiClearCrawlResults,
-            this.tsmiRemoveCaches,
-            this.tsmiRemoveDeadlineEntries,
-            this.tsmiRemoveNgContents,
-            this.toolStripSeparator4,
-            this.tsmiGetProfile,
-            this.toolStripSeparator2,
-            this.tsucmiCommand});
-			this.tsmiTools.Name = "tsmiTools";
-			this.tsmiTools.Size = new System.Drawing.Size(61, 16);
-			this.tsmiTools.Text = "ツール(&T)";
-			// 
-			// tsmiMergeResults
-			// 
-			this.tsmiMergeResults.Name = "tsmiMergeResults";
-			this.tsmiMergeResults.Size = new System.Drawing.Size(269, 22);
-			this.tsmiMergeResults.Text = "既得ジャンルを結合して表示(&M)";
-			this.tsmiMergeResults.Click += new System.EventHandler(this.tsmiMergeResults_Click);
-			// 
-			// toolStripMenuItem1
-			// 
-			this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-			this.toolStripMenuItem1.Size = new System.Drawing.Size(266, 6);
-			// 
-			// tsmiClearCrawlResults
-			// 
-			this.tsmiClearCrawlResults.Name = "tsmiClearCrawlResults";
-			this.tsmiClearCrawlResults.Size = new System.Drawing.Size(269, 22);
-			this.tsmiClearCrawlResults.Text = "全クロール結果の破棄(&D)...";
-			this.tsmiClearCrawlResults.Click += new System.EventHandler(this.tsmiClearCrawlResults_Click);
-			// 
-			// tsmiRemoveCaches
-			// 
-			this.tsmiRemoveCaches.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiRemoveCachesUnreachable,
-            this.tsmiRemoveCachesAll});
-			this.tsmiRemoveCaches.Name = "tsmiRemoveCaches";
-			this.tsmiRemoveCaches.Size = new System.Drawing.Size(269, 22);
-			this.tsmiRemoveCaches.Text = "キャッシュの削除(&R)";
-			// 
-			// tsmiRemoveCachesUnreachable
-			// 
-			this.tsmiRemoveCachesUnreachable.Name = "tsmiRemoveCachesUnreachable";
-			this.tsmiRemoveCachesUnreachable.Size = new System.Drawing.Size(210, 22);
-			this.tsmiRemoveCachesUnreachable.Text = "到達不可キャッシュを削除(&U)";
-			this.tsmiRemoveCachesUnreachable.Click += new System.EventHandler(this.tsmiRemoveCachesUnreachable_Click);
-			// 
-			// tsmiRemoveCachesAll
-			// 
-			this.tsmiRemoveCachesAll.Name = "tsmiRemoveCachesAll";
-			this.tsmiRemoveCachesAll.Size = new System.Drawing.Size(210, 22);
-			this.tsmiRemoveCachesAll.Text = "全てのキャッシュを削除(&A)...";
-			this.tsmiRemoveCachesAll.Click += new System.EventHandler(this.tsmiRemoveCachesAll_Click);
-			// 
-			// tsmiRemoveDeadlineEntries
-			// 
-			this.tsmiRemoveDeadlineEntries.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiRemoveDeadlineEntriesUnreacheable,
-            this.tsmiRemoveDeadlineEntriesAll});
-			this.tsmiRemoveDeadlineEntries.Name = "tsmiRemoveDeadlineEntries";
-			this.tsmiRemoveDeadlineEntries.Size = new System.Drawing.Size(269, 22);
-			this.tsmiRemoveDeadlineEntries.Text = "配信期限辞書の整理(&L)";
-			// 
-			// tsmiRemoveDeadlineEntriesUnreacheable
-			// 
-			this.tsmiRemoveDeadlineEntriesUnreacheable.Name = "tsmiRemoveDeadlineEntriesUnreacheable";
-			this.tsmiRemoveDeadlineEntriesUnreacheable.Size = new System.Drawing.Size(210, 22);
-			this.tsmiRemoveDeadlineEntriesUnreacheable.Text = "到達不可エントリーを削除(&U)";
-			this.tsmiRemoveDeadlineEntriesUnreacheable.Click += new System.EventHandler(this.tsmiRemoveDeadlineEntriesUnreacheable_Click);
-			// 
-			// tsmiRemoveDeadlineEntriesAll
-			// 
-			this.tsmiRemoveDeadlineEntriesAll.Name = "tsmiRemoveDeadlineEntriesAll";
-			this.tsmiRemoveDeadlineEntriesAll.Size = new System.Drawing.Size(210, 22);
-			this.tsmiRemoveDeadlineEntriesAll.Text = "全てのエントリーを削除(&A)...";
-			this.tsmiRemoveDeadlineEntriesAll.Click += new System.EventHandler(this.tsmiRemoveDeadlineEntriesAll_Click);
-			// 
-			// tsmiRemoveNgContents
-			// 
-			this.tsmiRemoveNgContents.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiDeleteNgContentsWeek,
-            this.tsmiDeleteNgContentsAll});
-			this.tsmiRemoveNgContents.Name = "tsmiRemoveNgContents";
-			this.tsmiRemoveNgContents.Size = new System.Drawing.Size(269, 22);
-			this.tsmiRemoveNgContents.Text = "NGコンテンツの削除(&N)";
-			// 
-			// tsmiDeleteNgContentsWeek
-			// 
-			this.tsmiDeleteNgContentsWeek.Name = "tsmiDeleteNgContentsWeek";
-			this.tsmiDeleteNgContentsWeek.Size = new System.Drawing.Size(284, 22);
-			this.tsmiDeleteNgContentsWeek.Text = "最終NGから1週間以上経過したのを削除(&W)";
-			this.tsmiDeleteNgContentsWeek.Click += new System.EventHandler(this.tsmiDeleteNgContentsWeek_Click);
-			// 
-			// tsmiDeleteNgContentsAll
-			// 
-			this.tsmiDeleteNgContentsAll.Name = "tsmiDeleteNgContentsAll";
-			this.tsmiDeleteNgContentsAll.Size = new System.Drawing.Size(284, 22);
-			this.tsmiDeleteNgContentsAll.Text = "全てのNGを削除(&A)...";
-			this.tsmiDeleteNgContentsAll.Click += new System.EventHandler(this.tsmiDeleteNgContentsAll_Click);
-			// 
-			// toolStripSeparator4
-			// 
-			this.toolStripSeparator4.Name = "toolStripSeparator4";
-			this.toolStripSeparator4.Size = new System.Drawing.Size(266, 6);
-			// 
-			// tsmiGetProfile
-			// 
-			this.tsmiGetProfile.Name = "tsmiGetProfile";
-			this.tsmiGetProfile.Size = new System.Drawing.Size(269, 22);
-			this.tsmiGetProfile.Text = "ユーザIDに対応するプロファイルを取得(&P)...";
-			this.tsmiGetProfile.Click += new System.EventHandler(this.tsmiGetProfile_Click);
-			// 
-			// toolStripSeparator2
-			// 
-			this.toolStripSeparator2.Name = "toolStripSeparator2";
-			this.toolStripSeparator2.Size = new System.Drawing.Size(266, 6);
-			// 
-			// tsucmiCommand
-			// 
-			this.tsucmiCommand.Enabled = false;
-			this.tsucmiCommand.Name = "tsucmiCommand";
-			this.tsucmiCommand.Size = new System.Drawing.Size(269, 22);
-			this.tsucmiCommand.Text = "引数置換なしの外部コマンド(&C)";
-			this.tsucmiCommand.UserCommandSelected += new System.EventHandler<Yusen.GExplorer.UserCommandSelectedEventArgs>(this.tsucmiCommand_UserCommandSelected);
-			// 
-			// tsmiAbortCrawling
-			// 
-			this.tsmiAbortCrawling.Enabled = false;
-			this.tsmiAbortCrawling.Name = "tsmiAbortCrawling";
-			this.tsmiAbortCrawling.Size = new System.Drawing.Size(118, 16);
-			this.tsmiAbortCrawling.Text = "<<クロール中止(&A)>>";
-			this.tsmiAbortCrawling.Click += new System.EventHandler(this.tsmiAbortCrawling_Click);
-			// 
 			// inputBoxDialog1
 			// 
 			this.inputBoxDialog1.Input = null;
@@ -699,31 +608,17 @@
 		private System.Windows.Forms.SplitContainer scLists;
 		private PlayListView playListView1;
 		private System.Windows.Forms.ToolStripMenuItem tsmiAbortCrawling;
-		private System.Windows.Forms.ToolStripMenuItem tsmiRemoveCaches;
-		private System.Windows.Forms.ToolStripMenuItem tsmiRemoveCachesUnreachable;
 		private System.Windows.Forms.ToolStripMenuItem tsmiSettings;
-		private System.Windows.Forms.ToolStripMenuItem tsmiRemoveCachesAll;
-		private System.Windows.Forms.ToolStripMenuItem tsmiClearCrawlResults;
-		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
 		private System.Windows.Forms.ToolStripMenuItem tsmiBrowsePackage;
 		private System.Windows.Forms.ToolStripMenuItem tsmiBrowseContent;
 		private System.Windows.Forms.ToolStripMenuItem tsmiMergeResults;
-		private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
-		private System.Windows.Forms.ToolStripMenuItem tsmiUncrawlableGenres;
-		private System.Windows.Forms.ToolStripMenuItem tsmiRemoveDeadlineEntries;
-		private System.Windows.Forms.ToolStripMenuItem tsmiRemoveDeadlineEntriesUnreacheable;
-		private System.Windows.Forms.ToolStripMenuItem tsmiRemoveDeadlineEntriesAll;
 		private InputBoxDialog inputBoxDialog1;
 		private System.Windows.Forms.Timer timerViewDetail;
 		private System.Windows.Forms.ToolStripMenuItem tsmiUserCommandsEditor;
 		private System.Windows.Forms.ToolStripMenuItem tsmiNgContentsEditor;
 		private System.Windows.Forms.Timer timerCrawlProgress;
 		private System.Windows.Forms.Timer timerClearStatusText;
-		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
 		private System.Windows.Forms.ToolStripMenuItem tsmiGetProfile;
-		private System.Windows.Forms.ToolStripMenuItem tsmiRemoveNgContents;
-		private System.Windows.Forms.ToolStripMenuItem tsmiDeleteNgContentsWeek;
-		private System.Windows.Forms.ToolStripMenuItem tsmiDeleteNgContentsAll;
 		private System.ComponentModel.BackgroundWorker bwCrawl;
 		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
 		private System.Windows.Forms.ToolStripMenuItem tsmiSettingsGlobal;
@@ -740,6 +635,9 @@
 		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
 		private System.Windows.Forms.ToolStripMenuItem tsmiSettingsGenreTab;
 		private ToolStripPropertyGrid tspgGenreTab;
+		private ToolStripGenreMenuItem tsgmiSelectGenre;
+		private ToolStripGenreMenuItem tsgmiCrawlGenre;
+		private ToolStripGenreMenuItem tsgmiUncrawlables;
 
 
 	}

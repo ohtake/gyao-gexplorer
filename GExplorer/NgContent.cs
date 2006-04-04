@@ -128,6 +128,12 @@ namespace Yusen.GExplorer {
 			}
 			return ngs.ToArray();
 		}
+		/// <summary>最終NG日時から1週間経過したNGコンテンツを削除する</summary>
+		public void RemoveNgContentsWeek() {
+			base.RemoveAll(new Predicate<NgContent>(delegate(NgContent ng) {
+				return ng.LastAbone < DateTime.Now.AddDays(-7);
+			}));
+		}
 		
 		protected override string FilenameForSerialization {
 			get { return @"NgContents.xml"; }

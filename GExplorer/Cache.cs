@@ -135,9 +135,6 @@ namespace Yusen.GExplorer {
 					}
 				}
 			}
-			this.OnCacheRearranged(new CacheEventArgs(
-				string.Format("キャッシュの削除    到達可により無視: {0}    削除成功: {1}    削除失敗: {2}",
-					ignored, success, failed)));
 		}
 		public void RemoveCachesAll() {
 			int success = 0;

@@ -12,8 +12,8 @@ namespace Yusen.GCrawler {
 		private readonly static Regex regexId = new Regex("pac[0-9]{7}", RegexOptions.Compiled);
 
 		private readonly static Regex regexPackageName = new Regex(@"<td class=""title12b"">(.+)</td>", RegexOptions.Compiled);
-		private const string strTitleDate = "<td class=\"titledate10\">";
-		private readonly static Regex regexAnchorHref = new Regex(@"<a href=""(.+?)""", RegexOptions.Compiled);
+		private static readonly Regex regexAddMyList = new Regex(@"<a href=""javascript:addMylist\('(cnt[0-9]{7})'\);"">", RegexOptions.Compiled);
+		private static readonly Regex regexDeadline = new Regex(@"^<td height=""14"" colspan=""2"" class=""bk10"">(.+)</td>$", RegexOptions.Compiled);
 		
 		public static bool TryExtractPackageId(Uri uri, out string id) {
 			Match match = GPackage.regexId.Match(uri.AbsoluteUri);
@@ -60,23 +60,34 @@ namespace Yusen.GCrawler {
 				}
 				//コンテンツIDと期限の抽出
 				List<string> contentIds = new List<string>();
-				string deadline = null;
-				while (null != (line = reader.ReadLine())) {
-					if (null == deadline) {
-						if (line.EndsWith(GPackage.strTitleDate)) {
-							deadline = reader.ReadLine().Trim();
+				while (true) {
+				beginExtractId:
+					string contId;
+					while (null != (line = reader.ReadLine())) {
+						Match match = GPackage.regexAddMyList.Match(line);
+						if (match.Success) {
+							contId = match.Groups[1].Value;
+							goto beginExtractDeadline;
 						}
-						continue;
 					}
-					Match match = GPackage.regexAnchorHref.Match(line);
-					if (match.Success) {
-						string contId;
-						if (GContent.TryExtractContentId(new Uri(uri, match.Groups[1].Value), out contId)) {
+					goto endExtract;
+				beginExtractDeadline:
+					while (null != (line = reader.ReadLine())) {
+						Match match = GPackage.regexDeadline.Match(line);
+						if (match.Success) {
+							string deadline = match.Groups[1].Value;
 							contentIds.Add(contId);
 							deadlineTable.SetDeadline(contId, deadline);
-							deadline = null;
+							goto beginExtractId;
 						}
 					}
+					throw new Exception("配信期限を取得できなかった． <" + uri.AbsoluteUri + ">");
+				}
+			endExtract:
+				
+				//コンテンツをひとつも取れなかったらエラーだろう
+				if (0 == contentIds.Count) {
+					throw new Exception("シリーズ一覧からコンテンツIDをひとつも抽出できなかった． <" + uri.AbsoluteUri + ">");
 				}
 				
 				childContIds = contentIds;

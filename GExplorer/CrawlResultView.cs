@@ -59,20 +59,20 @@ namespace Yusen.GExplorer {
 			private int? colWidthTitle;
 
 			[Category("カラム幅")]
-			[DisplayName("[2] 話数")]
-			[Description("'話数'カラムの幅をピクセルで指定します．")]
+			[DisplayName("[2] シリーズ番号")]
+			[Description("'シリーズ番号'カラムの幅をピクセルで指定します．")]
 			[DefaultValue(null)]
-			public int? ColWidthEpisode {
+			public int? ColWidthSeriesNumber {
 				get {
-					if (this.HasOwner) return this.owner.chEpisode.Width;
-					else return this.colWidthEpisode;
+					if (this.HasOwner) return this.owner.chSeriesNumber.Width;
+					else return this.colWidthSeriesNumber;
 				}
 				set {
-					if (this.HasOwner && value.HasValue) this.owner.chEpisode.Width = value.Value;
-					else this.colWidthEpisode = value;
+					if (this.HasOwner && value.HasValue) this.owner.chSeriesNumber.Width = value.Value;
+					else this.colWidthSeriesNumber = value;
 				}
 			}
-			private int? colWidthEpisode;
+			private int? colWidthSeriesNumber;
 
 			[Category("カラム幅")]
 			[DisplayName("[3] サブタイトル")]
@@ -328,7 +328,7 @@ namespace Yusen.GExplorer {
 
 		private sealed class ContentListViewItem : ListViewItem {
 			public ContentListViewItem(ContentAdapter ca, ListViewGroup packageGroup)
-				: base(new string[] { ca.ContentId, ca.Title, ca.EpisodeNumber, ca.SubTitle, ca.GTimeSpan.ToString(), ca.Deadline, ca.LongDescription, ca.Attributes }) {
+				: base(new string[] { ca.ContentId, ca.Title, ca.SeriesNumber, ca.SubTitle, ca.GTimeSpan.ToString(), ca.Deadline, ca.LongDescription, ca.Attributes }) {
 				this.contentAdapter = ca;
 				this.packageGroup = packageGroup;
 				this.RefreshNgCached();

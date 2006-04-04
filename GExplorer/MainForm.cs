@@ -152,6 +152,8 @@ namespace Yusen.GExplorer {
 			this.tsmiSettingsResultView.DropDown.Closing += ToolStripPropertyGrid.CancelDropDownClosingIfEditingPropertyGrid;
 			this.tsmiSettingsPlaylistView.DropDown.Closing += ToolStripPropertyGrid.CancelDropDownClosingIfEditingPropertyGrid;
 			this.tsmiSettingsDetailView.DropDown.Closing += ToolStripPropertyGrid.CancelDropDownClosingIfEditingPropertyGrid;
+
+			this.tsmiAbortCrawling.Font = new Font(this.tsmiAbortCrawling.Font, FontStyle.Bold);
 		}
 		
 		private void ClearStatusBarInfo() {
@@ -176,13 +178,14 @@ namespace Yusen.GExplorer {
 			}
 		}
 		
-		private void ChangeEnabilityOfTsmiAbortCrawling(bool enabled) {
+		private void ChangeVisibilityOfAbortCrawling(bool abortVisible) {
 			if (this.InvokeRequired) {
 				this.Invoke(new ParameterizedThreadStart(delegate(object param) {
-					this.ChangeEnabilityOfTsmiAbortCrawling((bool)param);
-				}), enabled);
+					this.ChangeVisibilityOfAbortCrawling((bool)param);
+				}), abortVisible);
 			} else {
-				this.tsmiAbortCrawling.Enabled = enabled;
+				this.tsgmiCrawlGenre.Visible = !abortVisible;
+				this.tsmiAbortCrawling.Visible = abortVisible;
 			}
 		}
 		private void ViewCrawlResult(CrawlResult result) {
@@ -191,12 +194,11 @@ namespace Yusen.GExplorer {
 					this.ViewCrawlResult(param as CrawlResult);
 				}), result);
 			} else {
-				DateTime begin = DateTime.Now;
 				this.crawlResultView1.CrawlResult = result;
-				DateTime end = DateTime.Now;
 				if (null == result) {
 					this.SetStatutBarTextTemporary("選択されたジャンルはまだクロールされていません．タブをダブルクリックするとクロールを実行します．");
 				} else {
+					this.genreTabControl1.SelectedGenre = result.Genre;
 					this.ClearStatusBarInfo();
 				}
 				if (this.settings.FocusOnResultAfterGenreChanged) {
@@ -213,9 +215,8 @@ namespace Yusen.GExplorer {
 			
 			this.crawler = new Crawler(new HtmlParserRegex(), Cache.Instance.ContentCacheController, Cache.Instance.DeadlineTable);
 			
-			Cache.Instance.CacheRearranged += new EventHandler<CacheEventArgs>(Cache_CacheRearranged);
 			Program.ProgramSerializationProgress += new EventHandler<ProgramSerializationProgressEventArgs>(this.Program_ProgramSerializationProgress);
-
+			
 			this.settings = new MainFormSettings(this);
 			this.tspgGlobal.SelectedObject = GlobalSettings.Instance;
 			this.tspgMainForm.SelectedObject = this.settings;
@@ -226,22 +227,15 @@ namespace Yusen.GExplorer {
 			Utility.LoadSettingsAndEnableSaveOnClosedNew(this);
 			
 			this.genreTabControl1.TabPages.Clear();
-			this.tsmiUncrawlableGenres.DropDownItems.Clear();
 			foreach (GGenre genre in GGenre.AllGenres) {
 				if (genre.IsCrawlable) {
 					this.genreTabControl1.AddGenre(genre);
-				} else {
-					ToolStripMenuItem tsmi = new ToolStripMenuItem(genre.GenreName);
-					tsmi.Tag = genre;
-					tsmi.Click += delegate(object sender2, EventArgs e2) {
-						Utility.Browse(((sender2 as ToolStripMenuItem).Tag as GGenre).TopPageUri);
-					};
-					this.tsmiUncrawlableGenres.DropDownItems.Add(tsmi);
 				}
 			}
 			this.genreTabControl1.SelectedGenre = null;
-			this.tsmiUncrawlableGenres.Enabled = this.tsmiUncrawlableGenres.HasDropDownItems;
-			this.tsmiUncrawlableGenres.Visible = this.tsmiUncrawlableGenres.HasDropDownItems;
+
+			this.ChangeVisibilityOfAbortCrawling(false);
+			this.tsgmiUncrawlables.Visible = this.tsgmiUncrawlables.Enabled;
 			
 			this.ClearStatusBarInfo();
 		}
@@ -274,25 +268,36 @@ namespace Yusen.GExplorer {
 			this.tsslCrawl.Text = string.Format("終了処理 {0}/{1}: {2}", e.Current, e.Max, e.Message);
 			Application.DoEvents();
 		}
-		private void Cache_CacheRearranged(object sender, CacheEventArgs e) {
-			this.SetStatutBarTextTemporary(e.Message);
+		private void tsgmiSelectGenre_GenreSelected(object sender, GenreMenuItemSelectedEventArgs e) {
+			this.SelectGenre(e.SelectedGenre);
 		}
-
-		private void genreTabControl1_GenreSelected(object sender, GenreSelectedEventArgs e) {
-			GGenre genre = e.Genre;
-			if (null == genre) return;
-			CrawlResult result = null;
+		private void tsgmiCrawlGenre_GenreSelected(object sender, GenreMenuItemSelectedEventArgs e) {
+			this.CrawlGenre(e.SelectedGenre);
+		}
+		private void tsgmiUncrawlables_GenreSelected(object sender, GenreMenuItemSelectedEventArgs e) {
+			Utility.Browse(e.SelectedGenre.TopPageUri);
+		}
+		private void genreTabControl1_GenreSelected(object sender, GenreTabSelectedEventArgs e) {
 			if (e.ForceReload) {
-				if (this.bwCrawl.IsBusy) {
-					MessageBox.Show("多重クロールは禁止．", Program.ApplicationName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-					return;
-				} else {
-					this.bwCrawl.RunWorkerAsync(genre);
-				}
-			} else if (Cache.Instance.ResultsDictionary.TryGetValue(genre, out result)) {
+				this.CrawlGenre(e.Genre);
+			} else {
+				this.SelectGenre(e.Genre);
+			}
+		}
+		private void SelectGenre(GGenre genre) {
+			CrawlResult result;
+			if (Cache.Instance.ResultsDictionary.TryGetValue(genre, out result)) {
 				this.ViewCrawlResult(result);
 			} else {
 				this.ViewCrawlResult(null);
+			}
+		}
+		private void CrawlGenre(GGenre genre) {
+			if (this.bwCrawl.IsBusy) {
+				MessageBox.Show("多重クロールは禁止．", Program.ApplicationName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+				return;
+			} else {
+				this.bwCrawl.RunWorkerAsync(genre);
 			}
 		}
 
@@ -359,59 +364,6 @@ namespace Yusen.GExplorer {
 			this.ViewCrawlResult(mergedResult);
 			this.genreTabControl1.SelectedGenre = null;
 		}
-		private void tsmiClearCrawlResults_Click(object sender, EventArgs e) {
-			switch (MessageBox.Show(
-					"全ジャンルのクロール結果を破棄します．よろしいですか？", "クロール結果の破棄",
-					MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2)) {
-				case DialogResult.Yes:
-					Cache.Instance.ClearCrawlResults();
-					break;
-			}
-		}
-		private void tsmiRemoveCachesUnreachable_Click(object sender, EventArgs e) {
-			Cache.Instance.RemoveCachesUnreachable();
-		}
-		private void tsmiRemoveCachesAll_Click(object sender, EventArgs e) {
-			switch (MessageBox.Show(
-					"全てのキャッシュを削除します．よろしいですか？",
-					"全てのキャッシュを削除", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2)) {
-				case DialogResult.Yes:
-					Cache.Instance.RemoveCachesAll();
-					break;
-			}
-		}
-		private void tsmiRemoveDeadlineEntriesUnreacheable_Click(object sender, EventArgs e) {
-			Cache.Instance.RemoveDeadlineEntriesUnreacheable();
-		}
-		private void tsmiRemoveDeadlineEntriesAll_Click(object sender, EventArgs e) {
-			switch (MessageBox.Show(
-					"全てのエントリーを削除します．\nよろしいですか？",
-					"全てのエントリーを削除", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2)) {
-				case DialogResult.Yes:
-					Cache.Instance.RemoveDeadlineEntriesAll();
-					break;
-			}
-		}
-		private void tsmiDeleteNgContentsWeek_Click(object sender, EventArgs e) {
-			NgContentsManager manager = NgContentsManager.Instance;
-			int cntAll = manager.Count;
-			NgContentsManager.Instance.RemoveAll(new Predicate<NgContent>(delegate(NgContent ng) {
-				return ng.LastAbone < DateTime.Now.AddDays(-7);
-			}));
-			int cntLast = manager.Count;
-			this.SetStatutBarTextTemporary(string.Format("NGコンテンツの削除    削除数: {0}    残り: {1}", cntAll - cntLast, cntLast));
-		}
-		private void tsmiDeleteNgContentsAll_Click(object sender, EventArgs e) {
-			switch(MessageBox.Show(
-				"全てのNGコンテンツを削除します．\nよろしいですか？",
-				"全てのNGコンテンツを削除", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2)) {
-				case DialogResult.Yes:
-					int num = NgContentsManager.Instance.Count;
-					NgContentsManager.Instance.Clear();
-					this.SetStatutBarTextTemporary(string.Format("NGコンテンツの削除    削除数: {0}", num));
-					break;
-			}
-		}
 		private void tsmiGetProfile_Click(object sender, EventArgs e) {
 			string title = "ユーザIDに対応するプロファイルを取得";
 			string profile;
@@ -465,7 +417,7 @@ namespace Yusen.GExplorer {
 		}
 
 		private void bwCrawl_DoWork(object sender, DoWorkEventArgs e) {
-			this.ChangeEnabilityOfTsmiAbortCrawling(true);
+			this.ChangeVisibilityOfAbortCrawling(true);
 			e.Result = this.crawler.Crawl(GlobalSettings.Instance.CreateCrawlSettings(), e.Argument as GGenre, this.bwCrawl);
 			if (null == e.Result) {
 				e.Cancel = true;
@@ -476,7 +428,7 @@ namespace Yusen.GExplorer {
 			this.crawlProgressEventArgs = e.UserState as CrawlProgressEventArgs;
 		}
 		private void bwCrawl_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e) {
-			this.ChangeEnabilityOfTsmiAbortCrawling(false);
+			this.ChangeVisibilityOfAbortCrawling(false);
 			this.timerCrawlProgress.Stop();
 			this.ClearStatusBarInfo();
 			if (e.Cancelled) {
