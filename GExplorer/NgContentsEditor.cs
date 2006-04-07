@@ -43,10 +43,15 @@ namespace Yusen.GExplorer {
 		private static NgContentsEditor instance = null;
 		public static NgContentsEditor Instance {
 			get {
-				if(null == NgContentsEditor.instance || NgContentsEditor.instance.IsDisposed) {
+				if(!NgContentsEditor.HasInstance) {
 					NgContentsEditor.instance = new NgContentsEditor();
 				}
 				return NgContentsEditor.instance;
+			}
+		}
+		public static bool HasInstance {
+			get {
+				return null != NgContentsEditor.instance && !NgContentsEditor.instance.IsDisposed;
 			}
 		}
 
@@ -84,6 +89,13 @@ namespace Yusen.GExplorer {
 				this.lvNgContents.Items.Add(lvi);
 			}
 			this.lvNgContents.EndUpdate();
+			
+			int cntAll = NgContentsManager.Instance.Count;
+			int cntAccId = NgContentsManager.Instance.AcceralatedNgIdsCount;
+			int cntAccTitle = NgContentsManager.Instance.AcceralatedNgTitlesCount;
+			int cntNoneAcc = NgContentsManager.Instance.NonAcceralatedNgContentsCount;
+			int cntDiff = cntAll - cntAccId - cntAccTitle - cntNoneAcc;
+			this.lblCount.Text = string.Format("総数[{0}] = 高速化済ID[{1}] + 高速化済タイトル[{2}] + 非高速化[{3}] + 食い違い数[{4}]", cntAll, cntAccId, cntAccTitle, cntNoneAcc, cntDiff);
 		}
 		
 		private void NgContentsEditor_Load(object sender, EventArgs e) {

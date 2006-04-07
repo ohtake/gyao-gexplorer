@@ -50,7 +50,6 @@
 			this.tsmiRemoveCache = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsucmiCommandRoot = new Yusen.GExplorer.ToolStripUserCommandMenuItem();
-			this.colorDialog1 = new System.Windows.Forms.ColorDialog();
 			this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
 			this.listView1 = new Yusen.GExplorer.DoubleBufferedListView();
 			this.chId = new System.Windows.Forms.ColumnHeader();
@@ -59,7 +58,7 @@
 			this.chSubTitle = new System.Windows.Forms.ColumnHeader();
 			this.chDuration = new System.Windows.Forms.ColumnHeader();
 			this.chDeadline = new System.Windows.Forms.ColumnHeader();
-			this.chDescription = new System.Windows.Forms.ColumnHeader();
+			this.chSummary = new System.Windows.Forms.ColumnHeader();
 			this.chAttribs = new System.Windows.Forms.ColumnHeader();
 			this.tsMain = new System.Windows.Forms.ToolStrip();
 			this.tslTitle = new System.Windows.Forms.ToolStripLabel();
@@ -123,7 +122,7 @@
             this.toolStripSeparator3,
             this.tsucmiCommandRoot});
 			this.cmsContent.Name = "contextMenuStrip1";
-			this.cmsContent.Size = new System.Drawing.Size(215, 364);
+			this.cmsContent.Size = new System.Drawing.Size(215, 342);
 			this.cmsContent.Opening += new System.ComponentModel.CancelEventHandler(this.cmsContent_Opening);
 			// 
 			// tsmiAdd
@@ -298,11 +297,6 @@
 			this.tsucmiCommandRoot.Text = "外部コマンド(&C)";
 			this.tsucmiCommandRoot.UserCommandSelected += new System.EventHandler<Yusen.GExplorer.UserCommandSelectedEventArgs>(this.tsucmiCommandRoot_UserCommandSelected);
 			// 
-			// colorDialog1
-			// 
-			this.colorDialog1.AnyColor = true;
-			this.colorDialog1.FullOpen = true;
-			// 
 			// toolStripContainer1
 			// 
 			// 
@@ -332,7 +326,7 @@
             this.chSubTitle,
             this.chDuration,
             this.chDeadline,
-            this.chDescription,
+            this.chSummary,
             this.chAttribs});
 			this.listView1.ContextMenuStrip = this.cmsContent;
 			this.listView1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -381,10 +375,10 @@
 			this.chDeadline.Text = "配信期限";
 			this.chDeadline.Width = 70;
 			// 
-			// chDescription
+			// chSummary
 			// 
-			this.chDescription.Text = "説明";
-			this.chDescription.Width = 100;
+			this.chSummary.Text = "サマリー";
+			this.chSummary.Width = 100;
 			// 
 			// chAttribs
 			// 
@@ -684,7 +678,7 @@
 		private System.Windows.Forms.ColumnHeader chSeriesNumber;
 		private System.Windows.Forms.ColumnHeader chSubTitle;
 		private System.Windows.Forms.ColumnHeader chDuration;
-		private System.Windows.Forms.ColumnHeader chDescription;
+		private System.Windows.Forms.ColumnHeader chSummary;
 		private System.Windows.Forms.ContextMenuStrip cmsContent;
 		private System.Windows.Forms.ToolStripMenuItem tsmiAdd;
 		private System.Windows.Forms.ToolStripMenuItem tsmiPlayWithWmp;
@@ -699,7 +693,6 @@
 		private System.Windows.Forms.ToolStripMenuItem tsmiNg;
 		private System.Windows.Forms.ToolStripMenuItem tsmiAddNgWithId;
 		private System.Windows.Forms.ToolStripMenuItem tsmiAddNgWithTitle;
-		private System.Windows.Forms.ColorDialog colorDialog1;
 		private System.Windows.Forms.ToolStripContainer toolStripContainer1;
 		private System.Windows.Forms.ToolStrip tsMain;
 		private System.Windows.Forms.ToolStripLabel tslTitle;

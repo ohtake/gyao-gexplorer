@@ -213,7 +213,7 @@ namespace Yusen.GExplorer {
 		private void MainForm_Load(object sender, EventArgs e) {
 			if (base.DesignMode) return;
 			
-			this.crawler = new Crawler(new HtmlParserRegex(), Cache.Instance.ContentCacheController, Cache.Instance.DeadlineTable);
+			this.crawler = new Crawler(new HtmlParserRegex(), Cache.Instance.ContentCacheController);
 			
 			Program.ProgramSerializationProgress += new EventHandler<ProgramSerializationProgressEventArgs>(this.Program_ProgramSerializationProgress);
 			
@@ -235,7 +235,7 @@ namespace Yusen.GExplorer {
 			this.genreTabControl1.SelectedGenre = null;
 
 			this.ChangeVisibilityOfAbortCrawling(false);
-			this.tsgmiUncrawlables.Visible = this.tsgmiUncrawlables.Enabled;
+			this.tsgmiUncrawlables.Visible = this.tsgmiUncrawlables.HasAvailableSubmenus;
 			
 			this.ClearStatusBarInfo();
 		}
@@ -269,9 +269,10 @@ namespace Yusen.GExplorer {
 			Application.DoEvents();
 		}
 		private void tsgmiSelectGenre_GenreSelected(object sender, GenreMenuItemSelectedEventArgs e) {
-			this.SelectGenre(e.SelectedGenre);
+			this.genreTabControl1.SelectedGenre = e.SelectedGenre;
 		}
 		private void tsgmiCrawlGenre_GenreSelected(object sender, GenreMenuItemSelectedEventArgs e) {
+			this.genreTabControl1.SelectedGenre = e.SelectedGenre;
 			this.CrawlGenre(e.SelectedGenre);
 		}
 		private void tsgmiUncrawlables_GenreSelected(object sender, GenreMenuItemSelectedEventArgs e) {
@@ -376,9 +377,35 @@ namespace Yusen.GExplorer {
 		private void tsucmiCommand_UserCommandSelected(object sender, UserCommandSelectedEventArgs e) {
 			e.UserCommand.Execute(new ContentAdapter[] { });
 		}
+		private void tsmiSerializeSettingsNow_Click(object sender, EventArgs e) {
+			switch (MessageBox.Show("アプリケーションを終了せずに終了処理の真似事をします．\nあまりお勧めできませんが実行しますか？", "設定ファイルとキャッシュの強制的な書き出し", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2)) {
+				case DialogResult.Yes:
+					break;
+				default:
+					return;
+			}
+			
+			this.tsmiAbortCrawling.PerformClick();
+			
+			this.Enabled = false;
+			this.SetStatutBarTextTemporary("各フォームごとの設定ファイルを書き出し中．");
+			if (PlayerForm.HasInstance) Utility.SerializeSettings(PlayerForm.Instance.FilenameForSettings, PlayerForm.Instance.Settings);
+			if (BrowserForm.HasInstance) Utility.SerializeSettings(BrowserForm.Instance.FilenameForSettings, BrowserForm.Instance.Settings);
+			if (UserCommandsEditor.HasInstance) Utility.SerializeSettings(UserCommandsEditor.Instance.FilenameForSettings, UserCommandsEditor.Instance.Settings);
+			if (NgContentsEditor.HasInstance) Utility.SerializeSettings(NgContentsEditor.Instance.FilenameForSettings, NgContentsEditor.Instance.Settings);
+			Utility.SerializeSettings(this.FilenameForSettings, this.Settings);
+			
+			Program.SerializeSettings();
+			
+			this.Enabled = true;
+			
+			this.ClearStatusBarInfo();
+			this.SetStatutBarTextTemporary("設定ファイルとキャッシュの強制的な書き出しを完了しました．");
+		}
 		private void tsmiAbortCrawling_Click(object sender, EventArgs e) {
 			this.bwCrawl.CancelAsync();
 		}
+
 
 		private void tsmiSettingsGlobal_DropDownOpened(object sender, EventArgs e) {
 			this.tspgGlobal.RefreshPropertyGrid();

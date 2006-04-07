@@ -409,12 +409,6 @@ namespace Yusen.GExplorer {
 				}
 			}
 		}
-		private void tsmiSetDeadlines_Click(object sender, EventArgs e) {
-			foreach (ContentAdapter cont in PlayList.Instance) {
-				cont.TryResetDeadline();
-			}
-			this.tsmiRefleshView.PerformClick();
-		}
 		private void tsmiRefleshView_Click(object sender, EventArgs e) {
 			this.listView1.BeginUpdate();
 			this.UpdateItems();
@@ -449,9 +443,6 @@ namespace Yusen.GExplorer {
 			if (DialogResult.OK == this.ofdXml.ShowDialog()) {
 				PlayList.Instance.DeserializeItems(this.ofdXml.FileName);
 			}
-		}
-		private void tsmiSerializePlayListNow_Click(object sender, EventArgs e) {
-			PlayList.Instance.SerializeItems();
 		}
 		private void tsmiRemoveUnreachables_Click(object sender, EventArgs e) {
 			PlayList.Instance.BeginUpdate();

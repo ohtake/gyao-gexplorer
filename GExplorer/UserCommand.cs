@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Reflection;
 using Process = System.Diagnostics.Process;
-using StringBuilder = System.Text.StringBuilder;
+using System.Text;
+using System.Web;
 
 namespace Yusen.GExplorer {
 	/// <summary>外部コマンド．</summary>
@@ -24,12 +25,14 @@ namespace Yusen.GExplorer {
 		private const string strEscapedOpenBrace = "{{";
 		private const string strEscapedCloseBrace = "}}";
 		private const string reVarient = @"(?<PropName>[_A-Za-z]\w*)";
+		private const string reCodePageName = @"(?<CodePageName>[-_A-Za-z0-9]+)";
 		private static readonly Regex regexArgValidator;
 		private static readonly Regex regexReplaceable;
 		private static readonly Dictionary<string, string> dicLiteralsEU = new Dictionary<string,string>();
 		
 		static UserCommand(){
-			string replaceable = @"\{" + UserCommand.reVarient + @"\}|" + Regex.Escape(UserCommand.strEscapedOpenBrace) + "|" + Regex.Escape(UserCommand.strEscapedCloseBrace);
+			string replaceable = @"\{" + UserCommand.reVarient + @"(?:\:" + UserCommand.reCodePageName + @")?\}|" + Regex.Escape(UserCommand.strEscapedOpenBrace) + "|" + Regex.Escape(UserCommand.strEscapedCloseBrace);
+			
 			UserCommand.regexArgValidator = new Regex(@"^(?:[^{}]|" + replaceable + @")*$");
 			UserCommand.regexReplaceable = new Regex(replaceable);
 			
@@ -50,6 +53,12 @@ namespace Yusen.GExplorer {
 					return UserCommand.UnescapeLiteral(match.Value);
 				} else {
 					PropertyInfo pi = typeof(ContentAdapter).GetProperty(match.Groups["PropName"].Value);
+					Encoding encoding = null;
+					string codePageName = match.Groups["CodePageName"].Value;
+					if (!string.IsNullOrEmpty(codePageName)) {
+						encoding = Encoding.GetEncoding(codePageName);
+					}
+					
 					StringBuilder sb = new StringBuilder();
 					foreach (ContentAdapter cont in this.conts) {
 						if (sb.Length > 0) {
@@ -57,7 +66,12 @@ namespace Yusen.GExplorer {
 						}
 						sb.Append(pi.GetValue(cont, null).ToString());
 					}
-					return sb.ToString();
+					
+					if (null == encoding) {
+						return sb.ToString();
+					}else{
+						return HttpUtility.UrlEncode(sb.ToString(), encoding);
+					}
 				}
 			}
 		}

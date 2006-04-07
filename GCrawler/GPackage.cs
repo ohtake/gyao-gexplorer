@@ -11,9 +11,12 @@ namespace Yusen.GCrawler {
 	public class GPackage {
 		private readonly static Regex regexId = new Regex("pac[0-9]{7}", RegexOptions.Compiled);
 
-		private readonly static Regex regexPackageName = new Regex(@"<td class=""title12b"">(.+)</td>", RegexOptions.Compiled);
+		private static readonly Regex regexPackageName = new Regex(@"<td class=""title12b"">(.+)</td>", RegexOptions.Compiled);
+		private static readonly Regex regexThumbnail = new Regex(@"<img src=""/img/info/[^/]+/(cnt[0-9]{7})_s.jpg"" width=""80"" height=""60"" border=""0""><!-- サムネイル -->", RegexOptions.Compiled);
+		private static readonly Regex regexSummary = new Regex(@"^<td width=""235"" valign=""top"" class=""text10"">(.*)<!-- サマリー --></td>$", RegexOptions.Compiled);
+		[Obsolete]
 		private static readonly Regex regexAddMyList = new Regex(@"<a href=""javascript:addMylist\('(cnt[0-9]{7})'\);"">", RegexOptions.Compiled);
-		private static readonly Regex regexDeadline = new Regex(@"^<td height=""14"" colspan=""2"" class=""bk10"">(.+)</td>$", RegexOptions.Compiled);
+		private static readonly Regex regexDeadline = new Regex(@"^(.+まで)</td>$", RegexOptions.Compiled);
 		
 		public static bool TryExtractPackageId(Uri uri, out string id) {
 			Match match = GPackage.regexId.Match(uri.AbsoluteUri);
@@ -42,7 +45,7 @@ namespace Yusen.GCrawler {
 			return new Uri("http://www.gyao.jp/sityou/catelist/pac_id/" + packageId + "/");
 		}
 
-		internal static GPackage DoDownload(string packId, IDeadlineTable deadlineTable, out List<string> childContIds) {
+		internal static GPackage DoDownload(string packId, out List<string> childContIds, Dictionary<string, ContentPropertiesOnPackagePage> cpPacs) {
 			Uri uri = GPackage.CreatePackagePageUri(packId);
 			using (TextReader reader = new StreamReader(new WebClient().OpenRead(uri), Encoding.GetEncoding("Shift_JIS"))) {
 				string line;
@@ -64,20 +67,30 @@ namespace Yusen.GCrawler {
 				beginExtractId:
 					string contId;
 					while (null != (line = reader.ReadLine())) {
-						Match match = GPackage.regexAddMyList.Match(line);
+						Match match = GPackage.regexThumbnail.Match(line);
 						if (match.Success) {
 							contId = match.Groups[1].Value;
-							goto beginExtractDeadline;
+							goto beginExtractSummary;
 						}
 					}
 					goto endExtract;
+				beginExtractSummary:
+					string summary;
+					while (null != (line = reader.ReadLine())) {
+						Match match = GPackage.regexSummary.Match(line);
+						if (match.Success) {
+							summary = match.Groups[1].Value;
+							goto beginExtractDeadline;
+						}
+					}
+					throw new Exception("サマリーを取得できなかった． <" + uri.AbsoluteUri + ">");
 				beginExtractDeadline:
 					while (null != (line = reader.ReadLine())) {
 						Match match = GPackage.regexDeadline.Match(line);
 						if (match.Success) {
 							string deadline = match.Groups[1].Value;
 							contentIds.Add(contId);
-							deadlineTable.SetDeadline(contId, deadline);
+							cpPacs.Add(contId, new ContentPropertiesOnPackagePage(deadline, summary));
 							goto beginExtractId;
 						}
 					}
@@ -123,6 +136,28 @@ namespace Yusen.GCrawler {
 		}
 		public override string ToString() {
 			return "<" + this.PackageId + "> " + this.PackageName;
+		}
+	}
+	
+	internal sealed class ContentPropertiesOnPackagePage {
+		internal static readonly ContentPropertiesOnPackagePage Empty;
+		static ContentPropertiesOnPackagePage() {
+			ContentPropertiesOnPackagePage.Empty = new ContentPropertiesOnPackagePage(string.Empty, string.Empty);
+		}
+		
+		private string deadline;
+		private string summary;
+
+		internal ContentPropertiesOnPackagePage(string deadline, string summary) {
+			this.deadline = deadline;
+			this.summary = summary;
+		}
+
+		public string Deadline {
+			get { return this.deadline; }
+		}
+		public string Summary {
+			get { return this.summary; }
 		}
 	}
 }

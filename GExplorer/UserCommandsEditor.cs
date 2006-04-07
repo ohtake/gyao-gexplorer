@@ -45,10 +45,15 @@ namespace Yusen.GExplorer {
 		private static UserCommandsEditor instance = null;
 		public static UserCommandsEditor Instance {
 			get {
-				if(null == UserCommandsEditor.instance || UserCommandsEditor.instance.IsDisposed) {
+				if (!UserCommandsEditor.HasInstance) {
 					UserCommandsEditor.instance = new UserCommandsEditor();
 				}
 				return UserCommandsEditor.instance;
+			}
+		}
+		public static bool HasInstance {
+			get {
+				return null != UserCommandsEditor.instance && !UserCommandsEditor.instance.IsDisposed;
 			}
 		}
 		

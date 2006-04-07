@@ -32,7 +32,6 @@
 			this.tsmiCopyNameDetailImageUri = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiCopyImage = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-			this.tsucmiCommand = new Yusen.GExplorer.ToolStripUserCommandMenuItem();
 			this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiTest = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiTestLoad = new System.Windows.Forms.ToolStripMenuItem();
@@ -53,11 +52,14 @@
 			this.txtSubtitle = new System.Windows.Forms.TextBox();
 			this.label5 = new System.Windows.Forms.Label();
 			this.txtDuration = new System.Windows.Forms.TextBox();
-			this.txtDescription = new System.Windows.Forms.TextBox();
 			this.label6 = new System.Windows.Forms.Label();
 			this.txtDeadline = new System.Windows.Forms.TextBox();
+			this.txtDescription = new System.Windows.Forms.TextBox();
+			this.label7 = new System.Windows.Forms.Label();
+			this.txtSummary = new System.Windows.Forms.TextBox();
 			this.tabpDetail = new System.Windows.Forms.TabPage();
 			this.propgDetail = new System.Windows.Forms.PropertyGrid();
+			this.tsucmiCommand = new Yusen.GExplorer.ToolStripUserCommandMenuItem();
 			this.splitContainer1.Panel1.SuspendLayout();
 			this.splitContainer1.Panel2.SuspendLayout();
 			this.splitContainer1.SuspendLayout();
@@ -83,7 +85,7 @@
 			// splitContainer1.Panel2
 			// 
 			this.splitContainer1.Panel2.Controls.Add(this.tabControl1);
-			this.splitContainer1.Size = new System.Drawing.Size(224, 387);
+			this.splitContainer1.Size = new System.Drawing.Size(224, 455);
 			this.splitContainer1.SplitterDistance = 157;
 			this.splitContainer1.TabIndex = 0;
 			this.splitContainer1.Text = "splitContainer1";
@@ -112,7 +114,7 @@
             this.toolStripMenuItem2,
             this.tsmiTest});
 			this.cmsImage.Name = "cmsImage";
-			this.cmsImage.Size = new System.Drawing.Size(249, 170);
+			this.cmsImage.Size = new System.Drawing.Size(249, 148);
 			this.cmsImage.Opening += new System.ComponentModel.CancelEventHandler(this.cmsImage_Opening);
 			// 
 			// tsmiCopyImageUri
@@ -147,13 +149,6 @@
 			// 
 			this.toolStripSeparator2.Name = "toolStripSeparator2";
 			this.toolStripSeparator2.Size = new System.Drawing.Size(245, 6);
-			// 
-			// tsucmiCommand
-			// 
-			this.tsucmiCommand.Name = "tsucmiCommand";
-			this.tsucmiCommand.Size = new System.Drawing.Size(248, 22);
-			this.tsucmiCommand.Text = "外部コマンド(&C)";
-			this.tsucmiCommand.UserCommandSelected += new System.EventHandler<Yusen.GExplorer.UserCommandSelectedEventArgs>(this.tsucmiCommand_UserCommandSelected);
 			// 
 			// toolStripMenuItem2
 			// 
@@ -213,7 +208,7 @@
 			this.tabControl1.Location = new System.Drawing.Point(0, 0);
 			this.tabControl1.Name = "tabControl1";
 			this.tabControl1.SelectedIndex = 0;
-			this.tabControl1.Size = new System.Drawing.Size(224, 226);
+			this.tabControl1.Size = new System.Drawing.Size(224, 294);
 			this.tabControl1.TabIndex = 0;
 			// 
 			// tabpSummary2
@@ -221,7 +216,7 @@
 			this.tabpSummary2.Controls.Add(this.tableLayoutPanel2);
 			this.tabpSummary2.Location = new System.Drawing.Point(4, 21);
 			this.tabpSummary2.Name = "tabpSummary2";
-			this.tabpSummary2.Size = new System.Drawing.Size(216, 201);
+			this.tabpSummary2.Size = new System.Drawing.Size(216, 269);
 			this.tabpSummary2.TabIndex = 0;
 			this.tabpSummary2.Text = "簡易";
 			this.tabpSummary2.UseVisualStyleBackColor = true;
@@ -241,13 +236,16 @@
 			this.tableLayoutPanel2.Controls.Add(this.txtSubtitle, 1, 3);
 			this.tableLayoutPanel2.Controls.Add(this.label5, 0, 4);
 			this.tableLayoutPanel2.Controls.Add(this.txtDuration, 1, 4);
-			this.tableLayoutPanel2.Controls.Add(this.txtDescription, 1, 5);
 			this.tableLayoutPanel2.Controls.Add(this.label6, 0, 5);
 			this.tableLayoutPanel2.Controls.Add(this.txtDeadline, 1, 5);
+			this.tableLayoutPanel2.Controls.Add(this.txtDescription, 0, 7);
+			this.tableLayoutPanel2.Controls.Add(this.label7, 0, 6);
+			this.tableLayoutPanel2.Controls.Add(this.txtSummary, 1, 6);
 			this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 0);
 			this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-			this.tableLayoutPanel2.RowCount = 7;
+			this.tableLayoutPanel2.RowCount = 8;
+			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 24F));
 			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 24F));
 			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 24F));
 			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 24F));
@@ -255,7 +253,9 @@
 			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 24F));
 			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 24F));
 			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-			this.tableLayoutPanel2.Size = new System.Drawing.Size(216, 201);
+			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+			this.tableLayoutPanel2.Size = new System.Drawing.Size(216, 269);
 			this.tableLayoutPanel2.TabIndex = 0;
 			// 
 			// label1
@@ -305,7 +305,7 @@
 			this.txtId.Name = "txtId";
 			this.txtId.ReadOnly = true;
 			this.txtId.Size = new System.Drawing.Size(163, 19);
-			this.txtId.TabIndex = 6;
+			this.txtId.TabIndex = 7;
 			// 
 			// txtTitle
 			// 
@@ -314,7 +314,7 @@
 			this.txtTitle.Name = "txtTitle";
 			this.txtTitle.ReadOnly = true;
 			this.txtTitle.Size = new System.Drawing.Size(163, 19);
-			this.txtTitle.TabIndex = 7;
+			this.txtTitle.TabIndex = 8;
 			// 
 			// txtEpisode
 			// 
@@ -323,7 +323,7 @@
 			this.txtEpisode.Name = "txtEpisode";
 			this.txtEpisode.ReadOnly = true;
 			this.txtEpisode.Size = new System.Drawing.Size(163, 19);
-			this.txtEpisode.TabIndex = 8;
+			this.txtEpisode.TabIndex = 9;
 			// 
 			// txtSubtitle
 			// 
@@ -332,7 +332,7 @@
 			this.txtSubtitle.Name = "txtSubtitle";
 			this.txtSubtitle.ReadOnly = true;
 			this.txtSubtitle.Size = new System.Drawing.Size(163, 19);
-			this.txtSubtitle.TabIndex = 9;
+			this.txtSubtitle.TabIndex = 10;
 			// 
 			// label5
 			// 
@@ -351,19 +351,7 @@
 			this.txtDuration.Name = "txtDuration";
 			this.txtDuration.ReadOnly = true;
 			this.txtDuration.Size = new System.Drawing.Size(163, 19);
-			this.txtDuration.TabIndex = 10;
-			// 
-			// txtDescription
-			// 
-			this.tableLayoutPanel2.SetColumnSpan(this.txtDescription, 2);
-			this.txtDescription.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.txtDescription.Location = new System.Drawing.Point(3, 147);
-			this.txtDescription.Multiline = true;
-			this.txtDescription.Name = "txtDescription";
-			this.txtDescription.ReadOnly = true;
-			this.txtDescription.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-			this.txtDescription.Size = new System.Drawing.Size(210, 51);
-			this.txtDescription.TabIndex = 12;
+			this.txtDuration.TabIndex = 11;
 			// 
 			// label6
 			// 
@@ -382,14 +370,45 @@
 			this.txtDeadline.Name = "txtDeadline";
 			this.txtDeadline.ReadOnly = true;
 			this.txtDeadline.Size = new System.Drawing.Size(163, 19);
-			this.txtDeadline.TabIndex = 11;
+			this.txtDeadline.TabIndex = 12;
+			// 
+			// txtDescription
+			// 
+			this.tableLayoutPanel2.SetColumnSpan(this.txtDescription, 2);
+			this.txtDescription.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.txtDescription.Location = new System.Drawing.Point(3, 171);
+			this.txtDescription.Multiline = true;
+			this.txtDescription.Name = "txtDescription";
+			this.txtDescription.ReadOnly = true;
+			this.txtDescription.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+			this.txtDescription.Size = new System.Drawing.Size(210, 95);
+			this.txtDescription.TabIndex = 14;
+			// 
+			// label7
+			// 
+			this.label7.Anchor = System.Windows.Forms.AnchorStyles.Right;
+			this.label7.AutoSize = true;
+			this.label7.Location = new System.Drawing.Point(3, 150);
+			this.label7.Name = "label7";
+			this.label7.Size = new System.Drawing.Size(41, 12);
+			this.label7.TabIndex = 6;
+			this.label7.Text = "サマリー";
+			// 
+			// txtSummary
+			// 
+			this.txtSummary.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.txtSummary.Location = new System.Drawing.Point(50, 147);
+			this.txtSummary.Name = "txtSummary";
+			this.txtSummary.ReadOnly = true;
+			this.txtSummary.Size = new System.Drawing.Size(163, 19);
+			this.txtSummary.TabIndex = 13;
 			// 
 			// tabpDetail
 			// 
 			this.tabpDetail.Controls.Add(this.propgDetail);
 			this.tabpDetail.Location = new System.Drawing.Point(4, 21);
 			this.tabpDetail.Name = "tabpDetail";
-			this.tabpDetail.Size = new System.Drawing.Size(216, 201);
+			this.tabpDetail.Size = new System.Drawing.Size(216, 269);
 			this.tabpDetail.TabIndex = 1;
 			this.tabpDetail.Text = "詳細";
 			this.tabpDetail.UseVisualStyleBackColor = true;
@@ -399,8 +418,15 @@
 			this.propgDetail.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.propgDetail.Location = new System.Drawing.Point(0, 0);
 			this.propgDetail.Name = "propgDetail";
-			this.propgDetail.Size = new System.Drawing.Size(216, 201);
+			this.propgDetail.Size = new System.Drawing.Size(216, 269);
 			this.propgDetail.TabIndex = 0;
+			// 
+			// tsucmiCommand
+			// 
+			this.tsucmiCommand.Name = "tsucmiCommand";
+			this.tsucmiCommand.Size = new System.Drawing.Size(248, 22);
+			this.tsucmiCommand.Text = "外部コマンド(&C)";
+			this.tsucmiCommand.UserCommandSelected += new System.EventHandler<Yusen.GExplorer.UserCommandSelectedEventArgs>(this.tsucmiCommand_UserCommandSelected);
 			// 
 			// ContentDetailView
 			// 
@@ -408,7 +434,7 @@
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.Controls.Add(this.splitContainer1);
 			this.Name = "ContentDetailView";
-			this.Size = new System.Drawing.Size(224, 387);
+			this.Size = new System.Drawing.Size(224, 455);
 			this.Load += new System.EventHandler(this.ContentDetailView_Load);
 			this.splitContainer1.Panel1.ResumeLayout(false);
 			this.splitContainer1.Panel2.ResumeLayout(false);
@@ -441,7 +467,6 @@
 		private System.Windows.Forms.TextBox txtTitle;
 		private System.Windows.Forms.TextBox txtEpisode;
 		private System.Windows.Forms.TextBox txtSubtitle;
-		private System.Windows.Forms.TextBox txtDescription;
 		private System.Windows.Forms.ContextMenuStrip cmsImage;
 		private System.Windows.Forms.ToolStripMenuItem tsmiCopyImageUri;
 		private System.Windows.Forms.Label label5;
@@ -460,5 +485,8 @@
 		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
 		private System.Windows.Forms.ToolStripMenuItem tsmiTestNewPictureBox;
 		private ToolStripUserCommandMenuItem tsucmiCommand;
+		private System.Windows.Forms.TextBox txtDescription;
+		private System.Windows.Forms.Label label7;
+		private System.Windows.Forms.TextBox txtSummary;
 	}
 }

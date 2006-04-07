@@ -84,7 +84,6 @@ namespace Yusen.GExplorer {
 		}
 		public ContentAdapter(GContent innerCont) {
 			this.InnerContent = innerCont;
-			this.TryResetDeadline();
 		}
 
 		private string CreateDisplayName() {
@@ -117,13 +116,6 @@ namespace Yusen.GExplorer {
 				this.gTimeSpan = new GTimeSpan(this.innerCont.Duration);
 			}
 		}
-		[ReadOnly(true)]
-		[Category("専ブラが付加した情報")]
-		[Description("配信期限．かなり適当なので必ずしも信用できるわけじゃない．")]
-		public string Deadline {
-			get { return this.deadline; }
-			set { this.deadline = value; }
-		}
 		[Category("ユーザが入力する情報")]
 		[Description("コメント．ユーザが自由に入力できる．ただしプレイリストに入っているものに対して入力しないとほとんど意味ない．")]
 		public string Comment {
@@ -139,41 +131,54 @@ namespace Yusen.GExplorer {
 			get { return this.innerCont.ContentId; }
 		}
 		[XmlIgnore]
-		[Category("付随情報")]
+		[Category("付随情報C")]
 		[Description("ジャンル名．")]
 		public string GenreName {
 			get { return this.innerCont.GenreName; }
 		}
 		[XmlIgnore]
-		[Category("付随情報")]
+		[Category("付随情報C")]
 		[Description("タイトル．")]
 		public string Title {
 			get { return this.innerCont.Title; }
 		}
 		[XmlIgnore]
-		[Category("付随情報")]
+		[Category("付随情報C")]
 		[Description("シリーズ番号．")]
 		public string SeriesNumber {
 			get { return this.innerCont.SeriesNumber; }
 		}
 		[XmlIgnore]
-		[Category("付随情報")]
+		[Category("付随情報C")]
 		[Description("サブタイトル．")]
 		public string SubTitle {
 			get { return this.innerCont.SubTitle; }
 		}
 		[XmlIgnore]
-		[Category("付随情報")]
+		[Category("付随情報C")]
 		[Description("番組時間 (CM時間を除く)．")]
 		public string Duration {
 			get { return this.innerCont.Duration; }
 		}
 		[XmlIgnore]
-		[Category("付随情報")]
+		[Category("付随情報C")]
 		[Description("詳細記述(長)．")]
 		public string LongDescription {
 			get { return this.innerCont.LongDescription; }
 		}
+		[XmlIgnore]
+		[Category("付随情報P")]
+		[Description("サマリー．")]
+		public string Summary {
+			get { return this.innerCont.Summary; }
+		}
+		[XmlIgnore]
+		[Category("付随情報P")]
+		[Description("配信期限．")]
+		public string Deadline {
+			get { return this.innerCont.Deadline; }
+		}
+		
 		[XmlIgnore]
 		[Category("専ブラが付加した情報")]
 		[Description("Trueの場合はキャッシュから読まれたことを示す．")]
@@ -272,14 +277,6 @@ namespace Yusen.GExplorer {
 		
 		public Uri ChapterPlaylistUriOf(int chapterNo) {
 			return GContent.CreatePlaylistUri(this.ContentId, GlobalSettings.Instance.UserNo, GlobalSettings.Instance.BitRate, chapterNo);
-		}
-		public bool TryResetDeadline() {
-			if (Cache.Instance.DeadlineTableReadOnly.TryGetDeadline(this.ContentId, out this.deadline)) {
-				return true;
-			} else {
-				this.deadline = string.Empty;
-				return false;
-			}
 		}
 
 		public override bool Equals(object obj) {

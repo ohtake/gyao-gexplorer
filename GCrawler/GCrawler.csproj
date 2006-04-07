@@ -36,7 +36,6 @@
   <ItemGroup>
     <Compile Include="ClipResumeInfo.cs" />
     <Compile Include="ContentCacheController.cs" />
-    <Compile Include="DeadlineTable.cs" />
     <Compile Include="GBitRate.cs" />
     <Compile Include="GContent.cs" />
     <Compile Include="Crawler.cs" />

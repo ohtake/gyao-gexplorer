@@ -123,20 +123,20 @@ namespace Yusen.GExplorer {
 			private int? colWidthDeadline;
 
 			[Category("カラム幅")]
-			[DisplayName("[6] 説明")]
-			[Description("'説明'カラムの幅をピクセルで指定します．")]
+			[DisplayName("[6] サマリー")]
+			[Description("'サマリー'カラムの幅をピクセルで指定します．")]
 			[DefaultValue(null)]
-			public int? ColWidthLongDesc {
+			public int? ColWidthSummary {
 				get {
-					if (this.HasOwner) return this.owner.chDescription.Width;
-					else return this.colWidthLongDesc;
+					if (this.HasOwner) return this.owner.chSummary.Width;
+					else return this.colWidthSummary;
 				}
 				set {
-					if (this.HasOwner && value.HasValue) this.owner.chDescription.Width = value.Value;
-					else this.colWidthLongDesc = value;
+					if (this.HasOwner && value.HasValue) this.owner.chSummary.Width = value.Value;
+					else this.colWidthSummary = value;
 				}
 			}
-			private int? colWidthLongDesc;
+			private int? colWidthSummary;
 
 			[Category("カラム幅")]
 			[DisplayName("[7] 属性")]
@@ -328,16 +328,15 @@ namespace Yusen.GExplorer {
 
 		private sealed class ContentListViewItem : ListViewItem {
 			public ContentListViewItem(ContentAdapter ca, ListViewGroup packageGroup)
-				: base(new string[] { ca.ContentId, ca.Title, ca.SeriesNumber, ca.SubTitle, ca.GTimeSpan.ToString(), ca.Deadline, ca.LongDescription, ca.Attributes }) {
+				: base(new string[] { ca.ContentId, ca.Title, ca.SeriesNumber, ca.SubTitle, ca.GTimeSpan.ToString(), ca.Deadline, ca.Summary, ca.Attributes }) {
 				this.contentAdapter = ca;
 				this.packageGroup = packageGroup;
-				this.RefreshNgCached();
 			}
 			private ContentAdapter contentAdapter;
 			public ContentAdapter ContentAdapter {
 				get { return this.contentAdapter; }
 			}
-			private bool isNgCached;
+			private bool isNgCached = false;
 			public bool IsNgCached {
 				get { return this.isNgCached; }
 			}
@@ -346,14 +345,14 @@ namespace Yusen.GExplorer {
 				get { return this.packageGroup; }
 			}
 
-			public void RefreshNgCached() {
+			public void ResetNgCachedFlag() {
 				this.isNgCached = NgContentsManager.Instance.IsNgContent(this.ContentAdapter);
 			}
 		}
 		
 		public event EventHandler<ContentSelectionChangedEventArgs> ContentSelectionChanged;
 		public event EventHandler<ManuallyCacheDeletedEventArgs> ManuallyCacheDeleted;
-		
+
 		private CrawlResult crawlResult;
 		private AboneType aboneType = AboneType.Toumei;
 		private FilterType filterType = FilterType.Normal;
@@ -419,12 +418,13 @@ namespace Yusen.GExplorer {
 			set {
 				lock (this) {
 					this.crawlResult = value;
-					
+
 					this.listView1.BeginUpdate();
 					this.ClearAllItems();
 					this.ShowPackages = this.ShowPackages;
 					if (null != value) {
 						this.CreateItems();
+						this.ReSETAllNgCached();
 						this.DisplayItems();
 					}
 					this.listView1.EndUpdate();
@@ -604,9 +604,10 @@ namespace Yusen.GExplorer {
 				}
 			}
 		}
-		private void RefreshAllNgCached() {
+		private void ReSETAllNgCached() {
+			DateTime begin = DateTime.Now;
 			foreach(ContentListViewItem clvi in this.allClvis) {
-				clvi.RefreshNgCached();
+				clvi.ResetNgCachedFlag();
 			}
 		}
 		private void DisplayItems(){
@@ -659,6 +660,7 @@ namespace Yusen.GExplorer {
 				}
 
 				clvi.Group = clvi.PackageGroup;
+				clvi.Selected = false;
 				this.listView1.Items.Add(clvi);
 			}
 
@@ -775,7 +777,7 @@ namespace Yusen.GExplorer {
 		}
 
 		private void NgContentsManager_NgContentsChanged(object sender, EventArgs e) {
-			this.RefreshAllNgCached();
+			this.ReSETAllNgCached();
 			this.UpdateView();
 		}
 
@@ -935,7 +937,7 @@ namespace Yusen.GExplorer {
 				}
 			}
 			if (0 == ngs.Count) {
-				MessageBox.Show("該当するNGコンテンツはありません．", "NGテスト", MessageBoxButtons.OK, MessageBoxIcon.Information);
+				MessageBox.Show("選択されたコンテンツをNGするNGコンテンツはありません．", "NGテスト", MessageBoxButtons.OK, MessageBoxIcon.Information);
 			} else {
 				string separator = "-------------------------------------------------";
 				StringBuilder sb = new StringBuilder();
@@ -1074,7 +1076,7 @@ namespace Yusen.GExplorer {
 		Migemo,
 		Regex,
 	}
-	public class ManuallyCacheDeletedEventArgs : EventArgs {
+	public sealed class ManuallyCacheDeletedEventArgs : EventArgs {
 		private int succeeded;
 		private int failed;
 		internal ManuallyCacheDeletedEventArgs(int succeeded, int failed) {

@@ -25,12 +25,12 @@ namespace Yusen.GExplorer {
 		public ToolStripUserCommandMenuItem() : base("ToolStripUserCommandMenuItem"){
 			if (base.DesignMode) return;
 			
-			UserCommandsManager.Instance.UserCommandsChanged += new EventHandler(UserCommandsManager_UserCommandsChanged);
 			this.RecreateSubMenuItems();
+			UserCommandsManager.Instance.UserCommandsChanged += new EventHandler(UserCommandsManager_UserCommandsChanged);
 		}
 		private void RecreateSubMenuItems() {
 			List<ToolStripItem> items = new List<ToolStripItem>();
-
+			
 			foreach (UserCommand command in UserCommandsManager.Instance) {
 				ToolStripMenuItemWithUserCommand tsmiwuc = new ToolStripMenuItemWithUserCommand(command);
 				tsmiwuc.Click += delegate(object sender, EventArgs e) {
@@ -45,8 +45,13 @@ namespace Yusen.GExplorer {
 			}
 			
 			base.DropDownItems.Clear();
-			base.DropDownItems.AddRange(items.ToArray());
-			base.Enabled = base.HasDropDownItems;
+			if (items.Count > 0) {
+				base.DropDownItems.AddRange(items.ToArray());
+			} else {
+				ToolStripMenuItem tsmi = new ToolStripMenuItem("(なし)");
+				tsmi.Enabled = false;
+				base.DropDownItems.Add(tsmi);
+			}
 		}
 		private void UserCommandsManager_UserCommandsChanged(object sender, EventArgs e) {
 			this.RecreateSubMenuItems();

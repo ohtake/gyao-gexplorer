@@ -57,13 +57,11 @@
 			this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsddbOperation = new System.Windows.Forms.ToolStripDropDownButton();
 			this.tsmiAddById = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiSetDeadlines = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiRefleshView = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiExport = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiImportAppend = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiImportOverwrite = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiSerializePlayListNow = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiRemoveUnreachables = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiClearPlayList = new System.Windows.Forms.ToolStripMenuItem();
@@ -173,7 +171,7 @@
             this.toolStripSeparator4,
             this.tsucmiCommand});
 			this.cmsPlayListItem.Name = "cmsPlayListItem";
-			this.cmsPlayListItem.Size = new System.Drawing.Size(212, 314);
+			this.cmsPlayListItem.Size = new System.Drawing.Size(212, 292);
 			this.cmsPlayListItem.Opening += new System.ComponentModel.CancelEventHandler(this.cmsPlayListItem_Opening);
 			// 
 			// tsmiPlay
@@ -356,13 +354,11 @@
 			this.tsddbOperation.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
 			this.tsddbOperation.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiAddById,
-            this.tsmiSetDeadlines,
             this.tsmiRefleshView,
             this.toolStripSeparator9,
             this.tsmiExport,
             this.tsmiImportAppend,
             this.tsmiImportOverwrite,
-            this.tsmiSerializePlayListNow,
             this.toolStripSeparator5,
             this.tsmiRemoveUnreachables,
             this.tsmiClearPlayList});
@@ -374,73 +370,59 @@
 			// tsmiAddById
 			// 
 			this.tsmiAddById.Name = "tsmiAddById";
-			this.tsmiAddById.Size = new System.Drawing.Size(252, 22);
+			this.tsmiAddById.Size = new System.Drawing.Size(248, 22);
 			this.tsmiAddById.Text = "ID指定で手動追加(&A) ...";
 			this.tsmiAddById.Click += new System.EventHandler(this.tsmiAddById_Click);
-			// 
-			// tsmiSetDeadlines
-			// 
-			this.tsmiSetDeadlines.Name = "tsmiSetDeadlines";
-			this.tsmiSetDeadlines.Size = new System.Drawing.Size(252, 22);
-			this.tsmiSetDeadlines.Text = "全項目の配信期限を設定しなおす(&D)";
-			this.tsmiSetDeadlines.Click += new System.EventHandler(this.tsmiSetDeadlines_Click);
 			// 
 			// tsmiRefleshView
 			// 
 			this.tsmiRefleshView.Name = "tsmiRefleshView";
-			this.tsmiRefleshView.Size = new System.Drawing.Size(252, 22);
+			this.tsmiRefleshView.Size = new System.Drawing.Size(248, 22);
 			this.tsmiRefleshView.Text = "表示内容を強制的にリフレッシュ(&R)";
 			this.tsmiRefleshView.Click += new System.EventHandler(this.tsmiRefleshView_Click);
 			// 
 			// toolStripSeparator9
 			// 
 			this.toolStripSeparator9.Name = "toolStripSeparator9";
-			this.toolStripSeparator9.Size = new System.Drawing.Size(249, 6);
+			this.toolStripSeparator9.Size = new System.Drawing.Size(245, 6);
 			// 
 			// tsmiExport
 			// 
 			this.tsmiExport.Name = "tsmiExport";
-			this.tsmiExport.Size = new System.Drawing.Size(252, 22);
+			this.tsmiExport.Size = new System.Drawing.Size(248, 22);
 			this.tsmiExport.Text = "プレイリストをイクスポート(&E)...";
 			this.tsmiExport.Click += new System.EventHandler(this.tsmiExport_Click);
 			// 
 			// tsmiImportAppend
 			// 
 			this.tsmiImportAppend.Name = "tsmiImportAppend";
-			this.tsmiImportAppend.Size = new System.Drawing.Size(252, 22);
+			this.tsmiImportAppend.Size = new System.Drawing.Size(248, 22);
 			this.tsmiImportAppend.Text = "プレイリストを追加インポート(&I)...";
 			this.tsmiImportAppend.Click += new System.EventHandler(this.tsmiImportAppend_Click);
 			// 
 			// tsmiImportOverwrite
 			// 
 			this.tsmiImportOverwrite.Name = "tsmiImportOverwrite";
-			this.tsmiImportOverwrite.Size = new System.Drawing.Size(252, 22);
+			this.tsmiImportOverwrite.Size = new System.Drawing.Size(248, 22);
 			this.tsmiImportOverwrite.Text = "プレイリストを上書きインポート(&M)...";
 			this.tsmiImportOverwrite.Click += new System.EventHandler(this.tsmiImportOverwrite_Click);
-			// 
-			// tsmiSerializePlayListNow
-			// 
-			this.tsmiSerializePlayListNow.Name = "tsmiSerializePlayListNow";
-			this.tsmiSerializePlayListNow.Size = new System.Drawing.Size(252, 22);
-			this.tsmiSerializePlayListNow.Text = "プレイリストを今すぐシリアライズ(&S)";
-			this.tsmiSerializePlayListNow.Click += new System.EventHandler(this.tsmiSerializePlayListNow_Click);
 			// 
 			// toolStripSeparator5
 			// 
 			this.toolStripSeparator5.Name = "toolStripSeparator5";
-			this.toolStripSeparator5.Size = new System.Drawing.Size(249, 6);
+			this.toolStripSeparator5.Size = new System.Drawing.Size(245, 6);
 			// 
 			// tsmiRemoveUnreachables
 			// 
 			this.tsmiRemoveUnreachables.Name = "tsmiRemoveUnreachables";
-			this.tsmiRemoveUnreachables.Size = new System.Drawing.Size(252, 22);
+			this.tsmiRemoveUnreachables.Size = new System.Drawing.Size(248, 22);
 			this.tsmiRemoveUnreachables.Text = "クロール結果で到達不可のを削除(&U)";
 			this.tsmiRemoveUnreachables.Click += new System.EventHandler(this.tsmiRemoveUnreachables_Click);
 			// 
 			// tsmiClearPlayList
 			// 
 			this.tsmiClearPlayList.Name = "tsmiClearPlayList";
-			this.tsmiClearPlayList.Size = new System.Drawing.Size(252, 22);
+			this.tsmiClearPlayList.Size = new System.Drawing.Size(248, 22);
 			this.tsmiClearPlayList.Text = "プレイリストの全項目を削除(&C)...";
 			this.tsmiClearPlayList.Click += new System.EventHandler(this.tsmiClearPlayList_Click);
 			// 
@@ -533,7 +515,6 @@
 		private System.Windows.Forms.ToolStripLabel tslTitle;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
 		private System.Windows.Forms.ToolStripDropDownButton tsddbOperation;
-		private System.Windows.Forms.ToolStripMenuItem tsmiSerializePlayListNow;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
 		private System.Windows.Forms.ToolStripMenuItem tsmiClearPlayList;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
@@ -547,7 +528,6 @@
 		private System.Windows.Forms.ColumnHeader chDeadline;
 		private System.Windows.Forms.ColumnHeader chComment;
 		private System.Windows.Forms.ToolStripMenuItem tsmiSetComment;
-		private System.Windows.Forms.ToolStripMenuItem tsmiSetDeadlines;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator9;
 		private System.Windows.Forms.ToolStripMenuItem tsmiRefleshView;
 		private System.Windows.Forms.ToolStripMenuItem tsmiImportAppend;

@@ -1,12 +1,12 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Collections.Generic;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.IO;
-using System.Xml.Serialization;
-using System.Text;
 using System.Net;
+using System.Xml.Serialization;
 using System.Runtime.Serialization;
-using System.ComponentModel;
 
 namespace Yusen.GCrawler {
 	[Serializable]
@@ -115,7 +115,7 @@ namespace Yusen.GCrawler {
 				+ "&clipNo=" + resumeInfo.ClipNo.ToString());
 		}
 #endif
-		public static GContent DoDownload(string contId) {
+		internal static GContent DoDownload(string contId, ContentPropertiesOnPackagePage cpPac) {
 			Uri uri = GContent.CreateDetailPageUri(contId);
 			TextReader reader = null;
 			try {
@@ -163,14 +163,18 @@ namespace Yusen.GCrawler {
 						}
 					}
 				}
-				return new GContent(contId, genre.Trim(), title.Trim(), seriesNum.Trim(), subtitle.Trim(), duration.Trim(), description.ToString().Trim(), imageDir, false);
+				ContentPropertiesOnContentPage cpCnt = new ContentPropertiesOnContentPage(genre, title, seriesNum, subtitle, duration, description.ToString(), imageDir);
+				return new GContent(contId, cpCnt, cpPac);
 			} catch (ContentDownloadException) {
 				throw;
-			} catch(Exception e) {
+			} catch (Exception e) {
 				throw new ContentDownloadException("不明なエラー．内部例外を参照．", e);
 			} finally {
 				if (null != reader) reader.Close();
 			}
+		}
+		public static GContent DoDownload(string contId) {
+			return GContent.DoDownload(contId, ContentPropertiesOnPackagePage.Empty);
 		}
 		private static bool TryRegexForEachLine(TextReader reader, Regex regex, out string group1) {
 			string line;
@@ -198,28 +202,33 @@ namespace Yusen.GCrawler {
 			return false;
 		}
 		public static GContent CreateDummyContent(string contId, GGenre genre, string reason) {
-			return new GContent(contId, "(ダミー)", "(ダミー)", "(ダミー)", "(ダミー)", "(ダミー)", reason, "/img/info/" + genre.ImageDirName + "/", true);
+			return new GContent(contId, new ContentPropertiesOnContentPage("(ダミー)", "(ダミー)", "(ダミー)", "(ダミー)", "(ダミー)", reason, "/img/info/" + genre.ImageDirName + "/"), new ContentPropertiesOnPackagePage("(ダミー)", reason));
 		}
-
+		
 		private string contentId;
 		private string genre;
 		private string title;
 		private string subtitle;
 		private string imageDir;
 		
-		[Obsolete("seriesNumberに名称変更"), OptionalField]
+		[Obsolete("seriesNumberに名称変更"), OptionalField]//2.0.3.2でObsolete
 		private string episodeNumber;
-		[OptionalField]
+		[OptionalField]//2.0.3.2で追加
 		private string seriesNumber;
 		
 		private string duration;
 		private string longDescription;
 		private bool fromCache;
-		[OptionalField]//2.0.1.1で追加
 		private bool isDummy;
 		
+		[OptionalField]//2.0.4.0で追加
+		private string deadline = string.Empty;
+		[OptionalField]//2.0.4.0で追加
+		private string summary = string.Empty;
+		
 		[OnDeserialized]
-		private void EpisodeNumber2SeriesNumber(StreamingContext context) {//2.0.3.3における episodeNumber -> seriesNumber
+		private void OnDeserialized(StreamingContext context) {
+			//2.0.3.3における episodeNumber -> seriesNumber
 			if (null == this.seriesNumber) {
 				if (null == this.episodeNumber) {
 					this.seriesNumber = string.Empty;
@@ -229,24 +238,32 @@ namespace Yusen.GCrawler {
 			} else {
 				this.episodeNumber = null;
 			}
+			//2.0.4.0で追加した deadline と summary
+			if (null == this.deadline) this.deadline = string.Empty;
+			if (null == this.subtitle) this.subtitle = string.Empty;
 		}
 		
 		public GContent() {
 			this.fromCache = true;
 		}
-		private GContent(string contentId, string genre, string title, string seriesNumber, string subtitle, string duration, string longDescription, string imageDir, bool isDummy) {
+		private GContent(string contentId, ContentPropertiesOnContentPage cpCnt, ContentPropertiesOnPackagePage cpPac) {
 			this.contentId = contentId;
-			this.genre = genre;
-			this.title = title;
-			this.subtitle = subtitle;
-			this.seriesNumber = seriesNumber;
-			this.duration  =duration;
-			this.longDescription = longDescription;
-			this.imageDir = imageDir;
+			
+			this.genre = cpCnt.GenreName;
+			this.title = cpCnt.Title;
+			this.seriesNumber = cpCnt.SeriesNumber;
+			this.subtitle = cpCnt.Subtitle;
+			this.duration = cpCnt.Duration;
+			this.longDescription = cpCnt.Description;
+			this.imageDir = cpCnt.ImageDirectory;
+			
+			this.deadline = cpPac.Deadline;
+			this.summary = cpPac.Summary;
+			
 			this.fromCache = false;
-			this.isDummy = isDummy;
+			this.isDummy = false;
 		}
-
+		
 		public string ContentId {
 			get { return this.contentId; }
 			set { this.contentId = value; }
@@ -260,11 +277,6 @@ namespace Yusen.GCrawler {
 			set { this.title = value; }
 		}
 		
-		[Obsolete("SeriesNumberに名称変更")]
-		public string EpisodeNumber {
-			get { return this.episodeNumber; }
-			set { this.seriesNumber = value; }
-		}
 		public string SeriesNumber {
 			get { return this.seriesNumber; }
 			set { this.seriesNumber = value; }
@@ -288,6 +300,15 @@ namespace Yusen.GCrawler {
 			set { this.longDescription = value; }
 		}
 
+		public string Summary {
+			get { return this.summary; }
+			set { this.summary = value; }
+		}
+		public string Deadline {
+			get { return this.deadline; }
+			set { this.deadline = value; }
+		}
+		
 		[XmlIgnore]
 		public Uri DetailPageUri {
 			get { return GContent.CreateDetailPageUri(this.ContentId); }
@@ -321,6 +342,16 @@ namespace Yusen.GCrawler {
 				return "<" + this.ContentId + "> " + this.Title;
 			}
 		}
+
+		[Obsolete]//2.0.4.0での追加フィールド用
+		internal bool HasSameCpPac(ContentPropertiesOnPackagePage cpPac) {
+			return cpPac.Deadline.Equals(this.deadline) && cpPac.Summary.Equals(this.summary);
+		}
+		[Obsolete]//2.0.4.0での追加フィールド用
+		internal void SetNewCpPac(ContentPropertiesOnPackagePage cpPac) {
+			this.deadline = cpPac.Deadline;
+			this.summary = cpPac.Summary;
+		}
 	}
 	
 	[Serializable]
@@ -333,6 +364,48 @@ namespace Yusen.GCrawler {
 		}
 		public ContentDownloadException(string message, Exception innerException)
 			: base(message, innerException) {
+		}
+	}
+	
+	internal sealed class ContentPropertiesOnContentPage {
+		private string genreName;
+		private string title;
+		private string seriesNumber;
+		private string subtitle;
+		private string duration;
+		private string description;
+		private string imageDir;
+
+		internal ContentPropertiesOnContentPage(string genreName, string title, string seriesNumber, string subtitle, string duration, string description, string imageDir) {
+			this.genreName = genreName;
+			this.title = title;
+			this.seriesNumber = seriesNumber;
+			this.subtitle = subtitle;
+			this.duration = duration;
+			this.description = description;
+			this.imageDir = imageDir;
+		}
+
+		public string GenreName {
+			get { return this.genreName; }
+		}
+		public string Title {
+			get { return this.title; }
+		}
+		public string SeriesNumber {
+			get { return this.seriesNumber; }
+		}
+		public string Subtitle {
+			get { return this.subtitle; }
+		}
+		public string Duration {
+			get { return this.duration; }
+		}
+		public string Description {
+			get { return this.description; }
+		}
+		public string ImageDirectory {
+			get { return this.imageDir; }
 		}
 	}
 }

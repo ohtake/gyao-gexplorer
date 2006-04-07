@@ -84,32 +84,74 @@ namespace Yusen.GExplorer {
 			return (bool)this.predInfo.Invoke(propValue, new object[] { this.word });
 		}
 	}
-	
-	class NgContentsManager : ItemsManagerBase<NgContent> {
+
+	internal sealed class NgContentsManager : ItemsManagerBase<NgContent> {
 		private static NgContentsManager instance = new NgContentsManager();
 		public static NgContentsManager Instance {
 			get {
 				return NgContentsManager.instance;
 			}
 		}
-		
+
 		public event EventHandler NgContentsChanged;
 		public event EventHandler LastAboneChanged;
 
-		private NgContentsManager() : base() {
+		private SortedDictionary<string, NgContent> dicNgId = new SortedDictionary<string, NgContent>();
+		private SortedDictionary<string, NgContent> dicNgTitle = new SortedDictionary<string, NgContent>();
+		private List<NgContent> listNoneAccelarated = new List<NgContent>();
+
+
+		private NgContentsManager()
+			: base() {
 		}
-		
+
+		private void RecreateAccelarationList() {
+			this.dicNgId.Clear();
+			this.dicNgTitle.Clear();
+			this.listNoneAccelarated.Clear();
+
+			foreach (NgContent ngc in base.items) {
+				if (ngc.Method == TwoStringsPredicateMethod.Equals) {
+					switch (ngc.PropertyName) {
+						case "ContentId":
+							this.dicNgId[ngc.Word] = ngc;
+							continue;
+						case "Title":
+							this.dicNgTitle[ngc.Word] = ngc;
+							continue;
+					}
+				}
+				this.listNoneAccelarated.Add(ngc);
+			}
+		}
+
 		override protected void OnChanged() {
-			if(null != this.NgContentsChanged) {
+			this.RecreateAccelarationList();
+			if (null != this.NgContentsChanged) {
 				this.NgContentsChanged(this, EventArgs.Empty);
 			}
 		}
-		
+
 		public bool IsNgContent(ContentAdapter cont) {
-			foreach(NgContent nc in base.items) {
+			NgContent ngc;
+			if (this.dicNgId.TryGetValue(cont.ContentId, out ngc)) {
+				ngc.LastAbone = DateTime.Now;
+				if (null != this.LastAboneChanged) {
+					this.LastAboneChanged(this, EventArgs.Empty);
+				}
+				return true;
+			}
+			if (this.dicNgTitle.TryGetValue(cont.Title, out ngc)) {
+				ngc.LastAbone = DateTime.Now;
+				if (null != this.LastAboneChanged) {
+					this.LastAboneChanged(this, EventArgs.Empty);
+				}
+				return true;
+			}
+			foreach (NgContent nc in this.listNoneAccelarated) {
 				if (nc.IsNgContent(cont)) {
 					nc.LastAbone = DateTime.Now;
-					if(null != this.LastAboneChanged) {
+					if (null != this.LastAboneChanged) {
 						this.LastAboneChanged(this, EventArgs.Empty);
 					}
 					return true;
@@ -120,23 +162,32 @@ namespace Yusen.GExplorer {
 
 		public NgContent[] EnumerateNgsTo(ContentAdapter cont) {
 			List<NgContent> ngs = new List<NgContent>();
-			foreach (NgContent nc in base.items) {
+			NgContent ngc;
+			if (this.dicNgId.TryGetValue(cont.ContentId, out ngc)) {
+				ngs.Add(ngc);
+			}
+			if (this.dicNgTitle.TryGetValue(cont.Title, out ngc)) {
+				ngs.Add(ngc);
+			}
+			foreach (NgContent nc in this.listNoneAccelarated) {
 				if (nc.IsNgContent(cont)) {
 					ngs.Add(nc);
-					//最終あぼーん日時の更新はとりあえずやらないでおく
 				}
 			}
 			return ngs.ToArray();
 		}
-		/// <summary>最終NG日時から1週間経過したNGコンテンツを削除する</summary>
-		public void RemoveNgContentsWeek() {
-			base.RemoveAll(new Predicate<NgContent>(delegate(NgContent ng) {
-				return ng.LastAbone < DateTime.Now.AddDays(-7);
-			}));
-		}
-		
 		protected override string FilenameForSerialization {
 			get { return @"NgContents.xml"; }
+		}
+		
+		public int AcceralatedNgIdsCount {
+			get { return this.dicNgId.Count; }
+		}
+		public int AcceralatedNgTitlesCount {
+			get { return this.dicNgTitle.Count; }
+		}
+		public int NonAcceralatedNgContentsCount {
+			get { return this.listNoneAccelarated.Count; }
 		}
 	}
 }

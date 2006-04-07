@@ -11,7 +11,9 @@ namespace Yusen.GExplorer {
 	sealed class Cache {
 		private const string CacheDir = @"Cache";
 		private const string ContentsFilename = @"Contents.xml";
+		[Obsolete]//2.0.4.0
 		private const string DeadlineFilenameXml = @"Deadlines.xml";
+		[Obsolete]//2.0.4.0よりもちょっと前
 		private const string DeadlineFilenameBin = @"Deadlines.bin";
 		private const string ResultsFilename = @"CrawlResults.bin";
 		
@@ -27,21 +29,17 @@ namespace Yusen.GExplorer {
 			Cache.instance.cacheCtl.DeserializeContents(Path.Combine(Cache.CacheDir, Cache.ContentsFilename));
 
 			try {
-				using (Stream stream = new FileStream(Path.Combine(Cache.CacheDir, Cache.DeadlineFilenameBin), FileMode.Open)) {
-					IFormatter formatter = new BinaryFormatter();
-					Cache.Instance.deadlineTable = (DeadlineTableSortedDic)formatter.Deserialize(stream);
-				}
-			} catch {
-				Cache.Instance.deadlineTable = new DeadlineTableSortedDic();
-			}
-			Cache.Instance.deadlineTable.DeserializeDeadlineTableFromXml(Path.Combine(Cache.CacheDir, Cache.DeadlineFilenameXml));
-
-			try {
 				Dictionary<GGenre, CrawlResult> oldResults = null;
 				using (Stream stream = new FileStream(Path.Combine(Cache.CacheDir, Cache.ResultsFilename), FileMode.Open)) {
 					IFormatter formatter = new BinaryFormatter();
 					oldResults = (Dictionary<GGenre, CrawlResult>)formatter.Deserialize(stream);
 				}
+
+				//Deadlines.* を削除
+				FileInfo fiDeadline = new FileInfo(Path.Combine(Cache.CacheDir, Cache.DeadlineFilenameXml));
+				if (fiDeadline.Exists) fiDeadline.Delete();
+				fiDeadline = new FileInfo(Path.Combine(Cache.CacheDir, Cache.DeadlineFilenameBin));
+				if (fiDeadline.Exists) fiDeadline.Delete();
 				
 				//かつてのバージョンではあったが新しいバージョンではなくなったジャンルを削除
 				Dictionary<GGenre, CrawlResult> newResults = new Dictionary<GGenre, CrawlResult>();
@@ -61,20 +59,13 @@ namespace Yusen.GExplorer {
 			Cache.Instance.cacheCtl.SerializeContentes(Path.Combine(Cache.CacheDir, Cache.ContentsFilename));
 			Cache.Instance.cacheCtl.DeleteTempCachesRead();
 
-			Cache.Instance.deadlineTable.SerializeDeadlineTableInXml(Path.Combine(Cache.CacheDir, Cache.DeadlineFilenameXml));
-			FileInfo fiDeadlineBinary = new FileInfo(Path.Combine(Cache.CacheDir, Cache.DeadlineFilenameBin));
-			if (fiDeadlineBinary.Exists) fiDeadlineBinary.Delete();
-
 			using (Stream stream = new FileStream(Path.Combine(Cache.CacheDir, Cache.ResultsFilename), FileMode.Create)) {
 				IFormatter formatter = new BinaryFormatter();
 				formatter.Serialize(stream, Cache.Instance.resultsDic);
 			}
 		}
 
-		public event EventHandler<CacheEventArgs> CacheRearranged;
-
 		private ContentCacheControllerSortedDic cacheCtl;
-		private DeadlineTableSortedDic deadlineTable;
 		private Dictionary<GGenre, CrawlResult> resultsDic;
 		
 		private Cache() {
@@ -82,12 +73,6 @@ namespace Yusen.GExplorer {
 		
 		public IContentCacheController ContentCacheController{
 			get { return this.cacheCtl; }
-		}
-		public IDeadlineTable DeadlineTable {
-			get { return this.deadlineTable; }
-		}
-		public IDeadlineTableReadOnly DeadlineTableReadOnly {
-			get { return this.deadlineTable; }
 		}
 		public IDictionary<GGenre, CrawlResult> ResultsDictionary {
 			get { return this.resultsDic; }
@@ -106,17 +91,9 @@ namespace Yusen.GExplorer {
 			return reachable;
 		}
 
-		private void OnCacheRearranged(CacheEventArgs e) {
-			if(null != this.CacheRearranged) {
-				this.CacheRearranged(this, e);
-			}
-		}
-
 		public void ClearCrawlResults() {
 			int numResults = Cache.Instance.ResultsDictionary.Count;
 			Cache.Instance.ResultsDictionary.Clear();
-			this.OnCacheRearranged(new CacheEventArgs(
-				string.Format("クロール結果の破棄    破棄数: {0}", numResults)));
 		}
 		public void RemoveCachesUnreachable() {
 			List<string> reachable = this.GetSortedReachableContentIds();
@@ -146,46 +123,6 @@ namespace Yusen.GExplorer {
 					failed++;
 				}
 			}
-			this.OnCacheRearranged(new CacheEventArgs(
-				string.Format("キャッシュの削除    削除成功: {0}    削除失敗: {1}",
-					success, failed)));
-		}
-		public void RemoveDeadlineEntriesUnreacheable() {
-			List<string> reachable = this.GetSortedReachableContentIds();
-
-			int success = 0;
-			int failed = 0;
-			int ignored = 0;
-			foreach(string key in new List<string>(this.DeadlineTable.ListContentIds())) {
-				if(reachable.BinarySearch(key) >= 0) {
-					ignored++;
-				} else {
-					if(this.DeadlineTable.RemoveDeadlineOf(key)) {
-						success++;
-					} else {
-						failed++;
-					}
-				}
-			}
-			this.OnCacheRearranged(new CacheEventArgs(
-				string.Format("配信期限エントリーの整理    到達可により無視: {0}    削除成功: {1}    削除失敗: {2}",
-					ignored, success, failed)));
-		}
-		public void RemoveDeadlineEntriesAll() {
-			int count = this.DeadlineTable.Count;
-			this.DeadlineTable.ClearDeadlines();
-			this.OnCacheRearranged(new CacheEventArgs(
-				string.Format("配信期限エントリーの整理    削除成功: {0}" + count)));
-		}
-	}
-
-	class CacheEventArgs : EventArgs {
-		private string message;
-		public CacheEventArgs(string message) {
-			this.message = message;
-		}
-		public string Message {
-			get { return this.message; }
 		}
 	}
 }

@@ -25,6 +25,7 @@ namespace Yusen.GExplorer {
 
 		public event EventHandler<GenreMenuItemSelectedEventArgs> GenreSelected;
 		private GenreMenuVisibility menuVisibility = GenreMenuVisibility.None;
+		private bool hasAvaibaleSubmenus = false;
 
 		[DefaultValue(GenreMenuVisibility.None)]
 		public GenreMenuVisibility MenuVisibility {
@@ -50,7 +51,6 @@ namespace Yusen.GExplorer {
 						break;
 				}
 
-				base.DropDownItems.Clear();
 				List<ToolStripItem> items = new List<ToolStripItem>();
 				foreach (GGenre genre in GGenre.AllGenres) {
 					if (showCrawlable && genre.IsCrawlable) {
@@ -59,10 +59,22 @@ namespace Yusen.GExplorer {
 						items.Add(this.CreateSubmenuItem(genre));
 					}
 				}
-				
-				base.DropDownItems.AddRange(items.ToArray());
-				base.Enabled = base.HasDropDownItems;
+
+				base.DropDownItems.Clear();
+				if (items.Count > 0) {
+					base.DropDownItems.AddRange(items.ToArray());
+					this.hasAvaibaleSubmenus = true;
+				} else {
+					ToolStripMenuItem tsmi = new ToolStripMenuItem("(なし)");
+					tsmi.Enabled = false;
+					base.DropDownItems.Add(tsmi);
+					this.hasAvaibaleSubmenus = false;
+				}
 			}
+		}
+
+		public bool HasAvailableSubmenus {
+			get { return this.hasAvaibaleSubmenus; }
 		}
 
 		private ToolStripMenuItemWithGenre CreateSubmenuItem(GGenre genre) {

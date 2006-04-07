@@ -44,6 +44,8 @@
 			this.lblComment = new System.Windows.Forms.Label();
 			this.btnAdd = new System.Windows.Forms.Button();
 			this.grpList = new System.Windows.Forms.GroupBox();
+			this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
+			this.lblCount = new System.Windows.Forms.Label();
 			this.label1 = new System.Windows.Forms.Label();
 			this.timerLastAbone = new System.Windows.Forms.Timer(this.components);
 			this.timerItemSelect = new System.Windows.Forms.Timer(this.components);
@@ -51,6 +53,7 @@
 			this.grpAdd.SuspendLayout();
 			this.tableLayoutPanel2.SuspendLayout();
 			this.grpList.SuspendLayout();
+			this.tableLayoutPanel3.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// lvNgContents
@@ -65,10 +68,11 @@
 			this.lvNgContents.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.lvNgContents.FullRowSelect = true;
 			this.lvNgContents.HideSelection = false;
-			this.lvNgContents.Location = new System.Drawing.Point(3, 15);
+			this.lvNgContents.Location = new System.Drawing.Point(0, 14);
+			this.lvNgContents.Margin = new System.Windows.Forms.Padding(0);
 			this.lvNgContents.Name = "lvNgContents";
 			this.lvNgContents.ShowItemToolTips = true;
-			this.lvNgContents.Size = new System.Drawing.Size(580, 100);
+			this.lvNgContents.Size = new System.Drawing.Size(580, 122);
 			this.lvNgContents.TabIndex = 101;
 			this.lvNgContents.UseCompatibleStateImageBehavior = false;
 			this.lvNgContents.View = System.Windows.Forms.View.Details;
@@ -117,17 +121,17 @@
 			this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
 			this.tableLayoutPanel1.Name = "tableLayoutPanel1";
 			this.tableLayoutPanel1.RowCount = 3;
-			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 28F));
+			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 42F));
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 72F));
-			this.tableLayoutPanel1.Size = new System.Drawing.Size(592, 224);
+			this.tableLayoutPanel1.Size = new System.Drawing.Size(592, 274);
 			this.tableLayoutPanel1.TabIndex = 1;
 			// 
 			// grpAdd
 			// 
 			this.grpAdd.Controls.Add(this.tableLayoutPanel2);
 			this.grpAdd.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.grpAdd.Location = new System.Drawing.Point(3, 155);
+			this.grpAdd.Location = new System.Drawing.Point(3, 205);
 			this.grpAdd.Name = "grpAdd";
 			this.grpAdd.Size = new System.Drawing.Size(586, 66);
 			this.grpAdd.TabIndex = 200;
@@ -251,24 +255,49 @@
 			// 
 			// grpList
 			// 
-			this.grpList.Controls.Add(this.lvNgContents);
+			this.grpList.Controls.Add(this.tableLayoutPanel3);
 			this.grpList.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.grpList.Location = new System.Drawing.Point(3, 31);
+			this.grpList.Location = new System.Drawing.Point(3, 45);
 			this.grpList.Name = "grpList";
-			this.grpList.Size = new System.Drawing.Size(586, 118);
+			this.grpList.Size = new System.Drawing.Size(586, 154);
 			this.grpList.TabIndex = 100;
 			this.grpList.TabStop = false;
 			this.grpList.Text = "NGコンテンツ一覧";
+			// 
+			// tableLayoutPanel3
+			// 
+			this.tableLayoutPanel3.ColumnCount = 1;
+			this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+			this.tableLayoutPanel3.Controls.Add(this.lvNgContents, 0, 1);
+			this.tableLayoutPanel3.Controls.Add(this.lblCount, 0, 0);
+			this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.tableLayoutPanel3.Location = new System.Drawing.Point(3, 15);
+			this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(0);
+			this.tableLayoutPanel3.Name = "tableLayoutPanel3";
+			this.tableLayoutPanel3.RowCount = 2;
+			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 14F));
+			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+			this.tableLayoutPanel3.Size = new System.Drawing.Size(580, 136);
+			this.tableLayoutPanel3.TabIndex = 102;
+			// 
+			// lblCount
+			// 
+			this.lblCount.AutoSize = true;
+			this.lblCount.Location = new System.Drawing.Point(3, 0);
+			this.lblCount.Name = "lblCount";
+			this.lblCount.Size = new System.Drawing.Size(47, 12);
+			this.lblCount.TabIndex = 102;
+			this.lblCount.Text = "lblCount";
 			// 
 			// label1
 			// 
 			this.label1.AutoSize = true;
 			this.label1.Location = new System.Drawing.Point(3, 0);
 			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(508, 24);
+			this.label1.Size = new System.Drawing.Size(508, 36);
 			this.label1.TabIndex = 201;
-			this.label1.Text = "一覧でNGコンテンツを選択してからDeleteキーを押すと削除できます．\r\nまた，最終NG日時から1週間以上経過したNGコンテンツはアプリケーション終了時に自動的" +
-				"に削除されます．";
+			this.label1.Text = "一覧でNGコンテンツを選択してからDeleteキーを押すと削除できます．\r\nアプリケーションの動作速度の悪化を防ぐため，最終NG日時の古いNGコンテンツは削除して" +
+				"ください．\r\nNGコンテンツの個数に食い違いがある場合は，高速化対象のNGコンテンツに重複があることが考えられます．";
 			// 
 			// timerLastAbone
 			// 
@@ -283,7 +312,7 @@
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(592, 224);
+			this.ClientSize = new System.Drawing.Size(592, 274);
 			this.Controls.Add(this.tableLayoutPanel1);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
 			this.MinimumSize = new System.Drawing.Size(550, 250);
@@ -297,6 +326,8 @@
 			this.tableLayoutPanel2.ResumeLayout(false);
 			this.tableLayoutPanel2.PerformLayout();
 			this.grpList.ResumeLayout(false);
+			this.tableLayoutPanel3.ResumeLayout(false);
+			this.tableLayoutPanel3.PerformLayout();
 			this.ResumeLayout(false);
 
 		}
@@ -326,5 +357,7 @@
 		private System.Windows.Forms.Timer timerLastAbone;
 		private System.Windows.Forms.Timer timerItemSelect;
 		private System.Windows.Forms.Label label1;
+		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
+		private System.Windows.Forms.Label lblCount;
 	}
 }

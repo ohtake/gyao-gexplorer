@@ -32,7 +32,7 @@ namespace Yusen.GCrawler {
 		ReadOnlyCollection<string> ListAllCacheKeys();
 	}
 	
-	[Obsolete("パフォーマンスが悪いから移行すべし．")]
+	[Obsolete("パフォーマンスが悪いから移行すべし．")]//2.0.3.0からObsolete
 	public sealed class ContentCacheControllerXml : IContentCacheController {
 		private string cacheDir;
 		private object objLock = new object();

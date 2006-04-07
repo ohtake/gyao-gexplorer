@@ -15,7 +15,7 @@ namespace Yusen.GExplorer {
 			internal ContentDetailViewSettings(ContentDetailView owner) {
 				this.owner = owner;
 			}
-
+			
 			[XmlIgnore]
 			[Browsable(false)]
 			private bool HasOwner {
@@ -137,6 +137,7 @@ namespace Yusen.GExplorer {
 					this.txtSubtitle.Text = value.SubTitle;
 					this.txtDuration.Text = value.Duration;
 					this.txtDeadline.Text = value.Deadline;
+					this.txtSummary.Text = value.Summary;
 					this.txtDescription.Text = value.LongDescription.Replace("\n", "\r\n");
 					this.propgDetail.SelectedObject = value;
 #if false
@@ -181,6 +182,7 @@ namespace Yusen.GExplorer {
 			this.txtEpisode.Clear();
 			this.txtSubtitle.Clear();
 			this.txtDuration.Clear();
+			this.txtSummary.Clear();
 			this.txtDescription.Clear();
 			this.propgDetail.SelectedObject = null;
 			this.picboxImage.Image = null;

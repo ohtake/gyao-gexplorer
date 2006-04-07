@@ -13,7 +13,7 @@ namespace Yusen.GExplorer {
 		internal static readonly string ApplicationName = Application.ProductName + " " + Application.ProductVersion;
 		
 		private const int InitializationSteps = 9;
-		private const int SerializationSteps = 7;
+		private const int SerializationSteps = 6;
 		private static SplashForm splashInit;
 		private static MainForm mainForm;
 		internal static event EventHandler<ProgramSerializationProgressEventArgs> ProgramSerializationProgress;
@@ -130,13 +130,10 @@ namespace Yusen.GExplorer {
 			PlayList.Instance.SerializeItems();
 			Program.OnProgramSerializationProgress(step++, "外部コマンドの保存");
 			UserCommandsManager.Instance.SerializeItems();
-			Program.OnProgramSerializationProgress(step++, "最終NGから一週間以上経過したNGコンテンツを削除");
-			NgContentsManager.Instance.RemoveNgContentsWeek();
 			Program.OnProgramSerializationProgress(step++, "NGコンテンツの保存");
 			NgContentsManager.Instance.SerializeItems();
 			Program.OnProgramSerializationProgress(step++, "キャッシュの最適化");
 			Cache.Instance.RemoveCachesUnreachable();
-			Cache.Instance.RemoveDeadlineEntriesUnreacheable();
 			Program.OnProgramSerializationProgress(step++, "キャッシュの保存");
 			Cache.Serialize();
 			Program.OnProgramSerializationProgress(step++, "グローバル設定の保存");

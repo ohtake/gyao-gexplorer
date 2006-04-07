@@ -201,10 +201,9 @@
 			// 
 			// tsucmiContentCommand
 			// 
-			this.tsucmiContentCommand.Enabled = false;
 			this.tsucmiContentCommand.Name = "tsucmiContentCommand";
 			this.tsucmiContentCommand.Size = new System.Drawing.Size(32, 19);
-			this.tsucmiContentCommand.Text = "ToolStripUserCommandMenuItem";
+			this.tsucmiContentCommand.Text = "外部コマンド(&C)";
 			// 
 			// GWebBrowser
 			// 
