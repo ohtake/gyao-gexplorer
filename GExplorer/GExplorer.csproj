@@ -322,12 +322,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\GCrawler\GCrawler.csproj">
-      <Project>{2169861A-96F9-42F6-8CE9-7819F62BED6E}</Project>
-      <Name>GCrawler</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <COMReference Include="AxWMPLib">
       <Guid>{6BF52A50-394A-11D3-B153-00C04F79FAA6}</Guid>
       <VersionMajor>1</VersionMajor>
@@ -344,6 +338,12 @@
       <WrapperTool>tlbimp</WrapperTool>
       <Isolated>False</Isolated>
     </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GCrawler\GCrawler.csproj">
+      <Project>{2169861A-96F9-42F6-8CE9-7819F62BED6E}</Project>
+      <Name>GCrawler</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

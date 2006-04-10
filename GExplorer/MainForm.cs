@@ -340,7 +340,7 @@ namespace Yusen.GExplorer {
 			this.inputBoxDialog1.Input = "cnt0000000";
 			switch (this.inputBoxDialog1.ShowDialog()) {
 				case DialogResult.OK:
-					Utility.Browse(GContent.CreateDetailPageUri(this.inputBoxDialog1.Input));
+					Utility.Browse(GContent.CreateDetailPageUri(GContent.ConvertToKeyFromId(this.inputBoxDialog1.Input)));
 					break;
 			}
 		}

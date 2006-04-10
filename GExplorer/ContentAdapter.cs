@@ -5,9 +5,23 @@ using System.Text;
 using System.Xml.Serialization;
 using Yusen.GCrawler;
 using System.Reflection;
+using System.Drawing;
 
 namespace Yusen.GExplorer {
 	public class ContentAdapter : IEquatable<ContentAdapter>{
+		private sealed class UnknownGenre : GGenre {
+			public static GGenre Default = new UnknownGenre();
+			private UnknownGenre()
+				: base(0, "unknown", "(不明なジャンル)", Color.Black) {
+			}
+			public override Uri TopPageUri {
+				get { return new Uri("http://www.gyao.jp/"); }
+			}
+			public override bool IsCrawlable {
+				get {return false;}
+			}
+		}
+
 		internal static string GetNames(IEnumerable<ContentAdapter> conts) {
 			StringBuilder sb = new StringBuilder();
 			foreach (ContentAdapter cont in conts) {
@@ -62,12 +76,13 @@ namespace Yusen.GExplorer {
 			}
 		}
 		private static bool EqualsHelper(ContentAdapter cont1, ContentAdapter cont2) {
-			return cont1.ContentId.Equals(cont2.ContentId);
+			return cont1.ContentKey.Equals(cont2.ContentKey);
 		}
 
 		private GContent innerCont;
 		private GTimeSpan gTimeSpan;
-		private string deadline = string.Empty;
+		private GGenre genre = null;
+		private string mergedDescription = null;
 		private string comment = string.Empty;
 		private string displayName = null;
 		private string attributes = null;
@@ -93,8 +108,8 @@ namespace Yusen.GExplorer {
 			if (!string.IsNullOrEmpty(this.SeriesNumber) && !this.SeriesNumber.Equals(this.Title)) {
 				sb.Append(" / " + this.SeriesNumber);
 			}
-			if (!string.IsNullOrEmpty(this.SubTitle) && !this.SubTitle.Equals(this.Title) && !this.SubTitle.Equals(this.SeriesNumber)) {
-				sb.Append(" / " + this.SubTitle);
+			if (!string.IsNullOrEmpty(this.Subtitle) && !this.Subtitle.Equals(this.Title) && !this.Subtitle.Equals(this.SeriesNumber)) {
+				sb.Append(" / " + this.Subtitle);
 			}
 			return sb.ToString();
 		}
@@ -116,14 +131,36 @@ namespace Yusen.GExplorer {
 				this.gTimeSpan = new GTimeSpan(this.innerCont.Duration);
 			}
 		}
+		[XmlIgnore]
+		[Browsable(false)]
+		private GGenre Genre {
+			get {
+				if (null == this.genre) {
+					GGenre genre;
+					if (GGenre.TryGetGerneByKey(this.GenreKey, out genre)) {
+						this.genre = genre;
+					} else {
+						this.genre = UnknownGenre.Default;
+					}
+				}
+				return this.genre;
+			}
+		}
+
 		[Category("ユーザが入力する情報")]
 		[Description("コメント．ユーザが自由に入力できる．ただしプレイリストに入っているものに対して入力しないとほとんど意味ない．")]
 		public string Comment {
 			get { return this.comment; }
 			set { this.comment = value; }
 		}
-		
-		
+
+
+		[XmlIgnore]
+		[Category("キー")]
+		[Description("コンテンツのキー．")]
+		public int ContentKey {
+			get { return this.innerCont.ContentKey; }
+		}
 		[XmlIgnore]
 		[Category("キー")]
 		[Description("コンテンツのID．")]
@@ -131,11 +168,30 @@ namespace Yusen.GExplorer {
 			get { return this.innerCont.ContentId; }
 		}
 		[XmlIgnore]
-		[Category("付随情報C")]
-		[Description("ジャンル名．")]
-		public string GenreName {
-			get { return this.innerCont.GenreName; }
+		[Category("キー")]
+		[Description("パッケージのキー．")]
+		public int PackageKey {
+			get { return this.innerCont.PackageKey; }
 		}
+		[XmlIgnore]
+		[Category("キー")]
+		[Description("パッケージのID．")]
+		public string PackageId {
+			get { return this.innerCont.PackageId; }
+		}
+		[XmlIgnore]
+		[Category("キー")]
+		[Description("ジャンルのキー．")]
+		public int GenreKey {
+			get { return this.innerCont.GenreKey; }
+		}
+		[XmlIgnore]
+		[Category("キー")]
+		[Description("ジャンルのID．")]
+		public string GenreId {
+			get { return this.innerCont.GenreId; }
+		}
+		
 		[XmlIgnore]
 		[Category("付随情報C")]
 		[Description("タイトル．")]
@@ -151,8 +207,8 @@ namespace Yusen.GExplorer {
 		[XmlIgnore]
 		[Category("付随情報C")]
 		[Description("サブタイトル．")]
-		public string SubTitle {
-			get { return this.innerCont.SubTitle; }
+		public string Subtitle {
+			get { return this.innerCont.Subtitle; }
 		}
 		[XmlIgnore]
 		[Category("付随情報C")]
@@ -162,9 +218,27 @@ namespace Yusen.GExplorer {
 		}
 		[XmlIgnore]
 		[Category("付随情報C")]
-		[Description("詳細記述(長)．")]
-		public string LongDescription {
-			get { return this.innerCont.LongDescription; }
+		[Description("説明記述1．")]
+		public string Description1 {
+			get { return this.innerCont.Description1; }
+		}
+		[XmlIgnore]
+		[Category("付随情報C")]
+		[Description("説明記述2．")]
+		public string Description2{
+			get { return this.innerCont.Description2; }
+		}
+		[XmlIgnore]
+		[Category("付随情報C")]
+		[Description("説明記述3．")]
+		public string Description3 {
+			get { return this.innerCont.Description3; }
+		}
+		[XmlIgnore]
+		[Category("付随情報C")]
+		[Description("説明記述4．")]
+		public string Description4 {
+			get { return this.innerCont.Description4; }
 		}
 		[XmlIgnore]
 		[Category("付随情報P")]
@@ -178,7 +252,42 @@ namespace Yusen.GExplorer {
 		public string Deadline {
 			get { return this.innerCont.Deadline; }
 		}
-		
+
+		[XmlIgnore]
+		[Category("専ブラが付加した情報")]
+		[Description("ジャンル名．")]
+		public string GenreName {
+			get {
+				return this.Genre.GenreName;
+			}
+		}
+		[XmlIgnore]
+		[Category("専ブラが付加した情報")]
+		[Description("結合した説明記述．")]
+		public string MergedDescription {
+			get {
+				if (null == this.mergedDescription) {
+					List<string> descs = new List<string>();
+					descs.Add(this.Description1.Trim());
+					descs.Add(this.Description2.Trim());
+					descs.Add(this.Description3.Trim());
+					descs.Add(this.Description4.Trim());
+					List<string> desc2 = new List<string>();
+					foreach (string desc in descs) {
+						if (!string.IsNullOrEmpty(desc)) desc2.Add(desc);
+					}
+					StringBuilder sb = new StringBuilder();
+					foreach (string desc in desc2) {
+						if (sb.Length > 0) {
+							sb.Append("\n\n");
+						}
+						sb.Append(desc);
+					}
+					this.mergedDescription = sb.ToString();
+				}
+				return this.mergedDescription;
+			}
+		}
 		[XmlIgnore]
 		[Category("専ブラが付加した情報")]
 		[Description("Trueの場合はキャッシュから読まれたことを示す．")]
@@ -233,7 +342,7 @@ namespace Yusen.GExplorer {
 		[Description("IEで正規に再生する場合のURI．(グローバル設定のビットレートの影響を受ける．)")]
 		public Uri PlayerPageUri {
 			get {
-				return GContent.CreatePlayerPageUri(this.ContentId, GlobalSettings.Instance.BitRate);
+				return GContent.CreatePlayerPageUri(this.ContentKey, GlobalSettings.Instance.BitRate);
 			}
 		}
 		[XmlIgnore]
@@ -241,27 +350,31 @@ namespace Yusen.GExplorer {
 		[Description("プレイリストのURI．(グローバル設定のビットレートの影響を受ける．ユーザIDを含む．)")]
 		public Uri PlayListUri {
 			get {
-				return GContent.CreatePlaylistUri(this.ContentId, GlobalSettings.Instance.UserNo, GlobalSettings.Instance.BitRate);
+				return GContent.CreatePlaylistUri(this.ContentKey, GlobalSettings.Instance.UserNo, GlobalSettings.Instance.BitRate);
 			}
 		}
 		[XmlIgnore]
 		[Category("URI")]
 		[Description("コンテンツの画像(大)のURI．")]
 		public Uri ImageLargeUri {
-			get {return this.innerCont.ImageLargeUri;}
+			get {
+				return GContent.CreateImageUri(this.ContentKey, this.genre.ImageDirName, 'l');
+			}
 		}
 		[XmlIgnore]
 		[Category("URI")]
 		[Description("コンテンツの画像(小)のURI．")]
 		public Uri ImageSmallUri {
-			get { return this.innerCont.ImageSmallUri; }
+			get {
+				return GContent.CreateImageUri(this.ContentKey, this.genre.ImageDirName, 's');
+			}
 		}
 		[XmlIgnore]
 		[Category("URI")]
 		[Description("お勧め番組の案内ページのURI． (グローバル設定のビットレートの影響を受ける．)")]
 		public Uri RecommendPageUri {
 			get {
-				return GContent.CreateRecommendPageUri(this.ContentId, GlobalSettings.Instance.BitRate);
+				return GContent.CreateRecommendPageUri(this.ContentKey, GlobalSettings.Instance.BitRate);
 			}
 		}
 #if CLIP_RESUME
@@ -294,7 +407,7 @@ namespace Yusen.GExplorer {
 		}
 		
 		public override int GetHashCode() {
-			return this.ContentId.GetHashCode();
+			return this.ContentKey.GetHashCode();
 		}
 		public override string ToString() {
 			return "<" + this.ContentId + "> " + this.DisplayName;
@@ -325,5 +438,4 @@ namespace Yusen.GExplorer {
 			get { return this.pi; }
 		}
 	}
-
 }

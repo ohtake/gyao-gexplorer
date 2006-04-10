@@ -372,7 +372,7 @@ namespace Yusen.GExplorer {
 					retry:
 						GContent cont = null;
 						try {
-							cont = GContent.DoDownload(id);
+							cont = GContent.DoDownload(GContent.ConvertToKeyFromId(id));
 						} catch (Exception ex) {
 							switch (MessageBox.Show(ex.Message, "ドロップによる追加", MessageBoxButtons.AbortRetryIgnore, MessageBoxIcon.Error, MessageBoxDefaultButton.Button3)) {
 								case DialogResult.Abort:
@@ -399,7 +399,7 @@ namespace Yusen.GExplorer {
 			this.inputBoxDialog1.Message = "追加するコンテンツのIDを入力してください．";
 			this.inputBoxDialog1.Input = "cnt0000000";
 			if (DialogResult.OK == this.inputBoxDialog1.ShowDialog()) {
-				GContent cont = GContent.DoDownload(this.inputBoxDialog1.Input);
+				GContent cont = GContent.DoDownload(GContent.ConvertToKeyFromId(this.inputBoxDialog1.Input));
 				ContentAdapter ca = new ContentAdapter(cont);
 				if (PlayList.Instance.Contains(ca)) {
 					MessageBox.Show("指定したIDはすでにプレイリストに存在します．",
@@ -446,10 +446,10 @@ namespace Yusen.GExplorer {
 		}
 		private void tsmiRemoveUnreachables_Click(object sender, EventArgs e) {
 			PlayList.Instance.BeginUpdate();
-			List<string> reachable = Cache.Instance.GetSortedReachableContentIds();
+			List<int> reachable = Cache.Instance.GetSortedReachableContentKeys();
 			foreach (ListViewItem lvi in this.listView1.Items) {
 				ContentAdapter cont = lvi.Tag as ContentAdapter;
-				if (reachable.BinarySearch(cont.ContentId) < 0) {
+				if (reachable.BinarySearch(cont.ContentKey) < 0) {
 					PlayList.Instance.Remove(cont);
 				}
 			}

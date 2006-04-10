@@ -22,17 +22,16 @@ namespace Yusen.GCrawler {
 			private IHtmlParser parser;
 			private IContentCacheController cacheController;
 			private Queue<Uri> waitingPages = new Queue<Uri>();
-			private Queue<string> waitingPackages = new Queue<string>();
-			private Queue<string> waitingContents = new Queue<string>();
+			private Queue<int> waitingPackages = new Queue<int>();
+			private Queue<int> waitingContents = new Queue<int>();
 			private List<Uri> visitedPages = new List<Uri>();
-			private Dictionary<string, GPackage> visitedPackages = new Dictionary<string, GPackage>();
-			private Dictionary<string, GContent> visitedContents = new Dictionary<string, GContent>();
-			private Dictionary<string, bool> contentsCached = new Dictionary<string, bool>();
-			private Dictionary<string, string> contPackRelations = new Dictionary<string, string>();
+			private Dictionary<int, GPackage> visitedPackages = new Dictionary<int, GPackage>();
+			private Dictionary<int, GContent> visitedContents = new Dictionary<int, GContent>();
+			private Dictionary<int, int> contPackRelations = new Dictionary<int, int>();
 			private List<Exception> ignoredExceptions = new List<Exception>();
-
-			private Dictionary<string, ContentPropertiesOnPackagePage> cpPacs = new Dictionary<string, ContentPropertiesOnPackagePage>();
-
+			
+			private SortedDictionary<int, ContentPropertiesOnPackagePage> cpPacs = new SortedDictionary<int, ContentPropertiesOnPackagePage>();
+			
 			public CrawlerHelper(CrawlSettings settings, GGenre genre, IHtmlParser parser, IContentCacheController cacheController, BackgroundWorker bw) {
 				this.bw = bw;
 				this.settings = settings;
@@ -113,14 +112,16 @@ namespace Yusen.GCrawler {
 					foreach(UriLinkTypePair pair in links) {
 						string id;
 						if(GPackage.TryExtractPackageId(pair.Uri, out id)) {
-							if(!this.waitingPackages.Contains(id)) {
-								this.waitingPackages.Enqueue(id);
+							int key = GPackage.ConvertToKeyFromId(id);
+							if(!this.waitingPackages.Contains(key)) {
+								this.waitingPackages.Enqueue(key);
 								continue;
 							}
 						}
 						if(GContent.TryExtractContentId(pair.Uri, out id)) {
-							if(!this.waitingContents.Contains(id)) {
-								this.waitingContents.Enqueue(id);
+							int key = GContent.ConvertToKeyFromId(id);
+							if(!this.waitingContents.Contains(key)) {
+								this.waitingContents.Enqueue(key);
 								continue;
 							}
 						}
@@ -143,26 +144,26 @@ namespace Yusen.GCrawler {
 				while(this.waitingPackages.Count > 0){
 					if (this.bw.CancellationPending) return;
 
-					string packId = this.waitingPackages.Dequeue();
+					int packKey = this.waitingPackages.Dequeue();
 					this.ReportProgressToBackgroundWorker(string.Format("フェーズ 2/4: シリーズ一覧ページを取得中 ({0}/{1}) {2}",
 						this.visitedPackages.Count,
 						this.visitedPackages.Count + this.waitingPackages.Count,
-						packId));
+						GPackage.ConvertToIdFromKey(packKey)));
 					GPackage package;
-					List<string> childContIds;
+					List<int> childContKeys;
 					try{
-						package = GPackage.DoDownload(packId, out childContIds, this.cpPacs);
+						package = GPackage.DoDownload(packKey, out childContKeys, this.cpPacs);
 					}catch(Exception e){
 						this.OnIgnoringException(e);
 						continue;
 					}
 					
-					this.visitedPackages.Add(packId, package);
-					foreach (string contId in childContIds) {
-						if (!this.waitingContents.Contains(contId)) {
-							this.waitingContents.Enqueue(contId);
+					this.visitedPackages.Add(packKey, package);
+					foreach (int contKey in childContKeys) {
+						if (!this.waitingContents.Contains(contKey)) {
+							this.waitingContents.Enqueue(contKey);
 						}
-						this.contPackRelations.Add(contId, packId);
+						this.contPackRelations.Add(contKey, packKey);
 					}
 				}
 			}
@@ -174,53 +175,39 @@ namespace Yusen.GCrawler {
 				while(this.waitingContents.Count > 0){
 					if (this.bw.CancellationPending) return;
 					
-					string contId = this.waitingContents.Dequeue();
+					int contKey = this.waitingContents.Dequeue();
 					ContentCache cache;
 					GContent content;
-					if (this.cacheController.TryGetCache(contId, out cache)) {
+					if (this.cacheController.TryGetCache(contKey, out cache)) {
 						content = cache.Content;
 						content.FromCache = true;
 
-						ContentPropertiesOnPackagePage cpPac;
-						if (this.cpPacs.TryGetValue(contId, out cpPac)) {
-							if (!content.HasSameCpPac(cpPac)) {
-								content.SetNewCpPac(cpPac);
-								this.cacheController.RemoveCache(contId);
-								this.cacheController.AddCache(content);
-							}
-						}
-						
 						this.ReportProgressToBackgroundWorker(string.Format("フェーズ 3/4: 詳細ページのキャッシュにヒット ({0}/{1}) {2}",
 							this.visitedContents.Count,
 							this.visitedContents.Count + this.waitingContents.Count,
-							contId));
-						this.visitedContents.Add(contId, content);
-						this.contentsCached.Add(contId, true);
-						continue;
-					}
-					this.ReportProgressToBackgroundWorker(string.Format("フェーズ 3/4: 詳細ページの取得中 ({0}/{1}) {2}",
-						this.visitedContents.Count,
-						this.visitedContents.Count + this.waitingContents.Count,
-						contId));
-					try {
-						ContentPropertiesOnPackagePage cpPac;
-						if (this.cpPacs.TryGetValue(contId, out cpPac)) {
-							content = GContent.DoDownload(contId, cpPac);
-						} else {
-							content = GContent.DoDownload(contId);
+							GContent.ConvertToIdFromKey(contKey)));
+						this.visitedContents.Add(contKey, content);
+					} else {
+						this.ReportProgressToBackgroundWorker(string.Format("フェーズ 3/4: 詳細ページの取得中 ({0}/{1}) {2}",
+							this.visitedContents.Count,
+							this.visitedContents.Count + this.waitingContents.Count,
+							GContent.ConvertToIdFromKey(contKey)));
+						try {
+							ContentPropertiesOnPackagePage cpPac;
+							if (this.cpPacs.TryGetValue(contKey, out cpPac)) {
+								content = GContent.DoDownload(contKey, this.contPackRelations[contKey], cpPac);
+							} else {
+								content = GContent.DoDownload(contKey);
+							}
+							//ダウンロード成功
+							this.visitedContents.Add(contKey, content);
+							this.cacheController.AddCache(content);
+						} catch (ContentDownloadException e) {
+							//ダウンロード失敗
+							this.OnIgnoringException(e);
+							content = GContent.CreateDummyContent(contKey, this.genre, e.Message);
+							this.visitedContents.Add(contKey, content);
 						}
-						//ダウンロード成功
-						this.visitedContents.Add(contId, content);
-						this.contentsCached.Add(contId, false);
-						this.cacheController.AddCache(content);
-						continue;
-					} catch (ContentDownloadException e) {
-						//ダウンロード失敗
-						this.OnIgnoringException(e);
-						content = GContent.CreateDummyContent(contId, this.genre, e.Message);
-						this.visitedContents.Add(contId, content);
-						this.contentsCached.Add(contId, false);
-						continue;
 					}
 				}
 			}
@@ -231,10 +218,10 @@ namespace Yusen.GCrawler {
 				this.ReportProgressToBackgroundWorker("フェーズ 4/4: データ構造の解析中");
 				//パッケージに含まれるコンテンツ
 				List<GPackage> packages = new List<GPackage>();
-				foreach (KeyValuePair<string, GPackage> packPair in this.visitedPackages) {
+				foreach (KeyValuePair<int, GPackage> packPair in this.visitedPackages) {
 					packages.Add(packPair.Value);
 					List<GContent> contents = new List<GContent>();
-					foreach (KeyValuePair<string, string> cpPair in this.contPackRelations) {
+					foreach (KeyValuePair<int, int> cpPair in this.contPackRelations) {
 						if (packPair.Key == cpPair.Value) {
 							contents.Add(this.visitedContents[cpPair.Key]);
 						}
@@ -244,7 +231,7 @@ namespace Yusen.GCrawler {
 				//どのパッケージに含まれているか不明なコンテンツ
 				GPackage dummyPackage = GPackage.CreateDummyPackage();
 				List<GContent> contentsWithoutPack = new List<GContent>();
-				foreach (KeyValuePair<string, GContent> contPair in this.visitedContents) {
+				foreach (KeyValuePair<int, GContent> contPair in this.visitedContents) {
 					if (!this.contPackRelations.ContainsKey(contPair.Key)) {
 						contentsWithoutPack.Add(contPair.Value);
 					}
@@ -256,16 +243,7 @@ namespace Yusen.GCrawler {
 				return packages.AsReadOnly();
 			}
 			private CrawlResult CreateCrawlResult(ReadOnlyCollection<GPackage> packages) {
-				int cDown = 0;
-				int cCache = 0;
-				foreach (KeyValuePair<string, bool> pair in this.contentsCached) {
-					if (pair.Value) {
-						cCache++;
-					} else {
-						cDown++;
-					}
-				}
-				return new CrawlResult(this.genre, packages, this.visitedPages.AsReadOnly(), this.ignoredExceptions.AsReadOnly(), cDown, cCache);
+				return new CrawlResult(this.genre, packages, this.visitedPages.AsReadOnly(), this.ignoredExceptions.AsReadOnly());
 			}
 			private bool IsInRestriction(Uri uri) {
 				return uri.AbsoluteUri.StartsWith(this.genre.RootUri.AbsoluteUri);
@@ -357,17 +335,14 @@ namespace Yusen.GCrawler {
 			ignoredExceptinos.AddRange(x.IgnoredExceptions);
 			ignoredExceptinos.AddRange(y.IgnoredExceptions);
 
-			return new CrawlResult(
-				genre, packages.AsReadOnly(), pages.AsReadOnly(), ignoredExceptinos.AsReadOnly(),
-				x.ContentsDownloaded + y.ContentsDownloaded, x.ContentsCached + y.ContentsCached);
+			return new CrawlResult(genre, packages.AsReadOnly(), pages.AsReadOnly(), ignoredExceptinos.AsReadOnly());
 		}
 		public static CrawlResult Merge(GGenre genre, IEnumerable<CrawlResult> results) {
 			CrawlResult seed = new CrawlResult(
 				genre,
 				new ReadOnlyCollection<GPackage>(new List<GPackage>()),
 				new ReadOnlyCollection<Uri>(new List<Uri>()),
-				new ReadOnlyCollection<Exception>(new List<Exception>()),
-				0, 0);
+				new ReadOnlyCollection<Exception>(new List<Exception>()));
 			foreach (CrawlResult result in results) {
 				seed = CrawlResult.Merge(genre, seed, result);
 			}
@@ -378,21 +353,16 @@ namespace Yusen.GCrawler {
 		private readonly ReadOnlyCollection<GPackage> packages;
 		private readonly ReadOnlyCollection<Uri> visitedPages;
 		private readonly ReadOnlyCollection<Exception> ignoredExceptions;
-		private readonly int contentsDownloaded;
-		private readonly int contentsCached;
 		private readonly DateTime time;
 		
 		internal CrawlResult(
 				GGenre genre,
 				ReadOnlyCollection<GPackage> packages, ReadOnlyCollection<Uri> vPages,
-				ReadOnlyCollection<Exception> ignoredExceptions,
-				int cDown, int cCache) {
+				ReadOnlyCollection<Exception> ignoredExceptions) {
 			this.genre = genre;
 			this.packages = packages;
 			this.visitedPages = vPages;
 			this.ignoredExceptions = ignoredExceptions;
-			this.contentsDownloaded = cDown;
-			this.contentsCached = cCache;
 			this.time = DateTime.Now;
 		}
 		
@@ -407,12 +377,6 @@ namespace Yusen.GCrawler {
 		}
 		public ReadOnlyCollection<Exception> IgnoredExceptions {
 			get { return this.ignoredExceptions; }
-		}
-		public int ContentsDownloaded {
-			get { return this.contentsDownloaded; }
-		}
-		public int ContentsCached {
-			get { return this.contentsCached; }
 		}
 		public DateTime Time {
 			get { return this.time; }

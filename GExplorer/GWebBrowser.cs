@@ -11,8 +11,8 @@ namespace Yusen.GExplorer {
 		private const string stylePackage = "border-top: 2px dashed blue !important; border-bottom: 2px dashed blue !important;";
 		private const string styleContent = "border-top: 2px dashed red !important; border-bottom: 2px dashed red !important;";
 		
-		private Dictionary<HtmlElement, string> dicPackage = new Dictionary<HtmlElement, string>();
-		private Dictionary<HtmlElement, string> dicContent = new Dictionary<HtmlElement, string>();
+		private Dictionary<HtmlElement, int> dicPackage = new Dictionary<HtmlElement, int>();
+		private Dictionary<HtmlElement, int> dicContent = new Dictionary<HtmlElement, int>();
 
 		private HtmlElement clickedPackage;
 		private HtmlElement clickedContent;
@@ -65,13 +65,13 @@ namespace Yusen.GExplorer {
 				//コンテンツ判定
 				string contentId;
 				if (GContent.TryExtractContentId(uri, out contentId)) {
-					this.AddToContents(elem, contentId);
+					this.AddToContents(elem, GContent.ConvertToKeyFromId(contentId));
 					continue;
 				}
 				//パッケージ判定
 				string packageId;
 				if (GPackage.TryExtractPackageId(uri, out packageId)) {
-					this.AddToPackages(elem, packageId);
+					this.AddToPackages(elem, GPackage.ConvertToKeyFromId(packageId));
 					continue;
 				}
 			}
@@ -98,7 +98,7 @@ namespace Yusen.GExplorer {
 		private void Package_MouseEnter(object sender, HtmlElementEventArgs e) {
 			if (Keys.None == (Keys.Alt & Control.ModifierKeys)) {
 				HtmlElement elem = sender as HtmlElement;
-				this.ttId.ToolTipTitle = this.dicPackage[elem];
+				this.ttId.ToolTipTitle = GPackage.ConvertToIdFromKey(this.dicPackage[elem]);
 				//場所がうまく取れないので MousePosition で
 				this.ttId.Show(" ", this, this.PointToClient(Control.MousePosition));
 			}
@@ -106,8 +106,8 @@ namespace Yusen.GExplorer {
 		private void Package_MouseLeave(object sender, HtmlElementEventArgs e) {
 			this.ttId.Hide(this);
 		}
-		private void AddToPackages(HtmlElement elem, string packageId) {
-			this.dicPackage.Add(elem, packageId);
+		private void AddToPackages(HtmlElement elem, int packageKey) {
+			this.dicPackage.Add(elem, packageKey);
 			elem.Style += GWebBrowser.stylePackage;
 			elem.MouseEnter += new HtmlElementEventHandler(this.Package_MouseEnter);
 			elem.MouseLeave += new HtmlElementEventHandler(this.Package_MouseLeave);
@@ -129,10 +129,11 @@ namespace Yusen.GExplorer {
 		private void Content_MouseEnter(object sender, HtmlElementEventArgs e) {
 			if (Keys.None == (Keys.Alt & Control.ModifierKeys)) {
 				HtmlElement elem = sender as HtmlElement;
-				string id = this.dicContent[elem];
+				int key = this.dicContent[elem];
+				string id = GContent.ConvertToIdFromKey(key);
 				string tipText;
 				ContentCache cache;
-				if (Cache.Instance.ContentCacheController.TryGetCache(id, out cache)) {
+				if (Cache.Instance.ContentCacheController.TryGetCache(key, out cache)) {
 					ContentAdapter ca = new ContentAdapter(cache.Content);
 					this.ttId.ToolTipTitle = id + " のキャッシュ";
 					tipText =
@@ -140,7 +141,7 @@ namespace Yusen.GExplorer {
 						+ ca.GenreName + Environment.NewLine
 						+ ca.Title + Environment.NewLine
 						+ ca.SeriesNumber + Environment.NewLine
-						+ ca.SubTitle + Environment.NewLine
+						+ ca.Subtitle + Environment.NewLine
 						+ ca.Duration + Environment.NewLine
 						+ ca.Deadline;
 				} else {
@@ -154,8 +155,8 @@ namespace Yusen.GExplorer {
 		private void Content_MouseLeave(object sender, HtmlElementEventArgs e) {
 			this.ttId.Hide(this);
 		}
-		private void AddToContents(HtmlElement elem, string contentId) {
-			this.dicContent.Add(elem, contentId);
+		private void AddToContents(HtmlElement elem, int contentKey) {
+			this.dicContent.Add(elem, contentKey);
 			elem.Style += GWebBrowser.styleContent;
 			elem.Click += new HtmlElementEventHandler(this.Content_Click);
 			elem.MouseEnter += new HtmlElementEventHandler(this.Content_MouseEnter);
@@ -186,14 +187,14 @@ namespace Yusen.GExplorer {
 			this.Url = GContent.CreateDetailPageUri(this.dicContent[this.clickedContent]);
 		}
 		private void tsmiContentAddToPlayList_Click(object sender, EventArgs e) {
-			string contId = this.dicContent[this.clickedContent];
-			GContent cont = GContent.DoDownload(contId);
+			int contKey = this.dicContent[this.clickedContent];
+			GContent cont = GContent.DoDownload(contKey);
 			ContentAdapter ca = new ContentAdapter(cont);
 			PlayList.Instance.AddIfNotExists(ca);
 		}
 		private void tsmiContentAddToPlayListWithComment_Click(object sender, EventArgs e) {
-			string contId = this.dicContent[this.clickedContent];
-			GContent cont = GContent.DoDownload(contId);
+			int contKey = this.dicContent[this.clickedContent];
+			GContent cont = GContent.DoDownload(contKey);
 			ContentAdapter ca = new ContentAdapter(cont);
 			this.inputBoxDialog1.Input = string.Empty;
 			this.inputBoxDialog1.Message = "コメントを入力してください．";
@@ -206,8 +207,8 @@ namespace Yusen.GExplorer {
 			}
 		}
 		private void tsmiContentPlayWithoutAdding_Click(object sender, EventArgs e) {
-			string contId = this.dicContent[this.clickedContent];
-			GContent cont = GContent.DoDownload(contId);
+			int contKey = this.dicContent[this.clickedContent];
+			GContent cont = GContent.DoDownload(contKey);
 			ContentAdapter ca = new ContentAdapter(cont);
 			PlayerForm.Play(ca);
 		}
@@ -218,8 +219,8 @@ namespace Yusen.GExplorer {
 			Utility.Browse(GContent.CreatePlayerPageUri(this.dicContent[this.clickedContent], GlobalSettings.Instance.BitRate));
 		}
 		private void tsucmiContentCommand_UserCommandSelected(object sender, UserCommandSelectedEventArgs e) {
-			string contId = this.dicContent[this.clickedContent];
-			GContent cont = GContent.DoDownload(contId);
+			int contKey = this.dicContent[this.clickedContent];
+			GContent cont = GContent.DoDownload(contKey);
 			ContentAdapter ca = new ContentAdapter(cont);
 			e.UserCommand.Execute(new ContentAdapter[] { ca });
 		}

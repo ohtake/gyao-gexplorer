@@ -60,14 +60,16 @@ namespace Yusen.GExplorer {
 
 		private NgContentsEditor() {
 			InitializeComponent();
-			
+			List<string> caPropertyNames = new List<string>();
 			foreach (PropertyInfo pi in typeof(ContentAdapter).GetProperties()) {
 				object[] attribs = pi.GetCustomAttributes(typeof(BrowsableAttribute), false);
 				if (attribs.Length > 0 && !(attribs[0] as BrowsableAttribute).Browsable) {
 					continue;
 				}
-				this.comboProperty.Items.Add(pi.Name);
+				caPropertyNames.Add(pi.Name);
 			}
+			caPropertyNames.Sort();
+			this.comboProperty.Items.AddRange(caPropertyNames.ToArray());
 			foreach (TwoStringsPredicateMethod m in Enum.GetValues(typeof(TwoStringsPredicateMethod))) {
 				this.comboMethod.Items.Add(m);
 			}

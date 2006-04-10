@@ -6,9 +6,10 @@ namespace Yusen.GCrawler {
 	[Serializable]
 	public abstract class GGenre : IEquatable<GGenre> {
 		private static readonly GGenre[] allGenres;
+		private static readonly SortedDictionary<int, GGenre> dicGenre;
 		static GGenre() {
 			GGenre.allGenres = new GGenre[]{
-				new GGenre200509(22, "news", "ニュース・ビジネス", Color.FromArgb(0x00, 0x33, 0x99)),
+				new GGenre200509NewsBiz(22, "news", "ニュース・ビジネス", Color.FromArgb(0x00, 0x33, 0x99)),
 				new GGenre200509( 1, "cinema", "映画", Color.FromArgb(0xCC, 0x00, 0x00)),
 				new GGenre200509( 3, "music", "音楽", Color.FromArgb(0x99, 0x33, 0xCC)),
 				new GGenre200509Drama( 2, "drama", "ドラマ", Color.FromArgb(0xFF, 0x99, 0x66)),
@@ -22,15 +23,29 @@ namespace Yusen.GCrawler {
 				new GGenre200509VideoBlog(12, "blog", "映像ブログ", Color.FromArgb(0xFF, 0x99, 0x99)),
 				new GGenre200509(24, "shopping", "ショッピング", Color.FromArgb(0xFF, 0x66, 0x00)),
 				new GGenre200509(25, "game", "ゲーム", Color.FromArgb(0x00, 0x99, 0x66)),
+				new GGenre200505(14, "station", "ステーションコール", Color.Black),
 			};
+			GGenre.dicGenre = new SortedDictionary<int, GGenre>();
+			foreach (GGenre genre in GGenre.AllGenres) {
+				GGenre.dicGenre.Add(genre.GenreKey, genre);
+			}
 		}
 		public static IEnumerable<GGenre> AllGenres {
 			get {
 				return GGenre.allGenres;
 			}
 		}
+		public static bool TryGetGerneByKey(int key, out GGenre genre) {
+			return GGenre.dicGenre.TryGetValue(key, out genre);
+		}
+		public static string ConvertToIdFromKey(int key) {
+			return string.Format("gen{0:d7}", key);
+		}
+		public static int ConvertToKeyFromId(string id) {
+			return int.Parse(id.Substring(3)); // 3 == "gen".Length
+		}
 		private static bool EqualsHelper(GGenre obj1, GGenre obj2) {
-			return obj1.GenreId.Equals(obj2.GenreId);
+			return obj1.GenreKey.Equals(obj2.GenreKey);
 		}
 
 		private readonly int keyNo;
@@ -44,7 +59,10 @@ namespace Yusen.GCrawler {
 			this.name = name;
 			this.color = color;
 		}
-		
+
+		public int GenreKey {
+			get { return this.keyNo; }
+		}
 		public string GenreId {
 			get { return "gen" + this.keyNo.ToString("0000000"); }
 		}
@@ -99,10 +117,20 @@ namespace Yusen.GCrawler {
 			return GGenre.EqualsHelper(this, other);
 		}
 		public override int GetHashCode() {
-			return this.GenreId.GetHashCode();
+			return this.GenreKey.GetHashCode();
 		}
 		public override string ToString() {
 			return "<" + this.GenreId + "> " + this.GenreName;
+		}
+		[Serializable]
+		private class GGenre200505 : GGenre {
+			public GGenre200505(int keyNo, string dir, string name, Color color)
+				: base(keyNo, dir, name, color) { }
+			public override Uri TopPageUri {
+				get {
+					return new Uri("http://www.gyao.jp/sityou/catetop/genre_id/" + this.GenreId + "/");
+				}
+			}
 		}
 		[Serializable]
 		private class GGenre200509 : GGenre {
@@ -112,6 +140,14 @@ namespace Yusen.GCrawler {
 				get {
 					return new Uri("http://www.gyao.jp/" + this.DirectoryName + "/");
 				}
+			}
+		}
+		[Serializable]
+		private sealed class GGenre200509NewsBiz : GGenre200509 {
+			public GGenre200509NewsBiz(int keyNo, string dir, string name, Color color)
+				: base(keyNo, dir, name, color) { }
+			public override string ImageDirName {
+				get { return "newsbiz"; }
 			}
 		}
 		[Serializable]

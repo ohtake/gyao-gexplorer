@@ -8,6 +8,7 @@ using System.Net;
 using System.Text.RegularExpressions;
 using System.Text;
 using System.Reflection;
+using System.Web;
 
 namespace Yusen.GExplorer {
 	static class Utility{

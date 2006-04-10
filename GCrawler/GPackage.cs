@@ -5,18 +5,15 @@ using System.Text;
 using System.Net;
 using System.IO;
 using System.Collections.ObjectModel;
+using System.Runtime.Serialization;
 
 namespace Yusen.GCrawler {
 	[Serializable]
 	public class GPackage {
 		private readonly static Regex regexId = new Regex("pac[0-9]{7}", RegexOptions.Compiled);
 
-		private static readonly Regex regexPackageName = new Regex(@"<td class=""title12b"">(.+)</td>", RegexOptions.Compiled);
-		private static readonly Regex regexThumbnail = new Regex(@"<img src=""/img/info/[^/]+/(cnt[0-9]{7})_s.jpg"" width=""80"" height=""60"" border=""0""><!-- サムネイル -->", RegexOptions.Compiled);
-		private static readonly Regex regexSummary = new Regex(@"^<td width=""235"" valign=""top"" class=""text10"">(.*)<!-- サマリー --></td>$", RegexOptions.Compiled);
-		[Obsolete]
-		private static readonly Regex regexAddMyList = new Regex(@"<a href=""javascript:addMylist\('(cnt[0-9]{7})'\);"">", RegexOptions.Compiled);
-		private static readonly Regex regexDeadline = new Regex(@"^(.+まで)</td>$", RegexOptions.Compiled);
+		private static readonly Regex regexPackagePackage = new Regex(@"<a href=""http://www\.gyao\.jp/sityou/catetop/genre_id/(?<GenreId>gen\d{7})/"">[\s\S]*?<td class=""title12b"">(?<PackageName>.*?)<!-- パックタイトル -->[\s\S]*?<b>(?<CatchCopy>.*?)<!-- パックキャッチコピー --></b>[\s\S]*?<td>(?<PackageText1>.*?)<!-- パックテキスト１ --></td>", RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.ExplicitCapture);
+		private static readonly Regex regexPackageContent = new Regex(@"<img src=""/img/info/[a-z]*?/{1,2}(?<ContentId>cnt\d{7})_s.jpg"" width=""80"" height=""60"" border=""0""><!-- サムネイル -->[\s\S]*?<td width=""235"" valign=""top"" class=""text10"">(?<Summary>.*)<!-- サマリー --></td>[\s\S]*?<td height=""14"" colspan=""2"" class=""bk10"">\r\n(?<Deadline>.*)</t[dr]>", RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.ExplicitCapture);
 		
 		public static bool TryExtractPackageId(Uri uri, out string id) {
 			Match match = GPackage.regexId.Match(uri.AbsoluteUri);
@@ -40,93 +37,98 @@ namespace Yusen.GCrawler {
 			string dummy;
 			return GPackage.TryExtractPackageId(uri, out dummy);
 		}
+		public static string ConvertToIdFromKey(int key) {
+			return string.Format("pac{0:d7}", key);
+		}
+		public static int ConvertToKeyFromId(string id) {
+			return int.Parse(id.Substring(3)); // 3 == "pac".Length
+		}
 
 		public static Uri CreatePackagePageUri(string packageId) {
 			return new Uri("http://www.gyao.jp/sityou/catelist/pac_id/" + packageId + "/");
 		}
+		public static Uri CreatePackagePageUri(int packageKey) {
+			return GPackage.CreatePackagePageUri(GPackage.ConvertToIdFromKey(packageKey));
+		}
 
-		internal static GPackage DoDownload(string packId, out List<string> childContIds, Dictionary<string, ContentPropertiesOnPackagePage> cpPacs) {
+		internal static GPackage DoDownload(int packKey, out List<int> childContKeys, SortedDictionary<int, ContentPropertiesOnPackagePage> cpPacs) {
+			string packId = GPackage.ConvertToIdFromKey(packKey);
 			Uri uri = GPackage.CreatePackagePageUri(packId);
 			using (TextReader reader = new StreamReader(new WebClient().OpenRead(uri), Encoding.GetEncoding("Shift_JIS"))) {
-				string line;
-				string packageName = "";
-				//パッケージ名の取得
-				while (null != (line = reader.ReadLine())) {
-					Match match = GPackage.regexPackageName.Match(line);
-					if (match.Success) {
-						packageName = HtmlUtility.HtmlToText(match.Groups[1].Value);
-						break;
-					}
+				string allHtml = reader.ReadToEnd();
+
+				string genreId;
+				string packageName;
+				string packageCatchCopy;
+				string packageText1;
+
+				Match matchPackage = GPackage.regexPackagePackage.Match(allHtml);
+				if (matchPackage.Success) {
+					genreId = HtmlUtility.HtmlToText(matchPackage.Groups["GenreId"].Value);
+					packageName = HtmlUtility.HtmlToText(matchPackage.Groups["PackageName"].Value);
+					packageCatchCopy = HtmlUtility.HtmlToText(matchPackage.Groups["CatchCopy"].Value);
+					packageText1 = HtmlUtility.HtmlToText(matchPackage.Groups["PackageText1"].Value);
+				} else {
+					throw new Exception("シリーズ一覧ページからパッケージの情報が取れなかった． <" + uri.AbsoluteUri + ">");
 				}
-				if (null == line) {//パッケージ名の取得ミス
-					throw new Exception("パッケージ名の取得ミス． <" + uri.AbsoluteUri + ">");
+				List<int> contentKeys = new List<int>();
+				for (Match matchContent = GPackage.regexPackageContent.Match(allHtml); matchContent.Success; matchContent = matchContent.NextMatch()) {
+					string id = matchContent.Groups["ContentId"].Value;
+					string summary = HtmlUtility.HtmlToText(matchContent.Groups["Summary"].Value);
+					string deadline = HtmlUtility.HtmlToText(matchContent.Groups["Deadline"].Value);
+					
+					ContentPropertiesOnPackagePage cpPac = new ContentPropertiesOnPackagePage(deadline, summary);
+					int key = GContent.ConvertToKeyFromId(id);
+					cpPacs.Add(key, cpPac);
+					contentKeys.Add(key);
 				}
-				//コンテンツIDと期限の抽出
-				List<string> contentIds = new List<string>();
-				while (true) {
-				beginExtractId:
-					string contId;
-					while (null != (line = reader.ReadLine())) {
-						Match match = GPackage.regexThumbnail.Match(line);
-						if (match.Success) {
-							contId = match.Groups[1].Value;
-							goto beginExtractSummary;
-						}
-					}
-					goto endExtract;
-				beginExtractSummary:
-					string summary;
-					while (null != (line = reader.ReadLine())) {
-						Match match = GPackage.regexSummary.Match(line);
-						if (match.Success) {
-							summary = match.Groups[1].Value;
-							goto beginExtractDeadline;
-						}
-					}
-					throw new Exception("サマリーを取得できなかった． <" + uri.AbsoluteUri + ">");
-				beginExtractDeadline:
-					while (null != (line = reader.ReadLine())) {
-						Match match = GPackage.regexDeadline.Match(line);
-						if (match.Success) {
-							string deadline = match.Groups[1].Value;
-							contentIds.Add(contId);
-							cpPacs.Add(contId, new ContentPropertiesOnPackagePage(deadline, summary));
-							goto beginExtractId;
-						}
-					}
-					throw new Exception("配信期限を取得できなかった． <" + uri.AbsoluteUri + ">");
-				}
-			endExtract:
-				
 				//コンテンツをひとつも取れなかったらエラーだろう
-				if (0 == contentIds.Count) {
+				if (0 == contentKeys.Count) {
 					throw new Exception("シリーズ一覧からコンテンツIDをひとつも抽出できなかった． <" + uri.AbsoluteUri + ">");
 				}
 				
-				childContIds = contentIds;
-				return new GPackage(packId, packageName);
+				childContKeys = contentKeys;
+				return new GPackage(packId, packageName, packageCatchCopy, packageText1);
 			}
-			
 		}
 		internal static GPackage CreateDummyPackage() {
-			return new GPackage("pac???????", "(不明なパッケージ)");
+			return new GPackage("pac0000000", "(不明なパッケージ)", string.Empty, string.Empty);
 		}
 
 		private readonly string packageId;
 		private readonly string packageName;
+		[OptionalField]//2.0.5.0
+		private /*readonly*/ string catchCopy;
+		[OptionalField]//2.0.5.0
+		private /*readonly*/ string packageText1;
 		private ReadOnlyCollection<GContent> contents;
 
-		private GPackage(string packageId, string packageName) {
+		private GPackage(string packageId, string packageName, string catchCopy, string packageText1) {
 			this.packageId = packageId;
 			this.packageName = packageName;
+			this.catchCopy = catchCopy;
+			this.packageText1 = packageText1;
 		}
 
+		[OnDeserialized]
+		private void OnDeserialized(StreamingContext context) {
+			if (null == this.catchCopy) this.catchCopy = string.Empty;
+			if (null == this.packageText1) this.packageText1 = string.Empty;
+		}
+		
 		public string PackageId {
 			get { return this.packageId; }
 		}
 		public string PackageName {
 			get { return this.packageName; }
 		}
+		public string CatchCopy {
+			get { return this.catchCopy; }
+		}
+		public string PackageText1 {
+			get { return this.packageText1; }
+		}
+
 		public Uri PackagePageUri {
 			get { return GPackage.CreatePackagePageUri(this.PackageId); }
 		}

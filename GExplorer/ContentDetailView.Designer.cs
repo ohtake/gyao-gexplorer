@@ -86,7 +86,7 @@
 			// 
 			this.splitContainer1.Panel2.Controls.Add(this.tabControl1);
 			this.splitContainer1.Size = new System.Drawing.Size(224, 455);
-			this.splitContainer1.SplitterDistance = 157;
+			this.splitContainer1.SplitterDistance = 178;
 			this.splitContainer1.TabIndex = 0;
 			this.splitContainer1.Text = "splitContainer1";
 			// 
@@ -96,7 +96,7 @@
 			this.picboxImage.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.picboxImage.Location = new System.Drawing.Point(0, 0);
 			this.picboxImage.Name = "picboxImage";
-			this.picboxImage.Size = new System.Drawing.Size(224, 157);
+			this.picboxImage.Size = new System.Drawing.Size(224, 178);
 			this.picboxImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
 			this.picboxImage.TabIndex = 1;
 			this.picboxImage.TabStop = false;
@@ -208,7 +208,7 @@
 			this.tabControl1.Location = new System.Drawing.Point(0, 0);
 			this.tabControl1.Name = "tabControl1";
 			this.tabControl1.SelectedIndex = 0;
-			this.tabControl1.Size = new System.Drawing.Size(224, 294);
+			this.tabControl1.Size = new System.Drawing.Size(224, 273);
 			this.tabControl1.TabIndex = 0;
 			// 
 			// tabpSummary2
@@ -216,7 +216,7 @@
 			this.tabpSummary2.Controls.Add(this.tableLayoutPanel2);
 			this.tabpSummary2.Location = new System.Drawing.Point(4, 21);
 			this.tabpSummary2.Name = "tabpSummary2";
-			this.tabpSummary2.Size = new System.Drawing.Size(216, 269);
+			this.tabpSummary2.Size = new System.Drawing.Size(216, 248);
 			this.tabpSummary2.TabIndex = 0;
 			this.tabpSummary2.Text = "簡易";
 			this.tabpSummary2.UseVisualStyleBackColor = true;
@@ -255,7 +255,7 @@
 			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
 			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
 			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-			this.tableLayoutPanel2.Size = new System.Drawing.Size(216, 269);
+			this.tableLayoutPanel2.Size = new System.Drawing.Size(216, 248);
 			this.tableLayoutPanel2.TabIndex = 0;
 			// 
 			// label1
@@ -381,7 +381,7 @@
 			this.txtDescription.Name = "txtDescription";
 			this.txtDescription.ReadOnly = true;
 			this.txtDescription.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-			this.txtDescription.Size = new System.Drawing.Size(210, 95);
+			this.txtDescription.Size = new System.Drawing.Size(210, 74);
 			this.txtDescription.TabIndex = 14;
 			// 
 			// label7
@@ -408,7 +408,7 @@
 			this.tabpDetail.Controls.Add(this.propgDetail);
 			this.tabpDetail.Location = new System.Drawing.Point(4, 21);
 			this.tabpDetail.Name = "tabpDetail";
-			this.tabpDetail.Size = new System.Drawing.Size(216, 269);
+			this.tabpDetail.Size = new System.Drawing.Size(216, 253);
 			this.tabpDetail.TabIndex = 1;
 			this.tabpDetail.Text = "詳細";
 			this.tabpDetail.UseVisualStyleBackColor = true;
@@ -418,7 +418,7 @@
 			this.propgDetail.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.propgDetail.Location = new System.Drawing.Point(0, 0);
 			this.propgDetail.Name = "propgDetail";
-			this.propgDetail.Size = new System.Drawing.Size(216, 269);
+			this.propgDetail.Size = new System.Drawing.Size(216, 253);
 			this.propgDetail.TabIndex = 0;
 			// 
 			// tsucmiCommand

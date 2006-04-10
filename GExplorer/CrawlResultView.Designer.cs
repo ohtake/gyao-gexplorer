@@ -303,11 +303,11 @@
 			// toolStripContainer1.ContentPanel
 			// 
 			this.toolStripContainer1.ContentPanel.Controls.Add(this.listView1);
-			this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(625, 196);
+			this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(640, 200);
 			this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.toolStripContainer1.Location = new System.Drawing.Point(0, 0);
 			this.toolStripContainer1.Name = "toolStripContainer1";
-			this.toolStripContainer1.Size = new System.Drawing.Size(625, 246);
+			this.toolStripContainer1.Size = new System.Drawing.Size(640, 250);
 			this.toolStripContainer1.TabIndex = 2;
 			this.toolStripContainer1.Text = "toolStripContainer1";
 			// 
@@ -335,7 +335,7 @@
 			this.listView1.Location = new System.Drawing.Point(0, 0);
 			this.listView1.Name = "listView1";
 			this.listView1.ShowItemToolTips = true;
-			this.listView1.Size = new System.Drawing.Size(625, 196);
+			this.listView1.Size = new System.Drawing.Size(640, 200);
 			this.listView1.TabIndex = 0;
 			this.listView1.UseCompatibleStateImageBehavior = false;
 			this.listView1.View = System.Windows.Forms.View.Details;
@@ -358,7 +358,6 @@
 			// chSeriesNumber
 			// 
 			this.chSeriesNumber.Text = "シリーズ番号";
-			this.chSeriesNumber.Width = 55;
 			// 
 			// chSubTitle
 			// 
@@ -378,7 +377,7 @@
 			// chSummary
 			// 
 			this.chSummary.Text = "サマリー";
-			this.chSummary.Width = 100;
+			this.chSummary.Width = 140;
 			// 
 			// chAttribs
 			// 
@@ -406,7 +405,7 @@
             this.tslTime});
 			this.tsMain.Location = new System.Drawing.Point(0, 0);
 			this.tsMain.Name = "tsMain";
-			this.tsMain.Size = new System.Drawing.Size(625, 25);
+			this.tsMain.Size = new System.Drawing.Size(640, 25);
 			this.tsMain.Stretch = true;
 			this.tsMain.TabIndex = 2;
 			this.tsMain.Text = "toolStrip1";
@@ -527,7 +526,7 @@
             this.tstbAnswer});
 			this.tsFilter.Location = new System.Drawing.Point(0, 25);
 			this.tsFilter.Name = "tsFilter";
-			this.tsFilter.Size = new System.Drawing.Size(625, 25);
+			this.tsFilter.Size = new System.Drawing.Size(640, 25);
 			this.tsFilter.Stretch = true;
 			this.tsFilter.TabIndex = 3;
 			this.tsFilter.Text = "tsFilter";
@@ -654,7 +653,7 @@
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.Controls.Add(this.toolStripContainer1);
 			this.Name = "CrawlResultView";
-			this.Size = new System.Drawing.Size(625, 246);
+			this.Size = new System.Drawing.Size(640, 250);
 			this.Load += new System.EventHandler(this.CrawlResultView_Load);
 			this.cmsContent.ResumeLayout(false);
 			this.toolStripContainer1.ContentPanel.ResumeLayout(false);

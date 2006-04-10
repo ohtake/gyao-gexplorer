@@ -85,11 +85,11 @@
 			// toolStripContainer1.ContentPanel
 			// 
 			this.toolStripContainer1.ContentPanel.Controls.Add(this.listView1);
-			this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(611, 136);
+			this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(640, 136);
 			this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.toolStripContainer1.Location = new System.Drawing.Point(0, 0);
 			this.toolStripContainer1.Name = "toolStripContainer1";
-			this.toolStripContainer1.Size = new System.Drawing.Size(611, 161);
+			this.toolStripContainer1.Size = new System.Drawing.Size(640, 161);
 			this.toolStripContainer1.TabIndex = 1;
 			this.toolStripContainer1.Text = "toolStripContainer1";
 			// 
@@ -114,7 +114,7 @@
 			this.listView1.Name = "listView1";
 			this.listView1.ShowGroups = false;
 			this.listView1.ShowItemToolTips = true;
-			this.listView1.Size = new System.Drawing.Size(611, 136);
+			this.listView1.Size = new System.Drawing.Size(640, 136);
 			this.listView1.TabIndex = 0;
 			this.listView1.UseCompatibleStateImageBehavior = false;
 			this.listView1.View = System.Windows.Forms.View.Details;
@@ -134,7 +134,7 @@
 			// chName
 			// 
 			this.chName.Text = "コンテンツ名";
-			this.chName.Width = 275;
+			this.chName.Width = 300;
 			// 
 			// chDuration
 			// 
@@ -149,7 +149,7 @@
 			// chComment
 			// 
 			this.chComment.Text = "コメント";
-			this.chComment.Width = 66;
+			this.chComment.Width = 90;
 			// 
 			// cmsPlayListItem
 			// 
@@ -332,7 +332,7 @@
             this.tslMessage});
 			this.toolStrip1.Location = new System.Drawing.Point(0, 0);
 			this.toolStrip1.Name = "toolStrip1";
-			this.toolStrip1.Size = new System.Drawing.Size(611, 25);
+			this.toolStrip1.Size = new System.Drawing.Size(640, 25);
 			this.toolStrip1.Stretch = true;
 			this.toolStrip1.TabIndex = 1;
 			this.toolStrip1.Text = "toolStrip1";
@@ -472,7 +472,7 @@
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.Controls.Add(this.toolStripContainer1);
 			this.Name = "PlayListView";
-			this.Size = new System.Drawing.Size(611, 161);
+			this.Size = new System.Drawing.Size(640, 161);
 			this.Load += new System.EventHandler(this.PlayListView_Load);
 			this.toolStripContainer1.ContentPanel.ResumeLayout(false);
 			this.toolStripContainer1.TopToolStripPanel.ResumeLayout(false);

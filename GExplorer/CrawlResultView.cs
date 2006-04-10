@@ -328,7 +328,7 @@ namespace Yusen.GExplorer {
 
 		private sealed class ContentListViewItem : ListViewItem {
 			public ContentListViewItem(ContentAdapter ca, ListViewGroup packageGroup)
-				: base(new string[] { ca.ContentId, ca.Title, ca.SeriesNumber, ca.SubTitle, ca.GTimeSpan.ToString(), ca.Deadline, ca.Summary, ca.Attributes }) {
+				: base(new string[] { ca.ContentId, ca.Title, ca.SeriesNumber, ca.Subtitle, ca.GTimeSpan.ToString(), ca.Deadline, ca.Summary, ca.Attributes }) {
 				this.contentAdapter = ca;
 				this.packageGroup = packageGroup;
 			}
@@ -424,7 +424,7 @@ namespace Yusen.GExplorer {
 					this.ShowPackages = this.ShowPackages;
 					if (null != value) {
 						this.CreateItems();
-						this.ReSETAllNgCached();
+						this.ResetAllNgCached();
 						this.DisplayItems();
 					}
 					this.listView1.EndUpdate();
@@ -596,7 +596,7 @@ namespace Yusen.GExplorer {
 		}
 		private void CreateItems() {
 			foreach (GPackage p in this.CrawlResult.Packages) {
-				ListViewGroup group = new ListViewGroup(p.ToString());
+				ListViewGroup group = new ListViewGroup(string.Format("<{0}> {1}", p.PackageId, p.PackageName));
 				this.allLvgs.Add(group);
 				foreach (GContent c in p.Contents) {
 					ContentAdapter ca = new ContentAdapter(c);
@@ -604,7 +604,7 @@ namespace Yusen.GExplorer {
 				}
 			}
 		}
-		private void ReSETAllNgCached() {
+		private void ResetAllNgCached() {
 			DateTime begin = DateTime.Now;
 			foreach(ContentListViewItem clvi in this.allClvis) {
 				clvi.ResetNgCachedFlag();
@@ -777,7 +777,7 @@ namespace Yusen.GExplorer {
 		}
 
 		private void NgContentsManager_NgContentsChanged(object sender, EventArgs e) {
-			this.ReSETAllNgCached();
+			this.ResetAllNgCached();
 			this.UpdateView();
 		}
 
@@ -959,7 +959,7 @@ namespace Yusen.GExplorer {
 			int succeeded = 0;
 			int failed = 0;
 			foreach (ContentAdapter cont in this.SelectedContents) {
-				if (Cache.Instance.ContentCacheController.RemoveCache(cont.ContentId)) {
+				if (Cache.Instance.ContentCacheController.RemoveCache(cont.ContentKey)) {
 					succeeded++;
 				} else {
 					failed++;

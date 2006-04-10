@@ -134,11 +134,11 @@ namespace Yusen.GExplorer {
 					this.txtId.Text = value.ContentId;
 					this.txtTitle.Text = value.Title;
 					this.txtEpisode.Text = value.SeriesNumber;
-					this.txtSubtitle.Text = value.SubTitle;
+					this.txtSubtitle.Text = value.Subtitle;
 					this.txtDuration.Text = value.Duration;
 					this.txtDeadline.Text = value.Deadline;
 					this.txtSummary.Text = value.Summary;
-					this.txtDescription.Text = value.LongDescription.Replace("\n", "\r\n");
+					this.txtDescription.Text = value.MergedDescription.Replace("\n", "\r\n");
 					this.propgDetail.SelectedObject = value;
 #if false
 					this.LoadImage();
