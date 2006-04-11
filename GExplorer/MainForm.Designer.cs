@@ -102,7 +102,7 @@
 			this.statusStrip1.Location = new System.Drawing.Point(0, 0);
 			this.statusStrip1.Name = "statusStrip1";
 			this.statusStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.ManagerRenderMode;
-			this.statusStrip1.Size = new System.Drawing.Size(917, 22);
+			this.statusStrip1.Size = new System.Drawing.Size(892, 22);
 			this.statusStrip1.TabIndex = 0;
 			this.statusStrip1.Text = "statusStrip1";
 			// 
@@ -127,11 +127,11 @@
 			// toolStripContainer1.ContentPanel
 			// 
 			this.toolStripContainer1.ContentPanel.Controls.Add(this.tableLayoutPanel1);
-			this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(917, 544);
+			this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(892, 524);
 			this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.toolStripContainer1.Location = new System.Drawing.Point(0, 0);
 			this.toolStripContainer1.Name = "toolStripContainer1";
-			this.toolStripContainer1.Size = new System.Drawing.Size(917, 586);
+			this.toolStripContainer1.Size = new System.Drawing.Size(892, 566);
 			this.toolStripContainer1.TabIndex = 1;
 			this.toolStripContainer1.Text = "toolStripContainer1";
 			// 
@@ -152,7 +152,7 @@
 			this.tableLayoutPanel1.RowCount = 2;
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-			this.tableLayoutPanel1.Size = new System.Drawing.Size(917, 544);
+			this.tableLayoutPanel1.Size = new System.Drawing.Size(892, 524);
 			this.tableLayoutPanel1.TabIndex = 0;
 			// 
 			// genreTabControl1
@@ -169,7 +169,7 @@
 			this.genreTabControl1.SelectedGenre = null;
 			this.genreTabControl1.SelectedIndex = 0;
 			this.genreTabControl1.ShowToolTips = true;
-			this.genreTabControl1.Size = new System.Drawing.Size(917, 20);
+			this.genreTabControl1.Size = new System.Drawing.Size(892, 20);
 			this.genreTabControl1.TabIndex = 0;
 			this.genreTabControl1.GenreSelected += new System.EventHandler<Yusen.GExplorer.GenreTabSelectedEventArgs>(this.genreTabControl1_GenreSelected);
 			// 
@@ -178,7 +178,7 @@
 			this.tabPage1.Location = new System.Drawing.Point(4, 24);
 			this.tabPage1.Name = "tabPage1";
 			this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage1.Size = new System.Drawing.Size(909, 0);
+			this.tabPage1.Size = new System.Drawing.Size(884, 0);
 			this.tabPage1.TabIndex = 0;
 			this.tabPage1.Text = "tabPage1";
 			// 
@@ -187,7 +187,7 @@
 			this.tabPage2.Location = new System.Drawing.Point(4, 24);
 			this.tabPage2.Name = "tabPage2";
 			this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage2.Size = new System.Drawing.Size(909, -8);
+			this.tabPage2.Size = new System.Drawing.Size(884, -8);
 			this.tabPage2.TabIndex = 1;
 			this.tabPage2.Text = "tabPage2";
 			// 
@@ -205,8 +205,8 @@
 			// scListsAndDetail.Panel2
 			// 
 			this.scListsAndDetail.Panel2.Controls.Add(this.contentDetailView1);
-			this.scListsAndDetail.Size = new System.Drawing.Size(917, 524);
-			this.scListsAndDetail.SplitterDistance = 640;
+			this.scListsAndDetail.Size = new System.Drawing.Size(892, 504);
+			this.scListsAndDetail.SplitterDistance = 625;
 			this.scListsAndDetail.TabIndex = 2;
 			this.scListsAndDetail.Text = "splitContainer1";
 			// 
@@ -224,8 +224,8 @@
 			// scLists.Panel2
 			// 
 			this.scLists.Panel2.Controls.Add(this.playListView1);
-			this.scLists.Size = new System.Drawing.Size(640, 524);
-			this.scLists.SplitterDistance = 329;
+			this.scLists.Size = new System.Drawing.Size(625, 504);
+			this.scLists.SplitterDistance = 315;
 			this.scLists.TabIndex = 2;
 			this.scLists.Text = "splitContainer2";
 			// 
@@ -236,7 +236,7 @@
 			this.crawlResultView1.Location = new System.Drawing.Point(0, 0);
 			this.crawlResultView1.Margin = new System.Windows.Forms.Padding(0);
 			this.crawlResultView1.Name = "crawlResultView1";
-			this.crawlResultView1.Size = new System.Drawing.Size(640, 329);
+			this.crawlResultView1.Size = new System.Drawing.Size(625, 315);
 			this.crawlResultView1.TabIndex = 1;
 			this.crawlResultView1.ContentSelectionChanged += new System.EventHandler<Yusen.GExplorer.ContentSelectionChangedEventArgs>(this.crawlResultView1_ContentSelectionChanged);
 			this.crawlResultView1.ManuallyCacheDeleted += new System.EventHandler<Yusen.GExplorer.ManuallyCacheDeletedEventArgs>(this.crawlResultView1_ManuallyCacheDeleted);
@@ -246,7 +246,7 @@
 			this.playListView1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.playListView1.Location = new System.Drawing.Point(0, 0);
 			this.playListView1.Name = "playListView1";
-			this.playListView1.Size = new System.Drawing.Size(640, 191);
+			this.playListView1.Size = new System.Drawing.Size(625, 185);
 			this.playListView1.TabIndex = 0;
 			this.playListView1.ContentSelectionChanged += new System.EventHandler<Yusen.GExplorer.ContentSelectionChangedEventArgs>(this.playListView1_ContentSelectionChanged);
 			// 
@@ -256,7 +256,7 @@
 			this.contentDetailView1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.contentDetailView1.Location = new System.Drawing.Point(0, 0);
 			this.contentDetailView1.Name = "contentDetailView1";
-			this.contentDetailView1.Size = new System.Drawing.Size(273, 524);
+			this.contentDetailView1.Size = new System.Drawing.Size(263, 504);
 			this.contentDetailView1.TabIndex = 0;
 			this.contentDetailView1.ImageLoadError += new System.EventHandler<Yusen.GExplorer.ImageLoadErrorEventArgs>(this.contentDetailView1_ImageLoadError);
 			// 
@@ -275,7 +275,7 @@
 			this.menuStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
-			this.menuStrip1.Size = new System.Drawing.Size(917, 20);
+			this.menuStrip1.Size = new System.Drawing.Size(892, 20);
 			this.menuStrip1.TabIndex = 0;
 			this.menuStrip1.Text = "menuStrip1";
 			// 
@@ -570,7 +570,7 @@
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(917, 586);
+			this.ClientSize = new System.Drawing.Size(892, 566);
 			this.Controls.Add(this.toolStripContainer1);
 			this.MainMenuStrip = this.menuStrip1;
 			this.MinimumSize = new System.Drawing.Size(300, 200);

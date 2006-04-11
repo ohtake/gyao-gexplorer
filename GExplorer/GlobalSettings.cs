@@ -177,7 +177,7 @@ namespace Yusen.GExplorer {
 		private bool useGBrowser = true;
 		[Category("ウェブブラウザ")]
 		[DisplayName("内蔵ブラウザを使う")]
-		[Description("GExplorer内蔵のブラウザを使用する場合には True にする．")]
+		[Description("GExplorer内蔵のブラウザを使用する場合には True にする．ただしカタログ表示の時には設定によらず内臓ウェブブラウザが使われる．")]
 		[DefaultValue(true)]
 		public bool UseGBrowser {
 			get { return this.useGBrowser; }

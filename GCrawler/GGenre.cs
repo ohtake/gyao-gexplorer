@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Color = System.Drawing.Color;
+using System.Runtime.Serialization;
 
 namespace Yusen.GCrawler {
 	[Serializable]
@@ -9,14 +10,14 @@ namespace Yusen.GCrawler {
 		private static readonly SortedDictionary<int, GGenre> dicGenre;
 		static GGenre() {
 			GGenre.allGenres = new GGenre[]{
-				new GGenre200509NewsBiz(22, "news", "ニュース・ビジネス", Color.FromArgb(0x00, 0x33, 0x99)),
+				new GGenre200509(22, "newsbiz", "news", "ニュース・ビジネス", Color.FromArgb(0x00, 0x33, 0x99)),
 				new GGenre200509( 1, "cinema", "映画", Color.FromArgb(0xCC, 0x00, 0x00)),
 				new GGenre200509( 3, "music", "音楽", Color.FromArgb(0x99, 0x33, 0xCC)),
-				new GGenre200509Drama( 2, "drama", "ドラマ", Color.FromArgb(0xFF, 0x99, 0x66)),
+				new GGenre200509( 2, "dorama", "drama", "ドラマ", Color.FromArgb(0xFF, 0x99, 0x66)),
 				new GGenre200509( 9, "sports", "スポーツ", Color.FromArgb(0x00, 0x66, 0xFF)),
 				new GGenre200509(10, "documentary", "ドキュメンタリー", Color.FromArgb(0x00, 0x99, 0x33)),
-				new GGenre200509(21, "beauty", "ビューティー＆ヘルス", Color.FromArgb(0xFF, 0x99, 0xCC)),
-				new GGenre200509(20, "life", "ライフ＆カルチャー", Color.FromArgb(0x99, 0x66, 0x33)),
+				new GGenre200509(21, "health", "beauty", "ビューティー＆ヘルス", Color.FromArgb(0xFF, 0x99, 0xCC)),
+				new GGenre200509(20, "culture", "life", "ライフ＆カルチャー", Color.FromArgb(0x99, 0x66, 0x33)),
 				new GGenre200509( 6, "anime", "アニメ", Color.FromArgb(0x00, 0x99, 0xFF)),
 				new GGenre200509( 5, "variety", "バラエティ", Color.FromArgb(0x66, 0xCC, 0x33)),
 				new GGenre200509( 4, "idol", "アイドル・グラビア", Color.FromArgb(0xFF, 0x66, 0xCC)),
@@ -24,6 +25,19 @@ namespace Yusen.GCrawler {
 				new GGenre200509(24, "shopping", "ショッピング", Color.FromArgb(0xFF, 0x66, 0x00)),
 				new GGenre200509(25, "game", "ゲーム", Color.FromArgb(0x00, 0x99, 0x66)),
 				new GGenre200505(14, "station", "ステーションコール", Color.Black),
+				new GGenre200505(26, "test", "テスト", Color.Black),
+				/*
+				 *  7	--> news
+				 *  8	ラジオ
+				 * 11	教育・学習
+				 * 13	世の中のイベント・動き
+				 * 15	--> beauty
+				 * 16	ビジネス
+				 * 17	オメコメ
+				 * 18	--> c.gyao.jp
+				 * 19	404
+				 * 23	アンケート
+				 */
 			};
 			GGenre.dicGenre = new SortedDictionary<int, GGenre>();
 			foreach (GGenre genre in GGenre.AllGenres) {
@@ -49,13 +63,16 @@ namespace Yusen.GCrawler {
 		}
 
 		private readonly int keyNo;
+		[Obsolete("imageDirに名前変更", true),OptionalField]//2.0.5.1
 		private readonly string dir;
+		[OptionalField]//2.0.5.1
+		private readonly string imageDir;
 		private readonly string name;
 		private readonly Color color;
-		
-		protected GGenre(int keyNo, string dir, string name, Color color) {
+
+		protected GGenre(int keyNo, string imageDir, string name, Color color) {
 			this.keyNo = keyNo;
-			this.dir = dir;
+			this.imageDir = imageDir;
 			this.name = name;
 			this.color = color;
 		}
@@ -64,31 +81,20 @@ namespace Yusen.GCrawler {
 			get { return this.keyNo; }
 		}
 		public string GenreId {
-			get { return "gen" + this.keyNo.ToString("0000000"); }
+			get { return string.Format("gen{0:d7}", this.keyNo); }
 		}
-		public string DirectoryName {
-			get { return this.dir; }
-		}
-		public virtual string ImageDirName {
-			get { return this.dir; }
+		public string ImageDirName {
+			get { return this.imageDir; }
 		}
 		public string GenreName {
 			get { return this.name; }
 		}
-		public Color GenreColor {
+		public Color GenreForeColor {
 			get { return this.color; }
 		}
-		public virtual bool IsCrawlable {
-			get { return true; }
-		}
-		public abstract Uri TopPageUri {
-			get;
-		}
-		public virtual Uri RootUri {
-			get {
-				return new Uri("http://www.gyao.jp/" + this.DirectoryName + "/");
-			}
-		}
+		public abstract bool IsCrawlable {get;}
+		public abstract Uri TopPageUri {get;}
+		public abstract Uri RootUri { get;}
 		public Uri TimetableRecentlyUpdatedFirstUri {
 			get {
 				return new Uri("http://www.gyao.jp/timetable/index.php?"
@@ -124,49 +130,83 @@ namespace Yusen.GCrawler {
 		}
 		[Serializable]
 		private class GGenre200505 : GGenre {
-			public GGenre200505(int keyNo, string dir, string name, Color color)
-				: base(keyNo, dir, name, color) { }
+			public GGenre200505(int keyNo, string imageDir, string name, Color color)
+				: base(keyNo, imageDir, name, color) { }
 			public override Uri TopPageUri {
 				get {
 					return new Uri("http://www.gyao.jp/sityou/catetop/genre_id/" + this.GenreId + "/");
 				}
 			}
+			public override Uri RootUri {
+				get { return this.TopPageUri; }
+			}
+			public override bool IsCrawlable {
+				get { return true; }
+			}
 		}
 		[Serializable]
 		private class GGenre200509 : GGenre {
-			public GGenre200509(int keyNo, string dir, string name, Color color)
-				: base(keyNo, dir, name, color) { }
+			[OptionalField]//2.0.5.1
+			private readonly string rootDir;
+			public GGenre200509(int keyNo, string sameDir, string name, Color color)
+				: this(keyNo, sameDir, sameDir, name, color) {
+			}
+			public GGenre200509(int keyNo, string imageDir, string rootDir, string name, Color color)
+				: base(keyNo, imageDir, name, color) {
+				this.rootDir = rootDir;
+			}
 			public override Uri TopPageUri {
 				get {
-					return new Uri("http://www.gyao.jp/" + this.DirectoryName + "/");
+					return new Uri("http://www.gyao.jp/" + this.rootDir + "/");
 				}
 			}
-		}
-		[Serializable]
-		private sealed class GGenre200509NewsBiz : GGenre200509 {
-			public GGenre200509NewsBiz(int keyNo, string dir, string name, Color color)
-				: base(keyNo, dir, name, color) { }
-			public override string ImageDirName {
-				get { return "newsbiz"; }
+			public override Uri RootUri {
+				get { return this.TopPageUri; }
 			}
-		}
-		[Serializable]
-		private sealed class GGenre200509Drama : GGenre200509 {
-			public GGenre200509Drama(int keyNo, string dir, string name, Color color)
-				: base(keyNo, dir, name, color) { }
-			// GyaO 側のスペルミスへの対応
-			public override string ImageDirName {
-				get { return "dorama"; }
+			public override bool IsCrawlable {
+				get { return true; }
 			}
 		}
 		[Serializable]
 		private sealed class GGenre200509VideoBlog : GGenre200509 {
-			public GGenre200509VideoBlog(int keyNo, string dir, string name, Color color)
-				: base(keyNo, dir, name, color) { }
+			public GGenre200509VideoBlog(int keyNo, string sameDir, string name, Color color)
+				: base(keyNo, sameDir, name, color) { }
 			public override Uri RootUri {
 				// blog の動的なページによりトラップにはまるので
 				// トップと番組表のみしか読まないようにする
 				get { return new Uri("http://www.gyao.jp/dummy/"); }
+			}
+		}
+		[Obsolete("GGenre200509に統合", true)]//2.0.5.1
+		[Serializable]
+		private class GGenre200509Drama : GGenre200509 {
+			public GGenre200509Drama(int keyNo, string imageDir, string rootDir, string name, Color color)
+				: base(keyNo, imageDir, rootDir, name, color) {
+			}
+			public override Uri TopPageUri {
+				get { throw new Exception(); }
+			}
+			public override Uri RootUri {
+				get { throw new Exception(); }
+			}
+			public override bool IsCrawlable {
+				get { throw new Exception(); }
+			}
+		}
+		[Obsolete("GGenre200509に統合", true)]//2.0.5.1
+		[Serializable]
+		private class GGenre200509NewsBiz : GGenre200509 {
+			public GGenre200509NewsBiz(int keyNo, string imageDir, string rootDir, string name, Color color)
+				: base(keyNo, imageDir, rootDir, name, color) {
+			}
+			public override Uri TopPageUri {
+				get { throw new Exception(); }
+			}
+			public override Uri RootUri {
+				get { throw new Exception(); }
+			}
+			public override bool IsCrawlable {
+				get { throw new Exception(); }
 			}
 		}
 	}

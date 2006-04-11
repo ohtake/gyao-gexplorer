@@ -32,6 +32,7 @@
 			this.tsmiCopyNameDetailImageUri = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiCopyImage = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+			this.tsucmiCommand = new Yusen.GExplorer.ToolStripUserCommandMenuItem();
 			this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiTest = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiTestLoad = new System.Windows.Forms.ToolStripMenuItem();
@@ -59,7 +60,6 @@
 			this.txtSummary = new System.Windows.Forms.TextBox();
 			this.tabpDetail = new System.Windows.Forms.TabPage();
 			this.propgDetail = new System.Windows.Forms.PropertyGrid();
-			this.tsucmiCommand = new Yusen.GExplorer.ToolStripUserCommandMenuItem();
 			this.splitContainer1.Panel1.SuspendLayout();
 			this.splitContainer1.Panel2.SuspendLayout();
 			this.splitContainer1.SuspendLayout();
@@ -114,7 +114,7 @@
             this.toolStripMenuItem2,
             this.tsmiTest});
 			this.cmsImage.Name = "cmsImage";
-			this.cmsImage.Size = new System.Drawing.Size(249, 148);
+			this.cmsImage.Size = new System.Drawing.Size(249, 170);
 			this.cmsImage.Opening += new System.ComponentModel.CancelEventHandler(this.cmsImage_Opening);
 			// 
 			// tsmiCopyImageUri
@@ -149,6 +149,13 @@
 			// 
 			this.toolStripSeparator2.Name = "toolStripSeparator2";
 			this.toolStripSeparator2.Size = new System.Drawing.Size(245, 6);
+			// 
+			// tsucmiCommand
+			// 
+			this.tsucmiCommand.Name = "tsucmiCommand";
+			this.tsucmiCommand.Size = new System.Drawing.Size(248, 22);
+			this.tsucmiCommand.Text = "外部コマンド(&E)";
+			this.tsucmiCommand.UserCommandSelected += new System.EventHandler<Yusen.GExplorer.UserCommandSelectedEventArgs>(this.tsucmiCommand_UserCommandSelected);
 			// 
 			// toolStripMenuItem2
 			// 
@@ -408,7 +415,7 @@
 			this.tabpDetail.Controls.Add(this.propgDetail);
 			this.tabpDetail.Location = new System.Drawing.Point(4, 21);
 			this.tabpDetail.Name = "tabpDetail";
-			this.tabpDetail.Size = new System.Drawing.Size(216, 253);
+			this.tabpDetail.Size = new System.Drawing.Size(216, 248);
 			this.tabpDetail.TabIndex = 1;
 			this.tabpDetail.Text = "詳細";
 			this.tabpDetail.UseVisualStyleBackColor = true;
@@ -418,15 +425,8 @@
 			this.propgDetail.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.propgDetail.Location = new System.Drawing.Point(0, 0);
 			this.propgDetail.Name = "propgDetail";
-			this.propgDetail.Size = new System.Drawing.Size(216, 253);
+			this.propgDetail.Size = new System.Drawing.Size(216, 248);
 			this.propgDetail.TabIndex = 0;
-			// 
-			// tsucmiCommand
-			// 
-			this.tsucmiCommand.Name = "tsucmiCommand";
-			this.tsucmiCommand.Size = new System.Drawing.Size(248, 22);
-			this.tsucmiCommand.Text = "外部コマンド(&C)";
-			this.tsucmiCommand.UserCommandSelected += new System.EventHandler<Yusen.GExplorer.UserCommandSelectedEventArgs>(this.tsucmiCommand_UserCommandSelected);
 			// 
 			// ContentDetailView
 			// 

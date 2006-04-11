@@ -50,7 +50,10 @@ namespace Yusen.GCrawler {
 		public static Uri CreatePackagePageUri(int packageKey) {
 			return GPackage.CreatePackagePageUri(GPackage.ConvertToIdFromKey(packageKey));
 		}
-
+		public static Uri CreateImageUri(int packageKey, string imageDir, char imageSizePostfix) {
+			return new Uri("http://www.gyao.jp/img/info/" + imageDir + "/" + GPackage.ConvertToIdFromKey(packageKey) + "_" + imageSizePostfix + ".jpg");
+		}
+		
 		internal static GPackage DoDownload(int packKey, out List<int> childContKeys, SortedDictionary<int, ContentPropertiesOnPackagePage> cpPacs) {
 			string packId = GPackage.ConvertToIdFromKey(packKey);
 			Uri uri = GPackage.CreatePackagePageUri(packId);
@@ -88,14 +91,20 @@ namespace Yusen.GCrawler {
 				}
 				
 				childContKeys = contentKeys;
-				return new GPackage(packId, packageName, packageCatchCopy, packageText1);
+				return new GPackage(packKey, GGenre.ConvertToKeyFromId(genreId), packageName, packageCatchCopy, packageText1);
 			}
 		}
-		internal static GPackage CreateDummyPackage() {
-			return new GPackage("pac0000000", "(不明なパッケージ)", string.Empty, string.Empty);
+		internal static GPackage CreateDummyPackage(GGenre genre) {
+			return new GPackage(0, genre.GenreKey, "(不明なパッケージ)", "(不明なパッケージ)", "(不明なパッケージ)");
 		}
 
-		private readonly string packageId;
+		[OptionalField,Obsolete]//2.0.5.1
+		private string packageId;
+		[OptionalField]//2.0.5.1
+		private int packageKey;
+		[OptionalField]//2.0.5.1
+		private int genreKey;
+		
 		private readonly string packageName;
 		[OptionalField]//2.0.5.0
 		private /*readonly*/ string catchCopy;
@@ -103,8 +112,16 @@ namespace Yusen.GCrawler {
 		private /*readonly*/ string packageText1;
 		private ReadOnlyCollection<GContent> contents;
 
+		[Obsolete]
 		private GPackage(string packageId, string packageName, string catchCopy, string packageText1) {
 			this.packageId = packageId;
+			this.packageName = packageName;
+			this.catchCopy = catchCopy;
+			this.packageText1 = packageText1;
+		}
+		private GPackage(int packageKey, int genreKey, string packageName, string catchCopy, string packageText1) {
+			this.packageKey = packageKey;
+			this.genreKey = genreKey;
 			this.packageName = packageName;
 			this.catchCopy = catchCopy;
 			this.packageText1 = packageText1;
@@ -112,12 +129,29 @@ namespace Yusen.GCrawler {
 
 		[OnDeserialized]
 		private void OnDeserialized(StreamingContext context) {
-			if (null == this.catchCopy) this.catchCopy = string.Empty;
-			if (null == this.packageText1) this.packageText1 = string.Empty;
+			if (null == this.catchCopy) this.catchCopy = string.Empty;//2.0.5.0
+			if (null == this.packageText1) this.packageText1 = string.Empty;//2.0.5.0
+			if (0 == this.packageKey && null != this.packageId) {
+				try {
+					this.packageKey = GPackage.ConvertToKeyFromId(this.packageId);//2.0.5.1
+				} catch {
+					this.packageKey = 0;
+				}
+			}
 		}
-		
+
+		public int PackageKey {
+			get { return this.packageKey; }
+		}
+		public int GenreKey {
+			get { return this.genreKey; }
+		}
+		[Obsolete]//2.0.5.1
+		internal void SetGenreKey(int genreKey) {
+			this.genreKey = genreKey;
+		}
 		public string PackageId {
-			get { return this.packageId; }
+			get { return GPackage.ConvertToIdFromKey(this.PackageKey); }
 		}
 		public string PackageName {
 			get { return this.packageName; }
@@ -142,11 +176,6 @@ namespace Yusen.GCrawler {
 	}
 	
 	internal sealed class ContentPropertiesOnPackagePage {
-		internal static readonly ContentPropertiesOnPackagePage Empty;
-		static ContentPropertiesOnPackagePage() {
-			ContentPropertiesOnPackagePage.Empty = new ContentPropertiesOnPackagePage(string.Empty, string.Empty);
-		}
-		
 		private string deadline;
 		private string summary;
 

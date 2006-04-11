@@ -15,7 +15,10 @@ namespace Yusen.GExplorer {
 				: base(0, "unknown", "(不明なジャンル)", Color.Black) {
 			}
 			public override Uri TopPageUri {
-				get { return new Uri("http://www.gyao.jp/"); }
+				get { return new Uri("about:blank"); }
+			}
+			public override Uri RootUri {
+				get { return new Uri("about:blank"); }
 			}
 			public override bool IsCrawlable {
 				get {return false;}
@@ -358,7 +361,7 @@ namespace Yusen.GExplorer {
 		[Description("コンテンツの画像(大)のURI．")]
 		public Uri ImageLargeUri {
 			get {
-				return GContent.CreateImageUri(this.ContentKey, this.genre.ImageDirName, 'l');
+				return GContent.CreateImageUri(this.ContentKey, this.Genre.ImageDirName, 'l');
 			}
 		}
 		[XmlIgnore]
@@ -366,7 +369,7 @@ namespace Yusen.GExplorer {
 		[Description("コンテンツの画像(小)のURI．")]
 		public Uri ImageSmallUri {
 			get {
-				return GContent.CreateImageUri(this.ContentKey, this.genre.ImageDirName, 's');
+				return GContent.CreateImageUri(this.ContentKey, this.Genre.ImageDirName, 's');
 			}
 		}
 		[XmlIgnore]

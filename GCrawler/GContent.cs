@@ -17,13 +17,6 @@ namespace Yusen.GCrawler {
 
 		private static readonly Regex regexContentPage = new Regex(@"<a href=""http://www\.gyao\.jp/sityou/catetop/genre_id/(?<GenreId>gen\d{7})/"">.*?\r\n(<a href=""http://www\.gyao\.jp/sityou/catelist/pac_id/(?<PackageId>pac\d{7})/"">)?[\s\S]*?<td width=""459"" class=""title12b"">(?<Title>.*?)</td>[\s\S]*?((?<SeriesNumber>.*?)<!-- シリーズ番号 -->)?(&nbsp;&nbsp;&nbsp;)?(?<Subtitle>.*?)<!-- サブタイトル -->[\s\S]*?<b>[^:]*時間[^:]* : (?<Duration>.*?)</b>[\s\S]*?<td align=""left"">(?<Description1>.*?)</td>([\s\S]*?<td align=""left"">\r\n(?<Description2>.*?)</td>[\s\S]*?<td align=""left"" class=""text10"">\r\n(?<Description3>.*?)</td>[\s\S]*?<td align=""right"" class=""text10"">\r\n(?<Description4>.*?)</td>)?", RegexOptions.Compiled | RegexOptions.ExplicitCapture | RegexOptions.Multiline);
 		
-		private static readonly Regex regexBreadGenre = new Regex(@"^<a href=""[^""]*"">(.*)</a> &gt; $", RegexOptions.Compiled);
-		private static readonly Regex regexTitle = new Regex(@"^<td width=""459"" class=""title12b"">(.*)</td>$", RegexOptions.Compiled);
-		private static readonly Regex regexSeriesAndSubtitle = new Regex(@"^(?:(.+)<!-- シリーズ番号 -->&nbsp;&nbsp;&nbsp;)?(.*)<!-- サブタイトル -->$", RegexOptions.Compiled);
-		private static readonly Regex regexDuration = new Regex(@"^<b>[^:]*時間[^:]* : (.*)</b>$", RegexOptions.Compiled);
-		private static readonly Regex regexImageDir = new Regex(@"<img src=""(/img/info/[a-z0-9]+/{1,2})cnt[0-9]+_[0-9a-z]*\.(?:jpg|gif)""", RegexOptions.Compiled); // 村上さんはなぜか / が2つ
-		private static readonly Regex regexDescription = new Regex(@"^\s*(?:<td align=""[^""]*"">)?(.+)</td>$", RegexOptions.IgnoreCase | RegexOptions.Compiled);
-		
 		public static void Serialize(string filename, GContent cont){
 			using (TextWriter writer = new StreamWriter(filename)) {
 				GContent.serializer.Serialize(writer, cont);

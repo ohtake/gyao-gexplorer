@@ -109,5 +109,14 @@ namespace Yusen.GExplorer {
 				}
 			}
 		}
+
+		public ContentAdapter GetCacheOrDownloadContent(int contentKey) {
+			ContentCache cache;
+			if (this.cacheCtl.TryGetCache(contentKey, out cache)) {
+				return new ContentAdapter(cache.Content);
+			} else {
+				return new ContentAdapter(GContent.DoDownload(contentKey));
+			}
+		}
 	}
 }

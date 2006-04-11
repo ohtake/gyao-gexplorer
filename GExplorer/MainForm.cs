@@ -129,6 +129,9 @@ namespace Yusen.GExplorer {
 			public override Uri TopPageUri {
 				get {return new Uri("about:blank");}
 			}
+			public override Uri RootUri {
+				get { return new Uri("about:blank"); }
+			}
 			public override bool IsCrawlable {
 				get { return false;}
 			}

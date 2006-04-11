@@ -370,9 +370,9 @@ namespace Yusen.GExplorer {
 					PlayList.Instance.BeginUpdate();
 					foreach (string id in this.dropIds) {
 					retry:
-						GContent cont = null;
+						ContentAdapter ca = null;
 						try {
-							cont = GContent.DoDownload(GContent.ConvertToKeyFromId(id));
+							ca = Cache.Instance.GetCacheOrDownloadContent(GContent.ConvertToKeyFromId(id));
 						} catch (Exception ex) {
 							switch (MessageBox.Show(ex.Message, "ドロップによる追加", MessageBoxButtons.AbortRetryIgnore, MessageBoxIcon.Error, MessageBoxDefaultButton.Button3)) {
 								case DialogResult.Abort:
@@ -383,7 +383,6 @@ namespace Yusen.GExplorer {
 									continue;
 							}
 						}
-						ContentAdapter ca = new ContentAdapter(cont);
 						PlayList.Instance.AddIfNotExists(ca);
 					}
 				} finally {
@@ -399,8 +398,7 @@ namespace Yusen.GExplorer {
 			this.inputBoxDialog1.Message = "追加するコンテンツのIDを入力してください．";
 			this.inputBoxDialog1.Input = "cnt0000000";
 			if (DialogResult.OK == this.inputBoxDialog1.ShowDialog()) {
-				GContent cont = GContent.DoDownload(GContent.ConvertToKeyFromId(this.inputBoxDialog1.Input));
-				ContentAdapter ca = new ContentAdapter(cont);
+				ContentAdapter ca = Cache.Instance.GetCacheOrDownloadContent(GContent.ConvertToKeyFromId(this.inputBoxDialog1.Input));
 				if (PlayList.Instance.Contains(ca)) {
 					MessageBox.Show("指定したIDはすでにプレイリストに存在します．",
 						title, MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -604,6 +602,21 @@ namespace Yusen.GExplorer {
 				Clipboard.SetText(text);
 			}
 		}
+		private void tsmiCatalogNormal_Click(object sender, EventArgs e) {
+			BrowserForm.Browse(this.SelectedContents);
+		}
+		private void tsmiCatalogImageSmall_Click(object sender, EventArgs e) {
+			Uri[] images = Array.ConvertAll<ContentAdapter, Uri>(this.SelectedContents, new Converter<ContentAdapter, Uri>(delegate(ContentAdapter input) {
+				return input.ImageSmallUri;
+			}));
+			BrowserForm.Browse(images);
+		}
+		private void tsmiCatalogImageLarge_Click(object sender, EventArgs e) {
+			Uri[] images = Array.ConvertAll<ContentAdapter, Uri>(this.SelectedContents, new Converter<ContentAdapter, Uri>(delegate(ContentAdapter input) {
+				return input.ImageLargeUri;
+			}));
+			BrowserForm.Browse(images);
+		}
 		private void tsucmiCommand_UserCommandSelected(object sender, UserCommandSelectedEventArgs e) {
 			e.UserCommand.Execute(this.SelectedContents);
 		}
@@ -625,5 +638,6 @@ namespace Yusen.GExplorer {
 			get { return this.settings; }
 		}
 		#endregion
+
 	}
 }

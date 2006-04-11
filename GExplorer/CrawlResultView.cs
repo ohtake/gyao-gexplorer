@@ -890,17 +890,23 @@ namespace Yusen.GExplorer {
 				Clipboard.SetText(text);
 			}
 		}
-		private void tsmiViewImagesSmall_Click(object sender, EventArgs e) {
+		private void tsmiCatalogNormal_Click(object sender, EventArgs e) {
+			BrowserForm.Browse(this.SelectedContents);
+		}
+		private void tsmiCatalogImageSmall_Click(object sender, EventArgs e) {
 			Uri[] images = Array.ConvertAll<ContentAdapter, Uri>(this.SelectedContents, new Converter<ContentAdapter, Uri>(delegate(ContentAdapter input) {
 				return input.ImageSmallUri;
 			}));
 			BrowserForm.Browse(images);
 		}
-		private void tsmiViewImagesLarge_Click(object sender, EventArgs e) {
+		private void tsmiCatalogImageLarge_Click(object sender, EventArgs e) {
 			Uri[] images = Array.ConvertAll<ContentAdapter, Uri>(this.SelectedContents, new Converter<ContentAdapter, Uri>(delegate(ContentAdapter input) {
 				return input.ImageLargeUri;
 			}));
 			BrowserForm.Browse(images);
+		}
+		private void tsucmiCommandRoot_UserCommandSelected(object sender, UserCommandSelectedEventArgs e) {
+			e.UserCommand.Execute(this.SelectedContents);
 		}
 		private void tsmiAddNgWithTitle_Click(object sender, EventArgs e) {
 			List<string> titles = new List<string>();
@@ -956,9 +962,16 @@ namespace Yusen.GExplorer {
 			}
 		}
 		private void tsmiRemoveCache_Click(object sender, EventArgs e) {
+			ContentAdapter[] selConts = this.SelectedContents;
+			switch (MessageBox.Show(string.Format("選択された {0} 個のコンテンツのキャッシュを削除しますか？", selConts.Length), "キャッシュの削除", MessageBoxButtons.YesNo, MessageBoxIcon.Question)) {
+				case DialogResult.Yes:
+					break;
+				default:
+					return;
+			}
 			int succeeded = 0;
 			int failed = 0;
-			foreach (ContentAdapter cont in this.SelectedContents) {
+			foreach (ContentAdapter cont in selConts) {
 				if (Cache.Instance.ContentCacheController.RemoveCache(cont.ContentKey)) {
 					succeeded++;
 				} else {
@@ -968,9 +981,6 @@ namespace Yusen.GExplorer {
 			if (null != this.ManuallyCacheDeleted) {
 				this.ManuallyCacheDeleted(this, new ManuallyCacheDeletedEventArgs(succeeded, failed));
 			}
-		}
-		private void tsucmiCommandRoot_UserCommandSelected(object sender, UserCommandSelectedEventArgs e) {
-			e.UserCommand.Execute(this.SelectedContents);
 		}
 		#endregion
 		#region フィルタ関連

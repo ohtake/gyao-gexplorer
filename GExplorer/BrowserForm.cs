@@ -6,6 +6,7 @@ using Yusen.GCrawler;
 using System.IO;
 using System.Text;
 using System.Xml.Serialization;
+using System.Web;
 
 namespace Yusen.GExplorer {
 	public sealed partial class BrowserForm : FormSettingsBase, IFormWithNewSettings<BrowserForm.BrowserFormSettings> {
@@ -41,56 +42,43 @@ namespace Yusen.GExplorer {
 			}
 			#endregion
 		}
-		
-		private sealed class ImageCatalogStream : Stream {
+
+		private abstract class CatalogStream : Stream {
 			private MemoryStream memStream;
 
-			public ImageCatalogStream(IEnumerable<Uri> images) {
-				this.memStream = new MemoryStream(Encoding.Default.GetBytes(this.CreateCatalogHtml(images)));
+			public CatalogStream(string html) {
+				this.memStream = new MemoryStream(Encoding.Default.GetBytes(html));
 			}
 
-			private string CreateCatalogHtml(IEnumerable<Uri> images) {
-				StringBuilder sb = new StringBuilder();
-				sb.AppendLine("<html>");
-				sb.AppendLine("<head><title>画像一覧</title></head>");
-				sb.AppendLine("<body><div>");
-				foreach (Uri image in images) {
-					sb.AppendLine(string.Format(@"<img src=""{0}""/>", image.AbsoluteUri));
-				}
-				sb.AppendLine("</div></body>");
-				sb.AppendLine("</html>");
-				return sb.ToString();
-			}
-
-			public override bool CanRead {
+			public sealed override bool CanRead {
 				get { return this.memStream.CanRead; }
 			}
-			public override bool CanSeek {
+			public sealed override bool CanSeek {
 				get { return this.memStream.CanSeek; }
 			}
-			public override bool CanWrite {
+			public sealed override bool CanWrite {
 				get { return this.memStream.CanWrite; }
 			}
-			public override void Flush() {
+			public sealed override void Flush() {
 				this.memStream.Flush();
 			}
-			public override long Length {
+			public sealed override long Length {
 				get { return this.memStream.Length; }
 			}
-			public override long Position {
+			public sealed override long Position {
 				get { return this.memStream.Position; }
 				set { this.memStream.Position = value; }
 			}
-			public override int Read(byte[] buffer, int offset, int count) {
+			public sealed override int Read(byte[] buffer, int offset, int count) {
 				return this.memStream.Read(buffer, offset, count);
 			}
-			public override long Seek(long offset, SeekOrigin origin) {
+			public sealed override long Seek(long offset, SeekOrigin origin) {
 				return this.memStream.Seek(offset, origin);
 			}
-			public override void SetLength(long value) {
+			public sealed override void SetLength(long value) {
 				this.memStream.SetLength(value);
 			}
-			public override void Write(byte[] buffer, int offset, int count) {
+			public sealed override void Write(byte[] buffer, int offset, int count) {
 				this.memStream.Write(buffer, offset, count);
 			}
 
@@ -99,6 +87,82 @@ namespace Yusen.GExplorer {
 					this.memStream.Dispose();
 				}
 				base.Dispose(disposing);
+			}
+		}
+		
+		private sealed class ImageCatalogStream : CatalogStream {
+			private static string CreateCatalogHtml(IEnumerable<Uri> images) {
+				StringBuilder sb = new StringBuilder();
+				sb.AppendLine("<html>");
+				sb.AppendLine("<head><title>画像カタログ</title></head>");
+				sb.AppendLine("<h1>画像カタログ</h1>");
+				sb.AppendLine("<body><div>");
+				foreach (Uri image in images) {
+					sb.AppendLine(string.Format(@"<img src=""{0}""/>", image.AbsoluteUri));
+				}
+				sb.AppendLine("</div></body>");
+				sb.AppendLine("</html>");
+				return sb.ToString();
+			}
+			public ImageCatalogStream(IEnumerable<Uri> images)
+				: base(ImageCatalogStream.CreateCatalogHtml(images)) {
+			}
+		}
+
+		private sealed class PackageCatalogStream : CatalogStream {
+			private static string CreateCatalogHtml(IEnumerable<PackageAdapter> pas, bool expandContents) {
+				StringBuilder sb = new StringBuilder();
+				sb.AppendLine("<html>");
+				sb.AppendLine("<head><title>パッケージカタログ</title></head>");
+				sb.AppendLine("<body>");
+				sb.AppendLine("<h1>パッケージカタログ</h1>");
+				foreach (PackageAdapter pa in pas) {
+					if (expandContents) {
+						sb.AppendLine(@"<hr style=""clear:both;""/>");
+					}
+					sb.Append(@"<div style=""clear:both;"">");
+					sb.AppendFormat(@"<img src=""{0}"" style=""float:left;""/>", pa.ImageMiddleUri.AbsoluteUri);
+					sb.AppendFormat(@"<div style=""float:left;""><a href=""{0}"">&lt;{1}&gt; {2}</a><br/>{3}<p>{4}</p></div>",
+						pa.PackagePageUri.AbsoluteUri, pa.PackageId, HttpUtility.HtmlEncode(pa.PackageName), HttpUtility.HtmlEncode(pa.CatchCopy), HttpUtility.HtmlEncode(pa.PackageText1));
+					sb.AppendLine("</div>");
+					if (expandContents) {
+						foreach (ContentAdapter ca in pa.ContentAdapters) {
+							sb.Append(@"<div style=""clear:both;margin-top:1px;"">");
+							sb.AppendFormat(@"<img src=""{0}"" style=""float:left;""/>", ca.ImageSmallUri.AbsoluteUri);
+							sb.AppendFormat(@"<div style=""float:left;""><a href=""{0}"">&lt;{1}&gt; {2} {3}</a><br/>{4}<br/><small>{5}&nbsp;&nbsp;&nbsp;&nbsp;{6}</small></div>",
+								ca.DetailPageUri.AbsoluteUri, ca.ContentId, HttpUtility.HtmlEncode(ca.SeriesNumber), HttpUtility.HtmlEncode(ca.Subtitle), HttpUtility.HtmlEncode(ca.Summary), HttpUtility.HtmlEncode(ca.Duration), HttpUtility.HtmlEncode(ca.Deadline));
+							sb.AppendLine("</div>");
+						}
+					}
+				}
+				sb.AppendLine("</body>");
+				sb.AppendLine("</html>");
+				return sb.ToString();
+			}
+			public PackageCatalogStream(IEnumerable<PackageAdapter> pas, bool expandContents)
+				: base(PackageCatalogStream.CreateCatalogHtml(pas, expandContents)) {
+			}
+		}
+		private sealed class ContentCatalogStream : CatalogStream {
+			private static string CreateCatalogHtml(IEnumerable<ContentAdapter> cas) {
+				StringBuilder sb = new StringBuilder();
+				sb.AppendLine("<html>");
+				sb.AppendLine("<head><title>コンテンツカタログ</title></head>");
+				sb.AppendLine("<body>");
+				sb.AppendLine("<h1>コンテンツカタログ</h1>");
+				foreach (ContentAdapter ca in cas) {
+					sb.Append(@"<div style=""clear:both;"">");
+					sb.AppendFormat(@"<img src=""{0}"" style=""float:left;""/>", ca.ImageSmallUri.AbsoluteUri);
+					sb.AppendFormat(@"<div style=""float:left;""><a href=""{0}"">&lt;{1}&gt; {2}</a><br/>{3}<br/><small>{4}&nbsp;&nbsp;&nbsp;&nbsp;{5}</small></div>",
+						ca.DetailPageUri.AbsoluteUri, ca.ContentId, HttpUtility.HtmlEncode(ca.DisplayName), HttpUtility.HtmlEncode(ca.Summary), HttpUtility.HtmlEncode(ca.Duration), HttpUtility.HtmlEncode(ca.Deadline));
+					sb.AppendLine(@"</div>");
+				}
+				sb.AppendLine("</body>");
+				sb.AppendLine("</html>");
+				return sb.ToString();
+			}
+			public ContentCatalogStream(IEnumerable<ContentAdapter> cas)
+				: base(ContentCatalogStream.CreateCatalogHtml(cas)) {
 			}
 		}
 
@@ -124,7 +188,17 @@ namespace Yusen.GExplorer {
 			BrowserForm.Instance.Focus();
 			BrowserForm.Instance.gwbMain.DocumentStream = new ImageCatalogStream(images);
 		}
-
+		public static void Browse(IEnumerable<PackageAdapter> pas, bool expandContents) {
+			BrowserForm.Instance.Show();
+			BrowserForm.Instance.Focus();
+			BrowserForm.Instance.gwbMain.DocumentStream = new PackageCatalogStream(pas, expandContents);
+		}
+		public static void Browse(IEnumerable<ContentAdapter> cas) {
+			BrowserForm.Instance.Show();
+			BrowserForm.Instance.Focus();
+			BrowserForm.Instance.gwbMain.DocumentStream = new ContentCatalogStream(cas);
+		}
+		
 		private BrowserFormSettings settings;
 
 		private BrowserForm() {

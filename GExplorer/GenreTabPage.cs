@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Forms;
 using System.Drawing;
-using GGenre = Yusen.GCrawler.GGenre;
+using Yusen.GCrawler;
 
 namespace Yusen.GExplorer {
 	public sealed partial class GenreTabPage : TabPage {
@@ -22,7 +22,28 @@ namespace Yusen.GExplorer {
 			this.tsmiBrowseTop.Click += delegate {
 				Utility.Browse(this.Genre.TopPageUri);
 			};
-			this.tsmiBrowseTimetableRecentlyUpdatedFirst.Click +=delegate {
+			this.tsmiCatalogPackage.Click += delegate{
+				List<PackageAdapter> pas = new List<PackageAdapter>();
+				foreach (GPackage pac in Cache.Instance.ResultsDictionary[this.genre].Packages) {
+					pas.Add(new PackageAdapter(pac));
+				}
+				BrowserForm.Browse(pas, false);
+			};
+			this.tsmiCatalogContent.Click += delegate {
+				List<ContentAdapter> cas = new List<ContentAdapter>();
+				foreach (GPackage pac in Cache.Instance.ResultsDictionary[this.genre].Packages) {
+					cas.AddRange(new PackageAdapter(pac).ContentAdapters);
+				}
+				BrowserForm.Browse(cas);
+			};
+			this.tsmiCatalogBoth.Click += delegate {
+				List<PackageAdapter> pas = new List<PackageAdapter>();
+				foreach (GPackage pac in Cache.Instance.ResultsDictionary[this.genre].Packages) {
+					pas.Add(new PackageAdapter(pac));
+				}
+				BrowserForm.Browse(pas, true);
+			};
+			this.tsmiBrowseTimetableRecentlyUpdatedFirst.Click += delegate {
 				Utility.Browse(this.Genre.TimetableRecentlyUpdatedFirstUri);
 			};
 			this.tsmiBrowseTimetableDeadlineNearFirst.Click += delegate {
@@ -38,6 +59,12 @@ namespace Yusen.GExplorer {
 				Clipboard.SetText(this.Genre.GenreName + Environment.NewLine + this.Genre.TopPageUri.AbsoluteUri);
 			};
 			this.tsmiRemoveCrawlResult.Click += delegate {
+				switch (MessageBox.Show(string.Format("ジャンル「{0}」のクロール結果を破棄しますか？", this.genre.GenreName), "クロール結果の破棄", MessageBoxButtons.YesNo, MessageBoxIcon.Question)) {
+					case DialogResult.Yes:
+						break;
+					default:
+						return;
+				}
 				Cache.Instance.ResultsDictionary.Remove(this.Genre);
 				if (null != this.ResultRemoved) {
 					this.ResultRemoved(this, EventArgs.Empty);
@@ -66,7 +93,9 @@ namespace Yusen.GExplorer {
 		}
 
 		private void cmsGenre_Opening(object sender, CancelEventArgs e) {
-			this.tsmiRemoveCrawlResult.Enabled = Cache.Instance.ResultsDictionary.ContainsKey(this.Genre);
+			bool hasResult = Cache.Instance.ResultsDictionary.ContainsKey(this.Genre);
+			this.tsmiCatalog.Enabled = hasResult;
+			this.tsmiRemoveCrawlResult.Enabled = hasResult;
 		}
 	}
 }

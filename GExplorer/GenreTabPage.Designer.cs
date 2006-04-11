@@ -26,6 +26,10 @@
 			this.components = new System.ComponentModel.Container();
 			this.cmsGenre = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.tsmiCrawl = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiCatalog = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiCatalogPackage = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiCatalogContent = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiCatalogBoth = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiBrowseTop = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiBrowseTimetableRecentlyUpdatedFirst = new System.Windows.Forms.ToolStripMenuItem();
@@ -43,6 +47,7 @@
 			// 
 			this.cmsGenre.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiCrawl,
+            this.tsmiCatalog,
             this.toolStripSeparator1,
             this.tsmiBrowseTop,
             this.tsmiBrowseTimetableRecentlyUpdatedFirst,
@@ -54,14 +59,42 @@
             this.toolStripSeparator3,
             this.tsmiRemoveCrawlResult});
 			this.cmsGenre.Name = "cmsGenre";
-			this.cmsGenre.Size = new System.Drawing.Size(191, 198);
+			this.cmsGenre.Size = new System.Drawing.Size(191, 220);
 			this.cmsGenre.Opening += new System.ComponentModel.CancelEventHandler(this.cmsGenre_Opening);
 			// 
 			// tsmiCrawl
 			// 
 			this.tsmiCrawl.Name = "tsmiCrawl";
 			this.tsmiCrawl.Size = new System.Drawing.Size(190, 22);
-			this.tsmiCrawl.Text = "クロール実行(&C)";
+			this.tsmiCrawl.Text = "クロール実行(&A)";
+			// 
+			// tsmiCatalog
+			// 
+			this.tsmiCatalog.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiCatalogPackage,
+            this.tsmiCatalogContent,
+            this.tsmiCatalogBoth});
+			this.tsmiCatalog.Name = "tsmiCatalog";
+			this.tsmiCatalog.Size = new System.Drawing.Size(190, 22);
+			this.tsmiCatalog.Text = "カタログ表示(&C)";
+			// 
+			// tsmiCatalogPackage
+			// 
+			this.tsmiCatalogPackage.Name = "tsmiCatalogPackage";
+			this.tsmiCatalogPackage.Size = new System.Drawing.Size(152, 22);
+			this.tsmiCatalogPackage.Text = "パッケージのみ(&P)";
+			// 
+			// tsmiCatalogContent
+			// 
+			this.tsmiCatalogContent.Name = "tsmiCatalogContent";
+			this.tsmiCatalogContent.Size = new System.Drawing.Size(152, 22);
+			this.tsmiCatalogContent.Text = "コンテンツのみ(&C)";
+			// 
+			// tsmiCatalogBoth
+			// 
+			this.tsmiCatalogBoth.Name = "tsmiCatalogBoth";
+			this.tsmiCatalogBoth.Size = new System.Drawing.Size(152, 22);
+			this.tsmiCatalogBoth.Text = "両方(&B)";
 			// 
 			// toolStripSeparator1
 			// 
@@ -119,7 +152,7 @@
 			// 
 			this.tsmiRemoveCrawlResult.Name = "tsmiRemoveCrawlResult";
 			this.tsmiRemoveCrawlResult.Size = new System.Drawing.Size(190, 22);
-			this.tsmiRemoveCrawlResult.Text = "クロール結果を破棄(&R)";
+			this.tsmiRemoveCrawlResult.Text = "クロール結果を破棄(&R)...";
 			// 
 			// GenreTabPage
 			// 
@@ -144,5 +177,9 @@
 		private System.Windows.Forms.ToolStripMenuItem tsmiBrowseTimetableRecentlyUpdatedFirst;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
 		private System.Windows.Forms.ToolStripMenuItem tsmiRemoveCrawlResult;
+		private System.Windows.Forms.ToolStripMenuItem tsmiCatalog;
+		private System.Windows.Forms.ToolStripMenuItem tsmiCatalogPackage;
+		private System.Windows.Forms.ToolStripMenuItem tsmiCatalogContent;
+		private System.Windows.Forms.ToolStripMenuItem tsmiCatalogBoth;
 	}
 }

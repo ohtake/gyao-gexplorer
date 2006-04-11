@@ -72,6 +72,10 @@
 			this.sfdXml = new System.Windows.Forms.SaveFileDialog();
 			this.timerSumSelected = new System.Windows.Forms.Timer(this.components);
 			this.inputBoxDialog1 = new Yusen.GExplorer.InputBoxDialog();
+			this.tsmiCatalog = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiCatalogNormal = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiCatalogImageSmall = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiCatalogImageLarge = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripContainer1.ContentPanel.SuspendLayout();
 			this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
 			this.toolStripContainer1.SuspendLayout();
@@ -85,11 +89,11 @@
 			// toolStripContainer1.ContentPanel
 			// 
 			this.toolStripContainer1.ContentPanel.Controls.Add(this.listView1);
-			this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(640, 136);
+			this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(625, 155);
 			this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.toolStripContainer1.Location = new System.Drawing.Point(0, 0);
 			this.toolStripContainer1.Name = "toolStripContainer1";
-			this.toolStripContainer1.Size = new System.Drawing.Size(640, 161);
+			this.toolStripContainer1.Size = new System.Drawing.Size(625, 180);
 			this.toolStripContainer1.TabIndex = 1;
 			this.toolStripContainer1.Text = "toolStripContainer1";
 			// 
@@ -114,7 +118,7 @@
 			this.listView1.Name = "listView1";
 			this.listView1.ShowGroups = false;
 			this.listView1.ShowItemToolTips = true;
-			this.listView1.Size = new System.Drawing.Size(640, 136);
+			this.listView1.Size = new System.Drawing.Size(625, 155);
 			this.listView1.TabIndex = 0;
 			this.listView1.UseCompatibleStateImageBehavior = false;
 			this.listView1.View = System.Windows.Forms.View.Details;
@@ -134,7 +138,7 @@
 			// chName
 			// 
 			this.chName.Text = "コンテンツ名";
-			this.chName.Width = 300;
+			this.chName.Width = 280;
 			// 
 			// chDuration
 			// 
@@ -169,9 +173,10 @@
             this.tsmiCopyNameAndUri,
             this.tscapmiCopyProperty,
             this.toolStripSeparator4,
+            this.tsmiCatalog,
             this.tsucmiCommand});
 			this.cmsPlayListItem.Name = "cmsPlayListItem";
-			this.cmsPlayListItem.Size = new System.Drawing.Size(212, 292);
+			this.cmsPlayListItem.Size = new System.Drawing.Size(212, 336);
 			this.cmsPlayListItem.Opening += new System.ComponentModel.CancelEventHandler(this.cmsPlayListItem_Opening);
 			// 
 			// tsmiPlay
@@ -316,7 +321,7 @@
 			// 
 			this.tsucmiCommand.Name = "tsucmiCommand";
 			this.tsucmiCommand.Size = new System.Drawing.Size(211, 22);
-			this.tsucmiCommand.Text = "外部コマンド(&C)";
+			this.tsucmiCommand.Text = "外部コマンド(&E)";
 			this.tsucmiCommand.UserCommandSelected += new System.EventHandler<Yusen.GExplorer.UserCommandSelectedEventArgs>(this.tsucmiCommand_UserCommandSelected);
 			// 
 			// toolStrip1
@@ -332,7 +337,7 @@
             this.tslMessage});
 			this.toolStrip1.Location = new System.Drawing.Point(0, 0);
 			this.toolStrip1.Name = "toolStrip1";
-			this.toolStrip1.Size = new System.Drawing.Size(640, 25);
+			this.toolStrip1.Size = new System.Drawing.Size(625, 25);
 			this.toolStrip1.Stretch = true;
 			this.toolStrip1.TabIndex = 1;
 			this.toolStrip1.Text = "toolStrip1";
@@ -466,13 +471,44 @@
 			this.inputBoxDialog1.Message = null;
 			this.inputBoxDialog1.Title = null;
 			// 
+			// tsmiCatalog
+			// 
+			this.tsmiCatalog.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiCatalogNormal,
+            this.tsmiCatalogImageSmall,
+            this.tsmiCatalogImageLarge});
+			this.tsmiCatalog.Name = "tsmiCatalog";
+			this.tsmiCatalog.Size = new System.Drawing.Size(211, 22);
+			this.tsmiCatalog.Text = "カタログ表示(&C)";
+			// 
+			// tsmiCatalogNormal
+			// 
+			this.tsmiCatalogNormal.Name = "tsmiCatalogNormal";
+			this.tsmiCatalogNormal.Size = new System.Drawing.Size(179, 22);
+			this.tsmiCatalogNormal.Text = "サムネイルとテキスト(&N)";
+			this.tsmiCatalogNormal.Click += new System.EventHandler(this.tsmiCatalogNormal_Click);
+			// 
+			// tsmiCatalogImageSmall
+			// 
+			this.tsmiCatalogImageSmall.Name = "tsmiCatalogImageSmall";
+			this.tsmiCatalogImageSmall.Size = new System.Drawing.Size(179, 22);
+			this.tsmiCatalogImageSmall.Text = "画像小のみ(&S)";
+			this.tsmiCatalogImageSmall.Click += new System.EventHandler(this.tsmiCatalogImageSmall_Click);
+			// 
+			// tsmiCatalogImageLarge
+			// 
+			this.tsmiCatalogImageLarge.Name = "tsmiCatalogImageLarge";
+			this.tsmiCatalogImageLarge.Size = new System.Drawing.Size(179, 22);
+			this.tsmiCatalogImageLarge.Text = "画像大のみ(&L)";
+			this.tsmiCatalogImageLarge.Click += new System.EventHandler(this.tsmiCatalogImageLarge_Click);
+			// 
 			// PlayListView
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.Controls.Add(this.toolStripContainer1);
 			this.Name = "PlayListView";
-			this.Size = new System.Drawing.Size(640, 161);
+			this.Size = new System.Drawing.Size(625, 180);
 			this.Load += new System.EventHandler(this.PlayListView_Load);
 			this.toolStripContainer1.ContentPanel.ResumeLayout(false);
 			this.toolStripContainer1.TopToolStripPanel.ResumeLayout(false);
@@ -536,5 +572,9 @@
 		private InputBoxDialog inputBoxDialog1;
 		private ToolStripCAPropertyMenuItem tscapmiCopyProperty;
 		private ToolStripUserCommandMenuItem tsucmiCommand;
+		private System.Windows.Forms.ToolStripMenuItem tsmiCatalog;
+		private System.Windows.Forms.ToolStripMenuItem tsmiCatalogNormal;
+		private System.Windows.Forms.ToolStripMenuItem tsmiCatalogImageSmall;
+		private System.Windows.Forms.ToolStripMenuItem tsmiCatalogImageLarge;
 	}
 }

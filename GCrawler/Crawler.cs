@@ -229,7 +229,7 @@ namespace Yusen.GCrawler {
 					packPair.Value.Contents = contents.AsReadOnly();
 				}
 				//どのパッケージに含まれているか不明なコンテンツ
-				GPackage dummyPackage = GPackage.CreateDummyPackage();
+				GPackage dummyPackage = GPackage.CreateDummyPackage(this.genre);
 				List<GContent> contentsWithoutPack = new List<GContent>();
 				foreach (KeyValuePair<int, GContent> contPair in this.visitedContents) {
 					if (!this.contPackRelations.ContainsKey(contPair.Key)) {
@@ -354,7 +354,15 @@ namespace Yusen.GCrawler {
 		private readonly ReadOnlyCollection<Uri> visitedPages;
 		private readonly ReadOnlyCollection<Exception> ignoredExceptions;
 		private readonly DateTime time;
-		
+
+		[OnDeserialized]
+		private void OnDeserialized(StreamingContext context) {
+			//2.0.5.1
+			foreach (GPackage package in this.packages) {
+				package.SetGenreKey(this.genre.GenreKey);
+			}
+		}
+
 		internal CrawlResult(
 				GGenre genre,
 				ReadOnlyCollection<GPackage> packages, ReadOnlyCollection<Uri> vPages,

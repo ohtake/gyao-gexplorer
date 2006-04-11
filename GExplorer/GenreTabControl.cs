@@ -223,7 +223,7 @@ namespace Yusen.GExplorer {
 			GenreTabPage gtp = base.TabPages[e.Index] as GenreTabPage;
 			if(null == gtp) return;
 			
-			Color genreColor = gtp.Genre.GenreColor;
+			Color genreColor = gtp.Genre.GenreForeColor;
 			string tabText = gtp.Text;
 			Rectangle textRect = new Rectangle(e.Bounds.Left + 2, e.Bounds.Top + 2, e.Bounds.Width, e.Bounds.Height);
 			

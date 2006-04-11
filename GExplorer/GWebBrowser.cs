@@ -8,9 +8,6 @@ using System.Runtime.InteropServices;
 
 namespace Yusen.GExplorer {
 	public partial class GWebBrowser : WebBrowser {
-		private const string stylePackage = "border-top: 2px dashed blue !important; border-bottom: 2px dashed blue !important;";
-		private const string styleContent = "border-top: 2px dashed red !important; border-bottom: 2px dashed red !important;";
-		
 		private Dictionary<HtmlElement, int> dicPackage = new Dictionary<HtmlElement, int>();
 		private Dictionary<HtmlElement, int> dicContent = new Dictionary<HtmlElement, int>();
 
@@ -108,7 +105,6 @@ namespace Yusen.GExplorer {
 		}
 		private void AddToPackages(HtmlElement elem, int packageKey) {
 			this.dicPackage.Add(elem, packageKey);
-			elem.Style += GWebBrowser.stylePackage;
 			elem.MouseEnter += new HtmlElementEventHandler(this.Package_MouseEnter);
 			elem.MouseLeave += new HtmlElementEventHandler(this.Package_MouseLeave);
 			elem.Click += new HtmlElementEventHandler(this.Package_Click);
@@ -157,7 +153,6 @@ namespace Yusen.GExplorer {
 		}
 		private void AddToContents(HtmlElement elem, int contentKey) {
 			this.dicContent.Add(elem, contentKey);
-			elem.Style += GWebBrowser.styleContent;
 			elem.Click += new HtmlElementEventHandler(this.Content_Click);
 			elem.MouseEnter += new HtmlElementEventHandler(this.Content_MouseEnter);
 			elem.MouseLeave += new HtmlElementEventHandler(this.Content_MouseLeave);
@@ -188,14 +183,12 @@ namespace Yusen.GExplorer {
 		}
 		private void tsmiContentAddToPlayList_Click(object sender, EventArgs e) {
 			int contKey = this.dicContent[this.clickedContent];
-			GContent cont = GContent.DoDownload(contKey);
-			ContentAdapter ca = new ContentAdapter(cont);
+			ContentAdapter ca = Cache.Instance.GetCacheOrDownloadContent(contKey);
 			PlayList.Instance.AddIfNotExists(ca);
 		}
 		private void tsmiContentAddToPlayListWithComment_Click(object sender, EventArgs e) {
 			int contKey = this.dicContent[this.clickedContent];
-			GContent cont = GContent.DoDownload(contKey);
-			ContentAdapter ca = new ContentAdapter(cont);
+			ContentAdapter ca = Cache.Instance.GetCacheOrDownloadContent(contKey);
 			this.inputBoxDialog1.Input = string.Empty;
 			this.inputBoxDialog1.Message = "コメントを入力してください．";
 			this.inputBoxDialog1.Title = "コメントの入力";
@@ -208,8 +201,7 @@ namespace Yusen.GExplorer {
 		}
 		private void tsmiContentPlayWithoutAdding_Click(object sender, EventArgs e) {
 			int contKey = this.dicContent[this.clickedContent];
-			GContent cont = GContent.DoDownload(contKey);
-			ContentAdapter ca = new ContentAdapter(cont);
+			ContentAdapter ca = Cache.Instance.GetCacheOrDownloadContent(contKey);
 			PlayerForm.Play(ca);
 		}
 		private void tsmiContentPlayWmp_Click(object sender, EventArgs e) {
@@ -220,8 +212,7 @@ namespace Yusen.GExplorer {
 		}
 		private void tsucmiContentCommand_UserCommandSelected(object sender, UserCommandSelectedEventArgs e) {
 			int contKey = this.dicContent[this.clickedContent];
-			GContent cont = GContent.DoDownload(contKey);
-			ContentAdapter ca = new ContentAdapter(cont);
+			ContentAdapter ca = Cache.Instance.GetCacheOrDownloadContent(contKey);
 			e.UserCommand.Execute(new ContentAdapter[] { ca });
 		}
 		private void tsmiContentCancel_Click(object sender, EventArgs e) {
