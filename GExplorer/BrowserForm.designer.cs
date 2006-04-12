@@ -43,6 +43,8 @@
 			this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiGotoCampaign = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiFillCampaignForm = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiSettings = new System.Windows.Forms.ToolStripMenuItem();
+			this.tspgBrowserForm = new Yusen.GExplorer.ToolStripPropertyGrid();
 			this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
 			this.statusStrip1 = new System.Windows.Forms.StatusStrip();
 			this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
@@ -75,7 +77,8 @@
             this.tsgmiGenreTop,
             this.tsgmiTimetableUpdate,
             this.tsmiTimeTablesDeadline,
-            this.tsmiTools});
+            this.tsmiTools,
+            this.tsmiSettings});
 			this.menuStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
@@ -221,6 +224,21 @@
 			this.tsmiFillCampaignForm.Size = new System.Drawing.Size(243, 22);
 			this.tsmiFillCampaignForm.Text = "応募フォームにフィル(&F)";
 			this.tsmiFillCampaignForm.Click += new System.EventHandler(this.tsmiFillCampaignForm_Click);
+			// 
+			// tsmiSettings
+			// 
+			this.tsmiSettings.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tspgBrowserForm});
+			this.tsmiSettings.Name = "tsmiSettings";
+			this.tsmiSettings.Size = new System.Drawing.Size(56, 16);
+			this.tsmiSettings.Text = "設定(&S)";
+			// 
+			// tspgBrowserForm
+			// 
+			this.tspgBrowserForm.Name = "tspgBrowserForm";
+			this.tspgBrowserForm.SelectedObject = null;
+			this.tspgBrowserForm.Size = new System.Drawing.Size(200, 300);
+			this.tspgBrowserForm.Text = "toolStripPropertyGrid1";
 			// 
 			// toolStripContainer1
 			// 
@@ -438,5 +456,7 @@
 		private System.Windows.Forms.ToolStripMenuItem tsmiFillCampaignForm;
 		private ToolStripGenreMenuItem tsgmiGenreTop;
 		private ToolStripGenreMenuItem tsgmiTimetableUpdate;
+		private System.Windows.Forms.ToolStripMenuItem tsmiSettings;
+		private ToolStripPropertyGrid tspgBrowserForm;
 	}
 }

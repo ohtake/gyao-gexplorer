@@ -2,21 +2,24 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Reflection;
+using System.Xml.Serialization;
 
 namespace Yusen.GExplorer {
-	/// <summary>2つの<see cref="string"/>を比較して真偽値を返すメソッドの名称．</summary>
-	public enum TwoStringsPredicateMethod {
-		Equals,
-		Contains,
-		StartsWith,
-		EndsWith,
-	}
-	
 	/// <summary>NGコンテンツ．<see cref="ContentAdapter"/>に対してNGの判定を行う．</summary>
 	public class NgContent {
+		public static readonly string MethodNameEquals = "Equals";
+		public static readonly string MethodNameContains = "Contains";
+		public static readonly string MethodNameStartsWith = "StartsWith";
+		public static readonly string MethodNameEndsWith = "EndsWith";
+		public static readonly string[] Methods = new string[] { NgContent.MethodNameEquals, NgContent.MethodNameContains, NgContent.MethodNameStartsWith, NgContent.MethodNameEndsWith};
+		
+		internal static bool IsInvalidNgContent(NgContent ngc) {
+			return null == ngc.subjInfo || null == ngc.predInfo;
+		}
+
 		private string comment;
 		private string propertyName;
-		private TwoStringsPredicateMethod method;
+		private string method;
 		private string word;
 		private DateTime created;
 		private DateTime lastAbone;
@@ -26,13 +29,20 @@ namespace Yusen.GExplorer {
 		
 		public NgContent(){
 		}
-		internal NgContent(string comment, string propertyName, TwoStringsPredicateMethod method, string word) {
+		internal NgContent(string comment, string propertyName, string method, string word) {
 			this.Comment = comment;
 			this.PropertyName = propertyName;
 			this.Method = method;
 			this.Word = word;
 			this.Created = DateTime.Now;
 			this.LastAbone = DateTime.MinValue;
+			
+			if (null == this.subjInfo) {
+				throw new ArgumentException("存在しないプロパティ名: " + this.propertyName);
+			}
+			if (null == this.predInfo) {
+				throw new ArgumentException("存在しないメソッド名: " + this.method);
+			}
 		}
 		/// <summary>コメント．意味なし．</summary>
 		public string Comment {
@@ -45,20 +55,14 @@ namespace Yusen.GExplorer {
 			set {
 				this.propertyName = value;
 				this.subjInfo = typeof(ContentAdapter).GetProperty(value);
-				if (null == this.subjInfo) {
-					throw new ArgumentException("存在しないプロパティ名: " + value);
-				}
 			}
 		}
 		/// <summary>NG処理で述語となる<see cref="string"/>のメソッド名．</summary>
-		public TwoStringsPredicateMethod Method {
+		public string Method {
 			get { return this.method; }
 			set {
 				this.method = value;
-				this.predInfo = typeof(string).GetMethod(value.ToString(), new Type[] { typeof(string)});
-				if (null == this.predInfo) {
-					throw new ArgumentException("存在しないメソッド名: " + value.ToString());
-				}
+				this.predInfo = typeof(string).GetMethod(value, new Type[] { typeof(string)});
 			}
 		}
 		/// <summary>NG処理で目的語となるNGワード．</summary>
@@ -111,12 +115,12 @@ namespace Yusen.GExplorer {
 			this.listNoneAccelarated.Clear();
 
 			foreach (NgContent ngc in base.items) {
-				if (ngc.Method == TwoStringsPredicateMethod.Equals) {
+				if (NgContent.MethodNameEquals.Equals(ngc.Method)) {
 					switch (ngc.PropertyName) {
-						case "ContentId":
+						case ContentAdapter.PropertyNameContentId:
 							this.dicNgId[ngc.Word] = ngc;
 							continue;
-						case "Title":
+						case ContentAdapter.PropertyNameTitle:
 							this.dicNgTitle[ngc.Word] = ngc;
 							continue;
 					}
@@ -188,6 +192,17 @@ namespace Yusen.GExplorer {
 		}
 		public int NonAcceralatedNgContentsCount {
 			get { return this.listNoneAccelarated.Count; }
+		}
+		
+		public NgContent[] GetInvalidNgContents() {
+			return base.items.FindAll(NgContent.IsInvalidNgContent).ToArray();
+		}
+		public int RemoveInvalidNgContents() {
+			int removeCnt = base.items.RemoveAll(NgContent.IsInvalidNgContent);
+			if (removeCnt > 0) {
+				this.OnChanged();
+			}
+			return removeCnt;
 		}
 	}
 }

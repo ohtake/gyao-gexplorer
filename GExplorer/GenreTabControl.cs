@@ -228,12 +228,18 @@ namespace Yusen.GExplorer {
 			Rectangle textRect = new Rectangle(e.Bounds.Left + 2, e.Bounds.Top + 2, e.Bounds.Width, e.Bounds.Height);
 			
 			if (e.State == DrawItemState.Selected) {
-				e.Graphics.FillRectangle(new SolidBrush(genreColor), e.Bounds);
-				e.Graphics.DrawString(tabText, e.Font, new SolidBrush(Color.White), textRect);
+				using (SolidBrush brushGenreColor = new SolidBrush(genreColor))
+				using (SolidBrush brushWhite = new SolidBrush(Color.White)) {
+					e.Graphics.FillRectangle(brushGenreColor, e.Bounds);
+					e.Graphics.DrawString(tabText, e.Font, brushWhite, textRect);
+				}
 			} else {
 				Rectangle markRect = new Rectangle(e.Bounds.Left, e.Bounds.Top, 3, e.Bounds.Height);
-				e.Graphics.DrawString(tabText, e.Font, new SolidBrush(SystemColors.WindowText), textRect);
-				e.Graphics.FillRectangle(new SolidBrush(genreColor), markRect);
+				using (SolidBrush brushText = new SolidBrush(SystemColors.WindowText))
+				using (SolidBrush brushGenreColor = new SolidBrush(genreColor)) {
+					e.Graphics.DrawString(tabText, e.Font, brushText, textRect);
+					e.Graphics.FillRectangle(brushGenreColor, markRect);
+				}
 			}
 		}
 

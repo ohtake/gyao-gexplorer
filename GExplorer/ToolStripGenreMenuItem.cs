@@ -5,6 +5,8 @@ using System.Windows.Forms;
 using System.Windows.Forms.Design;
 using System.ComponentModel;
 using Yusen.GCrawler;
+using System.Drawing;
+using System.Drawing.Drawing2D;
 
 namespace Yusen.GExplorer {
 	[ToolStripItemDesignerAvailability(ToolStripItemDesignerAvailability.All)]
@@ -12,11 +14,36 @@ namespace Yusen.GExplorer {
 	public sealed class ToolStripGenreMenuItem : ToolStripMenuItem{
 		private sealed class ToolStripMenuItemWithGenre : ToolStripMenuItem {
 			private readonly GGenre genre;
+			private bool genreColored = true;
+			
 			public ToolStripMenuItemWithGenre(GGenre genre) : base(genre.GenreName){
 				this.genre = genre;
 			}
 			public GGenre Genre {
 				get { return this.genre; }
+			}
+			public bool GenreColored {
+				set { this.genreColored = value; }
+			}
+			protected override void OnPaint(PaintEventArgs e) {
+				if (!this.genreColored) {
+					base.OnPaint(e);
+					return;
+				}
+				Rectangle rectIcon = new Rectangle(e.ClipRectangle.Location, new Size(25, e.ClipRectangle.Height));
+				using (LinearGradientBrush brushIcon = new LinearGradientBrush(rectIcon, Color.White, this.genre.GenreForeColor, LinearGradientMode.Horizontal)) {
+					if (base.Selected) {
+						using (SolidBrush brushBack = new SolidBrush(this.genre.GenreForeColor))
+						using (SolidBrush brushText = new SolidBrush(Color.White)) {
+							e.Graphics.FillRectangle(brushBack, e.ClipRectangle);
+							e.Graphics.FillRectangle(brushIcon, rectIcon);
+							e.Graphics.DrawString(base.Text, base.Font, brushText, new Point(e.ClipRectangle.Left + 25 + 8, e.ClipRectangle.Top + 4));
+						}
+					} else {
+						e.Graphics.FillRectangle(brushIcon, rectIcon);
+						base.OnPaint(e);
+					}
+				}
 			}
 		}
 		
@@ -26,6 +53,7 @@ namespace Yusen.GExplorer {
 		public event EventHandler<GenreMenuItemSelectedEventArgs> GenreSelected;
 		private GenreMenuVisibility menuVisibility = GenreMenuVisibility.None;
 		private bool hasAvaibaleSubmenus = false;
+		private bool genreColored = true;
 
 		[DefaultValue(GenreMenuVisibility.None)]
 		public GenreMenuVisibility MenuVisibility {
@@ -72,7 +100,23 @@ namespace Yusen.GExplorer {
 				}
 			}
 		}
-
+		
+		[DefaultValue(true)]
+		public bool GenreColored {
+			get { return this.genreColored; }
+			set {
+				if (this.genreColored != value) {
+					this.genreColored = value;
+					foreach (ToolStripItem tsi in this.DropDownItems) {
+						ToolStripMenuItemWithGenre tsmiwg = tsi as ToolStripMenuItemWithGenre;
+						if (null != tsmiwg) {
+							tsmiwg.GenreColored = value;
+						}
+					}
+				}
+			}
+		}
+		
 		public bool HasAvailableSubmenus {
 			get { return this.hasAvaibaleSubmenus; }
 		}

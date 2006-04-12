@@ -126,7 +126,7 @@ namespace Yusen.GCrawler {
 			return this.GenreKey.GetHashCode();
 		}
 		public override string ToString() {
-			return "<" + this.GenreId + "> " + this.GenreName;
+			return string.Format("<{0}> {1}", this.GenreId, this.GenreName);
 		}
 		[Serializable]
 		private class GGenre200505 : GGenre {

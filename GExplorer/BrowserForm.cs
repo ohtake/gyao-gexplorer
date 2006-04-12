@@ -36,6 +36,29 @@ namespace Yusen.GExplorer {
 			}
 			private FormSettingsBaseSettings formSettingsBaseSettings;
 
+			[Category("表示")]
+			[DisplayName("ジャンルメニューの色分け")]
+			[Description("ジャンルメニューをジャンルごとに色分けして表示します．")]
+			[DefaultValue(true)]
+			public bool MenuGenreColored {
+				get {
+					if (this.HasOwner) {
+						return this.owner.tsgmiGenreTop.GenreColored;
+					} else {
+						return this.menuGenreColored;
+					}
+				}
+				set {
+					if (this.HasOwner) {
+						this.owner.tsgmiGenreTop.GenreColored = value;
+						this.owner.tsgmiTimetableUpdate.GenreColored = value;
+					} else {
+						this.menuGenreColored = value;
+					}
+				}
+			}
+			private bool menuGenreColored = true;
+			
 			#region INewSettings<BrowserFormSettings> Members
 			public void ApplySettings(BrowserFormSettings newSettings) {
 				Utility.SubstituteAllPublicProperties(this, newSettings);
@@ -204,7 +227,8 @@ namespace Yusen.GExplorer {
 		private BrowserForm() {
 			InitializeComponent();
 			Utility.AppendHelpMenu(this.menuStrip1);
-
+			this.tsmiSettings.DropDown.Closing += ToolStripPropertyGrid.CancelDropDownClosingIfEditingPropertyGrid;
+			
 			if (base.DesignMode) return;
 
 			this.tscbAddress.Items.Clear();
@@ -213,7 +237,10 @@ namespace Yusen.GExplorer {
 			}
 		}
 		private void BrowserForm_Load(object sender, EventArgs e) {
+			if (base.DesignMode) return;
+
 			this.settings = new BrowserFormSettings(this);
+			this.tspgBrowserForm.SelectedObject = this.settings;
 			Utility.LoadSettingsAndEnableSaveOnClosedNew(this);
 		}
 		public string FilenameForSettings {

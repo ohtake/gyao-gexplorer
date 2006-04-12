@@ -24,22 +24,6 @@ namespace Yusen.GExplorer {
 				get { return null != this.owner; }
 			}
 			
-			[Category("動作")]
-			[DisplayName("複数選択")]
-			[Description("リストビューでの複数選択を有効にする")]
-			[DefaultValue(true)]
-			public bool MultiSelectEnabled {
-				get {
-					if (this.HasOwner) return this.owner.listView1.MultiSelect;
-					else return this.multiSelectEnabled;
-				}
-				set {
-					if (this.HasOwner) this.owner.listView1.MultiSelect = value;
-					else this.multiSelectEnabled = value;
-				}
-			}
-			private bool multiSelectEnabled = true;
-			
 			[Category("カラム幅")]
 			[DisplayName("[0] contents_id")]
 			[Description("'contents_id'カラムの幅を指定します．")]
@@ -120,6 +104,22 @@ namespace Yusen.GExplorer {
 			}
 			private int? colWidthComment;
 
+			[Category("表示")]
+			[DisplayName("ジャンルで色分け")]
+			[Description("ジャンルごとに色分けをします．")]
+			[DefaultValue(true)]
+			public bool GenreColored {
+				get {
+					if (this.HasOwner) return this.owner.GenreColored;
+					else return this.genreColored;
+				}
+				set {
+					if (this.HasOwner) this.owner.GenreColored = value;
+					else this.genreColored = value;
+				}
+			}
+			private bool genreColored = true;
+
 			#region INewSettings<PlayListViewSettings> Members
 			public void ApplySettings(PlayListViewSettings newSettings) {
 				Utility.SubstituteAllPublicProperties(this, newSettings);
@@ -129,6 +129,8 @@ namespace Yusen.GExplorer {
 
 
 		public event EventHandler<ContentSelectionChangedEventArgs> ContentSelectionChanged;
+
+		private bool genreColored = true;
 
 		private bool dragging = false;
 		private string[] dropIds = null;
@@ -182,6 +184,15 @@ namespace Yusen.GExplorer {
 				}
 			}
 		}
+		private bool GenreColored {
+			get { return this.genreColored; }
+			set {
+				if (this.genreColored != value) {
+					this.genreColored = value;
+					this.UpdateItems();
+				}
+			}
+		}
 
 		private void UpdateItems() {
 			int oldCount = this.listView1.Items.Count;
@@ -198,6 +209,11 @@ namespace Yusen.GExplorer {
 				lvi.SubItems[3].Text = cont.Deadline;
 				lvi.SubItems[4].Text = cont.Comment;
 				lvi.Tag = cont;
+				if (this.genreColored) {
+					lvi.ForeColor = cont.Genre.GenreForeColor;
+				} else {
+					lvi.ForeColor = SystemColors.WindowText;
+				}
 			}
 			//増減をチェックしてから差分を埋める
 			if(minCount == newCount) { //減ったか同じの場合
@@ -209,6 +225,11 @@ namespace Yusen.GExplorer {
 					ContentAdapter cont = PlayList.Instance[i];
 					ListViewItem lvi = new ListViewItem(new string[] { cont.ContentId, cont.DisplayName, cont.GTimeSpan.ToString(), cont.Deadline, cont.Comment });
 					lvi.Tag = cont;
+					if (this.genreColored) {
+						lvi.ForeColor = cont.Genre.GenreForeColor;
+					} else {
+						lvi.ForeColor = SystemColors.WindowText;
+					}
 					this.listView1.Items.Add(lvi);
 				}
 				//個数が増えたのならばおそらく末尾への追加だろう
@@ -237,9 +258,9 @@ namespace Yusen.GExplorer {
 
 			string num = "数: " + selectedNum.ToString() + " / " + totalNum.ToString();
 			string time = "時間: "
-				+ selectedTimeSpan.ToString() + (hasExactSelectedTimeSpan ? "" : "+?")
+				+ selectedTimeSpan.ToString() + (hasExactSelectedTimeSpan ? string.Empty : "+?")
 				+ " / "
-				+ totalTimeSpan.ToString() + (hasExactTotalTimeSpan ? "" : "+?");
+				+ totalTimeSpan.ToString() + (hasExactTotalTimeSpan ? string.Empty : "+?");
 			this.tslMessage.Text = num + "   " + time;
 		}
 		private void ScrollToTop() {
@@ -285,6 +306,22 @@ namespace Yusen.GExplorer {
 			switch (e.KeyCode) {
 				case Keys.Enter:
 					this.tsmiPlay.PerformClick();
+					break;
+				case Keys.A:
+					if (Keys.None != (Control.ModifierKeys & Keys.Control)) {
+						this.listView1.BeginUpdate();
+						foreach (ListViewItem lvi in this.listView1.Items) {
+							lvi.Selected = true;
+						}
+						this.listView1.EndUpdate();
+					}
+					break;
+				case Keys.Escape:
+					this.listView1.BeginUpdate();
+					foreach (ListViewItem lvi in this.listView1.Items) {
+						lvi.Selected = false;
+					}
+					this.listView1.EndUpdate();
 					break;
 			}
 		}
@@ -638,6 +675,5 @@ namespace Yusen.GExplorer {
 			get { return this.settings; }
 		}
 		#endregion
-
 	}
 }

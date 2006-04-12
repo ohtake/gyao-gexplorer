@@ -21,16 +21,22 @@ namespace Yusen.GCrawler {
 			private GGenre genre;
 			private IHtmlParser parser;
 			private IContentCacheController cacheController;
-			private Queue<Uri> waitingPages = new Queue<Uri>();
-			private Queue<int> waitingPackages = new Queue<int>();
-			private Queue<int> waitingContents = new Queue<int>();
-			private List<Uri> visitedPages = new List<Uri>();
-			private Dictionary<int, GPackage> visitedPackages = new Dictionary<int, GPackage>();
-			private Dictionary<int, GContent> visitedContents = new Dictionary<int, GContent>();
-			private Dictionary<int, int> contPackRelations = new Dictionary<int, int>();
-			private List<Exception> ignoredExceptions = new List<Exception>();
 			
+			private Queue<Uri> pagesWaiting = new Queue<Uri>();
+			private List<Uri> pagesSuccess = new List<Uri>();
+			private List<Uri> pagesFailed = new List<Uri>();
+			
+			private Queue<int> pacsWaiting = new Queue<int>();
+			private Dictionary<int, GPackage> pacsSuccess = new Dictionary<int, GPackage>();
+			private List<int> pacsFailed = new List<int>();
+			
+			private Queue<int> contsWatings = new Queue<int>();
+			private Dictionary<int, GContent> contsVisited = new Dictionary<int, GContent>();
+			private List<int> contsIgnored = new List<int>();
+
+			private Dictionary<int, int> contPackRelations = new Dictionary<int, int>();
 			private SortedDictionary<int, ContentPropertiesOnPackagePage> cpPacs = new SortedDictionary<int, ContentPropertiesOnPackagePage>();
+			private List<Exception> ignoredExceptions = new List<Exception>();
 			
 			public CrawlerHelper(CrawlSettings settings, GGenre genre, IHtmlParser parser, IContentCacheController cacheController, BackgroundWorker bw) {
 				this.bw = bw;
@@ -41,22 +47,22 @@ namespace Yusen.GCrawler {
 				
 				switch(settings.CrawlOrder) {
 					case CrawlOrder.TopPageFirst:
-						this.waitingPages.Enqueue(this.genre.TopPageUri);
+						this.pagesWaiting.Enqueue(this.genre.TopPageUri);
 						this.PushTimeTable();
 						break;
 					case CrawlOrder.TimetableFirst:
 						this.PushTimeTable();
-						this.waitingPages.Enqueue(this.genre.TopPageUri);
+						this.pagesWaiting.Enqueue(this.genre.TopPageUri);
 						break;
 				}
 			}
 			private void PushTimeTable (){
 				switch(this.settings.TimeTableSortType) {
 					case TimetableSortType.RecentlyUpdatedFirst:
-						this.waitingPages.Enqueue(this.genre.TimetableRecentlyUpdatedFirstUri);
+						this.pagesWaiting.Enqueue(this.genre.TimetableRecentlyUpdatedFirstUri);
 						break;
 					case TimetableSortType.DeadlineNearFirst:
-						this.waitingPages.Enqueue(this.genre.TimetableDeadlineNearFirstUri);
+						this.pagesWaiting.Enqueue(this.genre.TimetableDeadlineNearFirstUri);
 						break;
 				}
 			}
@@ -72,8 +78,11 @@ namespace Yusen.GCrawler {
 				return this.CreateCrawlResult(this.BuildGpcTree());
 			}
 			private void ReportProgressToBackgroundWorker(string message) {
-				int visited = this.visitedPages.Count + this.visitedPackages.Count + this.visitedContents.Count;
-				int waiting = this.waitingPages.Count + this.waitingPackages.Count + this.waitingContents.Count;
+				int visited =
+					this.pagesSuccess.Count + this.pagesFailed.Count
+					+this.pacsSuccess.Count + this.pacsFailed.Count
+					+ this.contsVisited.Count + this.contsIgnored.Count;
+				int waiting = this.pagesWaiting.Count + this.pacsWaiting.Count + this.contsWatings.Count;
 				CrawlProgressEventArgs e = new CrawlProgressEventArgs(message, visited, waiting);
 				this.bw.ReportProgress(100*visited/(visited + waiting), e);
 			}
@@ -85,52 +94,55 @@ namespace Yusen.GCrawler {
 			/// パッケージとコンテンツのIDを取得する．
 			/// </summary>
 			private void CrawlPages() {
-				while (this.waitingPages.Count > 0) {
+				while (this.pagesWaiting.Count > 0) {
 					if (this.bw.CancellationPending) return;
 					
-					if(this.visitedPages.Count >= this.settings.MaxPages) {
-						this.OnIgnoringException(new Exception(string.Format("クロールする一般ページの上限数に達した． ({0}/{1})", this.settings.MaxPages, this.visitedPages.Count + this.waitingPages.Count)));
-						this.waitingPages.Clear();
+					if(this.pagesSuccess.Count + this.pagesFailed.Count >= this.settings.MaxPages) {
+						this.OnIgnoringException(new Exception(string.Format("クロールする一般ページの上限数に達した． ({0}/{1})", this.settings.MaxPages, this.pagesSuccess.Count + this.pagesWaiting.Count)));
+						this.pagesWaiting.Clear();
 						return;
 					}
 					this.ReportProgressToBackgroundWorker(string.Format("フェーズ 1/4: 一般ページを取得中 ({0}/{1}) {2}",
-						this.visitedPages.Count,
-						this.visitedPages.Count + this.waitingPages.Count,
-						this.waitingPages.Peek().PathAndQuery));
+						this.pagesSuccess.Count + this.pagesFailed.Count,
+						this.pagesSuccess.Count + this.pagesFailed.Count + this.pagesWaiting.Count,
+						this.pagesWaiting.Peek().PathAndQuery));
 					
-					Uri uri = this.waitingPages.Dequeue();
-					this.visitedPages.Add(uri);
+					Uri uri = this.pagesWaiting.Dequeue();
 					List<UriLinkTypePair> links;
 					try {
 						links = this.parser.ExtractLinks(uri);
 					} catch(Exception e) {
-						this.OnIgnoringException(new Exception("一般ページの取得失敗． <" + uri.AbsoluteUri + ">", e));
+						this.pagesFailed.Add(uri);
+						this.OnIgnoringException(new Exception(string.Format("一般ページの取得失敗 <{0}>", uri.AbsoluteUri), e));
 						continue;
 					}
+					this.pagesSuccess.Add(uri);
 					
 					links = links.ConvertAll<UriLinkTypePair>(CrawlerHelper.ConvertUriWithoutFragment);
 					foreach(UriLinkTypePair pair in links) {
 						string id;
 						if(GPackage.TryExtractPackageId(pair.Uri, out id)) {
 							int key = GPackage.ConvertToKeyFromId(id);
-							if(!this.waitingPackages.Contains(key)) {
-								this.waitingPackages.Enqueue(key);
+							if(!this.pacsWaiting.Contains(key)) {
+								this.pacsWaiting.Enqueue(key);
 								continue;
 							}
 						}
 						if(GContent.TryExtractContentId(pair.Uri, out id)) {
 							int key = GContent.ConvertToKeyFromId(id);
-							if(!this.waitingContents.Contains(key)) {
-								this.waitingContents.Enqueue(key);
+							if(!this.contsWatings.Contains(key)) {
+								this.contsWatings.Enqueue(key);
 								continue;
 							}
 						}
 						if(this.IsInRestriction(pair.Uri)) {
 							switch(pair.LinkType) {
 								case LinkType.AnchorOrFrame:
-									if(!this.visitedPages.Contains(pair.Uri) && !this.waitingPages.Contains(pair.Uri)) {
-										this.waitingPages.Enqueue(pair.Uri);
-									}
+									if (this.pagesWaiting.Contains(pair.Uri)) break;
+									if (this.pagesSuccess.Contains(pair.Uri)) break;
+									if (this.pagesFailed.Contains(pair.Uri)) break;
+									if (uri.Equals(pair.Uri)) break;
+									this.pagesWaiting.Enqueue(pair.Uri);
 									break;
 							}
 						}
@@ -138,30 +150,37 @@ namespace Yusen.GCrawler {
 				}
 			}
 			/// <summary>
-			/// シリーズ一覧ページを読み込んでコンテンツのIDを取得する．
+			/// シリーズ一覧ページを読み込んでコンテンツのIDなどを取得する．
 			/// </summary>
 			private void FetchPackages() {
-				while(this.waitingPackages.Count > 0){
+				while(this.pacsWaiting.Count > 0){
 					if (this.bw.CancellationPending) return;
 
-					int packKey = this.waitingPackages.Dequeue();
+					int packKey = this.pacsWaiting.Dequeue();
 					this.ReportProgressToBackgroundWorker(string.Format("フェーズ 2/4: シリーズ一覧ページを取得中 ({0}/{1}) {2}",
-						this.visitedPackages.Count,
-						this.visitedPackages.Count + this.waitingPackages.Count,
+						this.pacsSuccess.Count + this.pacsFailed.Count,
+						this.pacsSuccess.Count + this.pacsFailed.Count + this.pacsWaiting.Count,
 						GPackage.ConvertToIdFromKey(packKey)));
 					GPackage package;
 					List<int> childContKeys;
 					try{
 						package = GPackage.DoDownload(packKey, out childContKeys, this.cpPacs);
 					}catch(Exception e){
+						this.pacsFailed.Add(packKey);
 						this.OnIgnoringException(e);
 						continue;
 					}
+					if (this.genre.GenreKey.Equals(package.GenreKey)) {
+						this.pacsSuccess.Add(packKey, package);
+					} else {
+						this.pacsFailed.Add(packKey);
+						this.OnIgnoringException(new Exception(string.Format("別ジャンルのため無視 <{0}>", package.PackageId)));
+						continue;
+					}
 					
-					this.visitedPackages.Add(packKey, package);
 					foreach (int contKey in childContKeys) {
-						if (!this.waitingContents.Contains(contKey)) {
-							this.waitingContents.Enqueue(contKey);
+						if (!this.contsWatings.Contains(contKey)) {
+							this.contsWatings.Enqueue(contKey);
 						}
 						this.contPackRelations.Add(contKey, packKey);
 					}
@@ -172,25 +191,32 @@ namespace Yusen.GCrawler {
 			/// もしキャッシュがあればキャッシュを利用する．
 			/// </summary>
 			private void FetchContents() {
-				while(this.waitingContents.Count > 0){
+				while(this.contsWatings.Count > 0){
 					if (this.bw.CancellationPending) return;
 					
-					int contKey = this.waitingContents.Dequeue();
+					int contKey = this.contsWatings.Dequeue();
 					ContentCache cache;
 					GContent content;
 					if (this.cacheController.TryGetCache(contKey, out cache)) {
 						content = cache.Content;
 						content.FromCache = true;
-
+						
 						this.ReportProgressToBackgroundWorker(string.Format("フェーズ 3/4: 詳細ページのキャッシュにヒット ({0}/{1}) {2}",
-							this.visitedContents.Count,
-							this.visitedContents.Count + this.waitingContents.Count,
+							this.contsVisited.Count + this.contsIgnored.Count,
+							this.contsVisited.Count + this.contsIgnored.Count + this.contsWatings.Count,
 							GContent.ConvertToIdFromKey(contKey)));
-						this.visitedContents.Add(contKey, content);
+						if (this.genre.GenreKey.Equals(content.GenreKey)) {
+							//ヒット成功
+							goto success;
+						} else {
+							//ヒット成功だけども別ジャンルだった
+							this.contsIgnored.Add(contKey);
+							this.OnIgnoringException(new Exception(string.Format("別ジャンルのため無視 <{0}>", content.ContentId)));
+						}
 					} else {
 						this.ReportProgressToBackgroundWorker(string.Format("フェーズ 3/4: 詳細ページの取得中 ({0}/{1}) {2}",
-							this.visitedContents.Count,
-							this.visitedContents.Count + this.waitingContents.Count,
+							this.contsVisited.Count + this.contsIgnored.Count,
+							this.contsVisited.Count + this.contsIgnored.Count + this.contsWatings.Count,
 							GContent.ConvertToIdFromKey(contKey)));
 						try {
 							ContentPropertiesOnPackagePage cpPac;
@@ -199,16 +225,59 @@ namespace Yusen.GCrawler {
 							} else {
 								content = GContent.DoDownload(contKey);
 							}
-							//ダウンロード成功
-							this.visitedContents.Add(contKey, content);
-							this.cacheController.AddCache(content);
+							if (this.genre.GenreKey.Equals(content.GenreKey)) {
+								//ダウンロード成功
+								this.cacheController.AddCache(content);
+								goto success;
+							} else {
+								//ダウンロード成功だけども別ジャンルだった
+								this.contsIgnored.Add(contKey);
+								this.OnIgnoringException(new Exception(string.Format("別ジャンルのため無視 <{0}>", content.ContentId)));
+							}
 						} catch (ContentDownloadException e) {
-							//ダウンロード失敗
-							this.OnIgnoringException(e);
+							//ダウンロード失敗だけどダミーを作って入れておく
 							content = GContent.CreateDummyContent(contKey, this.genre, e.Message);
-							this.visitedContents.Add(contKey, content);
+							this.contsVisited.Add(contKey, content);
+							this.OnIgnoringException(e);
 						}
 					}
+					continue;
+				success:
+					this.contsVisited.Add(contKey, content);
+					//取得しているパッケージなら次
+					int packKey = content.PackageKey;
+					if (0 == packKey || this.pacsSuccess.ContainsKey(packKey) || this.pacsFailed.Contains(packKey)) {
+						continue;
+					}
+					// 取得していないパッケージなら取得する
+					// ここから FetchPackages のコピペ改変
+					GPackage package;
+					List<int> childContKeys;
+					try {
+						package = GPackage.DoDownload(packKey, out childContKeys, this.cpPacs);
+					} catch (Exception e) {
+						this.pacsFailed.Add(packKey);
+						this.OnIgnoringException(e);
+						continue;
+					}
+					this.pacsSuccess.Add(packKey, package);
+					
+					foreach (int key in childContKeys) {
+						if (contKey == key) {
+							//パッケージの情報を追加してキャッシュ更新
+							ContentPropertiesOnPackagePage cpPac = this.cpPacs[contKey];
+							if (!content.HasSameContentPropertiesOnPackagePage(cpPac)) {
+								content.SetContentPropertiesOnPackagePage(cpPac);
+								this.cacheController.RemoveCache(content.ContentKey);
+								this.cacheController.AddCache(content);
+							}
+						}else if (!this.contsWatings.Contains(key) && !this.contsWatings.Contains(key)) {
+							//新たに見つかったコンテンツをキューに追加
+							this.contsWatings.Enqueue(key);
+						}
+						this.contPackRelations.Add(key, packKey);
+					}
+					continue;
 				}
 			}
 			/// <summary>
@@ -218,12 +287,12 @@ namespace Yusen.GCrawler {
 				this.ReportProgressToBackgroundWorker("フェーズ 4/4: データ構造の解析中");
 				//パッケージに含まれるコンテンツ
 				List<GPackage> packages = new List<GPackage>();
-				foreach (KeyValuePair<int, GPackage> packPair in this.visitedPackages) {
+				foreach (KeyValuePair<int, GPackage> packPair in this.pacsSuccess) {
 					packages.Add(packPair.Value);
 					List<GContent> contents = new List<GContent>();
 					foreach (KeyValuePair<int, int> cpPair in this.contPackRelations) {
 						if (packPair.Key == cpPair.Value) {
-							contents.Add(this.visitedContents[cpPair.Key]);
+							contents.Add(this.contsVisited[cpPair.Key]);
 						}
 					}
 					packPair.Value.Contents = contents.AsReadOnly();
@@ -231,7 +300,7 @@ namespace Yusen.GCrawler {
 				//どのパッケージに含まれているか不明なコンテンツ
 				GPackage dummyPackage = GPackage.CreateDummyPackage(this.genre);
 				List<GContent> contentsWithoutPack = new List<GContent>();
-				foreach (KeyValuePair<int, GContent> contPair in this.visitedContents) {
+				foreach (KeyValuePair<int, GContent> contPair in this.contsVisited) {
 					if (!this.contPackRelations.ContainsKey(contPair.Key)) {
 						contentsWithoutPack.Add(contPair.Value);
 					}
@@ -243,13 +312,10 @@ namespace Yusen.GCrawler {
 				return packages.AsReadOnly();
 			}
 			private CrawlResult CreateCrawlResult(ReadOnlyCollection<GPackage> packages) {
-				return new CrawlResult(this.genre, packages, this.visitedPages.AsReadOnly(), this.ignoredExceptions.AsReadOnly());
+				return new CrawlResult(this.genre, packages, this.pagesSuccess.AsReadOnly(), this.ignoredExceptions.AsReadOnly());
 			}
 			private bool IsInRestriction(Uri uri) {
 				return uri.AbsoluteUri.StartsWith(this.genre.RootUri.AbsoluteUri);
-			}
-			private Uri StartPageUri {
-				get {return this.genre.TopPageUri;}
 			}
 		}
 		
@@ -354,14 +420,6 @@ namespace Yusen.GCrawler {
 		private readonly ReadOnlyCollection<Uri> visitedPages;
 		private readonly ReadOnlyCollection<Exception> ignoredExceptions;
 		private readonly DateTime time;
-
-		[OnDeserialized]
-		private void OnDeserialized(StreamingContext context) {
-			//2.0.5.1
-			foreach (GPackage package in this.packages) {
-				package.SetGenreKey(this.genre.GenreKey);
-			}
-		}
 
 		internal CrawlResult(
 				GGenre genre,

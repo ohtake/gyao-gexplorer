@@ -13,9 +13,11 @@ namespace Yusen.GCrawler {
 	public class GContent {
 		private static readonly XmlSerializer serializer = new XmlSerializer(typeof(GContent));
 		
-		private static readonly Regex regexId = new Regex("cnt[0-9]{7}", RegexOptions.Compiled);
-
-		private static readonly Regex regexContentPage = new Regex(@"<a href=""http://www\.gyao\.jp/sityou/catetop/genre_id/(?<GenreId>gen\d{7})/"">.*?\r\n(<a href=""http://www\.gyao\.jp/sityou/catelist/pac_id/(?<PackageId>pac\d{7})/"">)?[\s\S]*?<td width=""459"" class=""title12b"">(?<Title>.*?)</td>[\s\S]*?((?<SeriesNumber>.*?)<!-- シリーズ番号 -->)?(&nbsp;&nbsp;&nbsp;)?(?<Subtitle>.*?)<!-- サブタイトル -->[\s\S]*?<b>[^:]*時間[^:]* : (?<Duration>.*?)</b>[\s\S]*?<td align=""left"">(?<Description1>.*?)</td>([\s\S]*?<td align=""left"">\r\n(?<Description2>.*?)</td>[\s\S]*?<td align=""left"" class=""text10"">\r\n(?<Description3>.*?)</td>[\s\S]*?<td align=""right"" class=""text10"">\r\n(?<Description4>.*?)</td>)?", RegexOptions.Compiled | RegexOptions.ExplicitCapture | RegexOptions.Multiline);
+		private static readonly Regex regexId = new Regex(@"cnt\d{7}", RegexOptions.Compiled);
+		
+		private static readonly Regex regexContentPage = new Regex(
+			@"<a href=""http://www\.gyao\.jp/sityou/catetop/genre_id/(?<GenreIdNavigation>gen\d{7})/"">.*?\r\n(<a href=""http://www\.gyao\.jp/sityou/catelist/pac_id/(?<PackageIdNavigation>pac\d{7})/"">)?[\s\S]*?<td width=""459"" class=""title12b"">(?<Title>.*?)</td>[\s\S]*?((?<SeriesNumber>.*?)<!-- シリーズ番号 -->)?(&nbsp;&nbsp;&nbsp;)?(?<Subtitle>.*?)<!-- サブタイトル -->[\s\S]*?<b>[^:]*時間[^:]* : (?<Duration>.*?)</b>[\s\S]*?<td align=""left"">(?<Description1>.*?)</td>([\s\S]*?<td align=""left"">\r\n(?<Description2>.*?)</td>[\s\S]*?<td align=""left"" class=""text10"">\r\n(?<Description3>.*?)</td>[\s\S]*?<td align=""right"" class=""text10"">\r\n(?<Description4>.*?)</td>)?([\s\S]*<div><a href=""http://www\.gyao\.jp/sityou_review/review_list\.php\?contents_id=cnt\d{7}&pac_id=(?<PackageIdReview>pac\d{7})"">)?",
+			RegexOptions.Compiled | RegexOptions.ExplicitCapture | RegexOptions.Multiline);
 		
 		public static void Serialize(string filename, GContent cont){
 			using (TextWriter writer = new StreamWriter(filename)) {
@@ -78,7 +80,7 @@ namespace Yusen.GCrawler {
 			return new Uri(
 				"http://www.gyao.jp/login/judge_cookie/?"
 				+ "contentsId=" + GContent.ConvertToIdFromKey(contKey)
-				+ "&rateId=" + "bit" + ((int)bitrate).ToString("0000000")
+				+ "&rateId=" + GBitRateUtility.ConvertToIdFromKey(bitrate)
 				+ "&login_from=shityou"
 				+ "&chapterNo="
 				+ "&recommend="
@@ -89,7 +91,7 @@ namespace Yusen.GCrawler {
 			return new Uri(
 				"http://www.gyao.jp/sityou/catedetail/?"
 				+ "contentsId=" + contId
-				+ "&rateId=" + "bit" + ((int)bitrate).ToString("0000000")
+				+ "&rateId=" + GBitRateUtility.ConvertToIdFromKey(bitrate)
 				+ "&login_from=shityou"
 				+ "&chapterNo="
 				+ "&recommend=1"
@@ -99,15 +101,15 @@ namespace Yusen.GCrawler {
 			return new Uri(
 				"http://www.gyao.jp/sityou/asx.php?"
 				+ "contentsId=" + GContent.ConvertToIdFromKey(contKey)
-				+ "&userNo=" + userNo
-				+ "&rateId=" + "bit" + ((int)bitrate).ToString("0000000"));
+				+ "&userNo=" + userNo.ToString()
+				+ "&rateId=" + GBitRateUtility.ConvertToIdFromKey(bitrate));
 		}
 		public static Uri CreatePlaylistUri(string contId, int userNo, GBitRate bitrate, int chapterNo) {
 			return new Uri(
 				"http://www.gyao.jp/sityou/asx.php?"
 				+ "contentsId=" + contId
-				+ "&userNo=" + userNo
-				+ "&rateId=" + "bit" + ((int)bitrate).ToString("0000000")
+				+ "&userNo=" + userNo.ToString()
+				+ "&rateId=" + GBitRateUtility.ConvertToIdFromKey(bitrate)
 				+ "&chapterNo=" + chapterNo.ToString());
 		}
 #if CLIP_RESUME
@@ -115,8 +117,8 @@ namespace Yusen.GCrawler {
 			return new Uri(
 				"http://www.gyao.jp/sityou/asx.php?"
 				+ "contentsId=" + contId
-				+ "&userNo=" + userNo
-				+ "&rateId=" + "bit" + ((int)bitrate).ToString("0000000")
+				+ "&userNo=" + userNo.ToString()
+				+ "&rateId=" + GBitRateUtility.ConvertToIdFromKey(bitrate)
 				+ "&clipBegin=" + resumeInfo.ClipBegin.ToString()
 				+ "&clipNo=" + resumeInfo.ClipNo.ToString());
 		}
@@ -128,8 +130,8 @@ namespace Yusen.GCrawler {
 				reader = new StreamReader(new WebClient().OpenRead(uri), Encoding.GetEncoding("Shift_JIS"));
 				string allHtml = reader.ReadToEnd();
 
-				string genreId;
-				string packageId;
+				string genreIdNavigation;
+				string packageIdNavigation;
 				string title;
 				string seriesNumber;
 				string subtitle;
@@ -138,11 +140,12 @@ namespace Yusen.GCrawler {
 				string description2;
 				string description3;
 				string description4;
+				string packageIdReview;
 
 				Match match = GContent.regexContentPage.Match(allHtml);
 				if (match.Success) {
-					genreId = match.Groups["GenreId"].Value;
-					packageId = match.Groups["PackageId"].Value;
+					genreIdNavigation = match.Groups["GenreIdNavigation"].Value;
+					packageIdNavigation = match.Groups["PackageIdNavigation"].Value;
 					title = HtmlUtility.HtmlToText(match.Groups["Title"].Value);
 					seriesNumber = HtmlUtility.HtmlToText(match.Groups["SeriesNumber"].Value);
 					subtitle = HtmlUtility.HtmlToText(match.Groups["Subtitle"].Value);
@@ -151,12 +154,20 @@ namespace Yusen.GCrawler {
 					description2 = HtmlUtility.HtmlToText(match.Groups["Description2"].Value);
 					description3 = HtmlUtility.HtmlToText(match.Groups["Description3"].Value);
 					description4 = HtmlUtility.HtmlToText(match.Groups["Description4"].Value);
+					packageIdReview = match.Groups["PackageIdReview"].Value;
 				} else {
-					throw new ContentDownloadException("詳細ページの解釈ができなかった <" + uri.AbsoluteUri + ">");
+					throw new ContentDownloadException(string.Format("詳細ページの解釈ができなかった <{0}>", GContent.ConvertToIdFromKey(contKey)));
 				}
 
-				int genreKey = GGenre.ConvertToKeyFromId(genreId);
-				int packageKey = string.IsNullOrEmpty(packageId) ? packKey : GPackage.ConvertToKeyFromId(packageId);
+				int genreKey = GGenre.ConvertToKeyFromId(genreIdNavigation);
+				int packageKey = packKey;
+				if (0 == packKey) {
+					if (!string.IsNullOrEmpty(packageIdNavigation)) {
+						packageKey = GPackage.ConvertToKeyFromId(packageIdNavigation);
+					} else if (!string.IsNullOrEmpty(packageIdReview)) {
+						packageKey = GPackage.ConvertToKeyFromId(packageIdReview);
+					}
+				}
 				ContentPropertiesOnContentPage cpCnt = new ContentPropertiesOnContentPage(genreKey, packageKey, title, seriesNumber, subtitle, duration, description1, description2, description3, description4);
 				return new GContent(contKey, cpCnt, cpPac);
 			}catch (ContentDownloadException) {
@@ -180,17 +191,17 @@ namespace Yusen.GCrawler {
 		private int packageKey;
 		private int genreKey;
 
-		private string title = string.Empty;
-		private string seriesNumber = string.Empty;
-		private string subtitle = string.Empty;
-		private string duration = string.Empty;
-		private string description1 = string.Empty;
-		private string description2 = string.Empty;
-		private string description3 = string.Empty;
-		private string description4 = string.Empty;
+		private string title;
+		private string seriesNumber;
+		private string subtitle;
+		private string duration;
+		private string description1;
+		private string description2;
+		private string description3;
+		private string description4;
 
-		private string deadline = string.Empty;
-		private string summary = string.Empty;
+		private string deadline;
+		private string summary;
 		
 		private bool fromCache;
 		private bool isDummy;
@@ -221,28 +232,21 @@ namespace Yusen.GCrawler {
 			this.isDummy = false;
 		}
 
-		[OnDeserialized]//2.0.5.0
-		private void OnDeserialized(StreamingContext context) {
-			if (null == this.title) this.title = string.Empty;
-			if (null == this.seriesNumber) this.seriesNumber = string.Empty;
-			if (null == this.subtitle) this.subtitle = string.Empty;
-			if (null == this.duration) this.duration = string.Empty;
-			if (null == this.description1) this.description1 = string.Empty;
-			if (null == this.description2) this.description2 = string.Empty;
-			if (null == this.description3) this.description3 = string.Empty;
-			if (null == this.description4) this.description4 = string.Empty;
-			if (null == this.deadline) this.deadline = string.Empty;
-			if (null == this.summary) this.summary = string.Empty;
+		internal bool HasSameContentPropertiesOnPackagePage(ContentPropertiesOnPackagePage cpPac) {
+			return this.deadline.Equals(cpPac.Deadline) && this.summary.Equals(cpPac.Summary);
 		}
-		
+		internal void SetContentPropertiesOnPackagePage(ContentPropertiesOnPackagePage cpPac) {
+			this.deadline = cpPac.Deadline;
+			this.summary = cpPac.Summary;
+		}
+
 		public int ContentKey {
 			get { return this.contentKey; }
 			set { this.contentKey = value; }
 		}
-		//[XmlIgnore]
+		[XmlIgnore]
 		public string ContentId {
 			get { return GContent.ConvertToIdFromKey(this.ContentKey);}
-			set { this.ContentKey = GContent.ConvertToKeyFromId(value); }
 		}
 		public int PackageKey {
 			get { return this.packageKey; }
@@ -251,7 +255,6 @@ namespace Yusen.GCrawler {
 		[XmlIgnore]
 		public string PackageId {
 			get { return GPackage.ConvertToIdFromKey(this.PackageKey); }
-			set { this.PackageKey = GPackage.ConvertToKeyFromId(value); }
 		}
 		public int GenreKey {
 			get { return this.genreKey; }
@@ -260,7 +263,6 @@ namespace Yusen.GCrawler {
 		[XmlIgnore]
 		public string GenreId {
 			get { return GGenre.ConvertToIdFromKey(this.GenreKey); }
-			set { this.GenreKey = GGenre.ConvertToKeyFromId(value); }
 		}
 		
 		public string Title {
@@ -320,11 +322,7 @@ namespace Yusen.GCrawler {
 		}
 
 		public override string ToString() {
-			if (this.Subtitle.Length > 0) {
-				return "<" + this.ContentId + "> " + this.Title + " / " + this.Subtitle;
-			} else {
-				return "<" + this.ContentId + "> " + this.Title;
-			}
+			return string.Format("<{0}> {1} / {2} / {3}", this.ContentId, this.Title, this.SeriesNumber, this.Subtitle);
 		}
 	}
 	

@@ -70,7 +70,7 @@ namespace Yusen.GExplorer {
 			}
 			caPropertyNames.Sort();
 			this.comboProperty.Items.AddRange(caPropertyNames.ToArray());
-			foreach (TwoStringsPredicateMethod m in Enum.GetValues(typeof(TwoStringsPredicateMethod))) {
+			foreach (string m in NgContent.Methods) {
 				this.comboMethod.Items.Add(m);
 			}
 		}
@@ -128,7 +128,7 @@ namespace Yusen.GExplorer {
 			this.timerLastAbone.Stop();
 			this.UpdateView();
 		}
-
+		
 		private void lvNgContents_KeyDown(object sender, KeyEventArgs e) {
 			switch(e.KeyCode) {
 				case Keys.Delete:
@@ -141,6 +141,22 @@ namespace Yusen.GExplorer {
 							return selectedContents.Contains(nc);
 						}
 					));
+					break;
+				case Keys.A:
+					if (Keys.None != (Control.ModifierKeys & Keys.Control)) {
+						this.lvNgContents.BeginUpdate();
+						foreach (ListViewItem lvi in this.lvNgContents.Items) {
+							lvi.Selected = true;
+						}
+						this.lvNgContents.EndUpdate();
+					}
+					break;
+				case Keys.Escape:
+					this.lvNgContents.BeginUpdate();
+					foreach (ListViewItem lvi in this.lvNgContents.Items) {
+						lvi.Selected = false;
+					}
+					this.lvNgContents.EndUpdate();
 					break;
 			}
 		}
@@ -168,8 +184,7 @@ namespace Yusen.GExplorer {
 				ng = new NgContent(
 					this.txtComment.Text,
 					this.comboProperty.Text,
-					(TwoStringsPredicateMethod)Enum.Parse(
-						typeof(TwoStringsPredicateMethod), this.comboMethod.Text),
+					this.comboMethod.Text,
 					this.txtWord.Text);
 			}catch(Exception ex){
 				MessageBox.Show(ex.Message, "NGコンテンツの追加", MessageBoxButtons.OK, MessageBoxIcon.Error);

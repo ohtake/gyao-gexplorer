@@ -36,11 +36,13 @@
 			this.tsmiCopyName = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiCopyDetailUri = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiCopyNameAndDetailUri = new System.Windows.Forms.ToolStripMenuItem();
+			this.tscapmiCopyProperty = new Yusen.GExplorer.ToolStripCAPropertyMenuItem();
 			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiCatalog = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiCatalogNormal = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiCatalogImageSmall = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiCatalogImageLarge = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsucmiCommandRoot = new Yusen.GExplorer.ToolStripUserCommandMenuItem();
 			this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiNg = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiAddNgWithTitle = new System.Windows.Forms.ToolStripMenuItem();
@@ -49,6 +51,15 @@
 			this.tsmiNgTest = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiRemoveCache = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
+			this.listView1 = new Yusen.GExplorer.DoubleBufferedListView();
+			this.chId = new System.Windows.Forms.ColumnHeader();
+			this.chTitle = new System.Windows.Forms.ColumnHeader();
+			this.chSeriesNumber = new System.Windows.Forms.ColumnHeader();
+			this.chSubTitle = new System.Windows.Forms.ColumnHeader();
+			this.chDuration = new System.Windows.Forms.ColumnHeader();
+			this.chDeadline = new System.Windows.Forms.ColumnHeader();
+			this.chSummary = new System.Windows.Forms.ColumnHeader();
+			this.chAttribs = new System.Windows.Forms.ColumnHeader();
 			this.tsMain = new System.Windows.Forms.ToolStrip();
 			this.tslTitle = new System.Windows.Forms.ToolStripLabel();
 			this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
@@ -78,17 +89,6 @@
 			this.tstbFilter = new System.Windows.Forms.ToolStripTextBox();
 			this.tstbAnswer = new System.Windows.Forms.ToolStripTextBox();
 			this.timerFilter = new System.Windows.Forms.Timer(this.components);
-			this.listView1 = new Yusen.GExplorer.DoubleBufferedListView();
-			this.chId = new System.Windows.Forms.ColumnHeader();
-			this.chTitle = new System.Windows.Forms.ColumnHeader();
-			this.chSeriesNumber = new System.Windows.Forms.ColumnHeader();
-			this.chSubTitle = new System.Windows.Forms.ColumnHeader();
-			this.chDuration = new System.Windows.Forms.ColumnHeader();
-			this.chDeadline = new System.Windows.Forms.ColumnHeader();
-			this.chSummary = new System.Windows.Forms.ColumnHeader();
-			this.chAttribs = new System.Windows.Forms.ColumnHeader();
-			this.tscapmiCopyProperty = new Yusen.GExplorer.ToolStripCAPropertyMenuItem();
-			this.tsucmiCommandRoot = new Yusen.GExplorer.ToolStripUserCommandMenuItem();
 			this.inputBoxDialog1 = new Yusen.GExplorer.InputBoxDialog();
 			this.exceptionDialog1 = new Yusen.GExplorer.ExceptionDialog();
 			this.cmsContent.SuspendLayout();
@@ -121,7 +121,7 @@
             this.tsmiNg,
             this.tsmiRemoveCache});
 			this.cmsContent.Name = "contextMenuStrip1";
-			this.cmsContent.Size = new System.Drawing.Size(215, 358);
+			this.cmsContent.Size = new System.Drawing.Size(215, 336);
 			this.cmsContent.Opening += new System.ComponentModel.CancelEventHandler(this.cmsContent_Opening);
 			// 
 			// tsmiAdd
@@ -200,6 +200,13 @@
 			this.tsmiCopyNameAndDetailUri.Text = "名前とURIをコピー(&B)";
 			this.tsmiCopyNameAndDetailUri.Click += new System.EventHandler(this.tsmiCopyNameAndDetailUri_Click);
 			// 
+			// tscapmiCopyProperty
+			// 
+			this.tscapmiCopyProperty.Name = "tscapmiCopyProperty";
+			this.tscapmiCopyProperty.Size = new System.Drawing.Size(214, 22);
+			this.tscapmiCopyProperty.Text = "その他のコピー(&O)";
+			this.tscapmiCopyProperty.PropertySelected += new System.EventHandler<Yusen.GExplorer.CAPropertySelectedEventArgs>(this.tscapmiCopyProperty_PropertySelected);
+			// 
 			// toolStripSeparator2
 			// 
 			this.toolStripSeparator2.Name = "toolStripSeparator2";
@@ -235,6 +242,13 @@
 			this.tsmiCatalogImageLarge.Size = new System.Drawing.Size(179, 22);
 			this.tsmiCatalogImageLarge.Text = "画像大のみ(&L)";
 			this.tsmiCatalogImageLarge.Click += new System.EventHandler(this.tsmiCatalogImageLarge_Click);
+			// 
+			// tsucmiCommandRoot
+			// 
+			this.tsucmiCommandRoot.Name = "tsucmiCommandRoot";
+			this.tsucmiCommandRoot.Size = new System.Drawing.Size(214, 22);
+			this.tsucmiCommandRoot.Text = "外部コマンド(&E)";
+			this.tsucmiCommandRoot.UserCommandSelected += new System.EventHandler<Yusen.GExplorer.UserCommandSelectedEventArgs>(this.tsucmiCommandRoot_UserCommandSelected);
 			// 
 			// toolStripMenuItem4
 			// 
@@ -303,6 +317,74 @@
 			// 
 			this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.tsMain);
 			this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.tsFilter);
+			// 
+			// listView1
+			// 
+			this.listView1.AllowDrop = true;
+			this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.chId,
+            this.chTitle,
+            this.chSeriesNumber,
+            this.chSubTitle,
+            this.chDuration,
+            this.chDeadline,
+            this.chSummary,
+            this.chAttribs});
+			this.listView1.ContextMenuStrip = this.cmsContent;
+			this.listView1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.listView1.FullRowSelect = true;
+			this.listView1.HideSelection = false;
+			this.listView1.Location = new System.Drawing.Point(0, 0);
+			this.listView1.Name = "listView1";
+			this.listView1.ShowItemToolTips = true;
+			this.listView1.Size = new System.Drawing.Size(625, 200);
+			this.listView1.TabIndex = 0;
+			this.listView1.UseCompatibleStateImageBehavior = false;
+			this.listView1.View = System.Windows.Forms.View.Details;
+			this.listView1.DoubleClick += new System.EventHandler(this.listView1_DoubleClick);
+			this.listView1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.listView1_KeyDown);
+			this.listView1.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.listView1_ColumnClick);
+			this.listView1.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.listView1_ItemSelectionChanged);
+			this.listView1.ItemDrag += new System.Windows.Forms.ItemDragEventHandler(this.listView1_ItemDrag);
+			// 
+			// chId
+			// 
+			this.chId.Text = "contents_id";
+			this.chId.Width = 80;
+			// 
+			// chTitle
+			// 
+			this.chTitle.Text = "タイトル";
+			this.chTitle.Width = 70;
+			// 
+			// chSeriesNumber
+			// 
+			this.chSeriesNumber.Text = "シリーズ番号";
+			// 
+			// chSubTitle
+			// 
+			this.chSubTitle.Text = "サブタイトル";
+			this.chSubTitle.Width = 70;
+			// 
+			// chDuration
+			// 
+			this.chDuration.Text = "番組時間";
+			this.chDuration.Width = 62;
+			// 
+			// chDeadline
+			// 
+			this.chDeadline.Text = "配信期限";
+			this.chDeadline.Width = 76;
+			// 
+			// chSummary
+			// 
+			this.chSummary.Text = "サマリー";
+			this.chSummary.Width = 135;
+			// 
+			// chAttribs
+			// 
+			this.chAttribs.Text = "属性";
+			this.chAttribs.Width = 34;
 			// 
 			// tsMain
 			// 
@@ -555,88 +637,6 @@
 			// timerFilter
 			// 
 			this.timerFilter.Tick += new System.EventHandler(this.timerFilter_Tick);
-			// 
-			// listView1
-			// 
-			this.listView1.AllowDrop = true;
-			this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.chId,
-            this.chTitle,
-            this.chSeriesNumber,
-            this.chSubTitle,
-            this.chDuration,
-            this.chDeadline,
-            this.chSummary,
-            this.chAttribs});
-			this.listView1.ContextMenuStrip = this.cmsContent;
-			this.listView1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.listView1.FullRowSelect = true;
-			this.listView1.HideSelection = false;
-			this.listView1.Location = new System.Drawing.Point(0, 0);
-			this.listView1.Name = "listView1";
-			this.listView1.ShowItemToolTips = true;
-			this.listView1.Size = new System.Drawing.Size(625, 200);
-			this.listView1.TabIndex = 0;
-			this.listView1.UseCompatibleStateImageBehavior = false;
-			this.listView1.View = System.Windows.Forms.View.Details;
-			this.listView1.DoubleClick += new System.EventHandler(this.listView1_DoubleClick);
-			this.listView1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.listView1_KeyDown);
-			this.listView1.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.listView1_ColumnClick);
-			this.listView1.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.listView1_ItemSelectionChanged);
-			this.listView1.ItemDrag += new System.Windows.Forms.ItemDragEventHandler(this.listView1_ItemDrag);
-			// 
-			// chId
-			// 
-			this.chId.Text = "contents_id";
-			this.chId.Width = 74;
-			// 
-			// chTitle
-			// 
-			this.chTitle.Text = "タイトル";
-			this.chTitle.Width = 80;
-			// 
-			// chSeriesNumber
-			// 
-			this.chSeriesNumber.Text = "シリーズ番号";
-			// 
-			// chSubTitle
-			// 
-			this.chSubTitle.Text = "サブタイトル";
-			this.chSubTitle.Width = 70;
-			// 
-			// chDuration
-			// 
-			this.chDuration.Text = "番組時間";
-			this.chDuration.Width = 56;
-			// 
-			// chDeadline
-			// 
-			this.chDeadline.Text = "配信期限";
-			this.chDeadline.Width = 70;
-			// 
-			// chSummary
-			// 
-			this.chSummary.Text = "サマリー";
-			this.chSummary.Width = 140;
-			// 
-			// chAttribs
-			// 
-			this.chAttribs.Text = "属性";
-			this.chAttribs.Width = 34;
-			// 
-			// tscapmiCopyProperty
-			// 
-			this.tscapmiCopyProperty.Name = "tscapmiCopyProperty";
-			this.tscapmiCopyProperty.Size = new System.Drawing.Size(214, 22);
-			this.tscapmiCopyProperty.Text = "その他のコピー(&O)";
-			this.tscapmiCopyProperty.PropertySelected += new System.EventHandler<Yusen.GExplorer.CAPropertySelectedEventArgs>(this.tscapmiCopyProperty_PropertySelected);
-			// 
-			// tsucmiCommandRoot
-			// 
-			this.tsucmiCommandRoot.Name = "tsucmiCommandRoot";
-			this.tsucmiCommandRoot.Size = new System.Drawing.Size(214, 22);
-			this.tsucmiCommandRoot.Text = "外部コマンド(&E)";
-			this.tsucmiCommandRoot.UserCommandSelected += new System.EventHandler<Yusen.GExplorer.UserCommandSelectedEventArgs>(this.tsucmiCommandRoot_UserCommandSelected);
 			// 
 			// inputBoxDialog1
 			// 

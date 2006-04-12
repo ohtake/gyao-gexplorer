@@ -155,6 +155,22 @@ namespace Yusen.GExplorer {
 			private int? colWidthAttribs;
 
 			[Category("表示")]
+			[DisplayName("ジャンルで色分け")]
+			[Description("ジャンルごとに色分けをします．ただし「さぼり」の設定でNG対象の項目はグレイで固定です．")]
+			[DefaultValue(true)]
+			public bool GenreColored {
+				get {
+					if (this.HasOwner) return this.owner.GenreColored;
+					else return this.genreColored;
+				}
+				set {
+					if (this.HasOwner) this.owner.GenreColored = value;
+					else this.genreColored = value;
+				}
+			}
+			private bool genreColored = true;
+			
+			[Category("表示")]
 			[DisplayName("あぼ～ん方法")]
 			[Description("あぼ～んする方法を指定します．「とうめい」ではNG対象は表示されません．「さぼり」ではNG対象がグレイで表示されます．「はきだめ」ではNG対象のみが表示されます．")]
 			[DefaultValue(AboneType.Toumei)]
@@ -202,21 +218,6 @@ namespace Yusen.GExplorer {
 			}
 			private bool hoverSelect = false;
 
-			[Category("動作")]
-			[DisplayName("複数選択")]
-			[Description("リストビューで項目を複数選択できるようにします．")]
-			[DefaultValue(true)]
-			public bool MultiSelect {
-				get {
-					if (this.HasOwner) return this.owner.MultiSelect;
-					else return this.multiSelect;
-				}
-				set {
-					if (this.HasOwner) this.owner.MultiSelect = value;
-					else this.multiSelect = value;
-				}
-			}
-			private bool multiSelect = true;
 			
 			[Category("フィルタ")]
 			[DisplayName("フィルタ")]
@@ -259,33 +260,6 @@ namespace Yusen.GExplorer {
 				}
 			}
 			private FilterType filterType = FilterType.Normal;
-
-			[XmlIgnore] //ColorはXMLシリアライズできない？
-			[Category("表示")]
-			[DisplayName("新着の色")]
-			[Description("新着コンテンツの色を指定します．")]
-			[DefaultValue(typeof(Color), "Red")]
-			public Color NewColor {
-				get {
-					if (this.HasOwner) return this.owner.NewColor;
-					else return this.newColor;
-				}
-				set {
-					if (this.HasOwner) this.owner.NewColor = value;
-					else this.newColor = value;
-				}
-			}
-			private Color newColor = Color.Red;
-			
-			[Browsable(false)]
-			public int? NewColorArgb {
-				get {return this.NewColor.ToArgb();}
-				set {
-					if (value.HasValue) {
-						this.NewColor = Color.FromArgb(value.Value);
-					}
-				}
-			}
 
 			[Category("表示")]
 			[DisplayName("'ページ'メニューの最大値")]
@@ -331,6 +305,9 @@ namespace Yusen.GExplorer {
 				: base(new string[] { ca.ContentId, ca.Title, ca.SeriesNumber, ca.Subtitle, ca.GTimeSpan.ToString(), ca.Deadline, ca.Summary, ca.Attributes }) {
 				this.contentAdapter = ca;
 				this.packageGroup = packageGroup;
+				if (!ca.FromCache && !ca.IsDummy) {
+					base.Font = new Font(base.Font, FontStyle.Bold);
+				}
 			}
 			private ContentAdapter contentAdapter;
 			public ContentAdapter ContentAdapter {
@@ -354,10 +331,10 @@ namespace Yusen.GExplorer {
 		public event EventHandler<ManuallyCacheDeletedEventArgs> ManuallyCacheDeleted;
 
 		private CrawlResult crawlResult;
+		private bool genreColored = true;
 		private AboneType aboneType = AboneType.Toumei;
 		private FilterType filterType = FilterType.Normal;
 		private bool showPackages = true;
-		private Color newColor = Color.Red;
 		private int maxPageMenuItems = 16;
 		private int maxExceptionMenuItems = 16;
 		
@@ -503,11 +480,21 @@ namespace Yusen.GExplorer {
 			set {
 				if (this.filterRegex != value) {
 					this.filterRegex = value;
-					this.UpdateView();
+					this.DisplayItems();
 				}
 			}
 		}
-		
+
+		private bool GenreColored {
+			get { return this.genreColored; }
+			set {
+				if (this.genreColored != value) {
+					this.genreColored = value;
+					this.DisplayItems();
+				}
+			}
+		}
+
 		private AboneType AboneType {
 			get { return this.aboneType; }
 			set {
@@ -527,7 +514,7 @@ namespace Yusen.GExplorer {
 				}
 				if(value != this.aboneType) {
 					this.aboneType = value;
-					this.UpdateView();
+					this.DisplayItems();
 				}
 			}
 		}
@@ -545,24 +532,11 @@ namespace Yusen.GExplorer {
 				this.listView1.HoverSelection = value;
 			}
 		}
-		private bool MultiSelect {
-			get { return this.listView1.MultiSelect; }
-			set { this.listView1.MultiSelect = value; }
-		}
 		private bool FilterEnabled {
 			get {return this.tsbShowFilter.Checked; }
 			set {
 				this.tsbShowFilter.Checked = value;
 				this.tsFilter.Visible = value;
-			}
-		}
-		private Color NewColor {
-			get { return this.newColor; }
-			set {
-				if (value != this.newColor) {
-					this.newColor = value;
-					this.UpdateView();
-				}
 			}
 		}
 		private int MaxPageMenuItems {
@@ -595,14 +569,17 @@ namespace Yusen.GExplorer {
 			this.tslTime.Text = string.Empty;
 		}
 		private void CreateItems() {
+			this.listView1.BeginUpdate();
 			foreach (GPackage p in this.CrawlResult.Packages) {
 				ListViewGroup group = new ListViewGroup(string.Format("<{0}> {1}", p.PackageId, p.PackageName));
+				
 				this.allLvgs.Add(group);
 				foreach (GContent c in p.Contents) {
 					ContentAdapter ca = new ContentAdapter(c);
 					this.allClvis.Add(new ContentListViewItem(ca, group));
 				}
 			}
+			this.listView1.EndUpdate();
 		}
 		private void ResetAllNgCached() {
 			DateTime begin = DateTime.Now;
@@ -612,6 +589,9 @@ namespace Yusen.GExplorer {
 		}
 		private void DisplayItems(){
 			if (null == this.CrawlResult) return;
+
+			this.listView1.BeginUpdate();
+
 			this.listView1.Groups.Clear();
 			this.listView1.Items.Clear();
 			
@@ -652,17 +632,20 @@ namespace Yusen.GExplorer {
 
 				//色づけ
 				clvi.ForeColor = SystemColors.WindowText;
-				if (! clvi.ContentAdapter.FromCache) {
-					clvi.ForeColor = this.NewColor;
-				}
 				if (isNg && AboneType.Sabori == this.AboneType) {
 					clvi.ForeColor = SystemColors.GrayText;
+				} else if (this.genreColored) {
+					clvi.ForeColor = clvi.ContentAdapter.Genre.GenreForeColor;
+				} else {
+					clvi.ForeColor = SystemColors.WindowText;
 				}
-
+				
 				clvi.Group = clvi.PackageGroup;
 				clvi.Selected = false;
 				this.listView1.Items.Add(clvi);
 			}
+
+			this.listView1.EndUpdate();
 
 			this.tslNumber.Text = this.listView1.Items.Count.ToString() + "+" + filtered.ToString() + "+" + aboned.ToString();
 			this.tslTime.Text = string.Format("({0})", this.CrawlResult.Time.ToString("MM/dd ddd HH:mm"));
@@ -765,20 +748,15 @@ namespace Yusen.GExplorer {
 			return;
 		}
 
-		private void UpdateView() {
-			this.listView1.BeginUpdate();
-			this.DisplayItems();
-			this.listView1.EndUpdate();
-		}
 		private void UpdateViewIfFilterEnabledAndHasFilterRegex() {
 			if(this.FilterEnabled && null != this.FilterRegex) {
-				this.UpdateView();
+				this.DisplayItems();
 			}
 		}
 
 		private void NgContentsManager_NgContentsChanged(object sender, EventArgs e) {
 			this.ResetAllNgCached();
-			this.UpdateView();
+			this.DisplayItems();
 		}
 
 		private void listView1_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e) {
@@ -793,6 +771,22 @@ namespace Yusen.GExplorer {
 			switch (e.KeyCode) {
 				case Keys.Enter:
 					this.tsmiAdd.PerformClick();
+					break;
+				case Keys.A:
+					if (Keys.None != (Control.ModifierKeys & Keys.Control)) {
+						this.listView1.BeginUpdate();
+						foreach (ListViewItem lvi in this.listView1.Items) {
+							lvi.Selected = true;
+						}
+						this.listView1.EndUpdate();
+					}
+					break;
+				case Keys.Escape:
+					this.listView1.BeginUpdate();
+					foreach (ListViewItem lvi in this.listView1.Items) {
+						lvi.Selected = false;
+					}
+					this.listView1.EndUpdate();
 					break;
 			}
 		}
@@ -917,7 +911,7 @@ namespace Yusen.GExplorer {
 				}
 			}
 			List<NgContent> ngs = titles.ConvertAll<NgContent>(new Converter<string, NgContent>(delegate(string input) {
-				return new NgContent("簡易追加", "Title", TwoStringsPredicateMethod.Equals, input);
+				return new NgContent("簡易追加", ContentAdapter.PropertyNameTitle, NgContent.MethodNameEquals, input);
 			}));
 			if(ngs.Count > 0) {
 				NgContentsManager.Instance.AddRange(ngs);
@@ -926,7 +920,7 @@ namespace Yusen.GExplorer {
 		private void tsmiAddNgWithId_Click(object sender, EventArgs e) {
 			List<NgContent> ngs = new List<NgContent>();
 			foreach(ContentAdapter cont in this.SelectedContents) {
-				ngs.Add(new NgContent("簡易追加", "ContentId", TwoStringsPredicateMethod.Equals, cont.ContentId));
+				ngs.Add(new NgContent("簡易追加", ContentAdapter.PropertyNameContentId, NgContent.MethodNameEquals, cont.ContentId));
 			}
 			if(ngs.Count > 0) {
 				NgContentsManager.Instance.AddRange(ngs);
@@ -989,7 +983,7 @@ namespace Yusen.GExplorer {
 			if (this.settings.ClearFilterStringOnHideEnabled && !this.FilterEnabled) {
 				this.FilterString = string.Empty;
 			}
-			this.UpdateView();
+			this.DisplayItems();
 		}
 		private void tstbFilter_TextChanged(object sender, EventArgs e) {
 			this.timerFilter.Start();

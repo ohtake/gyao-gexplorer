@@ -25,6 +25,9 @@ namespace Yusen.GExplorer {
 			}
 		}
 
+		public const string PropertyNameContentId = "ContentId";
+		public const string PropertyNameTitle = "Title";
+		
 		internal static string GetNames(IEnumerable<ContentAdapter> conts) {
 			StringBuilder sb = new StringBuilder();
 			foreach (ContentAdapter cont in conts) {
@@ -136,7 +139,7 @@ namespace Yusen.GExplorer {
 		}
 		[XmlIgnore]
 		[Browsable(false)]
-		private GGenre Genre {
+		internal GGenre Genre {
 			get {
 				if (null == this.genre) {
 					GGenre genre;
@@ -149,15 +152,14 @@ namespace Yusen.GExplorer {
 				return this.genre;
 			}
 		}
-
+		
 		[Category("ユーザが入力する情報")]
 		[Description("コメント．ユーザが自由に入力できる．ただしプレイリストに入っているものに対して入力しないとほとんど意味ない．")]
 		public string Comment {
 			get { return this.comment; }
 			set { this.comment = value; }
 		}
-
-
+		
 		[XmlIgnore]
 		[Category("キー")]
 		[Description("コンテンツのキー．")]

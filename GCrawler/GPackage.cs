@@ -72,7 +72,7 @@ namespace Yusen.GCrawler {
 					packageCatchCopy = HtmlUtility.HtmlToText(matchPackage.Groups["CatchCopy"].Value);
 					packageText1 = HtmlUtility.HtmlToText(matchPackage.Groups["PackageText1"].Value);
 				} else {
-					throw new Exception("シリーズ一覧ページからパッケージの情報が取れなかった． <" + uri.AbsoluteUri + ">");
+					throw new Exception(string.Format("シリーズ一覧ページからパッケージの情報が取れなかった <{0}>", packId));
 				}
 				List<int> contentKeys = new List<int>();
 				for (Match matchContent = GPackage.regexPackageContent.Match(allHtml); matchContent.Success; matchContent = matchContent.NextMatch()) {
@@ -87,7 +87,7 @@ namespace Yusen.GCrawler {
 				}
 				//コンテンツをひとつも取れなかったらエラーだろう
 				if (0 == contentKeys.Count) {
-					throw new Exception("シリーズ一覧からコンテンツIDをひとつも抽出できなかった． <" + uri.AbsoluteUri + ">");
+					throw new Exception(string.Format("シリーズ一覧からコンテンツIDをひとつも抽出できなかった <{0}>", packId));
 				}
 				
 				childContKeys = contentKeys;
@@ -106,19 +106,12 @@ namespace Yusen.GCrawler {
 		private int genreKey;
 		
 		private readonly string packageName;
-		[OptionalField]//2.0.5.0
-		private /*readonly*/ string catchCopy;
-		[OptionalField]//2.0.5.0
-		private /*readonly*/ string packageText1;
+		[OptionalField]
+		private readonly string catchCopy;
+		[OptionalField]
+		private readonly string packageText1;
 		private ReadOnlyCollection<GContent> contents;
 
-		[Obsolete]
-		private GPackage(string packageId, string packageName, string catchCopy, string packageText1) {
-			this.packageId = packageId;
-			this.packageName = packageName;
-			this.catchCopy = catchCopy;
-			this.packageText1 = packageText1;
-		}
 		private GPackage(int packageKey, int genreKey, string packageName, string catchCopy, string packageText1) {
 			this.packageKey = packageKey;
 			this.genreKey = genreKey;
@@ -129,8 +122,6 @@ namespace Yusen.GCrawler {
 
 		[OnDeserialized]
 		private void OnDeserialized(StreamingContext context) {
-			if (null == this.catchCopy) this.catchCopy = string.Empty;//2.0.5.0
-			if (null == this.packageText1) this.packageText1 = string.Empty;//2.0.5.0
 			if (0 == this.packageKey && null != this.packageId) {
 				try {
 					this.packageKey = GPackage.ConvertToKeyFromId(this.packageId);//2.0.5.1
@@ -143,15 +134,14 @@ namespace Yusen.GCrawler {
 		public int PackageKey {
 			get { return this.packageKey; }
 		}
+		public string PackageId {
+			get { return GPackage.ConvertToIdFromKey(this.PackageKey); }
+		}
 		public int GenreKey {
 			get { return this.genreKey; }
 		}
-		[Obsolete]//2.0.5.1
-		internal void SetGenreKey(int genreKey) {
-			this.genreKey = genreKey;
-		}
-		public string PackageId {
-			get { return GPackage.ConvertToIdFromKey(this.PackageKey); }
+		public string GenreId {
+			get { return GGenre.ConvertToIdFromKey(this.GenreKey); }
 		}
 		public string PackageName {
 			get { return this.packageName; }
@@ -171,7 +161,7 @@ namespace Yusen.GCrawler {
 			internal set { this.contents = value; }
 		}
 		public override string ToString() {
-			return "<" + this.PackageId + "> " + this.PackageName;
+			return string.Format("<{0}> {1}", this.PackageId, this.PackageName);
 		}
 	}
 	

@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using System.Threading;
 using Yusen.GCrawler;
 using System.Xml.Serialization;
+using System.Text;
 
 namespace Yusen.GExplorer {
 	public sealed partial class MainForm : FormSettingsBase, IFormWithNewSettings<MainForm.MainFormSettings> {
@@ -45,16 +46,6 @@ namespace Yusen.GExplorer {
 				set { this.FormSettingsBaseSettings.ApplySettings(value); }
 			}
 			private readonly FormSettingsBaseSettings formSettingsBaseSettings;
-
-			[Category("動作")]
-			[DisplayName("タブ切り替えでフォーカス移動")]
-			[Description("ジャンルタブでタブを切り替えるとクロール結果ビューにフォーカスを移動させます．")]
-			[DefaultValue(true)]
-			public bool FocusOnResultAfterGenreChanged {
-				get { return this.focusOnResultAfterGenreChanged; }
-				set { this.focusOnResultAfterGenreChanged = value; }
-			}
-			private bool focusOnResultAfterGenreChanged = true;
 			
 			[Category("位置とサイズ")]
 			[DisplayName("クロール結果ビューの幅")]
@@ -87,6 +78,40 @@ namespace Yusen.GExplorer {
 				}
 			}
 			private int? listViewHeight;
+
+			[Category("動作")]
+			[DisplayName("タブ切り替えでフォーカス移動")]
+			[Description("ジャンルタブでタブを切り替えるとクロール結果ビューにフォーカスを移動させます．")]
+			[DefaultValue(true)]
+			public bool FocusOnResultAfterGenreChanged {
+				get { return this.focusOnResultAfterGenreChanged; }
+				set { this.focusOnResultAfterGenreChanged = value; }
+			}
+			private bool focusOnResultAfterGenreChanged = true;
+
+			[Category("表示")]
+			[DisplayName("ジャンルメニューの色分け")]
+			[Description("ジャンルメニューをジャンルごとに色分けして表示します．")]
+			[DefaultValue(true)]
+			public bool MenuGenreColored {
+				get {
+					if (this.HasOwner) {
+						return this.owner.tsgmiSelectGenre.GenreColored;
+					} else {
+						return this.menuGenreColored;
+					}
+				}
+				set {
+					if (this.HasOwner) {
+						this.owner.tsgmiSelectGenre.GenreColored = value;
+						this.owner.tsgmiCrawlGenre.GenreColored = value;
+						this.owner.tsgmiUncrawlables.GenreColored = value;
+					} else {
+						this.menuGenreColored = value;
+					}
+				}
+			}
+			private bool menuGenreColored = true;
 
 			[Browsable(false)]
 			public GenreTabControl.GenreTabControlSettings GenreTabControlSettings {
@@ -209,6 +234,32 @@ namespace Yusen.GExplorer {
 				}
 			}
 		}
+		private void CheckInvalidNgContents(bool showResultOnSuccess) {
+			NgContent[] ngcs = NgContentsManager.Instance.GetInvalidNgContents();
+			if (ngcs.Length > 0) {
+				string separator = "-------------------------------------------------";
+				StringBuilder sb = new StringBuilder();
+				sb.AppendLine(separator);
+				sb.AppendLine("コメント\t主語\t述語\t目的語\t作成日時");
+				sb.AppendLine(separator);
+				foreach (NgContent ngc in ngcs) {
+					sb.AppendLine(string.Format("{0}\t{1}\t{2}\t{3}\t{4}", ngc.Comment, ngc.PropertyName, ngc.Method.ToString(), ngc.Word, ngc.Created.ToString()));
+				}
+				sb.AppendLine(separator);
+				switch (MessageBox.Show(string.Format("妥当でないNGコンテンツが {0} 個見つかりました．\n\n{1}\n削除しますか？", ngcs.Length, sb.ToString()), "妥当でないNGコンテンツ", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation)) {
+					case DialogResult.Yes:
+						int removeCnt = NgContentsManager.Instance.RemoveInvalidNgContents();
+						MessageBox.Show(string.Format("妥当でなかったNGコンテンツを {0} 個削除しました．", removeCnt), "妥当でないNGコンテンツ", MessageBoxButtons.OK, MessageBoxIcon.Information);
+						break;
+					case DialogResult.No:
+						MessageBox.Show("妥当でないNGコンテンツを保持したままNG処理が行われるとエラーが起こりえます．\nNGコンテンツエディタで妥当でないNGコンテンツの削除を行ってください．", "妥当でないNGコンテンツ", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+						break;
+				}
+			} else if (showResultOnSuccess) {
+				MessageBox.Show("妥当でないNGコンテンツをありませんでした．", "妥当でないNGコンテンツ", MessageBoxButtons.OK, MessageBoxIcon.Information);
+			}
+		}
+
 		public string FilenameForSettings {
 			get { return @"MainFormSettings.xml"; }
 		}
@@ -241,6 +292,7 @@ namespace Yusen.GExplorer {
 			this.tsgmiUncrawlables.Visible = this.tsgmiUncrawlables.HasAvailableSubmenus;
 			
 			this.ClearStatusBarInfo();
+			this.CheckInvalidNgContents(false);
 		}
 		
 		private void MainForm_FormClosing(object sender, FormClosingEventArgs e) {
