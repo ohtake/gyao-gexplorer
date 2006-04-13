@@ -14,7 +14,6 @@ namespace Yusen.GCrawler {
 		private static readonly XmlSerializer serializer = new XmlSerializer(typeof(GContent));
 		
 		private static readonly Regex regexId = new Regex(@"cnt\d{7}", RegexOptions.Compiled);
-		
 		private static readonly Regex regexContentPage = new Regex(
 			@"<a href=""http://www\.gyao\.jp/sityou/catetop/genre_id/(?<GenreIdNavigation>gen\d{7})/"">.*?\r\n(<a href=""http://www\.gyao\.jp/sityou/catelist/pac_id/(?<PackageIdNavigation>pac\d{7})/"">)?[\s\S]*?<td width=""459"" class=""title12b"">(?<Title>.*?)</td>[\s\S]*?((?<SeriesNumber>.*?)<!-- シリーズ番号 -->)?(&nbsp;&nbsp;&nbsp;)?(?<Subtitle>.*?)<!-- サブタイトル -->[\s\S]*?<b>[^:]*時間[^:]* : (?<Duration>.*?)</b>[\s\S]*?<td align=""left"">(?<Description1>.*?)</td>([\s\S]*?<td align=""left"">\r\n(?<Description2>.*?)</td>[\s\S]*?<td align=""left"" class=""text10"">\r\n(?<Description3>.*?)</td>[\s\S]*?<td align=""right"" class=""text10"">\r\n(?<Description4>.*?)</td>)?([\s\S]*<div><a href=""http://www\.gyao\.jp/sityou_review/review_list\.php\?contents_id=cnt\d{7}&pac_id=(?<PackageIdReview>pac\d{7})"">)?",
 			RegexOptions.Compiled | RegexOptions.ExplicitCapture | RegexOptions.Multiline);

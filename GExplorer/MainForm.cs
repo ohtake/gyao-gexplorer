@@ -518,7 +518,8 @@ namespace Yusen.GExplorer {
 				return;
 			}
 			if (null != e.Error) {
-				throw e.Error;
+				Program.DisplayException("クロール中にキャッチされなかった例外", e.Error);
+				return;
 			}
 			CrawlResult result = e.Result as CrawlResult;
 			Cache.Instance.ResultsDictionary[result.Genre] = result;

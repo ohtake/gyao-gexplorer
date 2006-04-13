@@ -30,19 +30,19 @@ namespace Yusen.GExplorer {
 					base.OnPaint(e);
 					return;
 				}
-				Rectangle rectIcon = new Rectangle(e.ClipRectangle.Location, new Size(25, e.ClipRectangle.Height));
-				using (LinearGradientBrush brushIcon = new LinearGradientBrush(rectIcon, Color.White, this.genre.GenreForeColor, LinearGradientMode.Horizontal)) {
-					if (base.Selected) {
-						using (SolidBrush brushBack = new SolidBrush(this.genre.GenreForeColor))
-						using (SolidBrush brushText = new SolidBrush(Color.White)) {
-							e.Graphics.FillRectangle(brushBack, e.ClipRectangle);
-							e.Graphics.FillRectangle(brushIcon, rectIcon);
-							e.Graphics.DrawString(base.Text, base.Font, brushText, new Point(e.ClipRectangle.Left + 25 + 8, e.ClipRectangle.Top + 4));
-						}
-					} else {
-						e.Graphics.FillRectangle(brushIcon, rectIcon);
-						base.OnPaint(e);
+				Color colorGfc = this.genre.GenreForeColor;
+				if (base.Selected) {
+					using (SolidBrush brushBack = new SolidBrush(colorGfc))
+					using (SolidBrush brushText = new SolidBrush(Color.White)) {
+						e.Graphics.FillRectangle(brushBack, e.ClipRectangle);
+						e.Graphics.DrawString(base.Text, base.Font, brushText, new Point(e.ClipRectangle.Left + 25 + 8, e.ClipRectangle.Top + 4));
 					}
+				} else {
+					Rectangle rectIcon = new Rectangle(e.ClipRectangle.Location, new Size(25, e.ClipRectangle.Height));
+					using (LinearGradientBrush brushIcon = new LinearGradientBrush(rectIcon, Color.White, colorGfc, LinearGradientMode.Horizontal)) {
+						e.Graphics.FillRectangle(brushIcon, rectIcon);
+					}
+					base.OnPaint(e);
 				}
 			}
 		}

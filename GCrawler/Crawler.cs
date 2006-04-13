@@ -264,14 +264,14 @@ namespace Yusen.GCrawler {
 					
 					foreach (int key in childContKeys) {
 						if (contKey == key) {
-							//パッケージの情報を追加してキャッシュ更新
 							ContentPropertiesOnPackagePage cpPac = this.cpPacs[contKey];
 							if (!content.HasSameContentPropertiesOnPackagePage(cpPac)) {
+								//パッケージページで取れた情報を追加できたのならば追加してキャッシュ更新
 								content.SetContentPropertiesOnPackagePage(cpPac);
 								this.cacheController.RemoveCache(content.ContentKey);
 								this.cacheController.AddCache(content);
 							}
-						}else if (!this.contsWatings.Contains(key) && !this.contsWatings.Contains(key)) {
+						}else if (!this.contsWatings.Contains(key) && !this.contsVisited.ContainsKey(key) && !this.contsIgnored.Contains(key)) {
 							//新たに見つかったコンテンツをキューに追加
 							this.contsWatings.Enqueue(key);
 						}
@@ -298,7 +298,6 @@ namespace Yusen.GCrawler {
 					packPair.Value.Contents = contents.AsReadOnly();
 				}
 				//どのパッケージに含まれているか不明なコンテンツ
-				GPackage dummyPackage = GPackage.CreateDummyPackage(this.genre);
 				List<GContent> contentsWithoutPack = new List<GContent>();
 				foreach (KeyValuePair<int, GContent> contPair in this.contsVisited) {
 					if (!this.contPackRelations.ContainsKey(contPair.Key)) {
@@ -306,6 +305,7 @@ namespace Yusen.GCrawler {
 					}
 				}
 				if (contentsWithoutPack.Count > 0) {
+					GPackage dummyPackage = GPackage.CreateDummyPackage(this.genre);
 					dummyPackage.Contents = contentsWithoutPack.AsReadOnly();
 					packages.Add(dummyPackage);
 				}

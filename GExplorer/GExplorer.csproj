@@ -299,6 +299,7 @@
     <Compile Include="Utility.cs" />
     <Compile Include="Win32WindowImpl.cs" />
     <Compile Include="WindowsConstants.cs" />
+    <Compile Include="XmlSerializableColor.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="ChangeLog.txt">

@@ -96,7 +96,7 @@ namespace Yusen.GExplorer {
 				return true;
 			} catch(FileNotFoundException) {
 			}catch(Exception e){
-				Program.DisplayException(string.Format("設定ファイル '{0}'  の読み取り", filename), e);
+				Program.DisplayException(string.Format("設定ファイル '{0}' の読み取り", filename), e);
 			} finally {
 				if (null != tr) tr.Close();
 			}

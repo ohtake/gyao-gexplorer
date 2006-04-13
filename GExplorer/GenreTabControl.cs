@@ -226,18 +226,20 @@ namespace Yusen.GExplorer {
 			Color genreColor = gtp.Genre.GenreForeColor;
 			string tabText = gtp.Text;
 			Rectangle textRect = new Rectangle(e.Bounds.Left + 2, e.Bounds.Top + 2, e.Bounds.Width, e.Bounds.Height);
-			
+			StringFormat strFormat = new StringFormat();
+			strFormat.FormatFlags = StringFormatFlags.NoWrap;
+
 			if (e.State == DrawItemState.Selected) {
 				using (SolidBrush brushGenreColor = new SolidBrush(genreColor))
 				using (SolidBrush brushWhite = new SolidBrush(Color.White)) {
 					e.Graphics.FillRectangle(brushGenreColor, e.Bounds);
-					e.Graphics.DrawString(tabText, e.Font, brushWhite, textRect);
+					e.Graphics.DrawString(tabText, e.Font, brushWhite, textRect, strFormat);
 				}
 			} else {
 				Rectangle markRect = new Rectangle(e.Bounds.Left, e.Bounds.Top, 3, e.Bounds.Height);
 				using (SolidBrush brushText = new SolidBrush(SystemColors.WindowText))
 				using (SolidBrush brushGenreColor = new SolidBrush(genreColor)) {
-					e.Graphics.DrawString(tabText, e.Font, brushText, textRect);
+					e.Graphics.DrawString(tabText, e.Font, brushText, textRect, strFormat);
 					e.Graphics.FillRectangle(brushGenreColor, markRect);
 				}
 			}

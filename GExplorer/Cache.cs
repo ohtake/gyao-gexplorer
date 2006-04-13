@@ -66,7 +66,7 @@ namespace Yusen.GExplorer {
 		}
 
 		private ContentCacheControllerSortedDic cacheCtl;
-		private Dictionary<GGenre, CrawlResult> resultsDic;
+		private Dictionary<GGenre, CrawlResult> resultsDic; //<int, CrawlResult> にすべきか
 		
 		private Cache() {
 		}

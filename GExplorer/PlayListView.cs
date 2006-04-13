@@ -104,22 +104,6 @@ namespace Yusen.GExplorer {
 			}
 			private int? colWidthComment;
 
-			[Category("表示")]
-			[DisplayName("ジャンルで色分け")]
-			[Description("ジャンルごとに色分けをします．")]
-			[DefaultValue(true)]
-			public bool GenreColored {
-				get {
-					if (this.HasOwner) return this.owner.GenreColored;
-					else return this.genreColored;
-				}
-				set {
-					if (this.HasOwner) this.owner.GenreColored = value;
-					else this.genreColored = value;
-				}
-			}
-			private bool genreColored = true;
-
 			#region INewSettings<PlayListViewSettings> Members
 			public void ApplySettings(PlayListViewSettings newSettings) {
 				Utility.SubstituteAllPublicProperties(this, newSettings);
@@ -130,7 +114,6 @@ namespace Yusen.GExplorer {
 
 		public event EventHandler<ContentSelectionChangedEventArgs> ContentSelectionChanged;
 
-		private bool genreColored = true;
 
 		private bool dragging = false;
 		private string[] dropIds = null;
@@ -184,21 +167,13 @@ namespace Yusen.GExplorer {
 				}
 			}
 		}
-		private bool GenreColored {
-			get { return this.genreColored; }
-			set {
-				if (this.genreColored != value) {
-					this.genreColored = value;
-					this.UpdateItems();
-				}
-			}
-		}
 
 		private void UpdateItems() {
 			int oldCount = this.listView1.Items.Count;
 			int newCount = PlayList.Instance.Count;
 			int minCount = (oldCount < newCount) ? oldCount : newCount;
 
+			this.listView1.BeginUpdate();
 			//従来のアイテムの値を書き換える
 			for(int i=0; i<minCount; i++) {
 				ContentAdapter cont = PlayList.Instance[i];
@@ -209,11 +184,6 @@ namespace Yusen.GExplorer {
 				lvi.SubItems[3].Text = cont.Deadline;
 				lvi.SubItems[4].Text = cont.Comment;
 				lvi.Tag = cont;
-				if (this.genreColored) {
-					lvi.ForeColor = cont.Genre.GenreForeColor;
-				} else {
-					lvi.ForeColor = SystemColors.WindowText;
-				}
 			}
 			//増減をチェックしてから差分を埋める
 			if(minCount == newCount) { //減ったか同じの場合
@@ -225,18 +195,15 @@ namespace Yusen.GExplorer {
 					ContentAdapter cont = PlayList.Instance[i];
 					ListViewItem lvi = new ListViewItem(new string[] { cont.ContentId, cont.DisplayName, cont.GTimeSpan.ToString(), cont.Deadline, cont.Comment });
 					lvi.Tag = cont;
-					if (this.genreColored) {
-						lvi.ForeColor = cont.Genre.GenreForeColor;
-					} else {
-						lvi.ForeColor = SystemColors.WindowText;
-					}
 					this.listView1.Items.Add(lvi);
 				}
 				//個数が増えたのならばおそらく末尾への追加だろう
 				this.ScrollToBottom();
 			}
+			this.listView1.EndUpdate();
 		}
 		private void UpdateBoldness() {
+			this.listView1.BeginUpdate();
 			foreach (ListViewItem lvi in this.listView1.Items) {
 				FontStyle oldStyle = lvi.Font.Style;
 				FontStyle newStyle = PlayList.Instance.IsCurrentContent(lvi.Tag as ContentAdapter) ? FontStyle.Bold : FontStyle.Regular;
@@ -244,6 +211,7 @@ namespace Yusen.GExplorer {
 					lvi.Font = new Font(lvi.Font, newStyle);
 				}
 			}
+			this.listView1.EndUpdate();
 		}
 		private void UpdateStatusBarText() {
 			int totalNum = PlayList.Instance.Count;
@@ -480,15 +448,33 @@ namespace Yusen.GExplorer {
 			}
 		}
 		private void tsmiRemoveUnreachables_Click(object sender, EventArgs e) {
-			PlayList.Instance.BeginUpdate();
-			List<int> reachable = Cache.Instance.GetSortedReachableContentKeys();
-			foreach (ListViewItem lvi in this.listView1.Items) {
-				ContentAdapter cont = lvi.Tag as ContentAdapter;
-				if (reachable.BinarySearch(cont.ContentKey) < 0) {
-					PlayList.Instance.Remove(cont);
+			//削除予定のリスト作成
+			List<int> reachables = Cache.Instance.GetSortedReachableContentKeys();
+			List<ContentAdapter> contsToBeRemoved = new List<ContentAdapter>();
+			foreach (ContentAdapter cont in PlayList.Instance) {
+				if (reachables.BinarySearch(cont.ContentKey) < 0) {
+					contsToBeRemoved.Add(cont);
 				}
 			}
-			PlayList.Instance.EndUpdate();
+			//確認と削除
+			if (contsToBeRemoved.Count > 0) {
+				string separator = "--------------------------------";
+				StringBuilder sb = new StringBuilder();
+				sb.AppendLine(separator);
+				sb.AppendLine("contents_id コンテンツ名");
+				sb.AppendLine(separator);
+				foreach (ContentAdapter cont in contsToBeRemoved) {
+					sb.AppendLine(string.Format("{0} {1}", cont.ContentId, cont.DisplayName));
+				}
+				sb.Append(separator);
+				switch (MessageBox.Show("以下のコンテンツが到達不可能だと判断されました．削除しますか？\n\n" + sb.ToString(), "到達不可コンテンツの削除", MessageBoxButtons.YesNo, MessageBoxIcon.Question)) {
+					case DialogResult.Yes:
+						PlayList.Instance.RemoveAll(contsToBeRemoved.Contains);
+						break;
+				}
+			} else {
+				MessageBox.Show("到達不可と思われるコンテンツはプレイリスト内にありませんでした．", "到達不可コンテンツの削除", MessageBoxButtons.OK, MessageBoxIcon.Information);
+			}
 		}
 		private void tsmiClearPlayList_Click(object sender, EventArgs e) {
 			switch (MessageBox.Show("プレイリスト内の全項目を削除します．よろしいですか？", "プレイリスト内の全項目を削除", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2)) {

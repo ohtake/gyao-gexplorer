@@ -6,13 +6,15 @@ using System.Web;
 
 namespace Yusen.GCrawler {
 	static class HtmlUtility {
-		private static readonly Regex regexWhiteSpaces = new Regex(@"\s+");
-		private static readonly Regex regexTabParaBegin = new Regex(@"<p>", RegexOptions.IgnoreCase);
-		private static readonly Regex regexTabParaEnd = new Regex(@"</p>", RegexOptions.IgnoreCase);
-		private static readonly Regex regexTabBreak = new Regex(@"<br */?>", RegexOptions.IgnoreCase);
-		private static readonly Regex regexTab = new Regex(@"<[^>]*>");
+		private static readonly Regex regexWhiteSpaces = new Regex(@"\s+", RegexOptions.Compiled);
+		private static readonly Regex regexTabParaBegin = new Regex(@"<p>", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+		private static readonly Regex regexTabParaEnd = new Regex(@"</p>", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+		private static readonly Regex regexTabBreak = new Regex(@"<br\s*/?>", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+		private static readonly Regex regexTab = new Regex(@"<[^>]*>", RegexOptions.Compiled);
 		
 		public static string HtmlToText(string input) {
+			if (string.IsNullOrEmpty(input)) return string.Empty;
+			
 			input = HtmlUtility.regexWhiteSpaces.Replace(input, " ");
 			input = HtmlUtility.regexTabParaBegin.Replace(input, "\n\n");
 			input = HtmlUtility.regexTabParaEnd.Replace(input, "\n");

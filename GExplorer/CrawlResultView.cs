@@ -155,22 +155,6 @@ namespace Yusen.GExplorer {
 			private int? colWidthAttribs;
 
 			[Category("表示")]
-			[DisplayName("ジャンルで色分け")]
-			[Description("ジャンルごとに色分けをします．ただし「さぼり」の設定でNG対象の項目はグレイで固定です．")]
-			[DefaultValue(true)]
-			public bool GenreColored {
-				get {
-					if (this.HasOwner) return this.owner.GenreColored;
-					else return this.genreColored;
-				}
-				set {
-					if (this.HasOwner) this.owner.GenreColored = value;
-					else this.genreColored = value;
-				}
-			}
-			private bool genreColored = true;
-			
-			[Category("表示")]
 			[DisplayName("あぼ～ん方法")]
 			[Description("あぼ～んする方法を指定します．「とうめい」ではNG対象は表示されません．「さぼり」ではNG対象がグレイで表示されます．「はきだめ」ではNG対象のみが表示されます．")]
 			[DefaultValue(AboneType.Toumei)]
@@ -293,6 +277,30 @@ namespace Yusen.GExplorer {
 			}
 			private int maxExceptionMenuItems = CrawlResultViewSettings.MaxMenuItems;
 
+			[XmlIgnore]//ColorはXMLシリアライズできない
+			[Category("表示")]
+			[DisplayName("新着の色")]
+			[Description("新着コンテンツを指定された色で表示します．")]
+			[DefaultValue(typeof(Color), "Red")]
+			public Color NewColor {
+				get {
+					if (this.HasOwner) return this.owner.NewColor;
+					else return this.newColor;
+				}
+				set {
+					if (this.HasOwner) this.owner.NewColor = value;
+					else this.newColor = value;
+				}
+			}
+			private Color newColor = Color.Red;
+			
+			[Browsable(false)]
+			[DefaultValue(typeof(XmlSerializableColor), "Red")]
+			public XmlSerializableColor NewColorXmlSerializable {
+				get { return new XmlSerializableColor(this.NewColor); }
+				set { this.NewColor = value.ToColor(); }
+			}
+
 			#region INewSettings<CrawlResultViewSettings> Members
 			public void ApplySettings(CrawlResultViewSettings newSettings) {
 				Utility.SubstituteAllPublicProperties(this, newSettings);
@@ -305,9 +313,6 @@ namespace Yusen.GExplorer {
 				: base(new string[] { ca.ContentId, ca.Title, ca.SeriesNumber, ca.Subtitle, ca.GTimeSpan.ToString(), ca.Deadline, ca.Summary, ca.Attributes }) {
 				this.contentAdapter = ca;
 				this.packageGroup = packageGroup;
-				if (!ca.FromCache && !ca.IsDummy) {
-					base.Font = new Font(base.Font, FontStyle.Bold);
-				}
 			}
 			private ContentAdapter contentAdapter;
 			public ContentAdapter ContentAdapter {
@@ -337,7 +342,8 @@ namespace Yusen.GExplorer {
 		private bool showPackages = true;
 		private int maxPageMenuItems = 16;
 		private int maxExceptionMenuItems = 16;
-		
+		private Color newColor = Color.Red;
+
 		private List<ListViewGroup> allLvgs = new List<ListViewGroup>();
 		private List<ContentListViewItem> allClvis = new List<ContentListViewItem>();
 		
@@ -388,7 +394,7 @@ namespace Yusen.GExplorer {
 			
 		}
 		
-		public CrawlResult CrawlResult {
+		internal CrawlResult CrawlResult {
 			get {
 				return this.crawlResult;
 			}
@@ -437,7 +443,7 @@ namespace Yusen.GExplorer {
 		}
 		
 		[DefaultValue("")]
-		public string FilterString {
+		private string FilterString {
 			get {
 				return this.tstbFilter.Text;
 			}
@@ -454,20 +460,9 @@ namespace Yusen.GExplorer {
 					value = FilterType.Normal;
 				}
 				//ボタンなどの更新
-				this.tsbOneFTypeNormal.Checked = false;
-				this.tsbOneFTypeMigemo.Checked = false;
-				this.tsbOneFTypeRegex.Checked = false;
-				switch(value) {
-					case FilterType.Normal:
-						this.tsbOneFTypeNormal.Checked = true;
-						break;
-					case FilterType.Migemo:
-						this.tsbOneFTypeMigemo.Checked = true;
-						break;
-					case FilterType.Regex:
-						this.tsbOneFTypeRegex.Checked = true;
-						break;
-				}
+				this.tsbOneFTypeNormal.Checked = value == FilterType.Normal;
+				this.tsbOneFTypeMigemo.Checked = value == FilterType.Migemo;
+				this.tsbOneFTypeRegex.Checked = value == FilterType.Regex;
 				//フィルタ適用
 				if(value != this.filterType) {
 					this.filterType = value;
@@ -484,34 +479,22 @@ namespace Yusen.GExplorer {
 				}
 			}
 		}
-
-		private bool GenreColored {
-			get { return this.genreColored; }
+		private Color NewColor {
+			get { return this.newColor; }
 			set {
-				if (this.genreColored != value) {
-					this.genreColored = value;
+				if (this.newColor != value) {
+					this.newColor = value;
 					this.DisplayItems();
 				}
 			}
 		}
-
+		
 		private AboneType AboneType {
 			get { return this.aboneType; }
 			set {
-				this.tsbOneAboneToumei.Checked = false;
-				this.tsbOneAboneSabori.Checked = false;
-				this.tsbOneAboneHakidame.Checked = false;
-				switch(value) {
-					case AboneType.Toumei:
-						this.tsbOneAboneToumei.Checked = true;
-						break;
-					case AboneType.Sabori:
-						this.tsbOneAboneSabori.Checked = true;
-						break;
-					case AboneType.Hakidame:
-						this.tsbOneAboneHakidame.Checked = true;
-						break;
-				}
+				this.tsbOneAboneToumei.Checked = value == AboneType.Toumei;
+				this.tsbOneAboneSabori.Checked = value == AboneType.Sabori;
+				this.tsbOneAboneHakidame.Checked = value == AboneType.Hakidame;
 				if(value != this.aboneType) {
 					this.aboneType = value;
 					this.DisplayItems();
@@ -631,11 +614,10 @@ namespace Yusen.GExplorer {
 			unfiltered:
 
 				//色づけ
-				clvi.ForeColor = SystemColors.WindowText;
 				if (isNg && AboneType.Sabori == this.AboneType) {
 					clvi.ForeColor = SystemColors.GrayText;
-				} else if (this.genreColored) {
-					clvi.ForeColor = clvi.ContentAdapter.Genre.GenreForeColor;
+				} else if (!clvi.ContentAdapter.FromCache) {
+					clvi.ForeColor = this.newColor;
 				} else {
 					clvi.ForeColor = SystemColors.WindowText;
 				}

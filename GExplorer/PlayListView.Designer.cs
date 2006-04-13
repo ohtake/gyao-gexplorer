@@ -406,59 +406,59 @@
 			// tsmiAddById
 			// 
 			this.tsmiAddById.Name = "tsmiAddById";
-			this.tsmiAddById.Size = new System.Drawing.Size(248, 22);
+			this.tsmiAddById.Size = new System.Drawing.Size(254, 22);
 			this.tsmiAddById.Text = "ID指定で手動追加(&O)...";
 			this.tsmiAddById.Click += new System.EventHandler(this.tsmiAddById_Click);
 			// 
 			// tsmiRefleshView
 			// 
 			this.tsmiRefleshView.Name = "tsmiRefleshView";
-			this.tsmiRefleshView.Size = new System.Drawing.Size(248, 22);
+			this.tsmiRefleshView.Size = new System.Drawing.Size(254, 22);
 			this.tsmiRefleshView.Text = "表示内容を強制的にリフレッシュ(&R)";
 			this.tsmiRefleshView.Click += new System.EventHandler(this.tsmiRefleshView_Click);
 			// 
 			// toolStripSeparator9
 			// 
 			this.toolStripSeparator9.Name = "toolStripSeparator9";
-			this.toolStripSeparator9.Size = new System.Drawing.Size(245, 6);
+			this.toolStripSeparator9.Size = new System.Drawing.Size(251, 6);
 			// 
 			// tsmiExport
 			// 
 			this.tsmiExport.Name = "tsmiExport";
-			this.tsmiExport.Size = new System.Drawing.Size(248, 22);
+			this.tsmiExport.Size = new System.Drawing.Size(254, 22);
 			this.tsmiExport.Text = "プレイリストをイクスポート(&E)...";
 			this.tsmiExport.Click += new System.EventHandler(this.tsmiExport_Click);
 			// 
 			// tsmiImportAppend
 			// 
 			this.tsmiImportAppend.Name = "tsmiImportAppend";
-			this.tsmiImportAppend.Size = new System.Drawing.Size(248, 22);
+			this.tsmiImportAppend.Size = new System.Drawing.Size(254, 22);
 			this.tsmiImportAppend.Text = "プレイリストを追加インポート(&I)...";
 			this.tsmiImportAppend.Click += new System.EventHandler(this.tsmiImportAppend_Click);
 			// 
 			// tsmiImportOverwrite
 			// 
 			this.tsmiImportOverwrite.Name = "tsmiImportOverwrite";
-			this.tsmiImportOverwrite.Size = new System.Drawing.Size(248, 22);
+			this.tsmiImportOverwrite.Size = new System.Drawing.Size(254, 22);
 			this.tsmiImportOverwrite.Text = "プレイリストを上書きインポート(&M)...";
 			this.tsmiImportOverwrite.Click += new System.EventHandler(this.tsmiImportOverwrite_Click);
 			// 
 			// toolStripSeparator5
 			// 
 			this.toolStripSeparator5.Name = "toolStripSeparator5";
-			this.toolStripSeparator5.Size = new System.Drawing.Size(245, 6);
+			this.toolStripSeparator5.Size = new System.Drawing.Size(251, 6);
 			// 
 			// tsmiRemoveUnreachables
 			// 
 			this.tsmiRemoveUnreachables.Name = "tsmiRemoveUnreachables";
-			this.tsmiRemoveUnreachables.Size = new System.Drawing.Size(248, 22);
-			this.tsmiRemoveUnreachables.Text = "クロール結果で到達不可のを削除(&U)";
+			this.tsmiRemoveUnreachables.Size = new System.Drawing.Size(254, 22);
+			this.tsmiRemoveUnreachables.Text = "クロール結果で到達不可のを削除(&U)...";
 			this.tsmiRemoveUnreachables.Click += new System.EventHandler(this.tsmiRemoveUnreachables_Click);
 			// 
 			// tsmiClearPlayList
 			// 
 			this.tsmiClearPlayList.Name = "tsmiClearPlayList";
-			this.tsmiClearPlayList.Size = new System.Drawing.Size(248, 22);
+			this.tsmiClearPlayList.Size = new System.Drawing.Size(254, 22);
 			this.tsmiClearPlayList.Text = "プレイリストの全項目を削除(&C)...";
 			this.tsmiClearPlayList.Click += new System.EventHandler(this.tsmiClearPlayList_Click);
 			// 

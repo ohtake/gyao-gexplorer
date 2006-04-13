@@ -350,16 +350,17 @@
 			// chId
 			// 
 			this.chId.Text = "contents_id";
-			this.chId.Width = 80;
+			this.chId.Width = 74;
 			// 
 			// chTitle
 			// 
 			this.chTitle.Text = "タイトル";
-			this.chTitle.Width = 70;
+			this.chTitle.Width = 90;
 			// 
 			// chSeriesNumber
 			// 
 			this.chSeriesNumber.Text = "シリーズ番号";
+			this.chSeriesNumber.Width = 55;
 			// 
 			// chSubTitle
 			// 
@@ -369,17 +370,17 @@
 			// chDuration
 			// 
 			this.chDuration.Text = "番組時間";
-			this.chDuration.Width = 62;
+			this.chDuration.Width = 56;
 			// 
 			// chDeadline
 			// 
 			this.chDeadline.Text = "配信期限";
-			this.chDeadline.Width = 76;
+			this.chDeadline.Width = 70;
 			// 
 			// chSummary
 			// 
 			this.chSummary.Text = "サマリー";
-			this.chSummary.Width = 135;
+			this.chSummary.Width = 140;
 			// 
 			// chAttribs
 			// 
