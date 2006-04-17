@@ -132,6 +132,15 @@ namespace Yusen.GExplorer {
 			get { return this.maxCrawlPages; }
 			set { this.maxCrawlPages = value; }
 		}
+		private bool ignoreAddMyListFunction = true;
+		[Category("クローラ")]
+		[DisplayName("addMyList関数を無視する")]
+		[Description("addMyList関数は放送予定コンテンツでも使われるため，無視することでダミーのコンテンツが減るようになります．")]
+		[DefaultValue(true)]
+		public bool IgnoreAddMyListFunction {
+			get { return this.ignoreAddMyListFunction; }
+			set { this.ignoreAddMyListFunction = value; }
+		}
 
 		[Category("GUI")]
 		[DisplayName("ビジュアルスタイル")]
@@ -193,7 +202,17 @@ namespace Yusen.GExplorer {
 			get { return this.browserPath; }
 			set { this.browserPath = value; }
 		}
-
+		
+		private bool automaticallyAddFavAndNewContents = true;
+		[Category("FAVコンテンツ")]
+		[DisplayName("新着FAVコンテンツの自動追加")]
+		[Description("新着であり尚且つFAVコンテンツの条件を満たすコンテンツをクロール終了時に自動的にプレイリストに追加します．")]
+		[DefaultValue(true)]
+		public bool AutomaticallyAddFavAndNewContents {
+			get { return this.automaticallyAddFavAndNewContents; }
+			set { this.automaticallyAddFavAndNewContents = value; }
+		}
+		
 		internal bool TryGetUserNumber() {
 			this.UserNo = GlobalSettings.InvalidUserNo;
 			//レジストリからの取得を試みる
@@ -238,7 +257,7 @@ namespace Yusen.GExplorer {
 		}
 		
 		internal CrawlSettings CreateCrawlSettings() {
-			return new CrawlSettings(this.maxCrawlPages, this.crawlOrder, this.timetableSortType);
+			return new CrawlSettings(this.maxCrawlPages, this.crawlOrder, this.timetableSortType, this.ignoreAddMyListFunction);
 		}
 	}
 }

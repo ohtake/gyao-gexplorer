@@ -172,7 +172,24 @@ namespace Yusen.GExplorer {
 			
 			//this.OnGenreSelected(true);
 		}
-		
+		private void GenreTabControl_KeyDown(object sender, KeyEventArgs e) {
+			switch (e.KeyCode) {
+				case Keys.F10://Shift+F10は押されたとき
+					if ((Control.ModifierKeys & Keys.Shift) != Keys.None) {
+						this.ShowContextMenuOnSelectedTag();
+					}
+					break;
+			}
+		}
+
+		private void GenreTabControl_KeyUp(object sender, KeyEventArgs e) {
+			switch (e.KeyCode) {
+				case Keys.Apps://Appsは離されたとき
+					this.ShowContextMenuOnSelectedTag();
+					break;
+			}
+		}
+
 		private void GenreTabControl_SelectedIndexChanged(object sender, EventArgs e) {
 			this.OnGenreSelected(false);
 		}
@@ -245,6 +262,17 @@ namespace Yusen.GExplorer {
 			}
 		}
 
+		private void ShowContextMenuOnSelectedTag() {
+			int selIndex = base.SelectedIndex;
+			GenreTabPage gtp = base.TabPages[selIndex] as GenreTabPage;
+			if (null == gtp) {
+				return;
+			}
+
+			Rectangle tabRect = base.GetTabRect(selIndex);
+			gtp.ShowContextMenu(this.PointToScreen(new Point(tabRect.Left, tabRect.Bottom)));
+		}
+
 		protected override void WndProc(ref Message m) {
 			switch ((WM)m.Msg) {
 				case WM.LBUTTONDBLCLK://ダブルクリック
@@ -259,7 +287,6 @@ namespace Yusen.GExplorer {
 			get { return this.settings; }
 		}
 		#endregion
-
 	}
 
 	public sealed class GenreTabSelectedEventArgs : EventArgs {

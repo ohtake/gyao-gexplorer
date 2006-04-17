@@ -7,6 +7,7 @@ using System.Xml.Serialization;
 using System.Text;
 using System.Text.RegularExpressions;
 using Yusen.GCrawler;
+using System.Reflection;
 
 namespace Yusen.GExplorer {
 	public sealed partial class CrawlResultView : UserControl, IHasNewSettings<CrawlResultView.CrawlResultViewSettings> {
@@ -155,22 +156,6 @@ namespace Yusen.GExplorer {
 			private int? colWidthAttribs;
 
 			[Category("表示")]
-			[DisplayName("あぼ～ん方法")]
-			[Description("あぼ～んする方法を指定します．「とうめい」ではNG対象は表示されません．「さぼり」ではNG対象がグレイで表示されます．「はきだめ」ではNG対象のみが表示されます．")]
-			[DefaultValue(AboneType.Toumei)]
-			public AboneType AboneType {
-				get {
-					if (this.HasOwner) return this.owner.AboneType;
-					else return this.aboneType;
-				}
-				set {
-					if (this.HasOwner) this.owner.AboneType = value;
-					else this.aboneType = value;
-				}
-			}
-			private AboneType aboneType = AboneType.Toumei;
-
-			[Category("表示")]
 			[DisplayName("パッケージでグループ化")]
 			[Description("パッケージごとにコンテンツをグループ化します．Windows XP 以降でのみ有効です．")]
 			[DefaultValue(true)]
@@ -301,6 +286,54 @@ namespace Yusen.GExplorer {
 				set { this.NewColor = value.ToColor(); }
 			}
 
+			[Category("コンテンツの表示条件")]
+			[DisplayName("NG")]
+			[Description("NGコンテンツに該当するか否かで表示か非表示かを設定します．")]
+			[DefaultValue(TruthSetForSingleBoolean.False)]
+			public TruthSetForSingleBoolean VisibilityNg {
+				get {
+					if (this.HasOwner) return this.owner.VisibilityNg;
+					else return this.visibilityNg;
+				}
+				set {
+					if (this.HasOwner) this.owner.VisibilityNg = value;
+					else this.visibilityNg = value;
+				}
+			}
+			private TruthSetForSingleBoolean visibilityNg = TruthSetForSingleBoolean.False;
+
+			[Category("コンテンツの表示条件")]
+			[DisplayName("FAV")]
+			[Description("FAVコンテンツに該当するか否かで表示か非表示かを設定します．")]
+			[DefaultValue(TruthSetForSingleBoolean.TrueAndFalse)]
+			public TruthSetForSingleBoolean VisibilityFav {
+				get {
+					if (this.HasOwner) return this.owner.VisibilityFav;
+					else return this.visibilityFav;
+				}
+				set {
+					if (this.HasOwner) this.owner.VisibilityFav = value;
+					else this.visibilityFav = value;
+				}
+			}
+			private TruthSetForSingleBoolean visibilityFav = TruthSetForSingleBoolean.TrueAndFalse;
+
+			[Category("コンテンツの表示条件")]
+			[DisplayName("New")]
+			[Description("新着か否かで表示か非表示かを設定します．")]
+			[DefaultValue(TruthSetForSingleBoolean.TrueAndFalse)]
+			public TruthSetForSingleBoolean VisibilityNew {
+				get {
+					if (this.HasOwner) return this.owner.VisibilityNew;
+					else return this.visibilityNew;
+				}
+				set {
+					if (this.HasOwner) this.owner.VisibilityNew = value;
+					else this.visibilityNew = value;
+				}
+			}
+			private TruthSetForSingleBoolean visibilityNew = TruthSetForSingleBoolean.TrueAndFalse;
+
 			#region INewSettings<CrawlResultViewSettings> Members
 			public void ApplySettings(CrawlResultViewSettings newSettings) {
 				Utility.SubstituteAllPublicProperties(this, newSettings);
@@ -318,26 +351,54 @@ namespace Yusen.GExplorer {
 			public ContentAdapter ContentAdapter {
 				get { return this.contentAdapter; }
 			}
-			private bool isNgCached = false;
-			public bool IsNgCached {
-				get { return this.isNgCached; }
+			private bool isNg = false;
+			public bool IsNg {
+				get { return this.isNg; }
+			}
+			private bool isFav = false;
+			public bool IsFav {
+				get { return this.isFav; }
 			}
 			private ListViewGroup packageGroup;
 			public ListViewGroup PackageGroup {
 				get { return this.packageGroup; }
 			}
 
-			public void ResetNgCachedFlag() {
-				this.isNgCached = NgContentsManager.Instance.IsNgContent(this.ContentAdapter);
+			public void ResetNgFlag() {
+				bool newVal = ContentPredicatesManager.NgManager.IsTrueFor(this.ContentAdapter);
+				if (this.isNg != newVal) {
+					this.isNg = newVal;
+					if (newVal) {
+						base.Font = new Font(base.Font, base.Font.Style | FontStyle.Strikeout);
+					} else {
+						base.Font = new Font(base.Font, base.Font.Style ^ FontStyle.Strikeout);
+					}
+				}
+			}
+			public void ResetFavFlag() {
+				bool newVal = ContentPredicatesManager.FavManager.IsTrueFor(this.ContentAdapter);
+				if (this.isFav != newVal) {
+					this.isFav = newVal;
+					if(newVal){
+						base.Font = new Font(base.Font, base.Font.Style | FontStyle.Italic);
+					}else{
+						base.Font = new Font(base.Font, base.Font.Style ^ FontStyle.Italic);
+					}
+				}
+			}
+			public void SetForeColorIfNew(Color clr) {
+				if (this.contentAdapter.IsNew) {
+					base.ForeColor = clr;
+				}
 			}
 		}
 		
 		public event EventHandler<ContentSelectionChangedEventArgs> ContentSelectionChanged;
-		public event EventHandler<ManuallyCacheDeletedEventArgs> ManuallyCacheDeleted;
 
 		private CrawlResult crawlResult;
-		private bool genreColored = true;
-		private AboneType aboneType = AboneType.Toumei;
+		private TruthSetForSingleBoolean visibilityNg = TruthSetForSingleBoolean.False;
+		private TruthSetForSingleBoolean visibilityFav = TruthSetForSingleBoolean.TrueAndFalse;
+		private TruthSetForSingleBoolean visibilityNew = TruthSetForSingleBoolean.TrueAndFalse;
 		private FilterType filterType = FilterType.Normal;
 		private bool showPackages = true;
 		private int maxPageMenuItems = 16;
@@ -350,7 +411,7 @@ namespace Yusen.GExplorer {
 		private Migemo migemo = null;
 		private Regex filterRegex = null;
 
-		private readonly CrawlResultViewSettings settings;
+		private CrawlResultViewSettings settings;
 
 		public CrawlResultView() {
 			InitializeComponent();
@@ -368,12 +429,17 @@ namespace Yusen.GExplorer {
 				};
 				this.tsddbFilterTarget.DropDownItems.Add(tsmi);
 			}
-			
-			this.settings = new CrawlResultViewSettings(this);
 		}
 		
 		private void CrawlResultView_Load(object sender, EventArgs e) {
 			if (base.DesignMode) return;
+
+			//ステータスバークリア
+			this.tslNumber.Text = string.Empty;
+			this.tslTime.Text = string.Empty;
+			
+			//設定読み込み
+			this.settings = new CrawlResultViewSettings(this);
 			
 			//Migemo初期化
 			try {
@@ -386,12 +452,13 @@ namespace Yusen.GExplorer {
 				this.tstbAnswer.Text = ex.Message;
 				this.tsbOneFTypeMigemo.Enabled = false;
 			}
-			
-			NgContentsManager.Instance.NgContentsChanged += new EventHandler(NgContentsManager_NgContentsChanged);
+
+			ContentPredicatesManager.NgManager.PredicatesChanged += new EventHandler(NgManager_PredicatesChanged);
+			ContentPredicatesManager.FavManager.PredicatesChanged += new EventHandler(FavManager_PredicatesChanged);
 			this.Disposed += delegate {
-				NgContentsManager.Instance.NgContentsChanged -= new EventHandler(NgContentsManager_NgContentsChanged);
+				ContentPredicatesManager.NgManager.PredicatesChanged -= new EventHandler(NgManager_PredicatesChanged);
+				ContentPredicatesManager.FavManager.PredicatesChanged -= new EventHandler(FavManager_PredicatesChanged);
 			};
-			
 		}
 		
 		internal CrawlResult CrawlResult {
@@ -407,7 +474,9 @@ namespace Yusen.GExplorer {
 					this.ShowPackages = this.ShowPackages;
 					if (null != value) {
 						this.CreateItems();
-						this.ResetAllNgCached();
+						this.SetNewColorAllIfNew();
+						this.ResetAllNgFlags();
+						this.ResetAllFavFlags();
 						this.DisplayItems();
 					}
 					this.listView1.EndUpdate();
@@ -484,23 +553,103 @@ namespace Yusen.GExplorer {
 			set {
 				if (this.newColor != value) {
 					this.newColor = value;
-					this.DisplayItems();
+					this.SetNewColorAllIfNew();
 				}
 			}
 		}
 		
-		private AboneType AboneType {
-			get { return this.aboneType; }
+		private TruthSetForSingleBoolean VisibilityNg {
+			get { return this.visibilityNg; }
 			set {
-				this.tsbOneAboneToumei.Checked = value == AboneType.Toumei;
-				this.tsbOneAboneSabori.Checked = value == AboneType.Sabori;
-				this.tsbOneAboneHakidame.Checked = value == AboneType.Hakidame;
-				if(value != this.aboneType) {
-					this.aboneType = value;
+				if (value == TruthSetForSingleBoolean.Empty) {
+					value = TruthSetForSingleBoolean.TrueAndFalse;
+				}
+				
+				this.tsmiVisibilityNgTrue.Checked = false;
+				this.tsmiVisibilityNgFalse.Checked = false;
+				this.tsmiVisibilityNgAll.Checked = false;
+				ToolStripMenuItem tsmi = null;
+				switch (value) {
+					case TruthSetForSingleBoolean.True:
+						tsmi = this.tsmiVisibilityNgTrue;
+						break;
+					case TruthSetForSingleBoolean.False:
+						tsmi = this.tsmiVisibilityNgFalse;
+						break;
+					case TruthSetForSingleBoolean.TrueAndFalse:
+						tsmi = this.tsmiVisibilityNgAll;
+						break;
+				}
+				tsmi.Checked = true;
+				this.tssbNg.Text = "N&G" + tsmi.Text.Substring(2, tsmi.Text.Length - 2 - 4);
+				
+				if (value != this.visibilityNg) {
+					this.visibilityNg = value;
 					this.DisplayItems();
 				}
 			}
 		}
+		private TruthSetForSingleBoolean VisibilityFav {
+			get { return this.visibilityFav; }
+			set {
+				if (value == TruthSetForSingleBoolean.Empty) {
+					value = TruthSetForSingleBoolean.TrueAndFalse;
+				}
+				this.tsmiVisibilityFavTrue.Checked = false;
+				this.tsmiVisibilityFavFalse.Checked = false;
+				this.tsmiVisibilityFavAll.Checked = false;
+				ToolStripMenuItem tsmi = null;
+				switch (value) {
+					case TruthSetForSingleBoolean.True:
+						tsmi = this.tsmiVisibilityFavTrue;
+						break;
+					case TruthSetForSingleBoolean.False:
+						tsmi = this.tsmiVisibilityFavFalse;
+						break;
+					case TruthSetForSingleBoolean.TrueAndFalse:
+						tsmi = this.tsmiVisibilityFavAll;
+						break;
+				}
+				tsmi.Checked = true;
+				this.tssbFav.Text = "F&AV" + tsmi.Text.Substring(3, tsmi.Text.Length - 3 - 4);
+				
+				if (value != this.visibilityFav) {
+					this.visibilityFav = value;
+					this.DisplayItems();
+				}
+			}
+		}
+		private TruthSetForSingleBoolean VisibilityNew {
+			get { return this.visibilityNew; }
+			set {
+				if (value == TruthSetForSingleBoolean.Empty) {
+					value = TruthSetForSingleBoolean.TrueAndFalse;
+				}
+				this.tsmiVisibilityNewTrue.Checked = false;
+				this.tsmiVisibilityNewFalse.Checked = false;
+				this.tsmiVisibilityNewAll.Checked = false;
+				ToolStripMenuItem tsmi = null;
+				switch (value) {
+					case TruthSetForSingleBoolean.True:
+						tsmi = this.tsmiVisibilityNewTrue;
+						break;
+					case TruthSetForSingleBoolean.False:
+						tsmi = this.tsmiVisibilityNewFalse;
+						break;
+					case TruthSetForSingleBoolean.TrueAndFalse:
+						tsmi = this.tsmiVisibilityNewAll;
+						break;
+				}
+				tsmi.Checked = true;
+				this.tssbNew.Text = "Ne&w" + tsmi.Text.Substring(3, tsmi.Text.Length - 3 - 4);
+				
+				if (value != this.visibilityNew) {
+					this.visibilityNew = value;
+					this.DisplayItems();
+				}
+			}
+		}
+
 		private bool ShowPackages {
 			get { return this.showPackages; }
 			set {
@@ -564,12 +713,24 @@ namespace Yusen.GExplorer {
 			}
 			this.listView1.EndUpdate();
 		}
-		private void ResetAllNgCached() {
-			DateTime begin = DateTime.Now;
+		private void SetNewColorAllIfNew() {
+			this.listView1.BeginUpdate();
+			foreach (ContentListViewItem clvi in this.allClvis) {
+				clvi.SetForeColorIfNew(this.newColor);
+			}
+			this.listView1.EndUpdate();
+		}
+		private void ResetAllNgFlags() {
 			foreach(ContentListViewItem clvi in this.allClvis) {
-				clvi.ResetNgCachedFlag();
+				clvi.ResetNgFlag();
 			}
 		}
+		private void ResetAllFavFlags() {
+			foreach (ContentListViewItem clvi in this.allClvis) {
+				clvi.ResetFavFlag();
+			}
+		}
+
 		private void DisplayItems(){
 			if (null == this.CrawlResult) return;
 
@@ -584,21 +745,50 @@ namespace Yusen.GExplorer {
 			int filtered = 0;
 			Regex filter = this.FilterEnabled ? this.FilterRegex : null;
 			List<bool> filterTarges = this.GetFilterTargetList();
+
+			bool showNgTrue = (this.VisibilityNg & TruthSetForSingleBoolean.True) != TruthSetForSingleBoolean.Empty;
+			bool showNgFalse = (this.VisibilityNg & TruthSetForSingleBoolean.False) != TruthSetForSingleBoolean.Empty;
+			bool showFavTrue = (this.VisibilityFav & TruthSetForSingleBoolean.True) != TruthSetForSingleBoolean.Empty;
+			bool showFavFalse = (this.VisibilityFav & TruthSetForSingleBoolean.False) != TruthSetForSingleBoolean.Empty;
+			bool showNewTrue = (this.VisibilityNew & TruthSetForSingleBoolean.True) != TruthSetForSingleBoolean.Empty;
+			bool showNewFalse = (this.VisibilityNew & TruthSetForSingleBoolean.False) != TruthSetForSingleBoolean.Empty;
 			
 			foreach (ContentListViewItem clvi in this.allClvis) {
-				//NG処理
-				bool isNg = clvi.IsNgCached;
-				switch (this.AboneType) {
-					case AboneType.Hakidame:
-						isNg = !isNg;
-						goto case AboneType.Toumei;
-					case AboneType.Toumei:
-						if (isNg) {
-							aboned++;
-							continue;
-						}
-						break;
+				//あぼ～ん処理
+				if (clvi.IsNg) {
+					if (!showNgTrue) {
+						aboned++;
+						continue;
+					}
+				} else {
+					if (!showNgFalse) {
+						aboned++;
+						continue;
+					}
 				}
+				if (clvi.IsFav) {
+					if (!showFavTrue) {
+						aboned++;
+						continue;
+					}
+				} else {
+					if (!showFavFalse) {
+						aboned++;
+						continue;
+					}
+				}
+				if (clvi.ContentAdapter.IsNew) {
+					if (!showNewTrue) {
+						aboned++;
+						continue;
+					}
+				} else {
+					if (!showNewFalse) {
+						aboned++;
+						continue;
+					}
+				}
+				
 				//フィルタ処理
 				if (null != filter) {
 					Match match;
@@ -612,15 +802,6 @@ namespace Yusen.GExplorer {
 					continue;
 				}
 			unfiltered:
-
-				//色づけ
-				if (isNg && AboneType.Sabori == this.AboneType) {
-					clvi.ForeColor = SystemColors.GrayText;
-				} else if (!clvi.ContentAdapter.FromCache) {
-					clvi.ForeColor = this.newColor;
-				} else {
-					clvi.ForeColor = SystemColors.WindowText;
-				}
 				
 				clvi.Group = clvi.PackageGroup;
 				clvi.Selected = false;
@@ -729,16 +910,23 @@ namespace Yusen.GExplorer {
 			this.FilterRegex = null;
 			return;
 		}
-
 		private void UpdateViewIfFilterEnabledAndHasFilterRegex() {
 			if(this.FilterEnabled && null != this.FilterRegex) {
 				this.DisplayItems();
 			}
 		}
 
-		private void NgContentsManager_NgContentsChanged(object sender, EventArgs e) {
-			this.ResetAllNgCached();
-			this.DisplayItems();
+		private void NgManager_PredicatesChanged(object sender, EventArgs e) {
+			this.ResetAllNgFlags();
+			if (this.VisibilityNg != TruthSetForSingleBoolean.TrueAndFalse) {
+				this.DisplayItems();
+			}
+		}
+		private void FavManager_PredicatesChanged(object sender, EventArgs e) {
+			this.ResetAllFavFlags();
+			if (this.VisibilityFav != TruthSetForSingleBoolean.TrueAndFalse) {
+				this.DisplayItems();
+			}
 		}
 
 		private void listView1_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e) {
@@ -881,65 +1069,16 @@ namespace Yusen.GExplorer {
 			}));
 			BrowserForm.Browse(images);
 		}
+		private void tsnfmiNgFav_SubmenuSelected(object sender, ContentSelectionRequiredEventArgs e) {
+			e.Selection = this.SelectedContents;
+		}
 		private void tsucmiCommandRoot_UserCommandSelected(object sender, UserCommandSelectedEventArgs e) {
 			e.UserCommand.Execute(this.SelectedContents);
 		}
-		private void tsmiAddNgWithTitle_Click(object sender, EventArgs e) {
-			List<string> titles = new List<string>();
-			foreach(ContentAdapter cont in this.SelectedContents) {
-				string title = cont.Title;
-				if(!titles.Contains(title)) {
-					titles.Add(title);
-				}
-			}
-			List<NgContent> ngs = titles.ConvertAll<NgContent>(new Converter<string, NgContent>(delegate(string input) {
-				return new NgContent("簡易追加", ContentAdapter.PropertyNameTitle, NgContent.MethodNameEquals, input);
-			}));
-			if(ngs.Count > 0) {
-				NgContentsManager.Instance.AddRange(ngs);
-			}
-		}
-		private void tsmiAddNgWithId_Click(object sender, EventArgs e) {
-			List<NgContent> ngs = new List<NgContent>();
-			foreach(ContentAdapter cont in this.SelectedContents) {
-				ngs.Add(new NgContent("簡易追加", ContentAdapter.PropertyNameContentId, NgContent.MethodNameEquals, cont.ContentId));
-			}
-			if(ngs.Count > 0) {
-				NgContentsManager.Instance.AddRange(ngs);
-			}
-		}
-		private void tsmiNgTest_Click(object sender, EventArgs e) {
-			List<NgContent> ngs = new List<NgContent>();
-			NgContentsManager manager = NgContentsManager.Instance;
-			foreach (ContentAdapter cont in this.SelectedContents) {
-				foreach (NgContent ng in manager.EnumerateNgsTo(cont)) {
-					if (!ngs.Contains(ng)) {
-						ngs.Add(ng);
-					}
-				}
-			}
-			if (0 == ngs.Count) {
-				MessageBox.Show("選択されたコンテンツをNGするNGコンテンツはありません．", "NGテスト", MessageBoxButtons.OK, MessageBoxIcon.Information);
-			} else {
-				string separator = "-------------------------------------------------";
-				StringBuilder sb = new StringBuilder();
-				sb.AppendLine(separator);
-				sb.AppendLine("コメント\t主語\t述語\t目的語\t作成日時");
-				sb.AppendLine(separator);
-				foreach (NgContent ng in ngs) {
-					sb.AppendLine(string.Format("{0}\t{1}\t{2}\t{3}\t{4}", ng.Comment, ng.PropertyName, ng.Method.ToString(), ng.Word, ng.Created.ToString()));
-				}
-				sb.AppendLine(separator);
-				switch (MessageBox.Show("以下のNGコンテンツに該当します．\n\n"+ sb.ToString() + "\n該当するNGコンテンツをすべて削除しますか？", "NGテスト", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2)) {
-					case DialogResult.Yes:
-						manager.RemoveAll(ngs.Contains);
-						break;
-				}
-			}
-		}
 		private void tsmiRemoveCache_Click(object sender, EventArgs e) {
+			string title = "キャッシュの削除";
 			ContentAdapter[] selConts = this.SelectedContents;
-			switch (MessageBox.Show(string.Format("選択された {0} 個のコンテンツのキャッシュを削除しますか？", selConts.Length), "キャッシュの削除", MessageBoxButtons.YesNo, MessageBoxIcon.Question)) {
+			switch (MessageBox.Show(string.Format("選択された {0} 個のコンテンツのキャッシュを削除しますか？", selConts.Length), title, MessageBoxButtons.YesNo, MessageBoxIcon.Question)) {
 				case DialogResult.Yes:
 					break;
 				default:
@@ -954,9 +1093,8 @@ namespace Yusen.GExplorer {
 					failed++;
 				}
 			}
-			if (null != this.ManuallyCacheDeleted) {
-				this.ManuallyCacheDeleted(this, new ManuallyCacheDeletedEventArgs(succeeded, failed));
-			}
+			
+			MessageBox.Show(string.Format("削除成功数: {0}\n削除失敗数: {1}", succeeded, failed), title, MessageBoxButtons.OK, MessageBoxIcon.Information);
 		}
 		#endregion
 		#region フィルタ関連
@@ -974,17 +1112,6 @@ namespace Yusen.GExplorer {
 			this.timerFilter.Stop();
 			this.CreateAndSetFilterRegex();
 		}
-		#endregion
-		#region ワンクリックでの切り替え
-		private void tsbOneAboneToumei_Click(object sender, EventArgs e) {
-			this.AboneType = AboneType.Toumei;
-		}
-		private void tsbOneAboneSabori_Click(object sender, EventArgs e) {
-			this.AboneType = AboneType.Sabori;
-		}
-		private void tsbOneAboneHakidame_Click(object sender, EventArgs e) {
-			this.AboneType = AboneType.Hakidame;
-		}
 		private void tsbOneFTypeNormal_Click(object sender, EventArgs e) {
 			this.FilterType = FilterType.Normal;
 		}
@@ -994,14 +1121,12 @@ namespace Yusen.GExplorer {
 		private void tsbOneFTypeRegex_Click(object sender, EventArgs e) {
 			this.FilterType = FilterType.Regex;
 		}
-		#endregion
-		#region フィルタ対象
 		private List<bool> GetFilterTargetList() {
 			List<bool> targets = new List<bool>(this.listView1.Columns.Count);
 			bool afterSeparator = false;
-			foreach(ToolStripItem tsi in this.tsddbFilterTarget.DropDownItems) {
-				if(!afterSeparator) {
-					if(tsi is ToolStripSeparator) {
+			foreach (ToolStripItem tsi in this.tsddbFilterTarget.DropDownItems) {
+				if (!afterSeparator) {
+					if (tsi is ToolStripSeparator) {
 						afterSeparator = true;
 					}
 					continue;
@@ -1013,9 +1138,9 @@ namespace Yusen.GExplorer {
 		}
 		private void ChangeAllFilterTargetHelper(Action<ToolStripMenuItem> action) {
 			bool afterSeparator = false;
-			foreach(ToolStripItem tsi in this.tsddbFilterTarget.DropDownItems) {
-				if(!afterSeparator) {
-					if(tsi is ToolStripSeparator) {
+			foreach (ToolStripItem tsi in this.tsddbFilterTarget.DropDownItems) {
+				if (!afterSeparator) {
+					if (tsi is ToolStripSeparator) {
 						afterSeparator = true;
 					}
 					continue;
@@ -1044,6 +1169,57 @@ namespace Yusen.GExplorer {
 		}
 		#endregion
 
+		#region 表示条件選択ボタン
+		private TruthSetForSingleBoolean NextSetOf(TruthSetForSingleBoolean ts) {
+			switch (ts) {
+				case TruthSetForSingleBoolean.Empty:
+					throw new ArgumentOutOfRangeException("ts");
+				case TruthSetForSingleBoolean.True:
+					return TruthSetForSingleBoolean.False;
+				case TruthSetForSingleBoolean.False:
+					return TruthSetForSingleBoolean.TrueAndFalse;
+				case TruthSetForSingleBoolean.TrueAndFalse:
+					return TruthSetForSingleBoolean.True;
+			}
+			throw new ArgumentOutOfRangeException("ts");
+		}
+		private void tssbNg_ButtonClick(object sender, EventArgs e) {
+			this.VisibilityNg = this.NextSetOf(this.VisibilityNg);
+		}
+		private void tssbFav_ButtonClick(object sender, EventArgs e) {
+			this.VisibilityFav = this.NextSetOf(this.VisibilityFav);
+		}
+		private void tssbNew_ButtonClick(object sender, EventArgs e) {
+			this.VisibilityNew = this.NextSetOf(this.VisibilityNew);
+		}
+		private void tsmiVisibilityNgTrue_Click(object sender, EventArgs e) {
+			this.VisibilityNg = TruthSetForSingleBoolean.True;
+		}
+		private void tsmiVisibilityNgFalse_Click(object sender, EventArgs e) {
+			this.VisibilityNg = TruthSetForSingleBoolean.False;
+		}
+		private void tsmiVisibilityNgAll_Click(object sender, EventArgs e) {
+			this.VisibilityNg = TruthSetForSingleBoolean.TrueAndFalse;
+		}
+		private void tsmiVisibilityFavTrue_Click(object sender, EventArgs e) {
+			this.VisibilityFav = TruthSetForSingleBoolean.True;
+		}
+		private void tsmiVisibilityFavFalse_Click(object sender, EventArgs e) {
+			this.VisibilityFav = TruthSetForSingleBoolean.False; ;
+		}
+		private void tsmiVisibilityFavAll_Click(object sender, EventArgs e) {
+			this.VisibilityFav = TruthSetForSingleBoolean.TrueAndFalse;
+		}
+		private void tsmiVisibilityNewTrue_Click(object sender, EventArgs e) {
+			this.VisibilityNew = TruthSetForSingleBoolean.True;
+		}
+		private void tsmiVisibilityNewFalse_Click(object sender, EventArgs e) {
+			this.VisibilityNew = TruthSetForSingleBoolean.False;
+		}
+		private void tsmiVisibilityNewAll_Click(object sender, EventArgs e) {
+			this.VisibilityNew = TruthSetForSingleBoolean.TrueAndFalse;
+		}
+		#endregion
 
 		#region IHasNewSettings<CrawlResultViewSettings> Members
 		public CrawlResultView.CrawlResultViewSettings Settings {
@@ -1052,28 +1228,17 @@ namespace Yusen.GExplorer {
 		#endregion
 	}
 
-	public enum AboneType {
-		Toumei,
-		Sabori,
-		Hakidame,
+	[Flags]
+	public enum TruthSetForSingleBoolean{
+		Empty=0,
+		True=1,
+		False=2,
+		TrueAndFalse=True|False,
 	}
+	
 	public enum FilterType {
 		Normal,
 		Migemo,
 		Regex,
-	}
-	public sealed class ManuallyCacheDeletedEventArgs : EventArgs {
-		private int succeeded;
-		private int failed;
-		internal ManuallyCacheDeletedEventArgs(int succeeded, int failed) {
-			this.succeeded = succeeded;
-			this.failed = failed;
-		}
-		public int Succeeded {
-			get { return this.succeeded; }
-		}
-		public int Failed {
-			get { return this.failed; }
-		}
 	}
 }

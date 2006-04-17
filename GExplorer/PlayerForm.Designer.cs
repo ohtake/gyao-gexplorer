@@ -58,10 +58,9 @@
 			this.tsmiNextContentWithDelete = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiView = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiViewFullScreen = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiViewTopmost = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiViewAutoHide = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiSettings = new System.Windows.Forms.ToolStripMenuItem();
-			this.tspgPlayerFormSettings = new Yusen.GExplorer.ToolStripPropertyGrid();
 			this.tsmiTools = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiFocusOnWmp = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiResizeToVideoResolution = new System.Windows.Forms.ToolStripMenuItem();
@@ -70,7 +69,10 @@
 			this.tsmiBrowseDetail = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiBrowseRecommended = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+			this.tsnfmiNgFav = new Yusen.GExplorer.ToolStripNgFavMenuItem();
 			this.tsucmiCommand = new Yusen.GExplorer.ToolStripUserCommandMenuItem();
+			this.tsmiSettings = new System.Windows.Forms.ToolStripMenuItem();
+			this.tspgPlayerFormSettings = new Yusen.GExplorer.ToolStripPropertyGrid();
 			this.inputBoxDialog1 = new Yusen.GExplorer.InputBoxDialog();
 			this.timerAutoVolume = new System.Windows.Forms.Timer(this.components);
 			this.timerSkipCmLisence = new System.Windows.Forms.Timer(this.components);
@@ -97,7 +99,7 @@
 			// toolStripContainer1.ContentPanel
 			// 
 			this.toolStripContainer1.ContentPanel.Controls.Add(this.splitContainer1);
-			this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(644, 548);
+			this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(644, 545);
 			this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.toolStripContainer1.Location = new System.Drawing.Point(0, 0);
 			this.toolStripContainer1.Name = "toolStripContainer1";
@@ -180,7 +182,7 @@
 			this.splitContainer1.Panel2.Controls.Add(this.tableLayoutPanel1);
 			this.splitContainer1.Panel2Collapsed = true;
 			this.splitContainer1.Panel2MinSize = 120;
-			this.splitContainer1.Size = new System.Drawing.Size(644, 548);
+			this.splitContainer1.Size = new System.Drawing.Size(644, 545);
 			this.splitContainer1.SplitterDistance = 523;
 			this.splitContainer1.SplitterWidth = 1;
 			this.splitContainer1.TabIndex = 1;
@@ -192,7 +194,7 @@
 			this.wmpMain.Location = new System.Drawing.Point(0, 0);
 			this.wmpMain.Name = "wmpMain";
 			this.wmpMain.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("wmpMain.OcxState")));
-			this.wmpMain.Size = new System.Drawing.Size(644, 548);
+			this.wmpMain.Size = new System.Drawing.Size(644, 545);
 			this.wmpMain.TabIndex = 0;
 			this.wmpMain.Text = "axWindowsMediaPlayer1";
 			this.wmpMain.PlayStateChange += new AxWMPLib._WMPOCXEvents_PlayStateChangeEventHandler(this.wmpMain_PlayStateChange);
@@ -236,7 +238,7 @@
 			this.menuStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
-			this.menuStrip1.Size = new System.Drawing.Size(644, 20);
+			this.menuStrip1.Size = new System.Drawing.Size(644, 23);
 			this.menuStrip1.TabIndex = 0;
 			this.menuStrip1.Text = "menuStrip1";
 			// 
@@ -255,28 +257,30 @@
 			// tsmiPlayChapter
 			// 
 			this.tsmiPlayChapter.Name = "tsmiPlayChapter";
-			this.tsmiPlayChapter.Size = new System.Drawing.Size(263, 22);
-			this.tsmiPlayChapter.Text = "特定のチャプターから再生(&C)...";
+			this.tsmiPlayChapter.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
+			this.tsmiPlayChapter.Size = new System.Drawing.Size(294, 22);
+			this.tsmiPlayChapter.Text = "特定のチャプタから再生(&C)...";
 			this.tsmiPlayChapter.Click += new System.EventHandler(this.tsmiPlayChapter_Click);
 			// 
 			// tsmiReload
 			// 
 			this.tsmiReload.Name = "tsmiReload";
 			this.tsmiReload.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.R)));
-			this.tsmiReload.Size = new System.Drawing.Size(263, 22);
+			this.tsmiReload.Size = new System.Drawing.Size(294, 22);
 			this.tsmiReload.Text = "動画の再読み込み(&R)";
 			this.tsmiReload.Click += new System.EventHandler(this.tsmiReload_Click);
 			// 
 			// toolStripSeparator2
 			// 
 			this.toolStripSeparator2.Name = "toolStripSeparator2";
-			this.toolStripSeparator2.Size = new System.Drawing.Size(260, 6);
+			this.toolStripSeparator2.Size = new System.Drawing.Size(291, 6);
 			// 
 			// tsmiRemoveAndClose
 			// 
 			this.tsmiRemoveAndClose.Name = "tsmiRemoveAndClose";
-			this.tsmiRemoveAndClose.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.E)));
-			this.tsmiRemoveAndClose.Size = new System.Drawing.Size(263, 22);
+			this.tsmiRemoveAndClose.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift)
+						| System.Windows.Forms.Keys.D)));
+			this.tsmiRemoveAndClose.Size = new System.Drawing.Size(294, 22);
 			this.tsmiRemoveAndClose.Text = "プレイリストから削除して閉じる(&E)";
 			this.tsmiRemoveAndClose.Click += new System.EventHandler(this.tsmiRemoveAndClose_Click);
 			// 
@@ -284,7 +288,7 @@
 			// 
 			this.tsmiClose.Name = "tsmiClose";
 			this.tsmiClose.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.W)));
-			this.tsmiClose.Size = new System.Drawing.Size(263, 22);
+			this.tsmiClose.Size = new System.Drawing.Size(294, 22);
 			this.tsmiClose.Text = "閉じる(&W)";
 			this.tsmiClose.Click += new System.EventHandler(this.tsmiClose_Click);
 			// 
@@ -310,7 +314,7 @@
 			// 
 			this.tsmiPlayPause.Name = "tsmiPlayPause";
 			this.tsmiPlayPause.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P)));
-			this.tsmiPlayPause.Size = new System.Drawing.Size(281, 22);
+			this.tsmiPlayPause.Size = new System.Drawing.Size(250, 22);
 			this.tsmiPlayPause.Text = "再生/一時停止(&P)";
 			this.tsmiPlayPause.Click += new System.EventHandler(this.tsmiPlayPause_Click);
 			// 
@@ -318,20 +322,20 @@
 			// 
 			this.tsmiStop.Name = "tsmiStop";
 			this.tsmiStop.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-			this.tsmiStop.Size = new System.Drawing.Size(281, 22);
+			this.tsmiStop.Size = new System.Drawing.Size(250, 22);
 			this.tsmiStop.Text = "停止(&S)";
 			this.tsmiStop.Click += new System.EventHandler(this.tsmiStop_Click);
 			// 
 			// toolStripSeparator5
 			// 
 			this.toolStripSeparator5.Name = "toolStripSeparator5";
-			this.toolStripSeparator5.Size = new System.Drawing.Size(278, 6);
+			this.toolStripSeparator5.Size = new System.Drawing.Size(247, 6);
 			// 
 			// tsmiPrevTrack
 			// 
 			this.tsmiPrevTrack.Name = "tsmiPrevTrack";
 			this.tsmiPrevTrack.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.B)));
-			this.tsmiPrevTrack.Size = new System.Drawing.Size(281, 22);
+			this.tsmiPrevTrack.Size = new System.Drawing.Size(250, 22);
 			this.tsmiPrevTrack.Text = "前へ(&B)";
 			this.tsmiPrevTrack.Click += new System.EventHandler(this.tsmiPrevTrack_Click);
 			// 
@@ -339,7 +343,7 @@
 			// 
 			this.tsmiNextTrack.Name = "tsmiNextTrack";
 			this.tsmiNextTrack.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
-			this.tsmiNextTrack.Size = new System.Drawing.Size(281, 22);
+			this.tsmiNextTrack.Size = new System.Drawing.Size(250, 22);
 			this.tsmiNextTrack.Text = "次へ(&F)";
 			this.tsmiNextTrack.Click += new System.EventHandler(this.tsmiNextTrack_Click);
 			// 
@@ -348,7 +352,7 @@
 			this.tsmiFastReverse.Name = "tsmiFastReverse";
 			this.tsmiFastReverse.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift)
 						| System.Windows.Forms.Keys.B)));
-			this.tsmiFastReverse.Size = new System.Drawing.Size(281, 22);
+			this.tsmiFastReverse.Size = new System.Drawing.Size(250, 22);
 			this.tsmiFastReverse.Text = "巻き戻し(&R)";
 			this.tsmiFastReverse.Click += new System.EventHandler(this.tsmiFastReverse_Click);
 			// 
@@ -357,39 +361,36 @@
 			this.tsmiFastForward.Name = "tsmiFastForward";
 			this.tsmiFastForward.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift)
 						| System.Windows.Forms.Keys.F)));
-			this.tsmiFastForward.Size = new System.Drawing.Size(281, 22);
+			this.tsmiFastForward.Size = new System.Drawing.Size(250, 22);
 			this.tsmiFastForward.Text = "早送り(&A)";
 			this.tsmiFastForward.Click += new System.EventHandler(this.tsmiFastForward_Click);
 			// 
 			// toolStripSeparator7
 			// 
 			this.toolStripSeparator7.Name = "toolStripSeparator7";
-			this.toolStripSeparator7.Size = new System.Drawing.Size(278, 6);
+			this.toolStripSeparator7.Size = new System.Drawing.Size(247, 6);
 			// 
 			// tsmiPrevContent
 			// 
 			this.tsmiPrevContent.Name = "tsmiPrevContent";
-			this.tsmiPrevContent.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift)
-						| System.Windows.Forms.Keys.P)));
-			this.tsmiPrevContent.Size = new System.Drawing.Size(281, 22);
+			this.tsmiPrevContent.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.E)));
+			this.tsmiPrevContent.Size = new System.Drawing.Size(250, 22);
 			this.tsmiPrevContent.Text = "プレイリストで前のコンテンツ(E)";
 			this.tsmiPrevContent.Click += new System.EventHandler(this.tsmiPrevContent_Click);
 			// 
 			// tsmiNextContent
 			// 
 			this.tsmiNextContent.Name = "tsmiNextContent";
-			this.tsmiNextContent.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift)
-						| System.Windows.Forms.Keys.N)));
-			this.tsmiNextContent.Size = new System.Drawing.Size(281, 22);
+			this.tsmiNextContent.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
+			this.tsmiNextContent.Size = new System.Drawing.Size(250, 22);
 			this.tsmiNextContent.Text = "プレイリストで次のコンテンツ(&N)";
 			this.tsmiNextContent.Click += new System.EventHandler(this.tsmiNextContent_Click);
 			// 
 			// tsmiNextContentWithDelete
 			// 
 			this.tsmiNextContentWithDelete.Name = "tsmiNextContentWithDelete";
-			this.tsmiNextContentWithDelete.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift)
-						| System.Windows.Forms.Keys.D)));
-			this.tsmiNextContentWithDelete.Size = new System.Drawing.Size(281, 22);
+			this.tsmiNextContentWithDelete.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D)));
+			this.tsmiNextContentWithDelete.Size = new System.Drawing.Size(250, 22);
 			this.tsmiNextContentWithDelete.Text = "プレイリストから削除して次(&D)";
 			this.tsmiNextContentWithDelete.Click += new System.EventHandler(this.tsmiNextContentWithDelete_Click);
 			// 
@@ -397,6 +398,7 @@
 			// 
 			this.tsmiView.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiViewFullScreen,
+            this.toolStripMenuItem1,
             this.tsmiViewTopmost,
             this.tsmiViewAutoHide});
 			this.tsmiView.Name = "tsmiView";
@@ -409,6 +411,11 @@
 			this.tsmiViewFullScreen.Size = new System.Drawing.Size(241, 22);
 			this.tsmiViewFullScreen.Text = "フルスクリーン(&F)";
 			this.tsmiViewFullScreen.Click += new System.EventHandler(this.tsmiViewFullScreen_Click);
+			// 
+			// toolStripMenuItem1
+			// 
+			this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+			this.toolStripMenuItem1.Size = new System.Drawing.Size(238, 6);
 			// 
 			// tsmiViewTopmost
 			// 
@@ -426,23 +433,6 @@
 			this.tsmiViewAutoHide.Text = "非アクティブ時にUIを隠す(&H)";
 			this.tsmiViewAutoHide.Click += new System.EventHandler(this.tsmiViewAutoHide_Click);
 			// 
-			// tsmiSettings
-			// 
-			this.tsmiSettings.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tspgPlayerFormSettings});
-			this.tsmiSettings.Name = "tsmiSettings";
-			this.tsmiSettings.Size = new System.Drawing.Size(56, 16);
-			this.tsmiSettings.Text = "設定(&S)";
-			this.tsmiSettings.DropDownOpened += new System.EventHandler(this.tsmiSettings_DropDownOpened);
-			// 
-			// tspgPlayerFormSettings
-			// 
-			this.tspgPlayerFormSettings.BackColor = System.Drawing.Color.Transparent;
-			this.tspgPlayerFormSettings.Name = "tspgPlayerFormSettings";
-			this.tspgPlayerFormSettings.SelectedObject = null;
-			this.tspgPlayerFormSettings.Size = new System.Drawing.Size(200, 300);
-			this.tspgPlayerFormSettings.Text = "tspgPlayerFormSettings";
-			// 
 			// tsmiTools
 			// 
 			this.tsmiTools.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -453,6 +443,7 @@
             this.tsmiBrowseDetail,
             this.tsmiBrowseRecommended,
             this.toolStripSeparator1,
+            this.tsnfmiNgFav,
             this.tsucmiCommand});
 			this.tsmiTools.Name = "tsmiTools";
 			this.tsmiTools.Size = new System.Drawing.Size(61, 16);
@@ -504,12 +495,36 @@
 			this.toolStripSeparator1.Name = "toolStripSeparator1";
 			this.toolStripSeparator1.Size = new System.Drawing.Size(238, 6);
 			// 
+			// tsnfmiNgFav
+			// 
+			this.tsnfmiNgFav.Name = "tsnfmiNgFav";
+			this.tsnfmiNgFav.Size = new System.Drawing.Size(241, 22);
+			this.tsnfmiNgFav.Text = "NG/FAV関連(&G)";
+			this.tsnfmiNgFav.SubmenuSelected += new System.EventHandler<Yusen.GExplorer.ContentSelectionRequiredEventArgs>(this.tsnfmiNgFav_SubmenuSelected);
+			// 
 			// tsucmiCommand
 			// 
 			this.tsucmiCommand.Name = "tsucmiCommand";
 			this.tsucmiCommand.Size = new System.Drawing.Size(241, 22);
 			this.tsucmiCommand.Text = "外部コマンド(&C)";
 			this.tsucmiCommand.UserCommandSelected += new System.EventHandler<Yusen.GExplorer.UserCommandSelectedEventArgs>(this.tsucmiCommand_UserCommandSelected);
+			// 
+			// tsmiSettings
+			// 
+			this.tsmiSettings.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tspgPlayerFormSettings});
+			this.tsmiSettings.Name = "tsmiSettings";
+			this.tsmiSettings.Size = new System.Drawing.Size(56, 16);
+			this.tsmiSettings.Text = "設定(&S)";
+			this.tsmiSettings.DropDownOpened += new System.EventHandler(this.tsmiSettings_DropDownOpened);
+			// 
+			// tspgPlayerFormSettings
+			// 
+			this.tspgPlayerFormSettings.BackColor = System.Drawing.Color.Transparent;
+			this.tspgPlayerFormSettings.Name = "tspgPlayerFormSettings";
+			this.tspgPlayerFormSettings.SelectedObject = null;
+			this.tspgPlayerFormSettings.Size = new System.Drawing.Size(200, 300);
+			this.tspgPlayerFormSettings.Text = "tspgPlayerFormSettings";
 			// 
 			// inputBoxDialog1
 			// 
@@ -611,5 +626,7 @@
 		private System.Windows.Forms.ToolStripMenuItem tsmiViewAutoHide;
 		private ToolStripUserCommandMenuItem tsucmiCommand;
 		private System.Windows.Forms.ToolStripStatusLabel tsslClipInfo;
+		private ToolStripNgFavMenuItem tsnfmiNgFav;
+		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
 	}
 }

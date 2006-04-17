@@ -163,8 +163,8 @@ namespace Yusen.GExplorer {
 			private bool skipCmLicenseEnabled = true;
 
 			[Category("再生")]
-			[DisplayName("最初からチャプターモード")]
-			[Description("再生開始時から常にチャプターモードで再生を開始します．")]
+			[DisplayName("最初からチャプタモード")]
+			[Description("再生開始時から常にチャプタモードで再生を開始します．")]
 			[DefaultValue(false)]
 			public bool ChapterModeFromBegining {
 				get { return this.chapterModeFromBegining; }
@@ -327,7 +327,7 @@ namespace Yusen.GExplorer {
 					+ ((null != matchClipBegin && matchClipBegin.Success) ?
 						"&&clipBegin=" + matchClipBegin.Groups[1].Value : string.Empty);
 				this.tsslChapter.Text = this.CurrentChapter.HasValue ?
-					"チャプター" + this.CurrentChapter.Value.ToString()
+					"チャプタ" + this.CurrentChapter.Value.ToString()
 					: "通常";
 				this.tsslDuration.Text = new TimeSpan((long)(10000000 * curMedia.duration)).ToString();
 				this.tsslSize.Text = curMedia.imageSourceWidth.ToString() + "x" + curMedia.imageSourceHeight.ToString();
@@ -477,9 +477,9 @@ namespace Yusen.GExplorer {
 		}
 		#region メインメニュー
 		private void tsmiPlayChapter_Click(object sender, EventArgs e) {
-			string title =  "特定のチャプターから再生";
+			string title =  "特定のチャプタから再生";
 			this.inputBoxDialog1.Title =title;
-			this.inputBoxDialog1.Message = "チャプター番号の入力．空白の場合は通常再生．";
+			this.inputBoxDialog1.Message = "チャプタ番号の入力．空白の場合は通常再生．";
 			this.inputBoxDialog1.Input = this.CurrentChapter.HasValue ? this.CurrentChapter.Value.ToString() : string.Empty;
 			switch (this.inputBoxDialog1.ShowDialog()) {
 				case DialogResult.OK:
@@ -549,6 +549,18 @@ namespace Yusen.GExplorer {
 				this.CurrentContent = nextCont;
 			}
 		}
+		private void tsmiViewFullScreen_Click(object sender, EventArgs e) {
+			try {
+				this.wmpMain.fullScreen = true;
+			} catch {
+			}
+		}
+		private void tsmiViewTopmost_Click(object sender, EventArgs e) {
+			this.settings.TopmostForm = !this.settings.TopmostForm;
+		}
+		private void tsmiViewAutoHide_Click(object sender, EventArgs e) {
+			this.settings.HideUiOnDeactivatedEnabled = !this.settings.HideUiOnDeactivatedEnabled;
+		}
 		private void tsmiPrevContent_Click(object sender, EventArgs e) {
 			ContentAdapter prevCont = PlayList.Instance.PrevContentOf(this.CurrentContent);
 			if (null == prevCont) {
@@ -585,6 +597,14 @@ namespace Yusen.GExplorer {
 		}
 		private void tsmiBrowseRecommended_Click(object sender, EventArgs e) {
 			Utility.Browse(this.CurrentContent.RecommendPageUri);
+		}
+		private void tsnfmiNgFav_SubmenuSelected(object sender, ContentSelectionRequiredEventArgs e) {
+			e.Selection = new ContentAdapter[] { this.CurrentContent };
+		}
+		private void tsucmiCommand_UserCommandSelected(object sender, UserCommandSelectedEventArgs e) {
+			if (null != this.CurrentContent) {
+				e.UserCommand.Execute(new ContentAdapter[] { this.CurrentContent });
+			}
 		}
 		#endregion
 		#region WMPのイベント
@@ -646,7 +666,7 @@ namespace Yusen.GExplorer {
 						break;
 					}
 					if (this.CurrentChapter.HasValue) {
-						//チャプターモードなら次のチャプター
+						//チャプタモードなら次のチャプタ
 						this.CurrentChapter++;
 					} else {
 						if (this.settings.RemovePlayedContentEnabled) {
@@ -663,11 +683,6 @@ namespace Yusen.GExplorer {
 		private void tsmiSettings_DropDownOpened(object sender, EventArgs e) {
 			this.tspgPlayerFormSettings.RefreshPropertyGrid();
 		}
-		private void tsucmiCommand_UserCommandSelected(object sender, UserCommandSelectedEventArgs e) {
-			if (null != this.CurrentContent) {
-				e.UserCommand.Execute(new ContentAdapter[] { this.CurrentContent });
-			}
-		}
 		
 		private void timerAutoVolume_Tick(object sender, EventArgs e) {
 			this.timerAutoVolume.Stop();
@@ -678,26 +693,12 @@ namespace Yusen.GExplorer {
 			this.tsmiNextTrack.PerformClick();
 		}
 
-		private void tsmiViewFullScreen_Click(object sender, EventArgs e) {
-			try {
-				this.wmpMain.fullScreen = true;
-			} catch {
-			}
-		}
-
-		private void tsmiViewTopmost_Click(object sender, EventArgs e) {
-			this.settings.TopmostForm = !this.settings.TopmostForm;
-		}
-
-		private void tsmiViewAutoHide_Click(object sender, EventArgs e) {
-			this.settings.HideUiOnDeactivatedEnabled = !this.settings.HideUiOnDeactivatedEnabled;
-		}
-
 		#region IHasNewSettings<PlayerFormSettings> Members
 		public PlayerFormSettings Settings {
 			get { return this.settings; }
 		}
 		#endregion
+
 	}
 
 #if false

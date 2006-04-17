@@ -80,7 +80,7 @@ namespace Yusen.GExplorer {
 				tw = new StreamWriter(Path.Combine(Utility.UserSettingsDir, filename));
 				xs.Serialize(tw, settings);
 			}catch(Exception e){
-				Program.DisplayException(string.Format("設定ファイル '{0}' の書き出し", filename), e);
+				Program.DisplayException(string.Format("設定ファイル '{0}' の書き出し失敗", filename), e);
 			} finally {
 				if (null != tw) tw.Close();
 			}
@@ -96,7 +96,7 @@ namespace Yusen.GExplorer {
 				return true;
 			} catch(FileNotFoundException) {
 			}catch(Exception e){
-				Program.DisplayException(string.Format("設定ファイル '{0}' の読み取り", filename), e);
+				Program.DisplayException(string.Format("設定ファイル '{0}' の読み取り失敗", filename), e);
 			} finally {
 				if (null != tr) tr.Close();
 			}
@@ -138,32 +138,24 @@ namespace Yusen.GExplorer {
 			}
 		}
 
-		public static bool TryGetUserProfileOf(int userNo, out string profile) {
-			try {
-				HttpWebRequest req = WebRequest.Create("http://www.gyao.jp/sityou/movie/contentsId/cnt0000000/rateId/bit0000002/login_from/shityou/") as HttpWebRequest;
-				CookieContainer cc = new CookieContainer();
-				cc.Add(new Cookie("Cookie_UserId", userNo.ToString(), "/", "www.gyao.jp"));
-				cc.Add(new Cookie("Cookie_CookieId", "0", "/", "www.gyao.jp"));
-				req.CookieContainer = cc;
-				WebResponse res = req.GetResponse();
-				using(TextReader reader = new StreamReader(res.GetResponseStream(), Encoding.GetEncoding("Shift_JIS"))) {
-					Regex regex = new Regex(@"(sex=\w+;(\w+=\w+;)*)sz=");
-					string line;
-					while(null != (line = reader.ReadLine())) {
-						Match match = regex.Match(line);
-						if(match.Success) {
-							profile = match.Groups[1].Value;
-							return true;
-						}
+		public static string GetUserProfileOf(int userNo) {
+			HttpWebRequest req = WebRequest.Create("http://www.gyao.jp/sityou/movie/contentsId/cnt0000000/rateId/bit0000002/login_from/shityou/") as HttpWebRequest;
+			CookieContainer cc = new CookieContainer();
+			cc.Add(new Cookie("Cookie_UserId", userNo.ToString(), "/", "www.gyao.jp"));
+			cc.Add(new Cookie("Cookie_CookieId", "0", "/", "www.gyao.jp"));
+			req.CookieContainer = cc;
+			WebResponse res = req.GetResponse();
+			using(TextReader reader = new StreamReader(res.GetResponseStream(), Encoding.GetEncoding("Shift_JIS"))) {
+				Regex regex = new Regex(@"(sex=\w+;(\w+=\w+;)*)sz=");
+				string line;
+				while(null != (line = reader.ReadLine())) {
+					Match match = regex.Match(line);
+					if(match.Success) {
+						return match.Groups[1].Value;
 					}
-					profile = null;
-					return false;
 				}
-			} catch(Exception e) {
-				Program.DisplayException("Utility.TryGetUserProfileOf", e);
-				profile = null;
-				return false;
 			}
+			throw new Exception("ユーザプロファイルの取得を試みたものの正規表現にあう行がなかった．");
 		}
 	}
 

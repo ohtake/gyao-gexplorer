@@ -120,6 +120,11 @@ namespace Yusen.GCrawler {
 					
 					links = links.ConvertAll<UriLinkTypePair>(CrawlerHelper.ConvertUriWithoutFragment);
 					foreach(UriLinkTypePair pair in links) {
+						//addMyList 関数は放送予定コンテンツをMyGyaOのリストへの追加にも使われるので無視する
+						if (this.settings.IgnoreAddMyListFunction && pair.Uri.AbsoluteUri.StartsWith(@"javascript:addMylist(")) {
+							continue;
+						}
+						//ID抽出
 						string id;
 						if(GPackage.TryExtractPackageId(pair.Uri, out id)) {
 							int key = GPackage.ConvertToKeyFromId(id);
@@ -135,6 +140,7 @@ namespace Yusen.GCrawler {
 								continue;
 							}
 						}
+						//IDが取れなかったらクロールキューに追加
 						if(this.IsInRestriction(pair.Uri)) {
 							switch(pair.LinkType) {
 								case LinkType.AnchorOrFrame:
@@ -292,7 +298,12 @@ namespace Yusen.GCrawler {
 					List<GContent> contents = new List<GContent>();
 					foreach (KeyValuePair<int, int> cpPair in this.contPackRelations) {
 						if (packPair.Key == cpPair.Value) {
-							contents.Add(this.contsVisited[cpPair.Key]);
+							GContent cont;
+							if (this.contsVisited.TryGetValue(cpPair.Key, out cont)) {
+								contents.Add(cont);
+							} else {
+								this.OnIgnoringException(new Exception(string.Format("GPCツリーの作成でパッケージ<{0}>にはコンテンツ<{1}>が含まれているはずなのにコンテンツ<{1}>が取得されていない．", packPair.Key, cpPair.Key)));
+							}
 						}
 					}
 					packPair.Value.Contents = contents.AsReadOnly();
@@ -350,11 +361,13 @@ namespace Yusen.GCrawler {
 		private int maxPages;
 		private CrawlOrder crawlOrder;
 		private TimetableSortType timeTableSortType;
+		private bool ignoreAddMyListFunction;
 
-		public CrawlSettings(int maxPages, CrawlOrder crawlOrder, TimetableSortType timeTableSortType) {
+		public CrawlSettings(int maxPages, CrawlOrder crawlOrder, TimetableSortType timeTableSortType, bool ignoreAddMyListFunction) {
 			this.maxPages = maxPages;
 			this.crawlOrder = crawlOrder;
 			this.timeTableSortType = timeTableSortType;
+			this.ignoreAddMyListFunction = ignoreAddMyListFunction;
 		}
 		public int MaxPages {
 			get { return this.maxPages; }
@@ -364,6 +377,9 @@ namespace Yusen.GCrawler {
 		}
 		public TimetableSortType TimeTableSortType {
 			get { return this.timeTableSortType; }
+		}
+		public bool IgnoreAddMyListFunction {
+			get { return this.ignoreAddMyListFunction; }
 		}
 	}
 

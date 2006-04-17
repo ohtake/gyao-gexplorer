@@ -12,8 +12,8 @@ namespace Yusen.GExplorer {
 	static class Program {
 		internal static readonly string ApplicationName = Application.ProductName + " " + Application.ProductVersion;
 		
-		private const int InitializationSteps = 9;
-		private const int SerializationSteps = 6;
+		private const int InitializationSteps = 11;
+		private const int SerializationSteps = 8;
 		private static SplashForm splashInit;
 		private static MainForm mainForm;
 		internal static event EventHandler<ProgramSerializationProgressEventArgs> ProgramSerializationProgress;
@@ -109,8 +109,16 @@ namespace Yusen.GExplorer {
 			
 			Program.splashInit.StepProgress("キャッシュの読み込み");
 			Cache.Initialize();
-			Program.splashInit.StepProgress("NGコンテンツの読み込み");
+			Program.splashInit.StepProgress("旧NGコンテンツの読み込み");
 			NgContentsManager.Instance.DeserializeItems();
+			Program.splashInit.StepProgress("新NGコンテンツの読み込み");
+			ContentPredicatesManager.NgManager.DeserializeItems();
+			
+			//新NGに以降
+			NgContentsManager.Instance.ExportToNewNgContentsManager();
+
+			Program.splashInit.StepProgress("FAVコンテンツの読み込み");
+			ContentPredicatesManager.FavManager.DeserializeItems();
 			Program.splashInit.StepProgress("外部コマンドの読み込み");
 			UserCommandsManager.Instance.DeserializeItems();
 			Program.splashInit.StepProgress("プレイリストの読み込み");
@@ -130,8 +138,13 @@ namespace Yusen.GExplorer {
 			PlayList.Instance.SerializeItems();
 			Program.OnProgramSerializationProgress(step++, "外部コマンドの保存");
 			UserCommandsManager.Instance.SerializeItems();
-			Program.OnProgramSerializationProgress(step++, "NGコンテンツの保存");
-			NgContentsManager.Instance.SerializeItems();
+			Program.OnProgramSerializationProgress(step++, "新NGコンテンツの保存");
+			ContentPredicatesManager.NgManager.SerializeItems();
+			Program.OnProgramSerializationProgress(step++, "FAVコンテンツの保存");
+			ContentPredicatesManager.FavManager.SerializeItems();
+			Program.OnProgramSerializationProgress(step++, "旧NGコンテンツの削除");
+			FileInfo fi = new FileInfo(@"UserSettings\NgContents.xml");
+			if (fi.Exists) fi.Delete();
 			Program.OnProgramSerializationProgress(step++, "キャッシュの最適化");
 			Cache.Instance.RemoveCachesUnreachable();
 			Program.OnProgramSerializationProgress(step++, "キャッシュの保存");
@@ -139,7 +152,6 @@ namespace Yusen.GExplorer {
 			Program.OnProgramSerializationProgress(step++, "グローバル設定の保存");
 			GlobalSettings.Serialize();
 		}
-
 
 		private static void Application_ThreadException(object sender, ThreadExceptionEventArgs e) {
 			Program.DisplayException("Application.ThreadException", e.Exception);

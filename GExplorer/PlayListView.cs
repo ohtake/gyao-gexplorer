@@ -640,6 +640,9 @@ namespace Yusen.GExplorer {
 			}));
 			BrowserForm.Browse(images);
 		}
+		private void tsnfmiNgFav_SubmenuSelected(object sender, ContentSelectionRequiredEventArgs e) {
+			e.Selection = this.SelectedContents;
+		}
 		private void tsucmiCommand_UserCommandSelected(object sender, UserCommandSelectedEventArgs e) {
 			e.UserCommand.Execute(this.SelectedContents);
 		}
@@ -661,5 +664,6 @@ namespace Yusen.GExplorer {
 			get { return this.settings; }
 		}
 		#endregion
+
 	}
 }

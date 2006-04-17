@@ -26,6 +26,7 @@ namespace Yusen.GExplorer {
 		}
 
 		public const string PropertyNameContentId = "ContentId";
+		public const string PropertyNamePackageId = "PackageId";
 		public const string PropertyNameTitle = "Title";
 		
 		internal static string GetNames(IEnumerable<ContentAdapter> conts) {
@@ -121,9 +122,11 @@ namespace Yusen.GExplorer {
 		}
 		private string CreateAttributes() {
 			if (this.IsDummy) {
-				return this.FromCache ? "D" : "DN";
+				return "D";
+			} else if (this.IsNew) {
+				return "N";
 			} else {
-				return this.FromCache ? string.Empty : "N";
+				return string.Empty;
 			}
 		}
 
@@ -301,6 +304,12 @@ namespace Yusen.GExplorer {
 		}
 		[XmlIgnore]
 		[Category("専ブラが付加した情報")]
+		[Description("クロール前にはキャッシュになく，尚且つダミーでないコンテンツは新着と判断される．")]
+		public bool IsNew {
+			get {return !this.innerCont.FromCache && !this.innerCont.IsDummy; }
+		}
+		[XmlIgnore]
+		[Category("専ブラが付加した情報")]
 		[Description("ジャンル名やタイトルを適当に組み合わせた表示名．")]
 		public string DisplayName {
 			get {
@@ -431,6 +440,16 @@ namespace Yusen.GExplorer {
 		}
 		public bool IsSelected {
 			get { return this.isSelected; }
+		}
+	}
+
+	public sealed class ContentSelectionRequiredEventArgs : EventArgs {
+		private IEnumerable<ContentAdapter> selection;
+		public ContentSelectionRequiredEventArgs() {
+		}
+		public IEnumerable<ContentAdapter> Selection {
+			get { return this.selection; }
+			set { this.selection = value; }
 		}
 	}
 

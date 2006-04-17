@@ -76,6 +76,7 @@
 			this.sfdXml = new System.Windows.Forms.SaveFileDialog();
 			this.timerSumSelected = new System.Windows.Forms.Timer(this.components);
 			this.inputBoxDialog1 = new Yusen.GExplorer.InputBoxDialog();
+			this.tsnfmiNgFav = new Yusen.GExplorer.ToolStripNgFavMenuItem();
 			this.toolStripContainer1.ContentPanel.SuspendLayout();
 			this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
 			this.toolStripContainer1.SuspendLayout();
@@ -174,9 +175,10 @@
             this.tscapmiCopyProperty,
             this.toolStripSeparator4,
             this.tsmiCatalog,
+            this.tsnfmiNgFav,
             this.tsucmiCommand});
 			this.cmsPlayListItem.Name = "cmsPlayListItem";
-			this.cmsPlayListItem.Size = new System.Drawing.Size(212, 314);
+			this.cmsPlayListItem.Size = new System.Drawing.Size(212, 358);
 			this.cmsPlayListItem.Opening += new System.ComponentModel.CancelEventHandler(this.cmsPlayListItem_Opening);
 			// 
 			// tsmiPlay
@@ -502,6 +504,13 @@
 			this.inputBoxDialog1.Message = null;
 			this.inputBoxDialog1.Title = null;
 			// 
+			// tsnfmiNgFav
+			// 
+			this.tsnfmiNgFav.Name = "tsnfmiNgFav";
+			this.tsnfmiNgFav.Size = new System.Drawing.Size(211, 22);
+			this.tsnfmiNgFav.Text = "NG/FAV関連(&G)";
+			this.tsnfmiNgFav.SubmenuSelected += new System.EventHandler<Yusen.GExplorer.ContentSelectionRequiredEventArgs>(this.tsnfmiNgFav_SubmenuSelected);
+			// 
 			// PlayListView
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -576,5 +585,6 @@
 		private System.Windows.Forms.ToolStripMenuItem tsmiCatalogImageSmall;
 		private System.Windows.Forms.ToolStripMenuItem tsmiCatalogImageLarge;
 		private System.Windows.Forms.ToolStripMenuItem tsmiAddById;
+		private ToolStripNgFavMenuItem tsnfmiNgFav;
 	}
 }

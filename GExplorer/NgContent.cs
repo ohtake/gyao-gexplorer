@@ -6,6 +6,7 @@ using System.Xml.Serialization;
 
 namespace Yusen.GExplorer {
 	/// <summary>NGコンテンツ．<see cref="ContentAdapter"/>に対してNGの判定を行う．</summary>
+	[Obsolete]
 	public class NgContent {
 		public static readonly string MethodNameEquals = "Equals";
 		public static readonly string MethodNameContains = "Contains";
@@ -15,6 +16,12 @@ namespace Yusen.GExplorer {
 		
 		internal static bool IsInvalidNgContent(NgContent ngc) {
 			return null == ngc.subjInfo || null == ngc.predInfo;
+		}
+		internal static ContentPredicate ConvertToContentPredicate(NgContent nc) {
+			ContentPredicate cp = new ContentPredicate(nc.Comment, nc.PropertyName, nc.Method, nc.Word);
+			cp.CreatedTime = nc.Created;
+			cp.LastTrueTime = nc.LastAbone;
+			return cp;
 		}
 
 		private string comment;
@@ -89,6 +96,7 @@ namespace Yusen.GExplorer {
 		}
 	}
 
+	[Obsolete]
 	internal sealed class NgContentsManager : ItemsManagerBase<NgContent> {
 		private static NgContentsManager instance = new NgContentsManager();
 		public static NgContentsManager Instance {
@@ -203,6 +211,11 @@ namespace Yusen.GExplorer {
 				this.OnChanged();
 			}
 			return removeCnt;
+		}
+		
+		internal void ExportToNewNgContentsManager() {
+			ContentPredicatesManager.NgManager.AddRange(base.items.ConvertAll<ContentPredicate>(NgContent.ConvertToContentPredicate));
+			base.Clear();
 		}
 	}
 }

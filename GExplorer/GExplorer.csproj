@@ -80,6 +80,13 @@
       <DependentUpon>ContentDetailView.cs</DependentUpon>
     </Compile>
     <Compile Include="ContentAdapter.cs" />
+    <Compile Include="ContentPredicate.cs" />
+    <Compile Include="ContentPredicatesEditControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ContentPredicatesEditControl.Designer.cs">
+      <DependentUpon>ContentPredicatesEditControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="DoubleBufferedListView.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -145,11 +152,11 @@
     </Compile>
     <Compile Include="Migemo.cs" />
     <Compile Include="NgContent.cs" />
-    <Compile Include="NgContentsEditor.cs">
+    <Compile Include="NgFavContentsEditor.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="NgContentsEditor.designer.cs">
-      <DependentUpon>NgContentsEditor.cs</DependentUpon>
+    <Compile Include="NgFavContentsEditor.designer.cs">
+      <DependentUpon>NgFavContentsEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="PackageAdapter.cs" />
     <Compile Include="PlayerForm.cs">
@@ -182,6 +189,10 @@
       <DependentUpon>ContentDetailView.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="ContentPredicatesEditControl.resx">
+      <DependentUpon>ContentPredicatesEditControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="ExceptionForm.resx">
       <DependentUpon>ExceptionForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -210,8 +221,8 @@
       <DependentUpon>MainForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="NgContentsEditor.resx">
-      <DependentUpon>NgContentsEditor.cs</DependentUpon>
+    <EmbeddedResource Include="NgFavContentsEditor.resx">
+      <DependentUpon>NgFavContentsEditor.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="PlayerForm.resx">
@@ -238,6 +249,10 @@
     <EmbeddedResource Include="SplashForm.resx">
       <SubType>Designer</SubType>
       <DependentUpon>SplashForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ToolStripNgFavMenuItem.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ToolStripNgFavMenuItem.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UserCommandsEditor.resx">
       <DependentUpon>UserCommandsEditor.cs</DependentUpon>
@@ -281,6 +296,12 @@
     </Compile>
     <Compile Include="ToolStripGenreMenuItem.cs">
       <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ToolStripNgFavMenuItem.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ToolStripNgFavMenuItem.Designer.cs">
+      <DependentUpon>ToolStripNgFavMenuItem.cs</DependentUpon>
     </Compile>
     <Compile Include="ToolStripPropertyGrid.cs">
       <SubType>Component</SubType>

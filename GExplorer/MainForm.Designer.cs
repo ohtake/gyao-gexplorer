@@ -59,7 +59,7 @@
 			this.tspgGlobal = new Yusen.GExplorer.ToolStripPropertyGrid();
 			this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiUserCommandsEditor = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiNgContentsEditor = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiNgFavContentsEditor = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiSettingsMainForm = new System.Windows.Forms.ToolStripMenuItem();
 			this.tspgMainForm = new Yusen.GExplorer.ToolStripPropertyGrid();
@@ -127,7 +127,7 @@
 			// toolStripContainer1.ContentPanel
 			// 
 			this.toolStripContainer1.ContentPanel.Controls.Add(this.tableLayoutPanel1);
-			this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(892, 524);
+			this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(892, 521);
 			this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.toolStripContainer1.Location = new System.Drawing.Point(0, 0);
 			this.toolStripContainer1.Name = "toolStripContainer1";
@@ -152,7 +152,7 @@
 			this.tableLayoutPanel1.RowCount = 2;
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-			this.tableLayoutPanel1.Size = new System.Drawing.Size(892, 524);
+			this.tableLayoutPanel1.Size = new System.Drawing.Size(892, 521);
 			this.tableLayoutPanel1.TabIndex = 0;
 			// 
 			// genreTabControl1
@@ -205,7 +205,7 @@
 			// scListsAndDetail.Panel2
 			// 
 			this.scListsAndDetail.Panel2.Controls.Add(this.contentDetailView1);
-			this.scListsAndDetail.Size = new System.Drawing.Size(892, 504);
+			this.scListsAndDetail.Size = new System.Drawing.Size(892, 501);
 			this.scListsAndDetail.SplitterDistance = 625;
 			this.scListsAndDetail.TabIndex = 2;
 			this.scListsAndDetail.Text = "splitContainer1";
@@ -224,29 +224,27 @@
 			// scLists.Panel2
 			// 
 			this.scLists.Panel2.Controls.Add(this.playListView1);
-			this.scLists.Size = new System.Drawing.Size(625, 504);
-			this.scLists.SplitterDistance = 315;
+			this.scLists.Size = new System.Drawing.Size(625, 501);
+			this.scLists.SplitterDistance = 313;
 			this.scLists.TabIndex = 2;
 			this.scLists.Text = "splitContainer2";
 			// 
 			// crawlResultView1
 			// 
-			this.crawlResultView1.CrawlResult = null;
 			this.crawlResultView1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.crawlResultView1.Location = new System.Drawing.Point(0, 0);
 			this.crawlResultView1.Margin = new System.Windows.Forms.Padding(0);
 			this.crawlResultView1.Name = "crawlResultView1";
-			this.crawlResultView1.Size = new System.Drawing.Size(625, 315);
+			this.crawlResultView1.Size = new System.Drawing.Size(625, 313);
 			this.crawlResultView1.TabIndex = 1;
 			this.crawlResultView1.ContentSelectionChanged += new System.EventHandler<Yusen.GExplorer.ContentSelectionChangedEventArgs>(this.crawlResultView1_ContentSelectionChanged);
-			this.crawlResultView1.ManuallyCacheDeleted += new System.EventHandler<Yusen.GExplorer.ManuallyCacheDeletedEventArgs>(this.crawlResultView1_ManuallyCacheDeleted);
 			// 
 			// playListView1
 			// 
 			this.playListView1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.playListView1.Location = new System.Drawing.Point(0, 0);
 			this.playListView1.Name = "playListView1";
-			this.playListView1.Size = new System.Drawing.Size(625, 185);
+			this.playListView1.Size = new System.Drawing.Size(625, 184);
 			this.playListView1.TabIndex = 0;
 			this.playListView1.ContentSelectionChanged += new System.EventHandler<Yusen.GExplorer.ContentSelectionChangedEventArgs>(this.playListView1_ContentSelectionChanged);
 			// 
@@ -256,7 +254,7 @@
 			this.contentDetailView1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.contentDetailView1.Location = new System.Drawing.Point(0, 0);
 			this.contentDetailView1.Name = "contentDetailView1";
-			this.contentDetailView1.Size = new System.Drawing.Size(263, 504);
+			this.contentDetailView1.Size = new System.Drawing.Size(263, 501);
 			this.contentDetailView1.TabIndex = 0;
 			this.contentDetailView1.ImageLoadError += new System.EventHandler<Yusen.GExplorer.ImageLoadErrorEventArgs>(this.contentDetailView1_ImageLoadError);
 			// 
@@ -275,7 +273,7 @@
 			this.menuStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
-			this.menuStrip1.Size = new System.Drawing.Size(892, 20);
+			this.menuStrip1.Size = new System.Drawing.Size(892, 23);
 			this.menuStrip1.TabIndex = 0;
 			this.menuStrip1.Text = "menuStrip1";
 			// 
@@ -407,7 +405,7 @@
             this.tsmiSettingsGlobal,
             this.toolStripMenuItem2,
             this.tsmiUserCommandsEditor,
-            this.tsmiNgContentsEditor,
+            this.tsmiNgFavContentsEditor,
             this.toolStripMenuItem3,
             this.tsmiSettingsMainForm,
             this.tsmiSettingsGenreTab,
@@ -423,7 +421,7 @@
 			this.tsmiSettingsGlobal.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tspgGlobal});
 			this.tsmiSettingsGlobal.Name = "tsmiSettingsGlobal";
-			this.tsmiSettingsGlobal.Size = new System.Drawing.Size(180, 22);
+			this.tsmiSettingsGlobal.Size = new System.Drawing.Size(209, 22);
 			this.tsmiSettingsGlobal.Text = "グローバル設定(&G)";
 			this.tsmiSettingsGlobal.DropDownOpened += new System.EventHandler(this.tsmiSettingsGlobal_DropDownOpened);
 			// 
@@ -437,33 +435,33 @@
 			// toolStripMenuItem2
 			// 
 			this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-			this.toolStripMenuItem2.Size = new System.Drawing.Size(177, 6);
+			this.toolStripMenuItem2.Size = new System.Drawing.Size(206, 6);
 			// 
 			// tsmiUserCommandsEditor
 			// 
 			this.tsmiUserCommandsEditor.Name = "tsmiUserCommandsEditor";
-			this.tsmiUserCommandsEditor.Size = new System.Drawing.Size(180, 22);
+			this.tsmiUserCommandsEditor.Size = new System.Drawing.Size(209, 22);
 			this.tsmiUserCommandsEditor.Text = "外部コマンドエディタ(&C)";
 			this.tsmiUserCommandsEditor.Click += new System.EventHandler(this.tsmiUserCommandsEditor_Click);
 			// 
-			// tsmiNgContentsEditor
+			// tsmiNgFavContentsEditor
 			// 
-			this.tsmiNgContentsEditor.Name = "tsmiNgContentsEditor";
-			this.tsmiNgContentsEditor.Size = new System.Drawing.Size(180, 22);
-			this.tsmiNgContentsEditor.Text = "NGコンテンツエディタ(&N)";
-			this.tsmiNgContentsEditor.Click += new System.EventHandler(this.tsmiNgContentsEditor_Click);
+			this.tsmiNgFavContentsEditor.Name = "tsmiNgFavContentsEditor";
+			this.tsmiNgFavContentsEditor.Size = new System.Drawing.Size(209, 22);
+			this.tsmiNgFavContentsEditor.Text = "NG/FAVコンテンツエディタ(&N)";
+			this.tsmiNgFavContentsEditor.Click += new System.EventHandler(this.tsmiNgFavContentsEditor_Click);
 			// 
 			// toolStripMenuItem3
 			// 
 			this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-			this.toolStripMenuItem3.Size = new System.Drawing.Size(177, 6);
+			this.toolStripMenuItem3.Size = new System.Drawing.Size(206, 6);
 			// 
 			// tsmiSettingsMainForm
 			// 
 			this.tsmiSettingsMainForm.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tspgMainForm});
 			this.tsmiSettingsMainForm.Name = "tsmiSettingsMainForm";
-			this.tsmiSettingsMainForm.Size = new System.Drawing.Size(180, 22);
+			this.tsmiSettingsMainForm.Size = new System.Drawing.Size(209, 22);
 			this.tsmiSettingsMainForm.Text = "メインフォーム(&M)";
 			this.tsmiSettingsMainForm.DropDownOpened += new System.EventHandler(this.tsmiSettingsMainForm_DropDownOpened);
 			// 
@@ -479,7 +477,7 @@
 			this.tsmiSettingsGenreTab.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tspgGenreTab});
 			this.tsmiSettingsGenreTab.Name = "tsmiSettingsGenreTab";
-			this.tsmiSettingsGenreTab.Size = new System.Drawing.Size(180, 22);
+			this.tsmiSettingsGenreTab.Size = new System.Drawing.Size(209, 22);
 			this.tsmiSettingsGenreTab.Text = "ジャンルタブ(&T)";
 			// 
 			// tspgGenreTab
@@ -494,7 +492,7 @@
 			this.tsmiSettingsResultView.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tspgResultView});
 			this.tsmiSettingsResultView.Name = "tsmiSettingsResultView";
-			this.tsmiSettingsResultView.Size = new System.Drawing.Size(180, 22);
+			this.tsmiSettingsResultView.Size = new System.Drawing.Size(209, 22);
 			this.tsmiSettingsResultView.Text = "クロール結果ビュー(&R)";
 			this.tsmiSettingsResultView.DropDownOpened += new System.EventHandler(this.tsmiSettingsResultView_DropDownOpened);
 			// 
@@ -510,7 +508,7 @@
 			this.tsmiSettingsPlaylistView.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tspgPlaylistView});
 			this.tsmiSettingsPlaylistView.Name = "tsmiSettingsPlaylistView";
-			this.tsmiSettingsPlaylistView.Size = new System.Drawing.Size(180, 22);
+			this.tsmiSettingsPlaylistView.Size = new System.Drawing.Size(209, 22);
 			this.tsmiSettingsPlaylistView.Text = "プレイリストビュー(&P)";
 			this.tsmiSettingsPlaylistView.DropDownOpened += new System.EventHandler(this.tsmiSettingsPlaylistView_DropDownOpened);
 			// 
@@ -526,7 +524,7 @@
 			this.tsmiSettingsDetailView.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tspgDetailView});
 			this.tsmiSettingsDetailView.Name = "tsmiSettingsDetailView";
-			this.tsmiSettingsDetailView.Size = new System.Drawing.Size(180, 22);
+			this.tsmiSettingsDetailView.Size = new System.Drawing.Size(209, 22);
 			this.tsmiSettingsDetailView.Text = "詳細ビュー(&D)";
 			this.tsmiSettingsDetailView.DropDownOpened += new System.EventHandler(this.tsmiSettingsDetailView_DropDownOpened);
 			// 
@@ -631,7 +629,6 @@
 		private InputBoxDialog inputBoxDialog1;
 		private System.Windows.Forms.Timer timerViewDetail;
 		private System.Windows.Forms.ToolStripMenuItem tsmiUserCommandsEditor;
-		private System.Windows.Forms.ToolStripMenuItem tsmiNgContentsEditor;
 		private System.Windows.Forms.Timer timerCrawlProgress;
 		private System.Windows.Forms.Timer timerClearStatusText;
 		private System.Windows.Forms.ToolStripMenuItem tsmiGetProfile;
@@ -656,6 +653,7 @@
 		private ToolStripGenreMenuItem tsgmiUncrawlables;
 		private System.Windows.Forms.ToolStripMenuItem tsmiSerializeSettingsNow;
 		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
+		private System.Windows.Forms.ToolStripMenuItem tsmiNgFavContentsEditor;
 
 
 	}

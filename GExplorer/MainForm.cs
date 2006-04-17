@@ -234,29 +234,30 @@ namespace Yusen.GExplorer {
 				}
 			}
 		}
-		private void CheckInvalidNgContents(bool showResultOnSuccess) {
-			NgContent[] ngcs = NgContentsManager.Instance.GetInvalidNgContents();
-			if (ngcs.Length > 0) {
+		private void CheckInvalidNgContents(ContentPredicatesManager manager, string cpName, bool showResultOnSuccess) {
+			string title = "妥当でない" + cpName;
+			ContentPredicate[] preds = manager.GetInvalidPredicates();
+			if (preds.Length > 0) {
 				string separator = "-------------------------------------------------";
 				StringBuilder sb = new StringBuilder();
 				sb.AppendLine(separator);
 				sb.AppendLine("コメント\t主語\t述語\t目的語\t作成日時");
 				sb.AppendLine(separator);
-				foreach (NgContent ngc in ngcs) {
-					sb.AppendLine(string.Format("{0}\t{1}\t{2}\t{3}\t{4}", ngc.Comment, ngc.PropertyName, ngc.Method.ToString(), ngc.Word, ngc.Created.ToString()));
+				foreach (ContentPredicate cp in preds) {
+					sb.AppendLine(string.Format("{0}\t{1}\t{2}\t{3}\t{4}", cp.Comment, cp.SubjectName, cp.PredicateName, cp.ObjectValue, cp.CreatedTime));
 				}
 				sb.AppendLine(separator);
-				switch (MessageBox.Show(string.Format("妥当でないNGコンテンツが {0} 個見つかりました．\n\n{1}\n削除しますか？", ngcs.Length, sb.ToString()), "妥当でないNGコンテンツ", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation)) {
+				switch (MessageBox.Show(string.Format("妥当でない{0}が {1} 個見つかりました．\n\n{2}\n削除しますか？", cpName, preds.Length, sb.ToString()), title, MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation)) {
 					case DialogResult.Yes:
-						int removeCnt = NgContentsManager.Instance.RemoveInvalidNgContents();
-						MessageBox.Show(string.Format("妥当でなかったNGコンテンツを {0} 個削除しました．", removeCnt), "妥当でないNGコンテンツ", MessageBoxButtons.OK, MessageBoxIcon.Information);
+						int removeCnt = manager.RemoveInvalidPredicates();
+						MessageBox.Show(string.Format("妥当でなかった{0}を {1} 個削除しました．", cpName, removeCnt), title, MessageBoxButtons.OK, MessageBoxIcon.Information);
 						break;
 					case DialogResult.No:
-						MessageBox.Show("妥当でないNGコンテンツを保持したままNG処理が行われるとエラーが起こりえます．\nNGコンテンツエディタで妥当でないNGコンテンツの削除を行ってください．", "妥当でないNGコンテンツ", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+						MessageBox.Show(string.Format("妥当でない{0}を保持したまま判定処理が行われるとエラーが起こりえます．\n{0}エディタで妥当でない{0}の削除を行ってください．", cpName), title, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 						break;
 				}
 			} else if (showResultOnSuccess) {
-				MessageBox.Show("妥当でないNGコンテンツをありませんでした．", "妥当でないNGコンテンツ", MessageBoxButtons.OK, MessageBoxIcon.Information);
+				MessageBox.Show(string.Format("妥当でない{0}はありませんでした．", cpName), title, MessageBoxButtons.OK, MessageBoxIcon.Information);
 			}
 		}
 
@@ -292,7 +293,8 @@ namespace Yusen.GExplorer {
 			this.tsgmiUncrawlables.Visible = this.tsgmiUncrawlables.HasAvailableSubmenus;
 			
 			this.ClearStatusBarInfo();
-			this.CheckInvalidNgContents(false);
+			this.CheckInvalidNgContents(ContentPredicatesManager.NgManager, "NGコンテンツ", false);
+			this.CheckInvalidNgContents(ContentPredicatesManager.FavManager, "FAVコンテンツ", false);
 		}
 		
 		private void MainForm_FormClosing(object sender, FormClosingEventArgs e) {
@@ -357,9 +359,6 @@ namespace Yusen.GExplorer {
 			}
 		}
 
-		private void crawlResultView1_ManuallyCacheDeleted(object sender, ManuallyCacheDeletedEventArgs e) {
-			this.SetStatutBarTextTemporary(string.Format("キャッシュの削除    成功: {0}    失敗: {1}", e.Succeeded, e.Failed));
-		}
 		private void crawlResultView1_ContentSelectionChanged(object sender, ContentSelectionChangedEventArgs e) {
 			if (e.IsSelected) {
 				this.seletedCont = e.Content;
@@ -408,11 +407,11 @@ namespace Yusen.GExplorer {
 			uce.Show();
 			uce.Focus();
 		}
-		private void tsmiNgContentsEditor_Click(object sender, EventArgs e) {
-			NgContentsEditor nce = NgContentsEditor.Instance;
-			nce.Owner = this;
-			nce.Show();
-			nce.Focus();
+		private void tsmiNgFavContentsEditor_Click(object sender, EventArgs e) {
+			NgFavContentsEditor nfce = NgFavContentsEditor.Instance;
+			nfce.Owner = this;
+			nfce.Show();
+			nfce.Focus();
 		}
 		private void tsmiMergeResults_Click(object sender, EventArgs e) {
 			GGenre mergedGenre = new MergedGenre();
@@ -422,12 +421,8 @@ namespace Yusen.GExplorer {
 		}
 		private void tsmiGetProfile_Click(object sender, EventArgs e) {
 			string title = "ユーザIDに対応するプロファイルを取得";
-			string profile;
-			if(Utility.TryGetUserProfileOf(GlobalSettings.Instance.UserNo, out profile)) {
-				MessageBox.Show(profile, title, MessageBoxButtons.OK, MessageBoxIcon.Information);
-			} else {
-				MessageBox.Show("ユーザプロファイルの取得に失敗しました．", title, MessageBoxButtons.OK, MessageBoxIcon.Error);
-			}
+			string profile = Utility.GetUserProfileOf(GlobalSettings.Instance.UserNo);
+			MessageBox.Show(profile, title, MessageBoxButtons.OK, MessageBoxIcon.Information);
 		}
 		private void tsucmiCommand_UserCommandSelected(object sender, UserCommandSelectedEventArgs e) {
 			e.UserCommand.Execute(new ContentAdapter[] { });
@@ -447,7 +442,7 @@ namespace Yusen.GExplorer {
 			if (PlayerForm.HasInstance) Utility.SerializeSettings(PlayerForm.Instance.FilenameForSettings, PlayerForm.Instance.Settings);
 			if (BrowserForm.HasInstance) Utility.SerializeSettings(BrowserForm.Instance.FilenameForSettings, BrowserForm.Instance.Settings);
 			if (UserCommandsEditor.HasInstance) Utility.SerializeSettings(UserCommandsEditor.Instance.FilenameForSettings, UserCommandsEditor.Instance.Settings);
-			if (NgContentsEditor.HasInstance) Utility.SerializeSettings(NgContentsEditor.Instance.FilenameForSettings, NgContentsEditor.Instance.Settings);
+			if (NgFavContentsEditor.HasInstance) Utility.SerializeSettings(NgFavContentsEditor.Instance.FilenameForSettings, NgFavContentsEditor.Instance.Settings);
 			Utility.SerializeSettings(this.FilenameForSettings, this.Settings);
 			
 			Program.SerializeSettings();
@@ -521,9 +516,32 @@ namespace Yusen.GExplorer {
 				Program.DisplayException("クロール中にキャッチされなかった例外", e.Error);
 				return;
 			}
+			//クロール結果の表示
 			CrawlResult result = e.Result as CrawlResult;
 			Cache.Instance.ResultsDictionary[result.Genre] = result;
 			this.ViewCrawlResult(result);
+
+			//新着FAVコンテンツをプレイリストに追加
+			if (GlobalSettings.Instance.AutomaticallyAddFavAndNewContents) {
+				//新着FAVコンテンツの抽出
+				List<ContentAdapter> favs = new List<ContentAdapter>();
+				foreach (GPackage package in result.Packages) {
+					foreach (GContent content in package.Contents) {
+						if (!content.FromCache) {//処理速度のため先に FromCache で仕分け
+							ContentAdapter ca = new ContentAdapter(content);
+							if (ca.IsNew && ContentPredicatesManager.FavManager.IsTrueFor(ca)) {
+								favs.Add(ca);
+							}
+						}
+					}
+				}
+				//追加済みのを除いてから追加する
+				favs.RemoveAll(PlayList.Instance.Contains);
+				if (favs.Count > 0) {
+					PlayList.Instance.AddRange(favs);
+					this.SetStatutBarTextTemporary(string.Format("FAVコンテンツに該当した {0} 個の新着コンテンツをプレイリストに追加しました．", favs.Count));
+				}
+			}
 		}
 
 		#region IHasNewSettings<MainFormSettings> Members

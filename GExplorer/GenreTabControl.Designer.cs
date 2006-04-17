@@ -34,7 +34,9 @@
 			this.DoubleClick += new System.EventHandler(this.GenreTabControl_DoubleClick);
 			this.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.GenreTabControl_DrawItem);
 			this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.GenreTabControl_MouseClick);
+			this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.GenreTabControl_KeyUp);
 			this.SelectedIndexChanged += new System.EventHandler(this.GenreTabControl_SelectedIndexChanged);
+			this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.GenreTabControl_KeyDown);
 			this.ResumeLayout(false);
 
 		}
