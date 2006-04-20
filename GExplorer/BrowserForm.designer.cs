@@ -45,6 +45,7 @@
 			this.tsmiFillCampaignForm = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiSettings = new System.Windows.Forms.ToolStripMenuItem();
 			this.tspgBrowserForm = new Yusen.GExplorer.ToolStripPropertyGrid();
+			this.tshmiHelp = new Yusen.GExplorer.ToolStripHelpMenuItem();
 			this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
 			this.statusStrip1 = new System.Windows.Forms.StatusStrip();
 			this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
@@ -78,7 +79,8 @@
             this.tsgmiTimetableUpdate,
             this.tsmiTimeTablesDeadline,
             this.tsmiTools,
-            this.tsmiSettings});
+            this.tsmiSettings,
+            this.tshmiHelp});
 			this.menuStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
@@ -240,6 +242,12 @@
 			this.tspgBrowserForm.Size = new System.Drawing.Size(200, 300);
 			this.tspgBrowserForm.Text = "toolStripPropertyGrid1";
 			// 
+			// tshmiHelp
+			// 
+			this.tshmiHelp.Name = "tshmiHelp";
+			this.tshmiHelp.Size = new System.Drawing.Size(62, 16);
+			this.tshmiHelp.Text = "ヘルプ(&H)";
+			// 
 			// toolStripContainer1
 			// 
 			// 
@@ -249,6 +257,7 @@
 			// 
 			// toolStripContainer1.ContentPanel
 			// 
+			this.toolStripContainer1.ContentPanel.AutoScroll = true;
 			this.toolStripContainer1.ContentPanel.Controls.Add(this.gwbMain);
 			this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(842, 529);
 			this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -458,5 +467,6 @@
 		private ToolStripGenreMenuItem tsgmiTimetableUpdate;
 		private System.Windows.Forms.ToolStripMenuItem tsmiSettings;
 		private ToolStripPropertyGrid tspgBrowserForm;
+		private ToolStripHelpMenuItem tshmiHelp;
 	}
 }

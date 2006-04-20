@@ -433,10 +433,9 @@ namespace Yusen.GExplorer {
 		
 		private void CrawlResultView_Load(object sender, EventArgs e) {
 			if (base.DesignMode) return;
-
-			//ステータスバークリア
-			this.tslNumber.Text = string.Empty;
-			this.tslTime.Text = string.Empty;
+			
+			//表示をクリア
+			this.CrawlResult = null;
 			
 			//設定読み込み
 			this.settings = new CrawlResultViewSettings(this);
@@ -756,37 +755,19 @@ namespace Yusen.GExplorer {
 			foreach (ContentListViewItem clvi in this.allClvis) {
 				//あぼ～ん処理
 				if (clvi.IsNg) {
-					if (!showNgTrue) {
-						aboned++;
-						continue;
-					}
+					if (!showNgTrue) goto l_abone;
 				} else {
-					if (!showNgFalse) {
-						aboned++;
-						continue;
-					}
+					if (!showNgFalse) goto l_abone;
 				}
 				if (clvi.IsFav) {
-					if (!showFavTrue) {
-						aboned++;
-						continue;
-					}
+					if (!showFavTrue) goto l_abone;
 				} else {
-					if (!showFavFalse) {
-						aboned++;
-						continue;
-					}
+					if (!showFavFalse) goto l_abone;
 				}
 				if (clvi.ContentAdapter.IsNew) {
-					if (!showNewTrue) {
-						aboned++;
-						continue;
-					}
+					if (!showNewTrue) goto l_abone;
 				} else {
-					if (!showNewFalse) {
-						aboned++;
-						continue;
-					}
+					if (!showNewFalse) goto l_abone;
 				}
 				
 				//フィルタ処理
@@ -795,21 +776,27 @@ namespace Yusen.GExplorer {
 					for(int i=0; i<filterTarges.Count; i++) {
 						if(filterTarges[i]) {
 							match = filter.Match(clvi.SubItems[i].Text);
-							if(match.Success) goto unfiltered;
+							if (match.Success) goto l_add;
 						}
 					}
-					filtered++;
-					continue;
+					goto l_filter;
 				}
-			unfiltered:
-				
+				goto l_add;
+			l_abone:
+				aboned++;
+				continue;
+			l_filter:
+				filtered++;
+				continue;
+			l_add:
 				clvi.Group = clvi.PackageGroup;
 				clvi.Selected = false;
 				this.listView1.Items.Add(clvi);
+				continue;
 			}
-
+			
 			this.listView1.EndUpdate();
-
+			
 			this.tslNumber.Text = this.listView1.Items.Count.ToString() + "+" + filtered.ToString() + "+" + aboned.ToString();
 			this.tslTime.Text = string.Format("({0})", this.CrawlResult.Time.ToString("MM/dd ddd HH:mm"));
 		}

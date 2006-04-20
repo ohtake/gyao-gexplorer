@@ -42,38 +42,9 @@ namespace Yusen.GExplorer {
 			Process.Start(Utility.GetPathForWMP(), uri.AbsoluteUri);
 		}
 		
-		public static void AppendHelpMenu(MenuStrip menuStrip) {
-			ToolStripMenuItem read = new ToolStripMenuItem(
-				"&ReadMe.txt", null,
-				new EventHandler(delegate(object sender, EventArgs e) {
-					Process.Start("ReadMe.txt");
-				}),
-				Keys.F1);
-			ToolStripMenuItem change = new ToolStripMenuItem(
-				"&ChangeLog.txt", null,
-				new EventHandler(delegate(object sender, EventArgs e) {
-					Process.Start("ChangeLog.txt");
-				}),
-				Keys.Shift | Keys.F1);
-			ToolStripMenuItem about = new ToolStripMenuItem(
-				"バージョン情報(&A)...", null,
-				new EventHandler(delegate(object sender, EventArgs e) {
-					using (AboutBox abox = new AboutBox()) {
-						abox.ShowDialog((sender as ToolStripMenuItem).Tag as Form);
-					}
-				}));
-			about.Tag = menuStrip.FindForm();
-			
-			ToolStripMenuItem help = new ToolStripMenuItem(
-				"ヘルプ(&H)", null,
-				read, change, new ToolStripSeparator(), about);
-			
-			menuStrip.Items.Add(help);
-		}
-		
 		public static void SerializeSettings<T>(string filename, T settings) {
 			XmlSerializer xs = new XmlSerializer(typeof(T));
-			TextWriter tw = null;
+			TextWriter tw = TextWriter.Null;
 			try {
 				DirectoryInfo di = new DirectoryInfo(Utility.UserSettingsDir);
 				if (!di.Exists) di.Create();
@@ -82,24 +53,28 @@ namespace Yusen.GExplorer {
 			}catch(Exception e){
 				Program.DisplayException(string.Format("設定ファイル '{0}' の書き出し失敗", filename), e);
 			} finally {
-				if (null != tw) tw.Close();
+				tw.Close();
 			}
 		}
 		public static bool TryDeserializeSettings<T>(string filename, out T settings) {
-			TextReader tr = null;
+			TextReader tr = TextReader.Null;
 			try {
 				DirectoryInfo di = new DirectoryInfo(Utility.UserSettingsDir);
 				if (!di.Exists) di.Create();
-				tr = new StreamReader(Path.Combine(Utility.UserSettingsDir, filename));
+				FileInfo fi = new FileInfo(Path.Combine(Utility.UserSettingsDir, filename));
+				if (!fi.Exists) {
+					goto failed;
+				}
 				XmlSerializer xs = new XmlSerializer(typeof(T));
+				tr = new StreamReader(fi.FullName);
 				settings = (T)xs.Deserialize(tr);
 				return true;
-			} catch(FileNotFoundException) {
 			}catch(Exception e){
 				Program.DisplayException(string.Format("設定ファイル '{0}' の読み取り失敗", filename), e);
 			} finally {
-				if (null != tr) tr.Close();
+				tr.Close();
 			}
+		failed:
 			settings = default(T);
 			return false;
 		}

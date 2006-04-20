@@ -62,7 +62,6 @@
 			this.tsmiViewTopmost = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiViewAutoHide = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiTools = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiFocusOnWmp = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiResizeToVideoResolution = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiShowItemInfo = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
@@ -73,6 +72,7 @@
 			this.tsucmiCommand = new Yusen.GExplorer.ToolStripUserCommandMenuItem();
 			this.tsmiSettings = new System.Windows.Forms.ToolStripMenuItem();
 			this.tspgPlayerFormSettings = new Yusen.GExplorer.ToolStripPropertyGrid();
+			this.tshmiHelp = new Yusen.GExplorer.ToolStripHelpMenuItem();
 			this.inputBoxDialog1 = new Yusen.GExplorer.InputBoxDialog();
 			this.timerAutoVolume = new System.Windows.Forms.Timer(this.components);
 			this.timerSkipCmLisence = new System.Windows.Forms.Timer(this.components);
@@ -99,7 +99,7 @@
 			// toolStripContainer1.ContentPanel
 			// 
 			this.toolStripContainer1.ContentPanel.Controls.Add(this.splitContainer1);
-			this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(644, 545);
+			this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(644, 548);
 			this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.toolStripContainer1.Location = new System.Drawing.Point(0, 0);
 			this.toolStripContainer1.Name = "toolStripContainer1";
@@ -182,7 +182,7 @@
 			this.splitContainer1.Panel2.Controls.Add(this.tableLayoutPanel1);
 			this.splitContainer1.Panel2Collapsed = true;
 			this.splitContainer1.Panel2MinSize = 120;
-			this.splitContainer1.Size = new System.Drawing.Size(644, 545);
+			this.splitContainer1.Size = new System.Drawing.Size(644, 548);
 			this.splitContainer1.SplitterDistance = 523;
 			this.splitContainer1.SplitterWidth = 1;
 			this.splitContainer1.TabIndex = 1;
@@ -194,7 +194,7 @@
 			this.wmpMain.Location = new System.Drawing.Point(0, 0);
 			this.wmpMain.Name = "wmpMain";
 			this.wmpMain.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("wmpMain.OcxState")));
-			this.wmpMain.Size = new System.Drawing.Size(644, 545);
+			this.wmpMain.Size = new System.Drawing.Size(644, 548);
 			this.wmpMain.TabIndex = 0;
 			this.wmpMain.Text = "axWindowsMediaPlayer1";
 			this.wmpMain.PlayStateChange += new AxWMPLib._WMPOCXEvents_PlayStateChangeEventHandler(this.wmpMain_PlayStateChange);
@@ -234,11 +234,12 @@
             this.tsmiOperations,
             this.tsmiView,
             this.tsmiTools,
-            this.tsmiSettings});
+            this.tsmiSettings,
+            this.tshmiHelp});
 			this.menuStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
-			this.menuStrip1.Size = new System.Drawing.Size(644, 23);
+			this.menuStrip1.Size = new System.Drawing.Size(644, 20);
 			this.menuStrip1.TabIndex = 0;
 			this.menuStrip1.Text = "menuStrip1";
 			// 
@@ -436,7 +437,6 @@
 			// tsmiTools
 			// 
 			this.tsmiTools.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiFocusOnWmp,
             this.tsmiResizeToVideoResolution,
             this.tsmiShowItemInfo,
             this.toolStripMenuItem3,
@@ -448,14 +448,6 @@
 			this.tsmiTools.Name = "tsmiTools";
 			this.tsmiTools.Size = new System.Drawing.Size(61, 16);
 			this.tsmiTools.Text = "ツール(&T)";
-			// 
-			// tsmiFocusOnWmp
-			// 
-			this.tsmiFocusOnWmp.Name = "tsmiFocusOnWmp";
-			this.tsmiFocusOnWmp.ShortcutKeys = System.Windows.Forms.Keys.F6;
-			this.tsmiFocusOnWmp.Size = new System.Drawing.Size(241, 22);
-			this.tsmiFocusOnWmp.Text = "WMP にフォーカスを送る(&S)";
-			this.tsmiFocusOnWmp.Click += new System.EventHandler(this.tsmiFocusOnWmp_Click);
 			// 
 			// tsmiResizeToVideoResolution
 			// 
@@ -526,6 +518,12 @@
 			this.tspgPlayerFormSettings.Size = new System.Drawing.Size(200, 300);
 			this.tspgPlayerFormSettings.Text = "tspgPlayerFormSettings";
 			// 
+			// tshmiHelp
+			// 
+			this.tshmiHelp.Name = "tshmiHelp";
+			this.tshmiHelp.Size = new System.Drawing.Size(62, 16);
+			this.tshmiHelp.Text = "ヘルプ(&H)";
+			// 
 			// inputBoxDialog1
 			// 
 			this.inputBoxDialog1.Input = null;
@@ -584,7 +582,6 @@
 		private System.Windows.Forms.ToolStripMenuItem tsmiTools;
 		private System.Windows.Forms.ToolStripMenuItem tsmiReload;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
-		private System.Windows.Forms.ToolStripMenuItem tsmiFocusOnWmp;
 		private System.Windows.Forms.ToolStripMenuItem tsmiOperations;
 		private System.Windows.Forms.ToolStripMenuItem tsmiPlayPause;
 		private System.Windows.Forms.ToolStripMenuItem tsmiStop;
@@ -628,5 +625,6 @@
 		private System.Windows.Forms.ToolStripStatusLabel tsslClipInfo;
 		private ToolStripNgFavMenuItem tsnfmiNgFav;
 		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
+		private ToolStripHelpMenuItem tshmiHelp;
 	}
 }

@@ -91,7 +91,10 @@
 			this.tsmiFilterTargetUncheckAll = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiFilterTargetToggleAll = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
+			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+			this.tslQuery = new System.Windows.Forms.ToolStripLabel();
 			this.tstbFilter = new System.Windows.Forms.ToolStripTextBox();
+			this.tslRegex = new System.Windows.Forms.ToolStripLabel();
 			this.tstbAnswer = new System.Windows.Forms.ToolStripTextBox();
 			this.timerFilter = new System.Windows.Forms.Timer(this.components);
 			this.inputBoxDialog1 = new Yusen.GExplorer.InputBoxDialog();
@@ -432,22 +435,22 @@
 			// tsmiVisibilityNgTrue
 			// 
 			this.tsmiVisibilityNgTrue.Name = "tsmiVisibilityNgTrue";
-			this.tsmiVisibilityNgTrue.Size = new System.Drawing.Size(138, 22);
+			this.tsmiVisibilityNgTrue.Size = new System.Drawing.Size(126, 22);
 			this.tsmiVisibilityNgTrue.Text = "NGのみ(&T)";
 			this.tsmiVisibilityNgTrue.Click += new System.EventHandler(this.tsmiVisibilityNgTrue_Click);
 			// 
 			// tsmiVisibilityNgFalse
 			// 
 			this.tsmiVisibilityNgFalse.Name = "tsmiVisibilityNgFalse";
-			this.tsmiVisibilityNgFalse.Size = new System.Drawing.Size(138, 22);
+			this.tsmiVisibilityNgFalse.Size = new System.Drawing.Size(126, 22);
 			this.tsmiVisibilityNgFalse.Text = "NG以外(&F)";
 			this.tsmiVisibilityNgFalse.Click += new System.EventHandler(this.tsmiVisibilityNgFalse_Click);
 			// 
 			// tsmiVisibilityNgAll
 			// 
 			this.tsmiVisibilityNgAll.Name = "tsmiVisibilityNgAll";
-			this.tsmiVisibilityNgAll.Size = new System.Drawing.Size(138, 22);
-			this.tsmiVisibilityNgAll.Text = "NG未指定(&A)";
+			this.tsmiVisibilityNgAll.Size = new System.Drawing.Size(126, 22);
+			this.tsmiVisibilityNgAll.Text = "NG不問(&A)";
 			this.tsmiVisibilityNgAll.Click += new System.EventHandler(this.tsmiVisibilityNgAll_Click);
 			// 
 			// tssbFav
@@ -467,22 +470,22 @@
 			// tsmiVisibilityFavTrue
 			// 
 			this.tsmiVisibilityFavTrue.Name = "tsmiVisibilityFavTrue";
-			this.tsmiVisibilityFavTrue.Size = new System.Drawing.Size(145, 22);
+			this.tsmiVisibilityFavTrue.Size = new System.Drawing.Size(133, 22);
 			this.tsmiVisibilityFavTrue.Text = "FAVのみ(&T)";
 			this.tsmiVisibilityFavTrue.Click += new System.EventHandler(this.tsmiVisibilityFavTrue_Click);
 			// 
 			// tsmiVisibilityFavFalse
 			// 
 			this.tsmiVisibilityFavFalse.Name = "tsmiVisibilityFavFalse";
-			this.tsmiVisibilityFavFalse.Size = new System.Drawing.Size(145, 22);
+			this.tsmiVisibilityFavFalse.Size = new System.Drawing.Size(133, 22);
 			this.tsmiVisibilityFavFalse.Text = "FAV以外(&F)";
 			this.tsmiVisibilityFavFalse.Click += new System.EventHandler(this.tsmiVisibilityFavFalse_Click);
 			// 
 			// tsmiVisibilityFavAll
 			// 
 			this.tsmiVisibilityFavAll.Name = "tsmiVisibilityFavAll";
-			this.tsmiVisibilityFavAll.Size = new System.Drawing.Size(145, 22);
-			this.tsmiVisibilityFavAll.Text = "FAV未指定(&A)";
+			this.tsmiVisibilityFavAll.Size = new System.Drawing.Size(133, 22);
+			this.tsmiVisibilityFavAll.Text = "FAV不問(&A)";
 			this.tsmiVisibilityFavAll.Click += new System.EventHandler(this.tsmiVisibilityFavAll_Click);
 			// 
 			// tssbNew
@@ -502,22 +505,22 @@
 			// tsmiVisibilityNewTrue
 			// 
 			this.tsmiVisibilityNewTrue.Name = "tsmiVisibilityNewTrue";
-			this.tsmiVisibilityNewTrue.Size = new System.Drawing.Size(152, 22);
+			this.tsmiVisibilityNewTrue.Size = new System.Drawing.Size(132, 22);
 			this.tsmiVisibilityNewTrue.Text = "Newのみ(&T)";
 			this.tsmiVisibilityNewTrue.Click += new System.EventHandler(this.tsmiVisibilityNewTrue_Click);
 			// 
 			// tsmiVisibilityNewFalse
 			// 
 			this.tsmiVisibilityNewFalse.Name = "tsmiVisibilityNewFalse";
-			this.tsmiVisibilityNewFalse.Size = new System.Drawing.Size(152, 22);
+			this.tsmiVisibilityNewFalse.Size = new System.Drawing.Size(132, 22);
 			this.tsmiVisibilityNewFalse.Text = "New以外(&F)";
 			this.tsmiVisibilityNewFalse.Click += new System.EventHandler(this.tsmiVisibilityNewFalse_Click);
 			// 
 			// tsmiVisibilityNewAll
 			// 
 			this.tsmiVisibilityNewAll.Name = "tsmiVisibilityNewAll";
-			this.tsmiVisibilityNewAll.Size = new System.Drawing.Size(152, 22);
-			this.tsmiVisibilityNewAll.Text = "New未指定(&A)";
+			this.tsmiVisibilityNewAll.Size = new System.Drawing.Size(132, 22);
+			this.tsmiVisibilityNewAll.Text = "New不問(&A)";
 			this.tsmiVisibilityNewAll.Click += new System.EventHandler(this.tsmiVisibilityNewAll_Click);
 			// 
 			// toolStripSeparator7
@@ -572,7 +575,10 @@
             this.tsbOneFTypeRegex,
             this.toolStripSeparator13,
             this.tsddbFilterTarget,
+            this.toolStripSeparator3,
+            this.tslQuery,
             this.tstbFilter,
+            this.tslRegex,
             this.tstbAnswer});
 			this.tsFilter.Location = new System.Drawing.Point(0, 25);
 			this.tsFilter.Name = "tsFilter";
@@ -670,11 +676,28 @@
 			this.toolStripMenuItem2.Name = "toolStripMenuItem2";
 			this.toolStripMenuItem2.Size = new System.Drawing.Size(153, 6);
 			// 
+			// toolStripSeparator3
+			// 
+			this.toolStripSeparator3.Name = "toolStripSeparator3";
+			this.toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
+			// 
+			// tslQuery
+			// 
+			this.tslQuery.Name = "tslQuery";
+			this.tslQuery.Size = new System.Drawing.Size(29, 22);
+			this.tslQuery.Text = "クエリ";
+			// 
 			// tstbFilter
 			// 
 			this.tstbFilter.Name = "tstbFilter";
 			this.tstbFilter.Size = new System.Drawing.Size(150, 25);
 			this.tstbFilter.TextChanged += new System.EventHandler(this.tstbFilter_TextChanged);
+			// 
+			// tslRegex
+			// 
+			this.tslRegex.Name = "tslRegex";
+			this.tslRegex.Size = new System.Drawing.Size(53, 22);
+			this.tslRegex.Text = "正規表現";
 			// 
 			// tstbAnswer
 			// 
@@ -793,5 +816,8 @@
 		private System.Windows.Forms.ToolStripMenuItem tsmiVisibilityNewFalse;
 		private System.Windows.Forms.ToolStripMenuItem tsmiVisibilityNewAll;
 		private ToolStripNgFavMenuItem tsnfmiNgFav;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+		private System.Windows.Forms.ToolStripLabel tslQuery;
+		private System.Windows.Forms.ToolStripLabel tslRegex;
 	}
 }

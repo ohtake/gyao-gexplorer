@@ -250,6 +250,10 @@
       <SubType>Designer</SubType>
       <DependentUpon>SplashForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ToolStripHelpMenuItem.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ToolStripHelpMenuItem.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ToolStripNgFavMenuItem.resx">
       <SubType>Designer</SubType>
       <DependentUpon>ToolStripNgFavMenuItem.cs</DependentUpon>
@@ -296,6 +300,12 @@
     </Compile>
     <Compile Include="ToolStripGenreMenuItem.cs">
       <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ToolStripHelpMenuItem.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ToolStripHelpMenuItem.Designer.cs">
+      <DependentUpon>ToolStripHelpMenuItem.cs</DependentUpon>
     </Compile>
     <Compile Include="ToolStripNgFavMenuItem.cs">
       <SubType>Component</SubType>

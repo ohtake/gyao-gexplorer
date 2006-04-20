@@ -226,7 +226,6 @@ namespace Yusen.GExplorer {
 
 		private BrowserForm() {
 			InitializeComponent();
-			Utility.AppendHelpMenu(this.menuStrip1);
 			this.tsmiSettings.DropDown.Closing += ToolStripPropertyGrid.CancelDropDownClosingIfEditingPropertyGrid;
 			
 			if (base.DesignMode) return;

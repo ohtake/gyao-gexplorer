@@ -284,7 +284,6 @@ namespace Yusen.GExplorer {
 		private PlayerForm() {
 			InitializeComponent();
 			this.tsmiViewFullScreen.ShortcutKeys = Keys.Alt | Keys.Enter;
-			Utility.AppendHelpMenu(this.menuStrip1);
 			
 			this.tsmiSettings.DropDown.Closing += ToolStripPropertyGrid.CancelDropDownClosingIfEditingPropertyGrid;
 		}
@@ -567,9 +566,6 @@ namespace Yusen.GExplorer {
 				prevCont = PlayList.Instance.PrevContentOf(null);
 			}
 			this.CurrentContent = prevCont;
-		}
-		private void tsmiFocusOnWmp_Click(object sender, EventArgs e) {
-			this.wmpMain.Focus();
 		}
 		private void tsmiResizeToVideoResolution_Click(object sender, EventArgs e) {
 			this.WindowState = FormWindowState.Normal;

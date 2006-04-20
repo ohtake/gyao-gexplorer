@@ -173,7 +173,6 @@ namespace Yusen.GExplorer {
 			InitializeComponent();
 
 			this.Text = Program.ApplicationName;
-			Utility.AppendHelpMenu(this.menuStrip1);
 			this.tsmiSettingsGlobal.DropDown.Closing += ToolStripPropertyGrid.CancelDropDownClosingIfEditingPropertyGrid;
 			this.tsmiSettingsMainForm.DropDown.Closing += ToolStripPropertyGrid.CancelDropDownClosingIfEditingPropertyGrid;
 			this.tsmiSettingsGenreTab.DropDown.Closing += ToolStripPropertyGrid.CancelDropDownClosingIfEditingPropertyGrid;
@@ -234,7 +233,7 @@ namespace Yusen.GExplorer {
 				}
 			}
 		}
-		private void CheckInvalidNgContents(ContentPredicatesManager manager, string cpName, bool showResultOnSuccess) {
+		private void CheckInvalidContentPredicates(ContentPredicatesManager manager, string cpName, bool showResultOnSuccess) {
 			string title = "妥当でない" + cpName;
 			ContentPredicate[] preds = manager.GetInvalidPredicates();
 			if (preds.Length > 0) {
@@ -293,8 +292,8 @@ namespace Yusen.GExplorer {
 			this.tsgmiUncrawlables.Visible = this.tsgmiUncrawlables.HasAvailableSubmenus;
 			
 			this.ClearStatusBarInfo();
-			this.CheckInvalidNgContents(ContentPredicatesManager.NgManager, "NGコンテンツ", false);
-			this.CheckInvalidNgContents(ContentPredicatesManager.FavManager, "FAVコンテンツ", false);
+			this.CheckInvalidContentPredicates(ContentPredicatesManager.NgManager, "NGコンテンツ", false);
+			this.CheckInvalidContentPredicates(ContentPredicatesManager.FavManager, "FAVコンテンツ", false);
 		}
 		
 		private void MainForm_FormClosing(object sender, FormClosingEventArgs e) {
