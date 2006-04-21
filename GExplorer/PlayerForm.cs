@@ -153,14 +153,14 @@ namespace Yusen.GExplorer {
 			private bool removePlayedContentEnabled = false;
 
 			[Category("再生")]
-			[DisplayName("cm_licenseの早期スキップ")]
-			[Description("cm_licenseを再生直後にスキップすることでステーションコールまでの待ち時間を短くします．")]
+			[DisplayName("krmの早期スキップ")]
+			[Description("krmを再生直後にスキップすることでステーションコールまでの待ち時間を短くします．")]
 			[DefaultValue(true)]
-			public bool SkipCmLicenseEnabled {
-				get { return this.skipCmLicenseEnabled; }
-				set { this.skipCmLicenseEnabled = value; }
+			public bool SkipKrmEnabled {
+				get { return this.skipKrmEnabled; }
+				set { this.skipKrmEnabled = value; }
 			}
-			private bool skipCmLicenseEnabled = true;
+			private bool skipKrmEnabled = true;
 
 			[Category("再生")]
 			[DisplayName("最初からチャプタモード")]
@@ -334,9 +334,10 @@ namespace Yusen.GExplorer {
 			}
 		}
 		private void ModifyVolume() {
-			bool? isCf = this.IsCf;
-			if(isCf.HasValue) {
-				this.wmpMain.settings.volume = isCf.Value ? this.settings.VolumeCf : this.settings.VolumeNormal;
+			if(this.IsCf) {
+				this.wmpMain.settings.volume = this.settings.VolumeCf;
+			}else if(this.IsMain){
+				this.wmpMain.settings.volume = this.settings.VolumeNormal;
 			}
 		}
 		private void HideUi() {
@@ -396,21 +397,27 @@ namespace Yusen.GExplorer {
 				}
 			}
 		}
-		private bool IsCmLicense {
+		private bool IsKrm {
 			get {
-				return this.wmpMain.currentMedia.sourceURL.Contains("cm_license");
+				return this.wmpMain.currentMedia.sourceURL.Contains("/krm");
 			}
 		}
-		private bool? IsCf {
+		private bool IsCf {
 			get {
 				string entryUrl = this.currentAttribs[PlayerForm.AttribNameEntryUrl];
-				if(entryUrl.StartsWith("Adv:")) {
-					return true;
-				} else if(entryUrl.StartsWith("Cnt:")) {
-					return false;
-				} else {
-					return null;
-				}
+				return entryUrl.StartsWith("Adv:");
+			}
+		}
+		private bool IsMain {
+			get {
+				string entryUrl = this.currentAttribs[PlayerForm.AttribNameEntryUrl];
+				return entryUrl.StartsWith("Cnt:");
+			}
+		}
+		private bool IsLastEntry {
+			get {
+				string attrib = this.currentAttribs["IsLastEntry"];
+				return "1".Equals(attrib);
 			}
 		}
 		private bool SuspendScreenSaveEnabled {
@@ -634,18 +641,18 @@ namespace Yusen.GExplorer {
 						this.wbBanner.Navigate("about:blank");
 					}
 					//cm_licenseの早期スキップ
-					if (this.settings.SkipCmLicenseEnabled && this.IsCmLicense) {
-						this.timerSkipCmLisence.Start();
+					if (this.settings.SkipKrmEnabled && this.IsKrm) {
+						this.timerSkipKrm.Start();
 					}
 					//ステータスバー更新
 					this.UpdateStatusbatText();
 					//リサイズ
-					if(this.IsCf.HasValue && FormWindowState.Normal == this.WindowState) {
-						if(this.IsCf.Value) {
+					if(FormWindowState.Normal == this.WindowState) {
+						if(this.IsCf) {
 							if(this.settings.AutoSizeOnCfEnabled) {
 								this.tsmiResizeToVideoResolution.PerformClick();
 							}
-						} else {
+						} else if(this.IsMain){
 							if(this.settings.AutoSizeOnNormalEnabled) {
 								this.tsmiResizeToVideoResolution.PerformClick();
 							}
@@ -657,18 +664,17 @@ namespace Yusen.GExplorer {
 		private void wmpMain_PlayStateChange(object sender, _WMPOCXEvents_PlayStateChangeEvent e) {
 			switch((WMPPlayState)e.newState){
 				case WMPPlayState.wmppsMediaEnded:
-					if(this.IsCmLicense){
-						//cm_licenseなら無視
-						break;
-					}
-					if (this.CurrentChapter.HasValue) {
-						//チャプタモードなら次のチャプタ
-						this.CurrentChapter++;
-					} else {
-						if (this.settings.RemovePlayedContentEnabled) {
-							this.tsmiNextContentWithDelete.PerformClick();
+					if (this.IsLastEntry) {
+						if (this.CurrentChapter.HasValue) {
+							//チャプタモードなら次のチャプタ
+							this.CurrentChapter++;
 						} else {
-							this.tsmiNextContent.PerformClick();
+							//次のコンテンツに推移
+							if (this.settings.RemovePlayedContentEnabled) {
+								this.tsmiNextContentWithDelete.PerformClick();
+							} else {
+								this.tsmiNextContent.PerformClick();
+							}
 						}
 					}
 					break;
@@ -684,8 +690,8 @@ namespace Yusen.GExplorer {
 			this.timerAutoVolume.Stop();
 			this.ModifyVolume();
 		}
-		private void timerSkipCmLisence_Tick(object sender, EventArgs e) {
-			this.timerSkipCmLisence.Stop();
+		private void timerSkipKrm_Tick(object sender, EventArgs e) {
+			this.timerSkipKrm.Stop();
 			this.tsmiNextTrack.PerformClick();
 		}
 

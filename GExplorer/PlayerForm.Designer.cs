@@ -75,7 +75,7 @@
 			this.tshmiHelp = new Yusen.GExplorer.ToolStripHelpMenuItem();
 			this.inputBoxDialog1 = new Yusen.GExplorer.InputBoxDialog();
 			this.timerAutoVolume = new System.Windows.Forms.Timer(this.components);
-			this.timerSkipCmLisence = new System.Windows.Forms.Timer(this.components);
+			this.timerSkipKrm = new System.Windows.Forms.Timer(this.components);
 			this.toolStripContainer1.BottomToolStripPanel.SuspendLayout();
 			this.toolStripContainer1.ContentPanel.SuspendLayout();
 			this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
@@ -258,7 +258,7 @@
 			// tsmiPlayChapter
 			// 
 			this.tsmiPlayChapter.Name = "tsmiPlayChapter";
-			this.tsmiPlayChapter.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
+			this.tsmiPlayChapter.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.G)));
 			this.tsmiPlayChapter.Size = new System.Drawing.Size(294, 22);
 			this.tsmiPlayChapter.Text = "特定のチャプタから再生(&C)...";
 			this.tsmiPlayChapter.Click += new System.EventHandler(this.tsmiPlayChapter_Click);
@@ -534,9 +534,9 @@
 			// 
 			this.timerAutoVolume.Tick += new System.EventHandler(this.timerAutoVolume_Tick);
 			// 
-			// timerSkipCmLisence
+			// timerSkipKrm
 			// 
-			this.timerSkipCmLisence.Tick += new System.EventHandler(this.timerSkipCmLisence_Tick);
+			this.timerSkipKrm.Tick += new System.EventHandler(this.timerSkipKrm_Tick);
 			// 
 			// PlayerForm
 			// 
@@ -607,7 +607,7 @@
 		private System.Windows.Forms.ToolStripStatusLabel tsslChapter;
 		private System.Windows.Forms.ToolStripStatusLabel tsslTitle;
 		private System.Windows.Forms.Timer timerAutoVolume;
-		private System.Windows.Forms.Timer timerSkipCmLisence;
+		private System.Windows.Forms.Timer timerSkipKrm;
 		private System.Windows.Forms.SplitContainer splitContainer1;
 		private System.Windows.Forms.WebBrowser wbBanner;
 		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;

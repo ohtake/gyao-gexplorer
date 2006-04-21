@@ -286,54 +286,23 @@ namespace Yusen.GExplorer {
 				set { this.NewColor = value.ToColor(); }
 			}
 
-			[Category("コンテンツの表示条件")]
-			[DisplayName("NG")]
-			[Description("NGコンテンツに該当するか否かで表示か非表示かを設定します．")]
-			[DefaultValue(TruthSetForSingleBoolean.False)]
-			public TruthSetForSingleBoolean VisibilityNg {
+			[Category("表示")]
+			[DisplayName("表示条件")]
+			[Description("コンテンツを表示する条件を指定します．")]
+			[DefaultValue(ContentVisibilities.PresetToumei)]
+			public ContentVisibilities ContentVisibilities {
 				get {
-					if (this.HasOwner) return this.owner.VisibilityNg;
-					else return this.visibilityNg;
+					if (this.HasOwner) return this.owner.ContentVisibilities;
+					else return this.contentVisibilities;
 				}
 				set {
-					if (this.HasOwner) this.owner.VisibilityNg = value;
-					else this.visibilityNg = value;
+					if (this.HasOwner) this.owner.ContentVisibilities = value;
+					else this.contentVisibilities = value;
 				}
 			}
-			private TruthSetForSingleBoolean visibilityNg = TruthSetForSingleBoolean.False;
-
-			[Category("コンテンツの表示条件")]
-			[DisplayName("FAV")]
-			[Description("FAVコンテンツに該当するか否かで表示か非表示かを設定します．")]
-			[DefaultValue(TruthSetForSingleBoolean.TrueAndFalse)]
-			public TruthSetForSingleBoolean VisibilityFav {
-				get {
-					if (this.HasOwner) return this.owner.VisibilityFav;
-					else return this.visibilityFav;
-				}
-				set {
-					if (this.HasOwner) this.owner.VisibilityFav = value;
-					else this.visibilityFav = value;
-				}
-			}
-			private TruthSetForSingleBoolean visibilityFav = TruthSetForSingleBoolean.TrueAndFalse;
-
-			[Category("コンテンツの表示条件")]
-			[DisplayName("New")]
-			[Description("新着か否かで表示か非表示かを設定します．")]
-			[DefaultValue(TruthSetForSingleBoolean.TrueAndFalse)]
-			public TruthSetForSingleBoolean VisibilityNew {
-				get {
-					if (this.HasOwner) return this.owner.VisibilityNew;
-					else return this.visibilityNew;
-				}
-				set {
-					if (this.HasOwner) this.owner.VisibilityNew = value;
-					else this.visibilityNew = value;
-				}
-			}
-			private TruthSetForSingleBoolean visibilityNew = TruthSetForSingleBoolean.TrueAndFalse;
-
+			private ContentVisibilities contentVisibilities = ContentVisibilities.PresetToumei;
+			
+			
 			#region INewSettings<CrawlResultViewSettings> Members
 			public void ApplySettings(CrawlResultViewSettings newSettings) {
 				Utility.SubstituteAllPublicProperties(this, newSettings);
@@ -396,9 +365,7 @@ namespace Yusen.GExplorer {
 		public event EventHandler<ContentSelectionChangedEventArgs> ContentSelectionChanged;
 
 		private CrawlResult crawlResult;
-		private TruthSetForSingleBoolean visibilityNg = TruthSetForSingleBoolean.False;
-		private TruthSetForSingleBoolean visibilityFav = TruthSetForSingleBoolean.TrueAndFalse;
-		private TruthSetForSingleBoolean visibilityNew = TruthSetForSingleBoolean.TrueAndFalse;
+		private ContentVisibilities contentVisibilities = ContentVisibilities.None;
 		private FilterType filterType = FilterType.Normal;
 		private bool showPackages = true;
 		private int maxPageMenuItems = 16;
@@ -556,99 +523,19 @@ namespace Yusen.GExplorer {
 				}
 			}
 		}
+		private ContentVisibilities ContentVisibilities {
+			get { return this.contentVisibilities; }
+			set {
+				ContentVisibilities vis = ContentVisibilitiesUtility.EnsureVisible(value);
+				if (vis == this.ContentVisibilities) return;
+				
+				this.contentVisibilities = vis;
+				this.tscvsVisibilitiesSelector.ContentVisibilities = vis;
+				this.tslVisibilities.Text = string.Format("[{0}]", ContentVisibilitiesUtility.ConvertToFlagsString(vis));
+				this.DisplayItems();
+			}
+		}
 		
-		private TruthSetForSingleBoolean VisibilityNg {
-			get { return this.visibilityNg; }
-			set {
-				if (value == TruthSetForSingleBoolean.Empty) {
-					value = TruthSetForSingleBoolean.TrueAndFalse;
-				}
-				
-				this.tsmiVisibilityNgTrue.Checked = false;
-				this.tsmiVisibilityNgFalse.Checked = false;
-				this.tsmiVisibilityNgAll.Checked = false;
-				ToolStripMenuItem tsmi = null;
-				switch (value) {
-					case TruthSetForSingleBoolean.True:
-						tsmi = this.tsmiVisibilityNgTrue;
-						break;
-					case TruthSetForSingleBoolean.False:
-						tsmi = this.tsmiVisibilityNgFalse;
-						break;
-					case TruthSetForSingleBoolean.TrueAndFalse:
-						tsmi = this.tsmiVisibilityNgAll;
-						break;
-				}
-				tsmi.Checked = true;
-				this.tssbNg.Text = "N&G" + tsmi.Text.Substring(2, tsmi.Text.Length - 2 - 4);
-				
-				if (value != this.visibilityNg) {
-					this.visibilityNg = value;
-					this.DisplayItems();
-				}
-			}
-		}
-		private TruthSetForSingleBoolean VisibilityFav {
-			get { return this.visibilityFav; }
-			set {
-				if (value == TruthSetForSingleBoolean.Empty) {
-					value = TruthSetForSingleBoolean.TrueAndFalse;
-				}
-				this.tsmiVisibilityFavTrue.Checked = false;
-				this.tsmiVisibilityFavFalse.Checked = false;
-				this.tsmiVisibilityFavAll.Checked = false;
-				ToolStripMenuItem tsmi = null;
-				switch (value) {
-					case TruthSetForSingleBoolean.True:
-						tsmi = this.tsmiVisibilityFavTrue;
-						break;
-					case TruthSetForSingleBoolean.False:
-						tsmi = this.tsmiVisibilityFavFalse;
-						break;
-					case TruthSetForSingleBoolean.TrueAndFalse:
-						tsmi = this.tsmiVisibilityFavAll;
-						break;
-				}
-				tsmi.Checked = true;
-				this.tssbFav.Text = "F&AV" + tsmi.Text.Substring(3, tsmi.Text.Length - 3 - 4);
-				
-				if (value != this.visibilityFav) {
-					this.visibilityFav = value;
-					this.DisplayItems();
-				}
-			}
-		}
-		private TruthSetForSingleBoolean VisibilityNew {
-			get { return this.visibilityNew; }
-			set {
-				if (value == TruthSetForSingleBoolean.Empty) {
-					value = TruthSetForSingleBoolean.TrueAndFalse;
-				}
-				this.tsmiVisibilityNewTrue.Checked = false;
-				this.tsmiVisibilityNewFalse.Checked = false;
-				this.tsmiVisibilityNewAll.Checked = false;
-				ToolStripMenuItem tsmi = null;
-				switch (value) {
-					case TruthSetForSingleBoolean.True:
-						tsmi = this.tsmiVisibilityNewTrue;
-						break;
-					case TruthSetForSingleBoolean.False:
-						tsmi = this.tsmiVisibilityNewFalse;
-						break;
-					case TruthSetForSingleBoolean.TrueAndFalse:
-						tsmi = this.tsmiVisibilityNewAll;
-						break;
-				}
-				tsmi.Checked = true;
-				this.tssbNew.Text = "Ne&w" + tsmi.Text.Substring(3, tsmi.Text.Length - 3 - 4);
-				
-				if (value != this.visibilityNew) {
-					this.visibilityNew = value;
-					this.DisplayItems();
-				}
-			}
-		}
-
 		private bool ShowPackages {
 			get { return this.showPackages; }
 			set {
@@ -720,14 +607,18 @@ namespace Yusen.GExplorer {
 			this.listView1.EndUpdate();
 		}
 		private void ResetAllNgFlags() {
+			this.listView1.BeginUpdate();
 			foreach(ContentListViewItem clvi in this.allClvis) {
 				clvi.ResetNgFlag();
 			}
+			this.listView1.EndUpdate();
 		}
 		private void ResetAllFavFlags() {
+			this.listView1.BeginUpdate();
 			foreach (ContentListViewItem clvi in this.allClvis) {
 				clvi.ResetFavFlag();
 			}
+			this.listView1.EndUpdate();
 		}
 
 		private void DisplayItems(){
@@ -744,13 +635,14 @@ namespace Yusen.GExplorer {
 			int filtered = 0;
 			Regex filter = this.FilterEnabled ? this.FilterRegex : null;
 			List<bool> filterTarges = this.GetFilterTargetList();
-
-			bool showNgTrue = (this.VisibilityNg & TruthSetForSingleBoolean.True) != TruthSetForSingleBoolean.Empty;
-			bool showNgFalse = (this.VisibilityNg & TruthSetForSingleBoolean.False) != TruthSetForSingleBoolean.Empty;
-			bool showFavTrue = (this.VisibilityFav & TruthSetForSingleBoolean.True) != TruthSetForSingleBoolean.Empty;
-			bool showFavFalse = (this.VisibilityFav & TruthSetForSingleBoolean.False) != TruthSetForSingleBoolean.Empty;
-			bool showNewTrue = (this.VisibilityNew & TruthSetForSingleBoolean.True) != TruthSetForSingleBoolean.Empty;
-			bool showNewFalse = (this.VisibilityNew & TruthSetForSingleBoolean.False) != TruthSetForSingleBoolean.Empty;
+			
+			ContentVisibilities vis = this.ContentVisibilities;
+			bool showNgTrue = (vis & ContentVisibilities.NgTrue) != ContentVisibilities.None;
+			bool showNgFalse = (vis & ContentVisibilities.NgFalse) != ContentVisibilities.None;
+			bool showFavTrue = (vis & ContentVisibilities.FavTrue) != ContentVisibilities.None;
+			bool showFavFalse = (vis & ContentVisibilities.FavFalse) != ContentVisibilities.None;
+			bool showNewTrue = (vis & ContentVisibilities.NewTrue) != ContentVisibilities.None;
+			bool showNewFalse = (vis & ContentVisibilities.NewFalse) != ContentVisibilities.None;
 			
 			foreach (ContentListViewItem clvi in this.allClvis) {
 				//あぼ～ん処理
@@ -905,13 +797,13 @@ namespace Yusen.GExplorer {
 
 		private void NgManager_PredicatesChanged(object sender, EventArgs e) {
 			this.ResetAllNgFlags();
-			if (this.VisibilityNg != TruthSetForSingleBoolean.TrueAndFalse) {
+			if ((this.ContentVisibilities & ContentVisibilities.NgDontCare) != ContentVisibilities.NgDontCare) {
 				this.DisplayItems();
 			}
 		}
 		private void FavManager_PredicatesChanged(object sender, EventArgs e) {
 			this.ResetAllFavFlags();
-			if (this.VisibilityFav != TruthSetForSingleBoolean.TrueAndFalse) {
+			if ((this.ContentVisibilities & ContentVisibilities.FavDontCare) != ContentVisibilities.FavDontCare) {
 				this.DisplayItems();
 			}
 		}
@@ -951,7 +843,7 @@ namespace Yusen.GExplorer {
 			if(this.ShowPackages) {
 				this.listView1.ShowGroups = false;
 			}
-
+			
 			ListViewItemComparer comparer = new ListViewItemComparer(e.Column);
 			if (comparer.SameIndexAs(this.listView1.ListViewItemSorter as ListViewItemComparer)) {
 				comparer = (this.listView1.ListViewItemSorter as ListViewItemComparer).Clone() as ListViewItemComparer;
@@ -1155,74 +1047,23 @@ namespace Yusen.GExplorer {
 			this.UpdateViewIfFilterEnabledAndHasFilterRegex();
 		}
 		#endregion
-
-		#region 表示条件選択ボタン
-		private TruthSetForSingleBoolean NextSetOf(TruthSetForSingleBoolean ts) {
-			switch (ts) {
-				case TruthSetForSingleBoolean.Empty:
-					throw new ArgumentOutOfRangeException("ts");
-				case TruthSetForSingleBoolean.True:
-					return TruthSetForSingleBoolean.False;
-				case TruthSetForSingleBoolean.False:
-					return TruthSetForSingleBoolean.TrueAndFalse;
-				case TruthSetForSingleBoolean.TrueAndFalse:
-					return TruthSetForSingleBoolean.True;
-			}
-			throw new ArgumentOutOfRangeException("ts");
+		#region 表示条件
+		private void tscvsVisibilitiesSelector_ContentVisibilitiesChanged(object sender, EventArgs e) {
+			this.ContentVisibilities = this.tscvsVisibilitiesSelector.ContentVisibilities;
 		}
-		private void tssbNg_ButtonClick(object sender, EventArgs e) {
-			this.VisibilityNg = this.NextSetOf(this.VisibilityNg);
-		}
-		private void tssbFav_ButtonClick(object sender, EventArgs e) {
-			this.VisibilityFav = this.NextSetOf(this.VisibilityFav);
-		}
-		private void tssbNew_ButtonClick(object sender, EventArgs e) {
-			this.VisibilityNew = this.NextSetOf(this.VisibilityNew);
-		}
-		private void tsmiVisibilityNgTrue_Click(object sender, EventArgs e) {
-			this.VisibilityNg = TruthSetForSingleBoolean.True;
-		}
-		private void tsmiVisibilityNgFalse_Click(object sender, EventArgs e) {
-			this.VisibilityNg = TruthSetForSingleBoolean.False;
-		}
-		private void tsmiVisibilityNgAll_Click(object sender, EventArgs e) {
-			this.VisibilityNg = TruthSetForSingleBoolean.TrueAndFalse;
-		}
-		private void tsmiVisibilityFavTrue_Click(object sender, EventArgs e) {
-			this.VisibilityFav = TruthSetForSingleBoolean.True;
-		}
-		private void tsmiVisibilityFavFalse_Click(object sender, EventArgs e) {
-			this.VisibilityFav = TruthSetForSingleBoolean.False; ;
-		}
-		private void tsmiVisibilityFavAll_Click(object sender, EventArgs e) {
-			this.VisibilityFav = TruthSetForSingleBoolean.TrueAndFalse;
-		}
-		private void tsmiVisibilityNewTrue_Click(object sender, EventArgs e) {
-			this.VisibilityNew = TruthSetForSingleBoolean.True;
-		}
-		private void tsmiVisibilityNewFalse_Click(object sender, EventArgs e) {
-			this.VisibilityNew = TruthSetForSingleBoolean.False;
-		}
-		private void tsmiVisibilityNewAll_Click(object sender, EventArgs e) {
-			this.VisibilityNew = TruthSetForSingleBoolean.TrueAndFalse;
+		private void tscvsVisibilitiesSelector_CloseClick(object sender, EventArgs e) {
+			this.tsddbVisibilities.DropDown.Close();
 		}
 		#endregion
-
+		
 		#region IHasNewSettings<CrawlResultViewSettings> Members
 		public CrawlResultView.CrawlResultViewSettings Settings {
 			get { return this.settings; }
 		}
 		#endregion
+
 	}
 
-	[Flags]
-	public enum TruthSetForSingleBoolean{
-		Empty=0,
-		True=1,
-		False=2,
-		TrueAndFalse=True|False,
-	}
-	
 	public enum FilterType {
 		Normal,
 		Migemo,

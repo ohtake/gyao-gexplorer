@@ -61,22 +61,13 @@
 			this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsbShowFilter = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator12 = new System.Windows.Forms.ToolStripSeparator();
-			this.tssbNg = new System.Windows.Forms.ToolStripSplitButton();
-			this.tsmiVisibilityNgTrue = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiVisibilityNgFalse = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiVisibilityNgAll = new System.Windows.Forms.ToolStripMenuItem();
-			this.tssbFav = new System.Windows.Forms.ToolStripSplitButton();
-			this.tsmiVisibilityFavTrue = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiVisibilityFavFalse = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiVisibilityFavAll = new System.Windows.Forms.ToolStripMenuItem();
-			this.tssbNew = new System.Windows.Forms.ToolStripSplitButton();
-			this.tsmiVisibilityNewTrue = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiVisibilityNewFalse = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiVisibilityNewAll = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsddbVisibilities = new System.Windows.Forms.ToolStripDropDownButton();
+			this.tscvsVisibilitiesSelector = new Yusen.GExplorer.ToolStripContentVisibilitiesSelector();
 			this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsddbNormalPages = new System.Windows.Forms.ToolStripDropDownButton();
 			this.tsddbExceptions = new System.Windows.Forms.ToolStripDropDownButton();
 			this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
+			this.tslVisibilities = new System.Windows.Forms.ToolStripLabel();
 			this.tslNumber = new System.Windows.Forms.ToolStripLabel();
 			this.tslTime = new System.Windows.Forms.ToolStripLabel();
 			this.tsFilter = new System.Windows.Forms.ToolStrip();
@@ -375,13 +366,12 @@
             this.toolStripSeparator4,
             this.tsbShowFilter,
             this.toolStripSeparator12,
-            this.tssbNg,
-            this.tssbFav,
-            this.tssbNew,
+            this.tsddbVisibilities,
             this.toolStripSeparator7,
             this.tsddbNormalPages,
             this.tsddbExceptions,
             this.toolStripSeparator11,
+            this.tslVisibilities,
             this.tslNumber,
             this.tslTime});
 			this.tsMain.Location = new System.Drawing.Point(0, 0);
@@ -418,110 +408,29 @@
 			this.toolStripSeparator12.Name = "toolStripSeparator12";
 			this.toolStripSeparator12.Size = new System.Drawing.Size(6, 25);
 			// 
-			// tssbNg
+			// tsddbVisibilities
 			// 
-			this.tssbNg.AutoToolTip = false;
-			this.tssbNg.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-			this.tssbNg.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiVisibilityNgTrue,
-            this.tsmiVisibilityNgFalse,
-            this.tsmiVisibilityNgAll});
-			this.tssbNg.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.tssbNg.Name = "tssbNg";
-			this.tssbNg.Size = new System.Drawing.Size(37, 22);
-			this.tssbNg.Text = "&NG";
-			this.tssbNg.ButtonClick += new System.EventHandler(this.tssbNg_ButtonClick);
+			this.tsddbVisibilities.AutoToolTip = false;
+			this.tsddbVisibilities.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+			this.tsddbVisibilities.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tscvsVisibilitiesSelector});
+			this.tsddbVisibilities.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.tsddbVisibilities.Name = "tsddbVisibilities";
+			this.tsddbVisibilities.Size = new System.Drawing.Size(82, 22);
+			this.tsddbVisibilities.Text = "表示条件(&V)";
 			// 
-			// tsmiVisibilityNgTrue
+			// tscvsVisibilitiesSelector
 			// 
-			this.tsmiVisibilityNgTrue.Name = "tsmiVisibilityNgTrue";
-			this.tsmiVisibilityNgTrue.Size = new System.Drawing.Size(126, 22);
-			this.tsmiVisibilityNgTrue.Text = "NGのみ(&T)";
-			this.tsmiVisibilityNgTrue.Click += new System.EventHandler(this.tsmiVisibilityNgTrue_Click);
-			// 
-			// tsmiVisibilityNgFalse
-			// 
-			this.tsmiVisibilityNgFalse.Name = "tsmiVisibilityNgFalse";
-			this.tsmiVisibilityNgFalse.Size = new System.Drawing.Size(126, 22);
-			this.tsmiVisibilityNgFalse.Text = "NG以外(&F)";
-			this.tsmiVisibilityNgFalse.Click += new System.EventHandler(this.tsmiVisibilityNgFalse_Click);
-			// 
-			// tsmiVisibilityNgAll
-			// 
-			this.tsmiVisibilityNgAll.Name = "tsmiVisibilityNgAll";
-			this.tsmiVisibilityNgAll.Size = new System.Drawing.Size(126, 22);
-			this.tsmiVisibilityNgAll.Text = "NG不問(&A)";
-			this.tsmiVisibilityNgAll.Click += new System.EventHandler(this.tsmiVisibilityNgAll_Click);
-			// 
-			// tssbFav
-			// 
-			this.tssbFav.AutoToolTip = false;
-			this.tssbFav.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-			this.tssbFav.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiVisibilityFavTrue,
-            this.tsmiVisibilityFavFalse,
-            this.tsmiVisibilityFavAll});
-			this.tssbFav.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.tssbFav.Name = "tssbFav";
-			this.tssbFav.Size = new System.Drawing.Size(44, 22);
-			this.tssbFav.Text = "FA&V";
-			this.tssbFav.ButtonClick += new System.EventHandler(this.tssbFav_ButtonClick);
-			// 
-			// tsmiVisibilityFavTrue
-			// 
-			this.tsmiVisibilityFavTrue.Name = "tsmiVisibilityFavTrue";
-			this.tsmiVisibilityFavTrue.Size = new System.Drawing.Size(133, 22);
-			this.tsmiVisibilityFavTrue.Text = "FAVのみ(&T)";
-			this.tsmiVisibilityFavTrue.Click += new System.EventHandler(this.tsmiVisibilityFavTrue_Click);
-			// 
-			// tsmiVisibilityFavFalse
-			// 
-			this.tsmiVisibilityFavFalse.Name = "tsmiVisibilityFavFalse";
-			this.tsmiVisibilityFavFalse.Size = new System.Drawing.Size(133, 22);
-			this.tsmiVisibilityFavFalse.Text = "FAV以外(&F)";
-			this.tsmiVisibilityFavFalse.Click += new System.EventHandler(this.tsmiVisibilityFavFalse_Click);
-			// 
-			// tsmiVisibilityFavAll
-			// 
-			this.tsmiVisibilityFavAll.Name = "tsmiVisibilityFavAll";
-			this.tsmiVisibilityFavAll.Size = new System.Drawing.Size(133, 22);
-			this.tsmiVisibilityFavAll.Text = "FAV不問(&A)";
-			this.tsmiVisibilityFavAll.Click += new System.EventHandler(this.tsmiVisibilityFavAll_Click);
-			// 
-			// tssbNew
-			// 
-			this.tssbNew.AutoToolTip = false;
-			this.tssbNew.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-			this.tssbNew.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiVisibilityNewTrue,
-            this.tsmiVisibilityNewFalse,
-            this.tsmiVisibilityNewAll});
-			this.tssbNew.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.tssbNew.Name = "tssbNew";
-			this.tssbNew.Size = new System.Drawing.Size(43, 22);
-			this.tssbNew.Text = "Ne&w";
-			this.tssbNew.ButtonClick += new System.EventHandler(this.tssbNew_ButtonClick);
-			// 
-			// tsmiVisibilityNewTrue
-			// 
-			this.tsmiVisibilityNewTrue.Name = "tsmiVisibilityNewTrue";
-			this.tsmiVisibilityNewTrue.Size = new System.Drawing.Size(132, 22);
-			this.tsmiVisibilityNewTrue.Text = "Newのみ(&T)";
-			this.tsmiVisibilityNewTrue.Click += new System.EventHandler(this.tsmiVisibilityNewTrue_Click);
-			// 
-			// tsmiVisibilityNewFalse
-			// 
-			this.tsmiVisibilityNewFalse.Name = "tsmiVisibilityNewFalse";
-			this.tsmiVisibilityNewFalse.Size = new System.Drawing.Size(132, 22);
-			this.tsmiVisibilityNewFalse.Text = "New以外(&F)";
-			this.tsmiVisibilityNewFalse.Click += new System.EventHandler(this.tsmiVisibilityNewFalse_Click);
-			// 
-			// tsmiVisibilityNewAll
-			// 
-			this.tsmiVisibilityNewAll.Name = "tsmiVisibilityNewAll";
-			this.tsmiVisibilityNewAll.Size = new System.Drawing.Size(132, 22);
-			this.tsmiVisibilityNewAll.Text = "New不問(&A)";
-			this.tsmiVisibilityNewAll.Click += new System.EventHandler(this.tsmiVisibilityNewAll_Click);
+			this.tscvsVisibilitiesSelector.BackColor = System.Drawing.Color.Transparent;
+			this.tscvsVisibilitiesSelector.ContentVisibilities = ((Yusen.GExplorer.ContentVisibilities)(((((Yusen.GExplorer.ContentVisibilities.NgFalse | Yusen.GExplorer.ContentVisibilities.FavTrue)
+						| Yusen.GExplorer.ContentVisibilities.FavFalse)
+						| Yusen.GExplorer.ContentVisibilities.NewTrue)
+						| Yusen.GExplorer.ContentVisibilities.NewFalse)));
+			this.tscvsVisibilitiesSelector.Name = "tscvsVisibilitiesSelector";
+			this.tscvsVisibilitiesSelector.Size = new System.Drawing.Size(266, 136);
+			this.tscvsVisibilitiesSelector.Text = "toolStripContentVisibilitiesSelector1";
+			this.tscvsVisibilitiesSelector.ContentVisibilitiesChanged += new System.EventHandler(this.tscvsVisibilitiesSelector_ContentVisibilitiesChanged);
+			this.tscvsVisibilitiesSelector.CloseClick += new System.EventHandler(this.tscvsVisibilitiesSelector_CloseClick);
 			// 
 			// toolStripSeparator7
 			// 
@@ -550,6 +459,12 @@
 			// 
 			this.toolStripSeparator11.Name = "toolStripSeparator11";
 			this.toolStripSeparator11.Size = new System.Drawing.Size(6, 25);
+			// 
+			// tslVisibilities
+			// 
+			this.tslVisibilities.Name = "tslVisibilities";
+			this.tslVisibilities.Size = new System.Drawing.Size(57, 22);
+			this.tslVisibilities.Text = "visibilities";
 			// 
 			// tslNumber
 			// 
@@ -803,21 +718,12 @@
 		private ToolStripUserCommandMenuItem tsucmiCommandRoot;
 		private System.Windows.Forms.ToolStripMenuItem tsmiCatalogNormal;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
-		private System.Windows.Forms.ToolStripSplitButton tssbNg;
-		private System.Windows.Forms.ToolStripMenuItem tsmiVisibilityNgTrue;
-		private System.Windows.Forms.ToolStripMenuItem tsmiVisibilityNgFalse;
-		private System.Windows.Forms.ToolStripMenuItem tsmiVisibilityNgAll;
-		private System.Windows.Forms.ToolStripSplitButton tssbFav;
-		private System.Windows.Forms.ToolStripMenuItem tsmiVisibilityFavTrue;
-		private System.Windows.Forms.ToolStripMenuItem tsmiVisibilityFavFalse;
-		private System.Windows.Forms.ToolStripMenuItem tsmiVisibilityFavAll;
-		private System.Windows.Forms.ToolStripSplitButton tssbNew;
-		private System.Windows.Forms.ToolStripMenuItem tsmiVisibilityNewTrue;
-		private System.Windows.Forms.ToolStripMenuItem tsmiVisibilityNewFalse;
-		private System.Windows.Forms.ToolStripMenuItem tsmiVisibilityNewAll;
 		private ToolStripNgFavMenuItem tsnfmiNgFav;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
 		private System.Windows.Forms.ToolStripLabel tslQuery;
 		private System.Windows.Forms.ToolStripLabel tslRegex;
+		private System.Windows.Forms.ToolStripDropDownButton tsddbVisibilities;
+		private ToolStripContentVisibilitiesSelector tscvsVisibilitiesSelector;
+		private System.Windows.Forms.ToolStripLabel tslVisibilities;
 	}
 }
