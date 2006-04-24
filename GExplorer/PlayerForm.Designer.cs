@@ -52,6 +52,7 @@
 			this.tsmiNextTrack = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiFastReverse = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiFastForward = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiRate = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiPrevContent = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiNextContent = new System.Windows.Forms.ToolStripMenuItem();
@@ -303,6 +304,7 @@
             this.tsmiNextTrack,
             this.tsmiFastReverse,
             this.tsmiFastForward,
+            this.tsmiRate,
             this.toolStripSeparator7,
             this.tsmiPrevContent,
             this.tsmiNextContent,
@@ -365,6 +367,13 @@
 			this.tsmiFastForward.Size = new System.Drawing.Size(250, 22);
 			this.tsmiFastForward.Text = "早送り(&A)";
 			this.tsmiFastForward.Click += new System.EventHandler(this.tsmiFastForward_Click);
+			// 
+			// tsmiRate
+			// 
+			this.tsmiRate.Name = "tsmiRate";
+			this.tsmiRate.Size = new System.Drawing.Size(250, 22);
+			this.tsmiRate.Text = "再生速度を指定(&T)...";
+			this.tsmiRate.Click += new System.EventHandler(this.tsmiRate_Click);
 			// 
 			// toolStripSeparator7
 			// 
@@ -626,5 +635,6 @@
 		private ToolStripNgFavMenuItem tsnfmiNgFav;
 		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
 		private ToolStripHelpMenuItem tshmiHelp;
+		private System.Windows.Forms.ToolStripMenuItem tsmiRate;
 	}
 }

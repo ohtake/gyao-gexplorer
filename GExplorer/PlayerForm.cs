@@ -531,10 +531,20 @@ namespace Yusen.GExplorer {
 			this.wmpMain.Ctlcontrols.next();
 		}
 		private void tsmiFastReverse_Click(object sender, EventArgs e) {
-			this.wmpMain.Ctlcontrols.fastForward();
+			this.wmpMain.Ctlcontrols.fastReverse();
 		}
 		private void tsmiFastForward_Click(object sender, EventArgs e) {
-			this.wmpMain.Ctlcontrols.fastReverse();
+			this.wmpMain.Ctlcontrols.fastForward();
+		}
+		private void tsmiRate_Click(object sender, EventArgs e) {
+			this.inputBoxDialog1.Title = "再生速度の指定";
+			this.inputBoxDialog1.Message = "再生速度を小数で入力してください．";
+			this.inputBoxDialog1.Input = this.wmpMain.settings.rate.ToString();
+			switch (this.inputBoxDialog1.ShowDialog()) {
+				case DialogResult.OK:
+					this.wmpMain.settings.rate = double.Parse(this.inputBoxDialog1.Input);
+					break;
+			}
 		}
 		private void tsmiNextContent_Click(object sender, EventArgs e) {
 			ContentAdapter nextCont = PlayList.Instance.NextContentOf(this.CurrentContent);
@@ -700,7 +710,6 @@ namespace Yusen.GExplorer {
 			get { return this.settings; }
 		}
 		#endregion
-
 	}
 
 #if false

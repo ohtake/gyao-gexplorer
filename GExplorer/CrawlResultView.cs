@@ -688,8 +688,11 @@ namespace Yusen.GExplorer {
 			}
 			
 			this.listView1.EndUpdate();
-			
-			this.tslNumber.Text = this.listView1.Items.Count.ToString() + "+" + filtered.ToString() + "+" + aboned.ToString();
+			if (this.FilterEnabled) {
+				this.tslNumber.Text = string.Format("{0}+{1}+{2}", this.listView1.Items.Count, filtered, aboned);
+			} else {
+				this.tslNumber.Text = string.Format("{0}+{1}", this.listView1.Items.Count, aboned);
+			}
 			this.tslTime.Text = string.Format("({0})", this.CrawlResult.Time.ToString("MM/dd ddd HH:mm"));
 		}
 		private void CreateNormalPagesMenuItems(bool createAll) {

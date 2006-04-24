@@ -60,7 +60,6 @@
 			this.tslTitle = new System.Windows.Forms.ToolStripLabel();
 			this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsbShowFilter = new System.Windows.Forms.ToolStripButton();
-			this.toolStripSeparator12 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsddbVisibilities = new System.Windows.Forms.ToolStripDropDownButton();
 			this.tscvsVisibilitiesSelector = new Yusen.GExplorer.ToolStripContentVisibilitiesSelector();
 			this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
@@ -364,9 +363,8 @@
 			this.tsMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tslTitle,
             this.toolStripSeparator4,
-            this.tsbShowFilter,
-            this.toolStripSeparator12,
             this.tsddbVisibilities,
+            this.tsbShowFilter,
             this.toolStripSeparator7,
             this.tsddbNormalPages,
             this.tsddbExceptions,
@@ -402,11 +400,6 @@
 			this.tsbShowFilter.Size = new System.Drawing.Size(53, 22);
 			this.tsbShowFilter.Text = "フィルタ(&I)";
 			this.tsbShowFilter.Click += new System.EventHandler(this.tsbShowFilter_Click);
-			// 
-			// toolStripSeparator12
-			// 
-			this.toolStripSeparator12.Name = "toolStripSeparator12";
-			this.toolStripSeparator12.Size = new System.Drawing.Size(6, 25);
 			// 
 			// tsddbVisibilities
 			// 
@@ -704,7 +697,6 @@
 		private System.Windows.Forms.ToolStripButton tsbOneFTypeMigemo;
 		private System.Windows.Forms.ToolStripButton tsbOneFTypeRegex;
 		private System.Windows.Forms.ToolStripDropDownButton tsddbFilterTarget;
-		private System.Windows.Forms.ToolStripSeparator toolStripSeparator12;
 		private System.Windows.Forms.ToolStripMenuItem tsmiFilterTargetCheckAll;
 		private System.Windows.Forms.ToolStripMenuItem tsmiFilterTargetUncheckAll;
 		private System.Windows.Forms.ToolStripMenuItem tsmiFilterTargetToggleAll;

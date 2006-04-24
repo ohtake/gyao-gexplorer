@@ -85,7 +85,7 @@ namespace Yusen.GExplorer {
 		}
 		private bool promptBitrateOnStartup = true;
 		[Category("ビットレート")]
-		[DisplayName("起動時に確認する")]
+		[DisplayName("起動時にビットレートを確認")]
 		[Description("起動時にビットレートを確認します．")]
 		[DefaultValue(true)]
 		public bool PromptBitrateOnStartup {

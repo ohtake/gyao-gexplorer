@@ -31,18 +31,20 @@ namespace Yusen.GExplorer {
 					return;
 				}
 				Color colorGfc = this.genre.GenreForeColor;
+				Point ptText = new Point(e.ClipRectangle.Left + 25 + 8, e.ClipRectangle.Top + 4);
 				if (base.Selected) {
 					using (SolidBrush brushBack = new SolidBrush(colorGfc))
 					using (SolidBrush brushText = new SolidBrush(Color.White)) {
 						e.Graphics.FillRectangle(brushBack, e.ClipRectangle);
-						e.Graphics.DrawString(base.Text, base.Font, brushText, new Point(e.ClipRectangle.Left + 25 + 8, e.ClipRectangle.Top + 4));
+						e.Graphics.DrawString(base.Text, base.Font, brushText, ptText);
 					}
 				} else {
 					Rectangle rectIcon = new Rectangle(e.ClipRectangle.Location, new Size(25, e.ClipRectangle.Height));
-					using (LinearGradientBrush brushIcon = new LinearGradientBrush(rectIcon, Color.White, colorGfc, LinearGradientMode.Horizontal)) {
+					using (LinearGradientBrush brushIcon = new LinearGradientBrush(rectIcon, Color.White, colorGfc, LinearGradientMode.Horizontal))
+					using (SolidBrush brushText = new SolidBrush(SystemColors.ControlText)){
 						e.Graphics.FillRectangle(brushIcon, rectIcon);
+						e.Graphics.DrawString(base.Text, base.Font, brushText, ptText);
 					}
-					base.OnPaint(e);
 				}
 			}
 		}

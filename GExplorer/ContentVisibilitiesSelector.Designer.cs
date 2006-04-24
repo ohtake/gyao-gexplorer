@@ -176,7 +176,7 @@
 			// 
 			this.tableLayoutPanel1.ColumnCount = 4;
 			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33332F));
 			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33334F));
 			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33334F));
 			this.tableLayoutPanel1.Controls.Add(this.panel2, 2, 1);
@@ -192,30 +192,10 @@
 			this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 15);
 			this.tableLayoutPanel1.Name = "tableLayoutPanel1";
 			this.tableLayoutPanel1.RowCount = 4;
-			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
 			this.tableLayoutPanel1.Size = new System.Drawing.Size(131, 92);
 			this.tableLayoutPanel1.TabIndex = 0;
 			// 
@@ -223,11 +203,11 @@
 			// 
 			this.panel2.Controls.Add(this.tableLayoutPanel4);
 			this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.panel2.Location = new System.Drawing.Point(56, 23);
+			this.panel2.Location = new System.Drawing.Point(56, 20);
 			this.panel2.Margin = new System.Windows.Forms.Padding(0);
 			this.panel2.Name = "panel2";
 			this.tableLayoutPanel1.SetRowSpan(this.panel2, 3);
-			this.panel2.Size = new System.Drawing.Size(37, 69);
+			this.panel2.Size = new System.Drawing.Size(37, 72);
 			this.panel2.TabIndex = 16;
 			// 
 			// tableLayoutPanel4
@@ -244,7 +224,7 @@
 			this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
 			this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33334F));
 			this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33334F));
-			this.tableLayoutPanel4.Size = new System.Drawing.Size(37, 69);
+			this.tableLayoutPanel4.Size = new System.Drawing.Size(37, 72);
 			this.tableLayoutPanel4.TabIndex = 0;
 			// 
 			// radioFavTrue
@@ -264,7 +244,7 @@
 			// 
 			this.radioFavBoth.Anchor = System.Windows.Forms.AnchorStyles.None;
 			this.radioFavBoth.AutoSize = true;
-			this.radioFavBoth.Location = new System.Drawing.Point(4, 49);
+			this.radioFavBoth.Location = new System.Drawing.Point(4, 51);
 			this.radioFavBoth.Name = "radioFavBoth";
 			this.radioFavBoth.Size = new System.Drawing.Size(29, 16);
 			this.radioFavBoth.TabIndex = 13;
@@ -277,7 +257,7 @@
 			// 
 			this.radioFavFalse.Anchor = System.Windows.Forms.AnchorStyles.None;
 			this.radioFavFalse.AutoSize = true;
-			this.radioFavFalse.Location = new System.Drawing.Point(4, 25);
+			this.radioFavFalse.Location = new System.Drawing.Point(4, 27);
 			this.radioFavFalse.Name = "radioFavFalse";
 			this.radioFavFalse.Size = new System.Drawing.Size(29, 16);
 			this.radioFavFalse.TabIndex = 10;
@@ -290,7 +270,7 @@
 			// 
 			this.label3.Anchor = System.Windows.Forms.AnchorStyles.None;
 			this.label3.AutoSize = true;
-			this.label3.Location = new System.Drawing.Point(98, 5);
+			this.label3.Location = new System.Drawing.Point(98, 4);
 			this.label3.Name = "label3";
 			this.label3.Size = new System.Drawing.Size(27, 12);
 			this.label3.TabIndex = 2;
@@ -300,7 +280,7 @@
 			// 
 			this.label2.Anchor = System.Windows.Forms.AnchorStyles.None;
 			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(60, 5);
+			this.label2.Location = new System.Drawing.Point(60, 4);
 			this.label2.Name = "label2";
 			this.label2.Size = new System.Drawing.Size(28, 12);
 			this.label2.TabIndex = 1;
@@ -310,7 +290,7 @@
 			// 
 			this.label1.Anchor = System.Windows.Forms.AnchorStyles.None;
 			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(27, 5);
+			this.label1.Location = new System.Drawing.Point(27, 4);
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(21, 12);
 			this.label1.TabIndex = 0;
@@ -320,7 +300,7 @@
 			// 
 			this.label4.Anchor = System.Windows.Forms.AnchorStyles.None;
 			this.label4.AutoSize = true;
-			this.label4.Location = new System.Drawing.Point(4, 28);
+			this.label4.Location = new System.Drawing.Point(4, 25);
 			this.label4.Name = "label4";
 			this.label4.Size = new System.Drawing.Size(12, 12);
 			this.label4.TabIndex = 3;
@@ -330,7 +310,7 @@
 			// 
 			this.label5.Anchor = System.Windows.Forms.AnchorStyles.None;
 			this.label5.AutoSize = true;
-			this.label5.Location = new System.Drawing.Point(4, 51);
+			this.label5.Location = new System.Drawing.Point(4, 48);
 			this.label5.Name = "label5";
 			this.label5.Size = new System.Drawing.Size(12, 12);
 			this.label5.TabIndex = 4;
@@ -340,7 +320,7 @@
 			// 
 			this.label6.Anchor = System.Windows.Forms.AnchorStyles.None;
 			this.label6.AutoSize = true;
-			this.label6.Location = new System.Drawing.Point(4, 74);
+			this.label6.Location = new System.Drawing.Point(4, 73);
 			this.label6.Name = "label6";
 			this.label6.Size = new System.Drawing.Size(11, 12);
 			this.label6.TabIndex = 5;
@@ -350,11 +330,11 @@
 			// 
 			this.panel1.Controls.Add(this.tableLayoutPanel3);
 			this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.panel1.Location = new System.Drawing.Point(20, 23);
+			this.panel1.Location = new System.Drawing.Point(20, 20);
 			this.panel1.Margin = new System.Windows.Forms.Padding(0);
 			this.panel1.Name = "panel1";
 			this.tableLayoutPanel1.SetRowSpan(this.panel1, 3);
-			this.panel1.Size = new System.Drawing.Size(36, 69);
+			this.panel1.Size = new System.Drawing.Size(36, 72);
 			this.panel1.TabIndex = 15;
 			// 
 			// tableLayoutPanel3
@@ -371,7 +351,7 @@
 			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
 			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33334F));
 			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33334F));
-			this.tableLayoutPanel3.Size = new System.Drawing.Size(36, 69);
+			this.tableLayoutPanel3.Size = new System.Drawing.Size(36, 72);
 			this.tableLayoutPanel3.TabIndex = 0;
 			// 
 			// radioNgTrue
@@ -391,7 +371,7 @@
 			// 
 			this.radioNgFalse.Anchor = System.Windows.Forms.AnchorStyles.None;
 			this.radioNgFalse.AutoSize = true;
-			this.radioNgFalse.Location = new System.Drawing.Point(3, 25);
+			this.radioNgFalse.Location = new System.Drawing.Point(3, 27);
 			this.radioNgFalse.Name = "radioNgFalse";
 			this.radioNgFalse.Size = new System.Drawing.Size(29, 16);
 			this.radioNgFalse.TabIndex = 9;
@@ -404,7 +384,7 @@
 			// 
 			this.radioNgBoth.Anchor = System.Windows.Forms.AnchorStyles.None;
 			this.radioNgBoth.AutoSize = true;
-			this.radioNgBoth.Location = new System.Drawing.Point(3, 49);
+			this.radioNgBoth.Location = new System.Drawing.Point(3, 51);
 			this.radioNgBoth.Name = "radioNgBoth";
 			this.radioNgBoth.Size = new System.Drawing.Size(29, 16);
 			this.radioNgBoth.TabIndex = 12;
@@ -417,11 +397,11 @@
 			// 
 			this.panel3.Controls.Add(this.tableLayoutPanel5);
 			this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.panel3.Location = new System.Drawing.Point(93, 23);
+			this.panel3.Location = new System.Drawing.Point(93, 20);
 			this.panel3.Margin = new System.Windows.Forms.Padding(0);
 			this.panel3.Name = "panel3";
 			this.tableLayoutPanel1.SetRowSpan(this.panel3, 3);
-			this.panel3.Size = new System.Drawing.Size(38, 69);
+			this.panel3.Size = new System.Drawing.Size(38, 72);
 			this.panel3.TabIndex = 16;
 			// 
 			// tableLayoutPanel5
@@ -438,7 +418,7 @@
 			this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
 			this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33334F));
 			this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33334F));
-			this.tableLayoutPanel5.Size = new System.Drawing.Size(38, 69);
+			this.tableLayoutPanel5.Size = new System.Drawing.Size(38, 72);
 			this.tableLayoutPanel5.TabIndex = 0;
 			// 
 			// radioNewTrue
@@ -458,7 +438,7 @@
 			// 
 			this.radioNewFalse.Anchor = System.Windows.Forms.AnchorStyles.None;
 			this.radioNewFalse.AutoSize = true;
-			this.radioNewFalse.Location = new System.Drawing.Point(4, 25);
+			this.radioNewFalse.Location = new System.Drawing.Point(4, 27);
 			this.radioNewFalse.Name = "radioNewFalse";
 			this.radioNewFalse.Size = new System.Drawing.Size(29, 16);
 			this.radioNewFalse.TabIndex = 11;
@@ -471,7 +451,7 @@
 			// 
 			this.radioNewBoth.Anchor = System.Windows.Forms.AnchorStyles.None;
 			this.radioNewBoth.AutoSize = true;
-			this.radioNewBoth.Location = new System.Drawing.Point(4, 49);
+			this.radioNewBoth.Location = new System.Drawing.Point(4, 51);
 			this.radioNewBoth.Name = "radioNewBoth";
 			this.radioNewBoth.Size = new System.Drawing.Size(29, 16);
 			this.radioNewBoth.TabIndex = 14;
