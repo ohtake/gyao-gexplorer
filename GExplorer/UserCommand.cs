@@ -5,6 +5,7 @@ using System.Reflection;
 using Process = System.Diagnostics.Process;
 using System.Text;
 using System.Web;
+using System.Xml.Serialization;
 
 namespace Yusen.GExplorer {
 	/// <summary>外部コマンド．</summary>
@@ -19,7 +20,9 @@ namespace Yusen.GExplorer {
 		public static string UnescapeLiteral(string escaped) {
 			return UserCommand.dicLiteralsEU[escaped];
 		}
-		
+
+		public static readonly string SeparatorTitle = "-";
+
 		private const string strOpenBrace = "{";
 		private const string strCloseBrace = "}";
 		private const string strEscapedOpenBrace = "{{";
@@ -31,7 +34,10 @@ namespace Yusen.GExplorer {
 		private static readonly Dictionary<string, string> dicLiteralsEU = new Dictionary<string,string>();
 		
 		static UserCommand(){
-			string replaceable = @"\{" + UserCommand.reVarient + @"(?:\:" + UserCommand.reCodePageName + @")?\}|" + Regex.Escape(UserCommand.strEscapedOpenBrace) + "|" + Regex.Escape(UserCommand.strEscapedCloseBrace);
+			string replaceable =
+				@"\{" + UserCommand.reVarient + @"(?:\:" + UserCommand.reCodePageName + @")?\}"
+				+ "|" + Regex.Escape(UserCommand.strEscapedOpenBrace)
+				+ "|" + Regex.Escape(UserCommand.strEscapedCloseBrace);
 			
 			UserCommand.regexArgValidator = new Regex(@"^(?:[^{}]|" + replaceable + @")*$");
 			UserCommand.regexReplaceable = new Regex(replaceable);
@@ -84,6 +90,13 @@ namespace Yusen.GExplorer {
 			this.Title = title;
 			this.FileName = fileName;
 			this.Arguments = arguments;
+
+			if (string.IsNullOrEmpty(this.Title)) {
+				throw new ArgumentException("空の表示名はだめ");
+			}
+			if (!UserCommand.regexArgValidator.Match(this.Arguments).Success) {
+				throw new ArgumentException("引数の書式が間違ってる．");
+			}
 		}
 		public UserCommand() {
 		}
@@ -91,6 +104,7 @@ namespace Yusen.GExplorer {
 		/// <summary>
 		/// 外部コマンドの名称．
 		/// メニューの項目名になるので &amp; でアクセスキーの設定ができる．
+		/// "-" の時はセパレータになる．
 		/// </summary>
 		public string Title {
 			get {
@@ -98,8 +112,11 @@ namespace Yusen.GExplorer {
 			}
 			set {
 				if(null != this.title) throw new InvalidOperationException();
-				if(string.IsNullOrEmpty(value)) throw new ArgumentException("空白の表示名は駄目．");
-				this.title = value;
+				if (string.IsNullOrEmpty(value)) {
+					this.title = string.Empty;
+				} else {
+					this.title = value;
+				}
 			}
 		}
 		
@@ -112,8 +129,11 @@ namespace Yusen.GExplorer {
 			}
 			set {
 				if(null != this.fileName) throw new InvalidOperationException();
-				if(string.IsNullOrEmpty(value)) throw new ArgumentException("空白のファイル名は駄目．");
-				this.fileName = value;
+				if (string.IsNullOrEmpty(value)) {
+					this.fileName = string.Empty;
+				} else {
+					this.fileName = value;
+				}
 			}
 		}
 		
@@ -129,23 +149,35 @@ namespace Yusen.GExplorer {
 			}
 			set {
 				if(null != this.arguments) throw new InvalidOperationException();
-				if(null == value) throw new ArgumentNullException();
-				if (!UserCommand.regexArgValidator.Match(value).Success) throw new ArgumentException("引数の書式が間違ってる．");
-				this.arguments = value;
+				if (string.IsNullOrEmpty(value)) {
+					this.arguments = string.Empty;
+				} else {
+					this.arguments = value;
+				}
 			}
+		}
+		
+		[XmlIgnore]
+		internal bool IsSeparator {
+			get { return UserCommand.SeparatorTitle.Equals(this.Title); }
 		}
 		
 		internal void Execute(IEnumerable<ContentAdapter> conts) {
 			UserCommandArgumentReplacer replacer = new UserCommandArgumentReplacer(conts);
 			string args = replacer.ExpandPropertyValues(this.Arguments);
-			Process.Start(Environment.ExpandEnvironmentVariables(this.fileName), args);
+			if (string.IsNullOrEmpty(this.FileName)) {
+				Process.Start(args);
+			} else {
+				Process.Start(Environment.ExpandEnvironmentVariables(this.fileName), args);
+			}
+		}
+
+		public override string ToString() {
+			return this.Title;
 		}
 		
 		public int CompareTo(UserCommand other) {
 			return this.Title.CompareTo(other.Title);
-		}
-		public override string ToString() {
-			return this.Title;
 		}
 	}
 	
@@ -176,15 +208,4 @@ namespace Yusen.GExplorer {
 			get { return "UserCommands.xml"; }
 		}
 	}
-
-	public sealed class UserCommandSelectedEventArgs : EventArgs {
-		private UserCommand command;
-		public UserCommandSelectedEventArgs(UserCommand command) {
-			this.command = command;
-		}
-		public UserCommand UserCommand {
-			get { return this.command; }
-		}
-	}
-
 }

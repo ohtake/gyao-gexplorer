@@ -36,6 +36,7 @@
 			this.tsmiContentPlayWmp = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiContentPlayBrowser = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
+			this.tsucmiContentCommand = new Yusen.GExplorer.ToolStripUserCommandMenuItem();
 			this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiContentCancel = new System.Windows.Forms.ToolStripMenuItem();
 			this.cmsPackage = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -47,7 +48,6 @@
 			this.ttId = new System.Windows.Forms.ToolTip(this.components);
 			this.timerIgnoreMenu = new System.Windows.Forms.Timer(this.components);
 			this.inputBoxDialog1 = new Yusen.GExplorer.InputBoxDialog();
-			this.tsucmiContentCommand = new Yusen.GExplorer.ToolStripUserCommandMenuItem();
 			this.cmsContent.SuspendLayout();
 			this.cmsPackage.SuspendLayout();
 			this.SuspendLayout();
@@ -76,7 +76,7 @@
 			// 
 			this.tsmiContentPerformClick.Name = "tsmiContentPerformClick";
 			this.tsmiContentPerformClick.Size = new System.Drawing.Size(203, 22);
-			this.tsmiContentPerformClick.Text = "通常のクリックとして扱う(&C)";
+			this.tsmiContentPerformClick.Text = "通常のクリックとして扱う(&E)";
 			// 
 			// toolStripSeparator3
 			// 
@@ -134,6 +134,12 @@
 			this.toolStripSeparator8.Name = "toolStripSeparator8";
 			this.toolStripSeparator8.Size = new System.Drawing.Size(200, 6);
 			// 
+			// tsucmiContentCommand
+			// 
+			this.tsucmiContentCommand.Name = "tsucmiContentCommand";
+			this.tsucmiContentCommand.Size = new System.Drawing.Size(203, 22);
+			this.tsucmiContentCommand.Text = "外部コマンド(&C)";
+			// 
 			// toolStripSeparator6
 			// 
 			this.toolStripSeparator6.Name = "toolStripSeparator6";
@@ -160,7 +166,7 @@
 			// 
 			this.tsmiPackagePerformClick.Name = "tsmiPackagePerformClick";
 			this.tsmiPackagePerformClick.Size = new System.Drawing.Size(204, 22);
-			this.tsmiPackagePerformClick.Text = "通常のクリックとして扱う(&C)";
+			this.tsmiPackagePerformClick.Text = "通常のクリックとして扱う(&E)";
 			// 
 			// toolStripSeparator4
 			// 
@@ -198,12 +204,6 @@
 			this.inputBoxDialog1.Input = null;
 			this.inputBoxDialog1.Message = null;
 			this.inputBoxDialog1.Title = null;
-			// 
-			// tsucmiContentCommand
-			// 
-			this.tsucmiContentCommand.Name = "tsucmiContentCommand";
-			this.tsucmiContentCommand.Size = new System.Drawing.Size(32, 19);
-			this.tsucmiContentCommand.Text = "外部コマンド(&C)";
 			// 
 			// GWebBrowser
 			// 

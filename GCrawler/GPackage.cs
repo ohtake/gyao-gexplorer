@@ -103,17 +103,11 @@ namespace Yusen.GCrawler {
 			return new GPackage(0, genre.GenreKey, "(不明なパッケージ)", "(不明なパッケージ)", "(不明なパッケージ)");
 		}
 
-		[OptionalField,Obsolete]//2.0.5.1
-		private string packageId;
-		[OptionalField]//2.0.5.1
 		private int packageKey;
-		[OptionalField]//2.0.5.1
 		private int genreKey;
 		
 		private readonly string packageName;
-		[OptionalField]
 		private readonly string catchCopy;
-		[OptionalField]
 		private readonly string packageText1;
 		private ReadOnlyCollection<GContent> contents;
 
@@ -123,17 +117,6 @@ namespace Yusen.GCrawler {
 			this.packageName = packageName;
 			this.catchCopy = catchCopy;
 			this.packageText1 = packageText1;
-		}
-
-		[OnDeserialized]
-		private void OnDeserialized(StreamingContext context) {
-			if (0 == this.packageKey && null != this.packageId) {
-				try {
-					this.packageKey = GPackage.ConvertToKeyFromId(this.packageId);//2.0.5.1
-				} catch {
-					this.packageKey = 0;
-				}
-			}
 		}
 
 		public int PackageKey {

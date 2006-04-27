@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.Data;
 using System.Text;
 using System.Windows.Forms;
 using System.Reflection;
@@ -70,7 +69,7 @@ namespace Yusen.GExplorer {
 			int cntDiff = cntAll - cntAccCntId - cntAccPacId - cntAccTitle - cntNoneAcc;
 			this.lblCount.Text =
 				string.Format(
-					"総数[{0}] = 高速化済コンテンツID[{1}] + 高速化済パッケージID[{2}] + 高速化済タイトル[{3}] + 非高速化[{4}] + 食い違い数[{5}]",
+					"総数[{0}] = 高速コンテンツID[{1}] + 高速パッケージID[{2}] + 高速タイトル[{3}] + 非高速化[{4}] + 食い違い数[{5}]",
 					cntAll, cntAccCntId, cntAccPacId, cntAccTitle, cntNoneAcc, cntDiff);
 		}
 
@@ -90,7 +89,7 @@ namespace Yusen.GExplorer {
 					this.comboPredicate.Text,
 					this.txtObject.Text);
 			} catch (Exception ex) {
-				MessageBox.Show(ex.Message, "コンテンツプレディケイトの追加", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				MessageBox.Show(ex.Message, "条件の追加", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				return;
 			}
 			this.manager.Add(cp);

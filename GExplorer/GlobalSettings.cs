@@ -115,6 +115,7 @@ namespace Yusen.GExplorer {
 		}
 		private TimetableSortType timetableSortType = TimetableSortType.RecentlyUpdatedFirst;
 		[XmlIgnore]
+		[ReadOnly(true)]
 		[Category("クローラ")]
 		[DisplayName("番組表のソート対象")]
 		[Description("クロール時に利用する番組表を更新日優先にするか残り日数優先にするかを指定します．「クロールの順序」で番組表を先に読む設定にしておかないとほとんど意味がありません．")]

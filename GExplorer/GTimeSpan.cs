@@ -5,7 +5,9 @@ using System.Text.RegularExpressions;
 
 namespace Yusen.GExplorer {
 	public struct GTimeSpan {
-		private static readonly Regex regex = new Regex("^((?<h>[0-9]+)時間)?((?<m>[0-9]+)分)?((?<s>[0-9]+)秒)?$", RegexOptions.ExplicitCapture | RegexOptions.Compiled);
+		private static readonly Regex regex = new Regex(
+			@"^((?<h>\d+)時間)?((?<m>\d+)分)?((?<s>\d+)秒)?$",
+			RegexOptions.ExplicitCapture | RegexOptions.Compiled);
 		
 		private TimeSpan? timeSpan;
 		private string original;

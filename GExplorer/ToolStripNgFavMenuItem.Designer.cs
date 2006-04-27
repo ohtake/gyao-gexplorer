@@ -77,13 +77,13 @@
 			// 
 			this.tsmiTestNg.Name = "tsmiTestNg";
 			this.tsmiTestNg.Size = new System.Drawing.Size(200, 22);
-			this.tsmiTestNg.Text = "NGテスト(&E)";
+			this.tsmiTestNg.Text = "NGテスト(&E)...";
 			// 
 			// tsmiTestFav
 			// 
 			this.tsmiTestFav.Name = "tsmiTestFav";
 			this.tsmiTestFav.Size = new System.Drawing.Size(200, 22);
-			this.tsmiTestFav.Text = "FAVテスト(&S)";
+			this.tsmiTestFav.Text = "FAVテスト(&S)...";
 			// 
 			// ToolStripNgFavMenuItem
 			// 

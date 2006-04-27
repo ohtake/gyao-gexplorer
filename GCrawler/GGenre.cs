@@ -63,9 +63,6 @@ namespace Yusen.GCrawler {
 		}
 
 		private readonly int keyNo;
-		[Obsolete("imageDirに名前変更", true),OptionalField]//2.0.5.1
-		private readonly string dir;
-		[OptionalField]//2.0.5.1
 		private readonly string imageDir;
 		private readonly string name;
 		private readonly Color color;
@@ -175,38 +172,6 @@ namespace Yusen.GCrawler {
 				// blog の動的なページによりトラップにはまるので
 				// トップと番組表のみしか読まないようにする
 				get { return new Uri("http://www.gyao.jp/dummy/"); }
-			}
-		}
-		[Obsolete("GGenre200509に統合", true)]//2.0.5.1
-		[Serializable]
-		private class GGenre200509Drama : GGenre200509 {
-			public GGenre200509Drama(int keyNo, string imageDir, string rootDir, string name, Color color)
-				: base(keyNo, imageDir, rootDir, name, color) {
-			}
-			public override Uri TopPageUri {
-				get { throw new Exception(); }
-			}
-			public override Uri RootUri {
-				get { throw new Exception(); }
-			}
-			public override bool IsCrawlable {
-				get { throw new Exception(); }
-			}
-		}
-		[Obsolete("GGenre200509に統合", true)]//2.0.5.1
-		[Serializable]
-		private class GGenre200509NewsBiz : GGenre200509 {
-			public GGenre200509NewsBiz(int keyNo, string imageDir, string rootDir, string name, Color color)
-				: base(keyNo, imageDir, rootDir, name, color) {
-			}
-			public override Uri TopPageUri {
-				get { throw new Exception(); }
-			}
-			public override Uri RootUri {
-				get { throw new Exception(); }
-			}
-			public override bool IsCrawlable {
-				get { throw new Exception(); }
 			}
 		}
 	}

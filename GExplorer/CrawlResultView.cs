@@ -540,7 +540,10 @@ namespace Yusen.GExplorer {
 			get { return this.showPackages; }
 			set {
 				this.showPackages = value;
+				this.listView1.BeginUpdate();
 				this.listView1.ShowGroups = value;
+				this.DisplayItems();
+				this.listView1.EndUpdate();
 			}
 		}
 		private bool HoverSelect {
@@ -688,6 +691,7 @@ namespace Yusen.GExplorer {
 			}
 			
 			this.listView1.EndUpdate();
+			
 			if (this.FilterEnabled) {
 				this.tslNumber.Text = string.Format("{0}+{1}+{2}", this.listView1.Items.Count, filtered, aboned);
 			} else {

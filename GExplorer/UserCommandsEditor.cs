@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Windows.Forms;
-using System.Reflection;
-using System.Drawing;
 using System.ComponentModel;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Windows.Forms;
+using System.Text;
 using System.Xml.Serialization;
 
 namespace Yusen.GExplorer {
@@ -65,25 +65,56 @@ namespace Yusen.GExplorer {
 			
 			this.btnsNeedingSelection = new Button[]{
 				this.btnUp, this.btnDown, this.btnDelete, this.btnModify,};
-
-			//簡易追加機能のメニューを作成
-			while (this.tscapmiProperty.HasDropDownItems) {
-				ToolStripItem tsi = this.tscapmiProperty.DropDownItems[0];
-				this.tscapmiProperty.DropDownItems.Remove(tsi);
-				this.cmsArgs.Items.Add(tsi);
+			
+			if (base.DesignMode) return;
+			
+			{//簡易追加機能のメニューを作成
+				List<ToolStripItem> categories = new List<ToolStripItem>();
+				foreach (ToolStripItem item in this.tscapmiProperty.DropDownItems) {
+					categories.Add(item);
+				}
+				this.tscapmiProperty.DropDownItems.Clear();
+				categories.Reverse();
+				foreach (ToolStripItem item in categories) {
+					this.cmsArgs.Items.Insert(0, item);
+				}
 			}
 			{//リテラル文字
-				this.cmsArgs.Items.Add(new ToolStripSeparator());
-				ToolStripMenuItem tsmiLiterals = new ToolStripMenuItem("リテラル文字");
+				List<ToolStripItem> literals = new List<ToolStripItem>();
 				foreach (string escaped in UserCommand.GetEscapedLiterals()) {
 					ToolStripMenuItem tsmi = new ToolStripMenuItem(UserCommand.UnescapeLiteral(escaped));
 					tsmi.Tag = escaped;
 					tsmi.Click += delegate(object sender2, EventArgs e2) {
 						this.AppendArg((sender2 as ToolStripMenuItem).Tag as string);
 					};
-					tsmiLiterals.DropDownItems.Add(tsmi);
+					literals.Add(tsmi);
 				}
-				this.cmsArgs.Items.Add(tsmiLiterals);
+				this.tsmiLiterals.DropDownItems.AddRange(literals.ToArray());
+			}
+			{//コードページ
+				List<ToolStripItem> firstLetters = new List<ToolStripItem>();
+				List<EncodingInfo> eis = new List<EncodingInfo>(Encoding.GetEncodings());
+				eis.Sort(new Comparison<EncodingInfo>(delegate(EncodingInfo a, EncodingInfo b){
+					return string.Compare(a.DisplayName, b.DisplayName, false);
+				}));
+				char firstLetter = char.MinValue;
+				ToolStripMenuItem tsmiFirstLetter = null;
+				foreach (EncodingInfo ei in eis) {
+					string displayName = ei.DisplayName;
+					if (string.IsNullOrEmpty(displayName)) continue;
+					if (null == tsmiFirstLetter || firstLetter != displayName[0]) {
+						firstLetter = displayName[0];
+						tsmiFirstLetter = new ToolStripMenuItem(firstLetter.ToString());
+						firstLetters.Add(tsmiFirstLetter);
+					}
+					ToolStripMenuItem tsmi = new ToolStripMenuItem(ei.DisplayName.Replace("&", "&&"));
+					tsmi.Tag = ei.Name;
+					tsmi.Click += delegate(object sender2, EventArgs e2) {
+						this.AppendArg((sender2 as ToolStripMenuItem).Tag as string);
+					};
+					tsmiFirstLetter.DropDownItems.Add(tsmi);
+				}
+				this.tsmiCodepages.DropDownItems.AddRange(firstLetters.ToArray());
 			}
 		}
 
@@ -104,7 +135,6 @@ namespace Yusen.GExplorer {
 			//位置復元のつもり
 			this.lboxCommands.SelectedIndex = oldSelIndex < itemCount ? oldSelIndex : itemCount - 1;
 			
-			this.btnSort.Enabled = 0 != this.lboxCommands.Items.Count;
 			bool hasItem = 0 < itemCount;
 			foreach(Button b in this.btnsNeedingSelection) {
 				b.Enabled = hasItem;
@@ -164,8 +194,8 @@ namespace Yusen.GExplorer {
 			UserCommandsManager.Instance.RemoveAt(oldSelIdx);
 		}
 		
-		private void btnSort_Click(object sender, EventArgs e) {
-			UserCommandsManager.Instance.Sort();
+		private void btnSeparator_Click(object sender, EventArgs e) {
+			this.txtTitle.Text = UserCommand.SeparatorTitle;
 		}
 		private void btnBrowse_Click(object sender, EventArgs e) {
 			if(DialogResult.OK == this.openFileDialog1.ShowDialog()) {

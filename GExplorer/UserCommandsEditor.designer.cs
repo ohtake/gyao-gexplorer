@@ -31,17 +31,21 @@
 			this.lblTitle = new System.Windows.Forms.Label();
 			this.txtTitle = new System.Windows.Forms.TextBox();
 			this.lblFile = new System.Windows.Forms.Label();
+			this.btnSeparator = new System.Windows.Forms.Button();
 			this.txtFile = new System.Windows.Forms.TextBox();
 			this.btnBrowse = new System.Windows.Forms.Button();
 			this.lblArg = new System.Windows.Forms.Label();
 			this.txtArg = new System.Windows.Forms.TextBox();
 			this.btnArg = new System.Windows.Forms.Button();
 			this.cmsArgs = new System.Windows.Forms.ContextMenuStrip(this.components);
+			this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+			this.tsmiLiterals = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
+			this.tsmiCodepages = new System.Windows.Forms.ToolStripMenuItem();
 			this.btnUp = new System.Windows.Forms.Button();
 			this.btnDown = new System.Windows.Forms.Button();
 			this.btnDelete = new System.Windows.Forms.Button();
 			this.panel1 = new System.Windows.Forms.Panel();
-			this.btnSort = new System.Windows.Forms.Button();
 			this.grpList = new System.Windows.Forms.GroupBox();
 			this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
 			this.lboxCommands = new System.Windows.Forms.ListBox();
@@ -51,6 +55,7 @@
 			this.tscapmiProperty = new Yusen.GExplorer.ToolStripCAPropertyMenuItem();
 			this.grpDetail.SuspendLayout();
 			this.tableLayoutPanel1.SuspendLayout();
+			this.cmsArgs.SuspendLayout();
 			this.panel1.SuspendLayout();
 			this.grpList.SuspendLayout();
 			this.tableLayoutPanel2.SuspendLayout();
@@ -64,7 +69,7 @@
 			this.grpDetail.Controls.Add(this.btnModify);
 			this.grpDetail.Controls.Add(this.tableLayoutPanel1);
 			this.grpDetail.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.grpDetail.Location = new System.Drawing.Point(3, 172);
+			this.grpDetail.Location = new System.Drawing.Point(3, 152);
 			this.grpDetail.Name = "grpDetail";
 			this.grpDetail.Size = new System.Drawing.Size(346, 139);
 			this.grpDetail.TabIndex = 200;
@@ -98,6 +103,7 @@
 			this.tableLayoutPanel1.Controls.Add(this.lblTitle, 0, 0);
 			this.tableLayoutPanel1.Controls.Add(this.txtTitle, 1, 0);
 			this.tableLayoutPanel1.Controls.Add(this.lblFile, 0, 1);
+			this.tableLayoutPanel1.Controls.Add(this.btnSeparator, 2, 0);
 			this.tableLayoutPanel1.Controls.Add(this.txtFile, 1, 1);
 			this.tableLayoutPanel1.Controls.Add(this.btnBrowse, 2, 1);
 			this.tableLayoutPanel1.Controls.Add(this.lblArg, 0, 2);
@@ -141,6 +147,17 @@
 			this.lblFile.TabIndex = 213;
 			this.lblFile.Text = "実行ファイル(&F)";
 			// 
+			// btnSeparator
+			// 
+			this.btnSeparator.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.btnSeparator.Location = new System.Drawing.Point(245, 3);
+			this.btnSeparator.Name = "btnSeparator";
+			this.btnSeparator.Size = new System.Drawing.Size(89, 23);
+			this.btnSeparator.TabIndex = 219;
+			this.btnSeparator.Text = "セパレータ(&S)";
+			this.btnSeparator.UseVisualStyleBackColor = true;
+			this.btnSeparator.Click += new System.EventHandler(this.btnSeparator_Click);
+			// 
 			// txtFile
 			// 
 			this.txtFile.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
@@ -154,9 +171,9 @@
 			// btnBrowse
 			// 
 			this.btnBrowse.Anchor = System.Windows.Forms.AnchorStyles.None;
-			this.btnBrowse.Location = new System.Drawing.Point(255, 33);
+			this.btnBrowse.Location = new System.Drawing.Point(245, 33);
 			this.btnBrowse.Name = "btnBrowse";
-			this.btnBrowse.Size = new System.Drawing.Size(69, 23);
+			this.btnBrowse.Size = new System.Drawing.Size(89, 23);
 			this.btnBrowse.TabIndex = 215;
 			this.btnBrowse.Text = "参照(&B)...";
 			this.btnBrowse.Click += new System.EventHandler(this.btnBrowse_Click);
@@ -186,13 +203,40 @@
 			this.btnArg.Name = "btnArg";
 			this.btnArg.Size = new System.Drawing.Size(89, 23);
 			this.btnArg.TabIndex = 218;
-			this.btnArg.Text = "簡易入力(&U)>>";
+			this.btnArg.Text = "入力補助(&U)>>";
 			this.btnArg.Click += new System.EventHandler(this.btnArg_Click);
 			// 
 			// cmsArgs
 			// 
+			this.cmsArgs.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem1,
+            this.tsmiLiterals,
+            this.toolStripMenuItem2,
+            this.tsmiCodepages});
 			this.cmsArgs.Name = "cmsArgs";
-			this.cmsArgs.Size = new System.Drawing.Size(61, 4);
+			this.cmsArgs.Size = new System.Drawing.Size(156, 60);
+			// 
+			// toolStripMenuItem1
+			// 
+			this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+			this.toolStripMenuItem1.Size = new System.Drawing.Size(152, 6);
+			// 
+			// tsmiLiterals
+			// 
+			this.tsmiLiterals.Name = "tsmiLiterals";
+			this.tsmiLiterals.Size = new System.Drawing.Size(155, 22);
+			this.tsmiLiterals.Text = "リテラル文字(&L)";
+			// 
+			// toolStripMenuItem2
+			// 
+			this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+			this.toolStripMenuItem2.Size = new System.Drawing.Size(152, 6);
+			// 
+			// tsmiCodepages
+			// 
+			this.tsmiCodepages.Name = "tsmiCodepages";
+			this.tsmiCodepages.Size = new System.Drawing.Size(155, 22);
+			this.tsmiCodepages.Text = "コードページ名(&C)";
 			// 
 			// btnUp
 			// 
@@ -227,20 +271,10 @@
 			this.panel1.Controls.Add(this.btnUp);
 			this.panel1.Controls.Add(this.btnDown);
 			this.panel1.Controls.Add(this.btnDelete);
-			this.panel1.Controls.Add(this.btnSort);
-			this.panel1.Location = new System.Drawing.Point(255, 4);
+			this.panel1.Location = new System.Drawing.Point(255, 14);
 			this.panel1.Name = "panel1";
-			this.panel1.Size = new System.Drawing.Size(82, 136);
+			this.panel1.Size = new System.Drawing.Size(82, 96);
 			this.panel1.TabIndex = 6;
-			// 
-			// btnSort
-			// 
-			this.btnSort.Location = new System.Drawing.Point(3, 110);
-			this.btnSort.Name = "btnSort";
-			this.btnSort.Size = new System.Drawing.Size(75, 23);
-			this.btnSort.TabIndex = 124;
-			this.btnSort.Text = "ソート(&S)";
-			this.btnSort.Click += new System.EventHandler(this.btnSort_Click);
 			// 
 			// grpList
 			// 
@@ -248,7 +282,7 @@
 			this.grpList.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.grpList.Location = new System.Drawing.Point(3, 3);
 			this.grpList.Name = "grpList";
-			this.grpList.Size = new System.Drawing.Size(346, 163);
+			this.grpList.Size = new System.Drawing.Size(346, 143);
 			this.grpList.TabIndex = 100;
 			this.grpList.TabStop = false;
 			this.grpList.Text = "外部コマンド一覧(&L)";
@@ -265,7 +299,7 @@
 			this.tableLayoutPanel2.Name = "tableLayoutPanel2";
 			this.tableLayoutPanel2.RowCount = 1;
 			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-			this.tableLayoutPanel2.Size = new System.Drawing.Size(340, 145);
+			this.tableLayoutPanel2.Size = new System.Drawing.Size(340, 125);
 			this.tableLayoutPanel2.TabIndex = 7;
 			// 
 			// lboxCommands
@@ -275,7 +309,7 @@
 			this.lboxCommands.ItemHeight = 12;
 			this.lboxCommands.Location = new System.Drawing.Point(3, 3);
 			this.lboxCommands.Name = "lboxCommands";
-			this.lboxCommands.Size = new System.Drawing.Size(246, 136);
+			this.lboxCommands.Size = new System.Drawing.Size(246, 112);
 			this.lboxCommands.TabIndex = 110;
 			this.lboxCommands.SelectedIndexChanged += new System.EventHandler(this.lboxCommands_SelectedIndexChanged);
 			// 
@@ -291,7 +325,7 @@
 			this.tableLayoutPanel3.RowCount = 2;
 			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
 			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
-			this.tableLayoutPanel3.Size = new System.Drawing.Size(352, 314);
+			this.tableLayoutPanel3.Size = new System.Drawing.Size(352, 294);
 			this.tableLayoutPanel3.TabIndex = 8;
 			// 
 			// openFileDialog1
@@ -304,7 +338,7 @@
 			this.cmsDummy.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tscapmiProperty});
 			this.cmsDummy.Name = "cmsDummy";
-			this.cmsDummy.Size = new System.Drawing.Size(225, 48);
+			this.cmsDummy.Size = new System.Drawing.Size(225, 26);
 			// 
 			// tscapmiProperty
 			// 
@@ -317,10 +351,10 @@
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(352, 314);
+			this.ClientSize = new System.Drawing.Size(352, 294);
 			this.Controls.Add(this.tableLayoutPanel3);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
-			this.MinimumSize = new System.Drawing.Size(360, 340);
+			this.MinimumSize = new System.Drawing.Size(360, 320);
 			this.Name = "UserCommandsEditor";
 			this.ShowInTaskbar = false;
 			this.Text = "外部コマンドエディタ";
@@ -328,6 +362,7 @@
 			this.grpDetail.ResumeLayout(false);
 			this.tableLayoutPanel1.ResumeLayout(false);
 			this.tableLayoutPanel1.PerformLayout();
+			this.cmsArgs.ResumeLayout(false);
 			this.panel1.ResumeLayout(false);
 			this.grpList.ResumeLayout(false);
 			this.tableLayoutPanel2.ResumeLayout(false);
@@ -357,12 +392,16 @@
 		private System.Windows.Forms.GroupBox grpList;
 		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
 		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
-		private System.Windows.Forms.Button btnSort;
 		private System.Windows.Forms.ListBox lboxCommands;
 		private System.Windows.Forms.OpenFileDialog openFileDialog1;
 		private System.Windows.Forms.Button btnArg;
 		private System.Windows.Forms.ContextMenuStrip cmsArgs;
 		private System.Windows.Forms.ContextMenuStrip cmsDummy;
 		private ToolStripCAPropertyMenuItem tscapmiProperty;
+		private System.Windows.Forms.Button btnSeparator;
+		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
+		private System.Windows.Forms.ToolStripMenuItem tsmiLiterals;
+		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
+		private System.Windows.Forms.ToolStripMenuItem tsmiCodepages;
 	}
 }

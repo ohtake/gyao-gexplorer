@@ -32,16 +32,20 @@ namespace Yusen.GExplorer {
 			List<ToolStripItem> items = new List<ToolStripItem>();
 			
 			foreach (UserCommand command in UserCommandsManager.Instance) {
-				ToolStripMenuItemWithUserCommand tsmiwuc = new ToolStripMenuItemWithUserCommand(command);
-				tsmiwuc.Click += delegate(object sender, EventArgs e) {
-					ToolStripMenuItemWithUserCommand sender2 = sender as ToolStripMenuItemWithUserCommand;
-					EventHandler<UserCommandSelectedEventArgs> handler = this.UserCommandSelected;
-					if (null == handler) {
-						throw new InvalidOperationException("UserCommandSelectedイベントがハンドルされていない");
-					}
-					handler(this, new UserCommandSelectedEventArgs(sender2.UserCommand));
-				};
-				items.Add(tsmiwuc);
+				if (command.IsSeparator) {
+					items.Add(new ToolStripSeparator());
+				} else {
+					ToolStripMenuItemWithUserCommand tsmiwuc = new ToolStripMenuItemWithUserCommand(command);
+					tsmiwuc.Click += delegate(object sender, EventArgs e) {
+						ToolStripMenuItemWithUserCommand sender2 = sender as ToolStripMenuItemWithUserCommand;
+						EventHandler<UserCommandSelectedEventArgs> handler = this.UserCommandSelected;
+						if (null == handler) {
+							throw new InvalidOperationException("UserCommandSelectedイベントがハンドルされていない");
+						}
+						handler(this, new UserCommandSelectedEventArgs(sender2.UserCommand));
+					};
+					items.Add(tsmiwuc);
+				}
 			}
 			
 			base.DropDownItems.Clear();
@@ -62,6 +66,16 @@ namespace Yusen.GExplorer {
 				UserCommandsManager.Instance.UserCommandsChanged -= new EventHandler(UserCommandsManager_UserCommandsChanged);
 			}
 			base.Dispose(disposing);
+		}
+	}
+	
+	public sealed class UserCommandSelectedEventArgs : EventArgs {
+		private UserCommand command;
+		public UserCommandSelectedEventArgs(UserCommand command) {
+			this.command = command;
+		}
+		public UserCommand UserCommand {
+			get { return this.command; }
 		}
 	}
 }
