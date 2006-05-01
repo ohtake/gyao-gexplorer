@@ -76,7 +76,7 @@
 			this.tshmiHelp = new Yusen.GExplorer.ToolStripHelpMenuItem();
 			this.inputBoxDialog1 = new Yusen.GExplorer.InputBoxDialog();
 			this.timerAutoVolume = new System.Windows.Forms.Timer(this.components);
-			this.timerSkipKrm = new System.Windows.Forms.Timer(this.components);
+			this.timerSkipGyaoCm = new System.Windows.Forms.Timer(this.components);
 			this.toolStripContainer1.BottomToolStripPanel.SuspendLayout();
 			this.toolStripContainer1.ContentPanel.SuspendLayout();
 			this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
@@ -545,7 +545,7 @@
 			// 
 			// timerSkipKrm
 			// 
-			this.timerSkipKrm.Tick += new System.EventHandler(this.timerSkipKrm_Tick);
+			this.timerSkipGyaoCm.Tick += new System.EventHandler(this.timerSkipGyaoCm_Tick);
 			// 
 			// PlayerForm
 			// 
@@ -616,7 +616,7 @@
 		private System.Windows.Forms.ToolStripStatusLabel tsslChapter;
 		private System.Windows.Forms.ToolStripStatusLabel tsslTitle;
 		private System.Windows.Forms.Timer timerAutoVolume;
-		private System.Windows.Forms.Timer timerSkipKrm;
+		private System.Windows.Forms.Timer timerSkipGyaoCm;
 		private System.Windows.Forms.SplitContainer splitContainer1;
 		private System.Windows.Forms.WebBrowser wbBanner;
 		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;

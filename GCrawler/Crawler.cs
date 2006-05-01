@@ -168,9 +168,9 @@ namespace Yusen.GCrawler {
 						this.pacsSuccess.Count + this.pacsFailed.Count + this.pacsWaiting.Count,
 						GPackage.ConvertToIdFromKey(packKey)));
 					GPackage package;
-					List<int> childContKeys;
+					Dictionary<int, ContentPropertiesOnPackagePage> childConts;
 					try{
-						package = GPackage.DoDownload(packKey, out childContKeys, this.cpPacs);
+						package = GPackage.DoDownload(packKey, out childConts);
 					}catch(Exception e){
 						this.pacsFailed.Add(packKey);
 						this.OnIgnoringException(e);
@@ -183,12 +183,15 @@ namespace Yusen.GCrawler {
 						this.OnIgnoringException(new Exception(string.Format("別ジャンルのため無視 <{0}>", package.PackageId)));
 						continue;
 					}
-					
-					foreach (int contKey in childContKeys) {
-						if (!this.contsWatings.Contains(contKey)) {
-							this.contsWatings.Enqueue(contKey);
+
+					foreach (KeyValuePair<int, ContentPropertiesOnPackagePage> pair in childConts) {
+						if (!this.contsWatings.Contains(pair.Key)) {
+							this.contsWatings.Enqueue(pair.Key);
 						}
-						this.contPackRelations.Add(contKey, packKey);
+						if(!this.contPackRelations.ContainsKey(pair.Key)){
+							this.contPackRelations.Add(pair.Key, packKey);
+							this.cpPacs.Add(pair.Key, pair.Value);
+						}
 					}
 				}
 			}
@@ -212,7 +215,7 @@ namespace Yusen.GCrawler {
 							this.contsVisited.Count + this.contsIgnored.Count + this.contsWatings.Count,
 							GContent.ConvertToIdFromKey(contKey)));
 						if (this.genre.GenreKey.Equals(content.GenreKey)) {
-							//ヒット成功
+							//ヒット成功で尚且つ同一ジャンル
 							goto success;
 						} else {
 							//ヒット成功だけども別ジャンルだった
@@ -258,30 +261,37 @@ namespace Yusen.GCrawler {
 					// 取得していないパッケージなら取得する
 					// ここから FetchPackages のコピペ改変
 					GPackage package;
-					List<int> childContKeys;
+					Dictionary<int, ContentPropertiesOnPackagePage> childConts;
 					try {
-						package = GPackage.DoDownload(packKey, out childContKeys, this.cpPacs);
+						package = GPackage.DoDownload(packKey, out childConts);
 					} catch (Exception e) {
 						this.pacsFailed.Add(packKey);
 						this.OnIgnoringException(e);
 						continue;
 					}
 					this.pacsSuccess.Add(packKey, package);
-					
-					foreach (int key in childContKeys) {
-						if (contKey == key) {
-							ContentPropertiesOnPackagePage cpPac = this.cpPacs[contKey];
+
+					foreach (KeyValuePair<int, ContentPropertiesOnPackagePage> pair in childConts) {
+						if (contKey == pair.Key) {
+							ContentPropertiesOnPackagePage cpPac = pair.Value;
 							if (!content.HasSameContentPropertiesOnPackagePage(cpPac)) {
 								//パッケージページで取れた情報を追加できたのならば追加してキャッシュ更新
 								content.SetContentPropertiesOnPackagePage(cpPac);
 								this.cacheController.RemoveCache(content.ContentKey);
 								this.cacheController.AddCache(content);
 							}
-						}else if (!this.contsWatings.Contains(key) && !this.contsVisited.ContainsKey(key) && !this.contsIgnored.Contains(key)) {
+						} else if (this.contsIgnored.Contains(pair.Key)) {
+							//無視済みならば何もしないで次
+							continue;
+						} else if (!this.contsWatings.Contains(pair.Key) && !this.contsVisited.ContainsKey(pair.Key)) {
 							//新たに見つかったコンテンツをキューに追加
-							this.contsWatings.Enqueue(key);
+							this.contsWatings.Enqueue(pair.Key);
 						}
-						this.contPackRelations.Add(key, packKey);
+						//コンテンツとパッケージの情報を追加
+						if (!this.contPackRelations.ContainsKey(pair.Key)) {
+							this.contPackRelations.Add(pair.Key, packKey);
+							this.cpPacs.Add(pair.Key, pair.Value);
+						}
 					}
 					continue;
 				}

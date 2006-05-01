@@ -59,9 +59,10 @@ namespace Yusen.GCrawler {
 			return new Uri(string.Format("http://www.gyao.jp/img/info/{0}/{1}_{2}.jpg", imageDir, GPackage.ConvertToIdFromKey(packageKey), imageSizePostfix));
 		}
 		
-		internal static GPackage DoDownload(int packKey, out List<int> childContKeys, SortedDictionary<int, ContentPropertiesOnPackagePage> cpPacs) {
+		internal static GPackage DoDownload(int packKey, out Dictionary<int, ContentPropertiesOnPackagePage> children) {
 			string packId = GPackage.ConvertToIdFromKey(packKey);
 			Uri uri = GPackage.CreatePackagePageUri(packId);
+			children = new Dictionary<int, ContentPropertiesOnPackagePage>();
 			using (TextReader reader = new StreamReader(new WebClient().OpenRead(uri), Encoding.GetEncoding("Shift_JIS"))) {
 				string allHtml = reader.ReadToEnd();
 
@@ -79,7 +80,6 @@ namespace Yusen.GCrawler {
 				} else {
 					throw new Exception(string.Format("シリーズ一覧ページからパッケージの情報が取れなかった <{0}>", packId));
 				}
-				List<int> contentKeys = new List<int>();
 				for (Match matchContent = GPackage.regexPackageContent.Match(allHtml); matchContent.Success; matchContent = matchContent.NextMatch()) {
 					string id = matchContent.Groups["ContentId"].Value;
 					string summary = HtmlUtility.HtmlToText(matchContent.Groups["Summary"].Value);
@@ -87,15 +87,15 @@ namespace Yusen.GCrawler {
 					
 					ContentPropertiesOnPackagePage cpPac = new ContentPropertiesOnPackagePage(deadline, summary);
 					int key = GContent.ConvertToKeyFromId(id);
-					cpPacs.Add(key, cpPac);
-					contentKeys.Add(key);
+					if (!children.ContainsKey(key)) {
+						children.Add(key, cpPac);
+					}
 				}
 				//コンテンツをひとつも取れなかったらエラーだろう
-				if (0 == contentKeys.Count) {
+				if (0 == children.Count) {
 					throw new Exception(string.Format("シリーズ一覧からコンテンツIDをひとつも抽出できなかった <{0}>", packId));
 				}
 				
-				childContKeys = contentKeys;
 				return new GPackage(packKey, GGenre.ConvertToKeyFromId(genreId), packageName, packageCatchCopy, packageText1);
 			}
 		}

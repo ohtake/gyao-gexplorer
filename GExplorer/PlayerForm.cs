@@ -19,7 +19,7 @@ namespace Yusen.GExplorer {
 			private const int ZoomMax = 200;
 			private const string VolumeRangeMessage = "[0-100]";
 			private const string ZoomRangeMessage = "[25-200]";
-
+			
 			private PlayerForm owner;
 			
 			public PlayerFormSettings() : this(null){
@@ -153,14 +153,14 @@ namespace Yusen.GExplorer {
 			private bool removePlayedContentEnabled = false;
 
 			[Category("再生")]
-			[DisplayName("krmの早期スキップ")]
-			[Description("krmを再生直後にスキップすることでステーションコールまでの待ち時間を短くします．")]
+			[DisplayName("gyaocmの早期スキップ")]
+			[Description("cm_licenseやkrmを再生直後にスキップすることでステーションコールまでの待ち時間を短くします．")]
 			[DefaultValue(true)]
-			public bool SkipKrmEnabled {
-				get { return this.skipKrmEnabled; }
-				set { this.skipKrmEnabled = value; }
+			public bool SkipGyaoCmEnabled {
+				get { return this.skipGyaoCmEnabled; }
+				set { this.skipGyaoCmEnabled = value; }
 			}
-			private bool skipKrmEnabled = true;
+			private bool skipGyaoCmEnabled = true;
 
 			[Category("再生")]
 			[DisplayName("最初からチャプタモード")]
@@ -397,9 +397,9 @@ namespace Yusen.GExplorer {
 				}
 			}
 		}
-		private bool IsKrm {
+		private bool IsGyaoCm {
 			get {
-				return this.wmpMain.currentMedia.sourceURL.Contains("/krm");
+				return this.wmpMain.currentMedia.sourceURL.Contains("/gyaocm");
 			}
 		}
 		private bool IsCf {
@@ -650,9 +650,9 @@ namespace Yusen.GExplorer {
 						this.splitContainer1.Panel2Collapsed = true;
 						this.wbBanner.Navigate("about:blank");
 					}
-					//cm_licenseの早期スキップ
-					if (this.settings.SkipKrmEnabled && this.IsKrm) {
-						this.timerSkipKrm.Start();
+					//cm_licenseとkrmの早期スキップ
+					if (this.settings.SkipGyaoCmEnabled && this.IsGyaoCm) {
+						this.timerSkipGyaoCm.Start();
 					}
 					//ステータスバー更新
 					this.UpdateStatusbatText();
@@ -700,8 +700,8 @@ namespace Yusen.GExplorer {
 			this.timerAutoVolume.Stop();
 			this.ModifyVolume();
 		}
-		private void timerSkipKrm_Tick(object sender, EventArgs e) {
-			this.timerSkipKrm.Stop();
+		private void timerSkipGyaoCm_Tick(object sender, EventArgs e) {
+			this.timerSkipGyaoCm.Stop();
 			this.tsmiNextTrack.PerformClick();
 		}
 
