@@ -200,7 +200,7 @@ namespace Yusen.GExplorer {
 			[Category("自動音量調整")]
 			[DisplayName("CFの音量")]
 			[Description("自動音量調節を有効にしている場合で，CFに切り替わったときに音量を設定します．" + PlayerFormSettings.VolumeRangeMessage)]
-			[DefaultValue(20)]
+			[DefaultValue(40)]
 			public int VolumeCf {
 				get { return this.volumeCf; }
 				set {
@@ -210,7 +210,7 @@ namespace Yusen.GExplorer {
 					this.volumeCf = value;
 				}
 			}
-			private int volumeCf = 20;
+			private int volumeCf = 40;
 			
 			#region INewSettings<PlayerFormSettings> Members
 			public void ApplySettings(PlayerFormSettings newSettings) {

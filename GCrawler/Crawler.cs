@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.Serialization;
+using System.Text.RegularExpressions;
 
 namespace Yusen.GCrawler {
 	public class Crawler {
@@ -21,7 +22,7 @@ namespace Yusen.GCrawler {
 			private GGenre genre;
 			private IHtmlParser parser;
 			private IContentCacheController cacheController;
-			
+
 			private Queue<Uri> pagesWaiting = new Queue<Uri>();
 			private List<Uri> pagesSuccess = new List<Uri>();
 			private List<Uri> pagesFailed = new List<Uri>();
@@ -44,7 +45,7 @@ namespace Yusen.GCrawler {
 				this.genre = genre;
 				this.parser = parser;
 				this.cacheController = cacheController;
-				
+
 				switch(settings.CrawlOrder) {
 					case CrawlOrder.TopPageFirst:
 						this.pagesWaiting.Enqueue(this.genre.TopPageUri);
@@ -130,15 +131,15 @@ namespace Yusen.GCrawler {
 							int key = GPackage.ConvertToKeyFromId(id);
 							if(!this.pacsWaiting.Contains(key)) {
 								this.pacsWaiting.Enqueue(key);
-								continue;
 							}
+							continue;
 						}
 						if(GContent.TryExtractContentId(pair.Uri, out id)) {
 							int key = GContent.ConvertToKeyFromId(id);
 							if(!this.contsWatings.Contains(key)) {
 								this.contsWatings.Enqueue(key);
-								continue;
 							}
+							continue;
 						}
 						//IDが取れなかったらクロールキューに追加
 						if(this.IsInRestriction(pair.Uri)) {
