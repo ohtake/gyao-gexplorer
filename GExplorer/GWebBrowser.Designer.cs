@@ -33,7 +33,6 @@
 			this.tsmiContentAddToPlayListWithComment = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiContentPlayWithoutAdding = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-			this.tsmiContentPlayWmp = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiContentPlayBrowser = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsucmiContentCommand = new Yusen.GExplorer.ToolStripUserCommandMenuItem();
@@ -63,7 +62,6 @@
             this.tsmiContentAddToPlayListWithComment,
             this.tsmiContentPlayWithoutAdding,
             this.toolStripSeparator2,
-            this.tsmiContentPlayWmp,
             this.tsmiContentPlayBrowser,
             this.toolStripSeparator8,
             this.tsucmiContentCommand,
@@ -116,12 +114,6 @@
 			// 
 			this.toolStripSeparator2.Name = "toolStripSeparator2";
 			this.toolStripSeparator2.Size = new System.Drawing.Size(200, 6);
-			// 
-			// tsmiContentPlayWmp
-			// 
-			this.tsmiContentPlayWmp.Name = "tsmiContentPlayWmp";
-			this.tsmiContentPlayWmp.Size = new System.Drawing.Size(203, 22);
-			this.tsmiContentPlayWmp.Text = "WMPで再生(&W)";
 			// 
 			// tsmiContentPlayBrowser
 			// 
@@ -224,7 +216,6 @@
 		private System.Windows.Forms.ToolStripMenuItem tsmiContentAddToPlayList;
 		private System.Windows.Forms.ToolStripMenuItem tsmiContentPlayWithoutAdding;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
-		private System.Windows.Forms.ToolStripMenuItem tsmiContentPlayWmp;
 		private System.Windows.Forms.ToolStripMenuItem tsmiContentPlayBrowser;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator8;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;

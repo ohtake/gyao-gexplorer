@@ -9,10 +9,11 @@ using System.Text.RegularExpressions;
 using System.Text;
 using System.Reflection;
 using System.Web;
+using Yusen.GCrawler;
 
 namespace Yusen.GExplorer {
 	static class Utility{
-		private const string UserSettingsDir = "UserSettings";
+		private static readonly string UserSettingsDir = Path.Combine(Application.StartupPath, "UserSettings");
 		
 		private static string GetPathForIE() {
 			return Path.Combine(
@@ -37,9 +38,6 @@ namespace Yusen.GExplorer {
 		}
 		private static void BrowseWithIE(Uri uri) {
 			Process.Start(Utility.GetPathForIE(), uri.AbsoluteUri);
-		}
-		public static void PlayWithWMP(Uri uri) {
-			Process.Start(Utility.GetPathForWMP(), uri.AbsoluteUri);
 		}
 		
 		public static void SerializeSettings<T>(string filename, T settings) {
@@ -113,8 +111,8 @@ namespace Yusen.GExplorer {
 			}
 		}
 
-		public static string GetUserProfileOf(int userNo) {
-			HttpWebRequest req = WebRequest.Create("http://www.gyao.jp/sityou/movie/contentsId/cnt0000000/rateId/bit0000002/login_from/shityou/") as HttpWebRequest;
+		public static string GetUserProfileOf(int userNo, int contKey) {
+			HttpWebRequest req = WebRequest.Create(GContent.CreatePlayerPageUri(contKey, GlobalSettings.Instance.BitRate)) as HttpWebRequest;
 			CookieContainer cc = new CookieContainer();
 			cc.Add(new Cookie("Cookie_UserId", userNo.ToString(), "/", "www.gyao.jp"));
 			cc.Add(new Cookie("Cookie_CookieId", "0", "/", "www.gyao.jp"));

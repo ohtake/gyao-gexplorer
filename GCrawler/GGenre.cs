@@ -16,7 +16,7 @@ namespace Yusen.GCrawler {
 				new GGenre200509( 2, "dorama", "drama", "ドラマ", Color.FromArgb(0xFF, 0x99, 0x66)),
 				new GGenre200509( 9, "sports", "スポーツ", Color.FromArgb(0x00, 0x66, 0xFF)),
 				new GGenre200509(10, "documentary", "ドキュメンタリー", Color.FromArgb(0x00, 0x99, 0x33)),
-				new GGenre200509(21, "health", "beauty", "ビューティー＆ヘルス", Color.FromArgb(0xFF, 0x99, 0xCC)),
+				new GGenre200509(21, "health", "beauty", "ビューティー＆ファッション", Color.FromArgb(0xFF, 0x99, 0xCC)),
 				new GGenre200509(20, "culture", "life", "ライフ＆カルチャー", Color.FromArgb(0x99, 0x66, 0x33)),
 				new GGenre200509( 6, "anime", "アニメ", Color.FromArgb(0x00, 0x99, 0xFF)),
 				new GGenre200509( 5, "variety", "バラエティ", Color.FromArgb(0x66, 0xCC, 0x33)),

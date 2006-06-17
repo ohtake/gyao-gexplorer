@@ -13,7 +13,7 @@ namespace Yusen.GExplorer {
 	public sealed partial class CrawlResultView : UserControl, IHasNewSettings<CrawlResultView.CrawlResultViewSettings> {
 		public sealed class CrawlResultViewSettings : INewSettings<CrawlResultViewSettings> {
 			private const int MaxMenuItems = 16;
-
+			
 			private readonly CrawlResultView owner;
 			public CrawlResultViewSettings() : this(null) {
 			}
@@ -477,7 +477,6 @@ namespace Yusen.GExplorer {
 			}
 		}
 		
-		[DefaultValue("")]
 		private string FilterString {
 			get {
 				return this.tstbFilter.Text;
@@ -629,8 +628,8 @@ namespace Yusen.GExplorer {
 
 			this.listView1.BeginUpdate();
 
-			this.listView1.Groups.Clear();
 			this.listView1.Items.Clear();
+			this.listView1.Groups.Clear();
 			
 			this.listView1.Groups.AddRange(this.allLvgs.ToArray());
 			
@@ -899,11 +898,6 @@ namespace Yusen.GExplorer {
 		private void tsmiPlay_Click(object sender, EventArgs e) {
 			foreach (ContentAdapter cont in this.SelectedContents) {
 				PlayerForm.Play(cont);
-			}
-		}
-		private void tsmiPlayWithWmp_Click(object sender, EventArgs e) {
-			foreach (ContentAdapter cont in this.SelectedContents) {
-				Utility.PlayWithWMP(cont.PlayListUri);
 			}
 		}
 		private void tsmiPlayWithBrowser_Click(object sender, EventArgs e) {

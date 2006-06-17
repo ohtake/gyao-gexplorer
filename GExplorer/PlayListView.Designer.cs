@@ -42,7 +42,6 @@
 			this.tsmiMoveToBottom = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiRemoveItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-			this.tsmiPlayWithWmp = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiPlayWithBrowser = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiBrowseDetail = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
@@ -55,6 +54,7 @@
 			this.tsmiCatalogNormal = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiCatalogImageSmall = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiCatalogImageLarge = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsnfmiNgFav = new Yusen.GExplorer.ToolStripNgFavMenuItem();
 			this.tsucmiCommand = new Yusen.GExplorer.ToolStripUserCommandMenuItem();
 			this.toolStrip1 = new System.Windows.Forms.ToolStrip();
 			this.tslTitle = new System.Windows.Forms.ToolStripLabel();
@@ -76,7 +76,6 @@
 			this.sfdXml = new System.Windows.Forms.SaveFileDialog();
 			this.timerSumSelected = new System.Windows.Forms.Timer(this.components);
 			this.inputBoxDialog1 = new Yusen.GExplorer.InputBoxDialog();
-			this.tsnfmiNgFav = new Yusen.GExplorer.ToolStripNgFavMenuItem();
 			this.toolStripContainer1.ContentPanel.SuspendLayout();
 			this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
 			this.toolStripContainer1.SuspendLayout();
@@ -165,9 +164,8 @@
             this.tsmiMove,
             this.tsmiRemoveItem,
             this.toolStripSeparator2,
-            this.tsmiPlayWithWmp,
-            this.tsmiPlayWithBrowser,
             this.tsmiBrowseDetail,
+            this.tsmiPlayWithBrowser,
             this.toolStripSeparator3,
             this.tsmiCopyName,
             this.tsmiCopyUri,
@@ -178,7 +176,7 @@
             this.tsnfmiNgFav,
             this.tsucmiCommand});
 			this.cmsPlayListItem.Name = "cmsPlayListItem";
-			this.cmsPlayListItem.Size = new System.Drawing.Size(212, 358);
+			this.cmsPlayListItem.Size = new System.Drawing.Size(212, 314);
 			this.cmsPlayListItem.Opening += new System.ComponentModel.CancelEventHandler(this.cmsPlayListItem_Opening);
 			// 
 			// tsmiPlay
@@ -258,13 +256,6 @@
 			// 
 			this.toolStripSeparator2.Name = "toolStripSeparator2";
 			this.toolStripSeparator2.Size = new System.Drawing.Size(208, 6);
-			// 
-			// tsmiPlayWithWmp
-			// 
-			this.tsmiPlayWithWmp.Name = "tsmiPlayWithWmp";
-			this.tsmiPlayWithWmp.Size = new System.Drawing.Size(211, 22);
-			this.tsmiPlayWithWmp.Text = "WMPで再生(&W)";
-			this.tsmiPlayWithWmp.Click += new System.EventHandler(this.tsmiPlayWithWmp_Click);
 			// 
 			// tsmiPlayWithBrowser
 			// 
@@ -349,6 +340,13 @@
 			this.tsmiCatalogImageLarge.Size = new System.Drawing.Size(179, 22);
 			this.tsmiCatalogImageLarge.Text = "画像大のみ(&L)";
 			this.tsmiCatalogImageLarge.Click += new System.EventHandler(this.tsmiCatalogImageLarge_Click);
+			// 
+			// tsnfmiNgFav
+			// 
+			this.tsnfmiNgFav.Name = "tsnfmiNgFav";
+			this.tsnfmiNgFav.Size = new System.Drawing.Size(211, 22);
+			this.tsnfmiNgFav.Text = "NG/FAV関連(&G)";
+			this.tsnfmiNgFav.SubmenuSelected += new System.EventHandler<Yusen.GExplorer.ContentSelectionRequiredEventArgs>(this.tsnfmiNgFav_SubmenuSelected);
 			// 
 			// tsucmiCommand
 			// 
@@ -504,13 +502,6 @@
 			this.inputBoxDialog1.Message = null;
 			this.inputBoxDialog1.Title = null;
 			// 
-			// tsnfmiNgFav
-			// 
-			this.tsnfmiNgFav.Name = "tsnfmiNgFav";
-			this.tsnfmiNgFav.Size = new System.Drawing.Size(211, 22);
-			this.tsnfmiNgFav.Text = "NG/FAV関連(&G)";
-			this.tsnfmiNgFav.SubmenuSelected += new System.EventHandler<Yusen.GExplorer.ContentSelectionRequiredEventArgs>(this.tsnfmiNgFav_SubmenuSelected);
-			// 
 			// PlayListView
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -548,7 +539,6 @@
 		private System.Windows.Forms.ToolStripMenuItem tsmiMoveToBottom;
 		private System.Windows.Forms.ToolStripMenuItem tsmiRemoveItem;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
-		private System.Windows.Forms.ToolStripMenuItem tsmiPlayWithWmp;
 		private System.Windows.Forms.ToolStripMenuItem tsmiPlayWithBrowser;
 		private System.Windows.Forms.ToolStripMenuItem tsmiBrowseDetail;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;

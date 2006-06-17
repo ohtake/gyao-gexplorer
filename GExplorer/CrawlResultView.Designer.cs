@@ -29,7 +29,6 @@
 			this.tsmiAddWithComment = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiPlay = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
-			this.tsmiPlayWithWmp = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiPlayWithBrowser = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiBroseDetail = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
@@ -59,9 +58,9 @@
 			this.tsMain = new System.Windows.Forms.ToolStrip();
 			this.tslTitle = new System.Windows.Forms.ToolStripLabel();
 			this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
-			this.tsbShowFilter = new System.Windows.Forms.ToolStripButton();
 			this.tsddbVisibilities = new System.Windows.Forms.ToolStripDropDownButton();
 			this.tscvsVisibilitiesSelector = new Yusen.GExplorer.ToolStripContentVisibilitiesSelector();
+			this.tsbShowFilter = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsddbNormalPages = new System.Windows.Forms.ToolStripDropDownButton();
 			this.tsddbExceptions = new System.Windows.Forms.ToolStripDropDownButton();
@@ -104,9 +103,8 @@
             this.tsmiAddWithComment,
             this.tsmiPlay,
             this.toolStripSeparator6,
-            this.tsmiPlayWithWmp,
-            this.tsmiPlayWithBrowser,
             this.tsmiBroseDetail,
+            this.tsmiPlayWithBrowser,
             this.toolStripSeparator1,
             this.tsmiCopyName,
             this.tsmiCopyDetailUri,
@@ -149,13 +147,6 @@
 			// 
 			this.toolStripSeparator6.Name = "toolStripSeparator6";
 			this.toolStripSeparator6.Size = new System.Drawing.Size(211, 6);
-			// 
-			// tsmiPlayWithWmp
-			// 
-			this.tsmiPlayWithWmp.Name = "tsmiPlayWithWmp";
-			this.tsmiPlayWithWmp.Size = new System.Drawing.Size(214, 22);
-			this.tsmiPlayWithWmp.Text = "WMPで再生(&W)";
-			this.tsmiPlayWithWmp.Click += new System.EventHandler(this.tsmiPlayWithWmp_Click);
 			// 
 			// tsmiPlayWithBrowser
 			// 
@@ -390,17 +381,6 @@
 			this.toolStripSeparator4.Name = "toolStripSeparator4";
 			this.toolStripSeparator4.Size = new System.Drawing.Size(6, 25);
 			// 
-			// tsbShowFilter
-			// 
-			this.tsbShowFilter.AutoToolTip = false;
-			this.tsbShowFilter.CheckOnClick = true;
-			this.tsbShowFilter.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-			this.tsbShowFilter.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.tsbShowFilter.Name = "tsbShowFilter";
-			this.tsbShowFilter.Size = new System.Drawing.Size(53, 22);
-			this.tsbShowFilter.Text = "フィルタ(&I)";
-			this.tsbShowFilter.Click += new System.EventHandler(this.tsbShowFilter_Click);
-			// 
 			// tsddbVisibilities
 			// 
 			this.tsddbVisibilities.AutoToolTip = false;
@@ -424,6 +404,17 @@
 			this.tscvsVisibilitiesSelector.Text = "toolStripContentVisibilitiesSelector1";
 			this.tscvsVisibilitiesSelector.ContentVisibilitiesChanged += new System.EventHandler(this.tscvsVisibilitiesSelector_ContentVisibilitiesChanged);
 			this.tscvsVisibilitiesSelector.CloseClick += new System.EventHandler(this.tscvsVisibilitiesSelector_CloseClick);
+			// 
+			// tsbShowFilter
+			// 
+			this.tsbShowFilter.AutoToolTip = false;
+			this.tsbShowFilter.CheckOnClick = true;
+			this.tsbShowFilter.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+			this.tsbShowFilter.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.tsbShowFilter.Name = "tsbShowFilter";
+			this.tsbShowFilter.Size = new System.Drawing.Size(53, 22);
+			this.tsbShowFilter.Text = "フィルタ(&I)";
+			this.tsbShowFilter.Click += new System.EventHandler(this.tsbShowFilter_Click);
 			// 
 			// toolStripSeparator7
 			// 
@@ -661,7 +652,6 @@
 		private System.Windows.Forms.ColumnHeader chSummary;
 		private System.Windows.Forms.ContextMenuStrip cmsContent;
 		private System.Windows.Forms.ToolStripMenuItem tsmiAdd;
-		private System.Windows.Forms.ToolStripMenuItem tsmiPlayWithWmp;
 		private System.Windows.Forms.ToolStripMenuItem tsmiPlayWithBrowser;
 		private System.Windows.Forms.ToolStripMenuItem tsmiBroseDetail;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;

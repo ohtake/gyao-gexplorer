@@ -85,13 +85,23 @@ namespace Yusen.GCrawler {
 				+ "&recommend="
 				+ "&contents_id=");
 		}
+		public static Uri CreatePlayerPageUri(int contKey, GBitRate bitrate, int chaperNo) {
+			return new Uri(
+				"http://www.gyao.jp/login/judge_cookie/?"
+				+ "contentsId=" + GContent.ConvertToIdFromKey(contKey)
+				+ "&rateId=" + GBitRateUtility.ConvertToIdFromKey(bitrate)
+				+ "&login_from=shityou"
+				+ "&chapterNo=" + chaperNo.ToString()
+				+ "&recommend="
+				+ "&contents_id=");
+		}
 		public static Uri CreateRecommendPageUri(int contKey, GBitRate bitrate) {
 			string contId = GContent.ConvertToIdFromKey(contKey);
 			return new Uri(
 				"http://www.gyao.jp/sityou/catedetail/?"
-				+ "contentsId=" + contId
+				+ "login_from=shityou"
+				+ "&contentsId=" + contId
 				+ "&rateId=" + GBitRateUtility.ConvertToIdFromKey(bitrate)
-				+ "&login_from=shityou"
 				+ "&chapterNo="
 				+ "&recommend=1"
 				+ "&contents_id=" + contId);
@@ -101,14 +111,16 @@ namespace Yusen.GCrawler {
 				"http://www.gyao.jp/sityou/asx.php?"
 				+ "contentsId=" + GContent.ConvertToIdFromKey(contKey)
 				+ "&userNo=" + userNo.ToString()
-				+ "&rateId=" + GBitRateUtility.ConvertToIdFromKey(bitrate));
+				+ "&rateId=" + GBitRateUtility.ConvertToIdFromKey(bitrate)
+				+ "&clipBegin=&clipNo=");
 		}
-		public static Uri CreatePlaylistUri(string contId, int userNo, GBitRate bitrate, int chapterNo) {
+		public static Uri CreatePlaylistUri(int contKey, int userNo, GBitRate bitrate, int chapterNo) {
 			return new Uri(
 				"http://www.gyao.jp/sityou/asx.php?"
-				+ "contentsId=" + contId
+				+ "contentsId=" + GContent.ConvertToIdFromKey(contKey)
 				+ "&userNo=" + userNo.ToString()
 				+ "&rateId=" + GBitRateUtility.ConvertToIdFromKey(bitrate)
+				+ "&clipBegin=&clipNo="
 				+ "&chapterNo=" + chapterNo.ToString());
 		}
 #if CLIP_RESUME

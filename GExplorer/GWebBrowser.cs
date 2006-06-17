@@ -28,7 +28,6 @@ namespace Yusen.GExplorer {
 			this.tsmiContentAddToPlayList.Click += new EventHandler(tsmiContentAddToPlayList_Click);
 			this.tsmiContentAddToPlayListWithComment.Click += new EventHandler(tsmiContentAddToPlayListWithComment_Click);
 			this.tsmiContentPlayWithoutAdding.Click += new EventHandler(tsmiContentPlayWithoutAdding_Click);
-			this.tsmiContentPlayWmp.Click += new EventHandler(tsmiContentPlayWmp_Click);
 			this.tsmiContentPlayBrowser.Click += new EventHandler(tsmiContentPlayBrowser_Click);
 			this.tsucmiContentCommand.UserCommandSelected += new EventHandler<UserCommandSelectedEventArgs>(tsucmiContentCommand_UserCommandSelected);
 			this.tsmiContentCancel.Click += new EventHandler(tsmiContentCancel_Click);
@@ -203,9 +202,6 @@ namespace Yusen.GExplorer {
 			int contKey = this.dicContent[this.clickedContent];
 			ContentAdapter ca = Cache.Instance.GetCacheOrDownloadContent(contKey);
 			PlayerForm.Play(ca);
-		}
-		private void tsmiContentPlayWmp_Click(object sender, EventArgs e) {
-			Utility.PlayWithWMP(GContent.CreatePlaylistUri(this.dicContent[this.clickedContent], GlobalSettings.Instance.UserNo, GlobalSettings.Instance.BitRate));
 		}
 		private void tsmiContentPlayBrowser_Click(object sender, EventArgs e) {
 			Utility.Browse(GContent.CreatePlayerPageUri(this.dicContent[this.clickedContent], GlobalSettings.Instance.BitRate));

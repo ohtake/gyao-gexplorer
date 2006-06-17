@@ -9,6 +9,8 @@ namespace Yusen.GExplorer {
 	[ToolStripItemDesignerAvailability(ToolStripItemDesignerAvailability.All)]
 	[DefaultEvent("UserCommandSelected")]
 	public sealed class ToolStripUserCommandMenuItem : ToolStripMenuItem{
+		private volatile bool commandChanged = false;
+		
 		private sealed class ToolStripMenuItemWithUserCommand : ToolStripMenuItem {
 			UserCommand command;
 			public ToolStripMenuItemWithUserCommand(UserCommand command) : base(command.Title) {
@@ -25,9 +27,20 @@ namespace Yusen.GExplorer {
 		public ToolStripUserCommandMenuItem() : base("ToolStripUserCommandMenuItem"){
 			if (base.DesignMode) return;
 			
+
+			base.DropDown.Opening += new CancelEventHandler(this.DropDown_Opening);
+
 			this.RecreateSubMenuItems();
 			UserCommandsManager.Instance.UserCommandsChanged += new EventHandler(UserCommandsManager_UserCommandsChanged);
 		}
+
+		private void DropDown_Opening(object sender, CancelEventArgs e) {
+			if (this.commandChanged) {
+				this.RecreateSubMenuItems();
+				this.commandChanged = false;
+			}
+		}
+
 		private void RecreateSubMenuItems() {
 			List<ToolStripItem> items = new List<ToolStripItem>();
 			
@@ -58,7 +71,7 @@ namespace Yusen.GExplorer {
 			}
 		}
 		private void UserCommandsManager_UserCommandsChanged(object sender, EventArgs e) {
-			this.RecreateSubMenuItems();
+			this.commandChanged = true;
 		}
 		
 		protected override void Dispose(bool disposing) {

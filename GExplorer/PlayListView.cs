@@ -586,11 +586,6 @@ namespace Yusen.GExplorer {
 			this.SelectedContents = new ContentAdapter[] { };
 			this.listView1.EndUpdate();
 		}
-		private void tsmiPlayWithWmp_Click(object sender, EventArgs e) {
-			foreach (ContentAdapter cont in this.SelectedContents) {
-				Utility.PlayWithWMP(cont.PlayListUri);
-			}
-		}
 		private void tsmiPlayWithBrowser_Click(object sender, EventArgs e) {
 			foreach (ContentAdapter cont in this.SelectedContents) {
 				Utility.Browse(cont.PlayerPageUri);

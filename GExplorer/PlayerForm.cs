@@ -5,10 +5,12 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Xml.Serialization;
 using AxWMPLib;
 using WMPLib;
-using DRegion=System.Drawing.Region;
-using System.Xml.Serialization;
+using DRegion = System.Drawing.Region;
+using BindingFlags = System.Reflection.BindingFlags;
+using Interaction = Microsoft.VisualBasic.Interaction;
 
 namespace Yusen.GExplorer {
 	public sealed partial class PlayerForm : FormSettingsBase, IFormWithNewSettings<PlayerForm.PlayerFormSettings> {
@@ -289,19 +291,25 @@ namespace Yusen.GExplorer {
 		}
 
 		private void OpenVideo() {
-			if(null == this.CurrentContent) {
+			if (null == this.CurrentContent) {
 				this.wmpMain.close();
 				this.wmpMain.currentMedia = null;
 				return;
 			}
-			IWMPMedia media;
-			if(this.CurrentChapter.HasValue) {
-				media = this.wmpMain.newMedia(this.CurrentContent.ChapterPlaylistUriOf(this.CurrentChapter.Value).AbsoluteUri);
-			} else {
-				media = this.wmpMain.newMedia(this.CurrentContent.PlayListUri.AbsoluteUri);
-			}
+			
+			Uri playerPageUri = this.CurrentChapter.HasValue ? this.CurrentContent.ChapterPlayerPageUriOf(this.CurrentChapter.Value) : this.CurrentContent.PlayerPageUri;
+			Uri playlistUri = this.CurrentChapter.HasValue ? this.CurrentContent.ChapterPlaylistUriOf(this.CurrentChapter.Value) : this.CurrentContent.PlayListUri;
+			
+			object xmlhttp = Interaction.CreateObject("MSXML2.XMLHTTP", string.Empty);
+			Type type = xmlhttp.GetType();
+			type.InvokeMember("open", BindingFlags.InvokeMethod, null, xmlhttp, new object[] { "GET", playerPageUri.AbsoluteUri, false });
+			type.InvokeMember("send", BindingFlags.InvokeMethod, null, xmlhttp, new object[] { });
+			string body = type.InvokeMember("responseText", BindingFlags.GetProperty, null, xmlhttp, new object[] { }) as string;
+			
+			
+			IWMPMedia media = this.wmpMain.newMedia(playlistUri.AbsoluteUri);
 			this.wmpMain.currentPlaylist.appendItem(media);
-			if(WMPPlayState.wmppsMediaEnded != this.wmpMain.playState) {
+			if (WMPPlayState.wmppsMediaEnded != this.wmpMain.playState) {
 				//手動で切り替えた場合では強制的に再生させる
 				this.wmpMain.currentMedia = media;
 				this.wmpMain.Ctlcontrols.play();

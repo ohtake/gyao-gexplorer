@@ -39,8 +39,6 @@ namespace Yusen.GExplorer {
 				}
 				break;
 			}
-			//カレントディレクトリをスタートアップパスにあわせる
-			Environment.CurrentDirectory = Application.StartupPath;
 			
 			Program.splashInit = new SplashForm();
 			Program.splashInit.Initialize("起動中です．．．", Program.InitializationSteps +1);

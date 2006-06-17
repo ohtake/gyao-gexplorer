@@ -6,10 +6,12 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using Yusen.GCrawler;
 using System.Collections.ObjectModel;
+using System.Reflection;
+using System.Windows.Forms;
 
 namespace Yusen.GExplorer {
 	sealed class Cache {
-		private const string CacheDir = @"Cache";
+		private static readonly string CacheDir = Path.Combine(Application.StartupPath, "Cache");
 		private const string ContentsFilename = @"Contents.xml";
 		private const string ResultsFilename = @"CrawlResults.bin";
 		

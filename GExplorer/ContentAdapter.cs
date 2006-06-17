@@ -403,7 +403,10 @@ namespace Yusen.GExplorer {
 #endif
 		
 		public Uri ChapterPlaylistUriOf(int chapterNo) {
-			return GContent.CreatePlaylistUri(this.ContentId, GlobalSettings.Instance.UserNo, GlobalSettings.Instance.BitRate, chapterNo);
+			return GContent.CreatePlaylistUri(this.ContentKey, GlobalSettings.Instance.UserNo, GlobalSettings.Instance.BitRate, chapterNo);
+		}
+		public Uri ChapterPlayerPageUriOf(int chapterNo) {
+			return GContent.CreatePlayerPageUri(this.ContentKey, GlobalSettings.Instance.BitRate, chapterNo);
 		}
 
 		public override bool Equals(object obj) {

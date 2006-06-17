@@ -6,8 +6,8 @@ using System.Runtime.Serialization;
 using System.Text.RegularExpressions;
 
 namespace Yusen.GCrawler {
-	public class Crawler {
-		private class CrawlerHelper{
+	public sealed class Crawler {
+		private sealed class CrawlerHelper{
 			private static UriLinkTypePair ConvertUriWithoutFragment(UriLinkTypePair pair) {
 				if (string.IsNullOrEmpty(pair.Uri.Fragment)) {
 					return pair;

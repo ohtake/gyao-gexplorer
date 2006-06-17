@@ -420,8 +420,15 @@ namespace Yusen.GExplorer {
 		}
 		private void tsmiGetProfile_Click(object sender, EventArgs e) {
 			string title = "ユーザIDに対応するプロファイルを取得";
-			string profile = Utility.GetUserProfileOf(GlobalSettings.Instance.UserNo);
-			MessageBox.Show(profile, title, MessageBoxButtons.OK, MessageBoxIcon.Information);
+			this.inputBoxDialog1.Title = "ユーザIDに対応するプロファイルを取得";
+			this.inputBoxDialog1.Message = "実在するコンテンツIDを入力してください．";
+			this.inputBoxDialog1.Input = "cnt0000000";
+			switch (this.inputBoxDialog1.ShowDialog()) {
+				case DialogResult.OK:
+					string profile = Utility.GetUserProfileOf(GlobalSettings.Instance.UserNo, GContent.ConvertToKeyFromId(this.inputBoxDialog1.Input));
+					MessageBox.Show(profile, title, MessageBoxButtons.OK, MessageBoxIcon.Information);
+					break;
+			}
 		}
 		private void tsucmiCommand_UserCommandSelected(object sender, UserCommandSelectedEventArgs e) {
 			e.UserCommand.Execute(new ContentAdapter[] { });
