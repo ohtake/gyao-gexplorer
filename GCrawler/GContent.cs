@@ -106,34 +106,7 @@ namespace Yusen.GCrawler {
 				+ "&recommend=1"
 				+ "&contents_id=" + contId);
 		}
-		public static Uri CreatePlaylistUri(int contKey, int userNo, GBitRate bitrate) {
-			return new Uri(
-				"http://www.gyao.jp/sityou/asx.php?"
-				+ "contentsId=" + GContent.ConvertToIdFromKey(contKey)
-				+ "&userNo=" + userNo.ToString()
-				+ "&rateId=" + GBitRateUtility.ConvertToIdFromKey(bitrate)
-				+ "&clipBegin=&clipNo=");
-		}
-		public static Uri CreatePlaylistUri(int contKey, int userNo, GBitRate bitrate, int chapterNo) {
-			return new Uri(
-				"http://www.gyao.jp/sityou/asx.php?"
-				+ "contentsId=" + GContent.ConvertToIdFromKey(contKey)
-				+ "&userNo=" + userNo.ToString()
-				+ "&rateId=" + GBitRateUtility.ConvertToIdFromKey(bitrate)
-				+ "&clipBegin=&clipNo="
-				+ "&chapterNo=" + chapterNo.ToString());
-		}
-#if CLIP_RESUME
-		public static Uri CreatePlaylistUri(string contId, int userNo, GBitRate bitrate, ClipResumeInfo resumeInfo) {
-			return new Uri(
-				"http://www.gyao.jp/sityou/asx.php?"
-				+ "contentsId=" + contId
-				+ "&userNo=" + userNo.ToString()
-				+ "&rateId=" + GBitRateUtility.ConvertToIdFromKey(bitrate)
-				+ "&clipBegin=" + resumeInfo.ClipBegin.ToString()
-				+ "&clipNo=" + resumeInfo.ClipNo.ToString());
-		}
-#endif
+		
 		internal static GContent DoDownload(int contKey, int packKey, ContentPropertiesOnPackagePage cpPac) {
 			Uri uri = GContent.CreateDetailPageUri(contKey);
 			TextReader reader = TextReader.Null;

@@ -255,6 +255,7 @@ namespace Yusen.GExplorer {
 		private static readonly Regex regexDartTag = new Regex(":dartTag=([^:=]*)");
 		private static readonly Regex regexClipNo = new Regex(":clipNo=([^:]*)");
 		private static readonly Regex regexClipBegin = new Regex(":clipBegin=([^:]*)");
+		private static readonly Regex regexAsxPhp = new Regex(@"http://www\.gyao\.jp/sityou/asx\.php\?[^""]+");
 		
 		private static PlayerForm instance = null;
 		public static PlayerForm Instance {
@@ -285,8 +286,8 @@ namespace Yusen.GExplorer {
 		
 		private PlayerForm() {
 			InitializeComponent();
-			this.tsmiViewFullScreen.ShortcutKeys = Keys.Alt | Keys.Enter;
 			
+			this.tsmiViewFullScreen.ShortcutKeys = Keys.Alt | Keys.Enter;
 			this.tsmiSettings.DropDown.Closing += ToolStripPropertyGrid.CancelDropDownClosingIfEditingPropertyGrid;
 		}
 
@@ -298,23 +299,28 @@ namespace Yusen.GExplorer {
 			}
 			
 			Uri playerPageUri = this.CurrentChapter.HasValue ? this.CurrentContent.ChapterPlayerPageUriOf(this.CurrentChapter.Value) : this.CurrentContent.PlayerPageUri;
-			Uri playlistUri = this.CurrentChapter.HasValue ? this.CurrentContent.ChapterPlaylistUriOf(this.CurrentChapter.Value) : this.CurrentContent.PlayListUri;
+			//Uri playlistUri = this.CurrentChapter.HasValue ? this.CurrentContent.ChapterPlaylistUriOf(this.CurrentChapter.Value) : this.CurrentContent.PlayListUri;
 			
 			object xmlhttp = Interaction.CreateObject("MSXML2.XMLHTTP", string.Empty);
 			Type type = xmlhttp.GetType();
 			type.InvokeMember("open", BindingFlags.InvokeMethod, null, xmlhttp, new object[] { "GET", playerPageUri.AbsoluteUri, false });
 			type.InvokeMember("send", BindingFlags.InvokeMethod, null, xmlhttp, new object[] { });
 			string body = type.InvokeMember("responseText", BindingFlags.GetProperty, null, xmlhttp, new object[] { }) as string;
-			
-			
-			IWMPMedia media = this.wmpMain.newMedia(playlistUri.AbsoluteUri);
-			this.wmpMain.currentPlaylist.appendItem(media);
-			if (WMPPlayState.wmppsMediaEnded != this.wmpMain.playState) {
-				//手動で切り替えた場合では強制的に再生させる
-				this.wmpMain.currentMedia = media;
-				this.wmpMain.Ctlcontrols.play();
+
+			Match match = PlayerForm.regexAsxPhp.Match(body);
+			if (match.Success) {
+				string asxPhpAddr = match.Value;
+				IWMPMedia media = this.wmpMain.newMedia(asxPhpAddr);
+				this.wmpMain.currentPlaylist.appendItem(media);
+				if (WMPPlayState.wmppsMediaEnded != this.wmpMain.playState) {
+					//手動で切り替えた場合では強制的に再生させる
+					this.wmpMain.currentMedia = media;
+					this.wmpMain.Ctlcontrols.play();
+				}
+				this.UpdateStatusbatText();
+			} else {
+				throw new Exception("再生ページから asx.php のアドレスを取得できなかった．");
 			}
-			this.UpdateStatusbatText();
 		}
 		private void UpdateStatusbatText() {
 			if(null != this.CurrentContent) {

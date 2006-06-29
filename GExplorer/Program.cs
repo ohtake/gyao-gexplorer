@@ -12,7 +12,7 @@ namespace Yusen.GExplorer {
 	static class Program {
 		internal static readonly string ApplicationName = Application.ProductName + " " + Application.ProductVersion;
 		
-		private const int InitializationSteps = 10;
+		private const int InitializationSteps = 9;
 		private const int SerializationSteps = 7;
 		private static SplashForm splashInit;
 		private static MainForm mainForm;
@@ -84,13 +84,6 @@ namespace Yusen.GExplorer {
 			} catch {
 			}
 
-			//ユーザID
-			Program.splashInit.StepProgress("ユーザIDの読み取り");
-			if(!GlobalSettings.Instance.TryGetUserNumber()) {
-				MessageBox.Show(
-					"ユーザIDが取得できませんでした．グローバル設定でIDの設定をしてください．",
-					Program.ApplicationName, MessageBoxButtons.OK, MessageBoxIcon.Error);
-			}
 			//ビットレートの設定
 			Program.splashInit.StepProgress("ビットレートの設定");
 			if (GlobalSettings.Instance.PromptBitrateOnStartup) {
@@ -117,7 +110,7 @@ namespace Yusen.GExplorer {
 			PlayList.Instance.DeserializeItems();
 
 			Program.splashInit.StepProgress("メインフォームの作成");
-			Program.mainForm = new MainForm();
+			Program.mainForm = MainForm.Instance;
 		}
 		private static void OnProgramSerializationProgress(int current, string message) {
 			EventHandler<ProgramSerializationProgressEventArgs> handler = Program.ProgramSerializationProgress;

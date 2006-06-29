@@ -32,14 +32,13 @@
 			this.tsmiCopyNameDetailImageUri = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiCopyImage = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-			this.tsucmiCommand = new Yusen.GExplorer.ToolStripUserCommandMenuItem();
 			this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiTest = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiTestNewPictureBox = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiTestLoad = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiTestLoadAsync = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiTestCancelAsync = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
-			this.tsmiTestNewPictureBox = new System.Windows.Forms.ToolStripMenuItem();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabpSummary2 = new System.Windows.Forms.TabPage();
 			this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
@@ -60,6 +59,7 @@
 			this.txtSummary = new System.Windows.Forms.TextBox();
 			this.tabpDetail = new System.Windows.Forms.TabPage();
 			this.propgDetail = new System.Windows.Forms.PropertyGrid();
+			this.tsucmiCommand = new Yusen.GExplorer.ToolStripUserCommandMenuItem();
 			this.splitContainer1.Panel1.SuspendLayout();
 			this.splitContainer1.Panel2.SuspendLayout();
 			this.splitContainer1.SuspendLayout();
@@ -150,13 +150,6 @@
 			this.toolStripSeparator2.Name = "toolStripSeparator2";
 			this.toolStripSeparator2.Size = new System.Drawing.Size(245, 6);
 			// 
-			// tsucmiCommand
-			// 
-			this.tsucmiCommand.Name = "tsucmiCommand";
-			this.tsucmiCommand.Size = new System.Drawing.Size(248, 22);
-			this.tsucmiCommand.Text = "外部コマンド(&E)";
-			this.tsucmiCommand.UserCommandSelected += new System.EventHandler<Yusen.GExplorer.UserCommandSelectedEventArgs>(this.tsucmiCommand_UserCommandSelected);
-			// 
 			// toolStripMenuItem2
 			// 
 			this.toolStripMenuItem2.Name = "toolStripMenuItem2";
@@ -174,38 +167,38 @@
 			this.tsmiTest.Size = new System.Drawing.Size(248, 22);
 			this.tsmiTest.Text = "テスト(&T)";
 			// 
+			// tsmiTestNewPictureBox
+			// 
+			this.tsmiTestNewPictureBox.Name = "tsmiTestNewPictureBox";
+			this.tsmiTestNewPictureBox.Size = new System.Drawing.Size(150, 22);
+			this.tsmiTestNewPictureBox.Text = "&new PictureBox";
+			this.tsmiTestNewPictureBox.Click += new System.EventHandler(this.tsmiTestNewPictureBox_Click);
+			// 
+			// toolStripMenuItem3
+			// 
+			this.toolStripMenuItem3.Name = "toolStripMenuItem3";
+			this.toolStripMenuItem3.Size = new System.Drawing.Size(147, 6);
+			// 
 			// tsmiTestLoad
 			// 
 			this.tsmiTestLoad.Name = "tsmiTestLoad";
-			this.tsmiTestLoad.Size = new System.Drawing.Size(152, 22);
+			this.tsmiTestLoad.Size = new System.Drawing.Size(150, 22);
 			this.tsmiTestLoad.Text = "&Load";
 			this.tsmiTestLoad.Click += new System.EventHandler(this.tsmiTestLoad_Click);
 			// 
 			// tsmiTestLoadAsync
 			// 
 			this.tsmiTestLoadAsync.Name = "tsmiTestLoadAsync";
-			this.tsmiTestLoadAsync.Size = new System.Drawing.Size(152, 22);
+			this.tsmiTestLoadAsync.Size = new System.Drawing.Size(150, 22);
 			this.tsmiTestLoadAsync.Text = "Load&Async";
 			this.tsmiTestLoadAsync.Click += new System.EventHandler(this.tsmiTestLoadAsync_Click);
 			// 
 			// tsmiTestCancelAsync
 			// 
 			this.tsmiTestCancelAsync.Name = "tsmiTestCancelAsync";
-			this.tsmiTestCancelAsync.Size = new System.Drawing.Size(152, 22);
+			this.tsmiTestCancelAsync.Size = new System.Drawing.Size(150, 22);
 			this.tsmiTestCancelAsync.Text = "&CancelAsync";
 			this.tsmiTestCancelAsync.Click += new System.EventHandler(this.tsmiTestCancelAsync_Click);
-			// 
-			// toolStripMenuItem3
-			// 
-			this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-			this.toolStripMenuItem3.Size = new System.Drawing.Size(149, 6);
-			// 
-			// tsmiTestNewPictureBox
-			// 
-			this.tsmiTestNewPictureBox.Name = "tsmiTestNewPictureBox";
-			this.tsmiTestNewPictureBox.Size = new System.Drawing.Size(152, 22);
-			this.tsmiTestNewPictureBox.Text = "&new PictureBox";
-			this.tsmiTestNewPictureBox.Click += new System.EventHandler(this.tsmiTestNewPictureBox_Click);
 			// 
 			// tabControl1
 			// 
@@ -258,10 +251,8 @@
 			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 24F));
 			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 24F));
 			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 24F));
-			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 24F));
+			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 38F));
 			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
 			this.tableLayoutPanel2.Size = new System.Drawing.Size(216, 248);
 			this.tableLayoutPanel2.TabIndex = 0;
 			// 
@@ -383,19 +374,19 @@
 			// 
 			this.tableLayoutPanel2.SetColumnSpan(this.txtDescription, 2);
 			this.txtDescription.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.txtDescription.Location = new System.Drawing.Point(3, 171);
+			this.txtDescription.Location = new System.Drawing.Point(3, 185);
 			this.txtDescription.Multiline = true;
 			this.txtDescription.Name = "txtDescription";
 			this.txtDescription.ReadOnly = true;
 			this.txtDescription.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-			this.txtDescription.Size = new System.Drawing.Size(210, 74);
+			this.txtDescription.Size = new System.Drawing.Size(210, 60);
 			this.txtDescription.TabIndex = 14;
 			// 
 			// label7
 			// 
 			this.label7.Anchor = System.Windows.Forms.AnchorStyles.Right;
 			this.label7.AutoSize = true;
-			this.label7.Location = new System.Drawing.Point(3, 150);
+			this.label7.Location = new System.Drawing.Point(3, 157);
 			this.label7.Name = "label7";
 			this.label7.Size = new System.Drawing.Size(41, 12);
 			this.label7.TabIndex = 6;
@@ -405,9 +396,11 @@
 			// 
 			this.txtSummary.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.txtSummary.Location = new System.Drawing.Point(50, 147);
+			this.txtSummary.Multiline = true;
 			this.txtSummary.Name = "txtSummary";
 			this.txtSummary.ReadOnly = true;
-			this.txtSummary.Size = new System.Drawing.Size(163, 19);
+			this.txtSummary.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+			this.txtSummary.Size = new System.Drawing.Size(163, 32);
 			this.txtSummary.TabIndex = 13;
 			// 
 			// tabpDetail
@@ -427,6 +420,13 @@
 			this.propgDetail.Name = "propgDetail";
 			this.propgDetail.Size = new System.Drawing.Size(216, 248);
 			this.propgDetail.TabIndex = 0;
+			// 
+			// tsucmiCommand
+			// 
+			this.tsucmiCommand.Name = "tsucmiCommand";
+			this.tsucmiCommand.Size = new System.Drawing.Size(248, 22);
+			this.tsucmiCommand.Text = "外部コマンド(&E)";
+			this.tsucmiCommand.UserCommandSelected += new System.EventHandler<Yusen.GExplorer.UserCommandSelectedEventArgs>(this.tsucmiCommand_UserCommandSelected);
 			// 
 			// ContentDetailView
 			// 

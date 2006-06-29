@@ -72,7 +72,7 @@
 			this.grpDetail.Location = new System.Drawing.Point(3, 152);
 			this.grpDetail.Name = "grpDetail";
 			this.grpDetail.Size = new System.Drawing.Size(346, 139);
-			this.grpDetail.TabIndex = 200;
+			this.grpDetail.TabIndex = 1;
 			this.grpDetail.TabStop = false;
 			this.grpDetail.Text = "外部コマンドの挿入と変更(&E)";
 			// 
@@ -81,7 +81,7 @@
 			this.btnInsert.Location = new System.Drawing.Point(6, 110);
 			this.btnInsert.Name = "btnInsert";
 			this.btnInsert.Size = new System.Drawing.Size(90, 23);
-			this.btnInsert.TabIndex = 221;
+			this.btnInsert.TabIndex = 1;
 			this.btnInsert.Text = "挿入(&I)";
 			this.btnInsert.Click += new System.EventHandler(this.btnInsert_Click);
 			// 
@@ -90,7 +90,7 @@
 			this.btnModify.Location = new System.Drawing.Point(102, 110);
 			this.btnModify.Name = "btnModify";
 			this.btnModify.Size = new System.Drawing.Size(90, 23);
-			this.btnModify.TabIndex = 222;
+			this.btnModify.TabIndex = 2;
 			this.btnModify.Text = "変更(&M)";
 			this.btnModify.Click += new System.EventHandler(this.btnModify_Click);
 			// 
@@ -126,7 +126,7 @@
 			this.lblTitle.Location = new System.Drawing.Point(31, 9);
 			this.lblTitle.Name = "lblTitle";
 			this.lblTitle.Size = new System.Drawing.Size(56, 12);
-			this.lblTitle.TabIndex = 211;
+			this.lblTitle.TabIndex = 0;
 			this.lblTitle.Text = "表示名(&T)";
 			// 
 			// txtTitle
@@ -135,7 +135,7 @@
 			this.txtTitle.Location = new System.Drawing.Point(93, 3);
 			this.txtTitle.Name = "txtTitle";
 			this.txtTitle.Size = new System.Drawing.Size(144, 19);
-			this.txtTitle.TabIndex = 212;
+			this.txtTitle.TabIndex = 1;
 			// 
 			// lblFile
 			// 
@@ -144,7 +144,7 @@
 			this.lblFile.Location = new System.Drawing.Point(9, 39);
 			this.lblFile.Name = "lblFile";
 			this.lblFile.Size = new System.Drawing.Size(78, 12);
-			this.lblFile.TabIndex = 213;
+			this.lblFile.TabIndex = 3;
 			this.lblFile.Text = "実行ファイル(&F)";
 			// 
 			// btnSeparator
@@ -153,7 +153,7 @@
 			this.btnSeparator.Location = new System.Drawing.Point(245, 3);
 			this.btnSeparator.Name = "btnSeparator";
 			this.btnSeparator.Size = new System.Drawing.Size(89, 23);
-			this.btnSeparator.TabIndex = 219;
+			this.btnSeparator.TabIndex = 2;
 			this.btnSeparator.Text = "セパレータ(&S)";
 			this.btnSeparator.UseVisualStyleBackColor = true;
 			this.btnSeparator.Click += new System.EventHandler(this.btnSeparator_Click);
@@ -166,7 +166,7 @@
 			this.txtFile.Location = new System.Drawing.Point(93, 33);
 			this.txtFile.Name = "txtFile";
 			this.txtFile.Size = new System.Drawing.Size(144, 19);
-			this.txtFile.TabIndex = 214;
+			this.txtFile.TabIndex = 4;
 			// 
 			// btnBrowse
 			// 
@@ -174,7 +174,7 @@
 			this.btnBrowse.Location = new System.Drawing.Point(245, 33);
 			this.btnBrowse.Name = "btnBrowse";
 			this.btnBrowse.Size = new System.Drawing.Size(89, 23);
-			this.btnBrowse.TabIndex = 215;
+			this.btnBrowse.TabIndex = 5;
 			this.btnBrowse.Text = "参照(&B)...";
 			this.btnBrowse.Click += new System.EventHandler(this.btnBrowse_Click);
 			// 
@@ -185,7 +185,7 @@
 			this.lblArg.Location = new System.Drawing.Point(42, 69);
 			this.lblArg.Name = "lblArg";
 			this.lblArg.Size = new System.Drawing.Size(45, 12);
-			this.lblArg.TabIndex = 216;
+			this.lblArg.TabIndex = 6;
 			this.lblArg.Text = "引数(&A)";
 			// 
 			// txtArg
@@ -194,7 +194,7 @@
 			this.txtArg.Location = new System.Drawing.Point(93, 63);
 			this.txtArg.Name = "txtArg";
 			this.txtArg.Size = new System.Drawing.Size(144, 19);
-			this.txtArg.TabIndex = 217;
+			this.txtArg.TabIndex = 7;
 			// 
 			// btnArg
 			// 
@@ -202,7 +202,7 @@
 			this.btnArg.Location = new System.Drawing.Point(245, 63);
 			this.btnArg.Name = "btnArg";
 			this.btnArg.Size = new System.Drawing.Size(89, 23);
-			this.btnArg.TabIndex = 218;
+			this.btnArg.TabIndex = 8;
 			this.btnArg.Text = "入力補助(&U)>>";
 			this.btnArg.Click += new System.EventHandler(this.btnArg_Click);
 			// 
@@ -243,7 +243,7 @@
 			this.btnUp.Location = new System.Drawing.Point(3, 3);
 			this.btnUp.Name = "btnUp";
 			this.btnUp.Size = new System.Drawing.Size(75, 23);
-			this.btnUp.TabIndex = 121;
+			this.btnUp.TabIndex = 0;
 			this.btnUp.Text = "上へ(&U)";
 			this.btnUp.Click += new System.EventHandler(this.btnUp_Click);
 			// 
@@ -252,7 +252,7 @@
 			this.btnDown.Location = new System.Drawing.Point(3, 32);
 			this.btnDown.Name = "btnDown";
 			this.btnDown.Size = new System.Drawing.Size(75, 23);
-			this.btnDown.TabIndex = 122;
+			this.btnDown.TabIndex = 1;
 			this.btnDown.Text = "下へ(&D)";
 			this.btnDown.Click += new System.EventHandler(this.btnDown_Click);
 			// 
@@ -261,7 +261,7 @@
 			this.btnDelete.Location = new System.Drawing.Point(3, 70);
 			this.btnDelete.Name = "btnDelete";
 			this.btnDelete.Size = new System.Drawing.Size(75, 23);
-			this.btnDelete.TabIndex = 123;
+			this.btnDelete.TabIndex = 2;
 			this.btnDelete.Text = "削除(&R)";
 			this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
 			// 
@@ -283,7 +283,7 @@
 			this.grpList.Location = new System.Drawing.Point(3, 3);
 			this.grpList.Name = "grpList";
 			this.grpList.Size = new System.Drawing.Size(346, 143);
-			this.grpList.TabIndex = 100;
+			this.grpList.TabIndex = 0;
 			this.grpList.TabStop = false;
 			this.grpList.Text = "外部コマンド一覧(&L)";
 			// 
@@ -310,7 +310,7 @@
 			this.lboxCommands.Location = new System.Drawing.Point(3, 3);
 			this.lboxCommands.Name = "lboxCommands";
 			this.lboxCommands.Size = new System.Drawing.Size(246, 112);
-			this.lboxCommands.TabIndex = 110;
+			this.lboxCommands.TabIndex = 0;
 			this.lboxCommands.SelectedIndexChanged += new System.EventHandler(this.lboxCommands_SelectedIndexChanged);
 			// 
 			// tableLayoutPanel3

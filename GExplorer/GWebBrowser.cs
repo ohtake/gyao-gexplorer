@@ -228,6 +228,10 @@ namespace Yusen.GExplorer {
 			this.ignoreMenuFlag = false;
 		}
 
+		public IEnumerator<int> GetContentKeyEnumerator() {
+			return this.dicContent.Values.GetEnumerator();
+		}
+
 #if false
 		#region http://lab.msdn.microsoft.com/ProductFeedback/ViewWorkaround.aspx?FeedbackID=FDBK12057
 

@@ -188,7 +188,7 @@ namespace Yusen.GExplorer {
 				: base(ContentCatalogStream.CreateCatalogHtml(cas)) {
 			}
 		}
-
+		
 		private static BrowserForm instance = null;
 		public static BrowserForm Instance {
 			get {
@@ -344,8 +344,28 @@ namespace Yusen.GExplorer {
 		private void tsgmiTimetableUpdate_GenreSelected(object sender, GenreMenuItemSelectedEventArgs e) {
 			this.DocumentUri = e.SelectedGenre.TimetableRecentlyUpdatedFirstUri;
 		}
-		private void tsmiGotoCampaign_Click(object sender, EventArgs e) {
-			this.gwbMain.GotoCampaign();
+		private void tsmiExportContentListToCrawlResultView_Click(object sender, EventArgs e) {
+			//重複なしでキーを並べる
+			List<int> keys = new List<int>();
+			using (IEnumerator<int> allkeys = this.gwbMain.GetContentKeyEnumerator()) {
+				while (allkeys.MoveNext()) {
+					if (!keys.Contains(allkeys.Current)) {
+						keys.Add(allkeys.Current);
+					}
+				}
+			}
+			//キャッシュから取り出す
+			List<GContent> conts = new List<GContent>(keys.Count);
+			foreach (int key in keys) {
+				ContentCache cache;
+				if (Cache.Instance.ContentCacheController.TryGetCache(key, out cache)) {
+					conts.Add(cache.Content);
+				} else {
+					conts.Add(GContent.CreateDummyContent(key, ContentAdapter.UnknownGenre.Default, "当該IDと同一のキャッシュを持っていない"));
+				}
+			}
+			//表示
+			MainForm.Instance.ViewFlatCrawlResult(conts);
 		}
 		private void tsmiExtractImages_Click(object sender, EventArgs e) {
 			List<Uri> images = new List<Uri>();
@@ -359,6 +379,9 @@ namespace Yusen.GExplorer {
 				}
 			}
 			BrowserForm.Browse(images);
+		}
+		private void tsmiGotoCampaign_Click(object sender, EventArgs e) {
+			this.gwbMain.GotoCampaign();
 		}
 		private void tsmiFillCampaignForm_Click(object sender, EventArgs e) {
 			GlobalSettings gs = GlobalSettings.Instance;

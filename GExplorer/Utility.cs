@@ -110,26 +110,6 @@ namespace Yusen.GExplorer {
 					break;
 			}
 		}
-
-		public static string GetUserProfileOf(int userNo, int contKey) {
-			HttpWebRequest req = WebRequest.Create(GContent.CreatePlayerPageUri(contKey, GlobalSettings.Instance.BitRate)) as HttpWebRequest;
-			CookieContainer cc = new CookieContainer();
-			cc.Add(new Cookie("Cookie_UserId", userNo.ToString(), "/", "www.gyao.jp"));
-			cc.Add(new Cookie("Cookie_CookieId", "0", "/", "www.gyao.jp"));
-			req.CookieContainer = cc;
-			WebResponse res = req.GetResponse();
-			using(TextReader reader = new StreamReader(res.GetResponseStream(), Encoding.GetEncoding("Shift_JIS"))) {
-				Regex regex = new Regex(@"(sex=\w+;(\w+=\w+;)*)sz=");
-				string line;
-				while(null != (line = reader.ReadLine())) {
-					Match match = regex.Match(line);
-					if(match.Success) {
-						return match.Groups[1].Value;
-					}
-				}
-			}
-			throw new Exception("ユーザプロファイルの取得を試みたものの正規表現にあう行がなかった．");
-		}
 	}
 
 	interface INewSettings<TNewSettings> where TNewSettings : new() {

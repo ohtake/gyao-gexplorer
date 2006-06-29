@@ -9,7 +9,7 @@ using System.Drawing;
 
 namespace Yusen.GExplorer {
 	public class ContentAdapter : IEquatable<ContentAdapter>{
-		private sealed class UnknownGenre : GGenre {
+		public sealed class UnknownGenre : GGenre {
 			public static GGenre Default = new UnknownGenre();
 			private UnknownGenre()
 				: base(0, "unknown", "(不明なジャンル)", Color.Black) {
@@ -361,14 +361,6 @@ namespace Yusen.GExplorer {
 		}
 		[XmlIgnore]
 		[Category("URI")]
-		[Description("プレイリストのURI．(グローバル設定のビットレートの影響を受ける．ユーザIDを含む．)")]
-		public Uri PlayListUri {
-			get {
-				return GContent.CreatePlaylistUri(this.ContentKey, GlobalSettings.Instance.UserNo, GlobalSettings.Instance.BitRate);
-			}
-		}
-		[XmlIgnore]
-		[Category("URI")]
 		[Description("コンテンツの画像(大)のURI．")]
 		public Uri ImageLargeUri {
 			get {
@@ -402,9 +394,6 @@ namespace Yusen.GExplorer {
 		}
 #endif
 		
-		public Uri ChapterPlaylistUriOf(int chapterNo) {
-			return GContent.CreatePlaylistUri(this.ContentKey, GlobalSettings.Instance.UserNo, GlobalSettings.Instance.BitRate, chapterNo);
-		}
 		public Uri ChapterPlayerPageUriOf(int chapterNo) {
 			return GContent.CreatePlayerPageUri(this.ContentKey, GlobalSettings.Instance.BitRate, chapterNo);
 		}

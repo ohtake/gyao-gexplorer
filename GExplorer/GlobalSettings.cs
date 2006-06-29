@@ -3,15 +3,12 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
-using Microsoft.Win32;
-using System.IO;
 using System.Xml.Serialization;
 using Yusen.GCrawler;
 
 namespace Yusen.GExplorer {
 	public class GlobalSettings {
 		private const string SettingsFilename = "GlobalSettings.xml";
-		private const int InvalidUserNo = 0;
 		
 		private static GlobalSettings instance = new GlobalSettings();
 		internal static GlobalSettings Instance {
@@ -29,16 +26,6 @@ namespace Yusen.GExplorer {
 			Utility.SerializeSettings(GlobalSettings.SettingsFilename, GlobalSettings.Instance);
 		}
 		
-		private int userNo = GlobalSettings.InvalidUserNo;
-		[XmlIgnore]
-		[Category("ユーザ情報")]
-		[DisplayName("Cookie_UserId")]
-		[Description("クッキーに保存されている Cookie_UserId の値．この設定は設定ファイルに保存されません．起動時毎にクッキーから読み取ります．")]
-		[DefaultValue(GlobalSettings.InvalidUserNo)]
-		public int UserNo {
-			get { return this.userNo; }
-			set { this.userNo = value; }
-		}
 		private string nameFamily = string.Empty;
 		[Category("ユーザ情報")]
 		[DisplayName("氏名(姓)")]
@@ -93,16 +80,6 @@ namespace Yusen.GExplorer {
 			set { this.promptBitrateOnStartup = value; }
 		}
 		
-		/// <summary>
-		/// 設定ファイルに userNo が保存されてなかったら取得の必要があり true が返る．
-		/// </summary>
-		[XmlIgnore]
-		[Browsable(false)]
-		internal bool IsCookieRequired {
-			get {
-				return GlobalSettings.InvalidUserNo == this.UserNo;
-			}
-		}
 		
 		private CrawlOrder crawlOrder = CrawlOrder.TimetableFirst;
 		[Category("クローラ")]
@@ -212,49 +189,6 @@ namespace Yusen.GExplorer {
 		public bool AutomaticallyAddFavAndNewContents {
 			get { return this.automaticallyAddFavAndNewContents; }
 			set { this.automaticallyAddFavAndNewContents = value; }
-		}
-		
-		internal bool TryGetUserNumber() {
-			this.UserNo = GlobalSettings.InvalidUserNo;
-			//レジストリからの取得を試みる
-			try {
-				using (RegistryKey cu = Registry.CurrentUser)
-				using (RegistryKey software = cu.OpenSubKey("SOFTWARE"))
-				using (RegistryKey usen = software.OpenSubKey("USEN"))
-				using (RegistryKey gyaoTool = usen.OpenSubKey("GyaOTool")) {
-					GlobalSettings.Instance.UserNo = int.Parse(gyaoTool.GetValue("Cookie_UserId") as string);
-				}
-			} catch {
-			}
-			if (!this.IsCookieRequired) {
-				return true;
-			}
-			//ファイルシステム上のクッキーから取得を試みる
-			try {
-				DirectoryInfo cookieDir = new DirectoryInfo(Environment.GetFolderPath(Environment.SpecialFolder.Cookies));
-				if (cookieDir.Exists) {
-					FileInfo[] fis = cookieDir.GetFiles("*@gyao*.txt");
-					foreach (FileInfo fi in fis) {
-						using (TextReader reader = new StreamReader(fi.FullName)) {
-							string line;
-							while (null != (line=reader.ReadLine())) {
-								if ("Cookie_UserId" == line) {
-									GlobalSettings.Instance.UserNo = int.Parse(reader.ReadLine());
-									break;
-								}
-							}
-							if (!GlobalSettings.Instance.IsCookieRequired) {
-								break;
-							}
-						}
-					}
-				}
-			} catch {
-			}
-			if (!this.IsCookieRequired) {
-				return true;
-			}
-			return false;
 		}
 		
 		internal CrawlSettings CreateCrawlSettings() {

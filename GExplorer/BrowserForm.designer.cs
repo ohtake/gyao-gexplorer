@@ -39,6 +39,7 @@
 			this.tsgmiTimetableUpdate = new Yusen.GExplorer.ToolStripGenreMenuItem();
 			this.tsmiTimeTablesDeadline = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiTools = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiExportContentListToCrawlResultView = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiExtractImages = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiGotoCampaign = new System.Windows.Forms.ToolStripMenuItem();
@@ -193,6 +194,7 @@
 			// tsmiTools
 			// 
 			this.tsmiTools.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiExportContentListToCrawlResultView,
             this.tsmiExtractImages,
             this.toolStripMenuItem1,
             this.tsmiGotoCampaign,
@@ -201,29 +203,36 @@
 			this.tsmiTools.Size = new System.Drawing.Size(61, 16);
 			this.tsmiTools.Text = "ツール(&T)";
 			// 
+			// tsmiExportContentListToCrawlResultView
+			// 
+			this.tsmiExportContentListToCrawlResultView.Name = "tsmiExportContentListToCrawlResultView";
+			this.tsmiExportContentListToCrawlResultView.Size = new System.Drawing.Size(330, 22);
+			this.tsmiExportContentListToCrawlResultView.Text = "ページ内のコンテンツをクロール結果ビューに書き出す(&R)";
+			this.tsmiExportContentListToCrawlResultView.Click += new System.EventHandler(this.tsmiExportContentListToCrawlResultView_Click);
+			// 
 			// tsmiExtractImages
 			// 
 			this.tsmiExtractImages.Name = "tsmiExtractImages";
-			this.tsmiExtractImages.Size = new System.Drawing.Size(243, 22);
+			this.tsmiExtractImages.Size = new System.Drawing.Size(330, 22);
 			this.tsmiExtractImages.Text = "画像の抽出(&I)";
 			this.tsmiExtractImages.Click += new System.EventHandler(this.tsmiExtractImages_Click);
 			// 
 			// toolStripMenuItem1
 			// 
 			this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-			this.toolStripMenuItem1.Size = new System.Drawing.Size(240, 6);
+			this.toolStripMenuItem1.Size = new System.Drawing.Size(327, 6);
 			// 
 			// tsmiGotoCampaign
 			// 
 			this.tsmiGotoCampaign.Name = "tsmiGotoCampaign";
-			this.tsmiGotoCampaign.Size = new System.Drawing.Size(243, 22);
+			this.tsmiGotoCampaign.Size = new System.Drawing.Size(330, 22);
 			this.tsmiGotoCampaign.Text = "gotoCampaign関数をInvokeする(&G)";
 			this.tsmiGotoCampaign.Click += new System.EventHandler(this.tsmiGotoCampaign_Click);
 			// 
 			// tsmiFillCampaignForm
 			// 
 			this.tsmiFillCampaignForm.Name = "tsmiFillCampaignForm";
-			this.tsmiFillCampaignForm.Size = new System.Drawing.Size(243, 22);
+			this.tsmiFillCampaignForm.Size = new System.Drawing.Size(330, 22);
 			this.tsmiFillCampaignForm.Text = "応募フォームにフィル(&F)";
 			this.tsmiFillCampaignForm.Click += new System.EventHandler(this.tsmiFillCampaignForm_Click);
 			// 
@@ -270,8 +279,8 @@
 			// toolStripContainer1.TopToolStripPanel
 			// 
 			this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.menuStrip1);
-			this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.tsStandard);
 			this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.tsAddress);
+			this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.tsStandard);
 			// 
 			// statusStrip1
 			// 
@@ -468,5 +477,6 @@
 		private System.Windows.Forms.ToolStripMenuItem tsmiSettings;
 		private ToolStripPropertyGrid tspgBrowserForm;
 		private ToolStripHelpMenuItem tshmiHelp;
+		private System.Windows.Forms.ToolStripMenuItem tsmiExportContentListToCrawlResultView;
 	}
 }

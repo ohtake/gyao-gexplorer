@@ -120,5 +120,28 @@ namespace Yusen.GExplorer {
 				return new ContentAdapter(GContent.DoDownload(contentKey));
 			}
 		}
+
+		public IList<GContent> FindCaches(string query) {
+			List<GContent> conts = new List<GContent>();
+			foreach (int key in this.cacheCtl.ListAllCacheKeys()) {
+				ContentCache cache;
+				if (!this.cacheCtl.TryGetCache(key, out cache)) continue;
+				GContent cont = cache.Content;
+				
+				if (cont.Title.Contains(query)) goto match;
+				if (cont.SeriesNumber.Contains(query)) goto match;
+				if (cont.Subtitle.Contains(query)) goto match;
+				if (cont.Summary.Contains(query)) goto match;
+				if (cont.Description1.Contains(query)) goto match;
+				if (cont.Description2.Contains(query)) goto match;
+				if (cont.Description3.Contains(query)) goto match;
+				if (cont.Description4.Contains(query)) goto match;
+				continue;
+			match:
+				conts.Add(cont);
+				continue;
+			}
+			return conts;
+		}
 	}
 }

@@ -441,7 +441,20 @@ namespace Yusen.GCrawler {
 			}
 			return seed;
 		}
-
+		public static CrawlResult CreateFlatResult(GGenre genre, IList<GContent> contents) {
+			List<GPackage> packages = new List<GPackage>(1);
+			GPackage package = GPackage.CreateDummyPackage(genre);
+			package.Contents = new ReadOnlyCollection<GContent>(contents);
+			packages.Add(package);
+			
+			CrawlResult result = new CrawlResult(
+				genre,
+				new ReadOnlyCollection<GPackage>(packages),
+				new ReadOnlyCollection<Uri>(new List<Uri>()),
+				new ReadOnlyCollection<Exception>(new List<Exception>()));
+			return result;
+		}
+		
 		private readonly GGenre genre;
 		private readonly ReadOnlyCollection<GPackage> packages;
 		private readonly ReadOnlyCollection<Uri> visitedPages;

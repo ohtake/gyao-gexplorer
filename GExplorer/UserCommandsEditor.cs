@@ -196,6 +196,8 @@ namespace Yusen.GExplorer {
 		
 		private void btnSeparator_Click(object sender, EventArgs e) {
 			this.txtTitle.Text = UserCommand.SeparatorTitle;
+			this.txtFile.Text = string.Empty;
+			this.txtArg.Text = string.Empty;
 		}
 		private void btnBrowse_Click(object sender, EventArgs e) {
 			if(DialogResult.OK == this.openFileDialog1.ShowDialog()) {

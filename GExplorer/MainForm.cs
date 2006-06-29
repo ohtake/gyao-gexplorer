@@ -7,6 +7,7 @@ using System.Threading;
 using Yusen.GCrawler;
 using System.Xml.Serialization;
 using System.Text;
+using System.Web;
 
 namespace Yusen.GExplorer {
 	public sealed partial class MainForm : FormSettingsBase, IFormWithNewSettings<MainForm.MainFormSettings> {
@@ -162,6 +163,33 @@ namespace Yusen.GExplorer {
 			}
 		}
 		
+		private sealed class FlatContentsGenre : GGenre {
+			public FlatContentsGenre() : base(0, "dummy", "一覧", Color.Black) {
+			}
+			public override Uri TopPageUri {
+				get { return new Uri("about:blank"); }
+			}
+			public override Uri RootUri {
+				get { return new Uri("about:blank"); }
+			}
+			public override bool IsCrawlable {
+				get { return false; }
+			}
+		}
+
+		private static MainForm instance = null;
+		public static MainForm Instance {
+			get {
+				if (!MainForm.HasInstance) {
+					MainForm.instance = new MainForm();
+				}
+				return MainForm.instance;
+			}
+		}
+		public static bool HasInstance {
+			get { return null != MainForm.instance && !MainForm.instance.IsDisposed; }
+		}
+		
 		private Crawler crawler;
 		
 		private ContentAdapter seletedCont = null;
@@ -169,7 +197,7 @@ namespace Yusen.GExplorer {
 
 		private MainFormSettings settings;
 
-		public MainForm() {
+		private MainForm() {
 			InitializeComponent();
 
 			this.Text = Program.ApplicationName;
@@ -233,6 +261,11 @@ namespace Yusen.GExplorer {
 				}
 			}
 		}
+		public void ViewFlatCrawlResult(IList<GContent> list) {
+			CrawlResult result = CrawlResult.CreateFlatResult(new FlatContentsGenre(), list);
+			this.ViewCrawlResult(result);
+		}
+		
 		private void CheckInvalidContentPredicates(ContentPredicatesManager manager, string cpName, bool showResultOnSuccess) {
 			string title = "妥当でない" + cpName;
 			ContentPredicate[] preds = manager.GetInvalidPredicates();
@@ -418,15 +451,36 @@ namespace Yusen.GExplorer {
 			this.ViewCrawlResult(mergedResult);
 			this.genreTabControl1.SelectedGenre = null;
 		}
-		private void tsmiGetProfile_Click(object sender, EventArgs e) {
-			string title = "ユーザIDに対応するプロファイルを取得";
-			this.inputBoxDialog1.Title = "ユーザIDに対応するプロファイルを取得";
-			this.inputBoxDialog1.Message = "実在するコンテンツIDを入力してください．";
-			this.inputBoxDialog1.Input = "cnt0000000";
+		private void tsmiSearchCache_Click(object sender, EventArgs e) {
+			this.inputBoxDialog1.Title = "キャッシュから検索";
+			this.inputBoxDialog1.Message = "検索する語句を入力してください．";
+			this.inputBoxDialog1.Input = string.Empty;
+
 			switch (this.inputBoxDialog1.ShowDialog()) {
 				case DialogResult.OK:
-					string profile = Utility.GetUserProfileOf(GlobalSettings.Instance.UserNo, GContent.ConvertToKeyFromId(this.inputBoxDialog1.Input));
-					MessageBox.Show(profile, title, MessageBoxButtons.OK, MessageBoxIcon.Information);
+					string query = this.inputBoxDialog1.Input;
+					if (string.IsNullOrEmpty(query)) return;
+
+					IList<GContent> list = Cache.Instance.FindCaches(query);
+					this.ViewFlatCrawlResult(list);
+					break;
+			}
+		}
+		private void tsmiSearchLivedoorGyaO_Click(object sender, EventArgs e) {
+			this.inputBoxDialog1.Title = "livedoor動画でGyaO検索";
+			this.inputBoxDialog1.Message = "検索する語句を入力してください．";
+			this.inputBoxDialog1.Input = string.Empty;
+
+			switch (this.inputBoxDialog1.ShowDialog()) {
+				case DialogResult.OK:
+					string query = this.inputBoxDialog1.Input;
+					if (string.IsNullOrEmpty(query)) return;
+
+					//Encoding encoding = Encoding.GetEncoding("EUC-JP");
+					Uri uri = new Uri(string.Format(
+						"http://stream.search.livedoor.com/search/?svc=gyao&num=100&q={0}",
+						/*HttpUtility.UrlEncode(query, encoding)*/ query)/*, false*/);
+					Utility.Browse(uri);
 					break;
 			}
 		}
@@ -549,7 +603,7 @@ namespace Yusen.GExplorer {
 				}
 			}
 		}
-
+		
 		#region IHasNewSettings<MainFormSettings> Members
 		public MainForm.MainFormSettings Settings {
 			get { return this.settings; }
