@@ -299,7 +299,6 @@ namespace Yusen.GExplorer {
 			}
 			
 			Uri playerPageUri = this.CurrentChapter.HasValue ? this.CurrentContent.ChapterPlayerPageUriOf(this.CurrentChapter.Value) : this.CurrentContent.PlayerPageUri;
-			//Uri playlistUri = this.CurrentChapter.HasValue ? this.CurrentContent.ChapterPlaylistUriOf(this.CurrentChapter.Value) : this.CurrentContent.PlayListUri;
 			
 			object xmlhttp = Interaction.CreateObject("MSXML2.XMLHTTP", string.Empty);
 			Type type = xmlhttp.GetType();
@@ -310,6 +309,11 @@ namespace Yusen.GExplorer {
 			Match match = PlayerForm.regexAsxPhp.Match(body);
 			if (match.Success) {
 				string asxPhpAddr = match.Value;
+				//chapter
+				if (this.CurrentChapter.HasValue) {
+					asxPhpAddr += "&chapterNo=" + this.CurrentChapter.Value.ToString();
+				}
+				
 				IWMPMedia media = this.wmpMain.newMedia(asxPhpAddr);
 				this.wmpMain.currentPlaylist.appendItem(media);
 				if (WMPPlayState.wmppsMediaEnded != this.wmpMain.playState) {
