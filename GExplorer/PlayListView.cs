@@ -181,7 +181,7 @@ namespace Yusen.GExplorer {
 				lvi.SubItems[0].Text = cont.ContentId;
 				lvi.SubItems[1].Text = cont.DisplayName;
 				lvi.SubItems[2].Text = cont.GTimeSpan.ToString();
-				lvi.SubItems[3].Text = cont.Deadline;
+				lvi.SubItems[3].Text = cont.GDeadline.ToString();
 				lvi.SubItems[4].Text = cont.Comment;
 				lvi.Tag = cont;
 			}
@@ -193,7 +193,7 @@ namespace Yusen.GExplorer {
 			} else if(minCount == oldCount){//増えた場合
 				for(int i=minCount; i<newCount; i++) {
 					ContentAdapter cont = PlayList.Instance[i];
-					ListViewItem lvi = new ListViewItem(new string[] { cont.ContentId, cont.DisplayName, cont.GTimeSpan.ToString(), cont.Deadline, cont.Comment });
+					ListViewItem lvi = new ListViewItem(new string[] { cont.ContentId, cont.DisplayName, cont.GTimeSpan.ToString(), cont.GDeadline.ToString(), cont.Comment });
 					lvi.Tag = cont;
 					this.listView1.Items.Add(lvi);
 				}

@@ -122,6 +122,7 @@
     <Compile Include="FormSettingsBase.Designer.cs">
       <DependentUpon>FormSettingsBase.cs</DependentUpon>
     </Compile>
+    <Compile Include="GDeadline.cs" />
     <Compile Include="GenreTabPage.cs">
       <SubType>Component</SubType>
     </Compile>

@@ -13,7 +13,7 @@ namespace Yusen.GCrawler {
 		private readonly static Regex regexId = new Regex("pac[0-9]{7}", RegexOptions.Compiled);
 
 		private static readonly Regex regexPackagePackage = new Regex(
-			@"<a href=""http://www\.gyao\.jp/sityou/catetop/genre_id/(?<GenreId>gen\d{7})/"">[\s\S]*?<td class=""title12b"">(?<PackageName>.*?)<!-- パックタイトル -->[\s\S]*?<b>(?<CatchCopy>.*?)<!-- パックキャッチコピー --></b>[\s\S]*?<td>(?<PackageText1>.*?)<!-- パックテキスト１ --></td>",
+			@"<a href=""http://www\.gyao\.jp/sityou/catetop/genre_id/(?<GenreId>gen\d{7})/"">[\s\S]*?<td width=""658"" class=""title12b"">(?<PackageName>.*?)<!-- パックタイトル -->[\s\S]*?<b>(?<CatchCopy>.*?)<!-- パックキャッチコピー --></b>[\s\S]*?<td>(?<PackageText1>.*?)<!-- パックテキスト１ --></td>",
 			RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.ExplicitCapture);
 		private static readonly Regex regexPackageContent = new Regex(
 			@"<img src=""/img/info/[a-z]*?/{1,2}(?<ContentId>cnt\d{7})_s.jpg"" width=""80"" height=""60"" border=""0""><!-- サムネイル -->[\s\S]*?<td width=""235"" valign=""top"">(?<Summary>.*?)<!-- サマリー --></td>[\s\S]*?<td height=""14"" colspan=""2"" class=""bk10"">[\r\n]{1,2}(?<Deadline>.*?)</t[dr]>",

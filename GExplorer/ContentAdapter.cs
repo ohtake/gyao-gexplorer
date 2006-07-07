@@ -88,20 +88,13 @@ namespace Yusen.GExplorer {
 
 		private GContent innerCont;
 		private GTimeSpan gTimeSpan;
+		private GDeadline gDeadline;
 		private GGenre genre = null;
 		private string mergedDescription = null;
 		private string comment = string.Empty;
 		private string displayName = null;
 		private string attributes = null;
 		
-#if CLIP_RESUME
-		private ClipResumeInfo resumeInfo;
-		public ClipResumeInfo ResumeInfo {
-			get { return this.resumeInfo; }
-			set { this.resumeInfo = value; }
-		}
-#endif
-
 		public ContentAdapter() {
 		}
 		public ContentAdapter(GContent innerCont) {
@@ -138,6 +131,7 @@ namespace Yusen.GExplorer {
 			set {
 				this.innerCont = value;
 				this.gTimeSpan = new GTimeSpan(this.innerCont.Duration);
+				this.gDeadline = new GDeadline(this.innerCont.Deadline);
 			}
 		}
 		[XmlIgnore]
@@ -329,6 +323,14 @@ namespace Yusen.GExplorer {
 		}
 		[XmlIgnore]
 		[Category("専ブラが付加した情報")]
+		[Description("配信期限のパーズ結果．")]
+		public GDeadline GDeadline {
+			get {
+				return this.gDeadline;
+			}
+		}
+		[XmlIgnore]
+		[Category("専ブラが付加した情報")]
 		[Description("ダミーかどうかのフラグ．")]
 		public bool IsDummy {
 			get { return this.InnerContent.IsDummy; }
@@ -383,16 +385,6 @@ namespace Yusen.GExplorer {
 				return GContent.CreateRecommendPageUri(this.ContentKey, GlobalSettings.Instance.BitRate);
 			}
 		}
-#if CLIP_RESUME
-		[XmlIgnore]
-		[Category("URI")]
-		[Description("中断位置を保持したプレイリストのURI． (ResumeInfo プロパティの影響を受ける．)")]
-		public Uri ResumedPlaylistUri {
-			get {
-				return GContent.CreatePlaylistUri(this.ContentId, GlobalSettings.Instance.UserNo, GlobalSettings.Instance.BitRate, this.ResumeInfo);
-			}
-		}
-#endif
 		
 		public Uri ChapterPlayerPageUriOf(int chapterNo) {
 			return GContent.CreatePlayerPageUri(this.ContentKey, GlobalSettings.Instance.BitRate, chapterNo);

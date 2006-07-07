@@ -34,7 +34,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ClipResumeInfo.cs" />
     <Compile Include="ContentCacheController.cs" />
     <Compile Include="GBitRate.cs" />
     <Compile Include="GContent.cs" />

@@ -312,7 +312,7 @@ namespace Yusen.GExplorer {
 
 		private sealed class ContentListViewItem : ListViewItem {
 			public ContentListViewItem(ContentAdapter ca, ListViewGroup packageGroup)
-				: base(new string[] { ca.ContentId, ca.Title, ca.SeriesNumber, ca.Subtitle, ca.GTimeSpan.ToString(), ca.Deadline, ca.Summary, ca.Attributes }) {
+				: base(new string[] { ca.ContentId, ca.Title, ca.SeriesNumber, ca.Subtitle, ca.GTimeSpan.ToString(), ca.GDeadline.ToString(), ca.Summary, ca.Attributes }) {
 				this.contentAdapter = ca;
 				this.packageGroup = packageGroup;
 			}

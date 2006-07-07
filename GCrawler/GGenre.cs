@@ -24,19 +24,19 @@ namespace Yusen.GCrawler {
 				new GGenre200509VideoBlog(12, "blog", "映像ブログ", Color.FromArgb(0xFF, 0x99, 0x99)),
 				new GGenre200509(24, "shopping", "ショッピング", Color.FromArgb(0xFF, 0x66, 0x00)),
 				new GGenre200509(25, "game", "ゲーム", Color.FromArgb(0x00, 0x99, 0x66)),
-				new GGenre200505(14, "station", "ステーションコール", Color.Black),
-				new GGenre200505(26, "test", "テスト", Color.Black),
 				/*
 				 *  7	--> news
 				 *  8	ラジオ
 				 * 11	教育・学習
 				 * 13	世の中のイベント・動き
+				 * 14	ステーションコール (pac0000062)
 				 * 15	--> beauty
 				 * 16	ビジネス
 				 * 17	オメコメ
 				 * 18	--> c.gyao.jp
-				 * 19	404
+				 * 19	--> election
 				 * 23	アンケート
+				 * 26	テスト (pac0001397)
 				 */
 			};
 			GGenre.dicGenre = new SortedDictionary<int, GGenre>();
@@ -126,6 +126,7 @@ namespace Yusen.GCrawler {
 			return string.Format("<{0}> {1}", this.GenreId, this.GenreName);
 		}
 		[Serializable]
+		[Obsolete("200505形式のジャンルは多分もうない (2006-07-07)", true)]
 		private class GGenre200505 : GGenre {
 			public GGenre200505(int keyNo, string imageDir, string name, Color color)
 				: base(keyNo, imageDir, name, color) { }
@@ -143,7 +144,6 @@ namespace Yusen.GCrawler {
 		}
 		[Serializable]
 		private class GGenre200509 : GGenre {
-			[OptionalField]//2.0.5.1
 			private readonly string rootDir;
 			public GGenre200509(int keyNo, string sameDir, string name, Color color)
 				: this(keyNo, sameDir, sameDir, name, color) {
