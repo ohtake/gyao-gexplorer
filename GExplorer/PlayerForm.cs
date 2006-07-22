@@ -9,8 +9,6 @@ using System.Xml.Serialization;
 using AxWMPLib;
 using WMPLib;
 using DRegion = System.Drawing.Region;
-using BindingFlags = System.Reflection.BindingFlags;
-using Interaction = Microsoft.VisualBasic.Interaction;
 
 namespace Yusen.GExplorer {
 	public sealed partial class PlayerForm : FormSettingsBase, IFormWithNewSettings<PlayerForm.PlayerFormSettings> {
@@ -174,6 +172,17 @@ namespace Yusen.GExplorer {
 			}
 			private bool chapterModeFromBegining = false;
 
+			[Category("再生")]
+			[DisplayName("年齢制限の確認には無条件でYES")]
+			[Description("年齢制限の確認のダイアログを表示せずに無条件でYESと返答します．")]
+			[DefaultValue(false)]
+			public bool DisableAdultCheckDialog {
+				get { return this.disableAdultCheckDialog; }
+				set { this.disableAdultCheckDialog = value; }
+			}
+			private bool disableAdultCheckDialog = false;
+
+
 			[Category("自動音量調整")]
 			[DisplayName("自動音量調整")]
 			[Description("本編やCFに切り替わったときに音量を自動的に調節します．設定の如何によらずミュートの時には音量調整は行いません．")]
@@ -246,6 +255,8 @@ namespace Yusen.GExplorer {
 		}
 
 		private const string AttribNameEntryUrl = "WMS_CONTENT_DESCRIPTION_PLAYLIST_ENTRY_URL";
+		private const string AdultErrorString = @"<a href=""/sityou/adult_error.php"" target=""_self""><img src=""/sityou/img/bt_no.gif"" width=""186"" height=""38"" border=""0""></a>";
+		private const string LastCallTitle = "ラストコール";
 		private const int VolumeMax = 100;
 		private const int VolumeMin = 0;
 		private const int ZoomMax = 200;
@@ -294,32 +305,47 @@ namespace Yusen.GExplorer {
 		private void OpenVideo() {
 			if (null == this.CurrentContent) {
 				this.wmpMain.close();
-				this.wmpMain.currentMedia = null;
+				this.wmpMain.currentPlaylist.clear();
 				return;
 			}
-			
-			Uri playerPageUri = this.CurrentChapter.HasValue ? this.CurrentContent.ChapterPlayerPageUriOf(this.CurrentChapter.Value) : this.CurrentContent.PlayerPageUri;
-			
-			object xmlhttp = Interaction.CreateObject("MSXML2.XMLHTTP", string.Empty);
-			Type type = xmlhttp.GetType();
-			type.InvokeMember("open", BindingFlags.InvokeMethod, null, xmlhttp, new object[] { "GET", playerPageUri.AbsoluteUri, false });
-			type.InvokeMember("send", BindingFlags.InvokeMethod, null, xmlhttp, new object[] { });
-			string body = type.InvokeMember("responseText", BindingFlags.GetProperty, null, xmlhttp, new object[] { }) as string;
 
+			Uri playerPageUri = this.CurrentContent.PlayerPageUri;
+			
+			XmlHttpWrapper xmlhttp = new XmlHttpWrapper();
+			string body = xmlhttp.GetResponseText(playerPageUri);
+			
+			//年齢チェック
+			if (body.Contains(PlayerForm.AdultErrorString)) {
+				if (!this.settings.DisableAdultCheckDialog) {
+					switch (MessageBox.Show(this, "年齢制限のあるコンテンツのようです．再生しますか？", "年齢制限", MessageBoxButtons.YesNo, MessageBoxIcon.Question)) {
+						case DialogResult.Yes:
+							break;
+						default:
+							this.CurrentContent = null;
+							return;
+					}
+				}
+				Uri playerPage2Uri = new Uri(playerPageUri.AbsoluteUri + "&check_flg=0");
+				body = xmlhttp.GetResponseText(playerPage2Uri);
+			}
+			
 			Match match = PlayerForm.regexAsxPhp.Match(body);
 			if (match.Success) {
 				string asxPhpAddr = match.Value;
-				//chapter
+				//チャプタ
 				if (this.CurrentChapter.HasValue) {
 					asxPhpAddr += "&chapterNo=" + this.CurrentChapter.Value.ToString();
 				}
 				
 				IWMPMedia media = this.wmpMain.newMedia(asxPhpAddr);
-				this.wmpMain.currentPlaylist.appendItem(media);
 				if (WMPPlayState.wmppsMediaEnded != this.wmpMain.playState) {
 					//手動で切り替えた場合では強制的に再生させる
+					this.wmpMain.currentPlaylist.clear();
 					this.wmpMain.currentMedia = media;
 					this.wmpMain.Ctlcontrols.play();
+				} else {
+					//コンテンツ末尾に達した場合はリストの末尾にmedia追加
+					this.wmpMain.currentPlaylist.appendItem(media);
 				}
 				this.UpdateStatusbatText();
 			} else {
@@ -394,14 +420,13 @@ namespace Yusen.GExplorer {
 				this.currentContent = value;
 				this.currentChapter = this.settings.ChapterModeFromBegining ? 1 : (int?)null;
 				
+				PlayList.Instance.CurrentContent = value;
 				if (null == value) {
 					this.Text = "PlayerForm";
-					this.wmpMain.close();
 				} else {
 					this.Text = value.DisplayName;
-					this.OpenVideo();
 				}
-				PlayList.Instance.CurrentContent = value;
+				this.OpenVideo();
 			}
 		}
 		public int? CurrentChapter {
@@ -693,9 +718,18 @@ namespace Yusen.GExplorer {
 			switch((WMPPlayState)e.newState){
 				case WMPPlayState.wmppsMediaEnded:
 					if (this.IsLastEntry) {
-						if (this.CurrentChapter.HasValue) {
-							//チャプタモードなら次のチャプタ
-							this.CurrentChapter++;
+						if (this.CurrentChapter.HasValue) {//チャプタモード
+							if (PlayerForm.LastCallTitle.Equals(this.wmpMain.currentMedia.name)) {
+								//次のコンテンツに推移
+								if (this.settings.RemovePlayedContentEnabled) {
+									this.tsmiNextContentWithDelete.PerformClick();
+								} else {
+									this.tsmiNextContent.PerformClick();
+								}
+							} else {
+								//次のチャプタ
+								this.CurrentChapter++;
+							}
 						} else {
 							//次のコンテンツに推移
 							if (this.settings.RemovePlayedContentEnabled) {

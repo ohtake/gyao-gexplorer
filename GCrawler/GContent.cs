@@ -85,16 +85,6 @@ namespace Yusen.GCrawler {
 				+ "&recommend="
 				+ "&contents_id=");
 		}
-		public static Uri CreatePlayerPageUri(int contKey, GBitRate bitrate, int chaperNo) {
-			return new Uri(
-				"http://www.gyao.jp/login/judge_cookie/?"
-				+ "contentsId=" + GContent.ConvertToIdFromKey(contKey)
-				+ "&rateId=" + GBitRateUtility.ConvertToIdFromKey(bitrate)
-				+ "&login_from=shityou"
-				+ "&chapterNo=" + chaperNo.ToString()
-				+ "&recommend="
-				+ "&contents_id=");
-		}
 		public static Uri CreateRecommendPageUri(int contKey, GBitRate bitrate) {
 			string contId = GContent.ConvertToIdFromKey(contKey);
 			return new Uri(

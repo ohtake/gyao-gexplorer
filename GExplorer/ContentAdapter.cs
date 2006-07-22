@@ -361,6 +361,7 @@ namespace Yusen.GExplorer {
 				return GContent.CreatePlayerPageUri(this.ContentKey, GlobalSettings.Instance.BitRate);
 			}
 		}
+
 		[XmlIgnore]
 		[Category("URI")]
 		[Description("コンテンツの画像(大)のURI．")]
@@ -386,10 +387,6 @@ namespace Yusen.GExplorer {
 			}
 		}
 		
-		public Uri ChapterPlayerPageUriOf(int chapterNo) {
-			return GContent.CreatePlayerPageUri(this.ContentKey, GlobalSettings.Instance.BitRate, chapterNo);
-		}
-
 		public override bool Equals(object obj) {
 			ContentAdapter cObj = obj as ContentAdapter;
 			if (null == cObj) {

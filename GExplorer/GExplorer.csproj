@@ -345,6 +345,7 @@
     <Compile Include="Utility.cs" />
     <Compile Include="Win32WindowImpl.cs" />
     <Compile Include="WindowsConstants.cs" />
+    <Compile Include="XmlHttpWrapper.cs" />
     <Compile Include="XmlSerializableColor.cs" />
   </ItemGroup>
   <ItemGroup>
