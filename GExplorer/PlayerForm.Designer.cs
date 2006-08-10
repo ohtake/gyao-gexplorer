@@ -225,6 +225,7 @@
 			this.wbBanner.ScrollBarsEnabled = false;
 			this.wbBanner.Size = new System.Drawing.Size(96, 600);
 			this.wbBanner.TabIndex = 0;
+			this.wbBanner.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.wbBanner_DocumentCompleted);
 			// 
 			// menuStrip1
 			// 
@@ -543,7 +544,7 @@
 			// 
 			this.timerAutoVolume.Tick += new System.EventHandler(this.timerAutoVolume_Tick);
 			// 
-			// timerSkipKrm
+			// timerSkipGyaoCm
 			// 
 			this.timerSkipGyaoCm.Tick += new System.EventHandler(this.timerSkipGyaoCm_Tick);
 			// 

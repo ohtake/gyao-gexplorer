@@ -16,6 +16,9 @@ namespace Yusen.GExplorer {
 		private string original;
 
 		public GDeadline(string original) {
+			if (null == original) {
+				original = string.Empty;
+			}
 			this.original = original;
 			Match match = GDeadline.regex.Match(original);
 			this.canParse = match.Success;

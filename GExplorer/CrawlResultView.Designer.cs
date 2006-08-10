@@ -29,8 +29,8 @@
 			this.tsmiAddWithComment = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiPlay = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
-			this.tsmiPlayWithBrowser = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiBroseDetail = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiPlayWithBrowser = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiCopyName = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiCopyDetailUri = new System.Windows.Forms.ToolStripMenuItem();
@@ -117,7 +117,7 @@
             this.toolStripMenuItem4,
             this.tsmiRemoveCache});
 			this.cmsContent.Name = "contextMenuStrip1";
-			this.cmsContent.Size = new System.Drawing.Size(215, 336);
+			this.cmsContent.Size = new System.Drawing.Size(215, 314);
 			this.cmsContent.Opening += new System.ComponentModel.CancelEventHandler(this.cmsContent_Opening);
 			// 
 			// tsmiAdd
@@ -148,19 +148,19 @@
 			this.toolStripSeparator6.Name = "toolStripSeparator6";
 			this.toolStripSeparator6.Size = new System.Drawing.Size(211, 6);
 			// 
-			// tsmiPlayWithBrowser
-			// 
-			this.tsmiPlayWithBrowser.Name = "tsmiPlayWithBrowser";
-			this.tsmiPlayWithBrowser.Size = new System.Drawing.Size(214, 22);
-			this.tsmiPlayWithBrowser.Text = "ウェブブラウザで再生ページ(&V)";
-			this.tsmiPlayWithBrowser.Click += new System.EventHandler(this.tsmiPlayWithBrowser_Click);
-			// 
 			// tsmiBroseDetail
 			// 
 			this.tsmiBroseDetail.Name = "tsmiBroseDetail";
 			this.tsmiBroseDetail.Size = new System.Drawing.Size(214, 22);
 			this.tsmiBroseDetail.Text = "ウェブブラウザで詳細ページ(&D)";
 			this.tsmiBroseDetail.Click += new System.EventHandler(this.tsmiBroseDetail_Click);
+			// 
+			// tsmiPlayWithBrowser
+			// 
+			this.tsmiPlayWithBrowser.Name = "tsmiPlayWithBrowser";
+			this.tsmiPlayWithBrowser.Size = new System.Drawing.Size(214, 22);
+			this.tsmiPlayWithBrowser.Text = "ウェブブラウザで再生ページ(&V)";
+			this.tsmiPlayWithBrowser.Click += new System.EventHandler(this.tsmiPlayWithBrowser_Click);
 			// 
 			// toolStripSeparator1
 			// 
@@ -264,11 +264,11 @@
 			// toolStripContainer1.ContentPanel
 			// 
 			this.toolStripContainer1.ContentPanel.Controls.Add(this.listView1);
-			this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(625, 200);
+			this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(592, 200);
 			this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.toolStripContainer1.Location = new System.Drawing.Point(0, 0);
 			this.toolStripContainer1.Name = "toolStripContainer1";
-			this.toolStripContainer1.Size = new System.Drawing.Size(625, 250);
+			this.toolStripContainer1.Size = new System.Drawing.Size(592, 250);
 			this.toolStripContainer1.TabIndex = 2;
 			this.toolStripContainer1.Text = "toolStripContainer1";
 			// 
@@ -296,7 +296,7 @@
 			this.listView1.Location = new System.Drawing.Point(0, 0);
 			this.listView1.Name = "listView1";
 			this.listView1.ShowItemToolTips = true;
-			this.listView1.Size = new System.Drawing.Size(625, 200);
+			this.listView1.Size = new System.Drawing.Size(592, 200);
 			this.listView1.TabIndex = 0;
 			this.listView1.UseCompatibleStateImageBehavior = false;
 			this.listView1.View = System.Windows.Forms.View.Details;
@@ -309,12 +309,12 @@
 			// chId
 			// 
 			this.chId.Text = "contents_id";
-			this.chId.Width = 74;
+			this.chId.Width = 73;
 			// 
 			// chTitle
 			// 
 			this.chTitle.Text = "タイトル";
-			this.chTitle.Width = 90;
+			this.chTitle.Width = 77;
 			// 
 			// chSeriesNumber
 			// 
@@ -334,12 +334,12 @@
 			// chDeadline
 			// 
 			this.chDeadline.Text = "配信期限";
-			this.chDeadline.Width = 70;
+			this.chDeadline.Width = 68;
 			// 
 			// chSummary
 			// 
 			this.chSummary.Text = "サマリー";
-			this.chSummary.Width = 140;
+			this.chSummary.Width = 122;
 			// 
 			// chAttribs
 			// 
@@ -365,7 +365,7 @@
             this.tslTime});
 			this.tsMain.Location = new System.Drawing.Point(0, 0);
 			this.tsMain.Name = "tsMain";
-			this.tsMain.Size = new System.Drawing.Size(625, 25);
+			this.tsMain.Size = new System.Drawing.Size(592, 25);
 			this.tsMain.Stretch = true;
 			this.tsMain.TabIndex = 2;
 			this.tsMain.Text = "toolStrip1";
@@ -481,7 +481,7 @@
             this.tstbAnswer});
 			this.tsFilter.Location = new System.Drawing.Point(0, 25);
 			this.tsFilter.Name = "tsFilter";
-			this.tsFilter.Size = new System.Drawing.Size(625, 25);
+			this.tsFilter.Size = new System.Drawing.Size(592, 25);
 			this.tsFilter.Stretch = true;
 			this.tsFilter.TabIndex = 3;
 			this.tsFilter.Text = "tsFilter";
@@ -625,7 +625,7 @@
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.Controls.Add(this.toolStripContainer1);
 			this.Name = "CrawlResultView";
-			this.Size = new System.Drawing.Size(625, 250);
+			this.Size = new System.Drawing.Size(592, 250);
 			this.Load += new System.EventHandler(this.CrawlResultView_Load);
 			this.cmsContent.ResumeLayout(false);
 			this.toolStripContainer1.ContentPanel.ResumeLayout(false);

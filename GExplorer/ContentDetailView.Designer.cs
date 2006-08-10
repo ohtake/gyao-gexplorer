@@ -86,7 +86,7 @@
 			// 
 			this.splitContainer1.Panel2.Controls.Add(this.tabControl1);
 			this.splitContainer1.Size = new System.Drawing.Size(224, 455);
-			this.splitContainer1.SplitterDistance = 178;
+			this.splitContainer1.SplitterDistance = 166;
 			this.splitContainer1.TabIndex = 0;
 			this.splitContainer1.Text = "splitContainer1";
 			// 
@@ -96,7 +96,7 @@
 			this.picboxImage.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.picboxImage.Location = new System.Drawing.Point(0, 0);
 			this.picboxImage.Name = "picboxImage";
-			this.picboxImage.Size = new System.Drawing.Size(224, 178);
+			this.picboxImage.Size = new System.Drawing.Size(224, 166);
 			this.picboxImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
 			this.picboxImage.TabIndex = 1;
 			this.picboxImage.TabStop = false;
@@ -208,7 +208,7 @@
 			this.tabControl1.Location = new System.Drawing.Point(0, 0);
 			this.tabControl1.Name = "tabControl1";
 			this.tabControl1.SelectedIndex = 0;
-			this.tabControl1.Size = new System.Drawing.Size(224, 273);
+			this.tabControl1.Size = new System.Drawing.Size(224, 285);
 			this.tabControl1.TabIndex = 0;
 			// 
 			// tabpSummary2
@@ -216,7 +216,7 @@
 			this.tabpSummary2.Controls.Add(this.tableLayoutPanel2);
 			this.tabpSummary2.Location = new System.Drawing.Point(4, 21);
 			this.tabpSummary2.Name = "tabpSummary2";
-			this.tabpSummary2.Size = new System.Drawing.Size(216, 248);
+			this.tabpSummary2.Size = new System.Drawing.Size(216, 260);
 			this.tabpSummary2.TabIndex = 0;
 			this.tabpSummary2.Text = "簡易";
 			this.tabpSummary2.UseVisualStyleBackColor = true;
@@ -224,7 +224,7 @@
 			// tableLayoutPanel2
 			// 
 			this.tableLayoutPanel2.ColumnCount = 2;
-			this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 47F));
+			this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 49F));
 			this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
 			this.tableLayoutPanel2.Controls.Add(this.label1, 0, 0);
 			this.tableLayoutPanel2.Controls.Add(this.label2, 0, 1);
@@ -253,14 +253,14 @@
 			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 24F));
 			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 38F));
 			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-			this.tableLayoutPanel2.Size = new System.Drawing.Size(216, 248);
+			this.tableLayoutPanel2.Size = new System.Drawing.Size(216, 260);
 			this.tableLayoutPanel2.TabIndex = 0;
 			// 
 			// label1
 			// 
 			this.label1.Anchor = System.Windows.Forms.AnchorStyles.Right;
 			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(28, 6);
+			this.label1.Location = new System.Drawing.Point(30, 6);
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(16, 12);
 			this.label1.TabIndex = 0;
@@ -270,7 +270,7 @@
 			// 
 			this.label2.Anchor = System.Windows.Forms.AnchorStyles.Right;
 			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(4, 30);
+			this.label2.Location = new System.Drawing.Point(6, 30);
 			this.label2.Name = "label2";
 			this.label2.Size = new System.Drawing.Size(40, 12);
 			this.label2.TabIndex = 1;
@@ -280,7 +280,7 @@
 			// 
 			this.label3.Anchor = System.Windows.Forms.AnchorStyles.Right;
 			this.label3.AutoSize = true;
-			this.label3.Location = new System.Drawing.Point(10, 54);
+			this.label3.Location = new System.Drawing.Point(12, 54);
 			this.label3.Name = "label3";
 			this.label3.Size = new System.Drawing.Size(34, 12);
 			this.label3.TabIndex = 2;
@@ -290,7 +290,7 @@
 			// 
 			this.label4.Anchor = System.Windows.Forms.AnchorStyles.Right;
 			this.label4.AutoSize = true;
-			this.label4.Location = new System.Drawing.Point(3, 78);
+			this.label4.Location = new System.Drawing.Point(5, 78);
 			this.label4.Name = "label4";
 			this.label4.Size = new System.Drawing.Size(41, 12);
 			this.label4.TabIndex = 3;
@@ -299,44 +299,44 @@
 			// txtId
 			// 
 			this.txtId.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.txtId.Location = new System.Drawing.Point(50, 3);
+			this.txtId.Location = new System.Drawing.Point(52, 3);
 			this.txtId.Name = "txtId";
 			this.txtId.ReadOnly = true;
-			this.txtId.Size = new System.Drawing.Size(163, 19);
+			this.txtId.Size = new System.Drawing.Size(161, 19);
 			this.txtId.TabIndex = 7;
 			// 
 			// txtTitle
 			// 
 			this.txtTitle.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.txtTitle.Location = new System.Drawing.Point(50, 27);
+			this.txtTitle.Location = new System.Drawing.Point(52, 27);
 			this.txtTitle.Name = "txtTitle";
 			this.txtTitle.ReadOnly = true;
-			this.txtTitle.Size = new System.Drawing.Size(163, 19);
+			this.txtTitle.Size = new System.Drawing.Size(161, 19);
 			this.txtTitle.TabIndex = 8;
 			// 
 			// txtEpisode
 			// 
 			this.txtEpisode.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.txtEpisode.Location = new System.Drawing.Point(50, 51);
+			this.txtEpisode.Location = new System.Drawing.Point(52, 51);
 			this.txtEpisode.Name = "txtEpisode";
 			this.txtEpisode.ReadOnly = true;
-			this.txtEpisode.Size = new System.Drawing.Size(163, 19);
+			this.txtEpisode.Size = new System.Drawing.Size(161, 19);
 			this.txtEpisode.TabIndex = 9;
 			// 
 			// txtSubtitle
 			// 
 			this.txtSubtitle.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.txtSubtitle.Location = new System.Drawing.Point(50, 75);
+			this.txtSubtitle.Location = new System.Drawing.Point(52, 75);
 			this.txtSubtitle.Name = "txtSubtitle";
 			this.txtSubtitle.ReadOnly = true;
-			this.txtSubtitle.Size = new System.Drawing.Size(163, 19);
+			this.txtSubtitle.Size = new System.Drawing.Size(161, 19);
 			this.txtSubtitle.TabIndex = 10;
 			// 
 			// label5
 			// 
 			this.label5.Anchor = System.Windows.Forms.AnchorStyles.Right;
 			this.label5.AutoSize = true;
-			this.label5.Location = new System.Drawing.Point(15, 102);
+			this.label5.Location = new System.Drawing.Point(17, 102);
 			this.label5.Name = "label5";
 			this.label5.Size = new System.Drawing.Size(29, 12);
 			this.label5.TabIndex = 4;
@@ -345,17 +345,17 @@
 			// txtDuration
 			// 
 			this.txtDuration.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.txtDuration.Location = new System.Drawing.Point(50, 99);
+			this.txtDuration.Location = new System.Drawing.Point(52, 99);
 			this.txtDuration.Name = "txtDuration";
 			this.txtDuration.ReadOnly = true;
-			this.txtDuration.Size = new System.Drawing.Size(163, 19);
+			this.txtDuration.Size = new System.Drawing.Size(161, 19);
 			this.txtDuration.TabIndex = 11;
 			// 
 			// label6
 			// 
 			this.label6.Anchor = System.Windows.Forms.AnchorStyles.Right;
 			this.label6.AutoSize = true;
-			this.label6.Location = new System.Drawing.Point(15, 126);
+			this.label6.Location = new System.Drawing.Point(17, 126);
 			this.label6.Name = "label6";
 			this.label6.Size = new System.Drawing.Size(29, 12);
 			this.label6.TabIndex = 5;
@@ -364,10 +364,10 @@
 			// txtDeadline
 			// 
 			this.txtDeadline.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.txtDeadline.Location = new System.Drawing.Point(50, 123);
+			this.txtDeadline.Location = new System.Drawing.Point(52, 123);
 			this.txtDeadline.Name = "txtDeadline";
 			this.txtDeadline.ReadOnly = true;
-			this.txtDeadline.Size = new System.Drawing.Size(163, 19);
+			this.txtDeadline.Size = new System.Drawing.Size(161, 19);
 			this.txtDeadline.TabIndex = 12;
 			// 
 			// txtDescription
@@ -379,14 +379,14 @@
 			this.txtDescription.Name = "txtDescription";
 			this.txtDescription.ReadOnly = true;
 			this.txtDescription.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-			this.txtDescription.Size = new System.Drawing.Size(210, 60);
+			this.txtDescription.Size = new System.Drawing.Size(210, 72);
 			this.txtDescription.TabIndex = 14;
 			// 
 			// label7
 			// 
 			this.label7.Anchor = System.Windows.Forms.AnchorStyles.Right;
 			this.label7.AutoSize = true;
-			this.label7.Location = new System.Drawing.Point(3, 157);
+			this.label7.Location = new System.Drawing.Point(5, 157);
 			this.label7.Name = "label7";
 			this.label7.Size = new System.Drawing.Size(41, 12);
 			this.label7.TabIndex = 6;
@@ -395,12 +395,12 @@
 			// txtSummary
 			// 
 			this.txtSummary.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.txtSummary.Location = new System.Drawing.Point(50, 147);
+			this.txtSummary.Location = new System.Drawing.Point(52, 147);
 			this.txtSummary.Multiline = true;
 			this.txtSummary.Name = "txtSummary";
 			this.txtSummary.ReadOnly = true;
 			this.txtSummary.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-			this.txtSummary.Size = new System.Drawing.Size(163, 32);
+			this.txtSummary.Size = new System.Drawing.Size(161, 32);
 			this.txtSummary.TabIndex = 13;
 			// 
 			// tabpDetail
@@ -408,7 +408,7 @@
 			this.tabpDetail.Controls.Add(this.propgDetail);
 			this.tabpDetail.Location = new System.Drawing.Point(4, 21);
 			this.tabpDetail.Name = "tabpDetail";
-			this.tabpDetail.Size = new System.Drawing.Size(216, 248);
+			this.tabpDetail.Size = new System.Drawing.Size(216, 260);
 			this.tabpDetail.TabIndex = 1;
 			this.tabpDetail.Text = "詳細";
 			this.tabpDetail.UseVisualStyleBackColor = true;
@@ -418,7 +418,7 @@
 			this.propgDetail.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.propgDetail.Location = new System.Drawing.Point(0, 0);
 			this.propgDetail.Name = "propgDetail";
-			this.propgDetail.Size = new System.Drawing.Size(216, 248);
+			this.propgDetail.Size = new System.Drawing.Size(216, 260);
 			this.propgDetail.TabIndex = 0;
 			// 
 			// tsucmiCommand

@@ -849,15 +849,15 @@ namespace Yusen.GExplorer {
 			if(this.ShowPackages) {
 				this.listView1.ShowGroups = false;
 			}
-			
-			ListViewItemComparer comparer = new ListViewItemComparer(e.Column);
-			if (comparer.SameIndexAs(this.listView1.ListViewItemSorter as ListViewItemComparer)) {
-				comparer = (this.listView1.ListViewItemSorter as ListViewItemComparer).Clone() as ListViewItemComparer;
-				comparer.Toggle();
-				this.listView1.ListViewItemSorter = comparer;
-			} else {
-				this.listView1.ListViewItemSorter = comparer;
+
+			ListViewItemStackableComparer comparer = this.listView1.ListViewItemSorter as ListViewItemStackableComparer;
+			if(null == comparer){
+				comparer = new ListViewItemStackableComparer();
+			}else{
+				comparer = comparer.Clone();
 			}
+			comparer.StackColumnIndex(e.Column);
+			this.listView1.ListViewItemSorter = comparer;
 		}
 		private void listView1_ItemDrag(object sender, ItemDragEventArgs e) {
 			DataObject dobj = new DataObject();

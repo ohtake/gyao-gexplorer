@@ -42,8 +42,8 @@
 			this.tsmiMoveToBottom = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiRemoveItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-			this.tsmiPlayWithBrowser = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiBrowseDetail = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiPlayWithBrowser = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiCopyName = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiCopyUri = new System.Windows.Forms.ToolStripMenuItem();
@@ -89,11 +89,11 @@
 			// toolStripContainer1.ContentPanel
 			// 
 			this.toolStripContainer1.ContentPanel.Controls.Add(this.listView1);
-			this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(625, 155);
+			this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(587, 155);
 			this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.toolStripContainer1.Location = new System.Drawing.Point(0, 0);
 			this.toolStripContainer1.Name = "toolStripContainer1";
-			this.toolStripContainer1.Size = new System.Drawing.Size(625, 180);
+			this.toolStripContainer1.Size = new System.Drawing.Size(587, 180);
 			this.toolStripContainer1.TabIndex = 1;
 			this.toolStripContainer1.Text = "toolStripContainer1";
 			// 
@@ -118,7 +118,7 @@
 			this.listView1.Name = "listView1";
 			this.listView1.ShowGroups = false;
 			this.listView1.ShowItemToolTips = true;
-			this.listView1.Size = new System.Drawing.Size(625, 155);
+			this.listView1.Size = new System.Drawing.Size(587, 155);
 			this.listView1.TabIndex = 0;
 			this.listView1.UseCompatibleStateImageBehavior = false;
 			this.listView1.View = System.Windows.Forms.View.Details;
@@ -138,7 +138,7 @@
 			// chName
 			// 
 			this.chName.Text = "コンテンツ名";
-			this.chName.Width = 280;
+			this.chName.Width = 245;
 			// 
 			// chDuration
 			// 
@@ -257,19 +257,19 @@
 			this.toolStripSeparator2.Name = "toolStripSeparator2";
 			this.toolStripSeparator2.Size = new System.Drawing.Size(208, 6);
 			// 
-			// tsmiPlayWithBrowser
-			// 
-			this.tsmiPlayWithBrowser.Name = "tsmiPlayWithBrowser";
-			this.tsmiPlayWithBrowser.Size = new System.Drawing.Size(211, 22);
-			this.tsmiPlayWithBrowser.Text = "ウェブブラウザで再生ページ(&V)";
-			this.tsmiPlayWithBrowser.Click += new System.EventHandler(this.tsmiPlayWithBrowser_Click);
-			// 
 			// tsmiBrowseDetail
 			// 
 			this.tsmiBrowseDetail.Name = "tsmiBrowseDetail";
 			this.tsmiBrowseDetail.Size = new System.Drawing.Size(211, 22);
 			this.tsmiBrowseDetail.Text = "ウェブブラウザで詳細ページ(&D)";
 			this.tsmiBrowseDetail.Click += new System.EventHandler(this.tsmiBrowseDetail_Click);
+			// 
+			// tsmiPlayWithBrowser
+			// 
+			this.tsmiPlayWithBrowser.Name = "tsmiPlayWithBrowser";
+			this.tsmiPlayWithBrowser.Size = new System.Drawing.Size(211, 22);
+			this.tsmiPlayWithBrowser.Text = "ウェブブラウザで再生ページ(&V)";
+			this.tsmiPlayWithBrowser.Click += new System.EventHandler(this.tsmiPlayWithBrowser_Click);
 			// 
 			// toolStripSeparator3
 			// 
@@ -368,7 +368,7 @@
             this.tslMessage});
 			this.toolStrip1.Location = new System.Drawing.Point(0, 0);
 			this.toolStrip1.Name = "toolStrip1";
-			this.toolStrip1.Size = new System.Drawing.Size(625, 25);
+			this.toolStrip1.Size = new System.Drawing.Size(587, 25);
 			this.toolStrip1.Stretch = true;
 			this.toolStrip1.TabIndex = 1;
 			this.toolStrip1.Text = "toolStrip1";
@@ -508,7 +508,7 @@
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.Controls.Add(this.toolStripContainer1);
 			this.Name = "PlayListView";
-			this.Size = new System.Drawing.Size(625, 180);
+			this.Size = new System.Drawing.Size(587, 180);
 			this.Load += new System.EventHandler(this.PlayListView_Load);
 			this.toolStripContainer1.ContentPanel.ResumeLayout(false);
 			this.toolStripContainer1.TopToolStripPanel.ResumeLayout(false);

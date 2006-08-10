@@ -10,7 +10,8 @@ namespace Yusen.GExplorer {
 	public partial class ContentPredicatesEditControl : UserControl {
 		private ContentPredicatesManager manager;
 		private volatile ContentPredicate selPred = null;
-
+		private ListViewItemStackableComparer comparer = new ListViewItemStackableComparer();
+		
 		public ContentPredicatesEditControl() {
 			InitializeComponent();
 			
@@ -96,21 +97,16 @@ namespace Yusen.GExplorer {
 		}
 
 		private void listview1_ColumnClick(object sender, ColumnClickEventArgs e) {
-			ListViewItemComparer comparer = new ListViewItemComparer(e.Column);
+			this.comparer.StackColumnIndex(e.Column);
 			List<ListViewItem> lvis = new List<ListViewItem>();
 			foreach (ListViewItem lvi in this.listview1.Items) {
 				lvis.Add(lvi);
 			}
-
-			if (Utility.IsSorted(lvis, comparer)) {
-				lvis.Reverse();
-			} else {
-				lvis.Sort(comparer);
-			}
+			lvis.Sort(this.comparer);
 			this.manager.SetAll(
 				lvis.ConvertAll<ContentPredicate>(delegate(ListViewItem lvi) {
-				return lvi.Tag as ContentPredicate;
-			}));
+					return lvi.Tag as ContentPredicate;
+				}));
 		}
 
 		private void listview1_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e) {

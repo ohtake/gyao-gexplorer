@@ -16,6 +16,10 @@ namespace Yusen.GExplorer {
 			if (null != FormBase.customIcon) {
 				this.Icon = FormBase.customIcon;
 			}
+			//いまいち画質が悪い
+			/* else {
+				this.Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath);
+			}*/
 		}
 	}
 }

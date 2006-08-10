@@ -146,7 +146,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="ItemsManagerBase.cs" />
-    <Compile Include="ListViewItemComparer.cs" />
+    <Compile Include="ListViewItemStackableComparer.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -352,10 +352,7 @@
     <Content Include="ChangeLog.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Icons\GExplorer_16_XP.ico" />
     <Content Include="Icons\GExplorer_16-32-48_XP.ico" />
-    <Content Include="Icons\GExplorer_32x32_16.ico" />
-    <Content Include="Icons\GExplorer_16x16_16.ico" />
     <Content Include="Icons\Icon_13_756.ico" />
     <Content Include="Icons\Icon_3_973.ico" />
     <Content Include="Icons\Icon_4_13.ico" />

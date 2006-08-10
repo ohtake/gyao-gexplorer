@@ -113,12 +113,12 @@ namespace Yusen.GExplorer {
 
 
 		public event EventHandler<ContentSelectionChangedEventArgs> ContentSelectionChanged;
-
-
+		
 		private bool dragging = false;
 		private string[] dropIds = null;
 		private ContentAdapter[] dropConts = null;
-
+		private ListViewItemStackableComparer comparer = new ListViewItemStackableComparer();
+		
 		private PlayListViewSettings settings;
 
 		public PlayListView() {
@@ -301,17 +301,12 @@ namespace Yusen.GExplorer {
 			}
 		}
 		private void listView1_ColumnClick(object sender, ColumnClickEventArgs e) {
-			ListViewItemComparer comparer = new ListViewItemComparer(e.Column);
+			this.comparer.StackColumnIndex(e.Column);
 			List<ListViewItem> lvis = new List<ListViewItem>();
 			foreach (ListViewItem lvi in this.listView1.Items) {
 				lvis.Add(lvi);
 			}
-
-			if (Utility.IsSorted(lvis, comparer)) {
-				lvis.Reverse();
-			} else {
-				lvis.Sort(comparer);
-			}
+			lvis.Sort(this.comparer);
 			PlayList.Instance.SetAll(
 				lvis.ConvertAll<ContentAdapter>(delegate(ListViewItem lvi){
 					return lvi.Tag as ContentAdapter;

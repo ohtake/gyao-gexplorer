@@ -13,6 +13,9 @@ namespace Yusen.GExplorer {
 		private string original;
 
 		public GTimeSpan(string original) {
+			if (null == original) {
+				original = string.Empty;
+			}
 			this.original = original;
 			Match match = GTimeSpan.regex.Match(original);
 			if (match.Success) {

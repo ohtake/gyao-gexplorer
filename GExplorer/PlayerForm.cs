@@ -230,43 +230,23 @@ namespace Yusen.GExplorer {
 			#endregion
 		}
 		
-		private sealed class BannerTag {
-			private const long OrdMax = 10000000000000000;
-			private static readonly Random rand = new Random();
-			
-			private readonly string dart;
-			private readonly long ord;
-			private readonly Uri page;
-
-			public BannerTag(string dart) {
-				this.dart = dart;
-				this.ord = (long)(BannerTag.rand.NextDouble() * BannerTag.OrdMax);
-				this.page = new Uri("http://ad.jp.doubleclick.net/adi/gyao.spot.sky/" + this.dart + ";sz=120x600;ord=" + this.ord.ToString() + "?");
-			}
-			public string Dart {
-				get { return this.dart; }
-			}
-			public long Ord {
-				get { return this.ord; }
-			}
-			public Uri PageUri {
-				get { return this.page; }
-			}
-		}
-
 		private const string AttribNameEntryUrl = "WMS_CONTENT_DESCRIPTION_PLAYLIST_ENTRY_URL";
 		private const string AdultErrorString = @"<a href=""/sityou/adult_error.php"" target=""_self""><img src=""/sityou/img/bt_no.gif"" width=""186"" height=""38"" border=""0""></a>";
 		private const string LastCallTitle = "ラストコール";
+		private const long OrdMax = 10000000000000000;
 		private const int VolumeMax = 100;
 		private const int VolumeMin = 0;
 		private const int ZoomMax = 200;
 		private const int ZoomMin = 25;
+		
+		private static readonly Random rand = new Random();
 		private static readonly Size WmpUiSize = new Size(0, 64);
 		private static readonly Size WmpMarginSize = new Size(3, 3);
 		private static readonly Regex regexDartTag = new Regex(":dartTag=([^:=]*)");
 		private static readonly Regex regexClipNo = new Regex(":clipNo=([^:]*)");
 		private static readonly Regex regexClipBegin = new Regex(":clipBegin=([^:]*)");
 		private static readonly Regex regexAsxPhp = new Regex(@"http://www\.gyao\.jp/sityou/asx\.php\?[^""]+");
+		private static readonly Regex regexBannerKeyValue = new Regex(@"var\s+keyValue\s+=\s+""(.+)"";");
 		
 		private static PlayerForm instance = null;
 		public static PlayerForm Instance {
@@ -290,7 +270,8 @@ namespace Yusen.GExplorer {
 		private ContentAdapter currentContent = null;
 		private int? currentChapter = null;
 		private Dictionary<string, string> currentAttribs = new Dictionary<string, string>();
-
+		private string bannerKeyValue = string.Empty;
+		
 		private ScreenSaveListener ssl;
 
 		private PlayerFormSettings settings;
@@ -329,28 +310,33 @@ namespace Yusen.GExplorer {
 				body = xmlhttp.GetResponseText(playerPage2Uri);
 			}
 			
-			Match match = PlayerForm.regexAsxPhp.Match(body);
-			if (match.Success) {
-				string asxPhpAddr = match.Value;
-				//チャプタ
-				if (this.CurrentChapter.HasValue) {
-					asxPhpAddr += "&chapterNo=" + this.CurrentChapter.Value.ToString();
-				}
-				
-				IWMPMedia media = this.wmpMain.newMedia(asxPhpAddr);
-				if (WMPPlayState.wmppsMediaEnded != this.wmpMain.playState) {
-					//手動で切り替えた場合では強制的に再生させる
-					this.wmpMain.currentPlaylist.clear();
-					this.wmpMain.currentMedia = media;
-					this.wmpMain.Ctlcontrols.play();
-				} else {
-					//コンテンツ末尾に達した場合はリストの末尾にmedia追加
-					this.wmpMain.currentPlaylist.appendItem(media);
-				}
-				this.UpdateStatusbatText();
-			} else {
+			Match matchAsxPhp = PlayerForm.regexAsxPhp.Match(body);
+			if (!matchAsxPhp.Success) {
 				throw new Exception("再生ページから asx.php のアドレスを取得できなかった．");
 			}
+			string asxPhpAddr = matchAsxPhp.Value;
+			//チャプタ
+			if (this.CurrentChapter.HasValue) {
+				asxPhpAddr += "&chapterNo=" + this.CurrentChapter.Value.ToString();
+			}
+			
+			IWMPMedia media = this.wmpMain.newMedia(asxPhpAddr);
+			if (WMPPlayState.wmppsMediaEnded != this.wmpMain.playState) {
+				//手動で切り替えた場合では強制的に再生させる
+				this.wmpMain.currentPlaylist.clear();
+				this.wmpMain.currentMedia = media;
+				this.wmpMain.Ctlcontrols.play();
+			} else {
+				//コンテンツ末尾に達した場合はリストの末尾にmedia追加
+				this.wmpMain.currentPlaylist.appendItem(media);
+			}
+			this.UpdateStatusbatText();
+
+			Match matchBannerKeyValue = PlayerForm.regexBannerKeyValue.Match(body);
+			if (!matchBannerKeyValue.Success) {
+				throw new Exception("再生ページからバナー用の個人情報を取得できなかった．");
+			}
+			this.bannerKeyValue = matchBannerKeyValue.Groups[1].Value;
 		}
 		private void UpdateStatusbatText() {
 			if(null != this.CurrentContent) {
@@ -406,6 +392,14 @@ namespace Yusen.GExplorer {
 				this.Region = null;
 				oldRegion.Dispose();
 			}
+		}
+		private Uri CreateBannerUri(string dartTag) {
+			long ord = (long)(PlayerForm.rand.NextDouble() * PlayerForm.OrdMax);
+			return new Uri(
+				"http://www1.gyao.jp/html.ng/site=gyao.cm.sky"
+				+ this.bannerKeyValue
+				+ "&zone=" + dartTag
+				+ "&ord=" + ord.ToString() + "?");
 		}
 
 		public string FilenameForSettings {
@@ -686,8 +680,9 @@ namespace Yusen.GExplorer {
 					//バナー表示
 					Match dartTagMatch = PlayerForm.regexDartTag.Match(entryUrl);
 					if (dartTagMatch.Success && !string.IsNullOrEmpty(dartTagMatch.Groups[1].Value)) {
-						BannerTag bt = new BannerTag(dartTagMatch.Groups[1].Value);
-						this.wbBanner.Navigate(bt.PageUri);
+						string dartTag = dartTagMatch.Groups[1].Value;
+						dartTag = dartTag.Split(new string[] { "AR" }, StringSplitOptions.None)[0];
+						this.wbBanner.Navigate(this.CreateBannerUri(dartTag));
 						this.splitContainer1.Panel2Collapsed = false;
 					} else {
 						this.splitContainer1.Panel2Collapsed = true;
@@ -747,7 +742,10 @@ namespace Yusen.GExplorer {
 		private void tsmiSettings_DropDownOpened(object sender, EventArgs e) {
 			this.tspgPlayerFormSettings.RefreshPropertyGrid();
 		}
-		
+
+		private void wbBanner_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e) {
+			this.wbBanner.Document.Body.Style += ";margin:0px;padding:0px;";
+		}
 		private void timerAutoVolume_Tick(object sender, EventArgs e) {
 			this.timerAutoVolume.Stop();
 			this.ModifyVolume();
