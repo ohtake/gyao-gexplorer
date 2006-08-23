@@ -184,6 +184,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="AboutBox.resx">
       <DependentUpon>AboutBox.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="BitRateForm.resx">
       <SubType>Designer</SubType>
@@ -207,12 +208,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ExceptionForm.resx">
       <DependentUpon>ExceptionForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="FormBase.resx">
       <DependentUpon>FormBase.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="FormSettingsBase.resx">
       <DependentUpon>FormSettingsBase.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="GenreTabControl.resx">
       <DependentUpon>GenreTabControl.cs</DependentUpon>
@@ -228,6 +232,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="InputBoxForm.resx">
       <DependentUpon>InputBoxForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
@@ -272,6 +277,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UserCommandsEditor.resx">
       <DependentUpon>UserCommandsEditor.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -308,6 +314,9 @@
       <DependentUpon>SplashForm.cs</DependentUpon>
     </Compile>
     <Compile Include="ToolStripCAPropertyMenuItem.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ToolStripPlayModeDropDownButton.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="ToolStripContentVisibilitiesSelector.cs">
@@ -359,6 +368,37 @@
     <Content Include="ReadMe.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\AutoFilter.bmp" />
+    <None Include="Resources\BuilderDialog_movedown.bmp" />
+    <None Include="Resources\BuilderDialog_moveup.bmp" />
+    <None Include="Resources\Warning.bmp" />
+    <None Include="Resources\HtmlPage.bmp" />
+    <None Include="Resources\FullScreen.bmp" />
+    <None Include="Resources\GoToNext.bmp" />
+    <None Include="Resources\GoToPrevious.bmp" />
+    <None Include="Resources\DoubleLeftArrow.bmp" />
+    <None Include="Resources\DoubleRightArrow.bmp" />
+    <None Include="Resources\stop.bmp" />
+    <None Include="Resources\Restart.bmp" />
+    <None Include="Resources\help.bmp" />
+    <None Include="Resources\SearchInFolder.bmp" />
+    <None Include="Resources\Play.bmp" />
+    <None Include="Resources\Comment.bmp" />
+    <None Include="Resources\BuilderDialog_add.bmp" />
+    <None Include="Resources\PrintPreview.bmp" />
+    <None Include="Resources\Print.bmp" />
+    <None Include="Resources\PrintSetup.bmp" />
+    <None Include="Resources\Properties.bmp" />
+    <None Include="Resources\Save.bmp" />
+    <None Include="Resources\searchWeb.bmp" />
+    <None Include="Resources\Refresh_Cancel.bmp" />
+    <None Include="Resources\RefreshDocView.bmp" />
+    <None Include="Resources\NavForward.bmp" />
+    <None Include="Resources\NavBack.bmp" />
+    <None Include="Resources\home.bmp" />
+    <None Include="Resources\Delete.bmp" />
+    <None Include="Resources\Copy.bmp" />
+    <None Include="Resources\FormRun.bmp" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">

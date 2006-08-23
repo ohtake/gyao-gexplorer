@@ -4,6 +4,9 @@ using System.Drawing;
 using System.ComponentModel;
 using System.Windows.Forms;
 using System.Xml.Serialization;
+using System.Net;
+using System.IO;
+using System.Net.Cache;
 
 namespace Yusen.GExplorer {
 	public sealed partial class ContentDetailView : UserControl, IHasNewSettings<ContentDetailView.ContentDetailViewSettings> {
@@ -68,7 +71,23 @@ namespace Yusen.GExplorer {
 				}
 			}
 			private PictureBoxSizeMode resizeMode = PictureBoxSizeMode.Zoom;
-			
+
+			[Category("画像")]
+			[DisplayName("キャッシュレベル")]
+			[Description("画像を読み込む際のキャッシュレベルを指定します．")]
+			[DefaultValue(RequestCacheLevel.Default)]
+			public RequestCacheLevel ImageRequestCacheLevel {
+				get {
+					if (this.HasOwner) return this.owner.wcImage.CachePolicy.Level;
+					else return this.imageRequestCacheLevel;
+				}
+				set {
+					if (this.HasOwner) this.owner.wcImage.CachePolicy = new RequestCachePolicy(value);
+					else this.imageRequestCacheLevel = value;
+				}
+			}
+			private RequestCacheLevel imageRequestCacheLevel = RequestCacheLevel.Default;
+
 			[ReadOnly(true)]
 			[Category("タブ")]
 			[DisplayName("インデックス")]
@@ -109,14 +128,20 @@ namespace Yusen.GExplorer {
 		private ContentImageSize imgSize = ContentImageSize.Large;
 
 		private object objSetContentAdapter = new object();
+		private object objWcImage = new object();
+		private WebClient wcImage = new WebClient();
 
 		private ContentDetailViewSettings settings;
 
 		public ContentDetailView() {
 			InitializeComponent();
+
+			if (base.DesignMode) return;
+			
 			this.settings = new ContentDetailViewSettings(this);
+			this.wcImage.OpenReadCompleted += new OpenReadCompletedEventHandler(wcImage_OpenReadCompleted);
 		}
-		
+
 		public ContentAdapter Content {
 			get {
 				return this.contAd;
@@ -140,19 +165,18 @@ namespace Yusen.GExplorer {
 					this.txtSummary.Text = value.Summary;
 					this.txtDescription.Text = value.MergedDescription.Replace("\n", "\r\n");
 					this.propgDetail.SelectedObject = value;
-#if false
-					this.LoadImage();
-#else
-					this.LoadImageAsync();
-#endif
+					
+					this.LoadImageAsyncWithWebClient();
 				}
 			}
 		}
+
+		
 		private ContentImageSize ImageSize {
 			get { return this.imgSize; }
 			set {
 				this.imgSize = value;
-				this.LoadImage();
+				this.LoadImageAsyncWithWebClient();
 			}
 		}
 		private PictureBoxSizeMode ResizeMode {
@@ -187,27 +211,35 @@ namespace Yusen.GExplorer {
 			this.propgDetail.SelectedObject = null;
 			this.picboxImage.Image = null;
 		}
-		private void LoadImage() {
-			Uri uri = this.ImageUri;
-			if(null == uri){
-				this.picboxImage.Image = null;
-			}else{
-				try {
-					this.picboxImage.Load(uri.AbsoluteUri);
-				} catch(Exception e) {
-					this.picboxImage.Image = this.picboxImage.ErrorImage;
-					this.OnImageLoadError(new ImageLoadErrorEventArgs(e));
+		
+		private void LoadImageAsyncWithWebClient() {
+			lock (this.objWcImage) {
+				Uri uri = this.ImageUri;
+				if (null == uri) {
+					this.picboxImage.Image = null;
+				} else {
+					this.wcImage.CancelAsync();
+					this.wcImage.OpenReadAsync(uri);
 				}
 			}
 		}
-		private void LoadImageAsync() {
-			Uri uri = this.ImageUri;
-			if(null == uri) {
-				this.picboxImage.Image = null;
-			} else {
-				this.picboxImage.LoadAsync(uri.AbsoluteUri);
+		private void wcImage_OpenReadCompleted(object sender, OpenReadCompletedEventArgs e) {
+			lock (this.objWcImage) {
+				if (e.Cancelled) return;
+				if (null != e.Error) {
+					this.picboxImage.Image = this.picboxImage.ErrorImage;
+					this.OnImageLoadError(new ImageLoadErrorEventArgs(e.Error));
+					return;
+				}
+				try {
+					this.picboxImage.Image = Image.FromStream(e.Result);
+				} catch (WebException e2) {
+					this.picboxImage.Image = this.picboxImage.ErrorImage;
+					this.OnImageLoadError(new ImageLoadErrorEventArgs(e2));
+				}
 			}
 		}
+
 		private void OnImageLoadError(ImageLoadErrorEventArgs e) {
 			EventHandler<ImageLoadErrorEventArgs> handler = this.ImageLoadError;
 			if(null != handler) {
@@ -267,40 +299,7 @@ namespace Yusen.GExplorer {
 		private void cmsImage_Opening(object sender, CancelEventArgs e) {
 			this.ChangeEnabilityOfCmsItems();
 		}
-
-		private void tsmiTestLoad_Click(object sender, EventArgs e) {
-			this.picboxImage.Load();
-		}
-		private void tsmiTestLoadAsync_Click(object sender, EventArgs e) {
-			this.picboxImage.LoadAsync();
-		}
-		private void tsmiTestCancelAsync_Click(object sender, EventArgs e) {
-			this.picboxImage.CancelAsync();
-		}
-		private void tsmiTestNewPictureBox_Click(object sender, EventArgs e) {
-			PictureBoxSizeMode sizeMode = this.picboxImage.SizeMode;
-			ContentImageSize imgSize = this.ImageSize;
-			
-			this.splitContainer1.Panel1.Controls.Remove(this.picboxImage);
-			this.picboxImage.Dispose();
-			
-			this.picboxImage = new PictureBox();
-			this.picboxImage.Dock = DockStyle.Fill;
-			this.picboxImage.ContextMenuStrip = this.cmsImage;
-			this.picboxImage.LoadCompleted += new AsyncCompletedEventHandler(this.picboxImage_LoadCompleted);
-			this.splitContainer1.Panel1.Controls.Add(this.picboxImage);
-			
-			this.picboxImage.SizeMode = sizeMode;
-			this.ImageSize = ContentImageSize.None;
-			this.ImageSize = imgSize;
-		}
 		
-		private void picboxImage_LoadCompleted(object sender, AsyncCompletedEventArgs e) {
-			if(null != e.Error) {
-				this.OnImageLoadError(new ImageLoadErrorEventArgs(e.Error));
-			}
-		}
-
 		#region IHasNewSettings<ContentDetailViewSettings> Members
 		public ContentDetailView.ContentDetailViewSettings Settings {
 			get { return this.settings; }

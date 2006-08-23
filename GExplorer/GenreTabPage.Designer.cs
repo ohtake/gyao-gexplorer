@@ -64,6 +64,8 @@
 			// 
 			// tsmiCrawl
 			// 
+			this.tsmiCrawl.Image = global::Yusen.GExplorer.Properties.Resources.FormRun;
+			this.tsmiCrawl.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tsmiCrawl.Name = "tsmiCrawl";
 			this.tsmiCrawl.Size = new System.Drawing.Size(190, 22);
 			this.tsmiCrawl.Text = "クロール実行(&A)";
@@ -74,6 +76,7 @@
             this.tsmiCatalogPackage,
             this.tsmiCatalogContent,
             this.tsmiCatalogBoth});
+			this.tsmiCatalog.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tsmiCatalog.Name = "tsmiCatalog";
 			this.tsmiCatalog.Size = new System.Drawing.Size(190, 22);
 			this.tsmiCatalog.Text = "カタログ表示(&C)";
@@ -103,6 +106,7 @@
 			// 
 			// tsmiBrowseTop
 			// 
+			this.tsmiBrowseTop.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tsmiBrowseTop.Name = "tsmiBrowseTop";
 			this.tsmiBrowseTop.Size = new System.Drawing.Size(190, 22);
 			this.tsmiBrowseTop.Text = "ジャンルトップ(&T)";
@@ -139,6 +143,8 @@
 			// 
 			// tsmiCopyGenreNameAndUri
 			// 
+			this.tsmiCopyGenreNameAndUri.Image = global::Yusen.GExplorer.Properties.Resources.Copy;
+			this.tsmiCopyGenreNameAndUri.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tsmiCopyGenreNameAndUri.Name = "tsmiCopyGenreNameAndUri";
 			this.tsmiCopyGenreNameAndUri.Size = new System.Drawing.Size(190, 22);
 			this.tsmiCopyGenreNameAndUri.Text = "名前とURIをコピー(&B)";
@@ -150,6 +156,8 @@
 			// 
 			// tsmiRemoveCrawlResult
 			// 
+			this.tsmiRemoveCrawlResult.Image = global::Yusen.GExplorer.Properties.Resources.Delete;
+			this.tsmiRemoveCrawlResult.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tsmiRemoveCrawlResult.Name = "tsmiRemoveCrawlResult";
 			this.tsmiRemoveCrawlResult.Size = new System.Drawing.Size(190, 22);
 			this.tsmiRemoveCrawlResult.Text = "クロール結果を破棄(&R)...";

@@ -32,13 +32,7 @@
 			this.tsmiCopyNameDetailImageUri = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiCopyImage = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-			this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
-			this.tsmiTest = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiTestNewPictureBox = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
-			this.tsmiTestLoad = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiTestLoadAsync = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiTestCancelAsync = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsucmiCommand = new Yusen.GExplorer.ToolStripUserCommandMenuItem();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabpSummary2 = new System.Windows.Forms.TabPage();
 			this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
@@ -59,7 +53,6 @@
 			this.txtSummary = new System.Windows.Forms.TextBox();
 			this.tabpDetail = new System.Windows.Forms.TabPage();
 			this.propgDetail = new System.Windows.Forms.PropertyGrid();
-			this.tsucmiCommand = new Yusen.GExplorer.ToolStripUserCommandMenuItem();
 			this.splitContainer1.Panel1.SuspendLayout();
 			this.splitContainer1.Panel2.SuspendLayout();
 			this.splitContainer1.SuspendLayout();
@@ -100,7 +93,6 @@
 			this.picboxImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
 			this.picboxImage.TabIndex = 1;
 			this.picboxImage.TabStop = false;
-			this.picboxImage.LoadCompleted += new System.ComponentModel.AsyncCompletedEventHandler(this.picboxImage_LoadCompleted);
 			// 
 			// cmsImage
 			// 
@@ -110,11 +102,9 @@
             this.tsmiCopyNameDetailImageUri,
             this.tsmiCopyImage,
             this.toolStripSeparator2,
-            this.tsucmiCommand,
-            this.toolStripMenuItem2,
-            this.tsmiTest});
+            this.tsucmiCommand});
 			this.cmsImage.Name = "cmsImage";
-			this.cmsImage.Size = new System.Drawing.Size(249, 148);
+			this.cmsImage.Size = new System.Drawing.Size(249, 120);
 			this.cmsImage.Opening += new System.ComponentModel.CancelEventHandler(this.cmsImage_Opening);
 			// 
 			// tsmiCopyImageUri
@@ -133,6 +123,8 @@
 			// 
 			// tsmiCopyNameDetailImageUri
 			// 
+			this.tsmiCopyNameDetailImageUri.Image = global::Yusen.GExplorer.Properties.Resources.Copy;
+			this.tsmiCopyNameDetailImageUri.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tsmiCopyNameDetailImageUri.Name = "tsmiCopyNameDetailImageUri";
 			this.tsmiCopyNameDetailImageUri.Size = new System.Drawing.Size(248, 22);
 			this.tsmiCopyNameDetailImageUri.Text = "名前，詳細URI，画像URIをコピー(&A)";
@@ -150,55 +142,12 @@
 			this.toolStripSeparator2.Name = "toolStripSeparator2";
 			this.toolStripSeparator2.Size = new System.Drawing.Size(245, 6);
 			// 
-			// toolStripMenuItem2
+			// tsucmiCommand
 			// 
-			this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-			this.toolStripMenuItem2.Size = new System.Drawing.Size(245, 6);
-			// 
-			// tsmiTest
-			// 
-			this.tsmiTest.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiTestNewPictureBox,
-            this.toolStripMenuItem3,
-            this.tsmiTestLoad,
-            this.tsmiTestLoadAsync,
-            this.tsmiTestCancelAsync});
-			this.tsmiTest.Name = "tsmiTest";
-			this.tsmiTest.Size = new System.Drawing.Size(248, 22);
-			this.tsmiTest.Text = "テスト(&T)";
-			// 
-			// tsmiTestNewPictureBox
-			// 
-			this.tsmiTestNewPictureBox.Name = "tsmiTestNewPictureBox";
-			this.tsmiTestNewPictureBox.Size = new System.Drawing.Size(150, 22);
-			this.tsmiTestNewPictureBox.Text = "&new PictureBox";
-			this.tsmiTestNewPictureBox.Click += new System.EventHandler(this.tsmiTestNewPictureBox_Click);
-			// 
-			// toolStripMenuItem3
-			// 
-			this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-			this.toolStripMenuItem3.Size = new System.Drawing.Size(147, 6);
-			// 
-			// tsmiTestLoad
-			// 
-			this.tsmiTestLoad.Name = "tsmiTestLoad";
-			this.tsmiTestLoad.Size = new System.Drawing.Size(150, 22);
-			this.tsmiTestLoad.Text = "&Load";
-			this.tsmiTestLoad.Click += new System.EventHandler(this.tsmiTestLoad_Click);
-			// 
-			// tsmiTestLoadAsync
-			// 
-			this.tsmiTestLoadAsync.Name = "tsmiTestLoadAsync";
-			this.tsmiTestLoadAsync.Size = new System.Drawing.Size(150, 22);
-			this.tsmiTestLoadAsync.Text = "Load&Async";
-			this.tsmiTestLoadAsync.Click += new System.EventHandler(this.tsmiTestLoadAsync_Click);
-			// 
-			// tsmiTestCancelAsync
-			// 
-			this.tsmiTestCancelAsync.Name = "tsmiTestCancelAsync";
-			this.tsmiTestCancelAsync.Size = new System.Drawing.Size(150, 22);
-			this.tsmiTestCancelAsync.Text = "&CancelAsync";
-			this.tsmiTestCancelAsync.Click += new System.EventHandler(this.tsmiTestCancelAsync_Click);
+			this.tsucmiCommand.Name = "tsucmiCommand";
+			this.tsucmiCommand.Size = new System.Drawing.Size(248, 22);
+			this.tsucmiCommand.Text = "外部コマンド(&E)";
+			this.tsucmiCommand.UserCommandSelected += new System.EventHandler<Yusen.GExplorer.UserCommandSelectedEventArgs>(this.tsucmiCommand_UserCommandSelected);
 			// 
 			// tabControl1
 			// 
@@ -421,13 +370,6 @@
 			this.propgDetail.Size = new System.Drawing.Size(216, 260);
 			this.propgDetail.TabIndex = 0;
 			// 
-			// tsucmiCommand
-			// 
-			this.tsucmiCommand.Name = "tsucmiCommand";
-			this.tsucmiCommand.Size = new System.Drawing.Size(248, 22);
-			this.tsucmiCommand.Text = "外部コマンド(&E)";
-			this.tsucmiCommand.UserCommandSelected += new System.EventHandler<Yusen.GExplorer.UserCommandSelectedEventArgs>(this.tsucmiCommand_UserCommandSelected);
-			// 
 			// ContentDetailView
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -477,13 +419,6 @@
 		private System.Windows.Forms.Label label6;
 		private System.Windows.Forms.TextBox txtDeadline;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
-		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
-		private System.Windows.Forms.ToolStripMenuItem tsmiTest;
-		private System.Windows.Forms.ToolStripMenuItem tsmiTestLoad;
-		private System.Windows.Forms.ToolStripMenuItem tsmiTestLoadAsync;
-		private System.Windows.Forms.ToolStripMenuItem tsmiTestCancelAsync;
-		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
-		private System.Windows.Forms.ToolStripMenuItem tsmiTestNewPictureBox;
 		private ToolStripUserCommandMenuItem tsucmiCommand;
 		private System.Windows.Forms.TextBox txtDescription;
 		private System.Windows.Forms.Label label7;

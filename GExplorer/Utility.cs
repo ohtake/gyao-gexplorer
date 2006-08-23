@@ -39,7 +39,15 @@ namespace Yusen.GExplorer {
 		private static void BrowseWithIE(Uri uri) {
 			Process.Start(Utility.GetPathForIE(), uri.AbsoluteUri);
 		}
-		
+
+		public static Uri CreateLivedoorVideoGyaoSearchUri(string query) {
+			//Encoding encoding = Encoding.GetEncoding("EUC-JP");
+			Uri uri = new Uri(string.Format(
+				"http://stream.search.livedoor.com/search/?svc=gyao&num=100&q={0}",
+				/*HttpUtility.UrlEncode(query, encoding)*/ query)/*, false*/);
+			return uri;
+		}
+
 		public static void SerializeSettings<T>(string filename, T settings) {
 			XmlSerializer xs = new XmlSerializer(typeof(T));
 			TextWriter tw = TextWriter.Null;

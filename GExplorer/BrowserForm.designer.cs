@@ -23,7 +23,6 @@
 		/// the contents of this method with the code editor.
 		/// </summary>
 		private void InitializeComponent() {
-			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BrowserForm));
 			this.menuStrip1 = new System.Windows.Forms.MenuStrip();
 			this.tsmiFile = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiOpenTop = new System.Windows.Forms.ToolStripMenuItem();
@@ -55,11 +54,11 @@
 			this.tsStandard = new System.Windows.Forms.ToolStrip();
 			this.tsbBack = new System.Windows.Forms.ToolStripButton();
 			this.tsbForward = new System.Windows.Forms.ToolStripButton();
-			this.tsbStop = new System.Windows.Forms.ToolStripButton();
-			this.tsAddress = new System.Windows.Forms.ToolStrip();
-			this.tslAddress = new System.Windows.Forms.ToolStripLabel();
 			this.tscbAddress = new System.Windows.Forms.ToolStripComboBox();
 			this.tsbGo = new System.Windows.Forms.ToolStripButton();
+			this.tsbStop = new System.Windows.Forms.ToolStripButton();
+			this.tstbLivedoor = new System.Windows.Forms.ToolStripTextBox();
+			this.tsbLivedoor = new System.Windows.Forms.ToolStripButton();
 			this.menuStrip1.SuspendLayout();
 			this.toolStripContainer1.BottomToolStripPanel.SuspendLayout();
 			this.toolStripContainer1.ContentPanel.SuspendLayout();
@@ -67,7 +66,6 @@
 			this.toolStripContainer1.SuspendLayout();
 			this.statusStrip1.SuspendLayout();
 			this.tsStandard.SuspendLayout();
-			this.tsAddress.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// menuStrip1
@@ -107,6 +105,8 @@
 			// 
 			// tsmiOpenTop
 			// 
+			this.tsmiOpenTop.Image = global::Yusen.GExplorer.Properties.Resources.home;
+			this.tsmiOpenTop.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tsmiOpenTop.Name = "tsmiOpenTop";
 			this.tsmiOpenTop.Size = new System.Drawing.Size(244, 22);
 			this.tsmiOpenTop.Text = "トップページを開く(T)";
@@ -114,6 +114,8 @@
 			// 
 			// tsmiSaveAs
 			// 
+			this.tsmiSaveAs.Image = global::Yusen.GExplorer.Properties.Resources.Save;
+			this.tsmiSaveAs.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tsmiSaveAs.Name = "tsmiSaveAs";
 			this.tsmiSaveAs.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift)
 						| System.Windows.Forms.Keys.S)));
@@ -123,6 +125,8 @@
 			// 
 			// tsmiPageProperty
 			// 
+			this.tsmiPageProperty.Image = global::Yusen.GExplorer.Properties.Resources.Properties;
+			this.tsmiPageProperty.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tsmiPageProperty.Name = "tsmiPageProperty";
 			this.tsmiPageProperty.Size = new System.Drawing.Size(244, 22);
 			this.tsmiPageProperty.Text = "ページのプロパティ(&R)...";
@@ -135,6 +139,8 @@
 			// 
 			// tsmiPageSetup
 			// 
+			this.tsmiPageSetup.Image = global::Yusen.GExplorer.Properties.Resources.PrintSetup;
+			this.tsmiPageSetup.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tsmiPageSetup.Name = "tsmiPageSetup";
 			this.tsmiPageSetup.Size = new System.Drawing.Size(244, 22);
 			this.tsmiPageSetup.Text = "ページ設定(&U)...";
@@ -142,6 +148,8 @@
 			// 
 			// tsmiPrint
 			// 
+			this.tsmiPrint.Image = global::Yusen.GExplorer.Properties.Resources.Print;
+			this.tsmiPrint.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tsmiPrint.Name = "tsmiPrint";
 			this.tsmiPrint.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P)));
 			this.tsmiPrint.Size = new System.Drawing.Size(244, 22);
@@ -150,6 +158,8 @@
 			// 
 			// tsmiPrintPreview
 			// 
+			this.tsmiPrintPreview.Image = global::Yusen.GExplorer.Properties.Resources.PrintPreview;
+			this.tsmiPrintPreview.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tsmiPrintPreview.Name = "tsmiPrintPreview";
 			this.tsmiPrintPreview.Size = new System.Drawing.Size(244, 22);
 			this.tsmiPrintPreview.Text = "印刷プレビュー(&V)...";
@@ -172,8 +182,8 @@
 			// 
 			this.tsgmiGenreTop.MenuVisibility = ((Yusen.GExplorer.GenreMenuVisibility)((Yusen.GExplorer.GenreMenuVisibility.Crawlable | Yusen.GExplorer.GenreMenuVisibility.UnCrawlable)));
 			this.tsgmiGenreTop.Name = "tsgmiGenreTop";
-			this.tsgmiGenreTop.Size = new System.Drawing.Size(93, 16);
-			this.tsgmiGenreTop.Text = "ジャンルトップ(&T)";
+			this.tsgmiGenreTop.Size = new System.Drawing.Size(94, 16);
+			this.tsgmiGenreTop.Text = "ジャンルトップ(&G)";
 			this.tsgmiGenreTop.GenreSelected += new System.EventHandler<Yusen.GExplorer.GenreMenuItemSelectedEventArgs>(this.tsgmiGenreTop_GenreSelected);
 			// 
 			// tsgmiTimetableUpdate
@@ -181,7 +191,7 @@
 			this.tsgmiTimetableUpdate.MenuVisibility = ((Yusen.GExplorer.GenreMenuVisibility)((Yusen.GExplorer.GenreMenuVisibility.Crawlable | Yusen.GExplorer.GenreMenuVisibility.UnCrawlable)));
 			this.tsgmiTimetableUpdate.Name = "tsgmiTimetableUpdate";
 			this.tsgmiTimetableUpdate.Size = new System.Drawing.Size(129, 16);
-			this.tsgmiTimetableUpdate.Text = "更新日優先番組表(&R)";
+			this.tsgmiTimetableUpdate.Text = "更新日優先番組表(&U)";
 			this.tsgmiTimetableUpdate.GenreSelected += new System.EventHandler<Yusen.GExplorer.GenreMenuItemSelectedEventArgs>(this.tsgmiTimetableUpdate_GenreSelected);
 			// 
 			// tsmiTimeTablesDeadline
@@ -205,6 +215,7 @@
 			// 
 			// tsmiExportContentListToCrawlResultView
 			// 
+			this.tsmiExportContentListToCrawlResultView.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tsmiExportContentListToCrawlResultView.Name = "tsmiExportContentListToCrawlResultView";
 			this.tsmiExportContentListToCrawlResultView.Size = new System.Drawing.Size(330, 22);
 			this.tsmiExportContentListToCrawlResultView.Text = "ページ内のコンテンツをクロール結果ビューに書き出す(&R)";
@@ -212,6 +223,7 @@
 			// 
 			// tsmiExtractImages
 			// 
+			this.tsmiExtractImages.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tsmiExtractImages.Name = "tsmiExtractImages";
 			this.tsmiExtractImages.Size = new System.Drawing.Size(330, 22);
 			this.tsmiExtractImages.Text = "画像の抽出(&I)";
@@ -231,6 +243,7 @@
 			// 
 			// tsmiFillCampaignForm
 			// 
+			this.tsmiFillCampaignForm.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tsmiFillCampaignForm.Name = "tsmiFillCampaignForm";
 			this.tsmiFillCampaignForm.Size = new System.Drawing.Size(330, 22);
 			this.tsmiFillCampaignForm.Text = "応募フォームにフィル(&F)";
@@ -279,7 +292,6 @@
 			// toolStripContainer1.TopToolStripPanel
 			// 
 			this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.menuStrip1);
-			this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.tsAddress);
 			this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.tsStandard);
 			// 
 			// statusStrip1
@@ -331,85 +343,87 @@
 			this.tsStandard.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsbBack,
             this.tsbForward,
-            this.tsbStop});
+            this.tscbAddress,
+            this.tsbGo,
+            this.tsbStop,
+            this.tstbLivedoor,
+            this.tsbLivedoor});
 			this.tsStandard.Location = new System.Drawing.Point(3, 20);
 			this.tsStandard.Name = "tsStandard";
-			this.tsStandard.Size = new System.Drawing.Size(200, 25);
+			this.tsStandard.Size = new System.Drawing.Size(812, 25);
 			this.tsStandard.TabIndex = 3;
 			this.tsStandard.Text = "標準バー";
 			// 
 			// tsbBack
 			// 
-			this.tsbBack.AutoToolTip = false;
+			this.tsbBack.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
 			this.tsbBack.Enabled = false;
-			this.tsbBack.Image = ((System.Drawing.Image)(resources.GetObject("tsbBack.Image")));
+			this.tsbBack.Image = global::Yusen.GExplorer.Properties.Resources.NavBack;
 			this.tsbBack.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tsbBack.Name = "tsbBack";
-			this.tsbBack.Size = new System.Drawing.Size(62, 22);
-			this.tsbBack.Text = "戻る(&B)";
+			this.tsbBack.Size = new System.Drawing.Size(23, 22);
+			this.tsbBack.Text = "戻る";
 			this.tsbBack.Click += new System.EventHandler(this.tsbBack_Click);
 			// 
 			// tsbForward
 			// 
-			this.tsbForward.AutoToolTip = false;
+			this.tsbForward.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
 			this.tsbForward.Enabled = false;
-			this.tsbForward.Image = ((System.Drawing.Image)(resources.GetObject("tsbForward.Image")));
+			this.tsbForward.Image = global::Yusen.GExplorer.Properties.Resources.NavForward;
 			this.tsbForward.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tsbForward.Name = "tsbForward";
-			this.tsbForward.Size = new System.Drawing.Size(62, 22);
-			this.tsbForward.Text = "進む(&F)";
+			this.tsbForward.Size = new System.Drawing.Size(23, 22);
+			this.tsbForward.Text = "進む";
 			this.tsbForward.Click += new System.EventHandler(this.tsbForward_Click);
-			// 
-			// tsbStop
-			// 
-			this.tsbStop.AutoToolTip = false;
-			this.tsbStop.Enabled = false;
-			this.tsbStop.Image = ((System.Drawing.Image)(resources.GetObject("tsbStop.Image")));
-			this.tsbStop.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.tsbStop.Name = "tsbStop";
-			this.tsbStop.Size = new System.Drawing.Size(64, 22);
-			this.tsbStop.Text = "中止(&S)";
-			this.tsbStop.Click += new System.EventHandler(this.tsbStop_Click);
-			// 
-			// tsAddress
-			// 
-			this.tsAddress.AllowItemReorder = true;
-			this.tsAddress.Dock = System.Windows.Forms.DockStyle.None;
-			this.tsAddress.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tslAddress,
-            this.tscbAddress,
-            this.tsbGo});
-			this.tsAddress.Location = new System.Drawing.Point(203, 20);
-			this.tsAddress.Name = "tsAddress";
-			this.tsAddress.Size = new System.Drawing.Size(586, 25);
-			this.tsAddress.TabIndex = 1;
-			this.tsAddress.Text = "アドレスバー";
-			// 
-			// tslAddress
-			// 
-			this.tslAddress.Name = "tslAddress";
-			this.tslAddress.Size = new System.Drawing.Size(57, 22);
-			this.tslAddress.Text = "アドレス(&D)";
 			// 
 			// tscbAddress
 			// 
-			this.tscbAddress.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
-			this.tscbAddress.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.AllUrl;
 			this.tscbAddress.Name = "tscbAddress";
-			this.tscbAddress.Size = new System.Drawing.Size(450, 25);
+			this.tscbAddress.Size = new System.Drawing.Size(500, 25);
 			this.tscbAddress.Text = "tscbAddress";
 			this.tscbAddress.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tscbAddress_KeyDown);
 			this.tscbAddress.SelectedIndexChanged += new System.EventHandler(this.GoToAddressBarUri);
 			// 
 			// tsbGo
 			// 
-			this.tsbGo.AutoToolTip = false;
-			this.tsbGo.Image = ((System.Drawing.Image)(resources.GetObject("tsbGo.Image")));
+			this.tsbGo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.tsbGo.Image = global::Yusen.GExplorer.Properties.Resources.RefreshDocView;
 			this.tsbGo.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tsbGo.Name = "tsbGo";
-			this.tsbGo.Size = new System.Drawing.Size(65, 22);
-			this.tsbGo.Text = "移動(&G)";
+			this.tsbGo.Size = new System.Drawing.Size(23, 22);
+			this.tsbGo.Text = "移動";
 			this.tsbGo.Click += new System.EventHandler(this.GoToAddressBarUri);
+			// 
+			// tsbStop
+			// 
+			this.tsbStop.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.tsbStop.Enabled = false;
+			this.tsbStop.Image = global::Yusen.GExplorer.Properties.Resources.Refresh_Cancel;
+			this.tsbStop.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.tsbStop.Name = "tsbStop";
+			this.tsbStop.Size = new System.Drawing.Size(23, 22);
+			this.tsbStop.Text = "中止";
+			this.tsbStop.Click += new System.EventHandler(this.tsbStop_Click);
+			// 
+			// tstbLivedoor
+			// 
+			this.tstbLivedoor.ForeColor = System.Drawing.SystemColors.GrayText;
+			this.tstbLivedoor.Name = "tstbLivedoor";
+			this.tstbLivedoor.Size = new System.Drawing.Size(150, 25);
+			this.tstbLivedoor.Text = "livedoor動画でGyaO検索";
+			this.tstbLivedoor.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tstbLivedoor_KeyDown);
+			this.tstbLivedoor.Enter += new System.EventHandler(this.tstbLivedoor_Enter);
+			this.tstbLivedoor.Leave += new System.EventHandler(this.tstbLivedoor_Leave);
+			// 
+			// tsbLivedoor
+			// 
+			this.tsbLivedoor.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.tsbLivedoor.Image = global::Yusen.GExplorer.Properties.Resources.searchWeb;
+			this.tsbLivedoor.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.tsbLivedoor.Name = "tsbLivedoor";
+			this.tsbLivedoor.Size = new System.Drawing.Size(23, 22);
+			this.tsbLivedoor.Text = "livedoor動画でGyaO検索";
+			this.tsbLivedoor.Click += new System.EventHandler(this.tsbLivedoor_Click);
 			// 
 			// BrowserForm
 			// 
@@ -434,8 +448,6 @@
 			this.statusStrip1.PerformLayout();
 			this.tsStandard.ResumeLayout(false);
 			this.tsStandard.PerformLayout();
-			this.tsAddress.ResumeLayout(false);
-			this.tsAddress.PerformLayout();
 			this.ResumeLayout(false);
 
 		}
@@ -445,12 +457,9 @@
 		private System.Windows.Forms.MenuStrip menuStrip1;
 		private System.Windows.Forms.ToolStripMenuItem tsmiFile;
 		private System.Windows.Forms.ToolStripContainer toolStripContainer1;
-		private System.Windows.Forms.ToolStrip tsAddress;
-		private System.Windows.Forms.ToolStripLabel tslAddress;
 		private System.Windows.Forms.ToolStrip tsStandard;
 		private System.Windows.Forms.ToolStripButton tsbBack;
 		private System.Windows.Forms.ToolStripButton tsbForward;
-		private System.Windows.Forms.ToolStripButton tsbGo;
 		private System.Windows.Forms.StatusStrip statusStrip1;
 		private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
 		private System.Windows.Forms.ToolStripProgressBar toolStripProgressBar1;
@@ -464,7 +473,6 @@
 		private System.Windows.Forms.ToolStripMenuItem tsmiPrintPreview;
 		private System.Windows.Forms.ToolStripMenuItem tsmiSaveAs;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
-		private System.Windows.Forms.ToolStripComboBox tscbAddress;
 		private GWebBrowser gwbMain;
 		private System.Windows.Forms.ToolStripMenuItem tsmiTimeTablesDeadline;
 		private System.Windows.Forms.ToolStripMenuItem tsmiTools;
@@ -478,5 +486,9 @@
 		private ToolStripPropertyGrid tspgBrowserForm;
 		private ToolStripHelpMenuItem tshmiHelp;
 		private System.Windows.Forms.ToolStripMenuItem tsmiExportContentListToCrawlResultView;
+		private System.Windows.Forms.ToolStripComboBox tscbAddress;
+		private System.Windows.Forms.ToolStripButton tsbGo;
+		private System.Windows.Forms.ToolStripTextBox tstbLivedoor;
+		private System.Windows.Forms.ToolStripButton tsbLivedoor;
 	}
 }

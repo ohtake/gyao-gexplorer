@@ -7,6 +7,7 @@ using System.IO;
 using System.Text;
 using System.Xml.Serialization;
 using System.Web;
+using System.Drawing;
 
 namespace Yusen.GExplorer {
 	public sealed partial class BrowserForm : FormSettingsBase, IFormWithNewSettings<BrowserForm.BrowserFormSettings> {
@@ -222,6 +223,7 @@ namespace Yusen.GExplorer {
 			BrowserForm.Instance.gwbMain.DocumentStream = new ContentCatalogStream(cas);
 		}
 		
+		private bool isSearchTextboxEmpty = true;
 		private BrowserFormSettings settings;
 
 		private BrowserForm() {
@@ -293,6 +295,8 @@ namespace Yusen.GExplorer {
 			this.tsbStop.Enabled = false;
 		}
 
+		#region ツールバー
+
 		private void tsbBack_Click(object sender, EventArgs e) {
 			this.gwbMain.GoBack();
 		}
@@ -304,6 +308,7 @@ namespace Yusen.GExplorer {
 		}
 		private void GoToAddressBarUri(object sender, EventArgs e) {
 			this.DocumentUri = new Uri(this.tscbAddress.Text);
+			this.gwbMain.Focus();
 		}
 		private void tscbAddress_KeyDown(object sender, KeyEventArgs e) {
 			switch(e.KeyCode) {
@@ -315,6 +320,50 @@ namespace Yusen.GExplorer {
 			}
 			e.Handled = true;
 		}
+		private void tstbLivedoor_KeyDown(object sender, KeyEventArgs e) {
+			switch (e.KeyCode) {
+				case Keys.Enter:
+					this.SearchGyaoViaLivedoorVideoWithSearchText();
+					break;
+			}
+		}
+		private void tsbLivedoor_Click(object sender, EventArgs e) {
+			this.SearchGyaoViaLivedoorVideoWithSearchText();
+		}
+		private void SearchGyaoViaLivedoorVideoWithSearchText() {
+			if (this.isSearchTextboxEmpty) {
+				this.tstbLivedoor.Focus();
+			} else {
+				string query = this.tstbLivedoor.Text;
+				query = query.Trim();
+				this.tstbLivedoor.Text = query;
+				if (string.IsNullOrEmpty(query)) {
+					this.tstbLivedoor.Focus();
+				} else {
+					this.DocumentUri = Utility.CreateLivedoorVideoGyaoSearchUri(query);
+					this.gwbMain.Focus();
+				}
+			}
+		}
+		private void tstbLivedoor_Enter(object sender, EventArgs e) {
+			if (this.isSearchTextboxEmpty) {
+				this.tstbLivedoor.Text = string.Empty;
+				this.tstbLivedoor.ForeColor = SystemColors.WindowText;
+				this.isSearchTextboxEmpty = false;
+			}
+		}
+
+		private void tstbLivedoor_Leave(object sender, EventArgs e) {
+			if (string.IsNullOrEmpty(this.tstbLivedoor.Text)) {
+				this.tstbLivedoor.Text = "livedoor動画でGyaO検索";
+				this.tstbLivedoor.ForeColor = SystemColors.GrayText;
+				this.isSearchTextboxEmpty = true;
+			} else {
+				this.isSearchTextboxEmpty = false;
+			}
+		}
+
+		#endregion
 
 		#region メニュー
 		private void tsmiOpenTop_Click(object sender, EventArgs e) {

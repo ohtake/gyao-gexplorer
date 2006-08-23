@@ -30,9 +30,11 @@
 			// 
 			// tsmiReadMe
 			// 
+			this.tsmiReadMe.Image = global::Yusen.GExplorer.Properties.Resources.help;
+			this.tsmiReadMe.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tsmiReadMe.Name = "tsmiReadMe";
 			this.tsmiReadMe.ShortcutKeys = System.Windows.Forms.Keys.F1;
-			this.tsmiReadMe.Size = new System.Drawing.Size(185, 22);
+			this.tsmiReadMe.Size = new System.Drawing.Size(190, 22);
 			this.tsmiReadMe.Text = "&ReadMe.txt";
 			// 
 			// tsmiChangeLog
@@ -45,7 +47,7 @@
 			// toolStripSeparator1
 			// 
 			this.toolStripSeparator1.Name = "toolStripSeparator1";
-			this.toolStripSeparator1.Size = new System.Drawing.Size(182, 6);
+			this.toolStripSeparator1.Size = new System.Drawing.Size(187, 6);
 			// 
 			// tsmiAbout
 			// 

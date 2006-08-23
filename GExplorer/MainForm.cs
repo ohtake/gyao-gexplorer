@@ -31,7 +31,7 @@ namespace Yusen.GExplorer {
 					this.contentDetailViewSettings = new ContentDetailView.ContentDetailViewSettings();
 				}
 			}
-
+			
 			[Browsable(false)]
 			[XmlIgnore]
 			private bool HasOwner {
@@ -475,12 +475,8 @@ namespace Yusen.GExplorer {
 				case DialogResult.OK:
 					string query = this.inputBoxDialog1.Input;
 					if (string.IsNullOrEmpty(query)) return;
-
-					//Encoding encoding = Encoding.GetEncoding("EUC-JP");
-					Uri uri = new Uri(string.Format(
-						"http://stream.search.livedoor.com/search/?svc=gyao&num=100&q={0}",
-						/*HttpUtility.UrlEncode(query, encoding)*/ query)/*, false*/);
-					Utility.Browse(uri);
+					
+					Utility.Browse(Utility.CreateLivedoorVideoGyaoSearchUri(query));
 					break;
 			}
 		}

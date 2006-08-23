@@ -557,6 +557,9 @@ namespace Yusen.GExplorer {
 			set {
 				this.tsbShowFilter.Checked = value;
 				this.tsFilter.Visible = value;
+				if (value) {
+					this.tstbFilter.Focus();
+				}
 			}
 		}
 		private int MaxPageMenuItems {
@@ -701,7 +704,9 @@ namespace Yusen.GExplorer {
 		private void CreateNormalPagesMenuItems(bool createAll) {
 			this.tsddbNormalPages.DropDownItems.Clear();
 			List<ToolStripItem> menuItems = new List<ToolStripItem>();
+			int pageCount = 0;
 			if (null != this.CrawlResult) {
+				pageCount = this.CrawlResult.VisitedPages.Count;
 				foreach (Uri page in this.CrawlResult.VisitedPages) {
 					if(!createAll && menuItems.Count == this.MaxPageMenuItems) {
 						menuItems.Add(new ToolStripSeparator());
@@ -722,12 +727,15 @@ namespace Yusen.GExplorer {
 				}
 			}
 			this.tsddbNormalPages.DropDownItems.AddRange(menuItems.ToArray());
+			this.tsddbNormalPages.Text = pageCount.ToString();
 			this.tsddbNormalPages.Enabled = this.tsddbNormalPages.HasDropDownItems;
 		}
 		private void CreateExceptionsMenuItems(bool createAll) {
 			this.tsddbExceptions.DropDownItems.Clear();
 			List<ToolStripItem> menuItems = new List<ToolStripItem>();
+			int exceptionCount = 0;
 			if(null != this.CrawlResult) {
+				exceptionCount = this.CrawlResult.IgnoredExceptions.Count;
 				foreach (Exception ex in this.CrawlResult.IgnoredExceptions) {
 					if(!createAll && menuItems.Count == this.MaxPageMenuItems) {
 						menuItems.Add(new ToolStripSeparator());
@@ -749,6 +757,7 @@ namespace Yusen.GExplorer {
 				}
 			}
 			this.tsddbExceptions.DropDownItems.AddRange(menuItems.ToArray());
+			this.tsddbExceptions.Text = exceptionCount.ToString();
 			this.tsddbExceptions.Enabled = this.tsddbExceptions.HasDropDownItems;
 		}
 		private void CreateAndSetFilterRegex() {

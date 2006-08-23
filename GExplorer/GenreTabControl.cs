@@ -155,14 +155,15 @@ namespace Yusen.GExplorer {
 						}
 					}
 					break;
-				case MouseButtons.Middle:
+				//タブを閉じる隠し機能はバグいっぽいから廃止
+				/*case MouseButtons.Middle:
 					for (int i = 0; i < base.TabCount; i++) {
 						Rectangle tabRect = base.GetTabRect(i);
 						if (tabRect.Contains(e.Location)) {
 							this.TabPages.RemoveAt(i);
 						}
 					}
-					break;
+					break;*/
 			}
 		}
 

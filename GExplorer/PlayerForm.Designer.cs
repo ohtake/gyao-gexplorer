@@ -27,13 +27,16 @@
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PlayerForm));
 			this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
 			this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-			this.tsslId = new System.Windows.Forms.ToolStripStatusLabel();
-			this.tsslClipInfo = new System.Windows.Forms.ToolStripStatusLabel();
-			this.tsslChapter = new System.Windows.Forms.ToolStripStatusLabel();
-			this.tsslDuration = new System.Windows.Forms.ToolStripStatusLabel();
-			this.tsslSize = new System.Windows.Forms.ToolStripStatusLabel();
-			this.tsslTitle = new System.Windows.Forms.ToolStripStatusLabel();
-			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+			this.tsddbPlaylist = new System.Windows.Forms.ToolStripDropDownButton();
+			this.tspmddbMode = new Yusen.GExplorer.ToolStripPlayModeDropDownButton();
+			this.tsddbDuration = new System.Windows.Forms.ToolStripDropDownButton();
+			this.tsmiCopyClipDuration = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsddbSize = new System.Windows.Forms.ToolStripDropDownButton();
+			this.tsmiCopyClipResolution = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsddbTitle = new System.Windows.Forms.ToolStripDropDownButton();
+			this.tsmiCopyClipTitle = new System.Windows.Forms.ToolStripMenuItem();
+			this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+			this.playListView1 = new Yusen.GExplorer.PlayListView();
 			this.wmpMain = new AxWMPLib.AxWindowsMediaPlayer();
 			this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
 			this.wbBanner = new System.Windows.Forms.WebBrowser();
@@ -44,7 +47,7 @@
 			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiRemoveAndClose = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiClose = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiOperations = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiPlayActions = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiPlayPause = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiStop = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
@@ -82,9 +85,9 @@
 			this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
 			this.toolStripContainer1.SuspendLayout();
 			this.statusStrip1.SuspendLayout();
-			this.splitContainer1.Panel1.SuspendLayout();
-			this.splitContainer1.Panel2.SuspendLayout();
-			this.splitContainer1.SuspendLayout();
+			this.splitContainer2.Panel1.SuspendLayout();
+			this.splitContainer2.Panel2.SuspendLayout();
+			this.splitContainer2.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.wmpMain)).BeginInit();
 			this.tableLayoutPanel1.SuspendLayout();
 			this.menuStrip1.SuspendLayout();
@@ -99,8 +102,8 @@
 			// 
 			// toolStripContainer1.ContentPanel
 			// 
-			this.toolStripContainer1.ContentPanel.Controls.Add(this.splitContainer1);
-			this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(644, 548);
+			this.toolStripContainer1.ContentPanel.Controls.Add(this.splitContainer2);
+			this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(644, 547);
 			this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.toolStripContainer1.Location = new System.Drawing.Point(0, 0);
 			this.toolStripContainer1.Name = "toolStripContainer1";
@@ -116,77 +119,127 @@
 			// 
 			this.statusStrip1.Dock = System.Windows.Forms.DockStyle.None;
 			this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsslId,
-            this.tsslClipInfo,
-            this.tsslChapter,
-            this.tsslDuration,
-            this.tsslSize,
-            this.tsslTitle});
+            this.tsddbPlaylist,
+            this.tspmddbMode,
+            this.tsddbDuration,
+            this.tsddbSize,
+            this.tsddbTitle});
 			this.statusStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
 			this.statusStrip1.Location = new System.Drawing.Point(0, 0);
 			this.statusStrip1.Name = "statusStrip1";
 			this.statusStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.ManagerRenderMode;
-			this.statusStrip1.Size = new System.Drawing.Size(644, 17);
+			this.statusStrip1.Size = new System.Drawing.Size(644, 18);
 			this.statusStrip1.TabIndex = 0;
 			// 
-			// tsslId
+			// tsddbPlaylist
 			// 
-			this.tsslId.Name = "tsslId";
-			this.tsslId.Size = new System.Drawing.Size(33, 12);
-			this.tsslId.Text = "tsslId";
+			this.tsddbPlaylist.AutoToolTip = false;
+			this.tsddbPlaylist.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+			this.tsddbPlaylist.Name = "tsddbPlaylist";
+			this.tsddbPlaylist.Size = new System.Drawing.Size(84, 16);
+			this.tsddbPlaylist.Text = "tsddbPlaylist";
+			this.tsddbPlaylist.Click += new System.EventHandler(this.tsddbPlaylist_Click);
 			// 
-			// tsslClipInfo
+			// tspmddbMode
 			// 
-			this.tsslClipInfo.Name = "tsslClipInfo";
-			this.tsslClipInfo.Size = new System.Drawing.Size(63, 12);
-			this.tsslClipInfo.Text = "tsslClipInfo";
+			this.tspmddbMode.AutoToolTip = false;
+			this.tspmddbMode.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+			this.tspmddbMode.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.tspmddbMode.Name = "tspmddbMode";
+			this.tspmddbMode.Size = new System.Drawing.Size(88, 16);
+			this.tspmddbMode.Text = "tspmddbMode";
+			this.tspmddbMode.PlayModeSelected += new System.EventHandler<Yusen.GExplorer.PlayModeSelectedEventArgs>(this.tspmddbMode_PlayModeSelected);
+			this.tspmddbMode.GoToChapterRequested += new System.EventHandler(this.tspmddbMode_GoToChapterRequested);
 			// 
-			// tsslChapter
+			// tsddbDuration
 			// 
-			this.tsslChapter.Name = "tsslChapter";
-			this.tsslChapter.Size = new System.Drawing.Size(64, 12);
-			this.tsslChapter.Text = "tsslChapter";
+			this.tsddbDuration.AutoToolTip = false;
+			this.tsddbDuration.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+			this.tsddbDuration.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiCopyClipDuration});
+			this.tsddbDuration.Name = "tsddbDuration";
+			this.tsddbDuration.Size = new System.Drawing.Size(89, 16);
+			this.tsddbDuration.Text = "tsddbDuration";
 			// 
-			// tsslDuration
+			// tsmiCopyClipDuration
 			// 
-			this.tsslDuration.Name = "tsslDuration";
-			this.tsslDuration.Size = new System.Drawing.Size(67, 12);
-			this.tsslDuration.Text = "tsslDuration";
+			this.tsmiCopyClipDuration.Image = global::Yusen.GExplorer.Properties.Resources.Copy;
+			this.tsmiCopyClipDuration.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.tsmiCopyClipDuration.Name = "tsmiCopyClipDuration";
+			this.tsmiCopyClipDuration.Size = new System.Drawing.Size(165, 22);
+			this.tsmiCopyClipDuration.Text = "クリップ長をコピー(&D)";
+			this.tsmiCopyClipDuration.Click += new System.EventHandler(this.tsmiCopyClipDuration_Click);
 			// 
-			// tsslSize
+			// tsddbSize
 			// 
-			this.tsslSize.Name = "tsslSize";
-			this.tsslSize.Size = new System.Drawing.Size(45, 12);
-			this.tsslSize.Text = "tsslSize";
+			this.tsddbSize.AutoToolTip = false;
+			this.tsddbSize.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+			this.tsddbSize.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiCopyClipResolution});
+			this.tsddbSize.Name = "tsddbSize";
+			this.tsddbSize.Size = new System.Drawing.Size(67, 16);
+			this.tsddbSize.Text = "tsddbSize";
 			// 
-			// tsslTitle
+			// tsmiCopyClipResolution
 			// 
-			this.tsslTitle.Name = "tsslTitle";
-			this.tsslTitle.Size = new System.Drawing.Size(47, 12);
-			this.tsslTitle.Text = "tsslTitle";
+			this.tsmiCopyClipResolution.Image = global::Yusen.GExplorer.Properties.Resources.Copy;
+			this.tsmiCopyClipResolution.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.tsmiCopyClipResolution.Name = "tsmiCopyClipResolution";
+			this.tsmiCopyClipResolution.Size = new System.Drawing.Size(182, 22);
+			this.tsmiCopyClipResolution.Text = "動画解像度をコピー(&R)";
+			this.tsmiCopyClipResolution.Click += new System.EventHandler(this.tsmiCopyClipResolution_Click);
 			// 
-			// splitContainer1
+			// tsddbTitle
 			// 
-			this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
-			this.splitContainer1.IsSplitterFixed = true;
-			this.splitContainer1.Location = new System.Drawing.Point(0, 0);
-			this.splitContainer1.Name = "splitContainer1";
+			this.tsddbTitle.AutoToolTip = false;
+			this.tsddbTitle.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+			this.tsddbTitle.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiCopyClipTitle});
+			this.tsddbTitle.Name = "tsddbTitle";
+			this.tsddbTitle.Size = new System.Drawing.Size(69, 16);
+			this.tsddbTitle.Text = "tsddbTitle";
 			// 
-			// splitContainer1.Panel1
+			// tsmiCopyClipTitle
 			// 
-			this.splitContainer1.Panel1.Controls.Add(this.wmpMain);
-			this.splitContainer1.Panel1MinSize = 0;
+			this.tsmiCopyClipTitle.Image = global::Yusen.GExplorer.Properties.Resources.Copy;
+			this.tsmiCopyClipTitle.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.tsmiCopyClipTitle.Name = "tsmiCopyClipTitle";
+			this.tsmiCopyClipTitle.Size = new System.Drawing.Size(164, 22);
+			this.tsmiCopyClipTitle.Text = "クリップ名をコピー(&T)";
+			this.tsmiCopyClipTitle.Click += new System.EventHandler(this.tsmiCopyClipTitle_Click);
 			// 
-			// splitContainer1.Panel2
+			// splitContainer2
 			// 
-			this.splitContainer1.Panel2.Controls.Add(this.tableLayoutPanel1);
-			this.splitContainer1.Panel2Collapsed = true;
-			this.splitContainer1.Panel2MinSize = 120;
-			this.splitContainer1.Size = new System.Drawing.Size(644, 548);
-			this.splitContainer1.SplitterDistance = 523;
-			this.splitContainer1.SplitterWidth = 1;
-			this.splitContainer1.TabIndex = 1;
+			this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.splitContainer2.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
+			this.splitContainer2.IsSplitterFixed = true;
+			this.splitContainer2.Location = new System.Drawing.Point(0, 0);
+			this.splitContainer2.Name = "splitContainer2";
+			// 
+			// splitContainer2.Panel1
+			// 
+			this.splitContainer2.Panel1.Controls.Add(this.playListView1);
+			this.splitContainer2.Panel1.Controls.Add(this.wmpMain);
+			// 
+			// splitContainer2.Panel2
+			// 
+			this.splitContainer2.Panel2.Controls.Add(this.tableLayoutPanel1);
+			this.splitContainer2.Panel2Collapsed = true;
+			this.splitContainer2.Panel2MinSize = 120;
+			this.splitContainer2.Size = new System.Drawing.Size(644, 547);
+			this.splitContainer2.SplitterDistance = 523;
+			this.splitContainer2.SplitterWidth = 1;
+			this.splitContainer2.TabIndex = 1;
+			// 
+			// playListView1
+			// 
+			this.playListView1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+			this.playListView1.Location = new System.Drawing.Point(0, 397);
+			this.playListView1.Name = "playListView1";
+			this.playListView1.Size = new System.Drawing.Size(400, 150);
+			this.playListView1.TabIndex = 2;
+			this.playListView1.Visible = false;
+			this.playListView1.Leave += new System.EventHandler(this.playListView1_Leave);
 			// 
 			// wmpMain
 			// 
@@ -195,7 +248,7 @@
 			this.wmpMain.Location = new System.Drawing.Point(0, 0);
 			this.wmpMain.Name = "wmpMain";
 			this.wmpMain.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("wmpMain.OcxState")));
-			this.wmpMain.Size = new System.Drawing.Size(644, 548);
+			this.wmpMain.Size = new System.Drawing.Size(644, 547);
 			this.wmpMain.TabIndex = 0;
 			this.wmpMain.Text = "axWindowsMediaPlayer1";
 			this.wmpMain.PlayStateChange += new AxWMPLib._WMPOCXEvents_PlayStateChangeEventHandler(this.wmpMain_PlayStateChange);
@@ -233,7 +286,7 @@
 			this.menuStrip1.Dock = System.Windows.Forms.DockStyle.None;
 			this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiFile,
-            this.tsmiOperations,
+            this.tsmiPlayActions,
             this.tsmiView,
             this.tsmiTools,
             this.tsmiSettings,
@@ -267,6 +320,8 @@
 			// 
 			// tsmiReload
 			// 
+			this.tsmiReload.Image = global::Yusen.GExplorer.Properties.Resources.Restart;
+			this.tsmiReload.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tsmiReload.Name = "tsmiReload";
 			this.tsmiReload.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.R)));
 			this.tsmiReload.Size = new System.Drawing.Size(294, 22);
@@ -295,9 +350,9 @@
 			this.tsmiClose.Text = "閉じる(&W)";
 			this.tsmiClose.Click += new System.EventHandler(this.tsmiClose_Click);
 			// 
-			// tsmiOperations
+			// tsmiPlayActions
 			// 
-			this.tsmiOperations.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+			this.tsmiPlayActions.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiPlayPause,
             this.tsmiStop,
             this.toolStripSeparator5,
@@ -310,12 +365,14 @@
             this.tsmiPrevContent,
             this.tsmiNextContent,
             this.tsmiNextContentWithDelete});
-			this.tsmiOperations.Name = "tsmiOperations";
-			this.tsmiOperations.Size = new System.Drawing.Size(57, 16);
-			this.tsmiOperations.Text = "操作(&O)";
+			this.tsmiPlayActions.Name = "tsmiPlayActions";
+			this.tsmiPlayActions.Size = new System.Drawing.Size(56, 16);
+			this.tsmiPlayActions.Text = "再生(&P)";
 			// 
 			// tsmiPlayPause
 			// 
+			this.tsmiPlayPause.Image = global::Yusen.GExplorer.Properties.Resources.Play;
+			this.tsmiPlayPause.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tsmiPlayPause.Name = "tsmiPlayPause";
 			this.tsmiPlayPause.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P)));
 			this.tsmiPlayPause.Size = new System.Drawing.Size(250, 22);
@@ -324,6 +381,8 @@
 			// 
 			// tsmiStop
 			// 
+			this.tsmiStop.Image = global::Yusen.GExplorer.Properties.Resources.stop;
+			this.tsmiStop.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tsmiStop.Name = "tsmiStop";
 			this.tsmiStop.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
 			this.tsmiStop.Size = new System.Drawing.Size(250, 22);
@@ -337,6 +396,8 @@
 			// 
 			// tsmiPrevTrack
 			// 
+			this.tsmiPrevTrack.Image = global::Yusen.GExplorer.Properties.Resources.DoubleLeftArrow;
+			this.tsmiPrevTrack.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tsmiPrevTrack.Name = "tsmiPrevTrack";
 			this.tsmiPrevTrack.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.B)));
 			this.tsmiPrevTrack.Size = new System.Drawing.Size(250, 22);
@@ -345,6 +406,8 @@
 			// 
 			// tsmiNextTrack
 			// 
+			this.tsmiNextTrack.Image = global::Yusen.GExplorer.Properties.Resources.DoubleRightArrow;
+			this.tsmiNextTrack.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tsmiNextTrack.Name = "tsmiNextTrack";
 			this.tsmiNextTrack.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
 			this.tsmiNextTrack.Size = new System.Drawing.Size(250, 22);
@@ -353,6 +416,7 @@
 			// 
 			// tsmiFastReverse
 			// 
+			this.tsmiFastReverse.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tsmiFastReverse.Name = "tsmiFastReverse";
 			this.tsmiFastReverse.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift)
 						| System.Windows.Forms.Keys.B)));
@@ -362,6 +426,7 @@
 			// 
 			// tsmiFastForward
 			// 
+			this.tsmiFastForward.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tsmiFastForward.Name = "tsmiFastForward";
 			this.tsmiFastForward.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift)
 						| System.Windows.Forms.Keys.F)));
@@ -371,6 +436,7 @@
 			// 
 			// tsmiRate
 			// 
+			this.tsmiRate.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tsmiRate.Name = "tsmiRate";
 			this.tsmiRate.Size = new System.Drawing.Size(250, 22);
 			this.tsmiRate.Text = "再生速度を指定(&T)...";
@@ -383,6 +449,8 @@
 			// 
 			// tsmiPrevContent
 			// 
+			this.tsmiPrevContent.Image = global::Yusen.GExplorer.Properties.Resources.GoToPrevious;
+			this.tsmiPrevContent.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tsmiPrevContent.Name = "tsmiPrevContent";
 			this.tsmiPrevContent.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.E)));
 			this.tsmiPrevContent.Size = new System.Drawing.Size(250, 22);
@@ -391,6 +459,8 @@
 			// 
 			// tsmiNextContent
 			// 
+			this.tsmiNextContent.Image = global::Yusen.GExplorer.Properties.Resources.GoToNext;
+			this.tsmiNextContent.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tsmiNextContent.Name = "tsmiNextContent";
 			this.tsmiNextContent.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
 			this.tsmiNextContent.Size = new System.Drawing.Size(250, 22);
@@ -399,6 +469,7 @@
 			// 
 			// tsmiNextContentWithDelete
 			// 
+			this.tsmiNextContentWithDelete.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tsmiNextContentWithDelete.Name = "tsmiNextContentWithDelete";
 			this.tsmiNextContentWithDelete.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D)));
 			this.tsmiNextContentWithDelete.Size = new System.Drawing.Size(250, 22);
@@ -418,6 +489,8 @@
 			// 
 			// tsmiViewFullScreen
 			// 
+			this.tsmiViewFullScreen.Image = global::Yusen.GExplorer.Properties.Resources.FullScreen;
+			this.tsmiViewFullScreen.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tsmiViewFullScreen.Name = "tsmiViewFullScreen";
 			this.tsmiViewFullScreen.Size = new System.Drawing.Size(241, 22);
 			this.tsmiViewFullScreen.Text = "フルスクリーン(&F)";
@@ -430,10 +503,11 @@
 			// 
 			// tsmiViewTopmost
 			// 
+			this.tsmiViewTopmost.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tsmiViewTopmost.Name = "tsmiViewTopmost";
 			this.tsmiViewTopmost.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.T)));
 			this.tsmiViewTopmost.Size = new System.Drawing.Size(241, 22);
-			this.tsmiViewTopmost.Text = "常に手前に表示(&T)";
+			this.tsmiViewTopmost.Text = "最前面(&T)";
 			this.tsmiViewTopmost.Click += new System.EventHandler(this.tsmiViewTopmost_Click);
 			// 
 			// tsmiViewAutoHide
@@ -461,6 +535,7 @@
 			// 
 			// tsmiResizeToVideoResolution
 			// 
+			this.tsmiResizeToVideoResolution.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tsmiResizeToVideoResolution.Name = "tsmiResizeToVideoResolution";
 			this.tsmiResizeToVideoResolution.Size = new System.Drawing.Size(241, 22);
 			this.tsmiResizeToVideoResolution.Text = "動画の解像度に合わせてリサイズ(&F)";
@@ -572,9 +647,9 @@
 			this.toolStripContainer1.PerformLayout();
 			this.statusStrip1.ResumeLayout(false);
 			this.statusStrip1.PerformLayout();
-			this.splitContainer1.Panel1.ResumeLayout(false);
-			this.splitContainer1.Panel2.ResumeLayout(false);
-			this.splitContainer1.ResumeLayout(false);
+			this.splitContainer2.Panel1.ResumeLayout(false);
+			this.splitContainer2.Panel2.ResumeLayout(false);
+			this.splitContainer2.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.wmpMain)).EndInit();
 			this.tableLayoutPanel1.ResumeLayout(false);
 			this.menuStrip1.ResumeLayout(false);
@@ -592,7 +667,7 @@
 		private System.Windows.Forms.ToolStripMenuItem tsmiTools;
 		private System.Windows.Forms.ToolStripMenuItem tsmiReload;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
-		private System.Windows.Forms.ToolStripMenuItem tsmiOperations;
+		private System.Windows.Forms.ToolStripMenuItem tsmiPlayActions;
 		private System.Windows.Forms.ToolStripMenuItem tsmiPlayPause;
 		private System.Windows.Forms.ToolStripMenuItem tsmiStop;
 		private System.Windows.Forms.ToolStripMenuItem tsmiNextTrack;
@@ -611,14 +686,8 @@
 		private System.Windows.Forms.ToolStripMenuItem tsmiShowItemInfo;
 		private System.Windows.Forms.ToolStripMenuItem tsmiResizeToVideoResolution;
 		private System.Windows.Forms.StatusStrip statusStrip1;
-		private System.Windows.Forms.ToolStripStatusLabel tsslId;
-		private System.Windows.Forms.ToolStripStatusLabel tsslSize;
-		private System.Windows.Forms.ToolStripStatusLabel tsslDuration;
-		private System.Windows.Forms.ToolStripStatusLabel tsslChapter;
-		private System.Windows.Forms.ToolStripStatusLabel tsslTitle;
 		private System.Windows.Forms.Timer timerAutoVolume;
 		private System.Windows.Forms.Timer timerSkipGyaoCm;
-		private System.Windows.Forms.SplitContainer splitContainer1;
 		private System.Windows.Forms.WebBrowser wbBanner;
 		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
 		private System.Windows.Forms.ToolStripMenuItem tsmiBrowseDetail;
@@ -632,10 +701,19 @@
 		private System.Windows.Forms.ToolStripMenuItem tsmiViewFullScreen;
 		private System.Windows.Forms.ToolStripMenuItem tsmiViewAutoHide;
 		private ToolStripUserCommandMenuItem tsucmiCommand;
-		private System.Windows.Forms.ToolStripStatusLabel tsslClipInfo;
 		private ToolStripNgFavMenuItem tsnfmiNgFav;
 		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
 		private ToolStripHelpMenuItem tshmiHelp;
 		private System.Windows.Forms.ToolStripMenuItem tsmiRate;
+		private System.Windows.Forms.SplitContainer splitContainer2;
+		private ToolStripPlayModeDropDownButton tspmddbMode;
+		private System.Windows.Forms.ToolStripDropDownButton tsddbPlaylist;
+		private System.Windows.Forms.ToolStripDropDownButton tsddbTitle;
+		private System.Windows.Forms.ToolStripMenuItem tsmiCopyClipTitle;
+		private System.Windows.Forms.ToolStripDropDownButton tsddbDuration;
+		private System.Windows.Forms.ToolStripDropDownButton tsddbSize;
+		private System.Windows.Forms.ToolStripMenuItem tsmiCopyClipDuration;
+		private System.Windows.Forms.ToolStripMenuItem tsmiCopyClipResolution;
+		private PlayListView playListView1;
 	}
 }

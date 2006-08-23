@@ -68,7 +68,7 @@
             this.toolStripSeparator6,
             this.tsmiContentCancel});
 			this.cmsContent.Name = "cmsContent";
-			this.cmsContent.Size = new System.Drawing.Size(204, 232);
+			this.cmsContent.Size = new System.Drawing.Size(204, 210);
 			// 
 			// tsmiContentPerformClick
 			// 
@@ -94,18 +94,23 @@
 			// 
 			// tsmiContentAddToPlayList
 			// 
+			this.tsmiContentAddToPlayList.Image = global::Yusen.GExplorer.Properties.Resources.BuilderDialog_add;
+			this.tsmiContentAddToPlayList.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tsmiContentAddToPlayList.Name = "tsmiContentAddToPlayList";
 			this.tsmiContentAddToPlayList.Size = new System.Drawing.Size(203, 22);
 			this.tsmiContentAddToPlayList.Text = "プレイリストに追加(&A)";
 			// 
 			// tsmiContentAddToPlayListWithComment
 			// 
+			this.tsmiContentAddToPlayListWithComment.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tsmiContentAddToPlayListWithComment.Name = "tsmiContentAddToPlayListWithComment";
 			this.tsmiContentAddToPlayListWithComment.Size = new System.Drawing.Size(203, 22);
 			this.tsmiContentAddToPlayListWithComment.Text = "コメント付きで追加(&L)...";
 			// 
 			// tsmiContentPlayWithoutAdding
 			// 
+			this.tsmiContentPlayWithoutAdding.Image = global::Yusen.GExplorer.Properties.Resources.Play;
+			this.tsmiContentPlayWithoutAdding.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tsmiContentPlayWithoutAdding.Name = "tsmiContentPlayWithoutAdding";
 			this.tsmiContentPlayWithoutAdding.Size = new System.Drawing.Size(203, 22);
 			this.tsmiContentPlayWithoutAdding.Text = "追加せずに再生(&P)";

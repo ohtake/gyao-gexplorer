@@ -237,8 +237,13 @@ namespace Yusen.GExplorer {
 			}
 		}
 		private void ScrollToBottom() {
-			if (0 < this.listView1.Items.Count) {
-				this.listView1.TopItem = this.listView1.Items[this.listView1.Items.Count - 1];
+			int count = this.listView1.Items.Count;
+			if (0 < count) {
+				try {
+					this.listView1.TopItem = this.listView1.Items[count - 1];
+				} catch(NullReferenceException){
+					//スプリットコンテナ内で非表示してから表示させると NullReferenceException
+				}
 			}
 		}
 
@@ -491,7 +496,7 @@ namespace Yusen.GExplorer {
 		private void tsmiSetComment_Click(object sender, EventArgs e) {
 			ContentAdapter[] conts = this.SelectedContents;
 			if (conts.Length > 0) {
-				this.inputBoxDialog1.Title = "コメントを入力．";
+				this.inputBoxDialog1.Title = "コメントの入力";
 				this.inputBoxDialog1.Message = "コメントを入力してください．";
 				this.inputBoxDialog1.Input = conts[0].Comment;
 				switch (this.inputBoxDialog1.ShowDialog()) {

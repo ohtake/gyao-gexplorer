@@ -122,6 +122,8 @@
 			// 
 			// tsmiAdd
 			// 
+			this.tsmiAdd.Image = global::Yusen.GExplorer.Properties.Resources.BuilderDialog_add;
+			this.tsmiAdd.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tsmiAdd.Name = "tsmiAdd";
 			this.tsmiAdd.Size = new System.Drawing.Size(214, 22);
 			this.tsmiAdd.Text = "プレイリストに追加(&A)";
@@ -129,6 +131,7 @@
 			// 
 			// tsmiAddWithComment
 			// 
+			this.tsmiAddWithComment.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tsmiAddWithComment.Name = "tsmiAddWithComment";
 			this.tsmiAddWithComment.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.L)));
 			this.tsmiAddWithComment.Size = new System.Drawing.Size(214, 22);
@@ -137,6 +140,8 @@
 			// 
 			// tsmiPlay
 			// 
+			this.tsmiPlay.Image = global::Yusen.GExplorer.Properties.Resources.Play;
+			this.tsmiPlay.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tsmiPlay.Name = "tsmiPlay";
 			this.tsmiPlay.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P)));
 			this.tsmiPlay.Size = new System.Drawing.Size(214, 22);
@@ -183,6 +188,8 @@
 			// 
 			// tsmiCopyNameAndDetailUri
 			// 
+			this.tsmiCopyNameAndDetailUri.Image = global::Yusen.GExplorer.Properties.Resources.Copy;
+			this.tsmiCopyNameAndDetailUri.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tsmiCopyNameAndDetailUri.Name = "tsmiCopyNameAndDetailUri";
 			this.tsmiCopyNameAndDetailUri.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
 			this.tsmiCopyNameAndDetailUri.Size = new System.Drawing.Size(214, 22);
@@ -253,6 +260,8 @@
 			// 
 			// tsmiRemoveCache
 			// 
+			this.tsmiRemoveCache.Image = global::Yusen.GExplorer.Properties.Resources.Delete;
+			this.tsmiRemoveCache.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tsmiRemoveCache.Name = "tsmiRemoveCache";
 			this.tsmiRemoveCache.Size = new System.Drawing.Size(214, 22);
 			this.tsmiRemoveCache.Text = "キャッシュを削除(&R)...";
@@ -384,12 +393,12 @@
 			// tsddbVisibilities
 			// 
 			this.tsddbVisibilities.AutoToolTip = false;
-			this.tsddbVisibilities.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
 			this.tsddbVisibilities.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tscvsVisibilitiesSelector});
+			this.tsddbVisibilities.Image = global::Yusen.GExplorer.Properties.Resources.AutoFilter;
 			this.tsddbVisibilities.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tsddbVisibilities.Name = "tsddbVisibilities";
-			this.tsddbVisibilities.Size = new System.Drawing.Size(82, 22);
+			this.tsddbVisibilities.Size = new System.Drawing.Size(98, 22);
 			this.tsddbVisibilities.Text = "表示条件(&V)";
 			// 
 			// tscvsVisibilitiesSelector
@@ -409,10 +418,10 @@
 			// 
 			this.tsbShowFilter.AutoToolTip = false;
 			this.tsbShowFilter.CheckOnClick = true;
-			this.tsbShowFilter.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+			this.tsbShowFilter.Image = global::Yusen.GExplorer.Properties.Resources.Filter2;
 			this.tsbShowFilter.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tsbShowFilter.Name = "tsbShowFilter";
-			this.tsbShowFilter.Size = new System.Drawing.Size(53, 22);
+			this.tsbShowFilter.Size = new System.Drawing.Size(69, 22);
 			this.tsbShowFilter.Text = "フィルタ(&I)";
 			this.tsbShowFilter.Click += new System.EventHandler(this.tsbShowFilter_Click);
 			// 
@@ -424,20 +433,20 @@
 			// tsddbNormalPages
 			// 
 			this.tsddbNormalPages.AutoToolTip = false;
-			this.tsddbNormalPages.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+			this.tsddbNormalPages.Image = global::Yusen.GExplorer.Properties.Resources.HtmlPage;
 			this.tsddbNormalPages.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tsddbNormalPages.Name = "tsddbNormalPages";
-			this.tsddbNormalPages.Size = new System.Drawing.Size(63, 22);
-			this.tsddbNormalPages.Text = "ページ(&P)";
+			this.tsddbNormalPages.Size = new System.Drawing.Size(29, 22);
+			this.tsddbNormalPages.ToolTipText = "ページ";
 			// 
 			// tsddbExceptions
 			// 
 			this.tsddbExceptions.AutoToolTip = false;
-			this.tsddbExceptions.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+			this.tsddbExceptions.Image = global::Yusen.GExplorer.Properties.Resources.Warning;
 			this.tsddbExceptions.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tsddbExceptions.Name = "tsddbExceptions";
-			this.tsddbExceptions.Size = new System.Drawing.Size(57, 22);
-			this.tsddbExceptions.Text = "例外(&E)";
+			this.tsddbExceptions.Size = new System.Drawing.Size(29, 22);
+			this.tsddbExceptions.ToolTipText = "例外";
 			// 
 			// toolStripSeparator11
 			// 

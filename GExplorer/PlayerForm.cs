@@ -27,6 +27,11 @@ namespace Yusen.GExplorer {
 			internal PlayerFormSettings(PlayerForm owner){
 				this.owner = owner;
 				this.formSettingsBaseSettings = new FormSettingsBaseSettings(owner);
+				if (this.HasOwner) {
+					this.playListViewSettings = new PlayListView.PlayListViewSettings(owner.playListView1);
+				} else {
+					this.playListViewSettings = new PlayListView.PlayListViewSettings();
+				}
 			}
 
 			[Browsable(false)]
@@ -222,7 +227,14 @@ namespace Yusen.GExplorer {
 				}
 			}
 			private int volumeCf = 40;
-			
+
+			[Browsable(false)]
+			public PlayListView.PlayListViewSettings PlayListViewSettings {
+				get { return this.playListViewSettings; }
+				set { this.playListViewSettings.ApplySettings(value); }
+			}
+			private readonly PlayListView.PlayListViewSettings playListViewSettings;
+
 			#region INewSettings<PlayerFormSettings> Members
 			public void ApplySettings(PlayerFormSettings newSettings) {
 				Utility.SubstituteAllPublicProperties(this, newSettings);
@@ -273,7 +285,7 @@ namespace Yusen.GExplorer {
 		private string bannerKeyValue = string.Empty;
 		
 		private ScreenSaveListener ssl;
-
+		
 		private PlayerFormSettings settings;
 		
 		private PlayerForm() {
@@ -290,14 +302,28 @@ namespace Yusen.GExplorer {
 				return;
 			}
 
+			if (WMPPlayState.wmppsMediaEnded != this.wmpMain.playState) {
+				//手動で切り替えた場合ではいったん再生停止
+				this.wmpMain.close();
+				this.wmpMain.currentPlaylist.clear();
+				//プレイリストも非表示
+				this.HidePlaylist();
+				Application.DoEvents();
+			}
+			
 			Uri playerPageUri = this.CurrentContent.PlayerPageUri;
 			
 			XmlHttpWrapper xmlhttp = new XmlHttpWrapper();
+			Application.DoEvents();
 			string body = xmlhttp.GetResponseText(playerPageUri);
+			Application.DoEvents();
 			
 			//年齢チェック
 			if (body.Contains(PlayerForm.AdultErrorString)) {
 				if (!this.settings.DisableAdultCheckDialog) {
+					//ダイアログ表示前に停止
+					this.wmpMain.close();
+					this.wmpMain.currentPlaylist.clear();
 					switch (MessageBox.Show(this, "年齢制限のあるコンテンツのようです．再生しますか？", "年齢制限", MessageBoxButtons.YesNo, MessageBoxIcon.Question)) {
 						case DialogResult.Yes:
 							break;
@@ -307,7 +333,9 @@ namespace Yusen.GExplorer {
 					}
 				}
 				Uri playerPage2Uri = new Uri(playerPageUri.AbsoluteUri + "&check_flg=0");
+				Application.DoEvents();
 				body = xmlhttp.GetResponseText(playerPage2Uri);
+				Application.DoEvents();
 			}
 			
 			Match matchAsxPhp = PlayerForm.regexAsxPhp.Match(body);
@@ -320,7 +348,9 @@ namespace Yusen.GExplorer {
 				asxPhpAddr += "&chapterNo=" + this.CurrentChapter.Value.ToString();
 			}
 			
+			Application.DoEvents();
 			IWMPMedia media = this.wmpMain.newMedia(asxPhpAddr);
+			Application.DoEvents();
 			if (WMPPlayState.wmppsMediaEnded != this.wmpMain.playState) {
 				//手動で切り替えた場合では強制的に再生させる
 				this.wmpMain.currentPlaylist.clear();
@@ -330,7 +360,7 @@ namespace Yusen.GExplorer {
 				//コンテンツ末尾に達した場合はリストの末尾にmedia追加
 				this.wmpMain.currentPlaylist.appendItem(media);
 			}
-			this.UpdateStatusbatText();
+			this.UpdateStatusbarText();
 
 			Match matchBannerKeyValue = PlayerForm.regexBannerKeyValue.Match(body);
 			if (!matchBannerKeyValue.Success) {
@@ -338,7 +368,7 @@ namespace Yusen.GExplorer {
 			}
 			this.bannerKeyValue = matchBannerKeyValue.Groups[1].Value;
 		}
-		private void UpdateStatusbatText() {
+		private void UpdateStatusbarText() {
 			if(null != this.CurrentContent) {
 				IWMPMedia curMedia = this.wmpMain.currentMedia;
 				string entryUrl;
@@ -349,18 +379,22 @@ namespace Yusen.GExplorer {
 					matchClipBegin = PlayerForm.regexClipBegin.Match(entryUrl);
 				}
 
-				this.tsslId.Text = this.CurrentContent.ContentId;
-				this.tsslClipInfo.Text = 
-					((null != matchClipNo && matchClipNo.Success) ?
-						"clipNo="+matchClipNo.Groups[1].Value : string.Empty)
-					+ ((null != matchClipBegin && matchClipBegin.Success) ?
-						"&&clipBegin=" + matchClipBegin.Groups[1].Value : string.Empty);
-				this.tsslChapter.Text = this.CurrentChapter.HasValue ?
-					"チャプタ" + this.CurrentChapter.Value.ToString()
-					: "通常";
-				this.tsslDuration.Text = new TimeSpan((long)(10000000 * curMedia.duration)).ToString();
-				this.tsslSize.Text = curMedia.imageSourceWidth.ToString() + "x" + curMedia.imageSourceHeight.ToString();
-				this.tsslTitle.Text = curMedia.name;
+				if (null != matchClipNo && matchClipNo.Success) {
+					int clipNo = int.Parse(matchClipNo.Groups[1].Value);
+					if (null != matchClipBegin && matchClipBegin.Success) {
+						int clipBegin = int.Parse(matchClipBegin.Groups[1].Value);
+						TimeSpan begin = new TimeSpan(0, 0, clipBegin);
+						TimeSpan duration = TimeSpan.FromSeconds(curMedia.duration);
+						this.tspmddbMode.AddClipInfo(clipNo, begin, duration);
+					}
+					this.tspmddbMode.NotifyCurrentModeAndNumber(this.CurrentChapter, clipNo);
+				} else {
+					this.tspmddbMode.NotifyCurrentModeAndNumber(this.CurrentChapter, null);
+				}
+				
+				this.tsddbDuration.Text = TimeSpan.FromSeconds(curMedia.duration).ToString();
+				this.tsddbSize.Text = curMedia.imageSourceWidth.ToString() + "x" + curMedia.imageSourceHeight.ToString();
+				this.tsddbTitle.Text = curMedia.name.Replace("&", "&&");
 			}
 		}
 		private void ModifyVolume() {
@@ -372,12 +406,12 @@ namespace Yusen.GExplorer {
 		}
 		private void HideUi() {
 			//WMPの座標計算
-			Point loc = this.PointToClient(this.splitContainer1.PointToScreen(new Point()));
+			Point loc = this.PointToClient(this.splitContainer2.PointToScreen(new Point()));
 			loc.X += SystemInformation.SizingBorderWidth;
 			loc.Y += SystemInformation.SizingBorderWidth + SystemInformation.CaptionHeight;
 			loc += PlayerForm.WmpMarginSize;
 			//WMPのビデオ部分のサイズ計算
-			Size size = this.splitContainer1.ClientSize;
+			Size size = this.splitContainer2.ClientSize;
 			size -= PlayerForm.WmpUiSize;
 			//リージョン設定
 			DRegion oldRegion = this.Region;
@@ -392,6 +426,9 @@ namespace Yusen.GExplorer {
 				this.Region = null;
 				oldRegion.Dispose();
 			}
+		}
+		private void HidePlaylist() {
+			this.playListView1.Visible = false;
 		}
 		private Uri CreateBannerUri(string dartTag) {
 			long ord = (long)(PlayerForm.rand.NextDouble() * PlayerForm.OrdMax);
@@ -417,9 +454,14 @@ namespace Yusen.GExplorer {
 				PlayList.Instance.CurrentContent = value;
 				if (null == value) {
 					this.Text = "PlayerForm";
+					this.tsddbPlaylist.Text = "リスト(&L)";
 				} else {
 					this.Text = value.DisplayName;
+					this.tsddbPlaylist.Text = value.ContentId;
 				}
+				this.tspmddbMode.ClearClipInfo();
+				this.tspmddbMode.NotifyCurrentModeAndNumber(this.CurrentChapter, null);
+				
 				this.OpenVideo();
 			}
 		}
@@ -430,6 +472,8 @@ namespace Yusen.GExplorer {
 			private set {
 				if (! value.Equals(this.currentChapter)) {
 					this.currentChapter = value;
+					this.tspmddbMode.NotifyCurrentModeAndNumber(this.CurrentChapter, null);
+					
 					this.OpenVideo();
 				}
 			}
@@ -461,7 +505,7 @@ namespace Yusen.GExplorer {
 			get { return this.ssl.Enabled; }
 			set { this.ssl.Enabled = value; }
 		}
-
+		
 		private void PlayerForm_Load(object sender, EventArgs e) {
 			this.ssl = new ScreenSaveListener();
 			this.ssl.ScreenSaverRaising += this.ssl_ScreenSaverRaising;
@@ -482,6 +526,7 @@ namespace Yusen.GExplorer {
 			this.ShowUi();
 		}
 		private void PlayerForm_Deactivate(object sender, EventArgs e) {
+			this.HidePlaylist();
 			if(this.settings.HideUiOnDeactivatedEnabled) {
 				this.HideUi();
 			}
@@ -507,6 +552,9 @@ namespace Yusen.GExplorer {
 				case Keys.MediaStop:
 					this.tsmiStop.PerformClick();
 					break;
+				case Keys.Escape:
+					this.HidePlaylist();
+					break;
 				default:
 					return;
 			}
@@ -522,7 +570,7 @@ namespace Yusen.GExplorer {
 		private void tsmiPlayChapter_Click(object sender, EventArgs e) {
 			string title =  "特定のチャプタから再生";
 			this.inputBoxDialog1.Title =title;
-			this.inputBoxDialog1.Message = "チャプタ番号の入力．空白の場合は通常再生．";
+			this.inputBoxDialog1.Message = "チャプタ番号の入力．空文字列の場合は通常再生．";
 			this.inputBoxDialog1.Input = this.CurrentChapter.HasValue ? this.CurrentChapter.Value.ToString() : string.Empty;
 			switch (this.inputBoxDialog1.ShowDialog()) {
 				case DialogResult.OK:
@@ -542,7 +590,6 @@ namespace Yusen.GExplorer {
 		}
 		private void tsmiReload_Click(object sender, EventArgs e) {
 			this.OpenVideo();
-			this.wmpMain.Ctlcontrols.play();
 		}
 		private void tsmiRemoveAndClose_Click(object sender, EventArgs e) {
 			PlayList.Instance.Remove(this.CurrentContent);
@@ -583,18 +630,16 @@ namespace Yusen.GExplorer {
 					break;
 			}
 		}
+		private void tsmiPrevContent_Click(object sender, EventArgs e) {
+			ContentAdapter prevCont = PlayList.Instance.PrevContentOf(this.CurrentContent);
+			this.CurrentContent = prevCont;
+		}
 		private void tsmiNextContent_Click(object sender, EventArgs e) {
 			ContentAdapter nextCont = PlayList.Instance.NextContentOf(this.CurrentContent);
-			if (null == nextCont) {
-				nextCont = PlayList.Instance.NextContentOf(null);
-			}
 			this.CurrentContent = nextCont;
 		}
 		private void tsmiNextContentWithDelete_Click(object sender, EventArgs e) {
 			ContentAdapter nextCont = PlayList.Instance.NextContentOf(this.CurrentContent);
-			if (null == nextCont) {
-				nextCont = PlayList.Instance.NextContentOf(null);
-			}
 			PlayList.Instance.Remove(this.CurrentContent);
 			if (this.CurrentContent.Equals(nextCont)) {
 				this.CurrentContent = null;
@@ -614,17 +659,13 @@ namespace Yusen.GExplorer {
 		private void tsmiViewAutoHide_Click(object sender, EventArgs e) {
 			this.settings.HideUiOnDeactivatedEnabled = !this.settings.HideUiOnDeactivatedEnabled;
 		}
-		private void tsmiPrevContent_Click(object sender, EventArgs e) {
-			ContentAdapter prevCont = PlayList.Instance.PrevContentOf(this.CurrentContent);
-			if (null == prevCont) {
-				prevCont = PlayList.Instance.PrevContentOf(null);
-			}
-			this.CurrentContent = prevCont;
-		}
 		private void tsmiResizeToVideoResolution_Click(object sender, EventArgs e) {
 			this.WindowState = FormWindowState.Normal;
 			Size videoSize = new Size(this.wmpMain.currentMedia.imageSourceWidth, this.wmpMain.currentMedia.imageSourceHeight);
 			Size distSize = new Size(videoSize.Width*this.settings.ZoomRatioOnResize/100, videoSize.Height*this.settings.ZoomRatioOnResize/100);
+			
+			if (Size.Empty == videoSize) return;
+			
 			for(int i=0; i<2; i++) {
 				//リサイズによってメニューバーやステータスバーの高さが変わることがあるので
 				//2回リサイズを試みる
@@ -683,9 +724,9 @@ namespace Yusen.GExplorer {
 						string dartTag = dartTagMatch.Groups[1].Value;
 						dartTag = dartTag.Split(new string[] { "AR" }, StringSplitOptions.None)[0];
 						this.wbBanner.Navigate(this.CreateBannerUri(dartTag));
-						this.splitContainer1.Panel2Collapsed = false;
+						this.splitContainer2.Panel2Collapsed = false;
 					} else {
-						this.splitContainer1.Panel2Collapsed = true;
+						this.splitContainer2.Panel2Collapsed = true;
 						this.wbBanner.Navigate("about:blank");
 					}
 					//cm_licenseとkrmの早期スキップ
@@ -693,7 +734,7 @@ namespace Yusen.GExplorer {
 						this.timerSkipGyaoCm.Start();
 					}
 					//ステータスバー更新
-					this.UpdateStatusbatText();
+					this.UpdateStatusbarText();
 					//リサイズ
 					if(FormWindowState.Normal == this.WindowState) {
 						if(this.IsCf) {
@@ -760,13 +801,49 @@ namespace Yusen.GExplorer {
 			get { return this.settings; }
 		}
 		#endregion
-	}
 
-#if false
-	public enum PlayMode {
-		Playlist,
-		SingleRepeat,
-		Shuffle,
+		private void tsddbPlaylist_Click(object sender, EventArgs e) {
+			if (this.playListView1.Visible) {
+				this.HidePlaylist();
+			}else{
+				Size oldSize = this.playListView1.Size;
+				Size newSize = new Size((int)(0.9 * this.wmpMain.Size.Width), (int)(0.4 * this.wmpMain.Size.Height));
+				this.playListView1.Location = new Point(this.playListView1.Location.X, this.playListView1.Location.Y+(oldSize-newSize).Height);
+				this.playListView1.Size = newSize;
+				this.playListView1.Visible = true;
+				this.playListView1.Focus();
+			}
+		}
+		private void tspmddbMode_PlayModeSelected(object sender, PlayModeSelectedEventArgs e) {
+			if (e.IsNormalMode) {
+				this.CurrentChapter = null;
+			} else {
+				this.CurrentChapter = e.ChapterNumber;
+			}
+		}
+
+		private void tspmddbMode_GoToChapterRequested(object sender, EventArgs e) {
+			this.tsmiPlayChapter.PerformClick();
+		}
+
+		private void tsmiCopyClipDuration_Click(object sender, EventArgs e) {
+			if (!string.IsNullOrEmpty(this.tsddbTitle.Text)) {
+				Clipboard.SetText(this.tsddbDuration.Text.Replace("&&", "&"));
+			}
+		}
+		private void tsmiCopyClipResolution_Click(object sender, EventArgs e) {
+			if (!string.IsNullOrEmpty(this.tsddbTitle.Text)) {
+				Clipboard.SetText(this.tsddbSize.Text.Replace("&&", "&"));
+			}
+		}
+		private void tsmiCopyClipTitle_Click(object sender, EventArgs e) {
+			if (!string.IsNullOrEmpty(this.tsddbTitle.Text)) {
+				Clipboard.SetText(this.tsddbTitle.Text.Replace("&&", "&"));
+			}
+		}
+
+		private void playListView1_Leave(object sender, EventArgs e) {
+			this.HidePlaylist();
+		}
 	}
-#endif
 }

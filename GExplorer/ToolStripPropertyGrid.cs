@@ -9,7 +9,7 @@ namespace Yusen.GExplorer {
 	[ToolStripItemDesignerAvailability(ToolStripItemDesignerAvailability.All)]
 	public sealed class ToolStripPropertyGrid : ToolStripControlHost{
 		[DllImport("user32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.Winapi)]
-		internal static extern IntPtr GetFocus();
+		private static extern IntPtr GetFocus();
 		
 		internal static void CancelDropDownClosingIfEditingPropertyGrid(object sender, ToolStripDropDownClosingEventArgs e) {
 			switch (e.CloseReason) {
