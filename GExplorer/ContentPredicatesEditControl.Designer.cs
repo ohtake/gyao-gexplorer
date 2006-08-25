@@ -45,6 +45,8 @@
 			this.chObject = new System.Windows.Forms.ColumnHeader();
 			this.chCreated = new System.Windows.Forms.ColumnHeader();
 			this.chLastTrue = new System.Windows.Forms.ColumnHeader();
+			this.cmsPredicate = new System.Windows.Forms.ContextMenuStrip(this.components);
+			this.tsmiDelete = new System.Windows.Forms.ToolStripMenuItem();
 			this.lblCount = new System.Windows.Forms.Label();
 			this.timerItemSelect = new System.Windows.Forms.Timer(this.components);
 			this.timerLastTrue = new System.Windows.Forms.Timer(this.components);
@@ -53,6 +55,7 @@
 			this.tableLayoutPanel2.SuspendLayout();
 			this.grpList.SuspendLayout();
 			this.tableLayoutPanel3.SuspendLayout();
+			this.cmsPredicate.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// tableLayoutPanel1
@@ -233,6 +236,7 @@
             this.chObject,
             this.chCreated,
             this.chLastTrue});
+			this.listview1.ContextMenuStrip = this.cmsPredicate;
 			this.listview1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.listview1.FullRowSelect = true;
 			this.listview1.HideSelection = false;
@@ -278,6 +282,23 @@
 			this.chLastTrue.Text = "最終True日時";
 			this.chLastTrue.Width = 116;
 			// 
+			// cmsPredicate
+			// 
+			this.cmsPredicate.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiDelete});
+			this.cmsPredicate.Name = "cmsPredicate";
+			this.cmsPredicate.Size = new System.Drawing.Size(153, 48);
+			// 
+			// tsmiDelete
+			// 
+			this.tsmiDelete.Image = global::Yusen.GExplorer.Properties.Resources.Delete;
+			this.tsmiDelete.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.tsmiDelete.Name = "tsmiDelete";
+			this.tsmiDelete.ShortcutKeys = System.Windows.Forms.Keys.Delete;
+			this.tsmiDelete.Size = new System.Drawing.Size(152, 22);
+			this.tsmiDelete.Text = "削除(&D)";
+			this.tsmiDelete.Click += new System.EventHandler(this.tsmiDelete_Click);
+			// 
 			// lblCount
 			// 
 			this.lblCount.AutoSize = true;
@@ -310,6 +331,7 @@
 			this.grpList.ResumeLayout(false);
 			this.tableLayoutPanel3.ResumeLayout(false);
 			this.tableLayoutPanel3.PerformLayout();
+			this.cmsPredicate.ResumeLayout(false);
 			this.ResumeLayout(false);
 
 		}
@@ -340,6 +362,8 @@
 		private System.Windows.Forms.Label lblCount;
 		private System.Windows.Forms.Timer timerItemSelect;
 		private System.Windows.Forms.Timer timerLastTrue;
+		private System.Windows.Forms.ContextMenuStrip cmsPredicate;
+		private System.Windows.Forms.ToolStripMenuItem tsmiDelete;
 
 	}
 }

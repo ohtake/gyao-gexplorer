@@ -251,7 +251,6 @@ namespace Yusen.GExplorer {
 		private const int ZoomMax = 200;
 		private const int ZoomMin = 25;
 		
-		private static readonly Random rand = new Random();
 		private static readonly Size WmpUiSize = new Size(0, 64);
 		private static readonly Size WmpMarginSize = new Size(3, 3);
 		private static readonly Regex regexDartTag = new Regex(":dartTag=([^:=]*)");
@@ -284,7 +283,8 @@ namespace Yusen.GExplorer {
 		private Dictionary<string, string> currentAttribs = new Dictionary<string, string>();
 		private string bannerKeyValue = string.Empty;
 		
-		private ScreenSaveListener ssl;
+		private readonly ScreenSaveListener ssl = new ScreenSaveListener();
+		private readonly Random rand = new Random();
 		
 		private PlayerFormSettings settings;
 		
@@ -430,8 +430,16 @@ namespace Yusen.GExplorer {
 		private void HidePlaylist() {
 			this.playListView1.Visible = false;
 		}
+		private void ShowPlaylist() {
+			Size oldSize = this.playListView1.Size;
+			Size newSize = new Size((int)(0.9 * this.wmpMain.Size.Width), (int)(0.4 * this.wmpMain.Size.Height));
+			this.playListView1.Location = new Point(this.playListView1.Location.X, this.playListView1.Location.Y + (oldSize - newSize).Height);
+			this.playListView1.Size = newSize;
+			this.playListView1.Visible = true;
+			this.playListView1.Focus();
+		}
 		private Uri CreateBannerUri(string dartTag) {
-			long ord = (long)(PlayerForm.rand.NextDouble() * PlayerForm.OrdMax);
+			long ord = (long)(this.rand.NextDouble() * PlayerForm.OrdMax);
 			return new Uri(
 				"http://www1.gyao.jp/html.ng/site=gyao.cm.sky"
 				+ this.bannerKeyValue
@@ -507,7 +515,6 @@ namespace Yusen.GExplorer {
 		}
 		
 		private void PlayerForm_Load(object sender, EventArgs e) {
-			this.ssl = new ScreenSaveListener();
 			this.ssl.ScreenSaverRaising += this.ssl_ScreenSaverRaising;
 			this.FormClosed += delegate {
 				this.ssl.ScreenSaverRaising -= this.ssl_ScreenSaverRaising;
@@ -532,6 +539,7 @@ namespace Yusen.GExplorer {
 			}
 		}
 		private void PlayerForm_Resize(object sender, EventArgs e) {
+			this.HidePlaylist();
 			if(null != this.Region) {
 				this.HideUi();
 			}
@@ -806,12 +814,7 @@ namespace Yusen.GExplorer {
 			if (this.playListView1.Visible) {
 				this.HidePlaylist();
 			}else{
-				Size oldSize = this.playListView1.Size;
-				Size newSize = new Size((int)(0.9 * this.wmpMain.Size.Width), (int)(0.4 * this.wmpMain.Size.Height));
-				this.playListView1.Location = new Point(this.playListView1.Location.X, this.playListView1.Location.Y+(oldSize-newSize).Height);
-				this.playListView1.Size = newSize;
-				this.playListView1.Visible = true;
-				this.playListView1.Focus();
+				this.ShowPlaylist();
 			}
 		}
 		private void tspmddbMode_PlayModeSelected(object sender, PlayModeSelectedEventArgs e) {

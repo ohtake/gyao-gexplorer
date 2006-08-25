@@ -32,17 +32,22 @@
 			this.chDeadline = new System.Windows.Forms.ColumnHeader();
 			this.chComment = new System.Windows.Forms.ColumnHeader();
 			this.cmsPlayListItem = new System.Windows.Forms.ContextMenuStrip(this.components);
+			this.tsmiPlay = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+			this.tsmiSetComment = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiMove = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiMoveToTop = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiMoveUp = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiMoveDown = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiMoveToBottom = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiRemoveItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiBrowseDetail = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiPlayWithBrowser = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiCopyName = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiCopyUri = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiCopyNameAndUri = new System.Windows.Forms.ToolStripMenuItem();
 			this.tscapmiCopyProperty = new Yusen.GExplorer.ToolStripCAPropertyMenuItem();
 			this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiCatalog = new System.Windows.Forms.ToolStripMenuItem();
@@ -71,11 +76,6 @@
 			this.sfdXml = new System.Windows.Forms.SaveFileDialog();
 			this.timerSumSelected = new System.Windows.Forms.Timer(this.components);
 			this.inputBoxDialog1 = new Yusen.GExplorer.InputBoxDialog();
-			this.tsmiPlay = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiSetComment = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiMoveUp = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiRemoveItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiCopyNameAndUri = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripContainer1.ContentPanel.SuspendLayout();
 			this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
 			this.toolStripContainer1.SuspendLayout();
@@ -89,11 +89,11 @@
 			// toolStripContainer1.ContentPanel
 			// 
 			this.toolStripContainer1.ContentPanel.Controls.Add(this.listView1);
-			this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(587, 155);
+			this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(643, 155);
 			this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.toolStripContainer1.Location = new System.Drawing.Point(0, 0);
 			this.toolStripContainer1.Name = "toolStripContainer1";
-			this.toolStripContainer1.Size = new System.Drawing.Size(587, 180);
+			this.toolStripContainer1.Size = new System.Drawing.Size(643, 180);
 			this.toolStripContainer1.TabIndex = 1;
 			this.toolStripContainer1.Text = "toolStripContainer1";
 			// 
@@ -118,7 +118,7 @@
 			this.listView1.Name = "listView1";
 			this.listView1.ShowGroups = false;
 			this.listView1.ShowItemToolTips = true;
-			this.listView1.Size = new System.Drawing.Size(587, 155);
+			this.listView1.Size = new System.Drawing.Size(643, 155);
 			this.listView1.TabIndex = 0;
 			this.listView1.UseCompatibleStateImageBehavior = false;
 			this.listView1.View = System.Windows.Forms.View.Details;
@@ -138,7 +138,7 @@
 			// chName
 			// 
 			this.chName.Text = "コンテンツ名";
-			this.chName.Width = 245;
+			this.chName.Width = 300;
 			// 
 			// chDuration
 			// 
@@ -176,13 +176,32 @@
             this.tsnfmiNgFav,
             this.tsucmiCommand});
 			this.cmsPlayListItem.Name = "cmsPlayListItem";
-			this.cmsPlayListItem.Size = new System.Drawing.Size(212, 336);
+			this.cmsPlayListItem.Size = new System.Drawing.Size(212, 314);
 			this.cmsPlayListItem.Opening += new System.ComponentModel.CancelEventHandler(this.cmsPlayListItem_Opening);
+			// 
+			// tsmiPlay
+			// 
+			this.tsmiPlay.Image = global::Yusen.GExplorer.Properties.Resources.Play;
+			this.tsmiPlay.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.tsmiPlay.Name = "tsmiPlay";
+			this.tsmiPlay.Size = new System.Drawing.Size(211, 22);
+			this.tsmiPlay.Text = "再生(&P)";
+			this.tsmiPlay.Click += new System.EventHandler(this.tsmiPlay_Click);
 			// 
 			// toolStripSeparator1
 			// 
 			this.toolStripSeparator1.Name = "toolStripSeparator1";
 			this.toolStripSeparator1.Size = new System.Drawing.Size(208, 6);
+			// 
+			// tsmiSetComment
+			// 
+			this.tsmiSetComment.Image = global::Yusen.GExplorer.Properties.Resources.Comment;
+			this.tsmiSetComment.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.tsmiSetComment.Name = "tsmiSetComment";
+			this.tsmiSetComment.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.L)));
+			this.tsmiSetComment.Size = new System.Drawing.Size(211, 22);
+			this.tsmiSetComment.Text = "コメントを入力(&L)...";
+			this.tsmiSetComment.Click += new System.EventHandler(this.tsmiSetComment_Click);
 			// 
 			// tsmiMove
 			// 
@@ -204,6 +223,16 @@
 			this.tsmiMoveToTop.Text = "最上部へ(&T)";
 			this.tsmiMoveToTop.Click += new System.EventHandler(this.tsmiMoveToTop_Click);
 			// 
+			// tsmiMoveUp
+			// 
+			this.tsmiMoveUp.Image = global::Yusen.GExplorer.Properties.Resources.BuilderDialog_moveup;
+			this.tsmiMoveUp.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.tsmiMoveUp.Name = "tsmiMoveUp";
+			this.tsmiMoveUp.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.Up)));
+			this.tsmiMoveUp.Size = new System.Drawing.Size(211, 22);
+			this.tsmiMoveUp.Text = "上へ(&U)";
+			this.tsmiMoveUp.Click += new System.EventHandler(this.tsmiMoveUp_Click);
+			// 
 			// tsmiMoveDown
 			// 
 			this.tsmiMoveDown.Image = global::Yusen.GExplorer.Properties.Resources.BuilderDialog_movedown;
@@ -222,6 +251,16 @@
 			this.tsmiMoveToBottom.Size = new System.Drawing.Size(211, 22);
 			this.tsmiMoveToBottom.Text = "最下部へ(&B)";
 			this.tsmiMoveToBottom.Click += new System.EventHandler(this.tsmiMoveToBottom_Click);
+			// 
+			// tsmiRemoveItem
+			// 
+			this.tsmiRemoveItem.Image = global::Yusen.GExplorer.Properties.Resources.Delete;
+			this.tsmiRemoveItem.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.tsmiRemoveItem.Name = "tsmiRemoveItem";
+			this.tsmiRemoveItem.ShortcutKeys = System.Windows.Forms.Keys.Delete;
+			this.tsmiRemoveItem.Size = new System.Drawing.Size(211, 22);
+			this.tsmiRemoveItem.Text = "リストから削除(&R)";
+			this.tsmiRemoveItem.Click += new System.EventHandler(this.tsmiRemoveItem_Click);
 			// 
 			// toolStripSeparator2
 			// 
@@ -260,6 +299,16 @@
 			this.tsmiCopyUri.Size = new System.Drawing.Size(211, 22);
 			this.tsmiCopyUri.Text = "URIをコピー(&U)";
 			this.tsmiCopyUri.Click += new System.EventHandler(this.tsmiCopyUri_Click);
+			// 
+			// tsmiCopyNameAndUri
+			// 
+			this.tsmiCopyNameAndUri.Image = global::Yusen.GExplorer.Properties.Resources.Copy;
+			this.tsmiCopyNameAndUri.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.tsmiCopyNameAndUri.Name = "tsmiCopyNameAndUri";
+			this.tsmiCopyNameAndUri.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
+			this.tsmiCopyNameAndUri.Size = new System.Drawing.Size(211, 22);
+			this.tsmiCopyNameAndUri.Text = "名前とURIをコピー(&B)";
+			this.tsmiCopyNameAndUri.Click += new System.EventHandler(this.tsmiCopyNameAndUri_Click);
 			// 
 			// tscapmiCopyProperty
 			// 
@@ -331,7 +380,7 @@
             this.tslMessage});
 			this.toolStrip1.Location = new System.Drawing.Point(0, 0);
 			this.toolStrip1.Name = "toolStrip1";
-			this.toolStrip1.Size = new System.Drawing.Size(587, 25);
+			this.toolStrip1.Size = new System.Drawing.Size(643, 25);
 			this.toolStrip1.Stretch = true;
 			this.toolStrip1.TabIndex = 1;
 			this.toolStrip1.Text = "toolStrip1";
@@ -465,62 +514,13 @@
 			this.inputBoxDialog1.Message = null;
 			this.inputBoxDialog1.Title = null;
 			// 
-			// tsmiPlay
-			// 
-			this.tsmiPlay.Image = global::Yusen.GExplorer.Properties.Resources.Play;
-			this.tsmiPlay.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.tsmiPlay.Name = "tsmiPlay";
-			this.tsmiPlay.Size = new System.Drawing.Size(211, 22);
-			this.tsmiPlay.Text = "再生(&P)";
-			this.tsmiPlay.Click += new System.EventHandler(this.tsmiPlay_Click);
-			// 
-			// tsmiSetComment
-			// 
-			this.tsmiSetComment.Image = global::Yusen.GExplorer.Properties.Resources.Comment;
-			this.tsmiSetComment.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.tsmiSetComment.Name = "tsmiSetComment";
-			this.tsmiSetComment.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.L)));
-			this.tsmiSetComment.Size = new System.Drawing.Size(211, 22);
-			this.tsmiSetComment.Text = "コメントを入力(&L)...";
-			this.tsmiSetComment.Click += new System.EventHandler(this.tsmiSetComment_Click);
-			// 
-			// tsmiMoveUp
-			// 
-			this.tsmiMoveUp.Image = global::Yusen.GExplorer.Properties.Resources.BuilderDialog_moveup;
-			this.tsmiMoveUp.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.tsmiMoveUp.Name = "tsmiMoveUp";
-			this.tsmiMoveUp.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.Up)));
-			this.tsmiMoveUp.Size = new System.Drawing.Size(211, 22);
-			this.tsmiMoveUp.Text = "上へ(&U)";
-			this.tsmiMoveUp.Click += new System.EventHandler(this.tsmiMoveUp_Click);
-			// 
-			// tsmiRemoveItem
-			// 
-			this.tsmiRemoveItem.Image = global::Yusen.GExplorer.Properties.Resources.Delete;
-			this.tsmiRemoveItem.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.tsmiRemoveItem.Name = "tsmiRemoveItem";
-			this.tsmiRemoveItem.ShortcutKeys = System.Windows.Forms.Keys.Delete;
-			this.tsmiRemoveItem.Size = new System.Drawing.Size(211, 22);
-			this.tsmiRemoveItem.Text = "リストから削除(&R)";
-			this.tsmiRemoveItem.Click += new System.EventHandler(this.tsmiRemoveItem_Click);
-			// 
-			// tsmiCopyNameAndUri
-			// 
-			this.tsmiCopyNameAndUri.Image = global::Yusen.GExplorer.Properties.Resources.Copy;
-			this.tsmiCopyNameAndUri.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.tsmiCopyNameAndUri.Name = "tsmiCopyNameAndUri";
-			this.tsmiCopyNameAndUri.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
-			this.tsmiCopyNameAndUri.Size = new System.Drawing.Size(211, 22);
-			this.tsmiCopyNameAndUri.Text = "名前とURIをコピー(&B)";
-			this.tsmiCopyNameAndUri.Click += new System.EventHandler(this.tsmiCopyNameAndUri_Click);
-			// 
 			// PlayListView
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.Controls.Add(this.toolStripContainer1);
 			this.Name = "PlayListView";
-			this.Size = new System.Drawing.Size(587, 180);
+			this.Size = new System.Drawing.Size(643, 180);
 			this.Load += new System.EventHandler(this.PlayListView_Load);
 			this.toolStripContainer1.ContentPanel.ResumeLayout(false);
 			this.toolStripContainer1.TopToolStripPanel.ResumeLayout(false);

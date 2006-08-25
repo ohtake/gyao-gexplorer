@@ -286,6 +286,30 @@ namespace Yusen.GExplorer {
 				set { this.NewColor = value.ToColor(); }
 			}
 
+			[XmlIgnore]//ColorはXMLシリアライズできない
+			[Category("表示")]
+			[DisplayName("FAVの色")]
+			[Description("FAVコンテンツに該当するコンテンツの背景色を指定します．")]
+			[DefaultValue(typeof(Color), "LightYellow")]
+			public Color FavColor {
+				get {
+					if (this.HasOwner) return this.owner.FavColor;
+					else return this.favColor;
+				}
+				set {
+					if (this.HasOwner) this.owner.FavColor = value;
+					else this.favColor = value;
+				}
+			}
+			private Color favColor = Color.LightYellow;
+
+			[Browsable(false)]
+			[DefaultValue(typeof(XmlSerializableColor), "LightYellow")]
+			public XmlSerializableColor FavColorXmlSerializable {
+				get { return new XmlSerializableColor(this.FavColor); }
+				set { this.FavColor = value.ToColor(); }
+			}
+
 			[Category("表示")]
 			[DisplayName("表示条件")]
 			[Description("コンテンツを表示する条件を指定します．")]
@@ -348,16 +372,20 @@ namespace Yusen.GExplorer {
 				bool newVal = ContentPredicatesManager.FavManager.IsTrueFor(this.ContentAdapter);
 				if (this.isFav != newVal) {
 					this.isFav = newVal;
-					if(newVal){
-						base.Font = new Font(base.Font, base.Font.Style | FontStyle.Italic);
-					}else{
-						base.Font = new Font(base.Font, base.Font.Style ^ FontStyle.Italic);
-					}
+				}
+			}
+			public void SetBackColorIfFav(Color clr) {
+				if (this.IsFav) {
+					base.BackColor = clr;
+				} else {
+					base.BackColor = SystemColors.Window;
 				}
 			}
 			public void SetForeColorIfNew(Color clr) {
 				if (this.contentAdapter.IsNew) {
 					base.ForeColor = clr;
+				} else {
+					base.ForeColor = SystemColors.WindowText;
 				}
 			}
 		}
@@ -371,6 +399,7 @@ namespace Yusen.GExplorer {
 		private int maxPageMenuItems = 16;
 		private int maxExceptionMenuItems = 16;
 		private Color newColor = Color.Red;
+		private Color favColor = Color.LightYellow;
 
 		private List<ListViewGroup> allLvgs = new List<ListViewGroup>();
 		private List<ContentListViewItem> allClvis = new List<ContentListViewItem>();
@@ -522,6 +551,15 @@ namespace Yusen.GExplorer {
 				}
 			}
 		}
+		private Color FavColor {
+			get { return this.favColor; }
+			set {
+				if (this.favColor != value) {
+					this.favColor = value;
+					this.SetFavColorAllIfFav();
+				}
+			}
+		}
 		private ContentVisibilities ContentVisibilities {
 			get { return this.contentVisibilities; }
 			set {
@@ -611,6 +649,13 @@ namespace Yusen.GExplorer {
 			}
 			this.listView1.EndUpdate();
 		}
+		private void SetFavColorAllIfFav() {
+			this.listView1.BeginUpdate();
+			foreach (ContentListViewItem clvi in this.allClvis) {
+				clvi.SetBackColorIfFav(this.favColor);
+			}
+			this.listView1.EndUpdate();
+		}
 		private void ResetAllNgFlags() {
 			this.listView1.BeginUpdate();
 			foreach(ContentListViewItem clvi in this.allClvis) {
@@ -622,6 +667,7 @@ namespace Yusen.GExplorer {
 			this.listView1.BeginUpdate();
 			foreach (ContentListViewItem clvi in this.allClvis) {
 				clvi.ResetFavFlag();
+				clvi.SetBackColorIfFav(this.FavColor);
 			}
 			this.listView1.EndUpdate();
 		}

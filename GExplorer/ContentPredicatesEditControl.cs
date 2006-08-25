@@ -118,17 +118,6 @@ namespace Yusen.GExplorer {
 
 		private void listview1_KeyDown(object sender, KeyEventArgs e) {
 			switch (e.KeyCode) {
-				case Keys.Delete:
-					List<ContentPredicate> selectedPredicates = new List<ContentPredicate>();
-					foreach (ListViewItem selItem in (sender as ListView).SelectedItems) {
-						selectedPredicates.Add(selItem.Tag as ContentPredicate);
-					}
-					this.manager.RemoveAll(new Predicate<ContentPredicate>(
-						delegate(ContentPredicate cp) {
-							return selectedPredicates.Contains(cp);
-						}
-					));
-					break;
 				case Keys.A:
 					if (Keys.None != (Control.ModifierKeys & Keys.Control)) {
 						this.listview1.BeginUpdate();
@@ -147,6 +136,17 @@ namespace Yusen.GExplorer {
 					break;
 			}
 		}
+		private void tsmiDelete_Click(object sender, EventArgs e) {
+			List<ContentPredicate> selectedPredicates = new List<ContentPredicate>();
+			foreach (ListViewItem selItem in this.listview1.SelectedItems) {
+				selectedPredicates.Add(selItem.Tag as ContentPredicate);
+			}
+			this.manager.RemoveAll(new Predicate<ContentPredicate>(
+				delegate(ContentPredicate cp) {
+					return selectedPredicates.Contains(cp);
+				}
+			));
+		}
 
 		private void timerItemSelect_Tick(object sender, EventArgs e) {
 			this.timerItemSelect.Stop();
@@ -163,5 +163,6 @@ namespace Yusen.GExplorer {
 			this.timerLastTrue.Stop();
 			this.UpdateView();
 		}
+
 	}
 }
