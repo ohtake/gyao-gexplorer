@@ -1,4 +1,6 @@
-﻿namespace Yusen.GExplorer {
+﻿using System;
+
+namespace Yusen.GExplorer {
 	/// <summary>Window Messages</summary>
 	enum WM {
 		// WinUser.h
@@ -227,14 +229,13 @@
 		APP = 0x8000,
 		USER = 0x0400,
 	}
-#if false
+	
 	/// <summary>XButton values are WORD flags</summary>
 	enum XBUTTON {
 		// WinUser.h
 		XBUTTON1 = 0x0001,
 		XBUTTON2 = 0x0002,
 	}
-#endif
 
 	/// <summary>System Menu Command Values</summary>
 	enum SC{
@@ -260,6 +261,40 @@
 		CONTEXTHELP = 0xF180,
 		SEPARATOR = 0xF00F,
 	}
+
+	/// <summary>SetWindowPos Flags</summary>
+	[Flags]
+	enum SetWindowsPosFlags : uint {
+		// WinUser.h
+		NOSIZE = 0x0001,
+		NOMOVE = 0x0002,
+		NOZORDER = 0x0004,
+		NOREDRAW = 0x0008,
+		NOACTIVATE = 0x0010,
+		FRAMECHANGED = 0x0020, // The frame changed: send WM_NCCALCSIZE
+		SHOWWINDOW = 0x0040,
+		HIDEWINDOW = 0x0080,
+		NOCOPYBITS = 0x0100,
+		NOOWNERZORDER = 0x0200, // Don't do owner Z ordering
+		NOSENDCHANGING = 0x0400, // Don't send WM_WINDOWPOSCHANGING
+		DRAWFRAME = FRAMECHANGED,
+		NOREPOSITION = NOOWNERZORDER,
+		DEFERERASE = 0x2000,
+		ASYNCWINDOWPOS = 0x4000,
+	}
+	
+	/// <summary>
+	/// hWndInsertAfter
+	/// [in] Handle to the window to precede the positioned window in the Z order.
+	/// This parameter must be a window handle or one of the following values.
+	/// </summary>
+	enum SetWindowPosInsertAfterSpecialValues : int {
+		TOP = 0,
+		BOTTOM = 1,
+		TOPMOST = -1,
+		NOTOPMOST =-2,
+	}
+
 #if false
 	/// <summary>
 	/// ShowWindow() Commands

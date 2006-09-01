@@ -224,12 +224,10 @@ namespace Yusen.GExplorer {
 			bool hasExactSelectedTimeSpan;
 			ContentAdapter.TotalTimeOf(this.SelectedContents, out selectedTimeSpan, out hasExactSelectedTimeSpan);
 
-			string num = "数: " + selectedNum.ToString() + " / " + totalNum.ToString();
-			string time = "時間: "
-				+ selectedTimeSpan.ToString() + (hasExactSelectedTimeSpan ? string.Empty : "+?")
-				+ " / "
-				+ totalTimeSpan.ToString() + (hasExactTotalTimeSpan ? string.Empty : "+?");
-			this.tslMessage.Text = num + "   " + time;
+			this.tslCount.Text = string.Format("数: {0} / {1}", selectedNum, totalNum);
+			this.tslTime.Text = string.Format("時間: {0} / {1}",
+				selectedTimeSpan.ToString() + (hasExactSelectedTimeSpan ? string.Empty : "+?"),
+				totalTimeSpan.ToString() + (hasExactTotalTimeSpan ? string.Empty : "+?"));
 		}
 		private void ScrollToTop() {
 			if (0 < this.listView1.Items.Count) {
@@ -239,11 +237,7 @@ namespace Yusen.GExplorer {
 		private void ScrollToBottom() {
 			int count = this.listView1.Items.Count;
 			if (0 < count) {
-				try {
-					this.listView1.TopItem = this.listView1.Items[count - 1];
-				} catch(NullReferenceException){
-					//スプリットコンテナ内で非表示してから表示させると NullReferenceException
-				}
+				this.listView1.TopItem = this.listView1.Items[count - 1];
 			}
 		}
 
@@ -312,10 +306,12 @@ namespace Yusen.GExplorer {
 				lvis.Add(lvi);
 			}
 			lvis.Sort(this.comparer);
+			//ContentAdapter[] selectedConts = this.SelectedContents;
 			PlayList.Instance.SetAll(
 				lvis.ConvertAll<ContentAdapter>(delegate(ListViewItem lvi){
 					return lvi.Tag as ContentAdapter;
 				}));
+			//this.SelectedContents = selectedConts;
 		}
 		private void listView1_ItemDrag(object sender, ItemDragEventArgs e) {
 			this.dragging = true;
@@ -659,6 +655,5 @@ namespace Yusen.GExplorer {
 			get { return this.settings; }
 		}
 		#endregion
-
 	}
 }

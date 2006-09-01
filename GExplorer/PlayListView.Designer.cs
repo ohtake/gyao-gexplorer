@@ -70,12 +70,14 @@
 			this.tsmiRemoveUnreachables = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiClearPlayList = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
-			this.tslMessage = new System.Windows.Forms.ToolStripLabel();
+			this.tslCount = new System.Windows.Forms.ToolStripLabel();
+			this.tslTime = new System.Windows.Forms.ToolStripLabel();
 			this.sfdAsx = new System.Windows.Forms.SaveFileDialog();
 			this.ofdXml = new System.Windows.Forms.OpenFileDialog();
 			this.sfdXml = new System.Windows.Forms.SaveFileDialog();
 			this.timerSumSelected = new System.Windows.Forms.Timer(this.components);
 			this.inputBoxDialog1 = new Yusen.GExplorer.InputBoxDialog();
+			this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
 			this.toolStripContainer1.ContentPanel.SuspendLayout();
 			this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
 			this.toolStripContainer1.SuspendLayout();
@@ -377,7 +379,9 @@
             this.toolStripSeparator6,
             this.tsddbOperation,
             this.toolStripSeparator7,
-            this.tslMessage});
+            this.tslCount,
+            this.toolStripSeparator8,
+            this.tslTime});
 			this.toolStrip1.Location = new System.Drawing.Point(0, 0);
 			this.toolStrip1.Name = "toolStrip1";
 			this.toolStrip1.Size = new System.Drawing.Size(643, 25);
@@ -479,11 +483,17 @@
 			this.toolStripSeparator7.Name = "toolStripSeparator7";
 			this.toolStripSeparator7.Size = new System.Drawing.Size(6, 25);
 			// 
-			// tslMessage
+			// tslCount
 			// 
-			this.tslMessage.Name = "tslMessage";
-			this.tslMessage.Size = new System.Drawing.Size(63, 22);
-			this.tslMessage.Text = "tslMessage";
+			this.tslCount.Name = "tslCount";
+			this.tslCount.Size = new System.Drawing.Size(48, 22);
+			this.tslCount.Text = "tslCount";
+			// 
+			// tslTime
+			// 
+			this.tslTime.Name = "tslTime";
+			this.tslTime.Size = new System.Drawing.Size(43, 22);
+			this.tslTime.Text = "tslTime";
 			// 
 			// sfdAsx
 			// 
@@ -513,6 +523,11 @@
 			this.inputBoxDialog1.Input = null;
 			this.inputBoxDialog1.Message = null;
 			this.inputBoxDialog1.Title = null;
+			// 
+			// toolStripSeparator8
+			// 
+			this.toolStripSeparator8.Name = "toolStripSeparator8";
+			this.toolStripSeparator8.Size = new System.Drawing.Size(6, 25);
 			// 
 			// PlayListView
 			// 
@@ -565,7 +580,7 @@
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
 		private System.Windows.Forms.ToolStripMenuItem tsmiClearPlayList;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
-		private System.Windows.Forms.ToolStripLabel tslMessage;
+		private System.Windows.Forms.ToolStripLabel tslCount;
 		private System.Windows.Forms.SaveFileDialog sfdAsx;
 		private System.Windows.Forms.ToolStripMenuItem tsmiExport;
 		private System.Windows.Forms.ToolStripMenuItem tsmiImportOverwrite;
@@ -588,5 +603,7 @@
 		private System.Windows.Forms.ToolStripMenuItem tsmiCatalogImageLarge;
 		private System.Windows.Forms.ToolStripMenuItem tsmiAddById;
 		private ToolStripNgFavMenuItem tsnfmiNgFav;
+		private System.Windows.Forms.ToolStripLabel tslTime;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator8;
 	}
 }

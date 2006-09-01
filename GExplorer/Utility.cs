@@ -47,7 +47,7 @@ namespace Yusen.GExplorer {
 				/*HttpUtility.UrlEncode(query, encoding)*/ query)/*, false*/);
 			return uri;
 		}
-
+		
 		public static void SerializeSettings<T>(string filename, T settings) {
 			XmlSerializer xs = new XmlSerializer(typeof(T));
 			TextWriter tw = TextWriter.Null;

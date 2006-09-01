@@ -33,7 +33,7 @@
 			// rdoSuperFine
 			// 
 			this.rdoSuperFine.AutoSize = true;
-			this.rdoSuperFine.Location = new System.Drawing.Point(27, 46);
+			this.rdoSuperFine.Location = new System.Drawing.Point(27, 41);
 			this.rdoSuperFine.Name = "rdoSuperFine";
 			this.rdoSuperFine.Size = new System.Drawing.Size(85, 16);
 			this.rdoSuperFine.TabIndex = 0;
@@ -43,7 +43,7 @@
 			// rdoStandard
 			// 
 			this.rdoStandard.AutoSize = true;
-			this.rdoStandard.Location = new System.Drawing.Point(27, 68);
+			this.rdoStandard.Location = new System.Drawing.Point(27, 63);
 			this.rdoStandard.Name = "rdoStandard";
 			this.rdoStandard.Size = new System.Drawing.Size(83, 16);
 			this.rdoStandard.TabIndex = 1;
@@ -55,7 +55,7 @@
 			this.chkSkipNextTime.AutoSize = true;
 			this.chkSkipNextTime.Checked = true;
 			this.chkSkipNextTime.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.chkSkipNextTime.Location = new System.Drawing.Point(12, 90);
+			this.chkSkipNextTime.Location = new System.Drawing.Point(12, 85);
 			this.chkSkipNextTime.Name = "chkSkipNextTime";
 			this.chkSkipNextTime.Size = new System.Drawing.Size(169, 16);
 			this.chkSkipNextTime.TabIndex = 2;
@@ -65,7 +65,7 @@
 			// btnOK
 			// 
 			this.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-			this.btnOK.Location = new System.Drawing.Point(185, 83);
+			this.btnOK.Location = new System.Drawing.Point(187, 78);
 			this.btnOK.Name = "btnOK";
 			this.btnOK.Size = new System.Drawing.Size(75, 23);
 			this.btnOK.TabIndex = 3;
@@ -86,7 +86,7 @@
 			this.AcceptButton = this.btnOK;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(267, 119);
+			this.ClientSize = new System.Drawing.Size(268, 108);
 			this.Controls.Add(this.label1);
 			this.Controls.Add(this.btnOK);
 			this.Controls.Add(this.chkSkipNextTime);

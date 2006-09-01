@@ -6,8 +6,11 @@ using System.Windows.Forms;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml.Serialization;
+using System.Net;
+using System.IO;
 using AxWMPLib;
 using WMPLib;
+using Marshal = System.Runtime.InteropServices.Marshal;
 using DRegion = System.Drawing.Region;
 
 namespace Yusen.GExplorer {
@@ -51,24 +54,40 @@ namespace Yusen.GExplorer {
 			private FormSettingsBaseSettings formSettingsBaseSettings;
 
 			[Category("表示")]
-			[DisplayName("最前面")]
-			[Description("フォームを最前面に表示します．")]
+			[DisplayName("常に最前面")]
+			[Description("フォームを常に最前面に表示します．")]
 			[DefaultValue(false)]
 			public bool TopmostForm {
-				get { return this.topmost;}
+				get {
+					if (this.HasOwner) return this.owner.IsAlwaysTopMost;
+					else return this.topmost;
+				}
 				set {
-					this.topmost = value;
-					if (this.HasOwner) {
-						this.owner.TopMost = value;
-						this.owner.tsmiViewTopmost.Checked = value;
-					}
+					if (this.HasOwner) this.owner.IsAlwaysTopMost = value;
+					else this.topmost = value;
 				}
 			}
 			private bool topmost = false;
 
 			[Category("表示")]
+			[DisplayName("常に最背面")]
+			[Description("フォームを常に最背面に表示します．")]
+			[DefaultValue(false)]
+			public bool IsAlwaysBottomMost {
+				get {
+					if (this.HasOwner) return this.owner.IsAlwaysBottomMost;
+					else return this.isAlwaysBottomMost;
+				}
+				set {
+					if (this.HasOwner) this.owner.IsAlwaysBottomMost = value;
+					else this.isAlwaysBottomMost = value;
+				}
+			}
+			private bool isAlwaysBottomMost = false;
+
+			[Category("表示")]
 			[DisplayName("非アクティブ時にUI非表示")]
-			[Description("プレーヤフォームがアクティブでないときにUIを非表示にします．")]
+			[Description("フォームがアクティブでないときにUIを非表示にします．")]
 			[DefaultValue(false)]
 			public bool HideUiOnDeactivatedEnabled {
 				get { return this.hideUiOnDeactivatedEnabled; }
@@ -82,7 +101,7 @@ namespace Yusen.GExplorer {
 			[Category("表示")]
 			[DisplayName("表示領域にあわせて拡大")]
 			[Description("動画解像度が表示領域よりも小さい場合に動画を拡大します．")]
-			[DefaultValue(false)]
+			[DefaultValue(true)]
 			public bool StrechToFitEnabled {
 				get {
 					if (this.HasOwner) return this.owner.wmpMain.stretchToFit;
@@ -94,7 +113,7 @@ namespace Yusen.GExplorer {
 					if (this.HasOwner) this.owner.wmpMain.stretchToFit = value;
 				}
 			}
-			private bool strechToFitEnabled = false;
+			private bool strechToFitEnabled = true;
 
 			[Category("表示")]
 			[DisplayName("スクリーンセーバ抑止")]
@@ -241,15 +260,57 @@ namespace Yusen.GExplorer {
 			}
 			#endregion
 		}
-		
+
+		private sealed class PageReaderWithCookie {
+			private static readonly Uri TopPageUri = new Uri("http://www.gyao.jp/");
+			private static readonly Encoding PageEncoding = Encoding.GetEncoding("Shift_JIS");
+			
+			private readonly CookieContainer cc;
+			
+			public PageReaderWithCookie() {
+				int cookieSize = 0;
+				if (!WindowsFunctions.InternetGetCookie(PageReaderWithCookie.TopPageUri.AbsoluteUri, null, null, ref cookieSize)) {
+					throw new InvalidOperationException("クッキー取得失敗");
+				}
+				StringBuilder cookieSb = new StringBuilder(cookieSize);
+				if (!WindowsFunctions.InternetGetCookie(PageReaderWithCookie.TopPageUri.AbsoluteUri, null, cookieSb, ref cookieSize)) {
+					throw new InvalidOperationException("クッキー取得失敗");
+				}
+				this.cc = new CookieContainer();
+				this.cc.SetCookies(PageReaderWithCookie.TopPageUri, cookieSb.ToString().Replace(';', ','));
+			}
+			
+			public string GetResponseText(Uri uri) {
+				HttpWebRequest req = WebRequest.Create(uri) as HttpWebRequest;
+				req.CookieContainer = this.cc;
+
+				using (HttpWebResponse res = req.GetResponse() as HttpWebResponse)
+				using (Stream stream = res.GetResponseStream())
+				using (StreamReader reader = new StreamReader(stream, PageReaderWithCookie.PageEncoding)) {
+					return reader.ReadToEnd();
+				}
+			}
+			public void DownloadToFile(Uri uri, string filename) {
+				HttpWebRequest req = WebRequest.Create(uri) as HttpWebRequest;
+				req.CookieContainer = this.cc;
+
+				using (HttpWebResponse res = req.GetResponse() as HttpWebResponse)
+				using (Stream stream = res.GetResponseStream())
+				using (FileStream dest = File.OpenWrite(filename)){
+					byte[] buf = new byte[1024];
+					while(true){
+						int len = stream.Read(buf, 0, buf.Length);
+						if (0 == len) break;
+						dest.Write(buf, 0, len);
+					}
+				}
+			}
+		}
+
 		private const string AttribNameEntryUrl = "WMS_CONTENT_DESCRIPTION_PLAYLIST_ENTRY_URL";
 		private const string AdultErrorString = @"<a href=""/sityou/adult_error.php"" target=""_self""><img src=""/sityou/img/bt_no.gif"" width=""186"" height=""38"" border=""0""></a>";
 		private const string LastCallTitle = "ラストコール";
 		private const long OrdMax = 10000000000000000;
-		private const int VolumeMax = 100;
-		private const int VolumeMin = 0;
-		private const int ZoomMax = 200;
-		private const int ZoomMin = 25;
 		
 		private static readonly Size WmpUiSize = new Size(0, 64);
 		private static readonly Size WmpMarginSize = new Size(3, 3);
@@ -257,7 +318,9 @@ namespace Yusen.GExplorer {
 		private static readonly Regex regexClipNo = new Regex(":clipNo=([^:]*)");
 		private static readonly Regex regexClipBegin = new Regex(":clipBegin=([^:]*)");
 		private static readonly Regex regexAsxPhp = new Regex(@"http://www\.gyao\.jp/sityou/asx\.php\?[^""]+");
-		private static readonly Regex regexBannerKeyValue = new Regex(@"var\s+keyValue\s+=\s+""(.+)"";");
+		private static readonly Regex regexBannerKeyValue = new Regex(@"var\s+keyValue\s*=\s*""(.+?)""");
+		private static readonly string tempAsxDirectory = Path.Combine(Application.StartupPath, "Temp");
+		private static readonly string tempAsxFilename = "AsxPhp.asx";
 		
 		private static PlayerForm instance = null;
 		public static PlayerForm Instance {
@@ -282,10 +345,11 @@ namespace Yusen.GExplorer {
 		private int? currentChapter = null;
 		private Dictionary<string, string> currentAttribs = new Dictionary<string, string>();
 		private string bannerKeyValue = string.Empty;
-		
+		private bool isAlwaysBottomMost = false;
+
 		private readonly ScreenSaveListener ssl = new ScreenSaveListener();
 		private readonly Random rand = new Random();
-		
+
 		private PlayerFormSettings settings;
 		
 		private PlayerForm() {
@@ -311,11 +375,12 @@ namespace Yusen.GExplorer {
 				Application.DoEvents();
 			}
 			
-			Uri playerPageUri = this.CurrentContent.PlayerPageUri;
+			PageReaderWithCookie pageReader = new PageReaderWithCookie();
 			
-			XmlHttpWrapper xmlhttp = new XmlHttpWrapper();
+			//再生ページ取得
+			Uri playerPageUri = this.CurrentContent.PlayerPageUri;
 			Application.DoEvents();
-			string body = xmlhttp.GetResponseText(playerPageUri);
+			string body = pageReader.GetResponseText(playerPageUri);
 			Application.DoEvents();
 			
 			//年齢チェック
@@ -334,10 +399,11 @@ namespace Yusen.GExplorer {
 				}
 				Uri playerPage2Uri = new Uri(playerPageUri.AbsoluteUri + "&check_flg=0");
 				Application.DoEvents();
-				body = xmlhttp.GetResponseText(playerPage2Uri);
+				body = pageReader.GetResponseText(playerPage2Uri);
 				Application.DoEvents();
 			}
 			
+			//asx.phpを検索
 			Match matchAsxPhp = PlayerForm.regexAsxPhp.Match(body);
 			if (!matchAsxPhp.Success) {
 				throw new Exception("再生ページから asx.php のアドレスを取得できなかった．");
@@ -348,17 +414,25 @@ namespace Yusen.GExplorer {
 				asxPhpAddr += "&chapterNo=" + this.CurrentChapter.Value.ToString();
 			}
 			
+			// asx をダウンロードして読み込ませる
+			DirectoryInfo diTemp = new DirectoryInfo(PlayerForm.tempAsxDirectory);
+			if (!diTemp.Exists) diTemp.Create();
+			string tempFile = Path.Combine(PlayerForm.tempAsxDirectory, PlayerForm.tempAsxFilename);
 			Application.DoEvents();
-			IWMPMedia media = this.wmpMain.newMedia(asxPhpAddr);
+			pageReader.DownloadToFile(new Uri(asxPhpAddr), tempFile);
 			Application.DoEvents();
+			IWMPPlaylist plist = this.wmpMain.newPlaylist(this.Text, tempFile);
+			Application.DoEvents();
+			
 			if (WMPPlayState.wmppsMediaEnded != this.wmpMain.playState) {
 				//手動で切り替えた場合では強制的に再生させる
-				this.wmpMain.currentPlaylist.clear();
-				this.wmpMain.currentMedia = media;
+				this.wmpMain.currentPlaylist = plist;
 				this.wmpMain.Ctlcontrols.play();
 			} else {
 				//コンテンツ末尾に達した場合はリストの末尾にmedia追加
-				this.wmpMain.currentPlaylist.appendItem(media);
+				for (int i = 0; i < plist.count; i++) {
+					this.wmpMain.currentPlaylist.appendItem(plist.get_Item(i));
+				}
 			}
 			this.UpdateStatusbarText();
 
@@ -367,35 +441,6 @@ namespace Yusen.GExplorer {
 				throw new Exception("再生ページからバナー用の個人情報を取得できなかった．");
 			}
 			this.bannerKeyValue = matchBannerKeyValue.Groups[1].Value;
-		}
-		private void UpdateStatusbarText() {
-			if(null != this.CurrentContent) {
-				IWMPMedia curMedia = this.wmpMain.currentMedia;
-				string entryUrl;
-				Match matchClipNo = null;
-				Match matchClipBegin = null;
-				if (this.currentAttribs.TryGetValue(PlayerForm.AttribNameEntryUrl, out entryUrl)) {
-					matchClipNo = PlayerForm.regexClipNo.Match(entryUrl);
-					matchClipBegin = PlayerForm.regexClipBegin.Match(entryUrl);
-				}
-
-				if (null != matchClipNo && matchClipNo.Success) {
-					int clipNo = int.Parse(matchClipNo.Groups[1].Value);
-					if (null != matchClipBegin && matchClipBegin.Success) {
-						int clipBegin = int.Parse(matchClipBegin.Groups[1].Value);
-						TimeSpan begin = new TimeSpan(0, 0, clipBegin);
-						TimeSpan duration = TimeSpan.FromSeconds(curMedia.duration);
-						this.tspmddbMode.AddClipInfo(clipNo, begin, duration);
-					}
-					this.tspmddbMode.NotifyCurrentModeAndNumber(this.CurrentChapter, clipNo);
-				} else {
-					this.tspmddbMode.NotifyCurrentModeAndNumber(this.CurrentChapter, null);
-				}
-				
-				this.tsddbDuration.Text = TimeSpan.FromSeconds(curMedia.duration).ToString();
-				this.tsddbSize.Text = curMedia.imageSourceWidth.ToString() + "x" + curMedia.imageSourceHeight.ToString();
-				this.tsddbTitle.Text = curMedia.name.Replace("&", "&&");
-			}
 		}
 		private void ModifyVolume() {
 			if(this.IsCf) {
@@ -426,17 +471,6 @@ namespace Yusen.GExplorer {
 				this.Region = null;
 				oldRegion.Dispose();
 			}
-		}
-		private void HidePlaylist() {
-			this.playListView1.Visible = false;
-		}
-		private void ShowPlaylist() {
-			Size oldSize = this.playListView1.Size;
-			Size newSize = new Size((int)(0.9 * this.wmpMain.Size.Width), (int)(0.4 * this.wmpMain.Size.Height));
-			this.playListView1.Location = new Point(this.playListView1.Location.X, this.playListView1.Location.Y + (oldSize - newSize).Height);
-			this.playListView1.Size = newSize;
-			this.playListView1.Visible = true;
-			this.playListView1.Focus();
 		}
 		private Uri CreateBannerUri(string dartTag) {
 			long ord = (long)(this.rand.NextDouble() * PlayerForm.OrdMax);
@@ -512,6 +546,36 @@ namespace Yusen.GExplorer {
 		private bool SuspendScreenSaveEnabled {
 			get { return this.ssl.Enabled; }
 			set { this.ssl.Enabled = value; }
+		}
+		private bool IsAlwaysTopMost {
+			get {
+				return this.TopMost;
+			}
+			set {
+				this.TopMost = value;
+				this.tsmiViewTopmost.Checked = value;
+
+				if (value) {
+					this.settings.IsAlwaysBottomMost = false;
+					base.BringToFront();
+				}
+			}
+		}
+		private bool IsAlwaysBottomMost {
+			get {
+				return this.isAlwaysBottomMost;
+			}
+			set {
+				this.isAlwaysBottomMost = value;
+				this.tsmiViewBottomMost.Checked = value;
+
+				if (value) {
+					this.settings.TopmostForm = false;
+					base.SendToBack();
+				} else {
+					base.BringToFront();
+				}
+			}
 		}
 		
 		private void PlayerForm_Load(object sender, EventArgs e) {
@@ -664,6 +728,9 @@ namespace Yusen.GExplorer {
 		private void tsmiViewTopmost_Click(object sender, EventArgs e) {
 			this.settings.TopmostForm = !this.settings.TopmostForm;
 		}
+		private void tsmiViewBottomMost_Click(object sender, EventArgs e) {
+			this.settings.IsAlwaysBottomMost = !this.settings.IsAlwaysBottomMost;
+		}
 		private void tsmiViewAutoHide_Click(object sender, EventArgs e) {
 			this.settings.HideUiOnDeactivatedEnabled = !this.settings.HideUiOnDeactivatedEnabled;
 		}
@@ -760,6 +827,15 @@ namespace Yusen.GExplorer {
 		}
 		private void wmpMain_PlayStateChange(object sender, _WMPOCXEvents_PlayStateChangeEvent e) {
 			switch((WMPPlayState)e.newState){
+				case WMPPlayState.wmppsPlaying:
+					IWMPMedia currentMedia = this.wmpMain.currentMedia;
+					while (true) {
+						//再生済みのを削除
+						IWMPMedia item0 = this.wmpMain.currentPlaylist.get_Item(0);
+						if(item0.get_isIdentical(currentMedia)) break;
+						this.wmpMain.currentPlaylist.removeItem(item0);
+					}
+					break;
 				case WMPPlayState.wmppsMediaEnded:
 					if (this.IsLastEntry) {
 						if (this.CurrentChapter.HasValue) {//チャプタモード
@@ -788,21 +864,6 @@ namespace Yusen.GExplorer {
 		}
 		#endregion
 
-		private void tsmiSettings_DropDownOpened(object sender, EventArgs e) {
-			this.tspgPlayerFormSettings.RefreshPropertyGrid();
-		}
-
-		private void wbBanner_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e) {
-			this.wbBanner.Document.Body.Style += ";margin:0px;padding:0px;";
-		}
-		private void timerAutoVolume_Tick(object sender, EventArgs e) {
-			this.timerAutoVolume.Stop();
-			this.ModifyVolume();
-		}
-		private void timerSkipGyaoCm_Tick(object sender, EventArgs e) {
-			this.timerSkipGyaoCm.Stop();
-			this.tsmiNextTrack.PerformClick();
-		}
 
 		#region IHasNewSettings<PlayerFormSettings> Members
 		public PlayerFormSettings Settings {
@@ -810,6 +871,48 @@ namespace Yusen.GExplorer {
 		}
 		#endregion
 
+		#region ステータスバー
+		private void UpdateStatusbarText() {
+			if (null != this.CurrentContent) {
+				IWMPMedia curMedia = this.wmpMain.currentMedia;
+				string entryUrl;
+				Match matchClipNo = null;
+				Match matchClipBegin = null;
+				if (this.currentAttribs.TryGetValue(PlayerForm.AttribNameEntryUrl, out entryUrl)) {
+					matchClipNo = PlayerForm.regexClipNo.Match(entryUrl);
+					matchClipBegin = PlayerForm.regexClipBegin.Match(entryUrl);
+				}
+
+				if (null != matchClipNo && matchClipNo.Success) {
+					int clipNo = int.Parse(matchClipNo.Groups[1].Value);
+					if (null != matchClipBegin && matchClipBegin.Success) {
+						int clipBegin = int.Parse(matchClipBegin.Groups[1].Value);
+						TimeSpan begin = new TimeSpan(0, 0, clipBegin);
+						TimeSpan duration = TimeSpan.FromSeconds(curMedia.duration);
+						this.tspmddbMode.AddClipInfo(clipNo, begin, duration);
+					}
+					this.tspmddbMode.NotifyCurrentModeAndNumber(this.CurrentChapter, clipNo);
+				} else {
+					this.tspmddbMode.NotifyCurrentModeAndNumber(this.CurrentChapter, null);
+				}
+
+				this.tsddbDuration.Text = TimeSpan.FromSeconds(curMedia.duration).ToString();
+				this.tsddbSize.Text = curMedia.imageSourceWidth.ToString() + "x" + curMedia.imageSourceHeight.ToString();
+				this.tsddbTitle.Text = curMedia.name.Replace("&", "&&");
+			}
+		}
+		private void HidePlaylist() {
+			this.playListView1.Visible = false;
+		}
+		private void ShowPlaylist() {
+			Size oldSize = this.playListView1.Size;
+			Size newSize = new Size((int)(0.9 * this.wmpMain.Size.Width), (int)(0.4 * this.wmpMain.Size.Height));
+			this.playListView1.Location = new Point(this.playListView1.Location.X, this.playListView1.Location.Y + (oldSize - newSize).Height);
+			this.playListView1.Size = newSize;
+			this.playListView1.Visible = true;
+			this.playListView1.Focus();
+		}
+		
 		private void tsddbPlaylist_Click(object sender, EventArgs e) {
 			if (this.playListView1.Visible) {
 				this.HidePlaylist();
@@ -824,11 +927,9 @@ namespace Yusen.GExplorer {
 				this.CurrentChapter = e.ChapterNumber;
 			}
 		}
-
 		private void tspmddbMode_GoToChapterRequested(object sender, EventArgs e) {
 			this.tsmiPlayChapter.PerformClick();
 		}
-
 		private void tsmiCopyClipDuration_Click(object sender, EventArgs e) {
 			if (!string.IsNullOrEmpty(this.tsddbTitle.Text)) {
 				Clipboard.SetText(this.tsddbDuration.Text.Replace("&&", "&"));
@@ -844,9 +945,39 @@ namespace Yusen.GExplorer {
 				Clipboard.SetText(this.tsddbTitle.Text.Replace("&&", "&"));
 			}
 		}
-
 		private void playListView1_Leave(object sender, EventArgs e) {
 			this.HidePlaylist();
+		}
+		#endregion
+
+		private void tsmiSettings_DropDownOpened(object sender, EventArgs e) {
+			this.tspgPlayerFormSettings.RefreshPropertyGrid();
+		}
+
+		private void wbBanner_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e) {
+			this.wbBanner.Document.Body.Style += ";margin:0px;padding:0px;";
+		}
+		private void timerAutoVolume_Tick(object sender, EventArgs e) {
+			this.timerAutoVolume.Stop();
+			this.ModifyVolume();
+		}
+		private void timerSkipGyaoCm_Tick(object sender, EventArgs e) {
+			this.timerSkipGyaoCm.Stop();
+			this.tsmiNextTrack.PerformClick();
+		}
+		
+		protected override void WndProc(ref Message m) {
+			switch ((WM)m.Msg) {
+				case WM.WINDOWPOSCHANGING:
+					if (!this.IsAlwaysBottomMost) break;
+					//最背面処理
+					WINDOWPOS wp = (WINDOWPOS)m.GetLParam(typeof(WINDOWPOS));
+					wp.hwndInsertAfter = new IntPtr((int)SetWindowPosInsertAfterSpecialValues.BOTTOM);
+					Marshal.StructureToPtr(wp, m.LParam, true);
+					m.Result = IntPtr.Zero;
+					return;
+			}
+			base.WndProc(ref m);
 		}
 	}
 }

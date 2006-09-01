@@ -1,13 +1,69 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
 using System.Windows.Forms;
 using Yusen.GCrawler;
-using System.Drawing;
-using System.Runtime.InteropServices;
 
 namespace Yusen.GExplorer {
 	public partial class GWebBrowser : WebBrowser {
+		sealed class WebBrowserXButtonDownListener : NativeWindow {
+			private static short GetHighWordOf(int x) {
+				return (short)(x >> 16);
+			}
+			private static short GetLowWordOf(int x) {
+				return (short)(x & 0xFFFF);
+			}
+
+			public event EventHandler XButton1Down;
+			public event EventHandler XButton2Down;
+
+			public WebBrowserXButtonDownListener(WebBrowser wb) {
+				wb.HandleCreated += new EventHandler(wb_HandleCreated);
+				wb.HandleDestroyed += new EventHandler(wb_HandleDestroyed);
+			}
+			
+			private void wb_HandleCreated(object sender, EventArgs e) {
+				base.AssignHandle((sender as WebBrowser).Handle);
+			}
+			private void wb_HandleDestroyed(object sender, EventArgs e) {
+				base.ReleaseHandle();
+			}
+
+			protected override void WndProc(ref Message m) {
+				switch ((WM)m.Msg) {
+					case WM.PARENTNOTIFY:
+						switch ((WM)WebBrowserXButtonDownListener.GetLowWordOf(m.WParam.ToInt32())) {
+							case WM.XBUTTONDOWN:
+								switch ((XBUTTON)WebBrowserXButtonDownListener.GetHighWordOf(m.WParam.ToInt32())) {
+									case XBUTTON.XBUTTON1:
+										this.OnXButton1Down();
+										break;
+									case XBUTTON.XBUTTON2:
+										this.OnXButton2Down();
+										break;
+								}
+								break;
+						}
+						break;
+				}
+				base.WndProc(ref m);
+			}
+
+			private void OnXButton1Down() {
+				EventHandler handler = this.XButton1Down;
+				if (null != handler) {
+					handler(this, EventArgs.Empty);
+				}
+			}
+			private void OnXButton2Down() {
+				EventHandler handler = this.XButton2Down;
+				if (null != handler) {
+					handler(this, EventArgs.Empty);
+				}
+			}
+		}
+		
 		private Dictionary<HtmlElement, int> dicPackage = new Dictionary<HtmlElement, int>();
 		private Dictionary<HtmlElement, int> dicContent = new Dictionary<HtmlElement, int>();
 
@@ -31,6 +87,11 @@ namespace Yusen.GExplorer {
 			this.tsmiContentPlayBrowser.Click += new EventHandler(tsmiContentPlayBrowser_Click);
 			this.tsucmiContentCommand.UserCommandSelected += new EventHandler<UserCommandSelectedEventArgs>(tsucmiContentCommand_UserCommandSelected);
 			this.tsmiContentCancel.Click += new EventHandler(tsmiContentCancel_Click);
+
+			//拡張ボタン
+			WebBrowserXButtonDownListener wbxbdListener = new WebBrowserXButtonDownListener(this);
+			wbxbdListener.XButton1Down += new EventHandler(this.wbxbdListener_XButton1Down);
+			wbxbdListener.XButton2Down += new EventHandler(this.wbxbdListener_XButton2Down);
 		}
 
 		private void GWebBrowser_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e) {
@@ -215,12 +276,13 @@ namespace Yusen.GExplorer {
 			this.ShowHelpOnHowToCancelMenu();
 		}
 
-		public void GotoCampaign() {
-			if(null != this.Document) {
-				this.Document.InvokeScript("gotoCampaign");
-			}
+		private void wbxbdListener_XButton1Down(object sender, EventArgs e) {
+			base.GoBack();
 		}
-
+		private void wbxbdListener_XButton2Down(object sender, EventArgs e) {
+			base.GoForward();
+		}
+		
 		private void timerIgnoreMenu_Tick(object sender, EventArgs e) {
 			this.timerIgnoreMenu.Stop();
 			//クリックイベントが複数起きることがあるので
@@ -231,6 +293,7 @@ namespace Yusen.GExplorer {
 		public IEnumerator<int> GetContentKeyEnumerator() {
 			return this.dicContent.Values.GetEnumerator();
 		}
+
 
 #if false
 		#region http://lab.msdn.microsoft.com/ProductFeedback/ViewWorkaround.aspx?FeedbackID=FDBK12057

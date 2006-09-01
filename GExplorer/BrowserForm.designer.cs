@@ -41,6 +41,9 @@
 			this.tsmiExportContentListToCrawlResultView = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiExtractImages = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+			this.tsmiTimetableExpandAll = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiTimetableCollapseAll = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiGotoCampaign = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiFillCampaignForm = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiSettings = new System.Windows.Forms.ToolStripMenuItem();
@@ -207,6 +210,9 @@
             this.tsmiExportContentListToCrawlResultView,
             this.tsmiExtractImages,
             this.toolStripMenuItem1,
+            this.tsmiTimetableExpandAll,
+            this.tsmiTimetableCollapseAll,
+            this.toolStripMenuItem2,
             this.tsmiGotoCampaign,
             this.tsmiFillCampaignForm});
 			this.tsmiTools.Name = "tsmiTools";
@@ -226,13 +232,32 @@
 			this.tsmiExtractImages.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tsmiExtractImages.Name = "tsmiExtractImages";
 			this.tsmiExtractImages.Size = new System.Drawing.Size(330, 22);
-			this.tsmiExtractImages.Text = "画像の抽出(&I)";
+			this.tsmiExtractImages.Text = "ページ内の画像を抽出する(&I)";
 			this.tsmiExtractImages.Click += new System.EventHandler(this.tsmiExtractImages_Click);
 			// 
 			// toolStripMenuItem1
 			// 
 			this.toolStripMenuItem1.Name = "toolStripMenuItem1";
 			this.toolStripMenuItem1.Size = new System.Drawing.Size(327, 6);
+			// 
+			// tsmiTimetableExpandAll
+			// 
+			this.tsmiTimetableExpandAll.Name = "tsmiTimetableExpandAll";
+			this.tsmiTimetableExpandAll.Size = new System.Drawing.Size(330, 22);
+			this.tsmiTimetableExpandAll.Text = "番組表の日程を全て展開する(&E)";
+			this.tsmiTimetableExpandAll.Click += new System.EventHandler(this.tsmiTimetableExpandAll_Click);
+			// 
+			// tsmiTimetableCollapseAll
+			// 
+			this.tsmiTimetableCollapseAll.Name = "tsmiTimetableCollapseAll";
+			this.tsmiTimetableCollapseAll.Size = new System.Drawing.Size(330, 22);
+			this.tsmiTimetableCollapseAll.Text = "番組表の日程を全て折りたたむ(&C)";
+			this.tsmiTimetableCollapseAll.Click += new System.EventHandler(this.tsmiTimetableCollapseAll_Click);
+			// 
+			// toolStripMenuItem2
+			// 
+			this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+			this.toolStripMenuItem2.Size = new System.Drawing.Size(327, 6);
 			// 
 			// tsmiGotoCampaign
 			// 
@@ -246,7 +271,7 @@
 			this.tsmiFillCampaignForm.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tsmiFillCampaignForm.Name = "tsmiFillCampaignForm";
 			this.tsmiFillCampaignForm.Size = new System.Drawing.Size(330, 22);
-			this.tsmiFillCampaignForm.Text = "応募フォームにフィル(&F)";
+			this.tsmiFillCampaignForm.Text = "キャンペーン応募フォームにフィル(&F)";
 			this.tsmiFillCampaignForm.Click += new System.EventHandler(this.tsmiFillCampaignForm_Click);
 			// 
 			// tsmiSettings
@@ -350,7 +375,7 @@
             this.tsbLivedoor});
 			this.tsStandard.Location = new System.Drawing.Point(3, 20);
 			this.tsStandard.Name = "tsStandard";
-			this.tsStandard.Size = new System.Drawing.Size(812, 25);
+			this.tsStandard.Size = new System.Drawing.Size(781, 25);
 			this.tsStandard.TabIndex = 3;
 			this.tsStandard.Text = "標準バー";
 			// 
@@ -490,5 +515,8 @@
 		private System.Windows.Forms.ToolStripButton tsbGo;
 		private System.Windows.Forms.ToolStripTextBox tstbLivedoor;
 		private System.Windows.Forms.ToolStripButton tsbLivedoor;
+		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
+		private System.Windows.Forms.ToolStripMenuItem tsmiTimetableExpandAll;
+		private System.Windows.Forms.ToolStripMenuItem tsmiTimetableCollapseAll;
 	}
 }

@@ -46,7 +46,6 @@
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Design" />
@@ -354,7 +353,8 @@
     <Compile Include="Utility.cs" />
     <Compile Include="Win32WindowImpl.cs" />
     <Compile Include="WindowsConstants.cs" />
-    <Compile Include="XmlHttpWrapper.cs" />
+    <Compile Include="WindowsFunctions.cs" />
+    <Compile Include="WindowsStructs.cs" />
     <Compile Include="XmlSerializableColor.cs" />
   </ItemGroup>
   <ItemGroup>

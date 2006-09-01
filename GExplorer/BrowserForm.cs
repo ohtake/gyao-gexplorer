@@ -429,8 +429,14 @@ namespace Yusen.GExplorer {
 			}
 			BrowserForm.Browse(images);
 		}
+		private void tsmiTimetableExpandAll_Click(object sender, EventArgs e) {
+			this.gwbMain.Url = new Uri("javascript:var c=document.getElementsByTagName('input');for(i in c){var n=c[i].name;if(n!=null&&n.indexOf('symbol[pac')==0)c[i].value='minus';}document.all['form2'].submit();");
+		}
+		private void tsmiTimetableCollapseAll_Click(object sender, EventArgs e) {
+			this.gwbMain.Url = new Uri("javascript:var c=document.getElementsByTagName('input');for(i in c){var n=c[i].name;if(n!=null&&n.indexOf('symbol[pac')==0)c[i].value='plus';}document.all['form2'].submit();");
+		}
 		private void tsmiGotoCampaign_Click(object sender, EventArgs e) {
-			this.gwbMain.GotoCampaign();
+			this.gwbMain.Url = new Uri("javascript:gotoCampaign();");
 		}
 		private void tsmiFillCampaignForm_Click(object sender, EventArgs e) {
 			GlobalSettings gs = GlobalSettings.Instance;
@@ -462,5 +468,6 @@ namespace Yusen.GExplorer {
 			get { return this.settings; }
 		}
 		#endregion
+
 	}
 }

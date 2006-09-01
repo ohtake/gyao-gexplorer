@@ -4,7 +4,6 @@ using System;
 using System.ComponentModel;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Runtime.InteropServices;
 using NativeWindow=System.Windows.Forms.NativeWindow;
 using Message=System.Windows.Forms.Message;
 using System.Timers;
@@ -16,11 +15,6 @@ namespace Yusen.GExplorer {
 	/// スクリーンセーバが立ち上がりそうになったらイベントを発生させるクラス．
 	/// </summary>
 	sealed class ScreenSaveListener : NativeWindow, IDisposable {
-		[DllImport("user32.dll")]
-		private static extern IntPtr GetForegroundWindow();
-		[DllImport("user32.dll")]
-		private static extern uint GetWindowThreadProcessId(IntPtr hWnd, out int lpdwProcessId);
-		
 		private const double DefaultInterval = 1 * 1000;
 		
 		public event CancelEventHandler ScreenSaverRaising;
@@ -40,9 +34,9 @@ namespace Yusen.GExplorer {
 		}
 		
 		private void timer_Elapsed(object sender, ElapsedEventArgs e) {
-			IntPtr fgw = ScreenSaveListener.GetForegroundWindow();
+			IntPtr fgw = WindowsFunctions.GetForegroundWindow();
 			int pid;
-			ScreenSaveListener.GetWindowThreadProcessId(fgw, out pid);
+			WindowsFunctions.GetWindowThreadProcessId(fgw, out pid);
 #if SSL_DEBUG_PRINT
 			Console.WriteLine("{0} elapsed {1} {2}", DateTime.Now.ToLongTimeString(), fgw, pid);
 #endif
