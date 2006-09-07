@@ -15,6 +15,8 @@ using DRegion = System.Drawing.Region;
 
 namespace Yusen.GExplorer {
 	public sealed partial class PlayerForm : FormSettingsBase, IFormWithNewSettings<PlayerForm.PlayerFormSettings> {
+		private const string StreamingServerName = "wms.cd.gyao.jp";
+		
 		public sealed class PlayerFormSettings : INewSettings<PlayerFormSettings>{
 			private const int VolumeMin = 0;
 			private const int VolumeMax = 100;
@@ -246,7 +248,21 @@ namespace Yusen.GExplorer {
 				}
 			}
 			private int volumeCf = 40;
-
+			
+			[Category("不具合対策")]
+			[DisplayName(PlayerForm.StreamingServerName + " のIPアドレス")]
+			[Description("asx.php の中にある \"" + PlayerForm.StreamingServerName + "\" の文字列を指定した IP アドレスに置換します．基本的には何も設定せずに空文字列としてください．値を変更したらメニューから動画の再読み込みを実行してください．フォームを閉じたらこの設定は消えます．")]
+			[DefaultValue("")]
+			[XmlIgnore]
+			public string StreamingServerAltAddress {
+				get { return this.streamingServerAltAddress; }
+				set {
+					if (string.IsNullOrEmpty(value)) value = string.Empty;
+					this.streamingServerAltAddress = value.Trim();
+				}
+			}
+			private string streamingServerAltAddress = string.Empty;
+			
 			[Browsable(false)]
 			public PlayListView.PlayListViewSettings PlayListViewSettings {
 				get { return this.playListViewSettings; }
@@ -270,11 +286,11 @@ namespace Yusen.GExplorer {
 			public PageReaderWithCookie() {
 				int cookieSize = 0;
 				if (!WindowsFunctions.InternetGetCookie(PageReaderWithCookie.TopPageUri.AbsoluteUri, null, null, ref cookieSize)) {
-					throw new InvalidOperationException("クッキー取得失敗");
+					Marshal.ThrowExceptionForHR(Marshal.GetHRForLastWin32Error());
 				}
 				StringBuilder cookieSb = new StringBuilder(cookieSize);
 				if (!WindowsFunctions.InternetGetCookie(PageReaderWithCookie.TopPageUri.AbsoluteUri, null, cookieSb, ref cookieSize)) {
-					throw new InvalidOperationException("クッキー取得失敗");
+					Marshal.ThrowExceptionForHR(Marshal.GetHRForLastWin32Error());
 				}
 				this.cc = new CookieContainer();
 				this.cc.SetCookies(PageReaderWithCookie.TopPageUri, cookieSb.ToString().Replace(';', ','));
@@ -414,12 +430,28 @@ namespace Yusen.GExplorer {
 				asxPhpAddr += "&chapterNo=" + this.CurrentChapter.Value.ToString();
 			}
 			
-			// asx をダウンロードして読み込ませる
+			// asx をダウンロード
 			DirectoryInfo diTemp = new DirectoryInfo(PlayerForm.tempAsxDirectory);
 			if (!diTemp.Exists) diTemp.Create();
 			string tempFile = Path.Combine(PlayerForm.tempAsxDirectory, PlayerForm.tempAsxFilename);
 			Application.DoEvents();
 			pageReader.DownloadToFile(new Uri(asxPhpAddr), tempFile);
+			Application.DoEvents();
+			
+			//名前解決ができない不具合対策用
+			if (!string.IsNullOrEmpty(this.settings.StreamingServerAltAddress)) {
+				string altHost = this.settings.StreamingServerAltAddress;
+				string asxText;
+				using (StreamReader reader = new StreamReader(tempFile)) {
+					asxText = reader.ReadToEnd();
+				}
+				using (StreamWriter writer = new StreamWriter(tempFile)) {
+					asxText = asxText.Replace(PlayerForm.StreamingServerName, altHost);
+					writer.Write(asxText);
+				}
+			}
+			
+			// WMP に読み込ませる
 			Application.DoEvents();
 			IWMPPlaylist plist = this.wmpMain.newPlaylist(this.Text, tempFile);
 			Application.DoEvents();

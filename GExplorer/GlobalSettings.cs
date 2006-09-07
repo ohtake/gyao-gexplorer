@@ -5,6 +5,8 @@ using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
 using System.Xml.Serialization;
 using Yusen.GCrawler;
+using System.Windows.Forms.Design;
+using System.Drawing.Design;
 
 namespace Yusen.GExplorer {
 	public class GlobalSettings {
@@ -137,6 +139,7 @@ namespace Yusen.GExplorer {
 		[DisplayName("アイコンのファイル名")]
 		[Description("アイコンのファイル名を指定．無指定の場合は実行ファイル名と同名のアイコンファイルが指定されているものとする．再起動後に有効．")]
 		[DefaultValue("")]
+		[Editor(typeof(FileNameEditor), typeof(UITypeEditor))]
 		public string IconFile {
 			get { return this.iconFile; }
 			set { this.iconFile = value; }
@@ -153,9 +156,10 @@ namespace Yusen.GExplorer {
 		
 		private string migemoDictionaryFilename = @"dict\migemo-dict";
 		[Category("migemo")]
-		[DisplayName("辞書ファイル")]
+		[DisplayName("辞書ファイルのディレクトリ")]
 		[Description("migemoの辞書ファイル．再起動後に有効．")]
 		[DefaultValue(@"dict\migemo-dict")]
+		[Editor(typeof(FolderNameEditor), typeof(UITypeEditor))]
 		public string MigemoDictionaryFilename {
 			get { return this.migemoDictionaryFilename; }
 			set { this.migemoDictionaryFilename = value; }

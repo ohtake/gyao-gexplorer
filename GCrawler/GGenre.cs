@@ -25,6 +25,7 @@ namespace Yusen.GCrawler {
 				new GGenre200509(24, "shopping", "ショッピング", Color.FromArgb(0xFF, 0x66, 0x00)),
 				new GGenre200509(25, "game", "ゲーム", Color.FromArgb(0x00, 0x99, 0x66)),
 				new GGenre200509(28, "comics", "コミックス", Color.FromArgb(0xA7, 0x0B, 0x85)),
+				new GGenre200509(27, "mansion", "special", "マンション情報", Color.FromArgb(0xFF, 0xC1, 0x00)),
 				/*
 				 *  7	--> news
 				 *  8	ラジオ
@@ -38,7 +39,6 @@ namespace Yusen.GCrawler {
 				 * 19	--> election
 				 * 23	アンケート
 				 * 26	テスト (pac0001397)
-				 * 27	?
 				 */
 			};
 			GGenre.dicGenre = new SortedDictionary<int, GGenre>();

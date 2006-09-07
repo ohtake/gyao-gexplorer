@@ -9,7 +9,7 @@ using System.Xml.Serialization;
 
 namespace Yusen.GExplorer {
 	public sealed partial class GenreTabControl : TabControl, IHasNewSettings<GenreTabControl.GenreTabControlSettings> {
-		private const int MaxNameLengthDefaultValue = 4;
+		private const int MaxNameLengthDefaultValue = -1;
 		
 		public sealed class GenreTabControlSettings : INewSettings<GenreTabControlSettings> {
 			private readonly GenreTabControl owner;
@@ -26,23 +26,7 @@ namespace Yusen.GExplorer {
 				get { return null != this.owner; }
 			}
 
-			[Category("タブの表示名")]
-			[DisplayName("長さの上限値")]
-			[Description("ジャンル名の長さが指定値よりも大きい場合に省略して表示します．負数の場合は無制限．")]
-			[DefaultValue(GenreTabControl.MaxNameLengthDefaultValue)]
-			public int MaxNameLength {
-				get {
-					if (this.HasOwner) return this.owner.MaxNameLength;
-					else return this.maxNameLength;
-				}
-				set {
-					if (this.HasOwner) this.owner.MaxNameLength = value;
-					else this.maxNameLength = value;
-				}
-			}
-			private int maxNameLength = GenreTabControl.MaxNameLengthDefaultValue;
-			
-			[Category("タブの見た目")]
+			[Category("見た目")]
 			[DisplayName("外観")]
 			[Description("タブの外観を指定します．")]
 			[DefaultValue(TabAppearance.FlatButtons)]
@@ -58,7 +42,7 @@ namespace Yusen.GExplorer {
 			}
 			private TabAppearance tabAppearance = TabAppearance.FlatButtons;
 
-			[Category("タブの見た目")]
+			[Category("見た目")]
 			[DisplayName("ドローモード")]
 			[Description("タブのドローモードを指定します．OwnerDrawFixedにするとオーナードローで独自の描画を行います．")]
 			[DefaultValue(TabDrawMode.OwnerDrawFixed)]
@@ -74,6 +58,70 @@ namespace Yusen.GExplorer {
 			}
 			private TabDrawMode tabDrawMode = TabDrawMode.OwnerDrawFixed;
 
+			[Category("レイアウト")]
+			[DisplayName("多段タブ")]
+			[Description("タブを多段で表示します．")]
+			[DefaultValue(true)]
+			public bool MultiLineTab {
+				get {
+					if (this.HasOwner) return this.owner.Multiline;
+					else return this.multiLineTab;
+				}
+				set {
+					if (this.HasOwner) this.owner.Multiline = value;
+					else this.multiLineTab = value;
+				}
+			}
+			private bool multiLineTab = true;
+
+			[Category("レイアウト")]
+			[DisplayName("タブ名の最大長")]
+			[Description("タブ名の長さが指定値よりも大きい場合に省略示します．負数の場合は無制限．サイズモードが Fixed のときは負数にしてください．")]
+			[DefaultValue(GenreTabControl.MaxNameLengthDefaultValue)]
+			public int MaxNameLength {
+				get {
+					if (this.HasOwner) return this.owner.MaxNameLength;
+					else return this.maxNameLength;
+				}
+				set {
+					if (this.HasOwner) this.owner.MaxNameLength = value;
+					else this.maxNameLength = value;
+				}
+			}
+			private int maxNameLength = GenreTabControl.MaxNameLengthDefaultValue;
+
+			[Category("レイアウト")]
+			[DisplayName("サイズモード")]
+			[Description("各々のタブのサイズの決定方法を指定します．")]
+			[DefaultValue(TabSizeMode.Fixed)]
+			public TabSizeMode TabSizeMode {
+				get {
+					if (this.HasOwner) return this.owner.SizeMode;
+					else return this.tabSizeMode;
+				}
+				set {
+					if (this.HasOwner) this.owner.SizeMode = value;
+					else this.tabSizeMode = value;
+				}
+			}
+			private TabSizeMode tabSizeMode = TabSizeMode.Fixed;
+
+			[Category("レイアウト")]
+			[DisplayName("タブサイズ")]
+			[Description("サイズモードが Fixed の場合のタブのサイズを指定します．")]
+			[DefaultValue(typeof(Size), "60, 20")]
+			public Size TabItemSize {
+				get {
+					if (this.HasOwner) return this.owner.ItemSize;
+					else return this.tabItemSize;
+				}
+				set {
+					if (this.HasOwner) this.owner.ItemSize = value;
+					else this.tabItemSize = value;
+				}
+			}
+			private Size tabItemSize = new Size(60, 20);
+
 			#region INewSettings<GenreTabControlSettings> Members
 			public void ApplySettings(GenreTabControlSettings newSettings) {
 				Utility.SubstituteAllPublicProperties(this, newSettings);
@@ -82,6 +130,9 @@ namespace Yusen.GExplorer {
 		}
 
 		public event EventHandler<GenreTabSelectedEventArgs> GenreSelected;
+		public event EventHandler RequiredHeightChanged;
+
+		private int requiredHeight = 0;
 
 		private GenreTabControlSettings settings;
 
@@ -106,11 +157,7 @@ namespace Yusen.GExplorer {
 		public void AddGenre(GGenre genre) {
 			GenreTabPage gtp;
 			string name = genre.GenreName;
-			if (this.MaxNameLength >= 0 && name.Length > this.MaxNameLength) {
-				gtp = new GenreTabPage(genre, name.Substring(0, this.MaxNameLength) + "...", name);
-			} else {
-				gtp = new GenreTabPage(genre);
-			}
+			gtp = new GenreTabPage(genre);
 			gtp.CrawlRequested += new EventHandler(gtp_ReloadRequested);
 			gtp.ResultRemoved += new EventHandler(gtp_ResultRemoved);
 			base.TabPages.Add(gtp);
@@ -220,10 +267,8 @@ namespace Yusen.GExplorer {
 				string name = gtp.Genre.GenreName;
 				if (this.MaxNameLength >= 0 && name.Length > this.MaxNameLength) {
 					gtp.Text = name.Substring(0, this.MaxNameLength) + "...";
-					gtp.ToolTipText = name;
 				} else {
 					gtp.Text = name;
-					gtp.ToolTipText = string.Empty;
 				}
 			}
 		}
@@ -288,6 +333,34 @@ namespace Yusen.GExplorer {
 			get { return this.settings; }
 		}
 		#endregion
+
+		private void GenreTabControl_SizeChanged(object sender, EventArgs e) {
+			this.RecalcurateRequiredHeight();
+		}
+		private void RecalcurateRequiredHeight() {
+			int maxBottom = 0;
+			for (int i = 0; i < base.TabCount; i++) {
+				Rectangle rect = base.GetTabRect(i);
+				int bot = rect.Bottom;
+				if (maxBottom < bot) {
+					maxBottom = bot;
+				}
+			}
+			if (this.requiredHeight != maxBottom) {
+				this.requiredHeight = maxBottom;
+				EventHandler handler = this.RequiredHeightChanged;
+				if (null != handler) {
+					handler(this, EventArgs.Empty);
+				}
+			}
+		}
+		public int RequiredHeight {
+			get { return this.requiredHeight; }
+		}
+
+		private void GenreTabControl_Layout(object sender, LayoutEventArgs e) {
+			this.RecalcurateRequiredHeight();
+		}
 	}
 
 	public sealed class GenreTabSelectedEventArgs : EventArgs {

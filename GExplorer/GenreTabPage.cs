@@ -72,12 +72,10 @@ namespace Yusen.GExplorer {
 			};
 		}
 		
-		public GenreTabPage(GGenre genre) : this(genre, genre.GenreName, string.Empty) {
-		}
-		public GenreTabPage(GGenre genre, string displayText, string tooltipText) : this() {
+		public GenreTabPage(GGenre genre) : this(){
 			this.genre = genre;
-			base.Text = displayText;
-			base.ToolTipText = tooltipText;
+			base.Text = genre.GenreName;
+			base.ToolTipText = string.Format("{0}\n{1}", genre.GenreName, genre.TopPageUri.AbsoluteUri);
 		}
 		
 		public GGenre Genre {

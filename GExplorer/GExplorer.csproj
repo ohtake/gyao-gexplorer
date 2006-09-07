@@ -100,6 +100,12 @@
     <Compile Include="DoubleBufferedListView.Designer.cs">
       <DependentUpon>DoubleBufferedListView.cs</DependentUpon>
     </Compile>
+    <Compile Include="EasterEggControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="EasterEggControl.Designer.cs">
+      <DependentUpon>EasterEggControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="ExceptionDialog.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -204,6 +210,10 @@
     <EmbeddedResource Include="ContentVisibilitiesSelector.resx">
       <SubType>Designer</SubType>
       <DependentUpon>ContentVisibilitiesSelector.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EasterEggControl.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>EasterEggControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ExceptionForm.resx">
       <DependentUpon>ExceptionForm.cs</DependentUpon>

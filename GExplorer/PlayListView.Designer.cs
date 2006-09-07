@@ -71,13 +71,13 @@
 			this.tsmiClearPlayList = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
 			this.tslCount = new System.Windows.Forms.ToolStripLabel();
+			this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
 			this.tslTime = new System.Windows.Forms.ToolStripLabel();
 			this.sfdAsx = new System.Windows.Forms.SaveFileDialog();
 			this.ofdXml = new System.Windows.Forms.OpenFileDialog();
 			this.sfdXml = new System.Windows.Forms.SaveFileDialog();
 			this.timerSumSelected = new System.Windows.Forms.Timer(this.components);
 			this.inputBoxDialog1 = new Yusen.GExplorer.InputBoxDialog();
-			this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
 			this.toolStripContainer1.ContentPanel.SuspendLayout();
 			this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
 			this.toolStripContainer1.SuspendLayout();
@@ -91,11 +91,11 @@
 			// toolStripContainer1.ContentPanel
 			// 
 			this.toolStripContainer1.ContentPanel.Controls.Add(this.listView1);
-			this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(643, 155);
+			this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(600, 155);
 			this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.toolStripContainer1.Location = new System.Drawing.Point(0, 0);
 			this.toolStripContainer1.Name = "toolStripContainer1";
-			this.toolStripContainer1.Size = new System.Drawing.Size(643, 180);
+			this.toolStripContainer1.Size = new System.Drawing.Size(600, 180);
 			this.toolStripContainer1.TabIndex = 1;
 			this.toolStripContainer1.Text = "toolStripContainer1";
 			// 
@@ -120,7 +120,7 @@
 			this.listView1.Name = "listView1";
 			this.listView1.ShowGroups = false;
 			this.listView1.ShowItemToolTips = true;
-			this.listView1.Size = new System.Drawing.Size(643, 155);
+			this.listView1.Size = new System.Drawing.Size(600, 155);
 			this.listView1.TabIndex = 0;
 			this.listView1.UseCompatibleStateImageBehavior = false;
 			this.listView1.View = System.Windows.Forms.View.Details;
@@ -140,7 +140,7 @@
 			// chName
 			// 
 			this.chName.Text = "コンテンツ名";
-			this.chName.Width = 300;
+			this.chName.Width = 255;
 			// 
 			// chDuration
 			// 
@@ -384,7 +384,7 @@
             this.tslTime});
 			this.toolStrip1.Location = new System.Drawing.Point(0, 0);
 			this.toolStrip1.Name = "toolStrip1";
-			this.toolStrip1.Size = new System.Drawing.Size(643, 25);
+			this.toolStrip1.Size = new System.Drawing.Size(600, 25);
 			this.toolStrip1.Stretch = true;
 			this.toolStrip1.TabIndex = 1;
 			this.toolStrip1.Text = "toolStrip1";
@@ -489,6 +489,11 @@
 			this.tslCount.Size = new System.Drawing.Size(48, 22);
 			this.tslCount.Text = "tslCount";
 			// 
+			// toolStripSeparator8
+			// 
+			this.toolStripSeparator8.Name = "toolStripSeparator8";
+			this.toolStripSeparator8.Size = new System.Drawing.Size(6, 25);
+			// 
 			// tslTime
 			// 
 			this.tslTime.Name = "tslTime";
@@ -524,18 +529,13 @@
 			this.inputBoxDialog1.Message = null;
 			this.inputBoxDialog1.Title = null;
 			// 
-			// toolStripSeparator8
-			// 
-			this.toolStripSeparator8.Name = "toolStripSeparator8";
-			this.toolStripSeparator8.Size = new System.Drawing.Size(6, 25);
-			// 
 			// PlayListView
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.Controls.Add(this.toolStripContainer1);
 			this.Name = "PlayListView";
-			this.Size = new System.Drawing.Size(643, 180);
+			this.Size = new System.Drawing.Size(600, 180);
 			this.Load += new System.EventHandler(this.PlayListView_Load);
 			this.toolStripContainer1.ContentPanel.ResumeLayout(false);
 			this.toolStripContainer1.TopToolStripPanel.ResumeLayout(false);

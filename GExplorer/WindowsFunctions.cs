@@ -6,7 +6,8 @@ namespace Yusen.GExplorer {
 	static class WindowsFunctions {
 		#region WinUser.h
 #if false
-		[DllImport("user32.dll", CallingConvention=CallingConvention.Winapi)]
+		[DllImport("user32.dll",
+			CallingConvention=CallingConvention.Winapi)]
 		public static extern bool SetWindowPos(
 			//WinUser.h
 			[In] IntPtr hWnd,
@@ -18,27 +19,36 @@ namespace Yusen.GExplorer {
 			[In] SetWindowsPosFlags uFlags);
 #endif
 
-		[DllImport("user32.dll", CallingConvention = CallingConvention.Winapi)]
+		[DllImport("user32.dll",
+			CallingConvention = CallingConvention.Winapi)]
 		public static extern IntPtr GetFocus();
 
-		[DllImport("user32.dll", CallingConvention = CallingConvention.Winapi)]
+		[DllImport("user32.dll",
+			CallingConvention = CallingConvention.Winapi)]
 		public static extern IntPtr GetForegroundWindow();
 
-		[DllImport("user32.dll", CallingConvention = CallingConvention.Winapi)]
+		[DllImport("user32.dll",
+			CallingConvention = CallingConvention.Winapi)]
 		public static extern uint GetWindowThreadProcessId(
 			[In] IntPtr hWnd,
 			[Out] out int lpdwProcessId);
 		#endregion
 		
 		#region WinInet.h
-		[DllImport("wininet.dll", CharSet = CharSet.Auto, CallingConvention=CallingConvention.StdCall)]
+		[DllImport("wininet.dll",
+			CharSet = CharSet.Auto,
+			CallingConvention=CallingConvention.StdCall,
+			SetLastError=true)]
 		public static extern bool InternetGetCookie(
 			[In] string lpszUrl,
 			[In] string lpszCookieName,
 			[Out] StringBuilder lpszCookieData,
 			[In,Out] ref int lpdwSize);
 #if false
-		[DllImport("wininet.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
+		[DllImport("wininet.dll",
+			CharSet = CharSet.Auto,
+			CallingConvention = CallingConvention.StdCall,
+			SetLastError=true)]
 		public static extern bool InternetSetCookie(
 			[In] string lpszUrl,
 			[In] string lpszCookieName,

@@ -40,7 +40,7 @@
 			this.wmpMain = new AxWMPLib.AxWindowsMediaPlayer();
 			this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
 			this.wbBanner = new System.Windows.Forms.WebBrowser();
-			this.lblCinnamon = new System.Windows.Forms.Label();
+			this.easterEggControl1 = new Yusen.GExplorer.EasterEggControl();
 			this.menuStrip1 = new System.Windows.Forms.MenuStrip();
 			this.tsmiFile = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiPlayChapter = new System.Windows.Forms.ToolStripMenuItem();
@@ -106,7 +106,7 @@
 			// toolStripContainer1.ContentPanel
 			// 
 			this.toolStripContainer1.ContentPanel.Controls.Add(this.splitContainer2);
-			this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(644, 548);
+			this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(644, 545);
 			this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.toolStripContainer1.Location = new System.Drawing.Point(0, 0);
 			this.toolStripContainer1.Name = "toolStripContainer1";
@@ -229,7 +229,7 @@
 			this.splitContainer2.Panel2.Controls.Add(this.tableLayoutPanel1);
 			this.splitContainer2.Panel2Collapsed = true;
 			this.splitContainer2.Panel2MinSize = 120;
-			this.splitContainer2.Size = new System.Drawing.Size(644, 548);
+			this.splitContainer2.Size = new System.Drawing.Size(644, 545);
 			this.splitContainer2.SplitterDistance = 523;
 			this.splitContainer2.SplitterWidth = 1;
 			this.splitContainer2.TabIndex = 1;
@@ -237,7 +237,7 @@
 			// playListView1
 			// 
 			this.playListView1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.playListView1.Location = new System.Drawing.Point(0, 398);
+			this.playListView1.Location = new System.Drawing.Point(0, 395);
 			this.playListView1.Name = "playListView1";
 			this.playListView1.Size = new System.Drawing.Size(400, 150);
 			this.playListView1.TabIndex = 2;
@@ -251,7 +251,7 @@
 			this.wmpMain.Location = new System.Drawing.Point(0, 0);
 			this.wmpMain.Name = "wmpMain";
 			this.wmpMain.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("wmpMain.OcxState")));
-			this.wmpMain.Size = new System.Drawing.Size(644, 548);
+			this.wmpMain.Size = new System.Drawing.Size(644, 545);
 			this.wmpMain.TabIndex = 0;
 			this.wmpMain.Text = "axWindowsMediaPlayer1";
 			this.wmpMain.PlayStateChange += new AxWMPLib._WMPOCXEvents_PlayStateChangeEventHandler(this.wmpMain_PlayStateChange);
@@ -262,7 +262,7 @@
 			this.tableLayoutPanel1.ColumnCount = 1;
 			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
 			this.tableLayoutPanel1.Controls.Add(this.wbBanner, 0, 0);
-			this.tableLayoutPanel1.Controls.Add(this.lblCinnamon, 0, 1);
+			this.tableLayoutPanel1.Controls.Add(this.easterEggControl1, 0, 1);
 			this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
 			this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -285,16 +285,13 @@
 			this.wbBanner.TabIndex = 0;
 			this.wbBanner.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.wbBanner_DocumentCompleted);
 			// 
-			// lblCinnamon
+			// easterEggControl1
 			// 
-			this.lblCinnamon.Anchor = System.Windows.Forms.AnchorStyles.None;
-			this.lblCinnamon.AutoSize = true;
-			this.lblCinnamon.Font = new System.Drawing.Font("MS PGothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.lblCinnamon.Location = new System.Drawing.Point(3, 600);
-			this.lblCinnamon.Name = "lblCinnamon";
-			this.lblCinnamon.Size = new System.Drawing.Size(89, 1);
-			this.lblCinnamon.TabIndex = 1;
-			this.lblCinnamon.Text = "　＿　　　 ＿\r\n（＿(,,・ω・)＿）\r\n　　 ＠＿）";
+			this.easterEggControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.easterEggControl1.Location = new System.Drawing.Point(3, 603);
+			this.easterEggControl1.Name = "easterEggControl1";
+			this.easterEggControl1.Size = new System.Drawing.Size(90, 1);
+			this.easterEggControl1.TabIndex = 1;
 			// 
 			// menuStrip1
 			// 
@@ -310,7 +307,7 @@
 			this.menuStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
-			this.menuStrip1.Size = new System.Drawing.Size(644, 20);
+			this.menuStrip1.Size = new System.Drawing.Size(644, 23);
 			this.menuStrip1.TabIndex = 0;
 			this.menuStrip1.Text = "menuStrip1";
 			// 
@@ -683,7 +680,6 @@
 			this.splitContainer2.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.wmpMain)).EndInit();
 			this.tableLayoutPanel1.ResumeLayout(false);
-			this.tableLayoutPanel1.PerformLayout();
 			this.menuStrip1.ResumeLayout(false);
 			this.menuStrip1.PerformLayout();
 			this.ResumeLayout(false);
@@ -747,8 +743,8 @@
 		private System.Windows.Forms.ToolStripMenuItem tsmiCopyClipDuration;
 		private System.Windows.Forms.ToolStripMenuItem tsmiCopyClipResolution;
 		private PlayListView playListView1;
-		private System.Windows.Forms.Label lblCinnamon;
 		private System.Windows.Forms.ToolStripMenuItem tsmiViewBottomMost;
 		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
+		private EasterEggControl easterEggControl1;
 	}
 }

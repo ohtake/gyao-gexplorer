@@ -28,13 +28,13 @@
 			this.tspbCrawl = new System.Windows.Forms.ToolStripProgressBar();
 			this.tsslCrawl = new System.Windows.Forms.ToolStripStatusLabel();
 			this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
+			this.scListsAndDetail = new System.Windows.Forms.SplitContainer();
+			this.scLists = new System.Windows.Forms.SplitContainer();
 			this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+			this.crawlResultView1 = new Yusen.GExplorer.CrawlResultView();
 			this.genreTabControl1 = new Yusen.GExplorer.GenreTabControl();
 			this.tabPage1 = new System.Windows.Forms.TabPage();
 			this.tabPage2 = new System.Windows.Forms.TabPage();
-			this.scListsAndDetail = new System.Windows.Forms.SplitContainer();
-			this.scLists = new System.Windows.Forms.SplitContainer();
-			this.crawlResultView1 = new Yusen.GExplorer.CrawlResultView();
 			this.playListView1 = new Yusen.GExplorer.PlayListView();
 			this.contentDetailView1 = new Yusen.GExplorer.ContentDetailView();
 			this.menuStrip1 = new System.Windows.Forms.MenuStrip();
@@ -84,14 +84,14 @@
 			this.toolStripContainer1.ContentPanel.SuspendLayout();
 			this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
 			this.toolStripContainer1.SuspendLayout();
-			this.tableLayoutPanel1.SuspendLayout();
-			this.genreTabControl1.SuspendLayout();
 			this.scListsAndDetail.Panel1.SuspendLayout();
 			this.scListsAndDetail.Panel2.SuspendLayout();
 			this.scListsAndDetail.SuspendLayout();
 			this.scLists.Panel1.SuspendLayout();
 			this.scLists.Panel2.SuspendLayout();
 			this.scLists.SuspendLayout();
+			this.tableLayoutPanel1.SuspendLayout();
+			this.genreTabControl1.SuspendLayout();
 			this.menuStrip1.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -105,7 +105,7 @@
 			this.statusStrip1.Location = new System.Drawing.Point(0, 0);
 			this.statusStrip1.Name = "statusStrip1";
 			this.statusStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.ManagerRenderMode;
-			this.statusStrip1.Size = new System.Drawing.Size(907, 22);
+			this.statusStrip1.Size = new System.Drawing.Size(872, 22);
 			this.statusStrip1.TabIndex = 0;
 			this.statusStrip1.Text = "statusStrip1";
 			// 
@@ -129,12 +129,12 @@
 			// 
 			// toolStripContainer1.ContentPanel
 			// 
-			this.toolStripContainer1.ContentPanel.Controls.Add(this.tableLayoutPanel1);
-			this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(907, 544);
+			this.toolStripContainer1.ContentPanel.Controls.Add(this.scListsAndDetail);
+			this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(872, 564);
 			this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.toolStripContainer1.Location = new System.Drawing.Point(0, 0);
 			this.toolStripContainer1.Name = "toolStripContainer1";
-			this.toolStripContainer1.Size = new System.Drawing.Size(907, 586);
+			this.toolStripContainer1.Size = new System.Drawing.Size(872, 606);
 			this.toolStripContainer1.TabIndex = 1;
 			this.toolStripContainer1.Text = "toolStripContainer1";
 			// 
@@ -142,63 +142,10 @@
 			// 
 			this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.menuStrip1);
 			// 
-			// tableLayoutPanel1
-			// 
-			this.tableLayoutPanel1.BackColor = System.Drawing.Color.Transparent;
-			this.tableLayoutPanel1.ColumnCount = 1;
-			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-			this.tableLayoutPanel1.Controls.Add(this.genreTabControl1, 0, 0);
-			this.tableLayoutPanel1.Controls.Add(this.scListsAndDetail, 0, 1);
-			this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
-			this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-			this.tableLayoutPanel1.RowCount = 2;
-			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-			this.tableLayoutPanel1.Size = new System.Drawing.Size(907, 544);
-			this.tableLayoutPanel1.TabIndex = 0;
-			// 
-			// genreTabControl1
-			// 
-			this.genreTabControl1.Appearance = System.Windows.Forms.TabAppearance.FlatButtons;
-			this.genreTabControl1.Controls.Add(this.tabPage1);
-			this.genreTabControl1.Controls.Add(this.tabPage2);
-			this.genreTabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.genreTabControl1.DrawMode = System.Windows.Forms.TabDrawMode.OwnerDrawFixed;
-			this.genreTabControl1.HotTrack = true;
-			this.genreTabControl1.Location = new System.Drawing.Point(0, 0);
-			this.genreTabControl1.Margin = new System.Windows.Forms.Padding(0);
-			this.genreTabControl1.Name = "genreTabControl1";
-			this.genreTabControl1.SelectedGenre = null;
-			this.genreTabControl1.SelectedIndex = 0;
-			this.genreTabControl1.ShowToolTips = true;
-			this.genreTabControl1.Size = new System.Drawing.Size(907, 20);
-			this.genreTabControl1.TabIndex = 0;
-			this.genreTabControl1.GenreSelected += new System.EventHandler<Yusen.GExplorer.GenreTabSelectedEventArgs>(this.genreTabControl1_GenreSelected);
-			// 
-			// tabPage1
-			// 
-			this.tabPage1.Location = new System.Drawing.Point(4, 24);
-			this.tabPage1.Name = "tabPage1";
-			this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage1.Size = new System.Drawing.Size(899, 0);
-			this.tabPage1.TabIndex = 0;
-			this.tabPage1.Text = "tabPage1";
-			// 
-			// tabPage2
-			// 
-			this.tabPage2.Location = new System.Drawing.Point(4, 24);
-			this.tabPage2.Name = "tabPage2";
-			this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage2.Size = new System.Drawing.Size(899, -8);
-			this.tabPage2.TabIndex = 1;
-			this.tabPage2.Text = "tabPage2";
-			// 
 			// scListsAndDetail
 			// 
 			this.scListsAndDetail.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.scListsAndDetail.Location = new System.Drawing.Point(0, 20);
-			this.scListsAndDetail.Margin = new System.Windows.Forms.Padding(0);
+			this.scListsAndDetail.Location = new System.Drawing.Point(0, 0);
 			this.scListsAndDetail.Name = "scListsAndDetail";
 			// 
 			// scListsAndDetail.Panel1
@@ -208,10 +155,9 @@
 			// scListsAndDetail.Panel2
 			// 
 			this.scListsAndDetail.Panel2.Controls.Add(this.contentDetailView1);
-			this.scListsAndDetail.Size = new System.Drawing.Size(907, 524);
-			this.scListsAndDetail.SplitterDistance = 643;
-			this.scListsAndDetail.TabIndex = 2;
-			this.scListsAndDetail.Text = "splitContainer1";
+			this.scListsAndDetail.Size = new System.Drawing.Size(872, 564);
+			this.scListsAndDetail.SplitterDistance = 600;
+			this.scListsAndDetail.TabIndex = 1;
 			// 
 			// scLists
 			// 
@@ -222,32 +168,88 @@
 			// 
 			// scLists.Panel1
 			// 
-			this.scLists.Panel1.Controls.Add(this.crawlResultView1);
+			this.scLists.Panel1.Controls.Add(this.tableLayoutPanel1);
 			// 
 			// scLists.Panel2
 			// 
 			this.scLists.Panel2.Controls.Add(this.playListView1);
-			this.scLists.Size = new System.Drawing.Size(643, 524);
-			this.scLists.SplitterDistance = 325;
+			this.scLists.Size = new System.Drawing.Size(600, 564);
+			this.scLists.SplitterDistance = 345;
 			this.scLists.TabIndex = 2;
 			this.scLists.Text = "splitContainer2";
+			// 
+			// tableLayoutPanel1
+			// 
+			this.tableLayoutPanel1.BackColor = System.Drawing.Color.Transparent;
+			this.tableLayoutPanel1.ColumnCount = 1;
+			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+			this.tableLayoutPanel1.Controls.Add(this.crawlResultView1, 0, 1);
+			this.tableLayoutPanel1.Controls.Add(this.genreTabControl1, 0, 0);
+			this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+			this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+			this.tableLayoutPanel1.RowCount = 2;
+			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+			this.tableLayoutPanel1.Size = new System.Drawing.Size(600, 345);
+			this.tableLayoutPanel1.TabIndex = 0;
 			// 
 			// crawlResultView1
 			// 
 			this.crawlResultView1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.crawlResultView1.Location = new System.Drawing.Point(0, 0);
+			this.crawlResultView1.Location = new System.Drawing.Point(0, 20);
 			this.crawlResultView1.Margin = new System.Windows.Forms.Padding(0);
 			this.crawlResultView1.Name = "crawlResultView1";
-			this.crawlResultView1.Size = new System.Drawing.Size(643, 325);
+			this.crawlResultView1.Size = new System.Drawing.Size(600, 325);
 			this.crawlResultView1.TabIndex = 1;
 			this.crawlResultView1.ContentSelectionChanged += new System.EventHandler<Yusen.GExplorer.ContentSelectionChangedEventArgs>(this.crawlResultView1_ContentSelectionChanged);
+			// 
+			// genreTabControl1
+			// 
+			this.genreTabControl1.Appearance = System.Windows.Forms.TabAppearance.FlatButtons;
+			this.genreTabControl1.Controls.Add(this.tabPage1);
+			this.genreTabControl1.Controls.Add(this.tabPage2);
+			this.genreTabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.genreTabControl1.DrawMode = System.Windows.Forms.TabDrawMode.OwnerDrawFixed;
+			this.genreTabControl1.HotTrack = true;
+			this.genreTabControl1.ItemSize = new System.Drawing.Size(65, 20);
+			this.genreTabControl1.Location = new System.Drawing.Point(0, 0);
+			this.genreTabControl1.Margin = new System.Windows.Forms.Padding(0);
+			this.genreTabControl1.Multiline = true;
+			this.genreTabControl1.Name = "genreTabControl1";
+			this.genreTabControl1.SelectedGenre = null;
+			this.genreTabControl1.SelectedIndex = 0;
+			this.genreTabControl1.ShowToolTips = true;
+			this.genreTabControl1.Size = new System.Drawing.Size(600, 20);
+			this.genreTabControl1.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
+			this.genreTabControl1.TabIndex = 0;
+			this.genreTabControl1.GenreSelected += new System.EventHandler<Yusen.GExplorer.GenreTabSelectedEventArgs>(this.genreTabControl1_GenreSelected);
+			this.genreTabControl1.RequiredHeightChanged += new System.EventHandler(this.genreTabControl1_RequiredHeightChanged);
+			// 
+			// tabPage1
+			// 
+			this.tabPage1.Location = new System.Drawing.Point(4, 24);
+			this.tabPage1.Name = "tabPage1";
+			this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+			this.tabPage1.Size = new System.Drawing.Size(592, 0);
+			this.tabPage1.TabIndex = 0;
+			this.tabPage1.Text = "tabPage1";
+			// 
+			// tabPage2
+			// 
+			this.tabPage2.Location = new System.Drawing.Point(4, 24);
+			this.tabPage2.Name = "tabPage2";
+			this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+			this.tabPage2.Size = new System.Drawing.Size(592, -8);
+			this.tabPage2.TabIndex = 1;
+			this.tabPage2.Text = "tabPage2";
 			// 
 			// playListView1
 			// 
 			this.playListView1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.playListView1.Location = new System.Drawing.Point(0, 0);
 			this.playListView1.Name = "playListView1";
-			this.playListView1.Size = new System.Drawing.Size(643, 195);
+			this.playListView1.Size = new System.Drawing.Size(600, 215);
 			this.playListView1.TabIndex = 0;
 			this.playListView1.ContentSelectionChanged += new System.EventHandler<Yusen.GExplorer.ContentSelectionChangedEventArgs>(this.playListView1_ContentSelectionChanged);
 			// 
@@ -257,7 +259,7 @@
 			this.contentDetailView1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.contentDetailView1.Location = new System.Drawing.Point(0, 0);
 			this.contentDetailView1.Name = "contentDetailView1";
-			this.contentDetailView1.Size = new System.Drawing.Size(260, 524);
+			this.contentDetailView1.Size = new System.Drawing.Size(268, 564);
 			this.contentDetailView1.TabIndex = 0;
 			this.contentDetailView1.ImageLoadError += new System.EventHandler<Yusen.GExplorer.ImageLoadErrorEventArgs>(this.contentDetailView1_ImageLoadError);
 			// 
@@ -277,7 +279,7 @@
 			this.menuStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
-			this.menuStrip1.Size = new System.Drawing.Size(907, 20);
+			this.menuStrip1.Size = new System.Drawing.Size(872, 20);
 			this.menuStrip1.TabIndex = 0;
 			this.menuStrip1.Text = "menuStrip1";
 			// 
@@ -598,10 +600,9 @@
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(907, 586);
+			this.ClientSize = new System.Drawing.Size(872, 606);
 			this.Controls.Add(this.toolStripContainer1);
 			this.MainMenuStrip = this.menuStrip1;
-			this.MinimumSize = new System.Drawing.Size(300, 200);
 			this.Name = "MainForm";
 			this.Text = "MainForm";
 			this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
@@ -616,14 +617,14 @@
 			this.toolStripContainer1.TopToolStripPanel.PerformLayout();
 			this.toolStripContainer1.ResumeLayout(false);
 			this.toolStripContainer1.PerformLayout();
-			this.tableLayoutPanel1.ResumeLayout(false);
-			this.genreTabControl1.ResumeLayout(false);
 			this.scListsAndDetail.Panel1.ResumeLayout(false);
 			this.scListsAndDetail.Panel2.ResumeLayout(false);
 			this.scListsAndDetail.ResumeLayout(false);
 			this.scLists.Panel1.ResumeLayout(false);
 			this.scLists.Panel2.ResumeLayout(false);
 			this.scLists.ResumeLayout(false);
+			this.tableLayoutPanel1.ResumeLayout(false);
+			this.genreTabControl1.ResumeLayout(false);
 			this.menuStrip1.ResumeLayout(false);
 			this.menuStrip1.PerformLayout();
 			this.ResumeLayout(false);
@@ -639,7 +640,6 @@
 		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
 		private System.Windows.Forms.ToolStripProgressBar tspbCrawl;
 		private System.Windows.Forms.ToolStripStatusLabel tsslCrawl;
-		private System.Windows.Forms.SplitContainer scListsAndDetail;
 		private GenreTabControl genreTabControl1;
 		private System.Windows.Forms.TabPage tabPage1;
 		private System.Windows.Forms.TabPage tabPage2;
@@ -687,6 +687,7 @@
 		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem4;
 		private System.Windows.Forms.ToolStripMenuItem tsmiSearchCache;
 		private System.Windows.Forms.ToolStripMenuItem tsmiSearchLivedoorGyaO;
+		private System.Windows.Forms.SplitContainer scListsAndDetail;
 
 
 	}

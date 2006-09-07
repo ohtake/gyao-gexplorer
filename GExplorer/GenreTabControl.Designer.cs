@@ -30,12 +30,17 @@
 			this.Appearance = System.Windows.Forms.TabAppearance.FlatButtons;
 			this.DrawMode = System.Windows.Forms.TabDrawMode.OwnerDrawFixed;
 			this.HotTrack = true;
+			this.ItemSize = new System.Drawing.Size(60, 20);
+			this.Multiline = true;
 			this.ShowToolTips = true;
+			this.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
 			this.DoubleClick += new System.EventHandler(this.GenreTabControl_DoubleClick);
+			this.Layout += new System.Windows.Forms.LayoutEventHandler(this.GenreTabControl_Layout);
 			this.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.GenreTabControl_DrawItem);
 			this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.GenreTabControl_MouseClick);
 			this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.GenreTabControl_KeyUp);
 			this.SelectedIndexChanged += new System.EventHandler(this.GenreTabControl_SelectedIndexChanged);
+			this.SizeChanged += new System.EventHandler(this.GenreTabControl_SizeChanged);
 			this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.GenreTabControl_KeyDown);
 			this.ResumeLayout(false);
 

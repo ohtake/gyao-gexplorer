@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 
 namespace Yusen.GExplorer{
 	sealed class Migemo : IDisposable{
+#if false
 		private enum DictionaryId{
 			Invalid		= 0,
 			Migemo		= 1,
@@ -12,7 +13,8 @@ namespace Yusen.GExplorer{
 			HiraToKata	= 3,
 			HanToZen	= 4,
 		}
-		private enum OperatorIndex{
+#endif
+		private enum OperatorIndex : int{
 			Or			= 0,
 			NestIn		= 1,
 			NestOut		= 2,
@@ -22,19 +24,19 @@ namespace Yusen.GExplorer{
 		}
 
 		[DllImport("migemo.dll", EntryPoint="migemo_open")]
-		private static extern IntPtr MigemoOpen(string filename);
+		private static extern IntPtr MigemoOpen([In] string filename);
 		[DllImport("migemo.dll", EntryPoint="migemo_close")]
 		private static extern void MigemoClose(IntPtr migemoObj);
 		
 		[DllImport("migemo.dll", EntryPoint="migemo_query")]
-		private static extern StringBuilder MigemoQuery(IntPtr migemoObj, string query);
+		private static extern IntPtr MigemoQuery(IntPtr migemoObj, IntPtr query);
 		[DllImport("migemo.dll", EntryPoint="migemo_release")]
-		private static extern void MigemoRelease(IntPtr migemoObj, [In] StringBuilder answer);
+		private static extern void MigemoRelease(IntPtr migemoObj, IntPtr answer);
 		
 		[DllImport("migemo.dll", EntryPoint="migemo_is_enable")]
 		private static extern bool MigemoIsEnable(IntPtr migemoObj);
 		[DllImport("migemo.dll", EntryPoint="migemo_set_operator")]
-		private static extern int MigemoSetOperator(IntPtr migemoObj, OperatorIndex opIndex, string opString);
+		private static extern int MigemoSetOperator(IntPtr migemoObj, OperatorIndex opIndex, [In] string opString);
 
 		private IntPtr migemoObj = IntPtr.Zero;
 
@@ -55,20 +57,21 @@ namespace Yusen.GExplorer{
 		}
 
 		public string Query(string query) {
-			StringBuilder ans = null;
+			IntPtr qry = IntPtr.Zero;
+			IntPtr ans = IntPtr.Zero;
 			string ansStr = string.Empty;
 			try {
-				ans = Migemo.MigemoQuery(this.migemoObj, query);
-				if(null != ans) {
-					ansStr = ans.ToString();
+				qry = Marshal.StringToCoTaskMemAnsi(query);
+				ans = Migemo.MigemoQuery(this.migemoObj, qry);
+				if(IntPtr.Zero != ans) {
+					ansStr = Marshal.PtrToStringAnsi(ans);
 				}
 			} finally {
-				if(null != ans) {
-					try {
-						Migemo.MigemoRelease(this.migemoObj, ans);
-					} catch(AccessViolationException) {
-						//環境によってはおきることがあるらしい
-					}
+				if (IntPtr.Zero != qry) {
+					Marshal.FreeCoTaskMem(qry);
+				}
+				if(IntPtr.Zero != ans) {
+					Migemo.MigemoRelease(this.migemoObj, ans);
 				}
 			}
 			return ansStr;
@@ -93,7 +96,7 @@ namespace Yusen.GExplorer{
 		}
 	}
 
-	class MigemoException : Exception {
+	sealed class MigemoException : Exception {
 		public MigemoException(string message)
 			: base(message) {
 		}

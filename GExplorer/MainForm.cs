@@ -605,5 +605,10 @@ namespace Yusen.GExplorer {
 			get { return this.settings; }
 		}
 		#endregion
+
+		private void genreTabControl1_RequiredHeightChanged(object sender, EventArgs e) {
+			this.tableLayoutPanel1.RowStyles[0] = new RowStyle(SizeType.Absolute, this.genreTabControl1.RequiredHeight);
+			this.tableLayoutPanel1.ResumeLayout(false);
+		}
 	}
 }
