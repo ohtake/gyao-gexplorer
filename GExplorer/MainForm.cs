@@ -376,7 +376,7 @@ namespace Yusen.GExplorer {
 		}
 		private void SelectGenre(GGenre genre) {
 			CrawlResult result;
-			if (Cache.Instance.ResultsDictionary.TryGetValue(genre, out result)) {
+			if (null != genre && Cache.Instance.ResultsDictionary.TryGetValue(genre, out result)) {
 				this.ViewCrawlResult(result);
 			} else {
 				this.ViewCrawlResult(null);
@@ -607,7 +607,7 @@ namespace Yusen.GExplorer {
 		#endregion
 
 		private void genreTabControl1_RequiredHeightChanged(object sender, EventArgs e) {
-			this.tableLayoutPanel1.RowStyles[0] = new RowStyle(SizeType.Absolute, this.genreTabControl1.RequiredHeight);
+			this.tableLayoutPanel1.RowStyles[this.tableLayoutPanel1.GetRow(this.genreTabControl1)].Height = this.genreTabControl1.RequiredHeight;
 			this.tableLayoutPanel1.ResumeLayout(false);
 		}
 	}

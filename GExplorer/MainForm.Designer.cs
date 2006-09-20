@@ -174,7 +174,7 @@
 			// 
 			this.scLists.Panel2.Controls.Add(this.playListView1);
 			this.scLists.Size = new System.Drawing.Size(600, 564);
-			this.scLists.SplitterDistance = 345;
+			this.scLists.SplitterDistance = 373;
 			this.scLists.TabIndex = 2;
 			this.scLists.Text = "splitContainer2";
 			// 
@@ -191,7 +191,7 @@
 			this.tableLayoutPanel1.RowCount = 2;
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-			this.tableLayoutPanel1.Size = new System.Drawing.Size(600, 345);
+			this.tableLayoutPanel1.Size = new System.Drawing.Size(600, 373);
 			this.tableLayoutPanel1.TabIndex = 0;
 			// 
 			// crawlResultView1
@@ -200,7 +200,7 @@
 			this.crawlResultView1.Location = new System.Drawing.Point(0, 20);
 			this.crawlResultView1.Margin = new System.Windows.Forms.Padding(0);
 			this.crawlResultView1.Name = "crawlResultView1";
-			this.crawlResultView1.Size = new System.Drawing.Size(600, 325);
+			this.crawlResultView1.Size = new System.Drawing.Size(600, 353);
 			this.crawlResultView1.TabIndex = 1;
 			this.crawlResultView1.ContentSelectionChanged += new System.EventHandler<Yusen.GExplorer.ContentSelectionChangedEventArgs>(this.crawlResultView1_ContentSelectionChanged);
 			// 
@@ -249,7 +249,7 @@
 			this.playListView1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.playListView1.Location = new System.Drawing.Point(0, 0);
 			this.playListView1.Name = "playListView1";
-			this.playListView1.Size = new System.Drawing.Size(600, 215);
+			this.playListView1.Size = new System.Drawing.Size(600, 187);
 			this.playListView1.TabIndex = 0;
 			this.playListView1.ContentSelectionChanged += new System.EventHandler<Yusen.GExplorer.ContentSelectionChangedEventArgs>(this.playListView1_ContentSelectionChanged);
 			// 

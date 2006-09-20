@@ -90,15 +90,19 @@ namespace Yusen.GExplorer {
 					}
 				}
 
-				base.DropDownItems.Clear();
+				//base.DropDownItems.Clear();
 				if (items.Count > 0) {
-					base.DropDownItems.AddRange(items.ToArray());
 					this.hasAvaibaleSubmenus = true;
+					foreach (ToolStripItem tsi in base.DropDownItems) {
+						items.Add(tsi);
+					}
+					base.DropDownItems.Clear();
+					base.DropDownItems.AddRange(items.ToArray());
 				} else {
+					this.hasAvaibaleSubmenus = false;
 					ToolStripMenuItem tsmi = new ToolStripMenuItem("(なし)");
 					tsmi.Enabled = false;
-					base.DropDownItems.Add(tsmi);
-					this.hasAvaibaleSubmenus = false;
+					base.DropDownItems.Insert(0, tsmi);
 				}
 			}
 		}

@@ -160,7 +160,18 @@ namespace Yusen.GExplorer {
 			gtp = new GenreTabPage(genre);
 			gtp.CrawlRequested += new EventHandler(gtp_ReloadRequested);
 			gtp.ResultRemoved += new EventHandler(gtp_ResultRemoved);
+			this.SetTabText(gtp);
 			base.TabPages.Add(gtp);
+		}
+		public bool ContainsGenre(GGenre genre) {
+			foreach (TabPage tp in base.TabPages) {
+				GenreTabPage gtp = tp as GenreTabPage;
+				if (null == gtp) continue;
+				if (gtp.Genre.Equals(genre)) {
+					return true;
+				}
+			}
+			return false;
 		}
 		
 		public GGenre SelectedGenre {
@@ -202,7 +213,7 @@ namespace Yusen.GExplorer {
 						}
 					}
 					break;
-				//タブを閉じる隠し機能はバグいっぽいから廃止
+				//やっぱりもう一度コメントアウト
 				/*case MouseButtons.Middle:
 					for (int i = 0; i < base.TabCount; i++) {
 						Rectangle tabRect = base.GetTabRect(i);
@@ -264,12 +275,16 @@ namespace Yusen.GExplorer {
 			foreach (TabPage tp in base.TabPages) {
 				GenreTabPage gtp = tp as GenreTabPage;
 				if (null == gtp) continue;
-				string name = gtp.Genre.GenreName;
-				if (this.MaxNameLength >= 0 && name.Length > this.MaxNameLength) {
-					gtp.Text = name.Substring(0, this.MaxNameLength) + "...";
-				} else {
-					gtp.Text = name;
-				}
+				this.SetTabText(gtp);
+			}
+			this.Invalidate();
+		}
+		private void SetTabText(GenreTabPage gtp) {
+			string name = gtp.Genre.GenreName;
+			if (this.MaxNameLength >= 0 && name.Length > this.MaxNameLength) {
+				gtp.Text = name.Substring(0, this.MaxNameLength) + "...";
+			} else {
+				gtp.Text = name;
 			}
 		}
 
@@ -291,7 +306,7 @@ namespace Yusen.GExplorer {
 			Rectangle textRect = new Rectangle(e.Bounds.Left + 2, e.Bounds.Top + 2, e.Bounds.Width, e.Bounds.Height);
 			StringFormat strFormat = new StringFormat();
 			strFormat.FormatFlags = StringFormatFlags.NoWrap;
-
+			
 			if (e.State == DrawItemState.Selected) {
 				using (SolidBrush brushGenreColor = new SolidBrush(genreColor))
 				using (SolidBrush brushWhite = new SolidBrush(Color.White)) {
@@ -307,7 +322,7 @@ namespace Yusen.GExplorer {
 				}
 			}
 		}
-
+		
 		private void ShowContextMenuOnSelectedTag() {
 			int selIndex = base.SelectedIndex;
 			GenreTabPage gtp = base.TabPages[selIndex] as GenreTabPage;

@@ -466,6 +466,8 @@ namespace Yusen.GExplorer {
 					this.wmpMain.currentPlaylist.appendItem(plist.get_Item(i));
 				}
 			}
+			
+			this.currentAttribs.Clear();
 			this.UpdateStatusbarText();
 
 			Match matchBannerKeyValue = PlayerForm.regexBannerKeyValue.Match(body);
