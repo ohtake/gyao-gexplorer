@@ -343,12 +343,12 @@
 			// chDeadline
 			// 
 			this.chDeadline.Text = "配信期限";
-			this.chDeadline.Width = 68;
+			this.chDeadline.Width = 80;
 			// 
 			// chSummary
 			// 
 			this.chSummary.Text = "サマリー";
-			this.chSummary.Width = 135;
+			this.chSummary.Width = 125;
 			// 
 			// chAttribs
 			// 

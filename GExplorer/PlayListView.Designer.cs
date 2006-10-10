@@ -150,7 +150,7 @@
 			// chDeadline
 			// 
 			this.chDeadline.Text = "配信期限";
-			this.chDeadline.Width = 76;
+			this.chDeadline.Width = 80;
 			// 
 			// chComment
 			// 

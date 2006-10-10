@@ -874,11 +874,15 @@ namespace Yusen.GExplorer {
 					if (this.IsLastEntry) {
 						if (this.CurrentChapter.HasValue) {//チャプタモード
 							if (PlayerForm.LastCallTitle.Equals(this.wmpMain.currentMedia.name)) {
-								//次のコンテンツに推移
-								if (this.settings.RemovePlayedContentEnabled) {
-									this.tsmiNextContentWithDelete.PerformClick();
-								} else {
-									this.tsmiNextContent.PerformClick();
+								//プレイリスト内ならば次のコンテンツに推移
+								if (PlayList.Instance.Contains(this.CurrentContent)) {
+									if (this.settings.RemovePlayedContentEnabled) {
+										this.tsmiNextContentWithDelete.PerformClick();
+									} else {
+										this.tsmiNextContent.PerformClick();
+									}
+								} else {//プレイリスト外なら再生終了
+									this.CurrentContent = null;
 								}
 							} else {
 								//次のチャプタ
