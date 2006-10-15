@@ -309,10 +309,11 @@ namespace Yusen.GExplorer {
 			public void DownloadToFile(Uri uri, string filename) {
 				HttpWebRequest req = WebRequest.Create(uri) as HttpWebRequest;
 				req.CookieContainer = this.cc;
-
+				
 				using (HttpWebResponse res = req.GetResponse() as HttpWebResponse)
 				using (Stream stream = res.GetResponseStream())
 				using (FileStream dest = File.OpenWrite(filename)){
+					dest.SetLength(0);
 					byte[] buf = new byte[1024];
 					while(true){
 						int len = stream.Read(buf, 0, buf.Length);
@@ -874,28 +875,25 @@ namespace Yusen.GExplorer {
 					if (this.IsLastEntry) {
 						if (this.CurrentChapter.HasValue) {//チャプタモード
 							if (PlayerForm.LastCallTitle.Equals(this.wmpMain.currentMedia.name)) {
-								//プレイリスト内ならば次のコンテンツに推移
-								if (PlayList.Instance.Contains(this.CurrentContent)) {
-									if (this.settings.RemovePlayedContentEnabled) {
-										this.tsmiNextContentWithDelete.PerformClick();
-									} else {
-										this.tsmiNextContent.PerformClick();
-									}
-								} else {//プレイリスト外なら再生終了
-									this.CurrentContent = null;
-								}
+								goto endOfCont;
 							} else {
 								//次のチャプタ
 								this.CurrentChapter++;
 							}
 						} else {
-							//次のコンテンツに推移
-							if (this.settings.RemovePlayedContentEnabled) {
-								this.tsmiNextContentWithDelete.PerformClick();
-							} else {
-								this.tsmiNextContent.PerformClick();
-							}
+							goto endOfCont;
 						}
+					}
+					break;
+				endOfCont:
+					if (PlayList.Instance.Contains(this.CurrentContent)) {//プレイリストで次
+						if (this.settings.RemovePlayedContentEnabled) {
+							this.tsmiNextContentWithDelete.PerformClick();
+						} else {
+							this.tsmiNextContent.PerformClick();
+						}
+					} else {//プレイリスト外なら再生終了
+						this.CurrentContent = null;
 					}
 					break;
 			}

@@ -580,7 +580,6 @@
 			// 
 			// timerCrawlProgress
 			// 
-			this.timerCrawlProgress.Interval = 50;
 			this.timerCrawlProgress.Tick += new System.EventHandler(this.timerCrawlProgress_Tick);
 			// 
 			// timerClearStatusText
