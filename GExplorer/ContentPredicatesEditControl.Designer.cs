@@ -38,7 +38,7 @@
 			this.btnAdd = new System.Windows.Forms.Button();
 			this.grpList = new System.Windows.Forms.GroupBox();
 			this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
-			this.listview1 = new Yusen.GExplorer.DoubleBufferedListView();
+			this.listview1 = new Yusen.GExplorer.UserInterfaces.DoubleBufferedListView();
 			this.chComment = new System.Windows.Forms.ColumnHeader();
 			this.chSubject = new System.Windows.Forms.ColumnHeader();
 			this.chPredicate = new System.Windows.Forms.ColumnHeader();
@@ -352,7 +352,7 @@
 		private System.Windows.Forms.Button btnAdd;
 		private System.Windows.Forms.GroupBox grpList;
 		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
-		private DoubleBufferedListView listview1;
+		private Yusen.GExplorer.UserInterfaces.DoubleBufferedListView listview1;
 		private System.Windows.Forms.ColumnHeader chComment;
 		private System.Windows.Forms.ColumnHeader chSubject;
 		private System.Windows.Forms.ColumnHeader chPredicate;

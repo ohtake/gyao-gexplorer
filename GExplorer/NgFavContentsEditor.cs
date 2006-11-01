@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Windows.Forms;
 using System.Reflection;
 using System.Xml.Serialization;
+using Yusen.GExplorer.OldApp;
 
 namespace Yusen.GExplorer {
 	public sealed partial class NgFavContentsEditor : FormSettingsBase, IFormWithNewSettings<NgFavContentsEditor.NgFavContentsEditorSettings> {

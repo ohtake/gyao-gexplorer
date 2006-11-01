@@ -25,28 +25,11 @@
 		private void InitializeComponent() {
 			this.components = new System.ComponentModel.Container();
 			this.cmsContent = new System.Windows.Forms.ContextMenuStrip(this.components);
-			this.tsmiAdd = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiAddWithComment = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiPlay = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
-			this.tsmiBroseDetail = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiPlayWithBrowser = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiCopyName = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiCopyDetailUri = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiCopyNameAndDetailUri = new System.Windows.Forms.ToolStripMenuItem();
-			this.tscapmiCopyProperty = new Yusen.GExplorer.ToolStripCAPropertyMenuItem();
-			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-			this.tsmiCatalog = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiCatalogNormal = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiCatalogImageSmall = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiCatalogImageLarge = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsnfmiNgFav = new Yusen.GExplorer.ToolStripNgFavMenuItem();
-			this.tsucmiCommandRoot = new Yusen.GExplorer.ToolStripUserCommandMenuItem();
-			this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
-			this.tsmiRemoveCache = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
-			this.listView1 = new Yusen.GExplorer.DoubleBufferedListView();
+			this.listView1 = new Yusen.GExplorer.UserInterfaces.DoubleBufferedListView();
 			this.chId = new System.Windows.Forms.ColumnHeader();
 			this.chTitle = new System.Windows.Forms.ColumnHeader();
 			this.chSeriesNumber = new System.Windows.Forms.ColumnHeader();
@@ -86,8 +69,8 @@
 			this.tslRegex = new System.Windows.Forms.ToolStripLabel();
 			this.tstbAnswer = new System.Windows.Forms.ToolStripTextBox();
 			this.timerFilter = new System.Windows.Forms.Timer(this.components);
-			this.inputBoxDialog1 = new Yusen.GExplorer.InputBoxDialog();
-			this.exceptionDialog1 = new Yusen.GExplorer.ExceptionDialog();
+			this.inputBoxDialog1 = new Yusen.GExplorer.UserInterfaces.InputBoxDialog();
+			this.exceptionDialog1 = new Yusen.GExplorer.UserInterfaces.ExceptionDialog();
 			this.cmsContent.SuspendLayout();
 			this.toolStripContainer1.ContentPanel.SuspendLayout();
 			this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
@@ -99,90 +82,24 @@
 			// cmsContent
 			// 
 			this.cmsContent.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiAdd,
-            this.tsmiAddWithComment,
-            this.tsmiPlay,
-            this.toolStripSeparator6,
-            this.tsmiBroseDetail,
-            this.tsmiPlayWithBrowser,
-            this.toolStripSeparator1,
             this.tsmiCopyName,
             this.tsmiCopyDetailUri,
-            this.tsmiCopyNameAndDetailUri,
-            this.tscapmiCopyProperty,
-            this.toolStripSeparator2,
-            this.tsmiCatalog,
-            this.tsnfmiNgFav,
-            this.tsucmiCommandRoot,
-            this.toolStripMenuItem4,
-            this.tsmiRemoveCache});
+            this.tsmiCopyNameAndDetailUri});
 			this.cmsContent.Name = "contextMenuStrip1";
-			this.cmsContent.Size = new System.Drawing.Size(215, 314);
+			this.cmsContent.Size = new System.Drawing.Size(212, 92);
 			this.cmsContent.Opening += new System.ComponentModel.CancelEventHandler(this.cmsContent_Opening);
-			// 
-			// tsmiAdd
-			// 
-			this.tsmiAdd.Image = global::Yusen.GExplorer.Properties.Resources.BuilderDialog_add;
-			this.tsmiAdd.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.tsmiAdd.Name = "tsmiAdd";
-			this.tsmiAdd.Size = new System.Drawing.Size(214, 22);
-			this.tsmiAdd.Text = "プレイリストに追加(&A)";
-			this.tsmiAdd.Click += new System.EventHandler(this.tsmiAdd_Click);
-			// 
-			// tsmiAddWithComment
-			// 
-			this.tsmiAddWithComment.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.tsmiAddWithComment.Name = "tsmiAddWithComment";
-			this.tsmiAddWithComment.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.L)));
-			this.tsmiAddWithComment.Size = new System.Drawing.Size(214, 22);
-			this.tsmiAddWithComment.Text = "コメント付きで追加(&L)...";
-			this.tsmiAddWithComment.Click += new System.EventHandler(this.tsmiAddWithComment_Click);
-			// 
-			// tsmiPlay
-			// 
-			this.tsmiPlay.Image = global::Yusen.GExplorer.Properties.Resources.Play;
-			this.tsmiPlay.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.tsmiPlay.Name = "tsmiPlay";
-			this.tsmiPlay.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P)));
-			this.tsmiPlay.Size = new System.Drawing.Size(214, 22);
-			this.tsmiPlay.Text = "追加せずに再生(&P)";
-			this.tsmiPlay.Click += new System.EventHandler(this.tsmiPlay_Click);
-			// 
-			// toolStripSeparator6
-			// 
-			this.toolStripSeparator6.Name = "toolStripSeparator6";
-			this.toolStripSeparator6.Size = new System.Drawing.Size(211, 6);
-			// 
-			// tsmiBroseDetail
-			// 
-			this.tsmiBroseDetail.Name = "tsmiBroseDetail";
-			this.tsmiBroseDetail.Size = new System.Drawing.Size(214, 22);
-			this.tsmiBroseDetail.Text = "ウェブブラウザで詳細ページ(&D)";
-			this.tsmiBroseDetail.Click += new System.EventHandler(this.tsmiBroseDetail_Click);
-			// 
-			// tsmiPlayWithBrowser
-			// 
-			this.tsmiPlayWithBrowser.Name = "tsmiPlayWithBrowser";
-			this.tsmiPlayWithBrowser.Size = new System.Drawing.Size(214, 22);
-			this.tsmiPlayWithBrowser.Text = "ウェブブラウザで再生ページ(&V)";
-			this.tsmiPlayWithBrowser.Click += new System.EventHandler(this.tsmiPlayWithBrowser_Click);
-			// 
-			// toolStripSeparator1
-			// 
-			this.toolStripSeparator1.Name = "toolStripSeparator1";
-			this.toolStripSeparator1.Size = new System.Drawing.Size(211, 6);
 			// 
 			// tsmiCopyName
 			// 
 			this.tsmiCopyName.Name = "tsmiCopyName";
-			this.tsmiCopyName.Size = new System.Drawing.Size(214, 22);
+			this.tsmiCopyName.Size = new System.Drawing.Size(211, 22);
 			this.tsmiCopyName.Text = "名前をコピー(&N)";
 			this.tsmiCopyName.Click += new System.EventHandler(this.tsmiCopyName_Click);
 			// 
 			// tsmiCopyDetailUri
 			// 
 			this.tsmiCopyDetailUri.Name = "tsmiCopyDetailUri";
-			this.tsmiCopyDetailUri.Size = new System.Drawing.Size(214, 22);
+			this.tsmiCopyDetailUri.Size = new System.Drawing.Size(211, 22);
 			this.tsmiCopyDetailUri.Text = "URIをコピー(&U)";
 			this.tsmiCopyDetailUri.Click += new System.EventHandler(this.tsmiCopyDetailUri_Click);
 			// 
@@ -192,80 +109,9 @@
 			this.tsmiCopyNameAndDetailUri.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tsmiCopyNameAndDetailUri.Name = "tsmiCopyNameAndDetailUri";
 			this.tsmiCopyNameAndDetailUri.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
-			this.tsmiCopyNameAndDetailUri.Size = new System.Drawing.Size(214, 22);
+			this.tsmiCopyNameAndDetailUri.Size = new System.Drawing.Size(211, 22);
 			this.tsmiCopyNameAndDetailUri.Text = "名前とURIをコピー(&B)";
 			this.tsmiCopyNameAndDetailUri.Click += new System.EventHandler(this.tsmiCopyNameAndDetailUri_Click);
-			// 
-			// tscapmiCopyProperty
-			// 
-			this.tscapmiCopyProperty.Name = "tscapmiCopyProperty";
-			this.tscapmiCopyProperty.Size = new System.Drawing.Size(214, 22);
-			this.tscapmiCopyProperty.Text = "その他のコピー(&O)";
-			this.tscapmiCopyProperty.PropertySelected += new System.EventHandler<Yusen.GExplorer.CAPropertySelectedEventArgs>(this.tscapmiCopyProperty_PropertySelected);
-			// 
-			// toolStripSeparator2
-			// 
-			this.toolStripSeparator2.Name = "toolStripSeparator2";
-			this.toolStripSeparator2.Size = new System.Drawing.Size(211, 6);
-			// 
-			// tsmiCatalog
-			// 
-			this.tsmiCatalog.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiCatalogNormal,
-            this.tsmiCatalogImageSmall,
-            this.tsmiCatalogImageLarge});
-			this.tsmiCatalog.Name = "tsmiCatalog";
-			this.tsmiCatalog.Size = new System.Drawing.Size(214, 22);
-			this.tsmiCatalog.Text = "カタログ表示(&C)";
-			// 
-			// tsmiCatalogNormal
-			// 
-			this.tsmiCatalogNormal.Name = "tsmiCatalogNormal";
-			this.tsmiCatalogNormal.Size = new System.Drawing.Size(179, 22);
-			this.tsmiCatalogNormal.Text = "サムネイルとテキスト(&N)";
-			this.tsmiCatalogNormal.Click += new System.EventHandler(this.tsmiCatalogNormal_Click);
-			// 
-			// tsmiCatalogImageSmall
-			// 
-			this.tsmiCatalogImageSmall.Name = "tsmiCatalogImageSmall";
-			this.tsmiCatalogImageSmall.Size = new System.Drawing.Size(179, 22);
-			this.tsmiCatalogImageSmall.Text = "画像小のみ(&S)";
-			this.tsmiCatalogImageSmall.Click += new System.EventHandler(this.tsmiCatalogImageSmall_Click);
-			// 
-			// tsmiCatalogImageLarge
-			// 
-			this.tsmiCatalogImageLarge.Name = "tsmiCatalogImageLarge";
-			this.tsmiCatalogImageLarge.Size = new System.Drawing.Size(179, 22);
-			this.tsmiCatalogImageLarge.Text = "画像大のみ(&L)";
-			this.tsmiCatalogImageLarge.Click += new System.EventHandler(this.tsmiCatalogImageLarge_Click);
-			// 
-			// tsnfmiNgFav
-			// 
-			this.tsnfmiNgFav.Name = "tsnfmiNgFav";
-			this.tsnfmiNgFav.Size = new System.Drawing.Size(214, 22);
-			this.tsnfmiNgFav.Text = "NG/FAV関連(&G)";
-			this.tsnfmiNgFav.SubmenuSelected += new System.EventHandler<Yusen.GExplorer.ContentSelectionRequiredEventArgs>(this.tsnfmiNgFav_SubmenuSelected);
-			// 
-			// tsucmiCommandRoot
-			// 
-			this.tsucmiCommandRoot.Name = "tsucmiCommandRoot";
-			this.tsucmiCommandRoot.Size = new System.Drawing.Size(214, 22);
-			this.tsucmiCommandRoot.Text = "外部コマンド(&E)";
-			this.tsucmiCommandRoot.UserCommandSelected += new System.EventHandler<Yusen.GExplorer.UserCommandSelectedEventArgs>(this.tsucmiCommandRoot_UserCommandSelected);
-			// 
-			// toolStripMenuItem4
-			// 
-			this.toolStripMenuItem4.Name = "toolStripMenuItem4";
-			this.toolStripMenuItem4.Size = new System.Drawing.Size(211, 6);
-			// 
-			// tsmiRemoveCache
-			// 
-			this.tsmiRemoveCache.Image = global::Yusen.GExplorer.Properties.Resources.Delete;
-			this.tsmiRemoveCache.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.tsmiRemoveCache.Name = "tsmiRemoveCache";
-			this.tsmiRemoveCache.Size = new System.Drawing.Size(214, 22);
-			this.tsmiRemoveCache.Text = "キャッシュを削除(&R)...";
-			this.tsmiRemoveCache.Click += new System.EventHandler(this.tsmiRemoveCache_Click);
 			// 
 			// toolStripContainer1
 			// 
@@ -652,7 +498,7 @@
 
 		#endregion
 
-		private Yusen.GExplorer.DoubleBufferedListView listView1;
+		private Yusen.GExplorer.UserInterfaces.DoubleBufferedListView listView1;
 		private System.Windows.Forms.ColumnHeader chId;
 		private System.Windows.Forms.ColumnHeader chTitle;
 		private System.Windows.Forms.ColumnHeader chSeriesNumber;
@@ -660,20 +506,13 @@
 		private System.Windows.Forms.ColumnHeader chDuration;
 		private System.Windows.Forms.ColumnHeader chSummary;
 		private System.Windows.Forms.ContextMenuStrip cmsContent;
-		private System.Windows.Forms.ToolStripMenuItem tsmiAdd;
-		private System.Windows.Forms.ToolStripMenuItem tsmiPlayWithBrowser;
-		private System.Windows.Forms.ToolStripMenuItem tsmiBroseDetail;
-		private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
 		private System.Windows.Forms.ToolStripMenuItem tsmiCopyDetailUri;
 		private System.Windows.Forms.ToolStripMenuItem tsmiCopyName;
 		private System.Windows.Forms.ToolStripMenuItem tsmiCopyNameAndDetailUri;
-		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
 		private System.Windows.Forms.ToolStripContainer toolStripContainer1;
 		private System.Windows.Forms.ToolStrip tsMain;
 		private System.Windows.Forms.ToolStripLabel tslTitle;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
-		private System.Windows.Forms.ToolStripMenuItem tsmiPlay;
-		private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
 		private System.Windows.Forms.ToolStrip tsFilter;
 		private System.Windows.Forms.ToolStripTextBox tstbFilter;
 		private System.Windows.Forms.ToolStripButton tsbShowFilter;
@@ -682,11 +521,9 @@
 		private System.Windows.Forms.ToolStripLabel tslNumber;
 		private System.Windows.Forms.ToolStripLabel tslTime;
 		private System.Windows.Forms.ColumnHeader chDeadline;
-		private System.Windows.Forms.ToolStripMenuItem tsmiAddWithComment;
-		private InputBoxDialog inputBoxDialog1;
-		private System.Windows.Forms.ToolStripMenuItem tsmiRemoveCache;
+		private Yusen.GExplorer.UserInterfaces.InputBoxDialog inputBoxDialog1;
 		private System.Windows.Forms.ToolStripDropDownButton tsddbExceptions;
-		private ExceptionDialog exceptionDialog1;
+		private Yusen.GExplorer.UserInterfaces.ExceptionDialog exceptionDialog1;
 		private System.Windows.Forms.ToolStripLabel tslFilter;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator9;
 		private System.Windows.Forms.Timer timerFilter;
@@ -701,15 +538,7 @@
 		private System.Windows.Forms.ToolStripMenuItem tsmiFilterTargetToggleAll;
 		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator13;
-		private System.Windows.Forms.ToolStripMenuItem tsmiCatalog;
-		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem4;
-		private System.Windows.Forms.ToolStripMenuItem tsmiCatalogImageSmall;
-		private System.Windows.Forms.ToolStripMenuItem tsmiCatalogImageLarge;
-		private ToolStripCAPropertyMenuItem tscapmiCopyProperty;
-		private ToolStripUserCommandMenuItem tsucmiCommandRoot;
-		private System.Windows.Forms.ToolStripMenuItem tsmiCatalogNormal;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
-		private ToolStripNgFavMenuItem tsnfmiNgFav;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
 		private System.Windows.Forms.ToolStripLabel tslQuery;
 		private System.Windows.Forms.ToolStripLabel tslRegex;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Reflection;
 using System.Xml.Serialization;
+using Yusen.GExplorer.OldApp;
 
 namespace Yusen.GExplorer {
 	public sealed class ContentPredicate {

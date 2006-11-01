@@ -6,6 +6,7 @@ using Process = System.Diagnostics.Process;
 using System.Text;
 using System.Web;
 using System.Xml.Serialization;
+using Yusen.GExplorer.OldApp;
 
 namespace Yusen.GExplorer {
 	/// <summary>外部コマンド．</summary>

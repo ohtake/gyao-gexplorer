@@ -13,5 +13,6 @@
     <FallbackCulture>en-US</FallbackCulture>
     <VerifyUploadedFiles>true</VerifyUploadedFiles>
     <LastOpenVersion>8.0.50215</LastOpenVersion>
+    <ProjectView>ProjectFiles</ProjectView>
   </PropertyGroup>
 </Project>

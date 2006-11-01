@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.Text;
 using System.Xml.Serialization;
+using Yusen.GExplorer.OldApp;
 
 namespace Yusen.GExplorer {
 	public sealed partial class UserCommandsEditor : FormSettingsBase, IFormWithNewSettings<UserCommandsEditor.UserCommandsEditorSettings> {

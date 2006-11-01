@@ -6,8 +6,10 @@ using System.Drawing;
 using System.Xml.Serialization;
 using System.Text;
 using System.Text.RegularExpressions;
-using Yusen.GCrawler;
+using Yusen.GExplorer.OldCrawler;
 using System.Reflection;
+using Yusen.GExplorer.Utilities;
+using Yusen.GExplorer.OldApp;
 
 namespace Yusen.GExplorer {
 	public sealed partial class CrawlResultView : UserControl, IHasNewSettings<CrawlResultView.CrawlResultViewSettings> {
@@ -412,9 +414,8 @@ namespace Yusen.GExplorer {
 		public CrawlResultView() {
 			InitializeComponent();
 			this.tslTitle.Font = new Font(this.tslTitle.Font, FontStyle.Bold);
-			this.tsmiAdd.Font = new Font(this.tsmiAdd.Font, FontStyle.Bold);
 			this.tsddbFilterTarget.DropDown.Closing += Utility.ToolStripDropDown_CancelClosingOnClick;
-
+			
 			//フィルタの対象のメニューを作成
 			foreach (ColumnHeader ch in this.listView1.Columns) {
 				ToolStripMenuItem tsmi = new ToolStripMenuItem(ch.Text);
@@ -875,12 +876,12 @@ namespace Yusen.GExplorer {
 			}
 		}
 		private void listView1_DoubleClick(object sender, EventArgs e) {
-			this.tsmiAdd.PerformClick();
+			//this.tsmiAdd.PerformClick();
 		}
 		private void listView1_KeyDown(object sender, KeyEventArgs e) {
 			switch (e.KeyCode) {
 				case Keys.Enter:
-					this.tsmiAdd.PerformClick();
+					//this.tsmiAdd.PerformClick();
 					break;
 				case Keys.A:
 					if (Keys.None != (Control.ModifierKeys & Keys.Control)) {
@@ -927,44 +928,6 @@ namespace Yusen.GExplorer {
 			}
 		}
 		#region コンテキストメニューの項目
-		private void tsmiAdd_Click(object sender, EventArgs e) {
-			PlayList.Instance.BeginUpdate();
-			foreach (ContentAdapter cont in this.SelectedContents) {
-				PlayList.Instance.AddIfNotExists(cont);
-			}
-			PlayList.Instance.EndUpdate();
-		}
-		private void tsmiAddWithComment_Click(object sender, EventArgs e) {
-			this.inputBoxDialog1.Title = "コメントを付けてプレイリストに追加";
-			this.inputBoxDialog1.Message = "付加するコメントを入力してください．";
-			this.inputBoxDialog1.Input = string.Empty;
-			switch (this.inputBoxDialog1.ShowDialog()) {
-				case DialogResult.OK:
-					string comment = this.inputBoxDialog1.Input;
-					PlayList.Instance.BeginUpdate();
-					foreach (ContentAdapter cont in this.SelectedContents) {
-						cont.Comment = comment;
-						PlayList.Instance.AddIfNotExists(cont);
-					}
-					PlayList.Instance.EndUpdate();
-					break;
-			}
-		}
-		private void tsmiPlay_Click(object sender, EventArgs e) {
-			foreach (ContentAdapter cont in this.SelectedContents) {
-				PlayerForm.Play(cont);
-			}
-		}
-		private void tsmiPlayWithBrowser_Click(object sender, EventArgs e) {
-			foreach (ContentAdapter cont in this.SelectedContents) {
-				Utility.Browse(cont.PlayerPageUri);
-			}
-		}
-		private void tsmiBroseDetail_Click(object sender, EventArgs e) {
-			foreach (ContentAdapter cont in this.SelectedContents) {
-				Utility.Browse(cont.DetailPageUri);
-			}
-		}
 		private void tsmiCopyName_Click(object sender, EventArgs e) {
 			string text = ContentAdapter.GetNames(this.SelectedContents);
 			if (!string.IsNullOrEmpty(text)) {
@@ -982,54 +945,6 @@ namespace Yusen.GExplorer {
 			if (!string.IsNullOrEmpty(text)) {
 				Clipboard.SetText(text);
 			}
-		}
-		private void tscapmiCopyProperty_PropertySelected(object sender, CAPropertySelectedEventArgs e) {
-			string text = ContentAdapter.GetPropertyValueLines(this.SelectedContents, e.PropertyInfo);
-			if (!string.IsNullOrEmpty(text)) {
-				Clipboard.SetText(text);
-			}
-		}
-		private void tsmiCatalogNormal_Click(object sender, EventArgs e) {
-			BrowserForm.Browse(this.SelectedContents);
-		}
-		private void tsmiCatalogImageSmall_Click(object sender, EventArgs e) {
-			Uri[] images = Array.ConvertAll<ContentAdapter, Uri>(this.SelectedContents, new Converter<ContentAdapter, Uri>(delegate(ContentAdapter input) {
-				return input.ImageSmallUri;
-			}));
-			BrowserForm.Browse(images);
-		}
-		private void tsmiCatalogImageLarge_Click(object sender, EventArgs e) {
-			Uri[] images = Array.ConvertAll<ContentAdapter, Uri>(this.SelectedContents, new Converter<ContentAdapter, Uri>(delegate(ContentAdapter input) {
-				return input.ImageLargeUri;
-			}));
-			BrowserForm.Browse(images);
-		}
-		private void tsnfmiNgFav_SubmenuSelected(object sender, ContentSelectionRequiredEventArgs e) {
-			e.Selection = this.SelectedContents;
-		}
-		private void tsucmiCommandRoot_UserCommandSelected(object sender, UserCommandSelectedEventArgs e) {
-			e.UserCommand.Execute(this.SelectedContents);
-		}
-		private void tsmiRemoveCache_Click(object sender, EventArgs e) {
-			string title = "キャッシュの削除";
-			ContentAdapter[] selConts = this.SelectedContents;
-			switch (MessageBox.Show(string.Format("選択された {0} 個のコンテンツのキャッシュを削除しますか？", selConts.Length), title, MessageBoxButtons.YesNo, MessageBoxIcon.Question)) {
-				case DialogResult.Yes:
-					break;
-				default:
-					return;
-			}
-			int succeeded = 0;
-			int failed = 0;
-			foreach (ContentAdapter cont in selConts) {
-				if (Cache.Instance.ContentCacheController.RemoveCache(cont.ContentKey)) {
-					succeeded++;
-				} else {
-					failed++;
-				}
-			}
-			
-			MessageBox.Show(string.Format("削除成功数: {0}\n削除失敗数: {1}", succeeded, failed), title, MessageBoxButtons.OK, MessageBoxIcon.Information);
 		}
 		#endregion
 		#region フィルタ関連

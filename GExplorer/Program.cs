@@ -1,23 +1,83 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Windows.Forms;
+using System.Diagnostics;
 using System.Threading;
 using System.IO;
 using System.Drawing;
 using System.Media;
-using System.Diagnostics;
-using Yusen.GCrawler;
+using System.Windows.Forms;
+using Yusen.GExplorer.AppCore;
+using Yusen.GExplorer.UserInterfaces;
+using Yusen.GExplorer.GyaoModel;
+using System.ComponentModel;
 
 namespace Yusen.GExplorer {
 	static class Program {
 		internal static readonly string ApplicationName = Application.ProductName + " " + Application.ProductVersion;
-		
-		private const int InitializationSteps = 9;
-		private const int SerializationSteps = 7;
-		private static SplashForm splashInit;
-		private static MainForm mainForm;
-		internal static event EventHandler<ProgramSerializationProgressEventArgs> ProgramSerializationProgress;
-		
+		private static CacheManager cacheManager;
+		private static PlaylistsManager playlistsManager;
+		private static RootOptions rootOptions;
+		private static PlayerForm2 playerForm = null;
+		private static OptionsForm optionsForm = null;
+		private static CacheViewerForm cacheViewerForm = null;
+		private static BrowserForm browserForm = null;
+
+		internal static CacheManager CacheManager {
+			get { return Program.cacheManager; }
+		}
+		internal static PlaylistsManager PlaylistsManager {
+			get { return Program.playlistsManager; }
+		}
+		internal static RootOptions RootOptions {
+			get { return Program.rootOptions; }
+		}
+		internal static void AddVirtualGenre(IVirtualGenre vgenre) {
+			Program.mainForm2.AddVirtualGenre(vgenre);
+			Program.mainForm2.Focus();
+		}
+		internal static void BrowsePage(Uri uri) {
+			if (null == Program.browserForm || Program.browserForm.IsDisposed) {
+				Program.browserForm = new BrowserForm();
+			}
+			Program.browserForm.Show();
+			Program.browserForm.Focus();
+			Program.browserForm.DocumentUri = uri;
+		}
+		internal static void PlayContent(GContentClass content, Playlist playlist) {
+			if (null == Program.playerForm || Program.playerForm.IsDisposed) {
+				Program.playerForm = new PlayerForm2();
+			}
+			Program.playerForm.Show();
+			Program.playerForm.Focus();
+			Program.playerForm.PlayContent(content, playlist);
+		}
+		internal static void ShowOptionsForm() {
+			if (null == Program.optionsForm || Program.optionsForm.IsDisposed) {
+				Program.optionsForm = new OptionsForm();
+			}
+			Program.optionsForm.Show();
+			Program.optionsForm.Focus();
+		}
+		internal static void ShowCacheViewerForm() {
+			if (null == Program.cacheViewerForm || Program.cacheViewerForm.IsDisposed) {
+				Program.cacheViewerForm = new CacheViewerForm();
+			}
+			Program.cacheViewerForm.Show();
+			Program.cacheViewerForm.Focus();
+		}
+		internal static string GetWorkingDirectory(WorkingDirectory wd) {
+			string path = Path.Combine(Application.StartupPath, wd.ToString());
+			DirectoryInfo di = new DirectoryInfo(path);
+			if (!di.Exists) di.Create();
+			return path;
+		}
+
+		private const int InitializationSteps2 = 6;
+		private const int SerializationSteps2 = 3;
+		private static SplashForm splashForm;
+		private static MainForm2 mainForm2;
+		internal static event ProgressChangedEventHandler ProgramSerializationProgress2;
+
 		/// <summary>The main entry point for the application.</summary>
 		[STAThread]
 		private static void Main() {
@@ -27,9 +87,10 @@ namespace Yusen.GExplorer {
 			//キャッチされない例外をキャッチ
 			Application.ThreadException += new ThreadExceptionEventHandler(Application_ThreadException);
 			AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
+
 			//多重起動チェック
-			while(Program.CheckMultipleExecution()) {
-				switch(MessageBox.Show("多重起動と思われます．どうしますか？", Program.ApplicationName, MessageBoxButtons.AbortRetryIgnore, MessageBoxIcon.Warning)) {
+			while (Program.CheckMultipleExecution()) {
+				switch (MessageBox.Show("多重起動と思われます．どうしますか？", Program.ApplicationName, MessageBoxButtons.AbortRetryIgnore, MessageBoxIcon.Warning)) {
 					case DialogResult.Abort:
 						return;
 					case DialogResult.Retry:
@@ -39,19 +100,20 @@ namespace Yusen.GExplorer {
 				}
 				break;
 			}
-			
-			Program.splashInit = new SplashForm();
-			Program.splashInit.Initialize("起動中です．．．", Program.InitializationSteps +1);
-			Program.InitializeProgram();
-			Program.mainForm.Load += delegate {
-				Program.splashInit.EndProgress();
-				Program.splashInit.Dispose();
-				Program.splashInit = null;
+
+			Program.splashForm = new SplashForm();
+			Program.splashForm.Initialize("起動中です．．．", Program.InitializationSteps2 + 1);
+			Program.InitializeProgram2();
+			Program.mainForm2.Load += delegate {
+				Program.splashForm.EndProgress();
+
+				Program.splashForm.Dispose();
+				Program.splashForm = null;
 			};
 			
-			Application.Run(Program.mainForm);
+			Application.Run(Program.mainForm2);
 		}
-
+		
 		private static bool CheckMultipleExecution() {
 			Process curProc = Process.GetCurrentProcess();
 			foreach(Process p in Process.GetProcesses()) {
@@ -67,73 +129,68 @@ namespace Yusen.GExplorer {
 			}
 			return false;
 		}
-
-		private static void InitializeProgram() {
-			//グローバル設定
-			Program.splashInit.StepProgress("グローバル設定の読み込み");
-			GlobalSettings.TryDeserialize();
-
+		private static void InitializeProgram2() {
+			Program.splashForm.StepProgress("ルートオプションの読み込み");
+			if (!RootOptions.TryDeserialize(Path.Combine(Program.GetWorkingDirectory(WorkingDirectory.UserSettings), "RootOptions.xml"), out Program.rootOptions)) {
+				Program.rootOptions = new RootOptions();
+			}
+			
 			//アイコンの読み込み
-			Program.splashInit.StepProgress("アイコンの読み込み");
+			Program.splashForm.StepProgress("アイコンの読み込み");
 			try {
-				string iconFileName = GlobalSettings.Instance.IconFile;
+				//string iconFileName = GlobalSettings.Instance.IconFile;
+				string iconFileName = string.Empty;
 				if (string.IsNullOrEmpty(iconFileName)) {
 					iconFileName = Path.GetFileNameWithoutExtension(Application.ExecutablePath) + ".ico";
 				}
-				FormBase.CustomIcon = new Icon(iconFileName);
+				BaseForm.CustomIcon = new Icon(iconFileName);
 			} catch {
 			}
 
 			//ビットレートの設定
-			Program.splashInit.StepProgress("ビットレートの設定");
-			if (GlobalSettings.Instance.PromptBitrateOnStartup) {
-				using (BitRateForm brf = new BitRateForm()) {
-					brf.BitRate = GlobalSettings.Instance.BitRate;
+			Program.splashForm.StepProgress("ビットレートの設定");
+			if (Program.RootOptions.AppBasicOptions.PromptBitrateOnStartup) {
+				using (BitrateForm brf = new BitrateForm()) {
+					brf.Bitrate = Program.RootOptions.AppBasicOptions.Bitrate;
 					switch (brf.ShowDialog()) {
 						case DialogResult.OK:
-							GlobalSettings.Instance.BitRate = brf.BitRate;
-							GlobalSettings.Instance.PromptBitrateOnStartup = !brf.SkipNextTimeEnabled;
+							Program.RootOptions.AppBasicOptions.Bitrate = brf.Bitrate;
+							Program.RootOptions.AppBasicOptions.PromptBitrateOnStartup = !brf.SkipNextTimeEnabled;
 							break;
 					}
 				}
 			}
-			
-			Program.splashInit.StepProgress("キャッシュの読み込み");
-			Cache.Initialize();
-			Program.splashInit.StepProgress("NGコンテンツの読み込み");
-			ContentPredicatesManager.NgManager.DeserializeItems();
-			Program.splashInit.StepProgress("FAVコンテンツの読み込み");
-			ContentPredicatesManager.FavManager.DeserializeItems();
-			Program.splashInit.StepProgress("外部コマンドの読み込み");
-			UserCommandsManager.Instance.DeserializeItems();
-			Program.splashInit.StepProgress("プレイリストの読み込み");
-			PlayList.Instance.DeserializeItems();
 
-			Program.splashInit.StepProgress("メインフォームの作成");
-			Program.mainForm = MainForm.Instance;
+			Program.splashForm.StepProgress("キャッシュの初期化と読み込み");
+			Program.cacheManager = new CacheManager(Program.GetWorkingDirectory(WorkingDirectory.Cache));
+			if (Program.RootOptions.AppBasicOptions.UseDefaultGenres) {
+				Program.CacheManager.ResetToDefaultGenres();
+			} else {
+				Program.CacheManager.DeserializeGenreTable();
+			}
+			Program.cacheManager.DeserializePackageAndContentTables();
+
+			Program.splashForm.StepProgress("プレイリストコレクションの読み込み");
+			Program.playlistsManager = new PlaylistsManager();
+			Program.playlistsManager.DeserializePlaylists(Path.Combine(Program.GetWorkingDirectory(WorkingDirectory.UserSettings), "PlaylistCollection.xml"));
+
+			Program.splashForm.StepProgress("メインフォームの作成");
+			Program.mainForm2 = new MainForm2();
 		}
-		private static void OnProgramSerializationProgress(int current, string message) {
-			EventHandler<ProgramSerializationProgressEventArgs> handler = Program.ProgramSerializationProgress;
-			if(null != handler) {
-				handler(null, new ProgramSerializationProgressEventArgs(current, Program.SerializationSteps, message));
+		private static void OnProgramSerializationProgress2(int current, string message) {
+			ProgressChangedEventHandler handler = Program.ProgramSerializationProgress2;
+			if (null != handler) {
+				handler(null, new ProgressChangedEventArgs(100*current/Program.SerializationSteps2, message));
 			}
 		}
-		internal static void SerializeSettings() {
+		internal static void SerializeSettings2() {
 			int step = 0;
-			Program.OnProgramSerializationProgress(step++, "プレイリストの保存");
-			PlayList.Instance.SerializeItems();
-			Program.OnProgramSerializationProgress(step++, "外部コマンドの保存");
-			UserCommandsManager.Instance.SerializeItems();
-			Program.OnProgramSerializationProgress(step++, "NGコンテンツの保存");
-			ContentPredicatesManager.NgManager.SerializeItems();
-			Program.OnProgramSerializationProgress(step++, "FAVコンテンツの保存");
-			ContentPredicatesManager.FavManager.SerializeItems();
-			Program.OnProgramSerializationProgress(step++, "キャッシュの最適化");
-			Cache.Instance.RemoveCachesUnreachable();
-			Program.OnProgramSerializationProgress(step++, "キャッシュの保存");
-			Cache.Serialize();
-			Program.OnProgramSerializationProgress(step++, "グローバル設定の保存");
-			GlobalSettings.Serialize();
+			Program.OnProgramSerializationProgress2(step++, "プレイリストコレクションの保存");
+			Program.playlistsManager.SerializePlaylists(Path.Combine(Program.GetWorkingDirectory(WorkingDirectory.UserSettings), "PlaylistCollection.xml"));
+			Program.OnProgramSerializationProgress2(step++, "キャッシュの保存");
+			Program.cacheManager.SerializeTables();
+			Program.OnProgramSerializationProgress2(step++, "ルートオプションの保存");
+			Program.rootOptions.Serialize(Path.Combine(Program.GetWorkingDirectory(WorkingDirectory.UserSettings), "RootOptions.xml"));
 		}
 
 		private static void Application_ThreadException(object sender, ThreadExceptionEventArgs e) {
@@ -162,24 +219,10 @@ namespace Yusen.GExplorer {
 			}
 		}
 	}
-
-	sealed class ProgramSerializationProgressEventArgs : EventArgs{
-		private int current;
-		private int max;
-		private string message;
-		public ProgramSerializationProgressEventArgs(int current, int max, string message) {
-			this.current = current;
-			this.max = max;
-			this.message = message;
-		}
-		public int Current {
-			get { return this.current; }
-		}
-		public int Max {
-			get { return this.max; }
-		}
-		public string Message {
-			get { return this.message; }
-		}
+	
+	enum WorkingDirectory {
+		Cache,
+		UserSettings,
+		Temp,
 	}
 }

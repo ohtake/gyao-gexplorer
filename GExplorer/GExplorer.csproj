@@ -70,32 +70,107 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AboutBox.cs">
+    <Compile Include="AppCore\VirtualGenres.cs" />
+    <Compile Include="OldCrawler\ContentCacheController.cs" />
+    <Compile Include="OldCrawler\Crawler.cs" />
+    <Compile Include="OldCrawler\GBitRate.cs" />
+    <Compile Include="OldCrawler\GContent.cs" />
+    <Compile Include="OldCrawler\GGenre.cs" />
+    <Compile Include="OldCrawler\GPackage.cs" />
+    <Compile Include="OldCrawler\HtmlParser.cs" />
+    <Compile Include="UserInterfaces\BindingContract.cs" />
+    <Compile Include="AppCore\PlaylistsManager.cs" />
+    <Compile Include="UserInterfaces\BitrateForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AboutBox.Designer.cs">
-      <DependentUpon>AboutBox.cs</DependentUpon>
+    <Compile Include="UserInterfaces\BitrateForm.Designer.cs">
+      <DependentUpon>BitrateForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="BitRateForm.cs">
+    <Compile Include="UserInterfaces\BrowserForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="BitRateForm.Designer.cs">
-      <DependentUpon>BitRateForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="BrowserForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="BrowserForm.designer.cs">
+    <Compile Include="UserInterfaces\BrowserForm.designer.cs">
       <DependentUpon>BrowserForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Cache.cs" />
+    <Compile Include="UserInterfaces\FormOptionsBase.cs" />
+    <Compile Include="UserInterfaces\GWebBrowser.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UserInterfaces\GWebBrowser.Designer.cs">
+      <DependentUpon>GWebBrowser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserInterfaces\OptionsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UserInterfaces\OptionsForm.Designer.cs">
+      <DependentUpon>OptionsForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserInterfaces\PlaylistsViewCControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserInterfaces\PlaylistsViewCControl.Designer.cs">
+      <DependentUpon>PlaylistsViewCControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserInterfaces\PlaylistsViewPControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserInterfaces\PlaylistsViewPControl.Designer.cs">
+      <DependentUpon>PlaylistsViewPControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserInterfaces\ToolStripPlaylistMenuItem.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UserInterfaces\PlayerForm2.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UserInterfaces\PlayerForm2.Designer.cs">
+      <DependentUpon>PlayerForm2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserInterfaces\PlaylistsView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserInterfaces\PlaylistsView.Designer.cs">
+      <DependentUpon>PlaylistsView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserInterfaces\ToolStripGenreMenuItem.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Utilities\BackgroundImageLoader.cs" />
+    <Compile Include="AppCore\CrawlResult.cs" />
+    <Compile Include="AppCore\IVirtualGenre.cs" />
+    <Compile Include="AppBasicOptions.cs" />
+    <Compile Include="GyaoModel\GDataSet.cs">
+      <DependentUpon>GDataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="GyaoModel\GIdExtractor.cs" />
+    <Compile Include="GyaoModel\GUriBuilder.cs" />
+    <Compile Include="UserInterfaces\AboutBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UserInterfaces\AboutBox.Designer.cs">
+      <DependentUpon>AboutBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AppCore\CacheManager.cs" />
+    <Compile Include="AppCore\GenreCrawler.cs" />
+    <Compile Include="UserInterfaces\BaseForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UserInterfaces\BaseForm.Designer.cs">
+      <DependentUpon>BaseForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GyaoModel\GBitrate.cs" />
+    <Compile Include="GyaoModel\GContentClass.cs" />
+    <Compile Include="GyaoModel\GConvert.cs" />
+    <Compile Include="GyaoModel\GDeadline.cs" />
+    <Compile Include="GyaoModel\GPackageClass.cs" />
+    <Compile Include="OldApp\Cache.cs" />
     <Compile Include="ContentDetailView.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="ContentDetailView.Designer.cs">
       <DependentUpon>ContentDetailView.cs</DependentUpon>
     </Compile>
-    <Compile Include="ContentAdapter.cs" />
+    <Compile Include="OldApp\ContentAdapter.cs" />
     <Compile Include="ContentPredicate.cs" />
     <Compile Include="ContentPredicatesEditControl.cs">
       <SubType>UserControl</SubType>
@@ -109,32 +184,38 @@
     <Compile Include="ContentVisibilitiesSelector.Designer.cs">
       <DependentUpon>ContentVisibilitiesSelector.cs</DependentUpon>
     </Compile>
-    <Compile Include="DoubleBufferedListView.cs">
-      <SubType>Component</SubType>
+    <Compile Include="GyaoModel\GDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GDataSet.xsd</DependentUpon>
     </Compile>
-    <Compile Include="DoubleBufferedListView.Designer.cs">
-      <DependentUpon>DoubleBufferedListView.cs</DependentUpon>
-    </Compile>
-    <Compile Include="EasterEggControl.cs">
+    <Compile Include="GyaoModel\GGenreClass.cs" />
+    <Compile Include="UserInterfaces\DetailView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="EasterEggControl.Designer.cs">
-      <DependentUpon>EasterEggControl.cs</DependentUpon>
+    <Compile Include="UserInterfaces\DetailView.Designer.cs">
+      <DependentUpon>DetailView.cs</DependentUpon>
     </Compile>
-    <Compile Include="ExceptionDialog.cs">
+    <Compile Include="UserInterfaces\DoubleBufferedListBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="ExceptionForm.cs">
+    <Compile Include="UserInterfaces\DoubleBufferedListBox.Designer.cs">
+      <DependentUpon>DoubleBufferedListBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserInterfaces\EasterEggControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserInterfaces\EasterEggControl.Designer.cs">
+      <DependentUpon>EasterEggControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserInterfaces\ExceptionDialog.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UserInterfaces\ExceptionForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ExceptionForm.Designer.cs">
+    <Compile Include="UserInterfaces\ExceptionForm.Designer.cs">
       <DependentUpon>ExceptionForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="FormBase.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FormBase.Designer.cs">
-      <DependentUpon>FormBase.cs</DependentUpon>
     </Compile>
     <Compile Include="FormSettingsBase.cs">
       <SubType>Form</SubType>
@@ -142,76 +223,56 @@
     <Compile Include="FormSettingsBase.Designer.cs">
       <DependentUpon>FormSettingsBase.cs</DependentUpon>
     </Compile>
-    <Compile Include="GDeadline.cs" />
-    <Compile Include="GenreTabPage.cs">
-      <SubType>Component</SubType>
+    <Compile Include="OldApp\GDeadline.cs" />
+    <Compile Include="OldApp\GTimeSpan.cs" />
+    <Compile Include="UserInterfaces\GenreSelctControl.cs">
+      <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="GenreTabPage.Designer.cs">
-      <DependentUpon>GenreTabPage.cs</DependentUpon>
+    <Compile Include="UserInterfaces\GenreSelctControl.Designer.cs">
+      <DependentUpon>GenreSelctControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="GTimeSpan.cs" />
-    <Compile Include="GWebBrowser.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="GWebBrowser.Designer.cs">
-      <DependentUpon>GWebBrowser.cs</DependentUpon>
-    </Compile>
-    <Compile Include="InputBoxForm.cs">
+    <Compile Include="UserInterfaces\InputBoxForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="InputBoxForm.Designer.cs">
+    <Compile Include="UserInterfaces\InputBoxForm.Designer.cs">
       <DependentUpon>InputBoxForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="InputBoxDialog.cs">
+    <Compile Include="UserInterfaces\InputBoxDialog.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="ItemsManagerBase.cs" />
-    <Compile Include="ListViewItemStackableComparer.cs" />
+    <Compile Include="OldApp\ItemsManagerBase.cs" />
+    <Compile Include="OldApp\ListViewItemStackableComparer.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="GenreTabControl.cs">
-      <SubType>Component</SubType>
+    <Compile Include="SubOptionsAttribute.cs" />
+    <Compile Include="UserInterfaces\MainForm2.cs">
+      <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GenreTabControl.Designer.cs">
-      <DependentUpon>GenreTabControl.cs</DependentUpon>
+    <Compile Include="UserInterfaces\MainForm2.Designer.cs">
+      <DependentUpon>MainForm2.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migemo.cs" />
+    <Compile Include="UserInterfaces\ViewSelectControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserInterfaces\ViewSelectControl.Designer.cs">
+      <DependentUpon>ViewSelectControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\Migemo.cs" />
     <Compile Include="NgFavContentsEditor.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="NgFavContentsEditor.designer.cs">
       <DependentUpon>NgFavContentsEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="PackageAdapter.cs" />
-    <Compile Include="PlayerForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="PlayerForm.Designer.cs">
-      <DependentUpon>PlayerForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="PlayList.cs" />
-    <Compile Include="PlayListView.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="PlayListView.Designer.cs">
-      <DependentUpon>PlayListView.cs</DependentUpon>
-    </Compile>
+    <Compile Include="OldApp\PlayList.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="AboutBox.resx">
+    <EmbeddedResource Include="UserInterfaces\AboutBox.resx">
       <DependentUpon>AboutBox.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="BitRateForm.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>BitRateForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="BrowserForm.resx">
-      <DependentUpon>BrowserForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="ContentDetailView.resx">
@@ -226,35 +287,43 @@
       <SubType>Designer</SubType>
       <DependentUpon>ContentVisibilitiesSelector.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="EasterEggControl.resx">
+    <EmbeddedResource Include="UserInterfaces\BitrateForm.resx">
+      <DependentUpon>BitrateForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserInterfaces\BrowserForm.resx">
+      <DependentUpon>BrowserForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserInterfaces\DetailView.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>DetailView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserInterfaces\EasterEggControl.resx">
       <SubType>Designer</SubType>
       <DependentUpon>EasterEggControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ExceptionForm.resx">
+    <EmbeddedResource Include="UserInterfaces\ExceptionForm.resx">
       <DependentUpon>ExceptionForm.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FormBase.resx">
-      <DependentUpon>FormBase.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="FormSettingsBase.resx">
       <DependentUpon>FormSettingsBase.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="GenreTabControl.resx">
-      <DependentUpon>GenreTabControl.cs</DependentUpon>
+    <EmbeddedResource Include="UserInterfaces\BaseForm.resx">
+      <DependentUpon>BaseForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="GenreTabPage.resx">
-      <DependentUpon>GenreTabPage.cs</DependentUpon>
+    <EmbeddedResource Include="UserInterfaces\GenreSelctControl.resx">
       <SubType>Designer</SubType>
+      <DependentUpon>GenreSelctControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GWebBrowser.resx">
+    <EmbeddedResource Include="UserInterfaces\GWebBrowser.resx">
       <DependentUpon>GWebBrowser.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="InputBoxForm.resx">
+    <EmbeddedResource Include="UserInterfaces\InputBoxForm.resx">
       <DependentUpon>InputBoxForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -266,14 +335,6 @@
       <DependentUpon>NgFavContentsEditor.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="PlayerForm.resx">
-      <DependentUpon>PlayerForm.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="PlayListView.resx">
-      <DependentUpon>PlayListView.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -283,32 +344,59 @@
       <DependentUpon>CrawlResultView.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="PropertyGridContainer.resx">
+    <EmbeddedResource Include="UserInterfaces\MainForm2.resx">
       <SubType>Designer</SubType>
-      <DependentUpon>PropertyGridContainer.cs</DependentUpon>
+      <DependentUpon>MainForm2.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="SplashForm.resx">
+    <EmbeddedResource Include="UserInterfaces\OptionsForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>OptionsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserInterfaces\PlayerForm2.resx">
+      <DependentUpon>PlayerForm2.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserInterfaces\PlaylistsView.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>PlaylistsView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserInterfaces\PlaylistsViewCControl.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>PlaylistsViewCControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserInterfaces\PlaylistsViewPControl.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>PlaylistsViewPControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserInterfaces\SplashForm.resx">
       <SubType>Designer</SubType>
       <DependentUpon>SplashForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ToolStripHelpMenuItem.resx">
+    <EmbeddedResource Include="UserInterfaces\ToolStripHelpMenuItem.resx">
       <SubType>Designer</SubType>
       <DependentUpon>ToolStripHelpMenuItem.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ToolStripNgFavMenuItem.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>ToolStripNgFavMenuItem.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UserCommandsEditor.resx">
       <DependentUpon>UserCommandsEditor.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserInterfaces\CacheViewerForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>CacheViewerForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserInterfaces\CrawlResultView2.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>CrawlResultView2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserInterfaces\ViewSelectControl.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ViewSelectControl.cs</DependentUpon>
     </EmbeddedResource>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <None Include="Forms.cd" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -324,48 +412,28 @@
     <Compile Include="CrawlResultView.Designer.cs">
       <DependentUpon>CrawlResultView.cs</DependentUpon>
     </Compile>
-    <Compile Include="PropertyGridContainer.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="PropertyGridContainer.Designer.cs">
-      <DependentUpon>PropertyGridContainer.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ScreenSaveListener.cs" />
-    <Compile Include="SplashForm.cs">
+    <Compile Include="RootOptions.cs" />
+    <Compile Include="Utilities\ScreenSaveListener.cs" />
+    <Compile Include="UserInterfaces\SplashForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SplashForm.Designer.cs">
+    <Compile Include="UserInterfaces\SplashForm.Designer.cs">
       <DependentUpon>SplashForm.cs</DependentUpon>
     </Compile>
     <Compile Include="ToolStripCAPropertyMenuItem.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="ToolStripPlayModeDropDownButton.cs">
+    <Compile Include="UserInterfaces\ToolStripPlayModeDropDownButton.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="ToolStripContentVisibilitiesSelector.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="ToolStripGenreMenuItem.cs">
+    <Compile Include="UserInterfaces\ToolStripHelpMenuItem.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="ToolStripHelpMenuItem.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="ToolStripHelpMenuItem.Designer.cs">
+    <Compile Include="UserInterfaces\ToolStripHelpMenuItem.Designer.cs">
       <DependentUpon>ToolStripHelpMenuItem.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ToolStripNgFavMenuItem.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="ToolStripNgFavMenuItem.Designer.cs">
-      <DependentUpon>ToolStripNgFavMenuItem.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ToolStripPropertyGrid.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="ToolStripUserCommandMenuItem.cs">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="UserCommand.cs" />
     <Compile Include="UserCommandsEditor.cs">
@@ -374,13 +442,33 @@
     <Compile Include="UserCommandsEditor.designer.cs">
       <DependentUpon>UserCommandsEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="GlobalSettings.cs" />
-    <Compile Include="Utility.cs" />
-    <Compile Include="Win32WindowImpl.cs" />
-    <Compile Include="WindowsConstants.cs" />
-    <Compile Include="WindowsFunctions.cs" />
-    <Compile Include="WindowsStructs.cs" />
-    <Compile Include="XmlSerializableColor.cs" />
+    <Compile Include="OldApp\GlobalSettings.cs" />
+    <Compile Include="UserInterfaces\CacheViewerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UserInterfaces\CacheViewerForm.Designer.cs">
+      <DependentUpon>CacheViewerForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserInterfaces\CrawlResultView2.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserInterfaces\CrawlResultView2.Designer.cs">
+      <DependentUpon>CrawlResultView2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserInterfaces\DoubleBufferedListView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UserInterfaces\DoubleBufferedListView.Designer.cs">
+      <DependentUpon>DoubleBufferedListView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="OldApp\Utility.cs" />
+    <Compile Include="Utilities\HtmlUtility.cs" />
+    <Compile Include="Utilities\StackableComparisonsComparer.cs" />
+    <Compile Include="Utilities\Win32WindowImpl.cs" />
+    <Compile Include="Utilities\WindowsConstants.cs" />
+    <Compile Include="Utilities\WindowsFunctions.cs" />
+    <Compile Include="Utilities\WindowsStructs.cs" />
+    <Compile Include="Utilities\XmlSerializableColor.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="ChangeLog.txt">
@@ -393,6 +481,17 @@
     <Content Include="ReadMe.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="GyaoModel\GDataSet.xsc">
+      <DependentUpon>GDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="GyaoModel\GDataSet.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>GDataSet.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="GyaoModel\GDataSet.xss">
+      <DependentUpon>GDataSet.xsd</DependentUpon>
+    </None>
     <None Include="Resources\AutoFilter.bmp" />
     <None Include="Resources\BuilderDialog_movedown.bmp" />
     <None Include="Resources\BuilderDialog_moveup.bmp" />
@@ -449,12 +548,6 @@
       <WrapperTool>tlbimp</WrapperTool>
       <Isolated>False</Isolated>
     </COMReference>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\GCrawler\GCrawler.csproj">
-      <Project>{2169861A-96F9-42F6-8CE9-7819F62BED6E}</Project>
-      <Name>GCrawler</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

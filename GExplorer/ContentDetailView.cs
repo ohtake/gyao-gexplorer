@@ -7,6 +7,7 @@ using System.Xml.Serialization;
 using System.Net;
 using System.IO;
 using System.Net.Cache;
+using Yusen.GExplorer.OldApp;
 
 namespace Yusen.GExplorer {
 	public sealed partial class ContentDetailView : UserControl, IHasNewSettings<ContentDetailView.ContentDetailViewSettings> {
@@ -254,24 +255,8 @@ namespace Yusen.GExplorer {
 			this.tsmiCopyNameAndImageUri.Enabled = hasContent & showImage;
 			this.tsmiCopyNameDetailImageUri.Enabled = hasContent  & showImage;
 			this.tsmiCopyImage.Enabled = hasContent & showImage;
-			
-			this.tsucmiCommand.Enabled = hasContent;
 		}
 		private void ContentDetailView_Load(object sender, EventArgs e) {
-			
-			if (base.DesignMode) return;
-
-			PlayList.Instance.CurrentContentChanged += new EventHandler(this.PlayList_CurrentContentChanged);
-			this.Disposed += delegate {
-				PlayList.Instance.CurrentContentChanged -= new EventHandler(this.PlayList_CurrentContentChanged);
-			};
-		}
-		private void PlayList_CurrentContentChanged(object sender, EventArgs e) {
-			if(this.settings.SyncronizeToCurrentContentEnabled) {
-				if(PlayList.Instance.HasCurrentContent) {
-					this.Content = PlayList.Instance.CurrentContent;
-				}
-			}
 		}
 		private void tsmiCopyImageUri_Click(object sender, EventArgs e) {
 			Clipboard.SetText(this.ImageUri.AbsoluteUri);
@@ -291,9 +276,6 @@ namespace Yusen.GExplorer {
 			if (null != this.picboxImage.Image) {
 				Clipboard.SetImage(this.picboxImage.Image);
 			}
-		}
-		private void tsucmiCommand_UserCommandSelected(object sender, UserCommandSelectedEventArgs e) {
-			e.UserCommand.Execute(new ContentAdapter[] { this.contAd });
 		}
 
 		private void cmsImage_Opening(object sender, CancelEventArgs e) {

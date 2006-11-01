@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using System.Windows.Forms.Design;
 using System.Reflection;
 using System.ComponentModel;
+using Yusen.GExplorer.OldApp;
 
 namespace Yusen.GExplorer {
 	[ToolStripItemDesignerAvailability(ToolStripItemDesignerAvailability.All)]

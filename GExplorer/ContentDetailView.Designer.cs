@@ -31,7 +31,6 @@
 			this.tsmiCopyNameAndImageUri = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiCopyNameDetailImageUri = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiCopyImage = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabpSummary2 = new System.Windows.Forms.TabPage();
 			this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
@@ -52,7 +51,6 @@
 			this.txtSummary = new System.Windows.Forms.TextBox();
 			this.tabpDetail = new System.Windows.Forms.TabPage();
 			this.propgDetail = new System.Windows.Forms.PropertyGrid();
-			this.tsucmiCommand = new Yusen.GExplorer.ToolStripUserCommandMenuItem();
 			this.splitContainer1.Panel1.SuspendLayout();
 			this.splitContainer1.Panel2.SuspendLayout();
 			this.splitContainer1.SuspendLayout();
@@ -100,11 +98,9 @@
             this.tsmiCopyImageUri,
             this.tsmiCopyNameAndImageUri,
             this.tsmiCopyNameDetailImageUri,
-            this.tsmiCopyImage,
-            this.toolStripSeparator2,
-            this.tsucmiCommand});
+            this.tsmiCopyImage});
 			this.cmsImage.Name = "cmsImage";
-			this.cmsImage.Size = new System.Drawing.Size(249, 120);
+			this.cmsImage.Size = new System.Drawing.Size(249, 114);
 			this.cmsImage.Opening += new System.ComponentModel.CancelEventHandler(this.cmsImage_Opening);
 			// 
 			// tsmiCopyImageUri
@@ -136,11 +132,6 @@
 			this.tsmiCopyImage.Size = new System.Drawing.Size(248, 22);
 			this.tsmiCopyImage.Text = "画像をコピー(&I)";
 			this.tsmiCopyImage.Click += new System.EventHandler(this.tsmiCopyImage_Click);
-			// 
-			// toolStripSeparator2
-			// 
-			this.toolStripSeparator2.Name = "toolStripSeparator2";
-			this.toolStripSeparator2.Size = new System.Drawing.Size(245, 6);
 			// 
 			// tabControl1
 			// 
@@ -350,7 +341,7 @@
 			this.tabpDetail.Controls.Add(this.propgDetail);
 			this.tabpDetail.Location = new System.Drawing.Point(4, 21);
 			this.tabpDetail.Name = "tabpDetail";
-			this.tabpDetail.Size = new System.Drawing.Size(216, 271);
+			this.tabpDetail.Size = new System.Drawing.Size(260, 333);
 			this.tabpDetail.TabIndex = 1;
 			this.tabpDetail.Text = "詳細";
 			this.tabpDetail.UseVisualStyleBackColor = true;
@@ -360,15 +351,8 @@
 			this.propgDetail.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.propgDetail.Location = new System.Drawing.Point(0, 0);
 			this.propgDetail.Name = "propgDetail";
-			this.propgDetail.Size = new System.Drawing.Size(216, 271);
+			this.propgDetail.Size = new System.Drawing.Size(260, 333);
 			this.propgDetail.TabIndex = 0;
-			// 
-			// tsucmiCommand
-			// 
-			this.tsucmiCommand.Name = "tsucmiCommand";
-			this.tsucmiCommand.Size = new System.Drawing.Size(248, 22);
-			this.tsucmiCommand.Text = "外部コマンド(&E)";
-			this.tsucmiCommand.UserCommandSelected += new System.EventHandler<Yusen.GExplorer.UserCommandSelectedEventArgs>(this.tsucmiCommand_UserCommandSelected);
 			// 
 			// ContentDetailView
 			// 
@@ -418,8 +402,6 @@
 		private System.Windows.Forms.ToolStripMenuItem tsmiCopyImage;
 		private System.Windows.Forms.Label label6;
 		private System.Windows.Forms.TextBox txtDeadline;
-		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
-		private ToolStripUserCommandMenuItem tsucmiCommand;
 		private System.Windows.Forms.TextBox txtDescription;
 		private System.Windows.Forms.Label label7;
 		private System.Windows.Forms.TextBox txtSummary;

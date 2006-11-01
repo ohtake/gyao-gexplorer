@@ -5,6 +5,8 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using System.Reflection;
+using Yusen.GExplorer.OldApp;
+using Yusen.GExplorer.Utilities;
 
 namespace Yusen.GExplorer {
 	public partial class ContentPredicatesEditControl : UserControl {

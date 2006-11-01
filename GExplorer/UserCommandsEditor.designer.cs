@@ -345,7 +345,7 @@
 			this.tscapmiProperty.Name = "tscapmiProperty";
 			this.tscapmiProperty.Size = new System.Drawing.Size(224, 22);
 			this.tscapmiProperty.Text = "ToolStripCAPropertyMenuItem";
-			this.tscapmiProperty.PropertySelected += new System.EventHandler<Yusen.GExplorer.CAPropertySelectedEventArgs>(this.tscapmiProperty_PropertySelected);
+			this.tscapmiProperty.PropertySelected += new System.EventHandler<Yusen.GExplorer.OldApp.CAPropertySelectedEventArgs>(this.tscapmiProperty_PropertySelected);
 			// 
 			// UserCommandsEditor
 			// 

@@ -2,9 +2,6 @@
 Microsoft Visual Studio Solution File, Format Version 9.00
 # Visual Studio 2005
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GExplorer", "GExplorer\GExplorer.csproj", "{80512014-643E-4E77-BEDD-FA0D0292DC52}"
-	ProjectSection(ProjectDependencies) = postProject
-		{2169861A-96F9-42F6-8CE9-7819F62BED6E} = {2169861A-96F9-42F6-8CE9-7819F62BED6E}
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Makefiles", "Makefiles", "{E0A335A5-9F56-4508-B40E-A0A5E4091045}"
 	ProjectSection(SolutionItems) = preProject
@@ -12,8 +9,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Makefiles", "Makefiles", "{
 		CleanReleaseX86.cmd = CleanReleaseX86.cmd
 		RebuildReleaseX86.cmd = RebuildReleaseX86.cmd
 	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GCrawler", "GCrawler\GCrawler.csproj", "{2169861A-96F9-42F6-8CE9-7819F62BED6E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,14 +26,6 @@ Global
 		{80512014-643E-4E77-BEDD-FA0D0292DC52}.Release|Any CPU.Build.0 = Release|Any CPU
 		{80512014-643E-4E77-BEDD-FA0D0292DC52}.Release|x86.ActiveCfg = Release|x86
 		{80512014-643E-4E77-BEDD-FA0D0292DC52}.Release|x86.Build.0 = Release|x86
-		{2169861A-96F9-42F6-8CE9-7819F62BED6E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2169861A-96F9-42F6-8CE9-7819F62BED6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2169861A-96F9-42F6-8CE9-7819F62BED6E}.Debug|x86.ActiveCfg = Debug|x86
-		{2169861A-96F9-42F6-8CE9-7819F62BED6E}.Debug|x86.Build.0 = Debug|x86
-		{2169861A-96F9-42F6-8CE9-7819F62BED6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2169861A-96F9-42F6-8CE9-7819F62BED6E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2169861A-96F9-42F6-8CE9-7819F62BED6E}.Release|x86.ActiveCfg = Release|x86
-		{2169861A-96F9-42F6-8CE9-7819F62BED6E}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
