@@ -52,7 +52,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 			if (base.DesignMode) return;
 
 			this.wcImage.CachePolicy = new RequestCachePolicy(RequestCacheLevel.CacheIfAvailable);
-			this.wcPage.CachePolicy = new RequestCachePolicy(RequestCacheLevel.CacheIfAvailable);
+			this.wcPage.CachePolicy = new RequestCachePolicy(RequestCacheLevel.Default);
 			this.wcImage.OpenReadCompleted += new OpenReadCompletedEventHandler(wcImage_OpenReadCompleted);
 			this.wcPage.OpenReadCompleted += new OpenReadCompletedEventHandler(wcPage_OpenReadCompleted);
 
@@ -121,7 +121,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 								this.lvReview.Items.Add(new ReviewPostListViewItem(m.Groups["NetaBare"].Success, m.Groups["Score"].Value, m.Groups["Denominator"].Value, m.Groups["Numerator"].Value, m.Groups["Title"].Value, m.Groups["Author"].Value, m.Groups["Posted"].Value, m.Groups["Body"].Value));
 							}
 							this.lvReview.EndUpdate();
-							this.lblReviewSummary.Text = string.IsNullOrEmpty(aveScore) ? "レビューなし" : string.Format("新着{0}件 総合評価{1}", this.lvReview.Items.Count, aveScore);
+							this.lblReviewSummary.Text = string.IsNullOrEmpty(aveScore) ? "レビューなし" : string.Format("新着分{0}件 総合評価{1}", this.lvReview.Items.Count, aveScore);
 						} else {
 							this.lblReviewSummary.Text = "レビュー取得失敗";
 							this.lvReview.Items.Clear();

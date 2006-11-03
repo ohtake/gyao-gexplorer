@@ -6,7 +6,7 @@ using System.Xml.Serialization;
 namespace Yusen.GExplorer.GyaoModel {
 	[Serializable]
 	[DefaultProperty("GenreKey")]
-	public sealed class GGenreClass {
+	public sealed class GGenreClass{
 		private int genreKey;
 		private string genreName;
 		private string rootDirectory;

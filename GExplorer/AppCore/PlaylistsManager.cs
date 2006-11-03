@@ -32,7 +32,6 @@ namespace Yusen.GExplorer.AppCore {
 			if (!this.IsUpdating) throw new InvalidOperationException();
 			if (0 == Interlocked.Decrement(ref this.updateCount)) {
 				if (this.updatedFlag) {
-					this.updatedFlag = false;
 					this.OnPlaylistsManagerChanged();
 				}
 			}
@@ -42,6 +41,8 @@ namespace Yusen.GExplorer.AppCore {
 				this.updatedFlag = true;
 				return;
 			}
+			this.updatedFlag = false;
+			
 			TimeSpan time = TimeSpan.Zero;
 			int count = 0;
 			foreach (Playlist pl in this.lists) {

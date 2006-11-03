@@ -12,23 +12,6 @@ namespace Yusen.GExplorer.OldApp {
 			this.items = new List<T>();
 		}
 		
-		public void DeserializeItems() {
-			this.DeserializeItems(this.FilenameForSerialization);
-		}
-		public void DeserializeItems(string filename) {
-			List<T> items;
-			if (Utility.TryDeserializeSettings(filename, out items)) {
-				this.items = items;
-				this.OnChanged();
-			}
-		}
-		public void SerializeItems() {
-			this.SerializeItems(this.FilenameForSerialization);
-		}
-		public void SerializeItems(string filename) {
-			Utility.SerializeSettings(filename, this.items);
-		}
-		
 		protected abstract void OnChanged();
 		protected virtual void OnAdditionRejectedBecauseOfExisting(T rejectedItem) {
 		}

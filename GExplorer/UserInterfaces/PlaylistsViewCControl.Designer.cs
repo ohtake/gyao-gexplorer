@@ -38,6 +38,8 @@
 			this.tsmiCmsDelete = new System.Windows.Forms.ToolStripMenuItem();
 			this.menuStrip1 = new System.Windows.Forms.MenuStrip();
 			this.pVCToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiSort = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripMenuItem5 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiViewContents = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiPlay = new System.Windows.Forms.ToolStripMenuItem();
@@ -49,8 +51,6 @@
 			this.tsmiRearrangeDown = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiRearrangeToBottom = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiDelete = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripMenuItem5 = new System.Windows.Forms.ToolStripSeparator();
-			this.tsmiSort = new System.Windows.Forms.ToolStripMenuItem();
 			this.lvPlaylists = new Yusen.GExplorer.UserInterfaces.DoubleBufferedListView();
 			this.chName = new System.Windows.Forms.ColumnHeader();
 			this.chCount = new System.Windows.Forms.ColumnHeader();
@@ -72,19 +72,19 @@
             this.tsmiCmsRearrange,
             this.tsmiCmsDelete});
 			this.cmsPlaylists.Name = "cmsPlaylists";
-			this.cmsPlaylists.Size = new System.Drawing.Size(201, 126);
+			this.cmsPlaylists.Size = new System.Drawing.Size(199, 126);
 			// 
 			// tsmiCmsViewPlaylistContents
 			// 
 			this.tsmiCmsViewPlaylistContents.Name = "tsmiCmsViewPlaylistContents";
-			this.tsmiCmsViewPlaylistContents.Size = new System.Drawing.Size(200, 22);
+			this.tsmiCmsViewPlaylistContents.Size = new System.Drawing.Size(198, 22);
 			this.tsmiCmsViewPlaylistContents.Text = "内容を表示(&V)";
 			this.tsmiCmsViewPlaylistContents.Click += new System.EventHandler(this.tsmiCmsViewPlaylistContents_Click);
 			// 
 			// toolStripMenuItem1
 			// 
 			this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-			this.toolStripMenuItem1.Size = new System.Drawing.Size(197, 6);
+			this.toolStripMenuItem1.Size = new System.Drawing.Size(195, 6);
 			// 
 			// tsmiCmsPlay
 			// 
@@ -92,21 +92,21 @@
 			this.tsmiCmsPlay.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tsmiCmsPlay.Name = "tsmiCmsPlay";
 			this.tsmiCmsPlay.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P)));
-			this.tsmiCmsPlay.Size = new System.Drawing.Size(200, 22);
+			this.tsmiCmsPlay.Size = new System.Drawing.Size(198, 22);
 			this.tsmiCmsPlay.Text = "再生(&P)";
 			this.tsmiCmsPlay.Click += new System.EventHandler(this.tsmiCmsPlay_Click);
 			// 
 			// toolStripMenuItem2
 			// 
 			this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-			this.toolStripMenuItem2.Size = new System.Drawing.Size(197, 6);
+			this.toolStripMenuItem2.Size = new System.Drawing.Size(195, 6);
 			// 
 			// tsmiCmsRenamePlaylist
 			// 
 			this.tsmiCmsRenamePlaylist.Name = "tsmiCmsRenamePlaylist";
 			this.tsmiCmsRenamePlaylist.ShortcutKeys = System.Windows.Forms.Keys.F2;
-			this.tsmiCmsRenamePlaylist.Size = new System.Drawing.Size(200, 22);
-			this.tsmiCmsRenamePlaylist.Text = "プレイリスト名を変更(&N)";
+			this.tsmiCmsRenamePlaylist.Size = new System.Drawing.Size(198, 22);
+			this.tsmiCmsRenamePlaylist.Text = "プレイリスト名を変更(&L)";
 			this.tsmiCmsRenamePlaylist.Click += new System.EventHandler(this.tsmiCmsRenamePlaylist_Click);
 			// 
 			// tsmiCmsRearrange
@@ -117,7 +117,7 @@
             this.tsmiCmsRearrangeDown,
             this.tsmiCmsRearrangeToBottom});
 			this.tsmiCmsRearrange.Name = "tsmiCmsRearrange";
-			this.tsmiCmsRearrange.Size = new System.Drawing.Size(200, 22);
+			this.tsmiCmsRearrange.Size = new System.Drawing.Size(198, 22);
 			this.tsmiCmsRearrange.Text = "コレクション内を移動(&A)";
 			// 
 			// tsmiCmsRearrangeToTop
@@ -164,7 +164,7 @@
 			this.tsmiCmsDelete.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tsmiCmsDelete.Name = "tsmiCmsDelete";
 			this.tsmiCmsDelete.ShortcutKeys = System.Windows.Forms.Keys.Delete;
-			this.tsmiCmsDelete.Size = new System.Drawing.Size(200, 22);
+			this.tsmiCmsDelete.Size = new System.Drawing.Size(198, 22);
 			this.tsmiCmsDelete.Text = "削除(&D)";
 			this.tsmiCmsDelete.Click += new System.EventHandler(this.tsmiCmsDelete_Click);
 			// 
@@ -197,37 +197,48 @@
 			this.pVCToolStripMenuItem.Size = new System.Drawing.Size(40, 20);
 			this.pVCToolStripMenuItem.Text = "PVC";
 			// 
+			// tsmiSort
+			// 
+			this.tsmiSort.Name = "tsmiSort";
+			this.tsmiSort.Size = new System.Drawing.Size(181, 22);
+			this.tsmiSort.Text = "ソート(&S)";
+			// 
+			// toolStripMenuItem5
+			// 
+			this.toolStripMenuItem5.Name = "toolStripMenuItem5";
+			this.toolStripMenuItem5.Size = new System.Drawing.Size(178, 6);
+			// 
 			// tsmiViewContents
 			// 
 			this.tsmiViewContents.Name = "tsmiViewContents";
-			this.tsmiViewContents.Size = new System.Drawing.Size(182, 22);
+			this.tsmiViewContents.Size = new System.Drawing.Size(181, 22);
 			this.tsmiViewContents.Text = "内容を表示(&V)";
 			this.tsmiViewContents.Click += new System.EventHandler(this.tsmiViewContents_Click);
 			// 
 			// toolStripMenuItem3
 			// 
 			this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-			this.toolStripMenuItem3.Size = new System.Drawing.Size(179, 6);
+			this.toolStripMenuItem3.Size = new System.Drawing.Size(178, 6);
 			// 
 			// tsmiPlay
 			// 
 			this.tsmiPlay.Image = global::Yusen.GExplorer.Properties.Resources.Play;
 			this.tsmiPlay.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tsmiPlay.Name = "tsmiPlay";
-			this.tsmiPlay.Size = new System.Drawing.Size(182, 22);
+			this.tsmiPlay.Size = new System.Drawing.Size(181, 22);
 			this.tsmiPlay.Text = "再生(&P)";
 			this.tsmiPlay.Click += new System.EventHandler(this.tsmiPlay_Click);
 			// 
 			// toolStripMenuItem4
 			// 
 			this.toolStripMenuItem4.Name = "toolStripMenuItem4";
-			this.toolStripMenuItem4.Size = new System.Drawing.Size(179, 6);
+			this.toolStripMenuItem4.Size = new System.Drawing.Size(178, 6);
 			// 
 			// tsmiRename
 			// 
 			this.tsmiRename.Name = "tsmiRename";
-			this.tsmiRename.Size = new System.Drawing.Size(182, 22);
-			this.tsmiRename.Text = "プレイリスト名を変更(&N)";
+			this.tsmiRename.Size = new System.Drawing.Size(181, 22);
+			this.tsmiRename.Text = "プレイリスト名を変更(&L)";
 			this.tsmiRename.Click += new System.EventHandler(this.tsmiRename_Click);
 			// 
 			// tsmiRearrange
@@ -238,7 +249,7 @@
             this.tsmiRearrangeDown,
             this.tsmiRearrangeToBottom});
 			this.tsmiRearrange.Name = "tsmiRearrange";
-			this.tsmiRearrange.Size = new System.Drawing.Size(182, 22);
+			this.tsmiRearrange.Size = new System.Drawing.Size(181, 22);
 			this.tsmiRearrange.Text = "コレクション内を移動(&R)";
 			// 
 			// tsmiRearrangeToTop
@@ -278,20 +289,9 @@
 			this.tsmiDelete.Image = global::Yusen.GExplorer.Properties.Resources.Delete;
 			this.tsmiDelete.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tsmiDelete.Name = "tsmiDelete";
-			this.tsmiDelete.Size = new System.Drawing.Size(182, 22);
+			this.tsmiDelete.Size = new System.Drawing.Size(181, 22);
 			this.tsmiDelete.Text = "削除(&D)";
 			this.tsmiDelete.Click += new System.EventHandler(this.tsmiDelete_Click);
-			// 
-			// toolStripMenuItem5
-			// 
-			this.toolStripMenuItem5.Name = "toolStripMenuItem5";
-			this.toolStripMenuItem5.Size = new System.Drawing.Size(179, 6);
-			// 
-			// tsmiSort
-			// 
-			this.tsmiSort.Name = "tsmiSort";
-			this.tsmiSort.Size = new System.Drawing.Size(182, 22);
-			this.tsmiSort.Text = "ソート(&S)";
 			// 
 			// lvPlaylists
 			// 

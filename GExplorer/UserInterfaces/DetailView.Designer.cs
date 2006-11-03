@@ -185,6 +185,7 @@
 			this.lvReview.Location = new System.Drawing.Point(0, 0);
 			this.lvReview.MultiSelect = false;
 			this.lvReview.Name = "lvReview";
+			this.lvReview.ShowItemToolTips = true;
 			this.lvReview.Size = new System.Drawing.Size(232, 153);
 			this.lvReview.TabIndex = 0;
 			this.lvReview.UseCompatibleStateImageBehavior = false;

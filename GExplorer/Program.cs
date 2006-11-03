@@ -17,16 +17,21 @@ namespace Yusen.GExplorer {
 		private static CacheManager cacheManager;
 		private static PlaylistsManager playlistsManager;
 		private static RootOptions rootOptions;
-		private static PlayerForm2 playerForm = null;
+		private static ExternalCommandsManager externalCommandsManager;
+		private static PlayerForm playerForm = null;
 		private static OptionsForm optionsForm = null;
 		private static CacheViewerForm cacheViewerForm = null;
 		private static BrowserForm browserForm = null;
+		private static ExternalCommandsEditor externalCommandsEditor = null;
 
 		internal static CacheManager CacheManager {
 			get { return Program.cacheManager; }
 		}
 		internal static PlaylistsManager PlaylistsManager {
 			get { return Program.playlistsManager; }
+		}
+		internal static ExternalCommandsManager ExternalCommandsManager {
+			get { return Program.externalCommandsManager; }
 		}
 		internal static RootOptions RootOptions {
 			get { return Program.rootOptions; }
@@ -45,7 +50,7 @@ namespace Yusen.GExplorer {
 		}
 		internal static void PlayContent(GContentClass content, Playlist playlist) {
 			if (null == Program.playerForm || Program.playerForm.IsDisposed) {
-				Program.playerForm = new PlayerForm2();
+				Program.playerForm = new PlayerForm();
 			}
 			Program.playerForm.Show();
 			Program.playerForm.Focus();
@@ -65,6 +70,13 @@ namespace Yusen.GExplorer {
 			Program.cacheViewerForm.Show();
 			Program.cacheViewerForm.Focus();
 		}
+		internal static void ShowExternalCommandsEditor() {
+			if (null == Program.externalCommandsEditor || Program.externalCommandsEditor.IsDisposed) {
+				Program.externalCommandsEditor = new ExternalCommandsEditor();
+			}
+			Program.externalCommandsEditor.Show();
+			Program.externalCommandsEditor.Focus();
+		}
 		internal static string GetWorkingDirectory(WorkingDirectory wd) {
 			string path = Path.Combine(Application.StartupPath, wd.ToString());
 			DirectoryInfo di = new DirectoryInfo(path);
@@ -72,10 +84,10 @@ namespace Yusen.GExplorer {
 			return path;
 		}
 
-		private const int InitializationSteps2 = 6;
-		private const int SerializationSteps2 = 3;
+		private const int InitializationSteps = 7;
+		private const int SerializationSteps = 4;
 		private static SplashForm splashForm;
-		private static MainForm2 mainForm2;
+		private static MainForm mainForm2;
 		internal static event ProgressChangedEventHandler ProgramSerializationProgress2;
 
 		/// <summary>The main entry point for the application.</summary>
@@ -102,7 +114,7 @@ namespace Yusen.GExplorer {
 			}
 
 			Program.splashForm = new SplashForm();
-			Program.splashForm.Initialize("起動中です．．．", Program.InitializationSteps2 + 1);
+			Program.splashForm.Initialize("起動中です．．．", Program.InitializationSteps + 1);
 			Program.InitializeProgram2();
 			Program.mainForm2.Load += delegate {
 				Program.splashForm.EndProgress();
@@ -174,19 +186,25 @@ namespace Yusen.GExplorer {
 			Program.playlistsManager = new PlaylistsManager();
 			Program.playlistsManager.DeserializePlaylists(Path.Combine(Program.GetWorkingDirectory(WorkingDirectory.UserSettings), "PlaylistCollection.xml"));
 
+			Program.splashForm.StepProgress("外部コマンドの読み込み");
+			Program.externalCommandsManager = new ExternalCommandsManager();
+			Program.externalCommandsManager.TryDeserialize(Path.Combine(Program.GetWorkingDirectory(WorkingDirectory.UserSettings), "ExternalCommands.xml"));
+
 			Program.splashForm.StepProgress("メインフォームの作成");
-			Program.mainForm2 = new MainForm2();
+			Program.mainForm2 = new MainForm();
 		}
 		private static void OnProgramSerializationProgress2(int current, string message) {
 			ProgressChangedEventHandler handler = Program.ProgramSerializationProgress2;
 			if (null != handler) {
-				handler(null, new ProgressChangedEventArgs(100*current/Program.SerializationSteps2, message));
+				handler(null, new ProgressChangedEventArgs(100*current/Program.SerializationSteps, message));
 			}
 		}
 		internal static void SerializeSettings2() {
 			int step = 0;
 			Program.OnProgramSerializationProgress2(step++, "プレイリストコレクションの保存");
 			Program.playlistsManager.SerializePlaylists(Path.Combine(Program.GetWorkingDirectory(WorkingDirectory.UserSettings), "PlaylistCollection.xml"));
+			Program.OnProgramSerializationProgress2(step++, "プレイリストコレクションの保存");
+			Program.externalCommandsManager.Serialize(Path.Combine(Program.GetWorkingDirectory(WorkingDirectory.UserSettings), "ExternalCommands.xml"));
 			Program.OnProgramSerializationProgress2(step++, "キャッシュの保存");
 			Program.cacheManager.SerializeTables();
 			Program.OnProgramSerializationProgress2(step++, "ルートオプションの保存");

@@ -154,9 +154,18 @@ namespace Yusen.GExplorer.UserInterfaces {
 		private void Package_MouseEnter(object sender, HtmlElementEventArgs e) {
 			if (Keys.None == (Keys.Alt & Control.ModifierKeys)) {
 				HtmlElement elem = sender as HtmlElement;
-				this.ttId.ToolTipTitle = this.dicPackage[elem].ToString();
+				int key = this.dicPackage[elem];
+				this.ttId.ToolTipTitle = GConvert.ToPackageId(key);
+				string tipText;
+				GPackageClass package;
+				if (Program.CacheManager.TryFindPackage(key, out package)) {
+					tipText = package.PackageTitle + Environment.NewLine
+						+ package.PackageCatch;
+				} else {
+					tipText = " ";
+				}
 				//場所がうまく取れないので MousePosition で
-				this.ttId.Show(" ", this, this.PointToClient(Control.MousePosition));
+				this.ttId.Show(tipText, this, this.PointToClient(Control.MousePosition));
 			}
 		}
 		private void Package_MouseLeave(object sender, HtmlElementEventArgs e) {
@@ -195,8 +204,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 						+ cont.SeriesNumber + Environment.NewLine
 						+ cont.Subtitle + Environment.NewLine
 						+ cont.DurationValue.ToString() + Environment.NewLine
-						+ cont.DeadlineValue.ToString() + Environment.NewLine
-						+ cont.SummaryText;
+						+ cont.DeadlineValue.ToString();
 				} else {
 					this.ttId.ToolTipTitle = id;
 					tipText = " ";

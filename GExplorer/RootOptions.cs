@@ -60,6 +60,14 @@ namespace Yusen.GExplorer {
 			set { this.cacheViewerFormOptions = value; }
 		}
 		
+		private ExternalCommandsEditorOptions externalCommandsEditorOptions = new ExternalCommandsEditorOptions();
+		[Browsable(false)]
+		[SubOptions("外部コマンドエディタ", "外部コマンドエディタに関する設定")]
+		public ExternalCommandsEditorOptions ExternalCommandsEditorOptions {
+			get { return this.externalCommandsEditorOptions; }
+			set { this.externalCommandsEditorOptions = value; }
+		}
+		
 		private OptionsFormOptions optionsFormOptions = new OptionsFormOptions();
 		[Browsable(false)]
 		[SubOptions("オプションフォーム", "オプションフォームに関する設定")]

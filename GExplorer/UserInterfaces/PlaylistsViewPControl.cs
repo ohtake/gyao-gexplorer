@@ -285,6 +285,11 @@ namespace Yusen.GExplorer.UserInterfaces {
 			this.tspmiCopyToAnother.Enabled = isSelected;
 			this.tspmiMoveToAnother.Enabled = isSelected;
 			this.tsmiDelete.Enabled = isSelected;
+			this.tsmiCopyName.Enabled = isSelected;
+			this.tsmiCopyUri.Enabled = isSelected;
+			this.tsmiCopyNameAndUri.Enabled = isSelected;
+			this.tscpmiCopyOtherProperties.Enabled = isSelected;
+			this.tsecmiCommand.Enabled = isSelected;
 
 			this.tsmiCmsPlay.Enabled = isSelected;
 			this.tsmiCmsRearrange.Enabled = isSelected;
@@ -295,6 +300,11 @@ namespace Yusen.GExplorer.UserInterfaces {
 			this.tspmiCmsCopyToAnother.Enabled = isSelected;
 			this.tspmiCmsMoveToAnother.Enabled = isSelected;
 			this.tsmiCmsDelete.Enabled = isSelected;
+			this.tsmiCmsCopyName.Enabled = isSelected;
+			this.tsmiCmsCopyUri.Enabled = isSelected;
+			this.tsmiCmsCopyNameAndUri.Enabled = isSelected;
+			this.tscpmiCmsCopyOtherProperties.Enabled = isSelected;
+			this.tsecmiCmsCommand.Enabled = isSelected;
 		}
 
 		private GContentClass[] GetSelectedContents() {
@@ -339,8 +349,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 
 		#region リストビューのイベントハンドラ
 		private void lvContents_SelectedIndexChanged(object sender, EventArgs e) {
-			this.UpdateStatusMessages();
-			this.ChangeEnabilityOfMenuItems();
+			this.timerSelectionDelay.Start();
 		}
 		private void lvContents_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e) {
 			if (e.IsSelected) {
@@ -412,9 +421,34 @@ namespace Yusen.GExplorer.UserInterfaces {
 		private void tsmiCmsDelete_Click(object sender, EventArgs e) {
 			this.tsmiDelete.PerformClick();
 		}
+		private void tsmiCmsCopyName_Click(object sender, EventArgs e) {
+			this.tsmiCopyName.PerformClick();
+		}
+		private void tsmiCmsCopyUri_Click(object sender, EventArgs e) {
+			this.tsmiCopyUri.PerformClick();
+		}
+		private void tsmiCmsCopyNameAndUri_Click(object sender, EventArgs e) {
+			this.tsmiCopyNameAndUri.PerformClick();
+		}
+		private void tscpmiCmsCopyOtherProperties_PropertySelected(object sender, EventArgs e) {
+			this.tscpmiCopyOtherProperties_PropertySelected(sender, e);
+		}
+		private void tsecmiCmsCommand_ExternalCommandSelected(object sender, EventArgs e) {
+			this.tsecmiCommand_ExternalCommandSelected(sender, e);
+		}
 		#endregion
 
 		#region メインメニュー
+		private void tsmiRenamePlaylist_Click(object sender, EventArgs e) {
+			this.inputBoxDialog1.Title = "プレイリスト名の変更";
+			this.inputBoxDialog1.Message = "新しいプレイリスト名を入力してください．";
+			this.inputBoxDialog1.Input = this.attachedPlaylist.Name;
+			switch (this.inputBoxDialog1.ShowDialog()) {
+				case DialogResult.OK:
+					this.attachedPlaylist.Name = this.inputBoxDialog1.Input;
+					break;
+			}
+		}
 		private void tsmiPlay_Click(object sender, EventArgs e) {
 			Program.PlayContent(this.GetSelectedContents()[0], this.attachedPlaylist);
 		}
@@ -478,15 +512,20 @@ namespace Yusen.GExplorer.UserInterfaces {
 			this.attachedPlaylist.EndUpdate();
 			this.lvContents.SelectedIndices.Clear();
 		}
-		private void tsmiRenamePlaylist_Click(object sender, EventArgs e) {
-			this.inputBoxDialog1.Title = "プレイリスト名の変更";
-			this.inputBoxDialog1.Message = "新しいプレイリスト名を入力してください．";
-			this.inputBoxDialog1.Input = this.attachedPlaylist.Name;
-			switch (this.inputBoxDialog1.ShowDialog()) {
-				case DialogResult.OK:
-					this.attachedPlaylist.Name = this.inputBoxDialog1.Input;
-					break;
-			}
+		private void tsmiCopyName_Click(object sender, EventArgs e) {
+			CPClipboardUtility.CopyNames(this.GetSelectedContents());
+		}
+		private void tsmiCopyUri_Click(object sender, EventArgs e) {
+			CPClipboardUtility.CopyUris(this.GetSelectedContents());
+		}
+		private void tsmiCopyNameAndUri_Click(object sender, EventArgs e) {
+			CPClipboardUtility.CopyNamesAndUris(this.GetSelectedContents());
+		}
+		private void tscpmiCopyOtherProperties_PropertySelected(object sender, EventArgs e) {
+			CPClipboardUtility.CopyContentProperties(this.GetSelectedContents(), (sender as ToolStripContentPropertyMenuItem).LastSelectedPropertyInfo);
+		}
+		private void tsecmiCommand_ExternalCommandSelected(object sender, EventArgs e) {
+			(sender as ToolStripExternalCommandMenuItem).LastSelectedExternalCommand.Execute(this.GetSelectedContents());
 		}
 		#endregion
 		
@@ -554,6 +593,12 @@ namespace Yusen.GExplorer.UserInterfaces {
 					this.OnLastSelectedContentChanged();
 				}
 			}
+		}
+
+		private void timerSelectionDelay_Tick(object sender, EventArgs e) {
+			this.timerSelectionDelay.Stop();
+			this.UpdateStatusMessages();
+			this.ChangeEnabilityOfMenuItems();
 		}
 	}
 

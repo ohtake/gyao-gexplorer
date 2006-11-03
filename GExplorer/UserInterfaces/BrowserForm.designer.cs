@@ -34,7 +34,9 @@
 			this.tsmiPrintPreview = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiClose = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiTimeTablesDeadline = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsgmiGenreTop = new Yusen.GExplorer.UserInterfaces.ToolStripGenreMenuItem();
+			this.tsgmiTimetableUpdated = new Yusen.GExplorer.UserInterfaces.ToolStripGenreMenuItem();
+			this.tsmiTimetableDeadline = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiTools = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiExportContentListToCrawlResultView = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiExtractImages = new System.Windows.Forms.ToolStripMenuItem();
@@ -49,6 +51,7 @@
 			this.statusStrip1 = new System.Windows.Forms.StatusStrip();
 			this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
 			this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+			this.gwbMain = new Yusen.GExplorer.UserInterfaces.GWebBrowser();
 			this.tsStandard = new System.Windows.Forms.ToolStrip();
 			this.tsbBack = new System.Windows.Forms.ToolStripButton();
 			this.tsbForward = new System.Windows.Forms.ToolStripButton();
@@ -57,7 +60,6 @@
 			this.tsbStop = new System.Windows.Forms.ToolStripButton();
 			this.tstbLivedoor = new System.Windows.Forms.ToolStripTextBox();
 			this.tsbLivedoor = new System.Windows.Forms.ToolStripButton();
-			this.gwbMain = new Yusen.GExplorer.UserInterfaces.GWebBrowser();
 			this.menuStrip1.SuspendLayout();
 			this.toolStripContainer1.BottomToolStripPanel.SuspendLayout();
 			this.toolStripContainer1.ContentPanel.SuspendLayout();
@@ -73,13 +75,15 @@
 			this.menuStrip1.Dock = System.Windows.Forms.DockStyle.None;
 			this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiFile,
-            this.tsmiTimeTablesDeadline,
+            this.tsgmiGenreTop,
+            this.tsgmiTimetableUpdated,
+            this.tsmiTimetableDeadline,
             this.tsmiTools,
             this.tshmiHelp});
 			this.menuStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
-			this.menuStrip1.Size = new System.Drawing.Size(842, 20);
+			this.menuStrip1.Size = new System.Drawing.Size(842, 23);
 			this.menuStrip1.TabIndex = 0;
 			this.menuStrip1.Text = "menuStrip1";
 			// 
@@ -174,12 +178,26 @@
 			this.tsmiClose.Text = "閉じる(&W)";
 			this.tsmiClose.Click += new System.EventHandler(this.tsmiClose_Click);
 			// 
-			// tsmiTimeTablesDeadline
+			// tsgmiGenreTop
 			// 
-			this.tsmiTimeTablesDeadline.Enabled = false;
-			this.tsmiTimeTablesDeadline.Name = "tsmiTimeTablesDeadline";
-			this.tsmiTimeTablesDeadline.Size = new System.Drawing.Size(137, 16);
-			this.tsmiTimeTablesDeadline.Text = "残り日数優先番組表(&D)";
+			this.tsgmiGenreTop.Name = "tsgmiGenreTop";
+			this.tsgmiGenreTop.Size = new System.Drawing.Size(93, 16);
+			this.tsgmiGenreTop.Text = "ジャンルトップ(&T)";
+			this.tsgmiGenreTop.GenreSelected += new System.EventHandler(this.tsgmiGenreTop_GenreSelected);
+			// 
+			// tsgmiTimetableUpdated
+			// 
+			this.tsgmiTimetableUpdated.Name = "tsgmiTimetableUpdated";
+			this.tsgmiTimetableUpdated.Size = new System.Drawing.Size(129, 16);
+			this.tsgmiTimetableUpdated.Text = "更新日優先番組表(&U)";
+			this.tsgmiTimetableUpdated.GenreSelected += new System.EventHandler(this.tsgmiTimetableUpdated_GenreSelected);
+			// 
+			// tsmiTimetableDeadline
+			// 
+			this.tsmiTimetableDeadline.Enabled = false;
+			this.tsmiTimetableDeadline.Name = "tsmiTimetableDeadline";
+			this.tsmiTimetableDeadline.Size = new System.Drawing.Size(137, 16);
+			this.tsmiTimetableDeadline.Text = "残り日数優先番組表(&D)";
 			// 
 			// tsmiTools
 			// 
@@ -268,7 +286,7 @@
 			// 
 			this.toolStripContainer1.ContentPanel.AutoScroll = true;
 			this.toolStripContainer1.ContentPanel.Controls.Add(this.gwbMain);
-			this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(842, 529);
+			this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(842, 526);
 			this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.toolStripContainer1.Location = new System.Drawing.Point(0, 0);
 			this.toolStripContainer1.Name = "toolStripContainer1";
@@ -307,6 +325,19 @@
 			this.toolStripStatusLabel1.Size = new System.Drawing.Size(114, 12);
 			this.toolStripStatusLabel1.Text = "toolStripStatusLabel1";
 			// 
+			// gwbMain
+			// 
+			this.gwbMain.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.gwbMain.Location = new System.Drawing.Point(0, 0);
+			this.gwbMain.MinimumSize = new System.Drawing.Size(20, 20);
+			this.gwbMain.Name = "gwbMain";
+			this.gwbMain.Size = new System.Drawing.Size(842, 526);
+			this.gwbMain.TabIndex = 0;
+			this.gwbMain.Navigated += new System.Windows.Forms.WebBrowserNavigatedEventHandler(this.gwbMain_Navigated);
+			this.gwbMain.ProgressChanged += new System.Windows.Forms.WebBrowserProgressChangedEventHandler(this.gwbMain_ProgressChanged);
+			this.gwbMain.Navigating += new System.Windows.Forms.WebBrowserNavigatingEventHandler(this.gwbMain_Navigating);
+			this.gwbMain.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.gwbMain_DocumentCompleted);
+			// 
 			// tsStandard
 			// 
 			this.tsStandard.AllowItemReorder = true;
@@ -319,7 +350,7 @@
             this.tsbStop,
             this.tstbLivedoor,
             this.tsbLivedoor});
-			this.tsStandard.Location = new System.Drawing.Point(3, 20);
+			this.tsStandard.Location = new System.Drawing.Point(3, 23);
 			this.tsStandard.Name = "tsStandard";
 			this.tsStandard.Size = new System.Drawing.Size(781, 25);
 			this.tsStandard.TabIndex = 3;
@@ -396,19 +427,6 @@
 			this.tsbLivedoor.Text = "livedoor動画でGyaO検索";
 			this.tsbLivedoor.Click += new System.EventHandler(this.tsbLivedoor_Click);
 			// 
-			// gwbMain
-			// 
-			this.gwbMain.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.gwbMain.Location = new System.Drawing.Point(0, 0);
-			this.gwbMain.MinimumSize = new System.Drawing.Size(20, 20);
-			this.gwbMain.Name = "gwbMain";
-			this.gwbMain.Size = new System.Drawing.Size(842, 529);
-			this.gwbMain.TabIndex = 0;
-			this.gwbMain.Navigated += new System.Windows.Forms.WebBrowserNavigatedEventHandler(this.gwbMain_Navigated);
-			this.gwbMain.ProgressChanged += new System.Windows.Forms.WebBrowserProgressChangedEventHandler(this.gwbMain_ProgressChanged);
-			this.gwbMain.Navigating += new System.Windows.Forms.WebBrowserNavigatingEventHandler(this.gwbMain_Navigating);
-			this.gwbMain.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.gwbMain_DocumentCompleted);
-			// 
 			// BrowserForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -457,7 +475,7 @@
 		private System.Windows.Forms.ToolStripMenuItem tsmiPrintPreview;
 		private System.Windows.Forms.ToolStripMenuItem tsmiSaveAs;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
-		private System.Windows.Forms.ToolStripMenuItem tsmiTimeTablesDeadline;
+		private System.Windows.Forms.ToolStripMenuItem tsmiTimetableDeadline;
 		private System.Windows.Forms.ToolStripMenuItem tsmiTools;
 		private System.Windows.Forms.ToolStripMenuItem tsmiGotoCampaign;
 		private System.Windows.Forms.ToolStripMenuItem tsmiExtractImages;
@@ -473,5 +491,7 @@
 		private System.Windows.Forms.ToolStripMenuItem tsmiTimetableExpandAll;
 		private System.Windows.Forms.ToolStripMenuItem tsmiTimetableCollapseAll;
 		private GWebBrowser gwbMain;
+		private ToolStripGenreMenuItem tsgmiGenreTop;
+		private ToolStripGenreMenuItem tsgmiTimetableUpdated;
 	}
 }

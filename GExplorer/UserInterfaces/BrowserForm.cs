@@ -244,6 +244,14 @@ namespace Yusen.GExplorer.UserInterfaces {
 		private void tsmiClose_Click(object sender, EventArgs e) {
 			this.Close();
 		}
+		private void tsgmiGenreTop_GenreSelected(object sender, EventArgs e) {
+			GGenreClass genre = this.tsgmiGenreTop.LastSelectedGenre;
+			this.DocumentUri = genre.GenreTopPageUri;
+		}
+		private void tsgmiTimetableUpdated_GenreSelected(object sender, EventArgs e) {
+			GGenreClass genre = this.tsgmiTimetableUpdated.LastSelectedGenre;
+			this.DocumentUri = genre.TimetableRecentlyUpdatedFirstUri;
+		}
 		private void tsmiExportContentListToCrawlResultView_Click(object sender, EventArgs e) {
 			//重複なしでキーを並べる
 			List<int> keys = new List<int>();

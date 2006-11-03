@@ -125,6 +125,16 @@ namespace Yusen.GExplorer.AppCore {
 				return false;
 			}
 		}
+		public bool TryFindPackage(int pacKey, out GPackageClass package) {
+			GDataSet.GPackageRow row = this.dataSet.GPackage.FindByPackageKey(pacKey);
+			if (null != row) {
+				package = new GPackageClass(row, this.GetCachedGenre(row));
+				return true;
+			} else {
+				package = null;
+				return false;
+			}
+		}
 		private bool TryFetchContent(int contKey, out GContentClass content) {
 			Uri uri = GUriBuilder.CreateContentDetailUri(contKey);
 			TextReader reader = TextReader.Null;
