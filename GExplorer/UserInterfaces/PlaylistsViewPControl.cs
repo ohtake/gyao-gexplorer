@@ -530,6 +530,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 		#endregion
 		
 		private void PushComparison(int idx) {
+			if (null == this.attachedPlaylist) return;
 			this.comparer.PushComparison(PlaylistsViewPControl.ContentComparisons[idx]);
 			this.attachedPlaylist.Sort(this.comparer);
 		}
@@ -540,7 +541,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 		}
 
 		#region IPlaylistsViewPControlBindingContract Members
-
+		[Browsable(false)]
 		public int ColWidthId {
 			get { return this.chId.Width;}
 			set {
@@ -548,6 +549,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 				this.OnPropertyChanged(PlaylistsViewPControl.ColWidthPropertyNames[0]);
 			}
 		}
+		[Browsable(false)]
 		public int ColWidthTitle {
 			get { return this.chTitle.Width; }
 			set {
@@ -555,6 +557,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 				this.OnPropertyChanged(PlaylistsViewPControl.ColWidthPropertyNames[1]);
 			}
 		}
+		[Browsable(false)]
 		public int ColWidthSeriesNumber {
 			get { return this.chSeriesNumber.Width; }
 			set {
@@ -562,6 +565,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 				this.OnPropertyChanged(PlaylistsViewPControl.ColWidthPropertyNames[2]);
 			}
 		}
+		[Browsable(false)]
 		public int ColWidthSubtitle {
 			get { return this.chSubtitle.Width; }
 			set {
@@ -569,6 +573,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 				this.OnPropertyChanged(PlaylistsViewPControl.ColWidthPropertyNames[3]);
 			}
 		}
+		[Browsable(false)]
 		public int ColWidthDuration {
 			get { return this.chDuration.Width; }
 			set {
@@ -576,6 +581,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 				this.OnPropertyChanged(PlaylistsViewPControl.ColWidthPropertyNames[4]);
 			}
 		}
+		[Browsable(false)]
 		public int ColWidthDeadline {
 			get { return this.chDeadline.Width; }
 			set {
@@ -619,51 +625,52 @@ namespace Yusen.GExplorer.UserInterfaces {
 		[Category("カラム幅")]
 		[DisplayName("[0] contents_id")]
 		[Description("カラム 'contents_id' の幅を指定します．")]
+		[DefaultValue(-1)]
 		public int ColWidthId {
 			get { return this.colWidthId; }
 			set { this.colWidthId = value; }
 		}
-
 		private int colWidthTitle = -1;
 		[Category("カラム幅")]
 		[DisplayName("[1] タイトル")]
 		[Description("カラム 'タイトル' の幅を指定します．")]
+		[DefaultValue(-1)]
 		public int ColWidthTitle {
 			get { return this.colWidthTitle; }
 			set { this.colWidthTitle = value; }
 		}
-
 		private int colWidthSeriesNumber = -1;
 		[Category("カラム幅")]
 		[DisplayName("[2] シリーズ番号")]
 		[Description("カラム 'シリーズ番号' の幅を指定します．")]
+		[DefaultValue(-1)]
 		public int ColWidthSeriesNumber {
 			get { return this.colWidthSeriesNumber; }
 			set { this.colWidthSeriesNumber = value; }
 		}
-
 		private int colWidthSubtitle = -1;
 		[Category("カラム幅")]
 		[DisplayName("[3] サブタイトル")]
 		[Description("カラム 'サブタイトル' の幅を指定します．")]
+		[DefaultValue(-1)]
 		public int ColWidthSubtitle {
 			get { return this.colWidthSubtitle; }
 			set { this.colWidthSubtitle = value; }
 		}
-
 		private int colWidthDuration = -1;
 		[Category("カラム幅")]
 		[DisplayName("[4] 時間")]
 		[Description("カラム '時間' の幅を指定します．")]
+		[DefaultValue(-1)]
 		public int ColWidthDuration {
 			get { return this.colWidthDuration; }
 			set { this.colWidthDuration = value; }
 		}
-
 		private int colWidthDeadline = -1;
 		[Category("カラム幅")]
 		[DisplayName("[5] 期限")]
 		[Description("カラム '期限' の幅を指定します．")]
+		[DefaultValue(-1)]
 		public int ColWidthDeadline {
 			get { return this.colWidthDeadline; }
 			set { this.colWidthDeadline = value; }

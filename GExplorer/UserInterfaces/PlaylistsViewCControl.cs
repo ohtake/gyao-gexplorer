@@ -517,6 +517,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 		[Category("カラム幅")]
 		[DisplayName("[0] プレイリスト名")]
 		[Description("カラム 'プレイリスト名' の幅を指定します．")]
+		[DefaultValue(-1)]
 		public int ColWidthName {
 			get { return this.colWidthName; }
 			set { this.colWidthName = value; }
@@ -526,6 +527,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 		[Category("カラム幅")]
 		[DisplayName("[1] 数")]
 		[Description("カラム '数' の幅を指定します．")]
+		[DefaultValue(-1)]
 		public int ColWidthCount {
 			get { return this.colWidthCount; }
 			set { this.colWidthCount = value; }
@@ -535,6 +537,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 		[Category("カラム幅")]
 		[DisplayName("[2] 時間")]
 		[Description("カラム '時間' の幅を指定します．")]
+		[DefaultValue(-1)]
 		public int ColWidthTime {
 			get { return this.colWidthTime; }
 			set { this.colWidthTime = value; }
@@ -544,6 +547,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 		[Category("カラム幅")]
 		[DisplayName("[3] 作成日時")]
 		[Description("カラム '作成日時' の幅を指定します．")]
+		[DefaultValue(-1)]
 		public int ColWidthCreated {
 			get { return this.colWidthCreated; }
 			set { this.colWidthCreated = value; }
@@ -553,6 +557,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 		[Category("カラム幅")]
 		[DisplayName("[4] 最終更新日時")]
 		[Description("カラム '最終更新日時' の幅を指定します．")]
+		[DefaultValue(-1)]
 		public int ColWidthModified {
 			get { return this.colWidthModified; }
 			set { this.colWidthModified = value; }

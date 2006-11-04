@@ -91,9 +91,9 @@ namespace Yusen.GExplorer.UserInterfaces {
 		private void BrowserForm_Load(object sender, EventArgs e) {
 			if (base.DesignMode) return;
 
-			if (Program.CacheManager == null) return;
+			if (Program.CacheController == null) return;
 			this.tscbAddress.Items.Clear();
-			foreach (GGenreClass genre in Program.CacheManager.GetEnumerableOfAllGenres()) {
+			foreach (GGenreClass genre in Program.CacheController.GetEnumerableOfAllGenres()) {
 				this.tscbAddress.Items.Add(genre.GenreTopPageUri);
 			}
 			if (null == Program.RootOptions) return;
@@ -267,7 +267,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 			List<GContentClass> conts = new List<GContentClass>(keys.Count);
 			foreach (int key in keys) {
 				GContentClass cont;
-				if (Program.CacheManager.TryFindContent(key, out cont)) {
+				if (Program.CacheController.TryFindContent(key, out cont)) {
 					conts.Add(cont);
 				} else {
 					ignoreCount++;

@@ -11,12 +11,12 @@ namespace Yusen.GExplorer.UserInterfaces {
 		public event PropertyChangedEventHandler PropertyChanged;
 
 		private GContentClass lastSelectedContent;
-
+		
 		public MainForm() {
 			InitializeComponent();
 			
 			this.tsmiGenreTab.DropDown = this.genreSelctControl1.GetToolStripDropDown();
-			this.tsmiCrawlResultView.DropDown = this.crawlResultView21.GetToolStripDropDown();
+			this.tsmiCrawlResultView.DropDown = this.crawlResultView.GetToolStripDropDown();
 			this.tsmiPlaylistCollection.DropDown = this.playlistsView1.GetPlaylistCollectionToolStripDropDown();
 			this.tsmiPlaylist.DropDown = this.playlistsView1.GetPlaylistToolStripDropDown();
 			this.tsmiDetailView.DropDown = this.detailView1.GetToolStripDropDown();
@@ -25,9 +25,10 @@ namespace Yusen.GExplorer.UserInterfaces {
 			this.Text = Program.ApplicationName;
 		}
 
-		private void MainForm2_Load(object sender, EventArgs e) {
+		private void MainForm_Load(object sender, EventArgs e) {
 			if (base.DesignMode) return;
-			Program.ProgramSerializationProgress2 += new ProgressChangedEventHandler(Program_ProgramSerializationProgress);
+			this.tsslMessage.Text = string.Empty;
+			Program.ProgramSerializationProgress += new ProgressChangedEventHandler(Program_ProgramSerializationProgress);
 
 			if (null == Program.RootOptions) return;
 
@@ -35,11 +36,11 @@ namespace Yusen.GExplorer.UserInterfaces {
 			Program.RootOptions.MainFormOptions.NeutralizeUnspecificValues(this);
 			BindingContractUtility.BindAllProperties<MainForm, IMainFormBindingContract>(this, Program.RootOptions.MainFormOptions);
 			this.genreSelctControl1.LoadOpenTabs(Program.RootOptions.MainFormOptions.GenreSelectControlOptions);
-			this.crawlResultView21.BindToOptions(Program.RootOptions.MainFormOptions.CrawlResultViewOptions);
+			this.crawlResultView.BindToOptions(Program.RootOptions.MainFormOptions.CrawlResultViewOptions);
 			this.playlistsView1.BindToOptions(Program.RootOptions.MainFormOptions.PlaylistsViewOptions);
 			this.detailView1.BindToOptions(Program.RootOptions.MainFormOptions.DetailViewOptions);
 		}
-		private void MainForm2_FormClosing(object sender, FormClosingEventArgs e) {
+		private void MainForm_FormClosing(object sender, FormClosingEventArgs e) {
 			switch (e.CloseReason) {
 				case CloseReason.UserClosing:
 					if (null != Program.PlaylistsManager.CurrentContent) {
@@ -52,12 +53,12 @@ namespace Yusen.GExplorer.UserInterfaces {
 					break;
 			}
 		}
-		private void MainForm2_FormClosed(object sender, FormClosedEventArgs e) {
+		private void MainForm_FormClosed(object sender, FormClosedEventArgs e) {
 			this.tsmiAbortCrawl.PerformClick();
 			
 			this.Enabled = false;
 			this.genreSelctControl1.StoreOpenTabs(Program.RootOptions.MainFormOptions.GenreSelectControlOptions);
-			Program.SerializeSettings2();
+			Program.SerializeSettings();
 		}
 
 		private void Program_ProgramSerializationProgress(object sender, ProgressChangedEventArgs e) {
@@ -75,14 +76,14 @@ namespace Yusen.GExplorer.UserInterfaces {
 		
 		#region ジャンルタブ
 		private void genreSelctControl1_CrawlResultSelected(object sender, EventArgs e) {
-			this.crawlResultView21.ViewCrawlResult(this.genreSelctControl1.SelectedCrawlResult);
+			this.crawlResultView.ViewCrawlResult(this.genreSelctControl1.SelectedCrawlResult);
 		}
 		private void genreSelctControl1_RequiredHeightChanged(object sender, EventArgs e) {
 			this.splitContainer3.SplitterDistance = this.genreSelctControl1.RequiredHeight;
 			this.splitContainer3.Panel1.ResumeLayout();
 		}
 		private void genreSelctControl1_StatusMessageChanged(object sender, EventArgs e) {
-			this.tsslMessage.Text = this.genreSelctControl1.StatusMessage;
+			this.SetTemporalStatusMessage(this.genreSelctControl1.StatusMessage);
 		}
 		private void genreSelctControl1_CrawlProgressChanged(object sender, ProgressChangedEventArgs e) {
 			ICrawlProgressState state = e.UserState as ICrawlProgressState;
@@ -148,6 +149,9 @@ namespace Yusen.GExplorer.UserInterfaces {
 					break;
 			}
 		}
+		private void tsmiExternalCommandsEditor_Click(object sender, EventArgs e) {
+			Program.ShowExternalCommandsEditor();
+		}
 		private void tsmiCacheViewer_Click(object sender, EventArgs e) {
 			Program.ShowCacheViewerForm();
 		}
@@ -187,27 +191,34 @@ namespace Yusen.GExplorer.UserInterfaces {
 			this.genreSelctControl1.AddAndSelectVirtualGenre(vgenre);
 		}
 		
-		private void crawlResultView21_LastSelectedContentChanged(object sender, EventArgs e) {
-			GContentClass cont = this.crawlResultView21.LastSelectedContent;
+		private void crawlResultView_LastSelectedContentChanged(object sender, EventArgs e) {
+			GContentClass cont = this.crawlResultView.LastSelectedContent;
 			this.SetLastSelectContentDelayed(cont);
 		}
-		
+		private void playlistsView1_LastSelectedContentChanged(object sender, EventArgs e) {
+			this.SetLastSelectContentDelayed(this.playlistsView1.LastSelectedContent);
+		}
 		private void SetLastSelectContentDelayed(GContentClass cont) {
 			this.lastSelectedContent = cont;
 			this.timerContentSelect.Start();
 		}
-		
 		private void timerContentSelect_Tick(object sender, EventArgs e) {
 			this.timerContentSelect.Stop();
 			this.detailView1.ViewDetail(this.lastSelectedContent);
 		}
-
-		private void playlistsView1_LastSelectedContentChanged(object sender, EventArgs e) {
-			this.SetLastSelectContentDelayed(this.playlistsView1.LastSelectedContent);
+		
+		private void SetTemporalStatusMessage(string message) {
+			this.tsslMessage.Text = message;
+			this.timerMessage.Stop();
+			this.timerMessage.Start();
 		}
-
-		private void tsmiExternalCommandsEditor_Click(object sender, EventArgs e) {
-			Program.ShowExternalCommandsEditor();
+		private void timerMessage_Tick(object sender, EventArgs e) {
+			this.timerMessage.Stop();
+			this.tsslMessage.Text = string.Empty;
+		}
+		
+		private void detailView1_StatusMessageChanged(object sender, EventArgs e) {
+			this.SetTemporalStatusMessage(this.detailView1.StatusMessage);
 		}
 	}
 	

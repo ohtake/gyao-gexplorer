@@ -478,7 +478,7 @@
 			// 
 			// timerSelectionDelay
 			// 
-			this.timerSelectionDelay.Interval = 50;
+			this.timerSelectionDelay.Interval = 10;
 			this.timerSelectionDelay.Tick += new System.EventHandler(this.timerSelectionDelay_Tick);
 			// 
 			// PlaylistsViewPControl

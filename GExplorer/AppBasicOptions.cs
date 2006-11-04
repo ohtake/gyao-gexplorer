@@ -66,6 +66,17 @@ namespace Yusen.GExplorer {
 			set { this.useDefaultGenres = value; }
 		}
 
+		private string migemoDicFile = @"dict\migemo-dict";
+		[Category("Migemo")]
+		[DisplayName("Migemoの辞書ファイル")]
+		[Description("Migemoの辞書ファイルを指定します．再起動後に変更が有効になります．")]
+		[DefaultValue(@"dict\migemo-dict")]
+		[Editor(typeof(FileNameEditor), typeof(UITypeEditor))]
+		public string MigemoDicFile {
+			get { return this.migemoDicFile; }
+			set { this.migemoDicFile = value; }
+		}
+
 		private string nameFamily = string.Empty;
 		[Category("ユーザ情報")]
 		[DisplayName("氏名(姓)")]

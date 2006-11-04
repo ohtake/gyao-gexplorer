@@ -10,7 +10,7 @@ using Yusen.GExplorer.GyaoModel;
 using Yusen.GExplorer.Utilities;
 
 namespace Yusen.GExplorer.AppCore {
-	sealed class CacheManager {
+	sealed class CacheController {
 		private static readonly Regex regexPackagePackage = new Regex(
 			@"<td width=""658"" class=""title12b"">(?<PackageName>.*?)<!-- パックタイトル -->[\s\S]*?<b>(?<CatchCopy>.*?)<!-- パックキャッチコピー --></b>[\s\S]*?<td>(?<PackageText1>.*?)<!-- パックテキスト１ --></td>",
 			RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.ExplicitCapture);
@@ -30,9 +30,9 @@ namespace Yusen.GExplorer.AppCore {
 		private readonly List<GGenreClass> allGenres = new List<GGenreClass>();
 		private readonly SortedDictionary<int, GGenreClass> dicGenre = new SortedDictionary<int, GGenreClass>();
 		
-		private CacheManager() {
+		private CacheController() {
 		}
-		public CacheManager(string cacheDirectory) : this(){
+		public CacheController(string cacheDirectory) : this(){
 			this.cacheDirectory = cacheDirectory;
 		}
 		public IEnumerable<GGenreClass> GetEnumerableOfAllGenres() {
@@ -150,7 +150,7 @@ namespace Yusen.GExplorer.AppCore {
 				string subtitle;
 				string durationText;
 				
-				Match match =CacheManager.regexContentPage.Match(allHtml);
+				Match match =CacheController.regexContentPage.Match(allHtml);
 				if (match.Success) {
 					string id;
 					if(GIdExtractor.TryExtractGenreId(allHtml, out id)){
@@ -226,7 +226,7 @@ namespace Yusen.GExplorer.AppCore {
 				string packageCatch;
 				string packageText;
 
-				Match matchPackage = CacheManager.regexPackagePackage.Match(allHtml);
+				Match matchPackage = CacheController.regexPackagePackage.Match(allHtml);
 				if (matchPackage.Success) {
 					string id;
 					if (GIdExtractor.TryExtractGenreId(allHtml, out id)) {
@@ -242,7 +242,7 @@ namespace Yusen.GExplorer.AppCore {
 				
 				package = this.CreatePackageAndStoreOrUpdate(pacKey, genre, packageName, packageCatch, packageText);
 				
-				for (Match matchContent = CacheManager.regexPackageContent.Match(allHtml); matchContent.Success; matchContent = matchContent.NextMatch()) {
+				for (Match matchContent = CacheController.regexPackageContent.Match(allHtml); matchContent.Success; matchContent = matchContent.NextMatch()) {
 					string id = matchContent.Groups["ContentId"].Value;
 					string seriesNumber = HtmlUtility.HtmlToText(matchContent.Groups["SeriesNumber"].Value);
 					string subtitle = HtmlUtility.HtmlToText(matchContent.Groups["Subtitle"].Value);

@@ -60,13 +60,6 @@ namespace Yusen.GExplorer.Properties {
             }
         }
         
-        internal static System.Drawing.Bitmap AutoFilter {
-            get {
-                object obj = ResourceManager.GetObject("AutoFilter", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
         internal static System.Drawing.Bitmap BuilderDialog_add {
             get {
                 object obj = ResourceManager.GetObject("BuilderDialog_add", resourceCulture);
@@ -84,13 +77,6 @@ namespace Yusen.GExplorer.Properties {
         internal static System.Drawing.Bitmap BuilderDialog_moveup {
             get {
                 object obj = ResourceManager.GetObject("BuilderDialog_moveup", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        internal static System.Drawing.Bitmap Comment {
-            get {
-                object obj = ResourceManager.GetObject("Comment", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -119,13 +105,6 @@ namespace Yusen.GExplorer.Properties {
         internal static System.Drawing.Bitmap DoubleRightArrow {
             get {
                 object obj = ResourceManager.GetObject("DoubleRightArrow", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        internal static System.Drawing.Bitmap Filter2 {
-            get {
-                object obj = ResourceManager.GetObject("Filter2", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -189,6 +168,13 @@ namespace Yusen.GExplorer.Properties {
         internal static System.Drawing.Bitmap NavForward {
             get {
                 object obj = ResourceManager.GetObject("NavForward", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Offline {
+            get {
+                object obj = ResourceManager.GetObject("Offline", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

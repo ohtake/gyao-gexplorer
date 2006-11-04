@@ -52,10 +52,10 @@ namespace Yusen.GExplorer.UserInterfaces {
 			base.DropDownItems.Add("ジャンル名2");
 
 			if (base.DesignMode) return;
-			if (null == Program.CacheManager) return;
+			if (null == Program.CacheController) return;
 
 			List<ToolStripItem> items = new List<ToolStripItem>();
-			foreach (GGenreClass genre in Program.CacheManager.GetEnumerableOfAllGenres()) {
+			foreach (GGenreClass genre in Program.CacheController.GetEnumerableOfAllGenres()) {
 				ToolStripMenuItemWithGenre tsmiwg = new ToolStripMenuItemWithGenre(genre);
 				tsmiwg.Click += new EventHandler(tsmiwg_Click);
 				items.Add(tsmiwg);

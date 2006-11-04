@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 using System.ComponentModel;
+using System.Collections;
 
 namespace Yusen.GExplorer.Utilities {
-	public sealed class StackableComparisonsComparer<T> : IComparer<T> {
+	sealed class StackableComparisonsComparer<T> : IComparer<T>, IComparer {
 		public const int DefaultMaxStackSize = 3;
 		private readonly int maxStackSize;
 		private readonly List<Comparison<T>> comparisons;
@@ -44,6 +45,9 @@ namespace Yusen.GExplorer.Utilities {
 		public void ClearComparisons() {
 			this.comparisons.Clear();
 		}
+		public int ComparisonsCount {
+			get { return this.comparisons.Count; }
+		}
 
 		#region IComparer<T> Members
 		public int Compare(T x, T y) {
@@ -54,6 +58,12 @@ namespace Yusen.GExplorer.Utilities {
 				return result;
 			}
 			return 0;
+		}
+		#endregion
+
+		#region IComparer Members
+		int IComparer.Compare(object x, object y) {
+			return this.Compare((T)x, (T)y);
 		}
 		#endregion
 	}

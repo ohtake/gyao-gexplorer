@@ -11,287 +11,152 @@ using System.Windows.Forms;
 using Yusen.GExplorer.AppCore;
 using Yusen.GExplorer.GyaoModel;
 using Yusen.GExplorer.Utilities;
+using System.Xml.Serialization;
+using System.Text.RegularExpressions;
+using System.Collections;
 
 namespace Yusen.GExplorer.UserInterfaces {
 	sealed partial class CrawlResultView : UserControl, ICrawlResultViewBindingContract, INotifyPropertyChanged {
-		#region ノードの内部クラス
-		private abstract class NodeItem : IDisposable{
-			private static readonly Size ImgSize4 = new Size(80, 60);
-			private static readonly Size ImgSize2 = new Size(40, 30);
-			private static readonly Size ImgSize1 = new Size(20, 15);
-
-			public event EventHandler LoadImageAsyncCompleted;
-			
-			private readonly BackgroundImageLoader bgImgLoader;
-			private readonly Uri uri = null;
-			private Image image = null;
-			private Color genColor;
-			private bool requestedAlready = false;
-			private bool disposed = false;
-			
-			protected NodeItem(BackgroundImageLoader bgImgLoader, Uri uri, Color genColor) {
-				this.bgImgLoader = bgImgLoader;
-				this.uri = uri;
-				this.genColor = genColor;
+		internal const string DefaultDestinationPlaylistName = "My Playlist 1";
+		
+		private sealed class FilterFlagComparer : IComparer<ContentListViewItem>, IComparer {
+			private IComparer<ContentListViewItem> anotherComparer;
+			public FilterFlagComparer(IComparer<ContentListViewItem> anotherComparer) {
+				this.anotherComparer = anotherComparer;
 			}
-			private Image GetImage() {
-				if (null != this.image) return this.image;
-				if (this.requestedAlready) return null;
-
-				this.requestedAlready = true;
-				if (null == this.uri) return null;
-				HttpWebRequest req = WebRequest.Create(this.uri) as HttpWebRequest;
-				req.CachePolicy = new RequestCachePolicy(RequestCacheLevel.CacheOnly);
-				try {
-					HttpWebResponse res = req.GetResponse() as HttpWebResponse;
-					using (Stream stream = res.GetResponseStream()) {
-						this.image = Image.FromStream(stream);
-					}
-					return this.image;
-				} catch (WebException) {
-					this.bgImgLoader.EnqueueTask(new BackgroundImageLoadTask(this.uri, this.BackgroundImageLoadCallback));
-				}
-				return null;
-			}
-			private bool BackgroundImageLoadCallback(Image img) {
-				if (this.IsDisposed) {
-					return false;
-				}
-				this.image = img;
-				this.OnLoadImageAsyncCompleted();
-				return true;
-			}
-			private void OnLoadImageAsyncCompleted() {
-				EventHandler handler = this.LoadImageAsyncCompleted;
-				if (null != handler) {
-					handler(this, EventArgs.Empty);
+			public int Compare(ContentListViewItem x, ContentListViewItem y) {
+				if (x.FilterFlag == y.FilterFlag) {
+					return this.anotherComparer.Compare(x, y);
+				} else if (x.FilterFlag) {
+					return -1;
+				} else {
+					return 1;
 				}
 			}
-			private void HandleDrawItemInternal(ListBox lbox, DrawItemEventArgs e, bool showImage, Size imageSize, int imageIndent, int textIndent, bool drawSecond, bool drawSummary) {
-				Image img = showImage ? this.GetImage() : null;
-				Color bgColor = this.GetBackgroundColor(lbox, e);
-				Color fgColor = this.GetForegraondColor(lbox, e);
-				Font font;
-				bool hasCustomFont = this.TryGetCustomFont(lbox, e, out font);
-				if (!hasCustomFont) font = e.Font;
-
-				Rectangle genRect = new Rectangle(e.Bounds.Location, new Size(textIndent-1, e.Bounds.Height));
-				using (LinearGradientBrush genBrush = new LinearGradientBrush(genRect, this.genColor, Color.White, LinearGradientMode.Vertical))
-				using (SolidBrush bgBrush = new SolidBrush(bgColor))
-				using (SolidBrush fgBrush = new SolidBrush(fgColor)) {
-					e.Graphics.FillRectangle(genBrush, genRect);
-					if (null != img) {
-						e.Graphics.DrawImage(img, new Rectangle(new Point(imageIndent + e.Bounds.Left, 1 + e.Bounds.Top), imageSize));
-					}
-					e.Graphics.FillRectangle(bgBrush, new Rectangle(e.Bounds.Left+textIndent-1, e.Bounds.Top, e.Bounds.Width - textIndent+1, e.Bounds.Height));
-					StringFormat sfText = new StringFormat(StringFormatFlags.FitBlackBox | StringFormatFlags.LineLimit);
-					sfText.Trimming = StringTrimming.EllipsisCharacter;
-					e.Graphics.DrawString(this.FirstLine, font, fgBrush, new RectangleF(textIndent + e.Bounds.Left, 1 + e.Bounds.Top, e.Bounds.Width - textIndent -1, 15), sfText);
-					if (drawSecond) e.Graphics.DrawString(this.SeccondLine, font, fgBrush, new RectangleF(textIndent + e.Bounds.Left, 16 + e.Bounds.Top, e.Bounds.Width - textIndent - 1, 15), sfText);
-					if (drawSummary) e.Graphics.DrawString(this.Summary, font, fgBrush, new RectangleF(textIndent + e.Bounds.Left, 31 + e.Bounds.Top, e.Bounds.Width - textIndent- 1, 30), sfText);
-				}
-				if ((e.State & DrawItemState.Focus) != DrawItemState.None) {
-					using (Pen penFocus = new Pen(SystemColors.ControlDarkDark)) {
-						penFocus.DashStyle = DashStyle.Dot;
-						e.Graphics.DrawRectangle(penFocus, new Rectangle(e.Bounds.Left, e.Bounds.Top, e.Bounds.Width - 1, e.Bounds.Height - 1));
-					}
-				}
-				if (hasCustomFont) font.Dispose();
-			}
-			
-			public void HandleDrawItem4WithImage(ListBox lbox, DrawItemEventArgs e) {
-				this.HandleDrawItemInternal(lbox, e, true, NodeItem.ImgSize4, 8, 90, true, true);
-			}
-			public void HandleDrawItem2WithImage(ListBox lbox, DrawItemEventArgs e) {
-				this.HandleDrawItemInternal(lbox, e, true, NodeItem.ImgSize2, 4, 46, true, false);
-			}
-			public void HandleDrawItem1WithImage(ListBox lbox, DrawItemEventArgs e) {
-				this.HandleDrawItemInternal(lbox, e, true, NodeItem.ImgSize1, 2, 24, false, false);
-			}
-			public void HandleDrawItem4WithoutImage(ListBox lbox, DrawItemEventArgs e) {
-				this.HandleDrawItemInternal(lbox, e, false, NodeItem.ImgSize4, 8, 10, true, true);
-			}
-			public void HandleDrawItem2WithoutImage(ListBox lbox, DrawItemEventArgs e) {
-				this.HandleDrawItemInternal(lbox, e, false, NodeItem.ImgSize2, 4, 6, true, false);
-			}
-			public void HandleDrawItem1WithoutImage(ListBox lbox, DrawItemEventArgs e) {
-				this.HandleDrawItemInternal(lbox, e, false, NodeItem.ImgSize1, 2, 4, false, false);
-			}
-			
-			protected abstract string FirstLine { get;}
-			protected abstract string SeccondLine { get;}
-			protected abstract string Summary { get;}
-			protected abstract int ImageIndent { get;}
-			protected abstract Color GetForegraondColor(ListBox lbox, DrawItemEventArgs e);
-			protected abstract Color GetBackgroundColor(ListBox lbox, DrawItemEventArgs e);
-			protected abstract bool TryGetCustomFont(ListBox lbox, DrawItemEventArgs e, out Font font);
-			
-			public bool IsDisposed {
-				get { return this.disposed; }
-			}
-			protected virtual void Dispose(bool disposing) {
-				if (disposing) {
-					this.disposed = true;
-					if (null != this.image) this.image.Dispose();
-				}
-			}
-			public void Dispose() {
-				this.Dispose(true);
-				GC.SuppressFinalize(this);
-			}
-			~NodeItem() {
-				this.Dispose(false);
+			public int Compare(object x, object y) {
+				return this.Compare(x as ContentListViewItem, y as ContentListViewItem);
 			}
 		}
-		private class GroupNodeItem : NodeItem {
-			public GroupNodeItem(BackgroundImageLoader bgImgLoader)
-				: base(bgImgLoader, null, Color.Black) {
-			}
-			protected GroupNodeItem(BackgroundImageLoader bgImgLoader, Uri imageUri, Color genColor)
-				: base(bgImgLoader, imageUri, genColor) {
-			}
+		private sealed class ContentListViewItem : ListViewItem {
+			private readonly GContentClass cont;
+			private readonly ContentStyle style;
+			private bool imageRequestedAlready = false;
+			private bool newFlag = false;
+			private bool modifiedFlag = false;
+			private bool filterFlag = false;
 			
-			protected override string FirstLine {
-				get { return "不明なパッケージ"; }
-			}
-			protected override string SeccondLine {
-				get { return string.Empty; }
-			}
-			protected override string Summary {
-				get { return string.Empty; }
-			}
-			protected sealed override int ImageIndent {
-				get { return 1; }
-			}
-			protected sealed override Color GetForegraondColor(ListBox lbox, DrawItemEventArgs e) {
-				return SystemColors.ControlText;
-			}
-			protected sealed override Color GetBackgroundColor(ListBox lbox, DrawItemEventArgs e) {
-				return SystemColors.ControlDark;
-			}
-			protected sealed override bool TryGetCustomFont(ListBox lbox, DrawItemEventArgs e, out Font font) {
-				font = null;
-				return false;
-			}
-		}
-		private sealed class PackageNodeItem : GroupNodeItem {
-			private readonly GPackageClass package;
-			private readonly Color genColor;
-			private string firstLine = null;
-			public PackageNodeItem(BackgroundImageLoader bgImgLoader, GPackageClass package)
-				: base(bgImgLoader, package.ImageMiddleUri, (null != package.ParentGenre)?package.ParentGenre.GenreColor : Color.Black) {
-				this.package = package;
-				if (null != package.ParentGenre) {
-					this.genColor = package.ParentGenre.GenreColor;
-				}
-			}
-			public GPackageClass Package {
-				get { return this.package; }
-			}
-			
-			protected override string FirstLine {
-				get {
-					if (null == this.firstLine) {
-						this.firstLine = string.Format("<{0}> {1}", this.package.PackageId, this.package.PackageTitle);
-					}
-					return this.firstLine;
-				}
-			}
-			protected override string SeccondLine {
-				get {
-					return this.Package.PackageCatch;
-				}
-			}
-			protected override string Summary {
-				get { return this.Package.PackageText; }
-			}
-		}
-		private sealed class ContentNodeItem : NodeItem {
-			private readonly GContentClass content;
-			private readonly Color genColor;
-			private readonly bool isNew;
-			private readonly bool isModified;
-			private string strFirstLine = null;
-			private string strSecondLine = null;
-			
-			public ContentNodeItem(BackgroundImageLoader bgImgLoader, GContentClass content, bool newFlag, bool modifiedFlag)
-				: base(bgImgLoader, content.ImageSmallUri, (null != content.GrandparentGenre) ? content.GrandparentGenre.GenreColor : Color.Black) {
-				this.content = content;
-				this.isNew = newFlag;
-				this.isModified = modifiedFlag;
-				if (null != this.content.GrandparentGenre) {
-					this.genColor = this.content.GrandparentGenre.GenreColor;
-				}
+			public ContentListViewItem(GContentClass cont, ContentStyle style)
+				: base(new string[] { cont.ContentId , cont.Title, cont.SeriesNumber, cont.Subtitle, cont.DurationValue.ToString(), cont.DeadlineValue.ToString(), cont.SummaryText}) {
+				this.cont = cont;
+				this.style = style;
 			}
 			public GContentClass Content {
-				get { return this.content; }
+				get { return this.cont; }
 			}
-			
-			protected override string FirstLine {
-				get {
-					if (null == this.strFirstLine) {
-						this.strFirstLine = string.Format("<{0}> {1} | {2} | {3}", content.ContentId, content.Title, content.SeriesNumber, content.Subtitle);
-					}
-					return this.strFirstLine;
-				}
+			public bool ImageRequestedAlready {
+				get { return this.imageRequestedAlready; }
+				set { this.imageRequestedAlready = value; }
 			}
-			protected override string SeccondLine {
-				get {
-					if (null == this.strSecondLine) {
-						this.strSecondLine = string.Format("{0} {1}", content.DurationValue, content.DeadlineValue, content.Created, content.LastModified);
-					}
-					return this.strSecondLine;
-				}
+			public bool NewFlag {
+				get { return this.newFlag; }
+				set { this.newFlag = value; }
 			}
-			protected override string Summary {
-				get { return this.Content.SummaryText; }
+			public bool ModifiedFlag {
+				get { return this.modifiedFlag; }
+				set { this.modifiedFlag = value; }
 			}
-			protected override int ImageIndent {
-				get { return 8; }
+			public bool FilterFlag {
+				get { return this.filterFlag; }
+				set { this.filterFlag = value; }
 			}
-			protected override Color GetForegraondColor(ListBox lbox, DrawItemEventArgs e) {
-				if ((e.State & DrawItemState.Selected) != DrawItemState.None) {
-					if (lbox.Focused) {
-						return SystemColors.HighlightText;
-					} else {
-						return SystemColors.ControlText;
-					}
+			public void ApplyStyle() {
+				if (this.NewFlag) {
+					this.ForeColor = this.style.ColorNew;
+				} else if (this.modifiedFlag) {
+					this.ForeColor = this.style.ColorModified;
 				} else {
-					return SystemColors.WindowText;
+					this.ForeColor = SystemColors.WindowText;
 				}
-			}
-			protected override Color GetBackgroundColor(ListBox lbox, DrawItemEventArgs e) {
-				if ((e.State & DrawItemState.Selected) != DrawItemState.None) {
-					if (lbox.Focused) {
-						return SystemColors.Highlight;
-					} else {
-						return SystemColors.Control;
-					}
+				if (this.filterFlag) {
+					this.BackColor = this.style.ColorFilter;
 				} else {
-					return SystemColors.Window;
+					this.BackColor = SystemColors.Window;
 				}
-			}
-			protected override bool TryGetCustomFont(ListBox lbox, DrawItemEventArgs e, out Font font) {
-				if (this.isNew) {
-					font = new Font(e.Font, FontStyle.Bold);
-					return true;
-				} else if (this.isModified) {
-					font = new Font(e.Font, FontStyle.Italic);
-					return true;
-				}
-				font = null;
-				return false;
 			}
 		}
+		private sealed class ContentStyle {
+			private Color colorNew = Color.Red;
+			private Color colorModified = Color.Orange;
+			private Color colorFilter = Color.LemonChiffon;
+
+			public Color ColorNew {
+				get { return this.colorNew; }
+				set { this.colorNew = value; }
+			}
+			public Color ColorModified {
+				get { return this.colorModified; }
+				set { this.colorModified = value; }
+			}
+			public Color ColorFilter {
+				get { return this.colorFilter; }
+				set { this.colorFilter = value; }
+			}
+		}
+		
+		#region カラムとソート関連
+		private static readonly string[] ColWidthPropertyNames = new string[] {
+			"ColWidthId", "ColWidthTitle", "ColWidthSeriesNumber", "ColWidthSubtitle", "ColWidthDuration", "ColWidthDeadline", "ColWidthSummary"
+		};
+		private static readonly Comparison<ContentListViewItem>[] ContentComparisons = new Comparison<ContentListViewItem>[]{
+			new Comparison<ContentListViewItem>(delegate(ContentListViewItem x, ContentListViewItem y){
+				return x.SubItems[0].Text.CompareTo(y.SubItems[0].Text);
+			}),
+			new Comparison<ContentListViewItem>(delegate(ContentListViewItem x, ContentListViewItem y){
+				return x.SubItems[1].Text.CompareTo(y.SubItems[1].Text);
+			}),
+			new Comparison<ContentListViewItem>(delegate(ContentListViewItem x, ContentListViewItem y){
+				return x.SubItems[2].Text.CompareTo(y.SubItems[2].Text);
+			}),
+			new Comparison<ContentListViewItem>(delegate(ContentListViewItem x, ContentListViewItem y){
+				return x.SubItems[3].Text.CompareTo(y.SubItems[3].Text);
+			}),
+			new Comparison<ContentListViewItem>(delegate(ContentListViewItem x, ContentListViewItem y){
+				return x.SubItems[4].Text.CompareTo(y.SubItems[4].Text);
+			}),
+			new Comparison<ContentListViewItem>(delegate(ContentListViewItem x, ContentListViewItem y){
+				return x.SubItems[5].Text.CompareTo(y.SubItems[5].Text);
+			}),
+			new Comparison<ContentListViewItem>(delegate(ContentListViewItem x, ContentListViewItem y){
+				return x.SubItems[6].Text.CompareTo(y.SubItems[6].Text);
+			}),
+		};
 		#endregion
 
+		private static readonly KeyValuePair<string, Comparison<ContentListViewItem>>[] AdditionalComparisons = new KeyValuePair<string, Comparison<ContentListViewItem>>[]{
+			new KeyValuePair<string, Comparison<ContentListViewItem>>("データロウ作成日時", new Comparison<ContentListViewItem>(delegate(ContentListViewItem x, ContentListViewItem y){
+				return x.Content.Created.CompareTo(y.Content.Created);
+			})),
+			new KeyValuePair<string, Comparison<ContentListViewItem>>("データロウ最終更新日時", new Comparison<ContentListViewItem>(delegate(ContentListViewItem x, ContentListViewItem y){
+				return x.Content.LastModified.CompareTo(y.Content.LastModified);
+			})),
+		};
 		public event PropertyChangedEventHandler PropertyChanged;
 		public event EventHandler LastSelectedContentChanged;
 		
-		private GContentClass lastSelectedContent;
-		private CrawlResultViewItemHeight itemHeight = CrawlResultViewItemHeight.FourLines;
-		private bool showThumbnail = true;
+		private CrawlResult result;
+		private List<ListViewGroup> allGroups = new List<ListViewGroup>();
+		private List<ContentListViewItem> allClvi = new List<ContentListViewItem>();
 		
+		private GContentClass lastSelectedContent;
+		private FilterFlagComparer comparerF;
+		private StackableComparisonsComparer<ContentListViewItem> comparerS;
+
+		private ContentStyle style = new ContentStyle();
+		private CrawlResultViewView crvView = CrawlResultViewView.Details;
+		private Migemo migemo;
+		private CrawlResultViewFilterType filterType = CrawlResultViewFilterType.Normal;
+		private bool incrementalFilterEnabled = true;
+		private bool caseInsensitiveFilter = true;
 		private readonly BackgroundImageLoader bgImgLoader = new BackgroundImageLoader(0);
 		
 		public CrawlResultView() {
@@ -299,20 +164,80 @@ namespace Yusen.GExplorer.UserInterfaces {
 
 			this.tslTitle.Font = new Font(this.tslTitle.Font, FontStyle.Bold);
 			this.tsmiCmsAddToThePlaylist.Font = new Font(this.tsmiCmsAddToThePlaylist.Font, FontStyle.Bold);
-			
-			this.lboxCrv.Font = new Font(this.Font.FontFamily, 12, GraphicsUnit.Pixel);
+
+			this.FilterType = CrawlResultViewFilterType.Regex;
+			this.FilterType = CrawlResultViewFilterType.Normal;
 		}
-		
+
 		private void CrawlResultView_Load(object sender, EventArgs e) {
 			if (base.DesignMode) return;
-			
-			this.ChangeEnabilityOfMenuItems();
+
+			List<ToolStripItem> sortMenuItems = new List<ToolStripItem>(this.lvResult.Columns.Count);
+			foreach (ColumnHeader ch in this.lvResult.Columns) {
+				ToolStripMenuItem tsmi = new ToolStripMenuItem(ch.Text);
+				tsmi.Tag = ch.Index;
+				tsmi.Click += delegate(object sender2, EventArgs e2) {
+					this.PushComparison((int)(sender2 as ToolStripMenuItem).Tag);
+				};
+				sortMenuItems.Add(tsmi);
+			}
+			sortMenuItems.Add(new ToolStripSeparator());
+			foreach (KeyValuePair<string, Comparison<ContentListViewItem>> pair in CrawlResultView.AdditionalComparisons) {
+				ToolStripMenuItem tsmi = new ToolStripMenuItem(pair.Key);
+				tsmi.Tag = pair.Value;
+				tsmi.Click += delegate(object sender2, EventArgs e2) {
+					this.PushComparison((sender2 as ToolStripMenuItem).Tag as Comparison<ContentListViewItem>);
+				};
+				sortMenuItems.Add(tsmi);
+			}
+			this.tsmiSort.DropDownItems.AddRange(sortMenuItems.ToArray());
+
+			this.comparerS = new StackableComparisonsComparer<ContentListViewItem>();
+			this.comparerF = new FilterFlagComparer(this.comparerS);
+			this.lvResult.ListViewItemSorter = this.comparerF;
+			this.ClearCrawlResult();
 			
 			this.bgImgLoader.StartWorking();
 			this.Disposed += delegate {
 				this.bgImgLoader.Dispose();
 			};
+
+			//フィルタの対象のメニューを作成
+			List<ToolStripItem> filterObjects = new List<ToolStripItem>();
+			foreach (ColumnHeader ch in this.lvResult.Columns) {
+				ToolStripMenuItem tsmi = new ToolStripMenuItem(ch.Text);
+				tsmi.Checked = true;
+				tsmi.CheckOnClick = true;
+				tsmi.Click += delegate {
+					this.ExecuteFilter();
+				};
+				filterObjects.Add(tsmi);
+			}
+			this.tsddbFilterObjects.DropDownItems.AddRange(filterObjects.ToArray());
+
+			//フィルタの対象のメニューは閉じない
+			this.tsddbFilterObjects.DropDown.Closing += delegate(object sender2, ToolStripDropDownClosingEventArgs e2) {
+				switch (e2.CloseReason) {
+					case ToolStripDropDownCloseReason.ItemClicked:
+						e2.Cancel = true;
+						break;
+				}
+			};
+
+			//Migemo初期化
+			try {
+				this.migemo = new Migemo(Program.RootOptions.AppBasicOptions.MigemoDicFile);
+				this.Disposed += delegate {
+					this.migemo.Dispose();
+				};
+			} catch (MigemoException ex) {
+				this.migemo = null;
+				this.tstbAnswer.Text = ex.Message;
+				this.tsmiFilterTypeMigemo.Enabled = false;
+				this.tsbFilterTypeMigemo.Enabled = false;
+			}
 		}
+
 		private void OnPropertyChanged(string propertyName) {
 			PropertyChangedEventHandler handler = this.PropertyChanged;
 			if (null != handler) {
@@ -325,142 +250,158 @@ namespace Yusen.GExplorer.UserInterfaces {
 				handler(this, EventArgs.Empty);
 			}
 		}
-		
+
+		#region 表示を行う箇所
 		public void ViewCrawlResult(CrawlResult result) {
-			this.bgImgLoader.ClearTasks();
-			
 			if (null == result) {
 				this.ClearCrawlResult();
 				return;
 			}
-			this.lboxCrv.BeginUpdate();
-			this.lboxCrv.Items.Clear();
-			int lastPacKey = -2;
-			foreach (GContentClass cont in result.Contents) {
-				if (null != cont.ParentPackage) {
-					if (lastPacKey != cont.ParentPackage.PackageKey) {
-						lastPacKey = cont.ParentPackage.PackageKey;
-						this.AddNodeInternal(new PackageNodeItem(this.bgImgLoader, cont.ParentPackage));
-					}
-				} else if (lastPacKey != -1) {
-					lastPacKey = -1;
-					this.AddNodeInternal(new GroupNodeItem(this.bgImgLoader));
-				}
-				bool isNew = (result.SortedCKeysNew.BinarySearch(cont.ContentKey) >= 0);
-				bool isModified = (result.SortedCKeysModified.BinarySearch(cont.ContentKey) >= 0);
-				this.AddNodeInternal(new ContentNodeItem(this.bgImgLoader, cont, isNew, isModified));
-			}
-			this.lboxCrv.EndUpdate();
+			
+			this.lvResult.BeginUpdate();
+			this.ClearCrawlResult();
+			this.result = result;
+			
+			this.lvResult.ShowGroups = true;
+			
+			this.MakeupToolbar();
+			this.MakeupItems();
+			this.ApplyContentStyle();
+			this.AddGroups();
+			this.DisplayItems();
+			
+			this.lvResult.EndUpdate();
 			
 			this.ChangeEnabilityOfMenuItems();
-			this.tslTime.Text = result.Time.ToString();
-		}
-		private void AddNodeInternal(NodeItem nodeItem) {
-			nodeItem.LoadImageAsyncCompleted += new EventHandler(nodeItem_LoadImageAsyncCompleted);
-			this.lboxCrv.Items.Add(nodeItem);
-		}
-		private void nodeItem_LoadImageAsyncCompleted(object sender, EventArgs e) {
-			int idx = this.lboxCrv.Items.IndexOf(sender);
-			if(idx >= 0){
-				this.lboxCrv.Invalidate(this.lboxCrv.GetItemRectangle(idx));
-			}
+			this.lvResult.Focus();
 		}
 		private void ClearCrawlResult() {
-			this.lboxCrv.Items.Clear();
-			this.ChangeEnabilityOfMenuItems();
-		}
-		
-		private void tscbDestPlaylistName_DropDown(object sender, EventArgs e) {
-			this.tscbDestPlaylistName.BeginUpdate();
-			this.tscbDestPlaylistName.Items.Clear();
-			foreach (Playlist pl in Program.PlaylistsManager) {
-				this.tscbDestPlaylistName.Items.Add(pl.Name);
-			}
-			this.tscbDestPlaylistName.EndUpdate();
-		}
+			this.result = null;
+			this.allGroups.Clear();
+			this.allClvi.Clear();
+			
+			this.bgImgLoader.ClearTasks();
+			
+			this.lvResult.BeginUpdate();
+			this.lvResult.Groups.Clear();
+			this.lvResult.Items.Clear();
+			this.ilLarge.Images.Clear();
+			this.comparerS.ClearComparisons();
+			this.lvResult.EndUpdate();
 
-		#region リストボックスのイベントハンドラ
-		private void lboxCrv_SelectedIndexChanged(object sender, EventArgs e) {
+			this.tslCount.Text = string.Empty;
+			this.tslTime.Text = string.Empty;
+
+			this.tsddbPages.DropDownItems.Clear();
+			this.tsddbErrors.DropDownItems.Clear();
+			this.tsddbOffline.DropDownItems.Clear();
+			this.tsddbPages.Text = "0";
+			this.tsddbErrors.Text = "0";
+			this.tsddbOffline.Text = "0";
+			this.tsddbPages.Enabled = false;
+			this.tsddbErrors.Enabled = false;
+			this.tsddbOffline.Enabled = false;
+
+			this.tstbFilter.Text = string.Empty;
+
 			this.ChangeEnabilityOfMenuItems();
-			//使い物にならないから DrawItem で
-			/*if (this.lboxCrv.SelectedIndex >= 0) {
-				ContentNodeItem cni = this.lboxCrv.Items[this.lboxCrv.SelectedIndex] as ContentNodeItem;
-				if (cni != null) {
-					this.LastSelectedContent = cni.Content;
-				}
-			}*/
 		}
-		private void lboxCrv_DrawItem(object sender, DrawItemEventArgs e) {
-			if (e.Index < 0) return;
-			NodeItem nodeItem = this.lboxCrv.Items[e.Index] as NodeItem;
-			if (null != nodeItem) {
-				if (this.ShowThumbnail) {
-					switch (this.ItemHeight) {
-						case CrawlResultViewItemHeight.FourLines:
-							nodeItem.HandleDrawItem4WithImage(this.lboxCrv, e);
-							break;
-						case CrawlResultViewItemHeight.TwoLines:
-							nodeItem.HandleDrawItem2WithImage(this.lboxCrv, e);
-							break;
-						case CrawlResultViewItemHeight.OneLine:
-							nodeItem.HandleDrawItem1WithImage(this.lboxCrv, e);
-							break;
-					}
-				} else {
-					switch (this.ItemHeight) {
-						case CrawlResultViewItemHeight.FourLines:
-							nodeItem.HandleDrawItem4WithoutImage(this.lboxCrv, e);
-							break;
-						case CrawlResultViewItemHeight.TwoLines:
-							nodeItem.HandleDrawItem2WithoutImage(this.lboxCrv, e);
-							break;
-						case CrawlResultViewItemHeight.OneLine:
-							nodeItem.HandleDrawItem1WithoutImage(this.lboxCrv, e);
-							break;
-					}
-				}
-				if ((e.State & DrawItemState.Focus) != DrawItemState.None) {//仕方ないからこっちで
-					ContentNodeItem cni = nodeItem as ContentNodeItem;
-					if (cni != null) {
-						this.LastSelectedContent = cni.Content;
-					}
-				}
-				return;
+		private void MakeupToolbar() {
+			this.tslCount.Text = string.Format("全{0} 新{1}", result.Contents.Count, result.SortedCKeysNew.Count + result.SortedCKeysModified.Count);
+			this.tslTime.Text = result.Time.ToString("MM/dd ddd HH:mm");
+
+			if (0 < (result.VisitedPages.Count + result.NotVisitedPages.Count)) {
+				this.tsddbPages.Enabled = true;
+				this.tsddbPages.Text = (result.VisitedPages.Count + result.NotVisitedPages.Count).ToString();
+			}
+			if (0 < result.Exceptions.Count) {
+				this.tsddbErrors.Enabled = true;
+				this.tsddbErrors.Text = result.Exceptions.Count.ToString();
+			}
+			if (0 < result.DroppedContents.Count) {
+				this.tsddbOffline.Enabled = true;
+				this.tsddbOffline.Text = result.DroppedContents.Count.ToString();
 			}
 		}
-		private void lboxCrv_KeyDown(object sender, KeyEventArgs e) {
-			switch (e.KeyCode) {
-				case Keys.Enter:
-					this.tsmiCmsAddToThePlaylist.PerformClick();
+		private void MakeupItems() {
+			SortedDictionary<int, ListViewGroup> dicGroups = new SortedDictionary<int, ListViewGroup>();
+			foreach (GContentClass cont in this.result.Contents) {
+				ContentListViewItem clvi = new ContentListViewItem(cont, this.style);
+				ListViewGroup group;
+				GPackageClass pac = cont.ParentPackage;
+				if (pac != null) {
+					if (dicGroups.TryGetValue(pac.PackageKey, out group)) {
+					} else {
+						group = new ListViewGroup(string.Format("<{0}> {1} ({2})", pac.PackageId, pac.PackageTitle, pac.PackageCatch));
+						dicGroups.Add(pac.PackageKey, group);
+						this.allGroups.Add(group);
+					}
+					clvi.Group = group;
+				}
+				if (result.SortedCKeysNew.BinarySearch(cont.ContentKey) >= 0) {
+					clvi.NewFlag = true;
+				} else if (result.SortedCKeysModified.BinarySearch(cont.ContentKey) >= 0) {
+					clvi.ModifiedFlag = true;
+				}
+				this.allClvi.Add(clvi);
+			}
+		}
+		private void ApplyContentStyle() {
+			this.lvResult.BeginUpdate();
+			foreach (ContentListViewItem clvi in this.allClvi) {
+				clvi.ApplyStyle();
+			}
+			this.lvResult.EndUpdate();
+		}
+		private void AddGroups() {
+			this.lvResult.Groups.AddRange(this.allGroups.ToArray());
+		}
+		private void DisplayItems() {
+			List<ListViewItem> lvis = new List<ListViewItem>();
+			foreach (ContentListViewItem clvi in this.allClvi) {
+				lvis.Add(clvi);
+			}
+			this.lvResult.BeginUpdate();
+			this.lvResult.Items.Clear();
+			this.lvResult.Items.AddRange(lvis.ToArray());
+			this.lvResult.EndUpdate();
+		}
+		#endregion
+
+		#region メインメニュー
+		private void tsmiChangeDestinationPlaylist_Click(object sender, EventArgs e) {
+			this.inputBoxDialog1.Title = "追加先のプレイリスト名を指定";
+			this.inputBoxDialog1.Message = "追加先のプレイリス名を入力してください．";
+			this.inputBoxDialog1.Input = this.tscbDestPlaylistName.Text;
+			switch (this.inputBoxDialog1.ShowDialog()) {
+				case DialogResult.OK:
+					this.tscbDestPlaylistName.Text = this.inputBoxDialog1.Input;
 					break;
 			}
 		}
-		private void lboxCrv_DoubleClick(object sender, EventArgs e) {
-			this.tsmiCmsAddToThePlaylist.PerformClick();
+		private void tsmiViewDetails_Click(object sender, EventArgs e) {
+			this.CrvView = CrawlResultViewView.Details;
 		}
-		private void lboxCrv_Enter(object sender, EventArgs e) {
-			if (this.lboxCrv.SelectedIndices.Count >= 2) {
-				//フォーカスがなくて選択されている項目が再描画されないことへの対策
-				this.lboxCrv.Invalidate();
-			}
+		private void tsmiViewTile_Click(object sender, EventArgs e) {
+			this.CrvView = CrawlResultViewView.Tile;
 		}
-		private void lboxCrv_Leave(object sender, EventArgs e) {
-			if (this.lboxCrv.SelectedIndices.Count >= 2) {
-				//フォーカスがなくて選択されている項目が再描画されないことへの対策
-				this.lboxCrv.Invalidate();
-			}
+		private void tsmiViewIcon_Click(object sender, EventArgs e) {
+			this.CrvView = CrawlResultViewView.Icon;
 		}
-		#endregion
-		
-		public ToolStripDropDown GetToolStripDropDown() {
-			return this.tsddbDropDown.DropDown;
+		private void tsmiFilter_Click(object sender, EventArgs e) {
+			this.FilterBarVisible = !this.FilterBarVisible;
 		}
-		public void BindToOptions(CrawlResultViewOptions options) {
-			BindingContractUtility.BindAllProperties<CrawlResultView, ICrawlResultViewBindingContract>(this, options);
+		private void tsmiFilterTypeNormal_Click(object sender, EventArgs e) {
+			this.FilterType = CrawlResultViewFilterType.Normal;
 		}
-		#region メインメニュー
+		private void tsmiFilterTypeMigemo_Click(object sender, EventArgs e) {
+			this.FilterType = CrawlResultViewFilterType.Migemo;
+		}
+		private void tsmiFilterTypeRegex_Click(object sender, EventArgs e) {
+			this.FilterType = CrawlResultViewFilterType.Regex;
+		}
 		private void tsmiAddToThePlaylist_Click(object sender, EventArgs e) {
-			Playlist pl = Program.PlaylistsManager.GetOrCreatePlaylistNamedAs(this.tscbDestPlaylistName.Text);
+			Playlist pl = Program.PlaylistsManager.GetOrCreatePlaylistNamedAs(this.DestinationPlaylistName);
 			pl.BeginUpdate();
 			foreach (GContentClass cont in this.GetSelectedContents()) {
 				pl.AddContent(cont);
@@ -480,13 +421,13 @@ namespace Yusen.GExplorer.UserInterfaces {
 			Program.PlayContent(conts[0], null);
 		}
 		private void tsmiCopyName_Click(object sender, EventArgs e) {
-			CPClipboardUtility.CopyNames(this.GetSelectedPackagesAndContents());
+			CPClipboardUtility.CopyNames(this.GetSelectedContents());
 		}
 		private void tsmiCopyUri_Click(object sender, EventArgs e) {
-			CPClipboardUtility.CopyUris(this.GetSelectedPackagesAndContents());
+			CPClipboardUtility.CopyUris(this.GetSelectedContents());
 		}
 		private void tsmiCopyNameAndUri_Click(object sender, EventArgs e) {
-			CPClipboardUtility.CopyNamesAndUris(this.GetSelectedPackagesAndContents());
+			CPClipboardUtility.CopyNamesAndUris(this.GetSelectedContents());
 		}
 		private void tscpmiCopyOtherProperties_PropertySelected(object sender, EventArgs e) {
 			CPClipboardUtility.CopyContentProperties(this.GetSelectedContents(), (sender as ToolStripContentPropertyMenuItem).LastSelectedPropertyInfo);
@@ -522,64 +463,238 @@ namespace Yusen.GExplorer.UserInterfaces {
 			this.tsecmiCommand_ExternalCommandSelected(sender, e);
 		}
 		#endregion
+		#region ツールバーのイベントハンドラ
+		private void tsddbPages_DropDownOpening(object sender, EventArgs e) {
+			if (!this.tsddbPages.HasDropDownItems) {
+				List<ToolStripItem> items = new List<ToolStripItem>();
+				foreach (Uri uri in this.result.VisitedPages) {
+					ToolStripMenuItem tsmi = new ToolStripMenuItem(uri.PathAndQuery);
+					tsmi.Tag = uri;
+					tsmi.Click += delegate(object sender2, EventArgs e2) {
+						Program.BrowsePage((sender2 as ToolStripMenuItem).Tag as Uri);
+					};
+					items.Add(tsmi);
+				}
+				if (this.result.NotVisitedPages.Count > 0) {
+					items.Add(new ToolStripSeparator());
+					foreach (Uri uri in this.result.NotVisitedPages) {
+						ToolStripMenuItem tsmi = new ToolStripMenuItem(uri.PathAndQuery);
+						tsmi.Tag = uri;
+						tsmi.Click += delegate(object sender2, EventArgs e2) {
+							Program.BrowsePage((sender2 as ToolStripMenuItem).Tag as Uri);
+						};
+						items.Add(tsmi);
+					}
+				}
+				this.tsddbPages.DropDownItems.AddRange(items.ToArray());
+			}
+		}
+		private void tsddbErrors_DropDownOpening(object sender, EventArgs e) {
+			if (!this.tsddbErrors.HasDropDownItems) {
+				List<ToolStripItem> items = new List<ToolStripItem>();
+				foreach (Exception ex in this.result.Exceptions) {
+					ToolStripMenuItem tsmi = new ToolStripMenuItem(ex.Message);
+					tsmi.Tag = ex;
+					tsmi.Click += delegate(object sender2, EventArgs e2) {
+						this.exceptionDialog1.Exception = (sender2 as ToolStripMenuItem).Tag as Exception;
+						this.exceptionDialog1.ShowDialog();
+					};
+					items.Add(tsmi);
+				}
+				this.tsddbErrors.DropDownItems.AddRange(items.ToArray());
+			}
+		}
+		private void tsddbOffline_DropDownOpening(object sender, EventArgs e) {
+			if (!this.tsddbOffline.HasDropDownItems) {
+				List<ToolStripItem> items = new List<ToolStripItem>();
+				foreach (GContentClass cont in this.result.DroppedContents) {
+					ToolStripMenuItem tsmi = new ToolStripMenuItem(string.Format("<{0}> {1} | {2} | {3}", cont.ContentId, cont.Title, cont.SeriesNumber, cont.Subtitle));
+					tsmi.Tag = cont;
+					tsmi.Click += delegate(object sender2, EventArgs e2) {
+						this.LastSelectedContent = (sender2 as ToolStripMenuItem).Tag as GContentClass;
+					};
+					items.Add(tsmi);
+				}
+				this.tsddbOffline.DropDownItems.AddRange(items.ToArray());
+			}
+		}
+		private void tscbDestPlaylistName_TextChanged(object sender, EventArgs e) {
+			this.OnPropertyChanged("DestinationPlaylistName");
+		}
+		private void tscbDestPlaylistName_DropDown(object sender, EventArgs e) {
+			this.tscbDestPlaylistName.BeginUpdate();
+			this.tscbDestPlaylistName.Items.Clear();
+			foreach (Playlist pl in Program.PlaylistsManager) {
+				this.tscbDestPlaylistName.Items.Add(pl.Name);
+			}
+			this.tscbDestPlaylistName.EndUpdate();
+		}
+		#endregion
+		#region 絞込みツールバー
+		private void tsbFilterTypeNormal_Click(object sender, EventArgs e) {
+			this.FilterType = CrawlResultViewFilterType.Normal;
+		}
+		private void tsbFilterTypeMigemo_Click(object sender, EventArgs e) {
+			this.FilterType = CrawlResultViewFilterType.Migemo;
+		}
+		private void tsbFilterTypeRegex_Click(object sender, EventArgs e) {
+			this.FilterType = CrawlResultViewFilterType.Regex;
+		}
+		private void tstbFilter_KeyDown(object sender, KeyEventArgs e) {
+			switch (e.KeyCode) {
+				case Keys.Enter:
+					this.ExecuteFilter();
+					break;
+			}
+		}
+		private void tstbFilter_TextChanged(object sender, EventArgs e) {
+			this.timerFilterDelay.Stop();
+			if (this.IncrementalFilterEnabled) {
+				this.timerFilterDelay.Start();
+			}
+		}
+		private void tsmiFilterObjectsAll_Click(object sender, EventArgs e) {
+			this.ChangeAllFilterObjectsHelper(new Action<ToolStripMenuItem>(delegate(ToolStripMenuItem tsmi) {
+				tsmi.Checked = true;
+			}));
+			this.ExecuteFilter();
+		}
+		private void tsmiFilterObjectsNone_Click(object sender, EventArgs e) {
+			this.ChangeAllFilterObjectsHelper(new Action<ToolStripMenuItem>(delegate(ToolStripMenuItem tsmi) {
+				tsmi.Checked = false;
+			}));
+			this.ExecuteFilter();
+		}
+		private void tsmiFilterObjectsToggle_Click(object sender, EventArgs e) {
+			this.ChangeAllFilterObjectsHelper(new Action<ToolStripMenuItem>(delegate(ToolStripMenuItem tsmi) {
+				tsmi.Checked = !tsmi.Checked;
+			}));
+			this.ExecuteFilter();
+		}
+		#endregion
+		#region リストビューのイベントハンドラ
+		private void lvResult_MouseDoubleClick(object sender, MouseEventArgs e) {
+			this.tsmiCmsAddToThePlaylist.PerformClick();
+		}
+		private void lvResult_KeyDown(object sender, KeyEventArgs e) {
+			switch (e.KeyCode) {
+				case Keys.Enter:
+					this.tsmiCmsAddToThePlaylist.PerformClick();
+					break;
+			}
+		}
+		private void lvResult_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e) {
+			if (e.IsSelected) {
+				this.LastSelectedContent = (e.Item as ContentListViewItem).Content;
+			}
+		}
+		private void lvResult_SelectedIndexChanged(object sender, EventArgs e) {
+			this.timerSelectionDelay.Start();
+		}
+		private void lvResult_ColumnClick(object sender, ColumnClickEventArgs e) {
+			this.PushComparison(e.Column);
+		}
+		private void lvResult_ColumnWidthChanged(object sender, ColumnWidthChangedEventArgs e) {
+			string propName = CrawlResultView.ColWidthPropertyNames[e.ColumnIndex];
+			this.OnPropertyChanged(propName);
+		}
+		private void lvResult_DrawItem(object sender, DrawListViewItemEventArgs e) {
+			ContentListViewItem clvi = e.Item as ContentListViewItem;
+			if (clvi == null) goto defaultDraw;
+			if (this.lvResult.View == View.Details) goto defaultDraw;
+			if (clvi.ImageRequestedAlready) goto defaultDraw;
+
+			clvi.ImageRequestedAlready = true;
+			Uri uri = clvi.Content.ImageSmallUri;
+			//キャッシュがあっても非同期の方が体感的には速いっぽいので
+			/*try {
+				HttpWebRequest req = WebRequest.Create(uri) as HttpWebRequest;
+				req.CachePolicy = new RequestCachePolicy(RequestCacheLevel.CacheOnly);
+				HttpWebResponse res = req.GetResponse() as HttpWebResponse;
+				using (Stream stream = res.GetResponseStream()) {
+					using (Image img = Image.FromStream(stream)) {
+						int idx = this.ilLarge.Images.Add(img, this.ilLarge.TransparentColor);
+						if (idx >= 0) {
+							clvi.ImageIndex = idx;
+						}
+					}
+				}
+			} catch (WebException) {*/
+			this.bgImgLoader.PushTask(new BackgroundImageLoadTask(uri, this.BackgroundImageLoadCompletedCallback, clvi));
+		//}
+		defaultDraw:
+			e.DrawDefault = true;
+		}
+		private void lvResult_DrawSubItem(object sender, DrawListViewSubItemEventArgs e) {
+			e.DrawDefault = true;
+		}
+		private void lvResult_DrawColumnHeader(object sender, DrawListViewColumnHeaderEventArgs e) {
+			e.DrawDefault = true;
+		}
+		#endregion
 		
+		private bool BackgroundImageLoadCompletedCallback(Image image, object userState) {
+			if (this.InvokeRequired) {
+				return (bool)this.Invoke(new BackgroundImageLoadCompletedCallback(this.BackgroundImageLoadCompletedCallback), image, userState);
+			} else {
+				ContentListViewItem clvi = userState as ContentListViewItem;
+				if (null != clvi) {
+					int idx = this.ilLarge.Images.Add(image, this.ilLarge.TransparentColor);
+					if (idx >= 0) {
+						clvi.ImageIndex = idx;
+					}
+				}
+				return false;
+			}
+		}
 		private GContentClass[] GetSelectedContents() {
 			List<GContentClass> conts = new List<GContentClass>();
-			foreach (NodeItem node in this.lboxCrv.SelectedItems) {
-				ContentNodeItem cnode = node as ContentNodeItem;
-				if (null != cnode) {
-					conts.Add(cnode.Content);
-				}
+			foreach (ContentListViewItem clvi in this.lvResult.SelectedItems) {
+				conts.Add(clvi.Content);
 			}
 			return conts.ToArray();
 		}
-		private GPackageClass[] GetSelectedPackages() {
-			List<GPackageClass> pacs = new List<GPackageClass>();
-			foreach (NodeItem node in this.lboxCrv.SelectedItems) {
-				PackageNodeItem pnode = node as PackageNodeItem;
-				if (null != pnode) {
-					pacs.Add(pnode.Package);
-				}
-			}
-			return pacs.ToArray();
+
+		private void PushComparison(Comparison<ContentListViewItem> comparison) {
+			this.comparerS.PushComparison(comparison);
+			this.lvResult.ShowGroups = false;
+			this.lvResult.Sort();
 		}
-		private object[] GetSelectedPackagesAndContents() {
-			List<object> objs = new List<object>();
-			foreach (NodeItem node in this.lboxCrv.SelectedItems) {
-				ContentNodeItem cnode = node as ContentNodeItem;
-				PackageNodeItem pnode = node as PackageNodeItem;
-				if (cnode != null) {
-					objs.Add(cnode.Content);
-				}else if(pnode != null){
-					objs.Add(pnode.Package);
-				}
-			}
-			return objs.ToArray();
+		private void PushComparison(int idx) {
+			this.PushComparison(CrawlResultView.ContentComparisons[idx]);
 		}
-		
+
 		private void ChangeEnabilityOfMenuItems() {
+			bool hasLvi = (this.lvResult.Items.Count > 0);
 			bool hasContent = (this.GetSelectedContents().Length > 0);
-			bool hasPackage = (this.GetSelectedPackages().Length > 0);
-			
+
+			this.tsmiSort.Enabled = hasLvi;
 			this.tsmiAddToThePlaylist.Enabled = hasContent;
 			this.tspmiAddToAnotherPlaylist.Enabled = hasContent;
 			this.tsmiPlay.Enabled = hasContent;
-			this.tsmiCopyName.Enabled = hasContent | hasPackage;
-			this.tsmiCopyUri.Enabled = hasContent | hasPackage;
-			this.tsmiCopyNameAndUri.Enabled = hasContent | hasPackage;
+			this.tsmiCopyName.Enabled = hasContent;
+			this.tsmiCopyUri.Enabled = hasContent;
+			this.tsmiCopyNameAndUri.Enabled = hasContent;
 			this.tscpmiCopyOtherProperties.Enabled = hasContent;
 			this.tsecmiCommand.Enabled = hasContent;
-			
+
 			this.tsmiCmsAddToThePlaylist.Enabled = hasContent;
 			this.tspmiCmsAddToAnotherPlaylist.Enabled = hasContent;
 			this.tsmiCmsPlay.Enabled = hasContent;
-			this.tsmiCmsCopyName.Enabled = hasContent | hasPackage;
-			this.tsmiCmsCopyUri.Enabled = hasContent | hasPackage;
-			this.tsmiCmsCopyNameAndUri.Enabled = hasContent | hasPackage;
+			this.tsmiCmsCopyName.Enabled = hasContent;
+			this.tsmiCmsCopyUri.Enabled = hasContent;
+			this.tsmiCmsCopyNameAndUri.Enabled = hasContent;
 			this.tscpmiCmsCopyOtherProperties.Enabled = hasContent;
 			this.tsecmiCmsCommand.Enabled = hasContent;
 		}
-
+		
+		public ToolStripDropDown GetToolStripDropDown() {
+			return this.tsddbDropDown.DropDown;
+		}
+		public void BindToOptions(CrawlResultViewOptions options) {
+			options.NeutralizeUnspecificValues(this);
+			BindingContractUtility.BindAllProperties<CrawlResultView, ICrawlResultViewBindingContract>(this, options);
+		}
 		public GContentClass LastSelectedContent {
 			get { return this.lastSelectedContent; }
 			private set {
@@ -589,91 +704,531 @@ namespace Yusen.GExplorer.UserInterfaces {
 				}
 			}
 		}
+		private void timerSelectionDelay_Tick(object sender, EventArgs e) {
+			this.timerSelectionDelay.Stop();
+			this.ChangeEnabilityOfMenuItems();
+		}
+		private void timerFilterDelay_Tick(object sender, EventArgs e) {
+			this.timerFilterDelay.Stop();
+			this.ExecuteFilter();
+		}
+		#region 絞込み関係
+		private Regex CreateFilterRegex() {
+			Regex regex = null;
+			string query = this.tstbFilter.Text;
+			string regexCompileErrMessage = null;
+			RegexOptions rOpts = RegexOptions.Singleline | RegexOptions.ExplicitCapture | (this.CaseInsensitiveFilter ? RegexOptions.IgnoreCase : RegexOptions.None);
+			if (!string.IsNullOrEmpty(query)) {
+				switch (this.FilterType) {
+					case CrawlResultViewFilterType.Normal:
+						try {
+							regex = new Regex(Regex.Escape(query), rOpts);
+						} catch (ArgumentException e) {
+							regexCompileErrMessage = e.Message;
+							goto failed;
+						}
+						break;
+					case CrawlResultViewFilterType.Migemo:
+						string ans = this.migemo.Query(query);
+						try {
+							regex = new Regex(ans, rOpts);
+						} catch (ArgumentException e) {
+							regexCompileErrMessage = e.Message;
+							goto failed;
+						}
+						break;
+					case CrawlResultViewFilterType.Regex:
+						try {
+							regex = new Regex(query, rOpts);
+						} catch (ArgumentException e) {
+							regexCompileErrMessage = e.Message;
+							goto failed;
+						}
+						break;
+				}
+			}
+			this.tstbFilter.BackColor = SystemColors.Window;
+			this.tstbAnswer.Text = (null == regex) ? string.Empty : regex.ToString();
+			return regex;
+		failed:
+			this.tstbFilter.BackColor = Color.Yellow;
+			if (!string.IsNullOrEmpty(regexCompileErrMessage)) {
+				this.tstbAnswer.Text = regexCompileErrMessage;
+			}
+			return null;
+		}
+		private void ExecuteFilter() {
+			Regex regex = this.CreateFilterRegex();
+			this.lvResult.BeginUpdate();
+			if (null == regex) {
+				foreach (ContentListViewItem clvi in this.allClvi) {
+					clvi.FilterFlag = false;
+				}
+			} else {
+				this.lvResult.ShowGroups = false;
+				foreach (ContentListViewItem clvi in this.allClvi) {
+					int[] filterObjects = this.GetFilterObjectsList();
+					foreach (int oIdx in filterObjects) {
+						if (regex.Match(clvi.SubItems[oIdx].Text).Success) {
+							clvi.FilterFlag = true;
+							goto nextClvi;
+						}
+					}
+					clvi.FilterFlag = false;
+				nextClvi:
+					continue;
+				}
+			}
+			this.lvResult.Sort();
+			if (this.lvResult.View == View.Details && this.lvResult.Items.Count > 0) {
+				this.lvResult.TopItem = this.lvResult.Items[0];
+			}
+			this.ApplyContentStyle();
+			this.lvResult.EndUpdate();
+		}
+		private bool CanUseMigemo {
+			get { return this.migemo != null; }
+		}
+		private void ChangeAllFilterObjectsHelper(Action<ToolStripMenuItem> action) {
+			bool afterSeparator = false;
+			foreach (ToolStripItem tsi in this.tsddbFilterObjects.DropDownItems) {
+				if (!afterSeparator) {
+					if (tsi is ToolStripSeparator) {
+						afterSeparator = true;
+					}
+					continue;
+				}
+				ToolStripMenuItem tsmi = tsi as ToolStripMenuItem;
+				action(tsmi);
+			}
+		}
+		private int[] GetFilterObjectsList() {
+			List<int> targets = new List<int>(this.lvResult.Columns.Count);
+			bool afterSeparator = false;
+			int index = 0;
+			foreach (ToolStripItem tsi in this.tsddbFilterObjects.DropDownItems) {
+				if (!afterSeparator) {
+					if (tsi is ToolStripSeparator) {
+						afterSeparator = true;
+					}
+					continue;
+				}
+				ToolStripMenuItem tsmi = tsi as ToolStripMenuItem;
+				if (tsmi.Checked) {
+					targets.Add(index);
+				}
+				index++;
+			}
+			return targets.ToArray();
+		}
+		#endregion
+		
 		#region ICrawlResultViewBindingContract Members
-		[DefaultValue(CrawlResultViewItemHeight.FourLines)]
-		public CrawlResultViewItemHeight ItemHeight {
-			get { return this.itemHeight; }
+		[Browsable(false)]
+		public string DestinationPlaylistName {
+			get { return this.tscbDestPlaylistName.Text; }
 			set {
-				if (this.itemHeight != value) {
-					this.itemHeight = value;
-					this.tsbLine1.Checked = false;
-					this.tsbLine2.Checked = false;
-					this.tsbLine4.Checked = false;
+				this.tscbDestPlaylistName.Text = value;
+				this.OnPropertyChanged("DestinationPlaylistName");
+			}
+		}
+		[Browsable(false)]
+		public CrawlResultViewView CrvView {
+			get { return this.crvView; }
+			set {
+				if (this.crvView != value) {
+					this.crvView = value;
+					this.tsmiViewDetails.Checked = false;
+					this.tsmiViewTile.Checked = false;
+					this.tsmiViewIcon.Checked = false;
 					switch (value) {
-						case CrawlResultViewItemHeight.OneLine:
-							this.tsbLine1.Checked = true;
+						case CrawlResultViewView.Details:
+							this.lvResult.View = View.Details;
+							this.tsmiViewDetails.Checked = true;
 							break;
-						case CrawlResultViewItemHeight.TwoLines:
-							this.tsbLine2.Checked = true;
+						case CrawlResultViewView.Tile:
+							this.lvResult.View = View.Tile;
+							this.tsmiViewTile.Checked = true;
 							break;
-						case CrawlResultViewItemHeight.FourLines:
-							this.tsbLine4.Checked = true;
+						case CrawlResultViewView.Icon:
+							this.lvResult.View = View.LargeIcon;
+							this.tsmiViewIcon.Checked = true;
 							break;
 					}
-					this.OnPropertyChanged("ItemHeight");
-					if (base.DesignMode) return;
-					this.lboxCrv.ItemHeight = (int)value;
+					this.OnPropertyChanged("CrvView");
 				}
 			}
 		}
-		[DefaultValue(true)]
-		public bool ShowThumbnail {
-			get { return this.showThumbnail; }
+		[Browsable(false)]
+		public Color ColorNew {
+			get { return this.style.ColorNew; }
 			set {
-				if (this.showThumbnail != value) {
-					this.showThumbnail = value;
-					this.OnPropertyChanged("ShowThumbnail");
-					if (base.DesignMode) return;
-					this.lboxCrv.Invalidate();
+				this.style.ColorNew = value;
+				this.OnPropertyChanged("ColorNew");
+				this.ApplyContentStyle();
+			}
+		}
+		[Browsable(false)]
+		public Color ColorModified {
+			get { return this.style.ColorModified; }
+			set {
+				this.style.ColorModified = value;
+				this.OnPropertyChanged("ColorModified");
+				this.ApplyContentStyle();
+			}
+		}
+		[Browsable(false)]
+		public Color ColorFilter {
+			get { return this.style.ColorFilter; }
+			set {
+				this.style.ColorFilter = value;
+				this.OnPropertyChanged("ColorFilter");
+				this.ApplyContentStyle();
+			}
+		}
+		[Browsable(false)]
+		public bool FilterBarVisible {
+			get {
+				return this.tsFilter.Visible;
+			}
+			set {
+				if (this.FilterBarVisible != value) {
+					this.tsFilter.Visible = value;
+					this.tsmiFilter.Checked = value;
+					if (value) {
+						this.tstbFilter.Focus();
+					} else {
+						this.lvResult.Focus();
+					}
+					this.OnPropertyChanged("FilterBarVisible");
 				}
+			}
+		}
+		[Browsable(false)]
+		public CrawlResultViewFilterType FilterType {
+			get { return this.filterType; }
+			set {
+				if (!this.CanUseMigemo && value == CrawlResultViewFilterType.Migemo) {
+					this.FilterType = CrawlResultViewFilterType.Normal;
+					return;
+				}
+				if (this.filterType != value) {
+					this.tsmiFilterTypeNormal.Checked = false;
+					this.tsmiFilterTypeMigemo.Checked = false;
+					this.tsmiFilterTypeRegex.Checked = false;
+					this.tsbFilterTypeNormal.Checked = false;
+					this.tsbFilterTypeMigemo.Checked = false;
+					this.tsbFilterTypeRegex.Checked = false;
+					switch (value) {
+						case CrawlResultViewFilterType.Normal:
+							this.tsmiFilterTypeNormal.Checked = true;
+							this.tsbFilterTypeNormal.Checked = true;
+							break;
+						case CrawlResultViewFilterType.Migemo:
+							this.tsmiFilterTypeMigemo.Checked = true;
+							this.tsbFilterTypeMigemo.Checked = true;
+							break;
+						case CrawlResultViewFilterType.Regex:
+							this.tsmiFilterTypeRegex.Checked = true;
+							this.tsbFilterTypeRegex.Checked = true;
+							break;
+					}
+					this.filterType = value;
+					this.ExecuteFilter();
+					this.OnPropertyChanged("FilterType");
+				}
+			}
+		}
+		[Browsable(false)]
+		public bool IncrementalFilterEnabled {
+			get { return this.incrementalFilterEnabled; }
+			set {
+				this.incrementalFilterEnabled = value;
+				this.OnPropertyChanged("IncrementalFilterEnabled");
+			}
+		}
+		[Browsable(false)]
+		public bool CaseInsensitiveFilter {
+			get { return this.caseInsensitiveFilter; }
+			set {
+				this.caseInsensitiveFilter = value;
+				this.OnPropertyChanged("CaseInsensitiveFilter");
+			}
+		}
+		[Browsable(false)]
+		public int ColWidthId {
+			get { return this.chId.Width; }
+			set {
+				this.chId.Width = value;
+				this.OnPropertyChanged(CrawlResultView.ColWidthPropertyNames[0]);
+			}
+		}
+		[Browsable(false)]
+		public int ColWidthTitle {
+			get { return this.chTitle.Width; }
+			set {
+				this.chTitle.Width = value;
+				this.OnPropertyChanged(CrawlResultView.ColWidthPropertyNames[1]);
+			}
+		}
+		[Browsable(false)]
+		public int ColWidthSeriesNumber {
+			get { return this.chSeriesNumber.Width; }
+			set {
+				this.chSeriesNumber.Width = value;
+				this.OnPropertyChanged(CrawlResultView.ColWidthPropertyNames[2]);
+			}
+		}
+		[Browsable(false)]
+		public int ColWidthSubtitle {
+			get { return this.chSubtitle.Width; }
+			set {
+				this.chSubtitle.Width = value;
+				this.OnPropertyChanged(CrawlResultView.ColWidthPropertyNames[3]);
+			}
+		}
+		[Browsable(false)]
+		public int ColWidthDuration {
+			get { return this.chDuration.Width; }
+			set {
+				this.chDuration.Width = value;
+				this.OnPropertyChanged(CrawlResultView.ColWidthPropertyNames[4]);
+			}
+		}
+		[Browsable(false)]
+		public int ColWidthDeadline {
+			get { return this.chDeadline.Width; }
+			set {
+				this.chDeadline.Width = value;
+				this.OnPropertyChanged(CrawlResultView.ColWidthPropertyNames[5]);
+			}
+		}
+		[Browsable(false)]
+		public int ColWidthSummary {
+			get { return this.chSummary.Width; }
+			set {
+				this.chSummary.Width = value;
+				this.OnPropertyChanged(CrawlResultView.ColWidthPropertyNames[6]);
 			}
 		}
 		#endregion
-
-		private void tsbLine1_Click(object sender, EventArgs e) {
-			this.ItemHeight = CrawlResultViewItemHeight.OneLine;
-		}
-		private void tsbLine2_Click(object sender, EventArgs e) {
-			this.ItemHeight = CrawlResultViewItemHeight.TwoLines;
-		}
-		private void tsbLine4_Click(object sender, EventArgs e) {
-			this.ItemHeight = CrawlResultViewItemHeight.FourLines;
-		}
 	}
-
-	public enum CrawlResultViewItemHeight {
-		OneLine = 17,
-		TwoLines = 32,
-		FourLines = 62,
+	
+	public enum CrawlResultViewFilterType {
+		Normal,
+		Migemo,
+		Regex,
+	}
+	
+	public enum CrawlResultViewView {
+		Details,
+		Tile,
+		Icon,
 	}
 
 	interface ICrawlResultViewBindingContract : IBindingContract {
-		CrawlResultViewItemHeight ItemHeight { get;set;}
-		bool ShowThumbnail { get;set;}
+		string DestinationPlaylistName { get;set;}
+		
+		CrawlResultViewView CrvView { get;set;}
+		
+		Color ColorNew { get;set;}
+		Color ColorModified { get;set;}
+		Color ColorFilter { get;set;}
+		
+		bool FilterBarVisible { get;set;}
+		CrawlResultViewFilterType FilterType { get;set;}
+		bool IncrementalFilterEnabled { get;set;}
+		bool CaseInsensitiveFilter { get;set;}
+
+		int ColWidthId { get;set;}
+		int ColWidthTitle { get;set;}
+		int ColWidthSeriesNumber { get;set;}
+		int ColWidthSubtitle { get;set;}
+		int ColWidthDuration { get;set;}
+		int ColWidthDeadline { get;set;}
+		int ColWidthSummary { get;set;}
 	}
 	public sealed class CrawlResultViewOptions : ICrawlResultViewBindingContract {
 		public CrawlResultViewOptions() {
 		}
-
+		
 		#region ICrawlResultViewBindingContract Members
-		private CrawlResultViewItemHeight itemHeight = CrawlResultViewItemHeight.FourLines;
-		[Category("表示")]
-		[DisplayName("行数")]
-		[Description("ひとつのアイテムに割く行数を指定します．")]
-		[DefaultValue(CrawlResultViewItemHeight.FourLines)]
-		public CrawlResultViewItemHeight ItemHeight {
-			get { return this.itemHeight; }
-			set { this.itemHeight = value; }
+		private string destinationPlaylistName = CrawlResultView.DefaultDestinationPlaylistName;
+		[Category("動作")]
+		[DisplayName("追加先のプレイリスト名")]
+		[Description("規定の追加先のプレイリスト名を指定します．")]
+		[DefaultValue(CrawlResultView.DefaultDestinationPlaylistName)]
+		public string DestinationPlaylistName {
+			get { return this.destinationPlaylistName; }
+			set { this.destinationPlaylistName = value; }
 		}
-		private bool showThumbnail = true;
+		
+		private CrawlResultViewView crvView = CrawlResultViewView.Details;
 		[Category("表示")]
-		[DisplayName("サムネイル")]
-		[Description("サムネイルを表示します．")]
+		[DisplayName("表示形式")]
+		[Description("コンテンツの表示形式を指定します．Tileを指定できるのはXP以降のみです．")]
+		[DefaultValue(CrawlResultViewView.Details)]
+		public CrawlResultViewView CrvView {
+			get { return this.crvView; }
+			set { this.crvView = value; }
+		}
+		private Color colorNew = Color.Red;
+		[Category("表示")]
+		[DisplayName("新着の色")]
+		[Description("新着コンテンツの文字色を指定します．")]
+		[DefaultValue(typeof(Color), "Red")]
+		[XmlIgnore]
+		public Color ColorNew {
+			get { return this.colorNew; }
+			set { this.colorNew = value; }
+		}
+		private Color colorModified = Color.Orange;
+		[Category("表示")]
+		[DisplayName("変更の色")]
+		[Description("属性値に変更があったコンテンツの文字色を指定します．")]
+		[DefaultValue(typeof(Color), "Orange")]
+		[XmlIgnore]
+		public Color ColorModified {
+			get { return this.colorModified; }
+			set { this.colorModified = value; }
+		}
+		private Color colorFilter = Color.LemonChiffon;
+		[Category("表示")]
+		[DisplayName("絞込みの色")]
+		[Description("絞込みの対象となったコンテンツの背景色を指定します．")]
+		[DefaultValue(typeof(Color), "LemonChiffon")]
+		[XmlIgnore]
+		public Color ColorFilter {
+			get { return this.colorFilter; }
+			set { this.colorFilter = value; }
+		}
+
+		private bool filterBarVisible = false;
+		[Category("絞込み")]
+		[DisplayName("絞込みバーを表示")]
+		[Description("絞込みツールバーを表示します．")]
+		[DefaultValue(false)]
+		public bool FilterBarVisible {
+			get { return this.filterBarVisible; }
+			set { this.filterBarVisible = value; }
+		}
+		private CrawlResultViewFilterType filterType = CrawlResultViewFilterType.Normal;
+		[Category("絞込み")]
+		[DisplayName("絞込みの方法")]
+		[Description("絞込みの方法を指定します．")]
+		[DefaultValue(CrawlResultViewFilterType.Normal)]
+		public CrawlResultViewFilterType FilterType {
+			get { return this.filterType; }
+			set { this.filterType = value; }
+		}
+		private bool incrementalFilterEnabled = true;
+		[Category("絞込み")]
+		[DisplayName("インクリメンタル")]
+		[Description("インクリメンタルに絞込みを実行します．Falseにした場合は絞込みを行うたびにEnterを押す必要があります．")]
 		[DefaultValue(true)]
-		public bool ShowThumbnail {
-			get { return this.showThumbnail; }
-			set { this.showThumbnail = value; }
+		public bool IncrementalFilterEnabled {
+			get { return this.incrementalFilterEnabled; }
+			set { this.incrementalFilterEnabled = value; }
+		}
+		private bool caseInsensitiveFilter = true;
+		[Category("絞込み")]
+		[DisplayName("ケースインセンシティブ")]
+		[Description("Trueにすると絞込みで大文字と小文字の区別をしません．")]
+		[DefaultValue(true)]
+		public bool CaseInsensitiveFilter {
+			get { return this.caseInsensitiveFilter; }
+			set { this.caseInsensitiveFilter = value; }
+		}
+		
+		private int colWidthId = -1;
+		[Category("カラム幅")]
+		[DisplayName("[0] contents_id")]
+		[Description("カラム 'contents_id' の幅を指定します．")]
+		[DefaultValue(-1)]
+		public int ColWidthId {
+			get { return this.colWidthId; }
+			set { this.colWidthId = value; }
+		}
+		private int colWidthTitle = -1;
+		[Category("カラム幅")]
+		[DisplayName("[1] タイトル")]
+		[Description("カラム 'タイトル' の幅を指定します．")]
+		[DefaultValue(-1)]
+		public int ColWidthTitle {
+			get { return this.colWidthTitle; }
+			set { this.colWidthTitle = value; }
+		}
+		private int colWidthSeriesNumber = -1;
+		[Category("カラム幅")]
+		[DisplayName("[2] シリーズ番号")]
+		[Description("カラム 'シリーズ番号' の幅を指定します．")]
+		[DefaultValue(-1)]
+		public int ColWidthSeriesNumber {
+			get { return this.colWidthSeriesNumber; }
+			set { this.colWidthSeriesNumber = value; }
+		}
+		private int colWidthSubtitle = -1;
+		[Category("カラム幅")]
+		[DisplayName("[3] サブタイトル")]
+		[Description("カラム 'サブタイトル' の幅を指定します．")]
+		[DefaultValue(-1)]
+		public int ColWidthSubtitle {
+			get { return this.colWidthSubtitle; }
+			set { this.colWidthSubtitle = value; }
+		}
+		private int colWidthDuration = -1;
+		[Category("カラム幅")]
+		[DisplayName("[4] 時間")]
+		[Description("カラム '時間' の幅を指定します．")]
+		[DefaultValue(-1)]
+		public int ColWidthDuration {
+			get { return this.colWidthDuration; }
+			set { this.colWidthDuration = value; }
+		}
+		private int colWidthDeadline = -1;
+		[Category("カラム幅")]
+		[DisplayName("[5] 期限")]
+		[Description("カラム '期限' の幅を指定します．")]
+		[DefaultValue(-1)]
+		public int ColWidthDeadline {
+			get { return this.colWidthDeadline; }
+			set { this.colWidthDeadline = value; }
+		}
+		private int colWidthSummary = -1;
+		[Category("カラム幅")]
+		[DisplayName("[6] サマリー")]
+		[Description("カラム 'サマリー' の幅を指定します．")]
+		[DefaultValue(-1)]
+		public int ColWidthSummary {
+			get { return this.colWidthSummary; }
+			set { this.colWidthSummary = value; }
 		}
 		#endregion
+
+		[Browsable(false)]
+		public XmlSerializableColor ColorNewXmlSerializable {
+			get { return new XmlSerializableColor(this.ColorNew); }
+			set { this.ColorNew = value.ToColor(); }
+		}
+		[Browsable(false)]
+		public XmlSerializableColor ColorModifiedXmlSerializable {
+			get { return new XmlSerializableColor(this.ColorModified); }
+			set { this.ColorModified = value.ToColor(); }
+		}
+		[Browsable(false)]
+		public XmlSerializableColor ColorFilterXmlSerializable {
+			get { return new XmlSerializableColor(this.ColorFilter); }
+			set { this.ColorFilter = value.ToColor(); }
+		}
+		
+		internal void NeutralizeUnspecificValues(CrawlResultView crv) {
+			if (this.ColWidthId < 0) this.ColWidthId = crv.ColWidthId;
+			if (this.ColWidthTitle < 0) this.ColWidthTitle = crv.ColWidthTitle;
+			if (this.ColWidthSeriesNumber < 0) this.ColWidthSeriesNumber = crv.ColWidthSeriesNumber;
+			if (this.ColWidthSubtitle < 0) this.ColWidthSubtitle = crv.ColWidthSubtitle;
+			if (this.ColWidthDuration < 0) this.ColWidthDuration = crv.ColWidthDuration;
+			if (this.ColWidthDeadline < 0) this.ColWidthDeadline = crv.ColWidthDeadline;
+			if (this.ColWidthSummary < 0) this.ColWidthSummary = crv.ColWidthSummary;
+		}
 	}
 }

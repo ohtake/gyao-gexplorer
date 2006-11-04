@@ -27,7 +27,7 @@ namespace Yusen.GExplorer {
 			get { return this.crawlOptions; }
 			set { this.crawlOptions = value; }
 		}
-
+		
 		private MainFormOptions mainFormOptions = new MainFormOptions();
 		[Browsable(false)]
 		[SubOptions("メインフォーム", "メインフォームに関する設定")]

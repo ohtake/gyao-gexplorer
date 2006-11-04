@@ -14,31 +14,36 @@ using System.ComponentModel;
 namespace Yusen.GExplorer {
 	static class Program {
 		internal static readonly string ApplicationName = Application.ProductName + " " + Application.ProductVersion;
-		private static CacheManager cacheManager;
-		private static PlaylistsManager playlistsManager;
 		private static RootOptions rootOptions;
+		private static CacheController cacheController;
+		private static PlaylistsManager playlistsManager;
+		//private static ContentClassificationRulesManager contentClassificatinoRulesManager;
 		private static ExternalCommandsManager externalCommandsManager;
+		
 		private static PlayerForm playerForm = null;
 		private static OptionsForm optionsForm = null;
 		private static CacheViewerForm cacheViewerForm = null;
 		private static BrowserForm browserForm = null;
 		private static ExternalCommandsEditor externalCommandsEditor = null;
 
-		internal static CacheManager CacheManager {
-			get { return Program.cacheManager; }
+		internal static RootOptions RootOptions {
+			get { return Program.rootOptions; }
+		}
+		internal static CacheController CacheController {
+			get { return Program.cacheController; }
 		}
 		internal static PlaylistsManager PlaylistsManager {
 			get { return Program.playlistsManager; }
 		}
+		/*internal static ContentClassificationRulesManager ContentClassificationRulesManager {
+			get { return Program.contentClassificatinoRulesManager; }
+		}*/
 		internal static ExternalCommandsManager ExternalCommandsManager {
 			get { return Program.externalCommandsManager; }
 		}
-		internal static RootOptions RootOptions {
-			get { return Program.rootOptions; }
-		}
 		internal static void AddVirtualGenre(IVirtualGenre vgenre) {
-			Program.mainForm2.AddVirtualGenre(vgenre);
-			Program.mainForm2.Focus();
+			Program.mainForm.AddVirtualGenre(vgenre);
+			Program.mainForm.Focus();
 		}
 		internal static void BrowsePage(Uri uri) {
 			if (null == Program.browserForm || Program.browserForm.IsDisposed) {
@@ -87,8 +92,8 @@ namespace Yusen.GExplorer {
 		private const int InitializationSteps = 7;
 		private const int SerializationSteps = 4;
 		private static SplashForm splashForm;
-		private static MainForm mainForm2;
-		internal static event ProgressChangedEventHandler ProgramSerializationProgress2;
+		private static MainForm mainForm;
+		internal static event ProgressChangedEventHandler ProgramSerializationProgress;
 
 		/// <summary>The main entry point for the application.</summary>
 		[STAThread]
@@ -97,9 +102,11 @@ namespace Yusen.GExplorer {
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
 			//キャッチされない例外をキャッチ
+#if !DEBUG
 			Application.ThreadException += new ThreadExceptionEventHandler(Application_ThreadException);
 			AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
-
+#endif
+			
 			//多重起動チェック
 			while (Program.CheckMultipleExecution()) {
 				switch (MessageBox.Show("多重起動と思われます．どうしますか？", Program.ApplicationName, MessageBoxButtons.AbortRetryIgnore, MessageBoxIcon.Warning)) {
@@ -116,14 +123,13 @@ namespace Yusen.GExplorer {
 			Program.splashForm = new SplashForm();
 			Program.splashForm.Initialize("起動中です．．．", Program.InitializationSteps + 1);
 			Program.InitializeProgram2();
-			Program.mainForm2.Load += delegate {
+			Program.mainForm.Load += delegate {
 				Program.splashForm.EndProgress();
-
 				Program.splashForm.Dispose();
 				Program.splashForm = null;
 			};
 			
-			Application.Run(Program.mainForm2);
+			Application.Run(Program.mainForm);
 		}
 		
 		private static bool CheckMultipleExecution() {
@@ -150,15 +156,17 @@ namespace Yusen.GExplorer {
 			//アイコンの読み込み
 			Program.splashForm.StepProgress("アイコンの読み込み");
 			try {
-				//string iconFileName = GlobalSettings.Instance.IconFile;
-				string iconFileName = string.Empty;
+				string iconFileName = Program.RootOptions.AppBasicOptions.IconFile;
 				if (string.IsNullOrEmpty(iconFileName)) {
 					iconFileName = Path.GetFileNameWithoutExtension(Application.ExecutablePath) + ".ico";
 				}
-				BaseForm.CustomIcon = new Icon(iconFileName);
-			} catch {
+				if (File.Exists(iconFileName)) {
+					BaseForm.CustomIcon = new Icon(iconFileName);
+				}
+			} catch(Exception e) {
+				Program.DisplayException("アイコンの読み込みエラー", e);
 			}
-
+			
 			//ビットレートの設定
 			Program.splashForm.StepProgress("ビットレートの設定");
 			if (Program.RootOptions.AppBasicOptions.PromptBitrateOnStartup) {
@@ -174,40 +182,46 @@ namespace Yusen.GExplorer {
 			}
 
 			Program.splashForm.StepProgress("キャッシュの初期化と読み込み");
-			Program.cacheManager = new CacheManager(Program.GetWorkingDirectory(WorkingDirectory.Cache));
+			Program.cacheController = new CacheController(Program.GetWorkingDirectory(WorkingDirectory.Cache));
 			if (Program.RootOptions.AppBasicOptions.UseDefaultGenres) {
-				Program.CacheManager.ResetToDefaultGenres();
+				Program.CacheController.ResetToDefaultGenres();
 			} else {
-				Program.CacheManager.DeserializeGenreTable();
+				Program.CacheController.DeserializeGenreTable();
 			}
-			Program.cacheManager.DeserializePackageAndContentTables();
-
+			Program.cacheController.DeserializePackageAndContentTables();
+			
 			Program.splashForm.StepProgress("プレイリストコレクションの読み込み");
 			Program.playlistsManager = new PlaylistsManager();
 			Program.playlistsManager.DeserializePlaylists(Path.Combine(Program.GetWorkingDirectory(WorkingDirectory.UserSettings), "PlaylistCollection.xml"));
-
+			/*
+			Program.splashForm.StepProgress("仕分けルールの読み込み");
+			Program.contentClassificatinoRulesManager = new ContentClassificationRulesManager();
+			Program.contentClassificatinoRulesManager.TryDeserialize(Path.Combine(Program.GetWorkingDirectory(WorkingDirectory.UserSettings), "ContentClassificationRules.xml"));
+			*/
 			Program.splashForm.StepProgress("外部コマンドの読み込み");
 			Program.externalCommandsManager = new ExternalCommandsManager();
 			Program.externalCommandsManager.TryDeserialize(Path.Combine(Program.GetWorkingDirectory(WorkingDirectory.UserSettings), "ExternalCommands.xml"));
 
 			Program.splashForm.StepProgress("メインフォームの作成");
-			Program.mainForm2 = new MainForm();
+			Program.mainForm = new MainForm();
 		}
-		private static void OnProgramSerializationProgress2(int current, string message) {
-			ProgressChangedEventHandler handler = Program.ProgramSerializationProgress2;
+		private static void OnProgramSerializationProgress(int current, string message) {
+			ProgressChangedEventHandler handler = Program.ProgramSerializationProgress;
 			if (null != handler) {
 				handler(null, new ProgressChangedEventArgs(100*current/Program.SerializationSteps, message));
 			}
 		}
-		internal static void SerializeSettings2() {
+		internal static void SerializeSettings() {
 			int step = 0;
-			Program.OnProgramSerializationProgress2(step++, "プレイリストコレクションの保存");
+			Program.OnProgramSerializationProgress(step++, "プレイリストコレクションの保存");
 			Program.playlistsManager.SerializePlaylists(Path.Combine(Program.GetWorkingDirectory(WorkingDirectory.UserSettings), "PlaylistCollection.xml"));
-			Program.OnProgramSerializationProgress2(step++, "プレイリストコレクションの保存");
+			//Program.OnProgramSerializationProgress2(step++, "仕分けルールの保存");
+			//Program.contentClassificatinoRulesManager.Serialize(Path.Combine(Program.GetWorkingDirectory(WorkingDirectory.UserSettings), "ContentClassificationRules.xml"));
+			Program.OnProgramSerializationProgress(step++, "外部コマンドの保存");
 			Program.externalCommandsManager.Serialize(Path.Combine(Program.GetWorkingDirectory(WorkingDirectory.UserSettings), "ExternalCommands.xml"));
-			Program.OnProgramSerializationProgress2(step++, "キャッシュの保存");
-			Program.cacheManager.SerializeTables();
-			Program.OnProgramSerializationProgress2(step++, "ルートオプションの保存");
+			Program.OnProgramSerializationProgress(step++, "キャッシュの保存");
+			Program.cacheController.SerializeTables();
+			Program.OnProgramSerializationProgress(step++, "ルートオプションの保存");
 			Program.rootOptions.Serialize(Path.Combine(Program.GetWorkingDirectory(WorkingDirectory.UserSettings), "RootOptions.xml"));
 		}
 

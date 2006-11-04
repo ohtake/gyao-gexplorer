@@ -54,11 +54,12 @@
 			this.splitContainer2 = new System.Windows.Forms.SplitContainer();
 			this.splitContainer3 = new System.Windows.Forms.SplitContainer();
 			this.genreSelctControl1 = new Yusen.GExplorer.UserInterfaces.GenreSelctControl();
-			this.crawlResultView21 = new Yusen.GExplorer.UserInterfaces.CrawlResultView();
+			this.crawlResultView = new Yusen.GExplorer.UserInterfaces.CrawlResultView();
 			this.playlistsView1 = new Yusen.GExplorer.UserInterfaces.PlaylistsView();
 			this.detailView1 = new Yusen.GExplorer.UserInterfaces.DetailView();
 			this.inputBoxDialog1 = new Yusen.GExplorer.UserInterfaces.InputBoxDialog();
 			this.timerContentSelect = new System.Windows.Forms.Timer(this.components);
+			this.timerMessage = new System.Windows.Forms.Timer(this.components);
 			this.menuStrip1.SuspendLayout();
 			this.toolStripContainer1.BottomToolStripPanel.SuspendLayout();
 			this.toolStripContainer1.ContentPanel.SuspendLayout();
@@ -93,7 +94,7 @@
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
 			this.menuStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-			this.menuStrip1.Size = new System.Drawing.Size(792, 39);
+			this.menuStrip1.Size = new System.Drawing.Size(792, 20);
 			this.menuStrip1.TabIndex = 0;
 			this.menuStrip1.Text = "menuStrip1";
 			// 
@@ -168,8 +169,8 @@
 			// tsmiCrawlResultView
 			// 
 			this.tsmiCrawlResultView.Name = "tsmiCrawlResultView";
-			this.tsmiCrawlResultView.Size = new System.Drawing.Size(94, 16);
-			this.tsmiCrawlResultView.Text = "クロール結果(&R)";
+			this.tsmiCrawlResultView.Size = new System.Drawing.Size(95, 16);
+			this.tsmiCrawlResultView.Text = "クロール結果(&W)";
 			// 
 			// tsmiPlaylistCollection
 			// 
@@ -260,7 +261,7 @@
 			// toolStripContainer1.ContentPanel
 			// 
 			this.toolStripContainer1.ContentPanel.Controls.Add(this.splitContainer1);
-			this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(792, 505);
+			this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(792, 524);
 			this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.toolStripContainer1.Location = new System.Drawing.Point(0, 0);
 			this.toolStripContainer1.Name = "toolStripContainer1";
@@ -309,7 +310,7 @@
 			// splitContainer1.Panel2
 			// 
 			this.splitContainer1.Panel2.Controls.Add(this.detailView1);
-			this.splitContainer1.Size = new System.Drawing.Size(792, 505);
+			this.splitContainer1.Size = new System.Drawing.Size(792, 524);
 			this.splitContainer1.SplitterDistance = 546;
 			this.splitContainer1.TabIndex = 1;
 			this.splitContainer1.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.splitContainer1_SplitterMoved);
@@ -329,8 +330,8 @@
 			// splitContainer2.Panel2
 			// 
 			this.splitContainer2.Panel2.Controls.Add(this.playlistsView1);
-			this.splitContainer2.Size = new System.Drawing.Size(546, 505);
-			this.splitContainer2.SplitterDistance = 325;
+			this.splitContainer2.Size = new System.Drawing.Size(546, 524);
+			this.splitContainer2.SplitterDistance = 344;
 			this.splitContainer2.TabIndex = 0;
 			this.splitContainer2.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.splitContainer2_SplitterMoved);
 			// 
@@ -350,9 +351,9 @@
 			// 
 			// splitContainer3.Panel2
 			// 
-			this.splitContainer3.Panel2.Controls.Add(this.crawlResultView21);
+			this.splitContainer3.Panel2.Controls.Add(this.crawlResultView);
 			this.splitContainer3.Panel2MinSize = 0;
-			this.splitContainer3.Size = new System.Drawing.Size(546, 325);
+			this.splitContainer3.Size = new System.Drawing.Size(546, 344);
 			this.splitContainer3.SplitterDistance = 46;
 			this.splitContainer3.SplitterWidth = 1;
 			this.splitContainer3.TabIndex = 1;
@@ -372,21 +373,21 @@
 			this.genreSelctControl1.RequiredHeightChanged += new System.EventHandler(this.genreSelctControl1_RequiredHeightChanged);
 			this.genreSelctControl1.CrawlEnded += new System.EventHandler(this.genreSelctControl1_CrawlEnded);
 			// 
-			// crawlResultView21
+			// crawlResultView
 			// 
-			this.crawlResultView21.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.crawlResultView21.Location = new System.Drawing.Point(0, 0);
-			this.crawlResultView21.Name = "crawlResultView21";
-			this.crawlResultView21.Size = new System.Drawing.Size(546, 278);
-			this.crawlResultView21.TabIndex = 0;
-			this.crawlResultView21.LastSelectedContentChanged += new System.EventHandler(this.crawlResultView21_LastSelectedContentChanged);
+			this.crawlResultView.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.crawlResultView.Location = new System.Drawing.Point(0, 0);
+			this.crawlResultView.Name = "crawlResultView";
+			this.crawlResultView.Size = new System.Drawing.Size(546, 297);
+			this.crawlResultView.TabIndex = 0;
+			this.crawlResultView.LastSelectedContentChanged += new System.EventHandler(this.crawlResultView_LastSelectedContentChanged);
 			// 
 			// playlistsView1
 			// 
 			this.playlistsView1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.playlistsView1.Location = new System.Drawing.Point(0, 0);
 			this.playlistsView1.Name = "playlistsView1";
-			this.playlistsView1.PlaylistCollectionWidth = 85;
+			this.playlistsView1.PlaylistCollectionWidth = 115;
 			this.playlistsView1.Size = new System.Drawing.Size(546, 176);
 			this.playlistsView1.TabIndex = 0;
 			this.playlistsView1.LastSelectedContentChanged += new System.EventHandler(this.playlistsView1_LastSelectedContentChanged);
@@ -399,15 +400,20 @@
 			this.detailView1.ColWidthRef = 42;
 			this.detailView1.ColWidthScore = 24;
 			this.detailView1.ColWidthTitle = 80;
+			this.detailView1.Description1Style = "font-size:12px;";
+			this.detailView1.Description2Style = "font-size:12px;";
+			this.detailView1.Description3Style = "font-size:10px;";
+			this.detailView1.Description4Style = "font-size:10px; text-align:right;";
 			this.detailView1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.detailView1.ImageHeight = 153;
+			this.detailView1.ImageHeight = 173;
 			this.detailView1.LoadImage = true;
 			this.detailView1.LoadPage = true;
 			this.detailView1.Location = new System.Drawing.Point(0, 0);
 			this.detailView1.Name = "detailView1";
-			this.detailView1.ReviewListHeight = 137;
-			this.detailView1.Size = new System.Drawing.Size(242, 505);
+			this.detailView1.ReviewListHeight = 140;
+			this.detailView1.Size = new System.Drawing.Size(242, 524);
 			this.detailView1.TabIndex = 0;
+			this.detailView1.StatusMessageChanged += new System.EventHandler(this.detailView1_StatusMessageChanged);
 			// 
 			// inputBoxDialog1
 			// 
@@ -420,18 +426,23 @@
 			this.timerContentSelect.Interval = 10;
 			this.timerContentSelect.Tick += new System.EventHandler(this.timerContentSelect_Tick);
 			// 
-			// MainForm2
+			// timerMessage
+			// 
+			this.timerMessage.Interval = 15000;
+			this.timerMessage.Tick += new System.EventHandler(this.timerMessage_Tick);
+			// 
+			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(792, 566);
 			this.Controls.Add(this.toolStripContainer1);
 			this.MainMenuStrip = this.menuStrip1;
-			this.Name = "MainForm2";
+			this.Name = "MainForm";
 			this.Text = "MainForm";
-			this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm2_FormClosed);
-			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm2_FormClosing);
-			this.Load += new System.EventHandler(this.MainForm2_Load);
+			this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
+			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
+			this.Load += new System.EventHandler(this.MainForm_Load);
 			this.menuStrip1.ResumeLayout(false);
 			this.menuStrip1.PerformLayout();
 			this.toolStripContainer1.BottomToolStripPanel.ResumeLayout(false);
@@ -466,7 +477,6 @@
 		private System.Windows.Forms.SplitContainer splitContainer1;
 		private System.Windows.Forms.SplitContainer splitContainer2;
 		private DetailView detailView1;
-		private CrawlResultView crawlResultView21;
 		private GenreSelctControl genreSelctControl1;
 		private PlaylistsView playlistsView1;
 		private System.Windows.Forms.ToolStripMenuItem tsmiQuit;
@@ -493,5 +503,7 @@
 		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
 		private System.Windows.Forms.Timer timerContentSelect;
 		private System.Windows.Forms.ToolStripMenuItem tsmiExternalCommandsEditor;
+		private CrawlResultView crawlResultView;
+		private System.Windows.Forms.Timer timerMessage;
 	}
 }

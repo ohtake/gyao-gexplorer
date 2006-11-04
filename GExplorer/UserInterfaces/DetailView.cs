@@ -13,6 +13,11 @@ using System.Net.Cache;
 
 namespace Yusen.GExplorer.UserInterfaces {
 	sealed partial class DetailView : UserControl, IDetailViewBindingContract, INotifyPropertyChanged {
+		public const string DefaultDescription1Style = "font-size:12px;";
+		public const string DefaultDescription2Style = "font-size:12px;";
+		public const string DefaultDescription3Style = "font-size:10px;";
+		public const string DefaultDescription4Style = "font-size:10px; text-align:right;";
+
 		private static readonly Encoding encodingGyao = Encoding.GetEncoding("Shift_JIS");
 		private static readonly Regex regexDesc = new Regex(@"<table width=""296"" border=""0"" cellspacing=""0"" cellpadding=""0"">\r?\n<tr>\r?\n<td align=""left"">(?<Desc1>.*?)</td>\r?\n</tr>\r?\n</table>\r?\n</div>\r?\n<div class=""marginT10"">\r?\n<table width=""296"" border=""0"" cellspacing=""0"" cellpadding=""0"">\r?\n<tr>\r?\n<td align=""left"">\r?\n(?<Desc2>.*?)</td>\r?\n</tr>\r?\n</table>\r?\n</div>\r?\n<div class=""marginT10"">\r?\n<table width=""296"" border=""0"" cellspacing=""0"" cellpadding=""0"">\r?\n<tr>\r?\n<td align=""(left|center)""( class=""text10"")?>\r?\n(?<Desc3>[\s\S]*?)</td>\r?\n</tr>\r?\n</table>\r?\n</div>\r?\n<div class=""marginT10"">\r?\n<table width=""296"" border=""0"" cellspacing=""0"" cellpadding=""0"">\r?\n<tr>\r?\n<td align=""right""( class=""text10"")?>\r?\n(?<Desc4>.*?)</td>\r?\n</tr>\r?\n</table>", RegexOptions.Compiled | RegexOptions.ExplicitCapture);
 		private static readonly Regex regexReviewSummary = new Regex(@"<td width=""115"" class=""title12b"" bgcolor=""#666666"" align=""left"">(?:<span class=""marginR10"">(?<Summary>.*?)</span>)?</td>", RegexOptions.Compiled | RegexOptions.ExplicitCapture);
@@ -34,6 +39,9 @@ namespace Yusen.GExplorer.UserInterfaces {
 		}
 
 		public event PropertyChangedEventHandler PropertyChanged;
+		public event EventHandler StatusMessageChanged;
+
+		private string statusMessage = string.Empty;
 
 		private bool loadImage = true;
 		private bool loadPage = true;
@@ -44,7 +52,11 @@ namespace Yusen.GExplorer.UserInterfaces {
 		private readonly WebClient wcPage = new WebClient();
 
 		private GContentClass cont;
-
+		private string description1Style = DetailView.DefaultDescription1Style;
+		private string description2Style = DetailView.DefaultDescription2Style;
+		private string description3Style = DetailView.DefaultDescription3Style;
+		private string description4Style = DetailView.DefaultDescription4Style;
+		
 		public DetailView() {
 			InitializeComponent();
 		}
@@ -56,7 +68,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 			this.wcImage.OpenReadCompleted += new OpenReadCompletedEventHandler(wcImage_OpenReadCompleted);
 			this.wcPage.OpenReadCompleted += new OpenReadCompletedEventHandler(wcPage_OpenReadCompleted);
 
-			this.wbDescription.DocumentText = "<html><body style='font-size:11px; margin:0px;'></body></html>";
+			this.wbDescription.DocumentText = "<html><body style='margin:0px;'></body></html>";
 		}
 
 		public void ViewDetail(GContentClass cont) {
@@ -81,12 +93,15 @@ namespace Yusen.GExplorer.UserInterfaces {
 				if (e.Cancelled) return;
 				if (null != e.Error) {
 					this.pbImage.Image = this.pbImage.ErrorImage;
+					this.StatusMessage = e.Error.Message;
 					return;
 				}
 				try {
 					this.pbImage.Image = Image.FromStream(e.Result);
 				} catch (WebException) {
 					this.pbImage.Image = this.pbImage.ErrorImage;
+				} catch(Exception ex) {
+					this.StatusMessage = ex.Message;
 				}
 			}
 		}
@@ -108,7 +123,9 @@ namespace Yusen.GExplorer.UserInterfaces {
 						string html = reader.ReadToEnd();
 						Match m = DetailView.regexDesc.Match(html);
 						if (m.Success) {
-							this.wbDescription.Document.Body.InnerHtml = string.Format("<p>{0}</p><p>{1}</p><p>{2}</p><p>{3}</p>", m.Groups["Desc1"].Value, m.Groups["Desc2"].Value, m.Groups["Desc3"].Value, m.Groups["Desc4"].Value);
+							this.wbDescription.Document.Body.InnerHtml = string.Format(@"<p style=""{4}"">{0}</p><p style=""{5}"">{1}</p><p style=""{6}"">{2}</p><p style=""{7}"">{3}</p>",
+								m.Groups["Desc1"].Value, m.Groups["Desc2"].Value, m.Groups["Desc3"].Value, m.Groups["Desc4"].Value,
+								this.Description1Style, this.Description2Style, this.Description3Style, this.Description4Style);
 						} else {
 							this.wbDescription.Document.Body.InnerHtml = "エラー: 正規表現にマッチしなかった";
 						}
@@ -128,8 +145,10 @@ namespace Yusen.GExplorer.UserInterfaces {
 						}
 						this.txtReview.Clear();
 					}
-				} catch (WebException e2) {
-					this.wbDescription.DocumentText = string.Format("エラー: {0}", e2.Message);
+				} catch (WebException ex) {
+					this.wbDescription.DocumentText = string.Format("エラー: {0}", ex.Message);
+				} catch (Exception ex){
+					this.StatusMessage = ex.Message;
 				}
 			}
 		}
@@ -155,6 +174,17 @@ namespace Yusen.GExplorer.UserInterfaces {
 			BindingContractUtility.BindAllProperties<DetailView, IDetailViewBindingContract>(this, options);
 		}
 
+		public string StatusMessage {
+			get { return this.statusMessage; }
+			private set {
+				this.statusMessage = value;
+				EventHandler handler = this.StatusMessageChanged;
+				if (null != handler) {
+					handler(this, EventArgs.Empty);
+				}
+			}
+		}
+
 		private void scRoot_SplitterMoved(object sender, SplitterEventArgs e) {
 			this.OnPropertyChanged("ImageHeight");
 		}
@@ -165,7 +195,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 			this.OnPropertyChanged(DetailView.ColWidthPropertyNames[e.ColumnIndex]);
 		}
 		#region IDetailViewBindingContract Members
-
+		[Browsable(false)]
 		public bool LoadImage {
 			get { return this.loadImage; }
 			set {
@@ -173,6 +203,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 				this.OnPropertyChanged("LoadImage");
 			}
 		}
+		[Browsable(false)]
 		public bool LoadPage {
 			get { return this.loadPage; }
 			set {
@@ -180,6 +211,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 				this.OnPropertyChanged("LoadPage");
 			}
 		}
+		[Browsable(false)]
 		public int ImageHeight {
 			get {
 				return this.scRoot.SplitterDistance;
@@ -189,6 +221,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 				this.OnPropertyChanged("ImageHeight");
 			}
 		}
+		[Browsable(false)]
 		public int ReviewListHeight {
 			get { return this.scReview.SplitterDistance; }
 			set {
@@ -196,6 +229,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 				this.OnPropertyChanged("ReviewListHeight");
 			}
 		}
+		[Browsable(false)]
 		public int ColWidthNetabare {
 			get { return this.chNeta.Width; }
 			set {
@@ -203,6 +237,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 				this.OnPropertyChanged("ColWidthNetabare");
 			}
 		}
+		[Browsable(false)]
 		public int ColWidthScore {
 			get { return this.chScore.Width; }
 			set {
@@ -210,6 +245,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 				this.OnPropertyChanged("ColWidthScore");
 			}
 		}
+		[Browsable(false)]
 		public int ColWidthRef {
 			get { return this.chRef.Width; }
 			set {
@@ -217,6 +253,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 				this.OnPropertyChanged("ColWidthRef");
 			}
 		}
+		[Browsable(false)]
 		public int ColWidthTitle {
 			get { return this.chTitle.Width; }
 			set {
@@ -224,6 +261,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 				this.OnPropertyChanged("ColWidthTitle");
 			}
 		}
+		[Browsable(false)]
 		public int ColWidthAuthor {
 			get { return this.chAuthor.Width; }
 			set {
@@ -231,11 +269,52 @@ namespace Yusen.GExplorer.UserInterfaces {
 				this.OnPropertyChanged("ColWidthAuthor");
 			}
 		}
+		[Browsable(false)]
 		public int ColWidthPosted {
 			get { return this.chDate.Width; }
 			set {
 				this.chDate.Width = value;
 				this.OnPropertyChanged("ColWidthPosted");
+			}
+		}
+		[Browsable(false)]
+		public string Description1Style {
+			get { return this.description1Style; }
+			set {
+				if (this.description1Style != value) {
+					this.description1Style = value;
+					this.OnPropertyChanged("Description1Style");
+				}
+			}
+		}
+		[Browsable(false)]
+		public string Description2Style {
+			get { return this.description2Style; }
+			set {
+				if (this.description2Style != value) {
+					this.description2Style = value;
+					this.OnPropertyChanged("Description2Style");
+				}
+			}
+		}
+		[Browsable(false)]
+		public string Description3Style {
+			get { return this.description3Style; }
+			set {
+				if (this.description3Style != value) {
+					this.description3Style = value;
+					this.OnPropertyChanged("Description3Style");
+				}
+			}
+		}
+		[Browsable(false)]
+		public string Description4Style {
+			get { return this.description4Style; }
+			set {
+				if (this.description4Style != value) {
+					this.description4Style = value;
+					this.OnPropertyChanged("Description4Style");
+				}
 			}
 		}
 		#endregion
@@ -253,11 +332,15 @@ namespace Yusen.GExplorer.UserInterfaces {
 		int ColWidthTitle { get;set;}
 		int ColWidthAuthor { get;set;}
 		int ColWidthPosted { get;set;}
+
+		string Description1Style { get;set;}
+		string Description2Style { get;set;}
+		string Description3Style { get;set;}
+		string Description4Style { get;set;}
 	}
 	public sealed class DetailViewOptions : IDetailViewBindingContract {
 		public DetailViewOptions() {
 		}
-
 
 		#region IDetailViewBindingContract Members
 		private bool loadImage = true;
@@ -351,6 +434,43 @@ namespace Yusen.GExplorer.UserInterfaces {
 		public int ColWidthPosted {
 			get { return this.colWidthPosted; }
 			set { this.colWidthPosted = value; }
+		}
+
+		private string description1Style = DetailView.DefaultDescription1Style;
+		[Category("説明文")]
+		[DisplayName("説明文1のスタイル")]
+		[Description("説明文1の表示に用いる HTML の style 属性を指定します．入力チェックは行っていないので不正な文字列を指定しないでください．変更は再表示後に有効になります．")]
+		[DefaultValue(DetailView.DefaultDescription1Style)]
+		public string Description1Style {
+			get { return this.description1Style; }
+			set { this.description1Style = value; }
+		}
+		private string description2Style = DetailView.DefaultDescription2Style;
+		[Category("説明文")]
+		[DisplayName("説明文2のスタイル")]
+		[Description("説明文2の表示に用いる HTML の style 属性を指定します．入力チェックは行っていないので不正な文字列を指定しないでください．変更は再表示後に有効になります．")]
+		[DefaultValue(DetailView.DefaultDescription2Style)]
+		public string Description2Style {
+			get { return this.description2Style; }
+			set { this.description2Style = value; }
+		}
+		private string description3Style = DetailView.DefaultDescription3Style;
+		[Category("説明文")]
+		[DisplayName("説明文3のスタイル")]
+		[Description("説明文3の表示に用いる HTML の style 属性を指定します．入力チェックは行っていないので不正な文字列を指定しないでください．変更は再表示後に有効になります．")]
+		[DefaultValue(DetailView.DefaultDescription3Style)]
+		public string Description3Style {
+			get { return this.description3Style; }
+			set { this.description3Style = value; }
+		}
+		private string description4Style = DetailView.DefaultDescription4Style;
+		[Category("説明文")]
+		[DisplayName("説明文4のスタイル")]
+		[Description("説明文4の表示に用いる HTML の style 属性を指定します．入力チェックは行っていないので不正な文字列を指定しないでください．変更は再表示後に有効になります．")]
+		[DefaultValue(DetailView.DefaultDescription4Style)]
+		public string Description4Style {
+			get { return this.description4Style;}
+			set { this.description4Style = value; }
 		}
 		#endregion
 		

@@ -165,11 +165,6 @@
 			// 
 			// pvcControl
 			// 
-			this.pvcControl.ColWidthCount = 24;
-			this.pvcControl.ColWidthCreated = 78;
-			this.pvcControl.ColWidthModified = 78;
-			this.pvcControl.ColWidthName = 80;
-			this.pvcControl.ColWidthTime = 52;
 			this.pvcControl.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.pvcControl.Location = new System.Drawing.Point(0, 0);
 			this.pvcControl.Name = "pvcControl";
@@ -180,12 +175,6 @@
 			// 
 			// pvpControl
 			// 
-			this.pvpControl.ColWidthDeadline = 80;
-			this.pvpControl.ColWidthDuration = 52;
-			this.pvpControl.ColWidthId = 66;
-			this.pvpControl.ColWidthSeriesNumber = 48;
-			this.pvpControl.ColWidthSubtitle = 60;
-			this.pvpControl.ColWidthTitle = 66;
 			this.pvpControl.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.pvpControl.Location = new System.Drawing.Point(0, 0);
 			this.pvpControl.Name = "pvpControl";

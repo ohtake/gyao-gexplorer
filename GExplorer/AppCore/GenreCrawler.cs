@@ -166,7 +166,7 @@ namespace Yusen.GExplorer.AppCore {
 		private readonly GGenreClass genre;
 		private readonly CrawlResult prevResult;
 		private readonly CrawlOptions options;
-		private readonly CacheManager cm;
+		private readonly CacheController cc;
 		private readonly BackgroundWorker bw;
 		
 		private readonly HtmlParserRegex parser = new HtmlParserRegex();
@@ -189,12 +189,12 @@ namespace Yusen.GExplorer.AppCore {
 		private GenreCrawler() {
 			this.ps = new CrawlProgressState(this);
 		}
-		public GenreCrawler(GGenreClass genre, CrawlResult prevResult, CrawlOptions options, CacheManager cm, BackgroundWorker bw)
+		public GenreCrawler(GGenreClass genre, CrawlResult prevResult, CrawlOptions options, CacheController cm, BackgroundWorker bw)
 			: this() {
 			this.genre = genre;
 			this.prevResult = prevResult;
 			this.options = options;
-			this.cm = cm;
+			this.cc = cm;
 			this.bw = bw;
 		}
 		
@@ -306,7 +306,7 @@ namespace Yusen.GExplorer.AppCore {
 				
 				GPackageClass pac;
 				List<GContentClass> conts;
-				if (this.cm.TryFetchPackage(pacKey, out pac, out conts)) {
+				if (this.cc.TryFetchPackage(pacKey, out pac, out conts)) {
 					if (!pac.GenreKey.HasValue || this.genre.GenreKey != pac.GenreKey) {
 						this.IgnoreException(new CrawlException(string.Format("<{0}> 他ジャンルにより無視．", GConvert.ToPackageId(pacKey))));
 						this.pacsFailed.Add(pacKey);
@@ -334,7 +334,7 @@ namespace Yusen.GExplorer.AppCore {
 					this.ReportProgressInPhase(100 * numerator / denominator, string.Format("{0}/{1} {2}", numerator, denominator, GConvert.ToContentId(contKey)));
 				}
 				GContentClass cont;
-				if (this.cm.TryFindContentOrTryFetchContent(contKey, out cont)) {
+				if (this.cc.TryFindContentOrTryFetchContent(contKey, out cont)) {
 					if (!cont.GenreKey.HasValue || this.genre.GenreKey != cont.GenreKey.Value) {
 						this.IgnoreException(new CrawlException(string.Format("<{0}> 他ジャンルにより無視．", GConvert.ToContentId(contKey))));
 						this.contsFailed.Add(contKey);
@@ -347,7 +347,7 @@ namespace Yusen.GExplorer.AppCore {
 						} else {
 							GPackageClass pac;
 							List<GContentClass> conts;
-							if (this.cm.TryFetchPackage(pacKey, out pac, out conts)) {
+							if (this.cc.TryFetchPackage(pacKey, out pac, out conts)) {
 								this.pacsSuccess.Add(pacKey, pac);
 								foreach (GContentClass contInPac in conts) {
 									this.contsSuccess.Add(contInPac.ContentKey, contInPac);

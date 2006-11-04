@@ -179,7 +179,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 			if (base.DesignMode) return;
 
 			this.cnodeGGenre = new CategoryNodeItem<GenreNodeItem>("GyaOのジャンル");
-			foreach (GGenreClass genre in Program.CacheManager.GetEnumerableOfAllGenres()) {
+			foreach (GGenreClass genre in Program.CacheController.GetEnumerableOfAllGenres()) {
 				this.cnodeGGenre.AddChildNode(new GenreNodeItem(genre));
 			}
 			this.cnodeVGenre = new CategoryNodeItem<VirtualNodeItem>("仮想ジャンル");

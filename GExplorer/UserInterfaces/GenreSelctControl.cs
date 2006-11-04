@@ -161,7 +161,10 @@ namespace Yusen.GExplorer.UserInterfaces {
 			VGenreTabPage vgtp = gtp as VGenreTabPage;
 			if (null != ggtp) {
 				CrawlResult result;
-				Program.CacheManager.TryDeserializeCrawlResult(ggtp.Genre, out result);
+				Program.CacheController.TryDeserializeCrawlResult(ggtp.Genre, out result);
+				if (null == result) {
+					this.StatusMessage = "選択したジャンルはまだクロールされていません．タブをダブルクリックするとクロールを開始します．";
+				}
 				this.SelectedCrawlResult = result;
 				return;
 			} else if (null != vgtp) {
@@ -345,7 +348,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 				return;
 			}
 			CrawlResult prevResult;
-			Program.CacheManager.TryDeserializeCrawlResult(ggtp.Genre, out prevResult);
+			Program.CacheController.TryDeserializeCrawlResult(ggtp.Genre, out prevResult);
 			this.lastRequest = new CrawlRequestObject(ggtp.Genre, prevResult);
 			this.bwCrawl.RunWorkerAsync();
 		}
@@ -354,7 +357,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 			if (null == req) throw new InvalidOperationException();
 
 			this.InvokeOnCrawlStarted();
-			e.Result = new GenreCrawler(req.Genre, req.PreviousCrawlResult, Program.RootOptions.CrawlOptions, Program.CacheManager, this.bwCrawl).GetResult();
+			e.Result = new GenreCrawler(req.Genre, req.PreviousCrawlResult, Program.RootOptions.CrawlOptions, Program.CacheController, this.bwCrawl).GetResult();
 			if (null == e.Result) {
 				e.Cancel = true;
 			}
@@ -378,7 +381,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 			}
 			
 			CrawlResult result = e.Result as CrawlResult;
-			Program.CacheManager.SerializeCrawlResult(this.lastRequest.Genre, result);
+			Program.CacheController.SerializeCrawlResult(this.lastRequest.Genre, result);
 			
 			this.BeginUpdateGenreTabs();
 			if (this.AddTabIfNotExists(this.lastRequest.Genre)) {
@@ -517,10 +520,8 @@ namespace Yusen.GExplorer.UserInterfaces {
 		public string StatusMessage {
 			get { return this.statusMessage; }
 			private set {
-				if (this.statusMessage != value) {
-					this.statusMessage = value;
-					this.OnStatusMessageChanged();
-				}
+				this.statusMessage = value;
+				this.OnStatusMessageChanged();
 			}
 		}
 		public int RequiredHeight {
@@ -555,7 +556,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 		private void tsmiAddAllGenres_Click(object sender, EventArgs e) {
 			bool isSelected = this.tabcGsc.SelectedIndex >= 0;
 			this.BeginUpdateGenreTabs();
-			foreach (GGenreClass genre in Program.CacheManager.GetEnumerableOfAllGenres()) {
+			foreach (GGenreClass genre in Program.CacheController.GetEnumerableOfAllGenres()) {
 				this.AddTabIfNotExists(genre);
 			}
 			if (!isSelected) this.tabcGsc.SelectedIndex = -1;
@@ -671,7 +672,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 			} else {
 				if (options.RestoreOpenTabs) {
 					Dictionary<int, GGenreClass> genres = new Dictionary<int, GGenreClass>();
-					foreach (GGenreClass genre in Program.CacheManager.GetEnumerableOfAllGenres()) {
+					foreach (GGenreClass genre in Program.CacheController.GetEnumerableOfAllGenres()) {
 						genres.Add(genre.GenreKey, genre);
 					}
 					this.BeginUpdateGenreTabs();

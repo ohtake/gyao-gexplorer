@@ -18,10 +18,10 @@ namespace Yusen.GExplorer.UserInterfaces {
 			if (Program.RootOptions == null) return;
 			Program.RootOptions.CacheViewerFormOptions.ApplyFormBaseOptionsAndTrackValues(this);
 
-			if (Program.CacheManager == null) return;
-			this.dgvContent.DataSource = Program.CacheManager.GDataSet.GContent;
-			this.dgvPackage.DataSource = Program.CacheManager.GDataSet.GPackage;
-			this.dgcGenre.DataSource = Program.CacheManager.GDataSet.GGenre;
+			if (Program.CacheController == null) return;
+			this.dgvContent.DataSource = Program.CacheController.GDataSet.GContent;
+			this.dgvPackage.DataSource = Program.CacheController.GDataSet.GPackage;
+			this.dgcGenre.DataSource = Program.CacheController.GDataSet.GGenre;
 		}
 	}
 	

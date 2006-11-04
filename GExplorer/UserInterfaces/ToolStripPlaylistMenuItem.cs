@@ -73,6 +73,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 					ToolStripTextBox tstb = sender as ToolStripTextBox;
 					Playlist pl = Program.PlaylistsManager.CreatePlaylistNamedAs(tstb.Text);
 					this.OnPlaylistSelected(pl);
+					e.Handled = true;
 					tstb.PerformClick();
 					tstb.Text = ToolStripPlaylistMenuItem.NewPlaylistName;
 					break;

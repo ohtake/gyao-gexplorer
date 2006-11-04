@@ -9,7 +9,7 @@ using System.Drawing;
 
 namespace Yusen.GExplorer.Utilities {
 	sealed class BackgroundImageLoader : IDisposable{
-		private readonly Queue<BackgroundImageLoadTask> queue = new Queue<BackgroundImageLoadTask>();
+		private readonly Stack<BackgroundImageLoadTask> stack = new Stack<BackgroundImageLoadTask>();
 		private readonly object workLock = new object();
 		private volatile bool working = false;
 		private volatile bool disposed = false;
@@ -23,23 +23,23 @@ namespace Yusen.GExplorer.Utilities {
 			this.intervalMilliseconds = intervalMilliseconds;
 		}
 		
-		public void EnqueueTask(BackgroundImageLoadTask task) {
+		public void PushTask(BackgroundImageLoadTask task) {
 			if (this.disposed) throw new InvalidOperationException();
-			lock (this.queue) {
-				this.queue.Enqueue(task);
+			lock (this.stack) {
+				this.stack.Push(task);
 				this.autoResetEvent.Set();
 			}
 		}
 		public void ClearTasks() {
 			if (this.disposed) throw new InvalidOperationException();
-			lock (this.queue) {
-				this.queue.Clear();
+			lock (this.stack) {
+				this.stack.Clear();
 			}
 		}
-		public int QueueLength {
+		public int StackLength {
 			get {
-				lock (this.queue) {
-					return this.queue.Count;
+				lock (this.stack) {
+					return this.stack.Count;
 				}
 			}
 		}
@@ -48,9 +48,9 @@ namespace Yusen.GExplorer.Utilities {
 			while (true) {
 				if (!this.IsWorking) return;
 				BackgroundImageLoadTask task = null;
-				lock (this.queue) {
-					if (this.queue.Count > 0) {
-						task = this.queue.Dequeue();
+				lock (this.stack) {
+					if (this.stack.Count > 0) {
+						task = this.stack.Pop();
 					}
 				}
 				if (null == task) {
@@ -122,21 +122,26 @@ namespace Yusen.GExplorer.Utilities {
 	sealed class BackgroundImageLoadTask {
 		private Uri uri;
 		private BackgroundImageLoadCompletedCallback callback;
+		private object userState;
 		
-		public BackgroundImageLoadTask(Uri uri, BackgroundImageLoadCompletedCallback callback) {
+		public BackgroundImageLoadTask(Uri uri, BackgroundImageLoadCompletedCallback callback, object userState) {
 			this.uri = uri;
 			this.callback = callback;
+			this.userState = userState;
 		}
 		public Uri Uri {
 			get { return this.uri; }
 		}
+		public Object UserState {
+			get { return this.userState; }
+		}
 		public bool InvokeCallback(Image img) {
-			return this.callback(img);
+			return this.callback(img, this.userState);
 		}
 	}
 	
 	/// <summary></summary>
 	/// <param name="img">読み込んだ画像</param>
 	/// <returns>引数の画像を受け取るのならばtrue</returns>
-	delegate bool BackgroundImageLoadCompletedCallback(Image img);
+	delegate bool BackgroundImageLoadCompletedCallback(Image img, object userState);
 }

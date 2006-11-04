@@ -70,12 +70,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppCore\ContentClassificationRule.cs" />
     <Compile Include="AppCore\ExternalCommand.cs" />
     <Compile Include="AppCore\VirtualGenres.cs" />
-    <Compile Include="OldCrawler\CrawlResult.cs" />
-    <Compile Include="OldCrawler\GContent.cs" />
-    <Compile Include="OldCrawler\GGenre.cs" />
-    <Compile Include="OldCrawler\GPackage.cs" />
+    <Compile Include="OldApp\GContent.cs" />
     <Compile Include="UserInterfaces\BindingContract.cs" />
     <Compile Include="AppCore\PlaylistsManager.cs" />
     <Compile Include="UserInterfaces\BitrateForm.cs">
@@ -89,6 +87,12 @@
     </Compile>
     <Compile Include="UserInterfaces\BrowserForm.designer.cs">
       <DependentUpon>BrowserForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserInterfaces\CrawlResultView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserInterfaces\CrawlResultView.Designer.cs">
+      <DependentUpon>CrawlResultView.cs</DependentUpon>
     </Compile>
     <Compile Include="UserInterfaces\CPClipboardUtility.cs" />
     <Compile Include="UserInterfaces\ToolStripExternalCommandMenuItem.cs">
@@ -161,7 +165,7 @@
     <Compile Include="UserInterfaces\AboutBox.Designer.cs">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </Compile>
-    <Compile Include="AppCore\CacheManager.cs" />
+    <Compile Include="AppCore\CacheController.cs" />
     <Compile Include="AppCore\GenreCrawler.cs" />
     <Compile Include="UserInterfaces\BaseForm.cs">
       <SubType>Form</SubType>
@@ -200,12 +204,6 @@
     <Compile Include="UserInterfaces\DetailView.Designer.cs">
       <DependentUpon>DetailView.cs</DependentUpon>
     </Compile>
-    <Compile Include="UserInterfaces\DoubleBufferedListBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="UserInterfaces\DoubleBufferedListBox.Designer.cs">
-      <DependentUpon>DoubleBufferedListBox.cs</DependentUpon>
-    </Compile>
     <Compile Include="UserInterfaces\EasterEggControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -237,12 +235,6 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="OldApp\ItemsManagerBase.cs" />
-    <Compile Include="OldApp\OldMainForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="OldApp\OldMainForm.Designer.cs">
-      <DependentUpon>OldMainForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="SubOptionsAttribute.cs" />
     <Compile Include="UserInterfaces\MainForm.cs">
       <SubType>Form</SubType>
@@ -285,6 +277,10 @@
       <DependentUpon>BrowserForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="UserInterfaces\CrawlResultView.resx">
+      <DependentUpon>CrawlResultView.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="UserInterfaces\DetailView.resx">
       <SubType>Designer</SubType>
       <DependentUpon>DetailView.cs</DependentUpon>
@@ -313,10 +309,6 @@
       <DependentUpon>InputBoxForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="OldApp\OldMainForm.resx">
-      <DependentUpon>OldMainForm.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="OldApp\NgFavContentsEditor.resx">
       <DependentUpon>NgFavContentsEditor.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -324,10 +316,6 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="OldApp\OldCrawlResultView.resx">
-      <DependentUpon>OldCrawlResultView.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="UserInterfaces\MainForm.resx">
@@ -366,10 +354,6 @@
       <SubType>Designer</SubType>
       <DependentUpon>CacheViewerForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UserInterfaces\CrawlResultView.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>CrawlResultView.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="UserInterfaces\ExternalCommandsEditor.resx">
       <DependentUpon>ExternalCommandsEditor.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -392,12 +376,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="OldApp\OldCrawlResultView.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="OldApp\OldCrawlResultView.Designer.cs">
-      <DependentUpon>OldCrawlResultView.cs</DependentUpon>
-    </Compile>
     <Compile Include="RootOptions.cs" />
     <Compile Include="Utilities\ScreenSaveListener.cs" />
     <Compile Include="UserInterfaces\SplashForm.cs">
@@ -407,9 +385,6 @@
       <DependentUpon>SplashForm.cs</DependentUpon>
     </Compile>
     <Compile Include="UserInterfaces\ToolStripPlayModeDropDownButton.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="OldApp\ToolStripContentVisibilitiesSelector.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="UserInterfaces\ToolStripHelpMenuItem.cs">
@@ -423,12 +398,6 @@
     </Compile>
     <Compile Include="UserInterfaces\CacheViewerForm.Designer.cs">
       <DependentUpon>CacheViewerForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UserInterfaces\CrawlResultView.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UserInterfaces\CrawlResultView.Designer.cs">
-      <DependentUpon>CrawlResultView.cs</DependentUpon>
     </Compile>
     <Compile Include="UserInterfaces\DoubleBufferedListView.cs">
       <SubType>Component</SubType>
@@ -456,6 +425,8 @@
     <Content Include="ReadMe.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\SearchInFolder.bmp" />
+    <None Include="Resources\Offline.bmp" />
     <None Include="GyaoModel\GDataSet.xsc">
       <DependentUpon>GDataSet.xsd</DependentUpon>
     </None>
@@ -467,7 +438,6 @@
     <None Include="GyaoModel\GDataSet.xss">
       <DependentUpon>GDataSet.xsd</DependentUpon>
     </None>
-    <None Include="Resources\AutoFilter.bmp" />
     <None Include="Resources\BuilderDialog_movedown.bmp" />
     <None Include="Resources\BuilderDialog_moveup.bmp" />
     <None Include="Resources\Warning.bmp" />
@@ -480,9 +450,7 @@
     <None Include="Resources\stop.bmp" />
     <None Include="Resources\Restart.bmp" />
     <None Include="Resources\help.bmp" />
-    <None Include="Resources\SearchInFolder.bmp" />
     <None Include="Resources\Play.bmp" />
-    <None Include="Resources\Comment.bmp" />
     <None Include="Resources\BuilderDialog_add.bmp" />
     <None Include="Resources\PrintPreview.bmp" />
     <None Include="Resources\Print.bmp" />

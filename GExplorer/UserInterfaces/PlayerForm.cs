@@ -487,7 +487,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 				} else {
 					this.PlayContent(null, this.currentPlaylist);
 				}
-			}else if (curIdx == 0) {
+			}else if (curIdx > 0) {
 				this.PlayContent(this.currentPlaylist[curIdx - 1], this.currentPlaylist);
 			} else {
 				this.PlayContent(null, this.currentPlaylist);

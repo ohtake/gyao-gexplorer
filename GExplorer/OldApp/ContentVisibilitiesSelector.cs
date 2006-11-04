@@ -12,10 +12,10 @@ namespace Yusen.GExplorer.OldApp {
 		private Dictionary<RadioButton, ContentVisibilities> dicCustomRV = new Dictionary<RadioButton, ContentVisibilities>();
 		private Dictionary<ContentVisibilities, RadioButton> dicPresetVR = new Dictionary<ContentVisibilities, RadioButton>();
 		private Dictionary<ContentVisibilities, RadioButton> dicCustomVR = new Dictionary<ContentVisibilities, RadioButton>();
-
+		
 		public event EventHandler ContentVisibilitiesChanged;
 		public event EventHandler CloseClick;
-
+		
 		private ContentVisibilities contentVisibilities = ContentVisibilities.None;
 		private volatile bool updating = false;
 		private readonly object updateLock = new object();

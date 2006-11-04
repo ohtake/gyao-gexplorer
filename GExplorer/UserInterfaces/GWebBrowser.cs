@@ -158,7 +158,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 				this.ttId.ToolTipTitle = GConvert.ToPackageId(key);
 				string tipText;
 				GPackageClass package;
-				if (Program.CacheManager.TryFindPackage(key, out package)) {
+				if (Program.CacheController.TryFindPackage(key, out package)) {
 					tipText = package.PackageTitle + Environment.NewLine
 						+ package.PackageCatch;
 				} else {
@@ -197,7 +197,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 				string id = GConvert.ToContentId(key);
 				string tipText;
 				GContentClass cont;
-				if (Program.CacheManager.TryFindContent(key, out cont)) {
+				if (Program.CacheController.TryFindContent(key, out cont)) {
 					this.ttId.ToolTipTitle = id + " のキャッシュ";
 					tipText =
 						cont.Title + Environment.NewLine
@@ -250,7 +250,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 		private void tspmiAddToPlaylist_PlaylistSelected(object sender, EventArgs e) {
 			int contKey = this.dicContent[this.clickedContent];
 			GContentClass cont;
-			if (Program.CacheManager.TryFindContentOrTryFetchContent(contKey, out cont)) {
+			if (Program.CacheController.TryFindContentOrTryFetchContent(contKey, out cont)) {
 				this.tspmiAddToPlaylist.LastSelectedPlaylist.AddContent(cont);
 			} else {
 				MessageBox.Show(string.Format("{0}のキャッシュを持っておらず，なおかつ{0}の詳細ページからも情報を取得できなかった．", GConvert.ToContentId(contKey)), "コンテンツの取得エラー", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -259,7 +259,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 		private void tsmiContentPlayWithoutAdding_Click(object sender, EventArgs e) {
 			int contKey = this.dicContent[this.clickedContent];
 			GContentClass cont;
-			if (Program.CacheManager.TryFindContentOrTryFetchContent(contKey, out cont)) {
+			if (Program.CacheController.TryFindContentOrTryFetchContent(contKey, out cont)) {
 				Program.PlayContent(cont, null);
 			} else {
 				MessageBox.Show(string.Format("{0}のキャッシュを持っておらず，なおかつ{0}の詳細ページからも情報を取得できなかった．", GConvert.ToContentId(contKey)), "コンテンツの取得エラー", MessageBoxButtons.OK, MessageBoxIcon.Error);

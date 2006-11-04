@@ -10,7 +10,7 @@ using System.Runtime.Serialization;
 using Yusen.GExplorer.Utilities;
 using Yusen.GExplorer.GyaoModel;
 
-namespace Yusen.GExplorer.OldCrawler {
+namespace Yusen.GExplorer.OldApp {
 	[Serializable]
 	public class GContent {
 		private int contentKey;
