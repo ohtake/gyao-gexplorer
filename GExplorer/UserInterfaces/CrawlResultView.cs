@@ -40,15 +40,20 @@ namespace Yusen.GExplorer.UserInterfaces {
 		private sealed class ContentListViewItem : ListViewItem {
 			private readonly GContentClass cont;
 			private readonly ContentStyle style;
+			private readonly ListViewGroup packageGroup;
 			private bool imageRequestedAlready = false;
 			private bool newFlag = false;
 			private bool modifiedFlag = false;
 			private bool filterFlag = false;
-			
-			public ContentListViewItem(GContentClass cont, ContentStyle style)
+			private bool isNg = false;
+			private bool isFav = false;
+
+			public ContentListViewItem(GContentClass cont, ContentStyle style, ListViewGroup group)
 				: base(new string[] { cont.ContentId , cont.Title, cont.SeriesNumber, cont.Subtitle, cont.DurationValue.ToString(), cont.DeadlineValue.ToString(), cont.SummaryText}) {
 				this.cont = cont;
 				this.style = style;
+				this.Group = group;
+				this.packageGroup = group;
 			}
 			public GContentClass Content {
 				get { return this.cont; }
@@ -83,10 +88,28 @@ namespace Yusen.GExplorer.UserInterfaces {
 					this.BackColor = SystemColors.Window;
 				}
 			}
+			public bool IsNg {
+				get { return this.isNg; }
+			}
+			public bool IsFav {
+				get { return this.isFav; }
+			}
+			public void SetNgFavFlag(bool isNg, bool isFav) {
+				if (this.isNg == isNg && this.isFav == isFav) return;
+				this.isNg = isNg;
+				this.isFav = isFav;
+				FontStyle fs = FontStyle.Regular;
+				if(this.isNg) fs |= FontStyle.Strikeout;
+				if(this.isFav) fs |= FontStyle.Underline;
+				base.Font = new Font(base.Font, fs);
+			}
+			public ListViewGroup PackageGroup {
+				get { return this.packageGroup; }
+			}
 		}
 		private sealed class ContentStyle {
 			private Color colorNew = Color.Red;
-			private Color colorModified = Color.Orange;
+			private Color colorModified = Color.DarkOrange;
 			private Color colorFilter = Color.LemonChiffon;
 
 			public Color ColorNew {
@@ -142,17 +165,21 @@ namespace Yusen.GExplorer.UserInterfaces {
 		};
 		public event PropertyChangedEventHandler PropertyChanged;
 		public event EventHandler LastSelectedContentChanged;
+		public event EventHandler LastSelectingPlaylistChanged;
 		
 		private CrawlResult result;
 		private List<ListViewGroup> allGroups = new List<ListViewGroup>();
 		private List<ContentListViewItem> allClvi = new List<ContentListViewItem>();
 		
 		private GContentClass lastSelectedContent;
+		private Playlist lastSelectingPlaylist;
 		private FilterFlagComparer comparerF;
 		private StackableComparisonsComparer<ContentListViewItem> comparerS;
-
-		private ContentStyle style = new ContentStyle();
+		
+		private ContentVisibilities contentVisibilities = ContentVisibilities.PresetToumei;
 		private CrawlResultViewView crvView = CrawlResultViewView.Details;
+		private ContentStyle style = new ContentStyle();
+		private bool groupingAtTheBegining = true;
 		private Migemo migemo;
 		private CrawlResultViewFilterType filterType = CrawlResultViewFilterType.Normal;
 		private bool incrementalFilterEnabled = true;
@@ -236,8 +263,14 @@ namespace Yusen.GExplorer.UserInterfaces {
 				this.tsmiFilterTypeMigemo.Enabled = false;
 				this.tsbFilterTypeMigemo.Enabled = false;
 			}
-		}
 
+			if (Program.ContentClassificationRulesManager == null) return;
+			Program.ContentClassificationRulesManager.ContentCllasificationRulesManagerChanged += new EventHandler(ContentClassificationRulesManager_ContentCllasificationRulesManagerChanged);
+			this.Disposed += delegate {
+				Program.ContentClassificationRulesManager.ContentCllasificationRulesManagerChanged -= new EventHandler(ContentClassificationRulesManager_ContentCllasificationRulesManagerChanged);
+			};
+		}
+		
 		private void OnPropertyChanged(string propertyName) {
 			PropertyChangedEventHandler handler = this.PropertyChanged;
 			if (null != handler) {
@@ -250,7 +283,13 @@ namespace Yusen.GExplorer.UserInterfaces {
 				handler(this, EventArgs.Empty);
 			}
 		}
-
+		private void OnLastSelectingPlaylistChanged() {
+			EventHandler handler = this.LastSelectingPlaylistChanged;
+			if (null != handler) {
+				handler(this, EventArgs.Empty);
+			}
+		}
+		
 		#region 表示を行う箇所
 		public void ViewCrawlResult(CrawlResult result) {
 			if (null == result) {
@@ -267,7 +306,8 @@ namespace Yusen.GExplorer.UserInterfaces {
 			this.MakeupToolbar();
 			this.MakeupItems();
 			this.ApplyContentStyle();
-			this.AddGroups();
+			this.ApplyNgFavFlags();
+			if(this.GroupingAtTheBegining) this.AddGroups();
 			this.DisplayItems();
 			
 			this.lvResult.EndUpdate();
@@ -301,13 +341,12 @@ namespace Yusen.GExplorer.UserInterfaces {
 			this.tsddbPages.Enabled = false;
 			this.tsddbErrors.Enabled = false;
 			this.tsddbOffline.Enabled = false;
-
+			
 			this.tstbFilter.Text = string.Empty;
-
+			
 			this.ChangeEnabilityOfMenuItems();
 		}
 		private void MakeupToolbar() {
-			this.tslCount.Text = string.Format("全{0} 新{1}", result.Contents.Count, result.SortedCKeysNew.Count + result.SortedCKeysModified.Count);
 			this.tslTime.Text = result.Time.ToString("MM/dd ddd HH:mm");
 
 			if (0 < (result.VisitedPages.Count + result.NotVisitedPages.Count)) {
@@ -326,8 +365,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 		private void MakeupItems() {
 			SortedDictionary<int, ListViewGroup> dicGroups = new SortedDictionary<int, ListViewGroup>();
 			foreach (GContentClass cont in this.result.Contents) {
-				ContentListViewItem clvi = new ContentListViewItem(cont, this.style);
-				ListViewGroup group;
+				ListViewGroup group = null;
 				GPackageClass pac = cont.ParentPackage;
 				if (pac != null) {
 					if (dicGroups.TryGetValue(pac.PackageKey, out group)) {
@@ -336,8 +374,8 @@ namespace Yusen.GExplorer.UserInterfaces {
 						dicGroups.Add(pac.PackageKey, group);
 						this.allGroups.Add(group);
 					}
-					clvi.Group = group;
 				}
+				ContentListViewItem clvi = new ContentListViewItem(cont, this.style, group);
 				if (result.SortedCKeysNew.BinarySearch(cont.ContentKey) >= 0) {
 					clvi.NewFlag = true;
 				} else if (result.SortedCKeysModified.BinarySearch(cont.ContentKey) >= 0) {
@@ -353,17 +391,55 @@ namespace Yusen.GExplorer.UserInterfaces {
 			}
 			this.lvResult.EndUpdate();
 		}
+		private void ApplyNgFavFlags() {
+			this.lvResult.BeginUpdate();
+			foreach (ContentListViewItem clvi in this.allClvi) {
+				string[] dests = Program.ContentClassificationRulesManager.GetDestinationsFor(clvi.Content);
+				bool isNg = false;
+				bool isFav = false;
+				foreach (string dest in dests) {
+					if (string.IsNullOrEmpty(dest)) {
+						isNg = true;
+					} else {
+						isFav = true;
+					}
+				}
+				clvi.SetNgFavFlag(isNg, isFav);
+			}
+			this.lvResult.EndUpdate();
+		}
 		private void AddGroups() {
 			this.lvResult.Groups.AddRange(this.allGroups.ToArray());
 		}
 		private void DisplayItems() {
-			List<ListViewItem> lvis = new List<ListViewItem>();
-			foreach (ContentListViewItem clvi in this.allClvi) {
-				lvis.Add(clvi);
-			}
 			this.lvResult.BeginUpdate();
 			this.lvResult.Items.Clear();
+			
+			ContentVisibilities vis = this.ContentVisibilities;
+			bool showNgTrue = (vis & ContentVisibilities.NgTrue) != ContentVisibilities.None;
+			bool showNgFalse = (vis & ContentVisibilities.NgFalse) != ContentVisibilities.None;
+			bool showFavTrue = (vis & ContentVisibilities.FavTrue) != ContentVisibilities.None;
+			bool showFavFalse = (vis & ContentVisibilities.FavFalse) != ContentVisibilities.None;
+			bool showNewTrue = (vis & ContentVisibilities.NewTrue) != ContentVisibilities.None;
+			bool showNewFalse = (vis & ContentVisibilities.NewFalse) != ContentVisibilities.None;
+			List<ListViewItem> lvis = new List<ListViewItem>();
+			foreach (ContentListViewItem clvi in this.allClvi) {
+				if ((clvi.IsNg && !showNgTrue) || (!clvi.IsNg && !showNgFalse)) continue;
+				if ((clvi.IsFav && !showFavTrue) || (!clvi.IsFav && !showFavFalse)) continue;
+				if (((clvi.NewFlag || clvi.ModifiedFlag) && !showNewTrue) || (!(clvi.NewFlag || clvi.ModifiedFlag) && !showNewFalse)) continue;
+
+				clvi.Group = clvi.PackageGroup;
+				lvis.Add(clvi);
+			}
 			this.lvResult.Items.AddRange(lvis.ToArray());
+			this.lvResult.EndUpdate();
+			
+			this.tslCount.Text = string.Format("{0}/{1}", lvis.Count, this.allClvi.Count);
+		}
+		private void ContentClassificationRulesManager_ContentCllasificationRulesManagerChanged(object sender, EventArgs e) {
+			this.lvResult.BeginUpdate();
+			this.ApplyNgFavFlags();
+			this.DisplayItems();
 			this.lvResult.EndUpdate();
 		}
 		#endregion
@@ -378,6 +454,21 @@ namespace Yusen.GExplorer.UserInterfaces {
 					this.tscbDestPlaylistName.Text = this.inputBoxDialog1.Input;
 					break;
 			}
+		}
+		private void tsmiVisibilitiesToumei_Click(object sender, EventArgs e) {
+			this.ContentVisibilities = ContentVisibilities.PresetToumei;
+		}
+		private void tsmiVisibilitiesSabori_Click(object sender, EventArgs e) {
+			this.ContentVisibilities = ContentVisibilities.PresetSabori;
+		}
+		private void tsmiVisibilitiesHakidame_Click(object sender, EventArgs e) {
+			this.ContentVisibilities = ContentVisibilities.PresetHakidame;
+		}
+		private void tsmiVisibilitiesYorigonomi_Click(object sender, EventArgs e) {
+			this.ContentVisibilities = ContentVisibilities.PresetYorigonomi;
+		}
+		private void tsmiVisibilitiesShinchaku_Click(object sender, EventArgs e) {
+			this.ContentVisibilities = ContentVisibilities.PresetShinchaku;
 		}
 		private void tsmiViewDetails_Click(object sender, EventArgs e) {
 			this.CrvView = CrawlResultViewView.Details;
@@ -402,19 +493,11 @@ namespace Yusen.GExplorer.UserInterfaces {
 		}
 		private void tsmiAddToThePlaylist_Click(object sender, EventArgs e) {
 			Playlist pl = Program.PlaylistsManager.GetOrCreatePlaylistNamedAs(this.DestinationPlaylistName);
-			pl.BeginUpdate();
-			foreach (GContentClass cont in this.GetSelectedContents()) {
-				pl.AddContent(cont);
-			}
-			pl.EndUpdate();
+			this.AddToPlaylistHelper(pl, this.GetSelectedContents());
 		}
 		private void tspmiAddToAnotherPlaylist_PlaylistSelected(object sender, EventArgs e) {
 			Playlist pl = (sender as ToolStripPlaylistMenuItem).LastSelectedPlaylist;
-			pl.BeginUpdate();
-			foreach (GContentClass cont in this.GetSelectedContents()) {
-				pl.AddContent(cont);
-			}
-			pl.EndUpdate();
+			this.AddToPlaylistHelper(pl, this.GetSelectedContents());
 		}
 		private void tsmiPlay_Click(object sender, EventArgs e) {
 			GContentClass[] conts = this.GetSelectedContents();
@@ -431,6 +514,10 @@ namespace Yusen.GExplorer.UserInterfaces {
 		}
 		private void tscpmiCopyOtherProperties_PropertySelected(object sender, EventArgs e) {
 			CPClipboardUtility.CopyContentProperties(this.GetSelectedContents(), (sender as ToolStripContentPropertyMenuItem).LastSelectedPropertyInfo);
+		}
+		private void tscrmiRules_SubmenuSelected(object sender, EventArgs e) {
+			ToolStripClassificationRuleMenuItem tscrmi = sender as ToolStripClassificationRuleMenuItem;
+			tscrmi.LastSelectedAction(this.GetSelectedContents());
 		}
 		private void tsecmiCommand_ExternalCommandSelected(object sender, EventArgs e) {
 			ExternalCommand ec = (sender as ToolStripExternalCommandMenuItem).LastSelectedExternalCommand;
@@ -458,6 +545,9 @@ namespace Yusen.GExplorer.UserInterfaces {
 		}
 		private void tscpmiCmsCopyOtherProperties_PropertySelected(object sender, EventArgs e) {
 			this.tscpmiCopyOtherProperties_PropertySelected(sender, e);
+		}
+		private void tscrmiCmsRules_SubmenuSelected(object sender, EventArgs e) {
+			this.tscrmiRules_SubmenuSelected(sender, e);
 		}
 		private void tsecmiCmsCommand_ExternalCommandSelected(object sender, EventArgs e) {
 			this.tsecmiCommand_ExternalCommandSelected(sender, e);
@@ -517,6 +607,31 @@ namespace Yusen.GExplorer.UserInterfaces {
 				}
 				this.tsddbOffline.DropDownItems.AddRange(items.ToArray());
 			}
+		}
+		private void tscvsTVisibilities_ContentVisibilitiesChanged(object sender, EventArgs e) {
+			this.ContentVisibilities = this.tscvsTVisibilities.ContentVisibilities;
+		}
+		private void tssbView_ButtonClick(object sender, EventArgs e) {
+			switch (this.CrvView) {
+				case CrawlResultViewView.Details:
+					this.CrvView = CrawlResultViewView.Tile;
+					break;
+				case CrawlResultViewView.Tile:
+					this.CrvView = CrawlResultViewView.Icon;
+					break;
+				case CrawlResultViewView.Icon:
+					this.CrvView = CrawlResultViewView.Details;
+					break;
+			}
+		}
+		private void tsmiTViewDetails_Click(object sender, EventArgs e) {
+			this.CrvView = CrawlResultViewView.Details;
+		}
+		private void tsmiTViewTile_Click(object sender, EventArgs e) {
+			this.CrvView = CrawlResultViewView.Tile;
+		}
+		private void tsmiTViewIcon_Click(object sender, EventArgs e) {
+			this.CrvView = CrawlResultViewView.Icon;
 		}
 		private void tscbDestPlaylistName_TextChanged(object sender, EventArgs e) {
 			this.OnPropertyChanged("DestinationPlaylistName");
@@ -632,7 +747,15 @@ namespace Yusen.GExplorer.UserInterfaces {
 			e.DrawDefault = true;
 		}
 		#endregion
-		
+
+		private void AddToPlaylistHelper(Playlist playlist, GContentClass[] conts) {
+			this.LastSelectingPlaylist = playlist;
+			playlist.BeginUpdate();
+			foreach (GContentClass cont in conts) {
+				playlist.AddContent(cont);
+			}
+			playlist.EndUpdate();
+		}
 		private bool BackgroundImageLoadCompletedCallback(Image image, object userState) {
 			if (this.InvokeRequired) {
 				return (bool)this.Invoke(new BackgroundImageLoadCompletedCallback(this.BackgroundImageLoadCompletedCallback), image, userState);
@@ -698,10 +821,17 @@ namespace Yusen.GExplorer.UserInterfaces {
 		public GContentClass LastSelectedContent {
 			get { return this.lastSelectedContent; }
 			private set {
-				if (this.lastSelectedContent != value) {
+				//if (this.lastSelectedContent != value) {
 					this.lastSelectedContent = value;
 					this.OnLastSelectedContentChanged();
-				}
+				//}
+			}
+		}
+		public Playlist LastSelectingPlaylist {
+			get { return this.lastSelectingPlaylist; }
+			set {
+				this.lastSelectingPlaylist = value;
+				this.OnLastSelectingPlaylistChanged();
 			}
 		}
 		private void timerSelectionDelay_Tick(object sender, EventArgs e) {
@@ -833,6 +963,33 @@ namespace Yusen.GExplorer.UserInterfaces {
 			}
 		}
 		[Browsable(false)]
+		public ContentVisibilities ContentVisibilities {
+			get { return this.contentVisibilities; }
+			set {
+				value = ContentVisibilitiesUtility.SanitizeValue(value);
+				if (value != this.ContentVisibilities) {
+					this.contentVisibilities = value;
+					this.tscvsTVisibilities.ContentVisibilities = value;
+
+					this.tsmiVisibilitiesToumei.Checked = (value == ContentVisibilities.PresetToumei);
+					this.tsmiVisibilitiesSabori.Checked = (value == ContentVisibilities.PresetSabori);
+					this.tsmiVisibilitiesHakidame.Checked = (value == ContentVisibilities.PresetHakidame);
+					this.tsmiVisibilitiesYorigonomi.Checked = (value == ContentVisibilities.PresetYorigonomi);
+					this.tsmiVisibilitiesShinchaku.Checked = (value == ContentVisibilities.PresetShinchaku);
+
+					this.tsddbVisibilities.Text = ContentVisibilitiesUtility.ConvertToFlagsString(value);
+
+					if (!base.DesignMode) {
+						this.lvResult.BeginUpdate();
+						this.DisplayItems();
+						this.lvResult.EndUpdate();
+					}
+
+					this.OnPropertyChanged("ContentVisibilities");
+				}
+			}
+		}
+		[Browsable(false)]
 		public CrawlResultViewView CrvView {
 			get { return this.crvView; }
 			set {
@@ -841,18 +998,27 @@ namespace Yusen.GExplorer.UserInterfaces {
 					this.tsmiViewDetails.Checked = false;
 					this.tsmiViewTile.Checked = false;
 					this.tsmiViewIcon.Checked = false;
+					this.tsmiTViewDetails.Checked = false;
+					this.tsmiTViewTile.Checked = false;
+					this.tsmiTViewIcon.Checked = false;
 					switch (value) {
 						case CrawlResultViewView.Details:
 							this.lvResult.View = View.Details;
 							this.tsmiViewDetails.Checked = true;
+							this.tsmiTViewDetails.Checked = true;
+							this.tssbView.Text = "D";
 							break;
 						case CrawlResultViewView.Tile:
 							this.lvResult.View = View.Tile;
 							this.tsmiViewTile.Checked = true;
+							this.tsmiTViewTile.Checked = true;
+							this.tssbView.Text = "T";
 							break;
 						case CrawlResultViewView.Icon:
 							this.lvResult.View = View.LargeIcon;
 							this.tsmiViewIcon.Checked = true;
+							this.tsmiTViewIcon.Checked = true;
+							this.tssbView.Text = "I";
 							break;
 					}
 					this.OnPropertyChanged("CrvView");
@@ -885,6 +1051,11 @@ namespace Yusen.GExplorer.UserInterfaces {
 				this.OnPropertyChanged("ColorFilter");
 				this.ApplyContentStyle();
 			}
+		}
+		[Browsable(false)]
+		public bool GroupingAtTheBegining {
+			get { return this.groupingAtTheBegining; }
+			set { this.groupingAtTheBegining = value; }
 		}
 		[Browsable(false)]
 		public bool FilterBarVisible {
@@ -944,6 +1115,9 @@ namespace Yusen.GExplorer.UserInterfaces {
 			get { return this.incrementalFilterEnabled; }
 			set {
 				this.incrementalFilterEnabled = value;
+				if (value) {
+					this.ExecuteFilter();
+				}
 				this.OnPropertyChanged("IncrementalFilterEnabled");
 			}
 		}
@@ -952,6 +1126,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 			get { return this.caseInsensitiveFilter; }
 			set {
 				this.caseInsensitiveFilter = value;
+				this.ExecuteFilter();
 				this.OnPropertyChanged("CaseInsensitiveFilter");
 			}
 		}
@@ -1019,7 +1194,6 @@ namespace Yusen.GExplorer.UserInterfaces {
 		Migemo,
 		Regex,
 	}
-	
 	public enum CrawlResultViewView {
 		Details,
 		Tile,
@@ -1028,13 +1202,16 @@ namespace Yusen.GExplorer.UserInterfaces {
 
 	interface ICrawlResultViewBindingContract : IBindingContract {
 		string DestinationPlaylistName { get;set;}
-		
+
+		ContentVisibilities ContentVisibilities { get;set;}
 		CrawlResultViewView CrvView { get;set;}
 		
 		Color ColorNew { get;set;}
 		Color ColorModified { get;set;}
 		Color ColorFilter { get;set;}
-		
+
+		bool GroupingAtTheBegining { get;set;}
+
 		bool FilterBarVisible { get;set;}
 		CrawlResultViewFilterType FilterType { get;set;}
 		bool IncrementalFilterEnabled { get;set;}
@@ -1062,7 +1239,18 @@ namespace Yusen.GExplorer.UserInterfaces {
 			get { return this.destinationPlaylistName; }
 			set { this.destinationPlaylistName = value; }
 		}
-		
+
+		private ContentVisibilities contentVisibilities = ContentVisibilities.PresetToumei;
+		[Category("表示")]
+		[DisplayName("表示条件")]
+		[Description("コンテンツの表示条件を指定します．")]
+		[DefaultValue(ContentVisibilities.PresetToumei)]
+		public ContentVisibilities ContentVisibilities {
+			get { return this.contentVisibilities; }
+			set {
+				this.contentVisibilities = ContentVisibilitiesUtility.SanitizeValue(value);
+			}
+		}
 		private CrawlResultViewView crvView = CrawlResultViewView.Details;
 		[Category("表示")]
 		[DisplayName("表示形式")]
@@ -1082,11 +1270,11 @@ namespace Yusen.GExplorer.UserInterfaces {
 			get { return this.colorNew; }
 			set { this.colorNew = value; }
 		}
-		private Color colorModified = Color.Orange;
+		private Color colorModified = Color.DarkOrange;
 		[Category("表示")]
 		[DisplayName("変更の色")]
 		[Description("属性値に変更があったコンテンツの文字色を指定します．")]
-		[DefaultValue(typeof(Color), "Orange")]
+		[DefaultValue(typeof(Color), "DarkOrange")]
 		[XmlIgnore]
 		public Color ColorModified {
 			get { return this.colorModified; }
@@ -1102,7 +1290,16 @@ namespace Yusen.GExplorer.UserInterfaces {
 			get { return this.colorFilter; }
 			set { this.colorFilter = value; }
 		}
-
+		private bool groupingAtTheBegining = true;
+		[Category("表示")]
+		[DisplayName("グループ化")]
+		[Description("クロール結果を表示した直後にパッケージでグループ化します．グループ化ができるのはXP以降です．")]
+		[DefaultValue(true)]
+		public bool GroupingAtTheBegining {
+			get { return this.groupingAtTheBegining; }
+			set { this.groupingAtTheBegining = value; }
+		}
+		
 		private bool filterBarVisible = false;
 		[Category("絞込み")]
 		[DisplayName("絞込みバーを表示")]

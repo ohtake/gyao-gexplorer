@@ -1,5 +1,5 @@
 ﻿namespace Yusen.GExplorer.UserInterfaces {
-	partial class GenreSelctControl {
+	partial class GenreSelectControl {
 		/// <summary> 
 		/// Required designer variable.
 		/// </summary>

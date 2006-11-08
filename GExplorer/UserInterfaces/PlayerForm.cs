@@ -10,11 +10,11 @@ using System.Net;
 using System.IO;
 using AxWMPLib;
 using WMPLib;
-using Marshal = System.Runtime.InteropServices.Marshal;
-using DRegion = System.Drawing.Region;
 using Yusen.GExplorer.Utilities;
 using Yusen.GExplorer.GyaoModel;
 using Yusen.GExplorer.AppCore;
+using Marshal = System.Runtime.InteropServices.Marshal;
+using DRegion = System.Drawing.Region;
 
 namespace Yusen.GExplorer.UserInterfaces {
 	public sealed partial class PlayerForm : BaseForm, INotifyPropertyChanged, IPlayerFormBindingContract {
@@ -107,6 +107,10 @@ namespace Yusen.GExplorer.UserInterfaces {
 			Program.PlaylistsManager.SetCurrentContentAndPlaylist(cont, playlist);
 			
 			this.AttachToPlaylist(playlist);
+			if (null != playlist) {
+				this.playlistsView1.SelectPlaylist(playlist);
+			}
+
 			this.currentContent = cont;
 			this.currentChapter = this.options.ChapterModeFromBegining ? 1 : (int?)null;
 

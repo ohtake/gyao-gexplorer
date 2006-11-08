@@ -73,7 +73,11 @@ namespace Yusen.GExplorer.UserInterfaces {
 				}
 			}
 		}
-		
+
+		public void SelectPlaylist(Playlist playlist) {
+			this.pvcControl.SelectPlaylist(playlist);
+		}
+
 		#region IPlaylistsViewBindingContract Members
 
 		public int PlaylistCollectionWidth {

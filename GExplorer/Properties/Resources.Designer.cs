@@ -60,6 +60,13 @@ namespace Yusen.GExplorer.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap AutoFilter {
+            get {
+                object obj = ResourceManager.GetObject("AutoFilter", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap BuilderDialog_add {
             get {
                 object obj = ResourceManager.GetObject("BuilderDialog_add", resourceCulture);
@@ -259,6 +266,34 @@ namespace Yusen.GExplorer.Properties {
         internal static System.Drawing.Bitmap stop {
             get {
                 object obj = ResourceManager.GetObject("stop", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap View {
+            get {
+                object obj = ResourceManager.GetObject("View", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap ViewDetails {
+            get {
+                object obj = ResourceManager.GetObject("ViewDetails", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap ViewIcon {
+            get {
+                object obj = ResourceManager.GetObject("ViewIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap ViewTile {
+            get {
+                object obj = ResourceManager.GetObject("ViewTile", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

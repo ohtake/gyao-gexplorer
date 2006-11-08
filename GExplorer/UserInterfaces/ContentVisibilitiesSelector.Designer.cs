@@ -1,4 +1,4 @@
-﻿namespace Yusen.GExplorer.OldApp {
+﻿namespace Yusen.GExplorer.UserInterfaces {
 	partial class ContentVisibilitiesSelector {
 		/// <summary> 
 		/// Required designer variable.
@@ -37,12 +37,12 @@
 			this.radioFavTrue = new System.Windows.Forms.RadioButton();
 			this.radioFavBoth = new System.Windows.Forms.RadioButton();
 			this.radioFavFalse = new System.Windows.Forms.RadioButton();
-			this.label3 = new System.Windows.Forms.Label();
-			this.label2 = new System.Windows.Forms.Label();
-			this.label1 = new System.Windows.Forms.Label();
-			this.label4 = new System.Windows.Forms.Label();
-			this.label5 = new System.Windows.Forms.Label();
-			this.label6 = new System.Windows.Forms.Label();
+			this.lblNew = new System.Windows.Forms.Label();
+			this.lblFav = new System.Windows.Forms.Label();
+			this.lblNg = new System.Windows.Forms.Label();
+			this.lblTrue = new System.Windows.Forms.Label();
+			this.lblFalse = new System.Windows.Forms.Label();
+			this.lblDontCare = new System.Windows.Forms.Label();
 			this.panel1 = new System.Windows.Forms.Panel();
 			this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
 			this.radioNgTrue = new System.Windows.Forms.RadioButton();
@@ -180,12 +180,12 @@
 			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33334F));
 			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33334F));
 			this.tableLayoutPanel1.Controls.Add(this.panel2, 2, 1);
-			this.tableLayoutPanel1.Controls.Add(this.label3, 3, 0);
-			this.tableLayoutPanel1.Controls.Add(this.label2, 2, 0);
-			this.tableLayoutPanel1.Controls.Add(this.label1, 1, 0);
-			this.tableLayoutPanel1.Controls.Add(this.label4, 0, 1);
-			this.tableLayoutPanel1.Controls.Add(this.label5, 0, 2);
-			this.tableLayoutPanel1.Controls.Add(this.label6, 0, 3);
+			this.tableLayoutPanel1.Controls.Add(this.lblNew, 3, 0);
+			this.tableLayoutPanel1.Controls.Add(this.lblFav, 2, 0);
+			this.tableLayoutPanel1.Controls.Add(this.lblNg, 1, 0);
+			this.tableLayoutPanel1.Controls.Add(this.lblTrue, 0, 1);
+			this.tableLayoutPanel1.Controls.Add(this.lblFalse, 0, 2);
+			this.tableLayoutPanel1.Controls.Add(this.lblDontCare, 0, 3);
 			this.tableLayoutPanel1.Controls.Add(this.panel1, 1, 1);
 			this.tableLayoutPanel1.Controls.Add(this.panel3, 3, 1);
 			this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -266,65 +266,65 @@
 			this.radioFavFalse.UseVisualStyleBackColor = true;
 			this.radioFavFalse.CheckedChanged += new System.EventHandler(this.RadioButton_CheckedChanged);
 			// 
-			// label3
+			// lblNew
 			// 
-			this.label3.Anchor = System.Windows.Forms.AnchorStyles.None;
-			this.label3.AutoSize = true;
-			this.label3.Location = new System.Drawing.Point(98, 4);
-			this.label3.Name = "label3";
-			this.label3.Size = new System.Drawing.Size(27, 12);
-			this.label3.TabIndex = 2;
-			this.label3.Text = "New";
+			this.lblNew.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.lblNew.AutoSize = true;
+			this.lblNew.Location = new System.Drawing.Point(98, 4);
+			this.lblNew.Name = "lblNew";
+			this.lblNew.Size = new System.Drawing.Size(27, 12);
+			this.lblNew.TabIndex = 2;
+			this.lblNew.Text = "New";
 			// 
-			// label2
+			// lblFav
 			// 
-			this.label2.Anchor = System.Windows.Forms.AnchorStyles.None;
-			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(60, 4);
-			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(28, 12);
-			this.label2.TabIndex = 1;
-			this.label2.Text = "FAV";
+			this.lblFav.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.lblFav.AutoSize = true;
+			this.lblFav.Location = new System.Drawing.Point(60, 4);
+			this.lblFav.Name = "lblFav";
+			this.lblFav.Size = new System.Drawing.Size(28, 12);
+			this.lblFav.TabIndex = 1;
+			this.lblFav.Text = "FAV";
 			// 
-			// label1
+			// lblNg
 			// 
-			this.label1.Anchor = System.Windows.Forms.AnchorStyles.None;
-			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(27, 4);
-			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(21, 12);
-			this.label1.TabIndex = 0;
-			this.label1.Text = "NG";
+			this.lblNg.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.lblNg.AutoSize = true;
+			this.lblNg.Location = new System.Drawing.Point(27, 4);
+			this.lblNg.Name = "lblNg";
+			this.lblNg.Size = new System.Drawing.Size(21, 12);
+			this.lblNg.TabIndex = 0;
+			this.lblNg.Text = "NG";
 			// 
-			// label4
+			// lblTrue
 			// 
-			this.label4.Anchor = System.Windows.Forms.AnchorStyles.None;
-			this.label4.AutoSize = true;
-			this.label4.Location = new System.Drawing.Point(4, 25);
-			this.label4.Name = "label4";
-			this.label4.Size = new System.Drawing.Size(12, 12);
-			this.label4.TabIndex = 3;
-			this.label4.Text = "T";
+			this.lblTrue.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.lblTrue.AutoSize = true;
+			this.lblTrue.Location = new System.Drawing.Point(4, 26);
+			this.lblTrue.Name = "lblTrue";
+			this.lblTrue.Size = new System.Drawing.Size(12, 12);
+			this.lblTrue.TabIndex = 3;
+			this.lblTrue.Text = "T";
 			// 
-			// label5
+			// lblFalse
 			// 
-			this.label5.Anchor = System.Windows.Forms.AnchorStyles.None;
-			this.label5.AutoSize = true;
-			this.label5.Location = new System.Drawing.Point(4, 48);
-			this.label5.Name = "label5";
-			this.label5.Size = new System.Drawing.Size(12, 12);
-			this.label5.TabIndex = 4;
-			this.label5.Text = "F";
+			this.lblFalse.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.lblFalse.AutoSize = true;
+			this.lblFalse.Location = new System.Drawing.Point(4, 50);
+			this.lblFalse.Name = "lblFalse";
+			this.lblFalse.Size = new System.Drawing.Size(12, 12);
+			this.lblFalse.TabIndex = 4;
+			this.lblFalse.Text = "F";
 			// 
-			// label6
+			// lblDontCare
 			// 
-			this.label6.Anchor = System.Windows.Forms.AnchorStyles.None;
-			this.label6.AutoSize = true;
-			this.label6.Location = new System.Drawing.Point(4, 73);
-			this.label6.Name = "label6";
-			this.label6.Size = new System.Drawing.Size(11, 12);
-			this.label6.TabIndex = 5;
-			this.label6.Text = "*";
+			this.lblDontCare.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.lblDontCare.AutoSize = true;
+			this.lblDontCare.Location = new System.Drawing.Point(4, 74);
+			this.lblDontCare.Name = "lblDontCare";
+			this.lblDontCare.Size = new System.Drawing.Size(11, 12);
+			this.lblDontCare.TabIndex = 5;
+			this.lblDontCare.Text = "*";
 			// 
 			// panel1
 			// 
@@ -476,10 +476,10 @@
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackColor = System.Drawing.Color.Transparent;
 			this.Controls.Add(this.btnClose);
-			this.Controls.Add(this.grpCustom);
 			this.Controls.Add(this.grpPreset);
+			this.Controls.Add(this.grpCustom);
 			this.Name = "ContentVisibilitiesSelector";
-			this.Size = new System.Drawing.Size(272, 152);
+			this.Size = new System.Drawing.Size(272, 139);
 			this.grpPreset.ResumeLayout(false);
 			this.tableLayoutPanel2.ResumeLayout(false);
 			this.tableLayoutPanel2.PerformLayout();
@@ -509,12 +509,12 @@
 		private System.Windows.Forms.RadioButton radioPresetSabori;
 		private System.Windows.Forms.RadioButton radioPresetToumei;
 		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-		private System.Windows.Forms.Label label1;
-		private System.Windows.Forms.Label label2;
-		private System.Windows.Forms.Label label3;
-		private System.Windows.Forms.Label label4;
-		private System.Windows.Forms.Label label5;
-		private System.Windows.Forms.Label label6;
+		private System.Windows.Forms.Label lblNg;
+		private System.Windows.Forms.Label lblFav;
+		private System.Windows.Forms.Label lblNew;
+		private System.Windows.Forms.Label lblTrue;
+		private System.Windows.Forms.Label lblFalse;
+		private System.Windows.Forms.Label lblDontCare;
 		private System.Windows.Forms.RadioButton radioNgTrue;
 		private System.Windows.Forms.RadioButton radioFavTrue;
 		private System.Windows.Forms.RadioButton radioNewTrue;

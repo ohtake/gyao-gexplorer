@@ -73,7 +73,6 @@
     <Compile Include="AppCore\ContentClassificationRule.cs" />
     <Compile Include="AppCore\ExternalCommand.cs" />
     <Compile Include="AppCore\VirtualGenres.cs" />
-    <Compile Include="OldApp\GContent.cs" />
     <Compile Include="UserInterfaces\BindingContract.cs" />
     <Compile Include="AppCore\PlaylistsManager.cs" />
     <Compile Include="UserInterfaces\BitrateForm.cs">
@@ -88,6 +87,24 @@
     <Compile Include="UserInterfaces\BrowserForm.designer.cs">
       <DependentUpon>BrowserForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="UserInterfaces\ContentClassificationRuleEditForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UserInterfaces\ContentClassificationRuleEditForm.Designer.cs">
+      <DependentUpon>ContentClassificationRuleEditForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserInterfaces\ContentVisibilitiesSelector.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserInterfaces\ContentVisibilitiesSelector.Designer.cs">
+      <DependentUpon>ContentVisibilitiesSelector.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserInterfaces\ToolStripClassificationRuleMenuItem.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UserInterfaces\ToolStripClassificationRuleMenuItem.Designer.cs">
+      <DependentUpon>ToolStripClassificationRuleMenuItem.cs</DependentUpon>
+    </Compile>
     <Compile Include="UserInterfaces\CrawlResultView.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -95,6 +112,9 @@
       <DependentUpon>CrawlResultView.cs</DependentUpon>
     </Compile>
     <Compile Include="UserInterfaces\CPClipboardUtility.cs" />
+    <Compile Include="UserInterfaces\ToolStripContentVisibilitiesSelector.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="UserInterfaces\ToolStripExternalCommandMenuItem.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -144,11 +164,11 @@
     <Compile Include="UserInterfaces\ToolStripGenreMenuItem.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="UserInterfaces\ExternalCommandsEditor.cs">
+    <Compile Include="UserInterfaces\ExternalCommandsEditForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UserInterfaces\ExternalCommandsEditor.designer.cs">
-      <DependentUpon>ExternalCommandsEditor.cs</DependentUpon>
+    <Compile Include="UserInterfaces\ExternalCommandsEditForm.designer.cs">
+      <DependentUpon>ExternalCommandsEditForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Utilities\BackgroundImageLoader.cs" />
     <Compile Include="AppCore\CrawlResult.cs" />
@@ -178,20 +198,6 @@
     <Compile Include="GyaoModel\GConvert.cs" />
     <Compile Include="GyaoModel\GDeadline.cs" />
     <Compile Include="GyaoModel\GPackageClass.cs" />
-    <Compile Include="OldApp\ContentAdapter.cs" />
-    <Compile Include="OldApp\ContentPredicate.cs" />
-    <Compile Include="OldApp\ContentPredicatesEditControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="OldApp\ContentPredicatesEditControl.Designer.cs">
-      <DependentUpon>ContentPredicatesEditControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="OldApp\ContentVisibilitiesSelector.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="OldApp\ContentVisibilitiesSelector.Designer.cs">
-      <DependentUpon>ContentVisibilitiesSelector.cs</DependentUpon>
-    </Compile>
     <Compile Include="GyaoModel\GDataSet.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -219,11 +225,11 @@
     <Compile Include="UserInterfaces\ExceptionForm.Designer.cs">
       <DependentUpon>ExceptionForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="UserInterfaces\GenreSelctControl.cs">
+    <Compile Include="UserInterfaces\GenreSelectControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UserInterfaces\GenreSelctControl.Designer.cs">
-      <DependentUpon>GenreSelctControl.cs</DependentUpon>
+    <Compile Include="UserInterfaces\GenreSelectControl.Designer.cs">
+      <DependentUpon>GenreSelectControl.cs</DependentUpon>
     </Compile>
     <Compile Include="UserInterfaces\InputBoxForm.cs">
       <SubType>Form</SubType>
@@ -234,7 +240,6 @@
     <Compile Include="UserInterfaces\InputBoxDialog.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="OldApp\ItemsManagerBase.cs" />
     <Compile Include="SubOptionsAttribute.cs" />
     <Compile Include="UserInterfaces\MainForm.cs">
       <SubType>Form</SubType>
@@ -242,32 +247,12 @@
     <Compile Include="UserInterfaces\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="UserInterfaces\ViewSelectControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UserInterfaces\ViewSelectControl.Designer.cs">
-      <DependentUpon>ViewSelectControl.cs</DependentUpon>
-    </Compile>
     <Compile Include="Utilities\Migemo.cs" />
-    <Compile Include="OldApp\NgFavContentsEditor.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="OldApp\NgFavContentsEditor.designer.cs">
-      <DependentUpon>NgFavContentsEditor.cs</DependentUpon>
-    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="UserInterfaces\AboutBox.resx">
       <DependentUpon>AboutBox.cs</DependentUpon>
       <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="OldApp\ContentPredicatesEditControl.resx">
-      <DependentUpon>ContentPredicatesEditControl.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="OldApp\ContentVisibilitiesSelector.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>ContentVisibilitiesSelector.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UserInterfaces\BitrateForm.resx">
       <DependentUpon>BitrateForm.cs</DependentUpon>
@@ -275,6 +260,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UserInterfaces\BrowserForm.resx">
       <DependentUpon>BrowserForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserInterfaces\ContentClassificationRuleEditForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ContentClassificationRuleEditForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserInterfaces\ContentVisibilitiesSelector.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ContentVisibilitiesSelector.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserInterfaces\ToolStripClassificationRuleMenuItem.resx">
+      <DependentUpon>ToolStripClassificationRuleMenuItem.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="UserInterfaces\CrawlResultView.resx">
@@ -297,9 +294,9 @@
       <DependentUpon>BaseForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="UserInterfaces\GenreSelctControl.resx">
+    <EmbeddedResource Include="UserInterfaces\GenreSelectControl.resx">
       <SubType>Designer</SubType>
-      <DependentUpon>GenreSelctControl.cs</DependentUpon>
+      <DependentUpon>GenreSelectControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UserInterfaces\GWebBrowser.resx">
       <DependentUpon>GWebBrowser.cs</DependentUpon>
@@ -307,10 +304,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UserInterfaces\InputBoxForm.resx">
       <DependentUpon>InputBoxForm.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="OldApp\NgFavContentsEditor.resx">
-      <DependentUpon>NgFavContentsEditor.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -354,13 +347,9 @@
       <SubType>Designer</SubType>
       <DependentUpon>CacheViewerForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UserInterfaces\ExternalCommandsEditor.resx">
-      <DependentUpon>ExternalCommandsEditor.cs</DependentUpon>
+    <EmbeddedResource Include="UserInterfaces\ExternalCommandsEditForm.resx">
+      <DependentUpon>ExternalCommandsEditForm.cs</DependentUpon>
       <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UserInterfaces\ViewSelectControl.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>ViewSelectControl.cs</DependentUpon>
     </EmbeddedResource>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -405,7 +394,6 @@
     <Compile Include="UserInterfaces\DoubleBufferedListView.Designer.cs">
       <DependentUpon>DoubleBufferedListView.cs</DependentUpon>
     </Compile>
-    <Compile Include="OldApp\Utility.cs" />
     <Compile Include="Utilities\HtmlUtility.cs" />
     <Compile Include="Utilities\StackableComparisonsComparer.cs" />
     <Compile Include="Utilities\Win32WindowImpl.cs" />
@@ -425,6 +413,11 @@
     <Content Include="ReadMe.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\ViewIcon.bmp" />
+    <None Include="Resources\ViewTile.bmp" />
+    <None Include="Resources\ViewDetails.bmp" />
+    <None Include="Resources\View.bmp" />
+    <None Include="Resources\AutoFilter.bmp" />
     <None Include="Resources\SearchInFolder.bmp" />
     <None Include="Resources\Offline.bmp" />
     <None Include="GyaoModel\GDataSet.xsc">

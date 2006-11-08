@@ -277,7 +277,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 			if (ignoreCount > 0) {
 				MessageBox.Show(string.Format("{0}個のコンテンツはキャッシュがなかったため無視しました．", ignoreCount), "キャッシュなし", MessageBoxButtons.OK, MessageBoxIcon.Information);
 			}
-			Program.AddVirtualGenre(new SimpleContentsVirtualGenre(conts, "ブラウザからの書き出し", "ブラウザからの書き出し" + Environment.NewLine + this.gwbMain.Url.AbsoluteUri));
+			Program.AddVirtualGenre(new SimpleContentsVirtualGenre(conts, "ブラウザ", "ブラウザからの書き出し" + Environment.NewLine + this.gwbMain.Url.AbsoluteUri));
 		}
 		private void tsmiExtractImages_Click(object sender, EventArgs e) {
 			List<Uri> images = new List<Uri>();

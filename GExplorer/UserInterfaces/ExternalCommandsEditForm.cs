@@ -8,10 +8,10 @@ using System.Xml.Serialization;
 using Yusen.GExplorer.AppCore;
 
 namespace Yusen.GExplorer.UserInterfaces {
-	sealed partial class ExternalCommandsEditor : BaseForm {
+	sealed partial class ExternalCommandsEditForm : BaseForm {
 		private readonly Button[] btnsNeedingSelection;
 		
-		public ExternalCommandsEditor() {
+		public ExternalCommandsEditForm() {
 			InitializeComponent();
 			
 			this.btnsNeedingSelection = new Button[]{
@@ -185,6 +185,6 @@ namespace Yusen.GExplorer.UserInterfaces {
 		}
 	}
 	
-	public sealed class ExternalCommandsEditorOptions : FormOptionsBase {
+	public sealed class ExternalCommandsEditFormOptions : FormOptionsBase {
 	}
 }

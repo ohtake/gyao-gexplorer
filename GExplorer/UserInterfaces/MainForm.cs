@@ -149,11 +149,14 @@ namespace Yusen.GExplorer.UserInterfaces {
 					break;
 			}
 		}
-		private void tsmiExternalCommandsEditor_Click(object sender, EventArgs e) {
-			Program.ShowExternalCommandsEditor();
-		}
 		private void tsmiCacheViewer_Click(object sender, EventArgs e) {
 			Program.ShowCacheViewerForm();
+		}
+		private void tsmiRuleEditForm_Click(object sender, EventArgs e) {
+			Program.ShowContentClassificationRuleEditForm();
+		}
+		private void tsmiExternalCommandsEditor_Click(object sender, EventArgs e) {
+			Program.ShowExternalCommandsEditForm();
 		}
 		private void tsmiOptionsForm_Click(object sender, EventArgs e) {
 			Program.ShowOptionsForm();
@@ -220,6 +223,11 @@ namespace Yusen.GExplorer.UserInterfaces {
 		private void detailView1_StatusMessageChanged(object sender, EventArgs e) {
 			this.SetTemporalStatusMessage(this.detailView1.StatusMessage);
 		}
+
+		private void crawlResultView_LastSelectingPlaylistChanged(object sender, EventArgs e) {
+			this.playlistsView1.SelectPlaylist(this.crawlResultView.LastSelectingPlaylist);
+		}
+
 	}
 	
 	interface IMainFormBindingContract : IBindingContract {

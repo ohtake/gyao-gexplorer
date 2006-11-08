@@ -438,8 +438,12 @@ namespace Yusen.GExplorer.UserInterfaces {
 			this.tsmiCmsRearrangeToBottom.Enabled = isSelected;
 			this.tsmiCmsDelete.Enabled = isSelected;
 		}
-		
-		
+
+		public void SelectPlaylist(Playlist pl) {
+			this.OnViewPlaylistsRequested(pl);
+			this.UpdateSelectedMark();
+		}
+
 		#region IPlaylistsViewCControlBindingContract Members
 		public int ColWidthName {
 			get {

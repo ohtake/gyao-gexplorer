@@ -10,7 +10,7 @@ using System.Threading;
 using Yusen.GExplorer.Utilities;
 
 namespace Yusen.GExplorer.UserInterfaces {
-	partial class GenreSelctControl : UserControl {
+	partial class GenreSelectControl : UserControl {
 		#region タブページ派生クラス
 		private abstract class GenreTabPage : TabPage {
 			protected GenreTabPage(string text) : base(text){
@@ -107,7 +107,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 		private string statusMessage = string.Empty;
 		private int requiredHeight = -1;
 
-		public GenreSelctControl() {
+		public GenreSelectControl() {
 			InitializeComponent();
 			this.tsmiGoToPrevTab.ShortcutKeys = Keys.Control | Keys.PageUp;
 			this.tsmiGoToNextTab.ShortcutKeys = Keys.Control | Keys.PageDown;
@@ -380,6 +380,8 @@ namespace Yusen.GExplorer.UserInterfaces {
 				return;
 			}
 			
+			TimeSpan crawlTime = DateTime.Now - this.lastRequest.Created;
+			
 			CrawlResult result = e.Result as CrawlResult;
 			Program.CacheController.SerializeCrawlResult(this.lastRequest.Genre, result);
 			
@@ -395,7 +397,38 @@ namespace Yusen.GExplorer.UserInterfaces {
 				}
 			}
 			this.EndUpdateGenreTabs();
-			this.StatusMessage = string.Format("クロール完了．クロール時間: {0}", DateTime.Now - this.lastRequest.Created);
+			
+			//自動追加
+			Dictionary<string, List<GContentClass>> favConts = new Dictionary<string, List<GContentClass>>();
+			foreach (GContentClass cont in result.Contents) {
+				if (result.SortedCKeysNew.BinarySearch(cont.ContentKey) >= 0) {
+					string[] dests = Program.ContentClassificationRulesManager.GetDestinationsFor(cont);
+					foreach (string dest in dests) {
+						if (!string.IsNullOrEmpty(dest)) {
+							List<GContentClass> l;
+							if (!favConts.TryGetValue(dest, out l)) {
+								l = new List<GContentClass>();
+								favConts.Add(dest, l);
+							}
+							l.Add(cont);
+						}
+					}
+				}
+			}
+			int count = 0;
+			Program.PlaylistsManager.BeginUpdate();
+			foreach (KeyValuePair<string, List<GContentClass>> pair in favConts) {
+				Playlist pl = Program.PlaylistsManager.GetOrCreatePlaylistNamedAs(pair.Key);
+				pl.BeginUpdate();
+				foreach (GContentClass cont in pair.Value) {
+					pl.AddContent(cont);
+				}
+				pl.EndUpdate();
+				count += pair.Value.Count;
+			}
+			Program.PlaylistsManager.EndUpdate();
+			
+			this.StatusMessage = string.Format("クロール完了．クロール時間: {0}   新着コンテンツのプレイリストへの仕分け: {1}", crawlTime, count);
 		}
 		public void RequestCrawlCancellation() {
 			this.bwCrawl.CancelAsync();

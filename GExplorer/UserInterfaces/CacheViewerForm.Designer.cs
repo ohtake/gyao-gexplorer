@@ -59,6 +59,8 @@
 			this.deadlineTextDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.createdDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.lastModifiedDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.cmsContent = new System.Windows.Forms.ContextMenuStrip(this.components);
+			this.tsmiCViewInCrawlResultView = new System.Windows.Forms.ToolStripMenuItem();
 			this.gContentBindingSource = new System.Windows.Forms.BindingSource(this.components);
 			this.tabControl1.SuspendLayout();
 			this.tabpGenre.SuspendLayout();
@@ -70,6 +72,7 @@
 			((System.ComponentModel.ISupportInitialize)(this.gPackageBindingSource)).BeginInit();
 			this.tabpContents.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dgvContent)).BeginInit();
+			this.cmsContent.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.gContentBindingSource)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -174,7 +177,7 @@
 			this.tabpPackage.Location = new System.Drawing.Point(4, 21);
 			this.tabpPackage.Name = "tabpPackage";
 			this.tabpPackage.Padding = new System.Windows.Forms.Padding(3);
-			this.tabpPackage.Size = new System.Drawing.Size(528, 350);
+			this.tabpPackage.Size = new System.Drawing.Size(784, 421);
 			this.tabpPackage.TabIndex = 1;
 			this.tabpPackage.Text = "パッケージ";
 			this.tabpPackage.UseVisualStyleBackColor = true;
@@ -196,7 +199,7 @@
 			this.dgvPackage.Location = new System.Drawing.Point(3, 3);
 			this.dgvPackage.Name = "dgvPackage";
 			this.dgvPackage.RowTemplate.Height = 21;
-			this.dgvPackage.Size = new System.Drawing.Size(522, 344);
+			this.dgvPackage.Size = new System.Drawing.Size(778, 415);
 			this.dgvPackage.TabIndex = 0;
 			// 
 			// packageKeyDataGridViewTextBoxColumn1
@@ -252,7 +255,7 @@
 			this.tabpContents.Location = new System.Drawing.Point(4, 21);
 			this.tabpContents.Name = "tabpContents";
 			this.tabpContents.Padding = new System.Windows.Forms.Padding(3);
-			this.tabpContents.Size = new System.Drawing.Size(528, 350);
+			this.tabpContents.Size = new System.Drawing.Size(784, 421);
 			this.tabpContents.TabIndex = 2;
 			this.tabpContents.Text = "コンテンツ";
 			this.tabpContents.UseVisualStyleBackColor = true;
@@ -273,12 +276,13 @@
             this.deadlineTextDataGridViewTextBoxColumn,
             this.createdDataGridViewTextBoxColumn,
             this.lastModifiedDataGridViewTextBoxColumn});
+			this.dgvContent.ContextMenuStrip = this.cmsContent;
 			this.dgvContent.DataSource = this.gContentBindingSource;
 			this.dgvContent.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.dgvContent.Location = new System.Drawing.Point(3, 3);
 			this.dgvContent.Name = "dgvContent";
 			this.dgvContent.RowTemplate.Height = 21;
-			this.dgvContent.Size = new System.Drawing.Size(522, 344);
+			this.dgvContent.Size = new System.Drawing.Size(778, 415);
 			this.dgvContent.TabIndex = 0;
 			// 
 			// contentKeyDataGridViewTextBoxColumn
@@ -347,6 +351,21 @@
 			this.lastModifiedDataGridViewTextBoxColumn.HeaderText = "LastModified";
 			this.lastModifiedDataGridViewTextBoxColumn.Name = "lastModifiedDataGridViewTextBoxColumn";
 			// 
+			// cmsContent
+			// 
+			this.cmsContent.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiCViewInCrawlResultView});
+			this.cmsContent.Name = "cmsContent";
+			this.cmsContent.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
+			this.cmsContent.Size = new System.Drawing.Size(229, 26);
+			// 
+			// tsmiCViewInCrawlResultView
+			// 
+			this.tsmiCViewInCrawlResultView.Name = "tsmiCViewInCrawlResultView";
+			this.tsmiCViewInCrawlResultView.Size = new System.Drawing.Size(228, 22);
+			this.tsmiCViewInCrawlResultView.Text = "クロール結果ビューに書き出す(&R)";
+			this.tsmiCViewInCrawlResultView.Click += new System.EventHandler(this.tsmiCViewInCrawlResultView_Click);
+			// 
 			// gContentBindingSource
 			// 
 			this.gContentBindingSource.DataMember = "GContent";
@@ -371,6 +390,7 @@
 			((System.ComponentModel.ISupportInitialize)(this.gPackageBindingSource)).EndInit();
 			this.tabpContents.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.dgvContent)).EndInit();
+			this.cmsContent.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.gContentBindingSource)).EndInit();
 			this.ResumeLayout(false);
 
@@ -414,5 +434,7 @@
 		private System.Windows.Forms.DataGridViewTextBoxColumn genreColorGreenDataGridViewTextBoxColumn;
 		private System.Windows.Forms.DataGridViewTextBoxColumn genreColorBlueDataGridViewTextBoxColumn;
 		private System.Windows.Forms.BindingSource gGenreBindingSource;
+		private System.Windows.Forms.ContextMenuStrip cmsContent;
+		private System.Windows.Forms.ToolStripMenuItem tsmiCViewInCrawlResultView;
 	}
 }

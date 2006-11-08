@@ -59,11 +59,19 @@ namespace Yusen.GExplorer {
 			get { return this.cacheViewerFormOptions; }
 			set { this.cacheViewerFormOptions = value; }
 		}
+
+		private ContentClassificationRuleEditFormOptions contentClassificationRuleEditFormOptions = new ContentClassificationRuleEditFormOptions();
+		[Browsable(false)]
+		[SubOptions("仕分けルールエディタ", "仕分けルールエディタに関する設定")]
+		public ContentClassificationRuleEditFormOptions ContentClassificationRuleEditFormOptions {
+			get { return this.contentClassificationRuleEditFormOptions; }
+			set { this.contentClassificationRuleEditFormOptions = value; }
+		}
 		
-		private ExternalCommandsEditorOptions externalCommandsEditorOptions = new ExternalCommandsEditorOptions();
+		private ExternalCommandsEditFormOptions externalCommandsEditorOptions = new ExternalCommandsEditFormOptions();
 		[Browsable(false)]
 		[SubOptions("外部コマンドエディタ", "外部コマンドエディタに関する設定")]
-		public ExternalCommandsEditorOptions ExternalCommandsEditorOptions {
+		public ExternalCommandsEditFormOptions ExternalCommandsEditorOptions {
 			get { return this.externalCommandsEditorOptions; }
 			set { this.externalCommandsEditorOptions = value; }
 		}

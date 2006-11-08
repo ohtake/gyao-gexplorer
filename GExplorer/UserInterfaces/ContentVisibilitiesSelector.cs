@@ -6,22 +6,24 @@ using System.Data;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Yusen.GExplorer.OldApp {
-	public sealed partial class ContentVisibilitiesSelector : UserControl {
+namespace Yusen.GExplorer.UserInterfaces {
+	sealed partial class ContentVisibilitiesSelector : UserControl {
 		private Dictionary<RadioButton, ContentVisibilities> dicPresetRV = new Dictionary<RadioButton, ContentVisibilities>();
 		private Dictionary<RadioButton, ContentVisibilities> dicCustomRV = new Dictionary<RadioButton, ContentVisibilities>();
 		private Dictionary<ContentVisibilities, RadioButton> dicPresetVR = new Dictionary<ContentVisibilities, RadioButton>();
 		private Dictionary<ContentVisibilities, RadioButton> dicCustomVR = new Dictionary<ContentVisibilities, RadioButton>();
-		
+
 		public event EventHandler ContentVisibilitiesChanged;
 		public event EventHandler CloseClick;
-		
+
 		private ContentVisibilities contentVisibilities = ContentVisibilities.None;
 		private volatile bool updating = false;
 		private readonly object updateLock = new object();
 
 		public ContentVisibilitiesSelector() {
 			InitializeComponent();
+
+			if (base.DesignMode) return;
 
 			this.dicPresetRV.Add(this.radioPresetToumei, ContentVisibilities.PresetToumei);
 			this.dicPresetRV.Add(this.radioPresetSabori, ContentVisibilities.PresetSabori);
@@ -53,7 +55,7 @@ namespace Yusen.GExplorer.OldApp {
 				return this.contentVisibilities;
 			}
 			set {
-				ContentVisibilities vis = ContentVisibilitiesUtility.EnsureVisible(value);
+				ContentVisibilities vis = ContentVisibilitiesUtility.SanitizeValue(value);
 				if (vis == this.contentVisibilities) return;
 				this.contentVisibilities = vis;
 				
@@ -142,7 +144,7 @@ namespace Yusen.GExplorer.OldApp {
 	}
 
 	internal static class ContentVisibilitiesUtility {
-		public static ContentVisibilities EnsureVisible(ContentVisibilities vis) {
+		public static ContentVisibilities SanitizeValue(ContentVisibilities vis) {
 			if ((vis & ContentVisibilities.NgDontCare) == ContentVisibilities.None) {
 				vis |= ContentVisibilities.NgDontCare;
 			}

@@ -1,5 +1,5 @@
 ﻿namespace Yusen.GExplorer.UserInterfaces {
-	partial class ExternalCommandsEditor {
+	partial class ExternalCommandsEditForm {
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>

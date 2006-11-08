@@ -17,14 +17,15 @@ namespace Yusen.GExplorer {
 		private static RootOptions rootOptions;
 		private static CacheController cacheController;
 		private static PlaylistsManager playlistsManager;
-		//private static ContentClassificationRulesManager contentClassificatinoRulesManager;
+		private static ContentClassificationRulesManager contentClassificatinoRulesManager;
 		private static ExternalCommandsManager externalCommandsManager;
 		
 		private static PlayerForm playerForm = null;
-		private static OptionsForm optionsForm = null;
-		private static CacheViewerForm cacheViewerForm = null;
 		private static BrowserForm browserForm = null;
-		private static ExternalCommandsEditor externalCommandsEditor = null;
+		private static CacheViewerForm cacheViewerForm = null;
+		private static ContentClassificationRuleEditForm contentClassificationRuleEditForm = null;
+		private static ExternalCommandsEditForm externalCommandsEditForm = null;
+		private static OptionsForm optionsForm = null;
 
 		internal static RootOptions RootOptions {
 			get { return Program.rootOptions; }
@@ -35,9 +36,9 @@ namespace Yusen.GExplorer {
 		internal static PlaylistsManager PlaylistsManager {
 			get { return Program.playlistsManager; }
 		}
-		/*internal static ContentClassificationRulesManager ContentClassificationRulesManager {
+		internal static ContentClassificationRulesManager ContentClassificationRulesManager {
 			get { return Program.contentClassificatinoRulesManager; }
-		}*/
+		}
 		internal static ExternalCommandsManager ExternalCommandsManager {
 			get { return Program.externalCommandsManager; }
 		}
@@ -61,13 +62,6 @@ namespace Yusen.GExplorer {
 			Program.playerForm.Focus();
 			Program.playerForm.PlayContent(content, playlist);
 		}
-		internal static void ShowOptionsForm() {
-			if (null == Program.optionsForm || Program.optionsForm.IsDisposed) {
-				Program.optionsForm = new OptionsForm();
-			}
-			Program.optionsForm.Show();
-			Program.optionsForm.Focus();
-		}
 		internal static void ShowCacheViewerForm() {
 			if (null == Program.cacheViewerForm || Program.cacheViewerForm.IsDisposed) {
 				Program.cacheViewerForm = new CacheViewerForm();
@@ -75,12 +69,26 @@ namespace Yusen.GExplorer {
 			Program.cacheViewerForm.Show();
 			Program.cacheViewerForm.Focus();
 		}
-		internal static void ShowExternalCommandsEditor() {
-			if (null == Program.externalCommandsEditor || Program.externalCommandsEditor.IsDisposed) {
-				Program.externalCommandsEditor = new ExternalCommandsEditor();
+		internal static void ShowContentClassificationRuleEditForm() {
+			if (null == Program.contentClassificationRuleEditForm || Program.contentClassificationRuleEditForm.IsDisposed) {
+				Program.contentClassificationRuleEditForm = new ContentClassificationRuleEditForm();
 			}
-			Program.externalCommandsEditor.Show();
-			Program.externalCommandsEditor.Focus();
+			Program.contentClassificationRuleEditForm.Show();
+			Program.contentClassificationRuleEditForm.Focus();
+		}
+		internal static void ShowExternalCommandsEditForm() {
+			if (null == Program.externalCommandsEditForm || Program.externalCommandsEditForm.IsDisposed) {
+				Program.externalCommandsEditForm = new ExternalCommandsEditForm();
+			}
+			Program.externalCommandsEditForm.Show();
+			Program.externalCommandsEditForm.Focus();
+		}
+		internal static void ShowOptionsForm() {
+			if (null == Program.optionsForm || Program.optionsForm.IsDisposed) {
+				Program.optionsForm = new OptionsForm();
+			}
+			Program.optionsForm.Show();
+			Program.optionsForm.Focus();
 		}
 		internal static string GetWorkingDirectory(WorkingDirectory wd) {
 			string path = Path.Combine(Application.StartupPath, wd.ToString());
@@ -89,8 +97,8 @@ namespace Yusen.GExplorer {
 			return path;
 		}
 
-		private const int InitializationSteps = 7;
-		private const int SerializationSteps = 4;
+		private const int InitializationSteps = 8;
+		private const int SerializationSteps = 5;
 		private static SplashForm splashForm;
 		private static MainForm mainForm;
 		internal static event ProgressChangedEventHandler ProgramSerializationProgress;
@@ -193,11 +201,11 @@ namespace Yusen.GExplorer {
 			Program.splashForm.StepProgress("プレイリストコレクションの読み込み");
 			Program.playlistsManager = new PlaylistsManager();
 			Program.playlistsManager.DeserializePlaylists(Path.Combine(Program.GetWorkingDirectory(WorkingDirectory.UserSettings), "PlaylistCollection.xml"));
-			/*
+			
 			Program.splashForm.StepProgress("仕分けルールの読み込み");
 			Program.contentClassificatinoRulesManager = new ContentClassificationRulesManager();
 			Program.contentClassificatinoRulesManager.TryDeserialize(Path.Combine(Program.GetWorkingDirectory(WorkingDirectory.UserSettings), "ContentClassificationRules.xml"));
-			*/
+			
 			Program.splashForm.StepProgress("外部コマンドの読み込み");
 			Program.externalCommandsManager = new ExternalCommandsManager();
 			Program.externalCommandsManager.TryDeserialize(Path.Combine(Program.GetWorkingDirectory(WorkingDirectory.UserSettings), "ExternalCommands.xml"));
@@ -215,8 +223,8 @@ namespace Yusen.GExplorer {
 			int step = 0;
 			Program.OnProgramSerializationProgress(step++, "プレイリストコレクションの保存");
 			Program.playlistsManager.SerializePlaylists(Path.Combine(Program.GetWorkingDirectory(WorkingDirectory.UserSettings), "PlaylistCollection.xml"));
-			//Program.OnProgramSerializationProgress2(step++, "仕分けルールの保存");
-			//Program.contentClassificatinoRulesManager.Serialize(Path.Combine(Program.GetWorkingDirectory(WorkingDirectory.UserSettings), "ContentClassificationRules.xml"));
+			Program.OnProgramSerializationProgress(step++, "仕分けルールの保存");
+			Program.contentClassificatinoRulesManager.Serialize(Path.Combine(Program.GetWorkingDirectory(WorkingDirectory.UserSettings), "ContentClassificationRules.xml"));
 			Program.OnProgramSerializationProgress(step++, "外部コマンドの保存");
 			Program.externalCommandsManager.Serialize(Path.Combine(Program.GetWorkingDirectory(WorkingDirectory.UserSettings), "ExternalCommands.xml"));
 			Program.OnProgramSerializationProgress(step++, "キャッシュの保存");
