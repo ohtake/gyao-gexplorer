@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
@@ -9,7 +10,6 @@ using System.Windows.Forms;
 using Yusen.GExplorer.AppCore;
 using Yusen.GExplorer.UserInterfaces;
 using Yusen.GExplorer.GyaoModel;
-using System.ComponentModel;
 
 namespace Yusen.GExplorer {
 	static class Program {

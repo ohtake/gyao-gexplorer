@@ -35,14 +35,17 @@ namespace Yusen.GExplorer.UserInterfaces {
 			if (this.FormBounds.HasValue) {
 				form.StartPosition = FormStartPosition.Manual;
 				form.Bounds = this.FormBounds.Value;
+			} else {
+				this.FormBounds = form.Bounds;
 			}
 			if (this.IsMaximized) {
 				form.WindowState = FormWindowState.Maximized;
 			}
-			form.ResizeEnd += new EventHandler(form_ResizeEnd);
 			form.LocationChanged += new EventHandler(form_LocationChanged);
+			form.SizeChanged += new EventHandler(form_SizeChanged);
 			form.FormClosed += new FormClosedEventHandler(form_FormClosed);
 		}
+		
 		private void StoreValues(Form form) {
 			switch (form.WindowState) {
 				case FormWindowState.Normal:
@@ -54,16 +57,16 @@ namespace Yusen.GExplorer.UserInterfaces {
 			}
 			this.IsMaximized = (form.WindowState == FormWindowState.Maximized);
 		}
-
+		
 		private void form_LocationChanged(object sender, EventArgs e) {
 			this.StoreValues(sender as Form);
 		}
-		private void form_ResizeEnd(object sender, EventArgs e) {
+		private void form_SizeChanged(object sender, EventArgs e) {
 			this.StoreValues(sender as Form);
 		}
 		private void form_FormClosed(object sender, FormClosedEventArgs e) {
 			Form form = sender as Form;
-			form.ResizeEnd -= this.form_ResizeEnd;
+			form.SizeChanged -= this.form_SizeChanged;
 			form.LocationChanged -= this.form_LocationChanged;
 			form.FormClosed -= this.form_FormClosed;
 		}

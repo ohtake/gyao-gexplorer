@@ -20,7 +20,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 
 		private static readonly Encoding encodingGyao = Encoding.GetEncoding("Shift_JIS");
 		private static readonly Regex regexDesc = new Regex(@"<table width=""296"" border=""0"" cellspacing=""0"" cellpadding=""0"">\r?\n<tr>\r?\n<td align=""left"">(?<Desc1>.*?)</td>\r?\n</tr>\r?\n</table>\r?\n</div>\r?\n<div class=""marginT10"">\r?\n<table width=""296"" border=""0"" cellspacing=""0"" cellpadding=""0"">\r?\n<tr>\r?\n<td align=""left"">\r?\n(?<Desc2>.*?)</td>\r?\n</tr>\r?\n</table>\r?\n</div>\r?\n<div class=""marginT10"">\r?\n<table width=""296"" border=""0"" cellspacing=""0"" cellpadding=""0"">\r?\n<tr>\r?\n<td align=""(left|center)""( class=""text10"")?>\r?\n(?<Desc3>[\s\S]*?)</td>\r?\n</tr>\r?\n</table>\r?\n</div>\r?\n<div class=""marginT10"">\r?\n<table width=""296"" border=""0"" cellspacing=""0"" cellpadding=""0"">\r?\n<tr>\r?\n<td align=""right""( class=""text10"")?>\r?\n(?<Desc4>.*?)</td>\r?\n</tr>\r?\n</table>", RegexOptions.Compiled | RegexOptions.ExplicitCapture);
-		private static readonly Regex regexReviewSummary = new Regex(@"<td width=""115"" class=""title12b"" bgcolor=""#666666"" align=""left"">(?:<span class=""marginR10"">(?<Summary>.*?)</span>)?</td>", RegexOptions.Compiled | RegexOptions.ExplicitCapture);
+		private static readonly Regex regexReviewSummary = new Regex(@"<td width=""115"" class=""title12b"" bgcolor=""#666666"" align=""left"">(?:<span class=""marginR10"">(?<Summary>.*?)点?</span>)?</td>", RegexOptions.Compiled | RegexOptions.ExplicitCapture);
 		private static readonly Regex regexReviewPost = new Regex(@"<td width=""210"" height=""25"" class=""bk12b"">(?<Title>.*?)</td>\r?\n<td width=""140"" class=""bk10"">投稿者：(?<Author>.*?)</td>\r?\n<td width=""118"" align=""center"" class=""bk10"">投稿日：(?<Posted>.*?) </td>\r?\n<td width=""102"" align=""center"">\r?\n<table width=""85"" border=""0"" cellspacing=""0"" cellpadding=""0"">\r?\n(<td><img src = ""http://www\.gyao\.jp/common/images/star_(w|half_n|half_w)\.gif"" width=""15"" height=""15"" border=""0""> </td>\r?\n){5} \r?\n</table>\r?\n</td>\r?\n<td width=""50"" align=""right"" class=""bk10"">(?<Score>\d+)点</td>\r?\n</tr>\r?\n</table>\r?\n</td></tr>\r?\n<tr><td><table width=""620"" border=""0"" cellspacing=""0"" cellpadding=""0"">\r?\n(?<NetaBare><tr><td><img src=""http://www\.gyao\.jp/common/images/neta\.gif"" alt=""ネタバレ"" width=""40"" height=""15"" border=""0""></td>\r?\n)?<td align=""right"" height=""35"" class=""bk10"">(?<Denominator>\d+)人中(?<Numerator>\d+)人が「この番組レビューは参考になる」と評価しています。</td></tr>\r?\n</table></td></tr>\r?\n<tr><td><p class=""marginT5B5"">(?<Body>.*?)</p></td></tr>", RegexOptions.Compiled | RegexOptions.ExplicitCapture);
 		private static readonly string[] ColWidthPropertyNames = new string[] {
 			"ColWidthNetabare", "ColWidthScore", "ColWidthRef", "ColWidthTitle", "ColWidthAuthor", "ColWidthPosted",
@@ -69,6 +69,18 @@ namespace Yusen.GExplorer.UserInterfaces {
 			this.wcPage.OpenReadCompleted += new OpenReadCompletedEventHandler(wcPage_OpenReadCompleted);
 
 			this.wbDescription.DocumentText = "<html><body style='margin:0px;'></body></html>";
+
+			this.ChangeEnabilityOfMenuItems();
+		}
+
+		private void ChangeEnabilityOfMenuItems() {
+			bool hasCont = (null != this.cont);
+
+			this.tsmiCopyName.Enabled = hasCont;
+			this.tsmiCopyUri.Enabled = hasCont;
+			this.tsmiCopyBoth.Enabled = hasCont;
+			this.tsmiCopyTriple.Enabled = hasCont;
+			this.tsmiCopyImage.Enabled = hasCont;
 		}
 
 		public void ViewDetail(GContentClass cont) {
@@ -80,6 +92,8 @@ namespace Yusen.GExplorer.UserInterfaces {
 
 			if(this.LoadImage) this.LoadImageAsync();
 			if(this.LoadPage) this.LoadPageAsync();
+
+			this.ChangeEnabilityOfMenuItems();
 		}
 
 		private void LoadImageAsync() {
@@ -138,9 +152,11 @@ namespace Yusen.GExplorer.UserInterfaces {
 								this.lvReview.Items.Add(new ReviewPostListViewItem(m.Groups["NetaBare"].Success, m.Groups["Score"].Value, m.Groups["Denominator"].Value, m.Groups["Numerator"].Value, m.Groups["Title"].Value, m.Groups["Author"].Value, m.Groups["Posted"].Value, m.Groups["Body"].Value));
 							}
 							this.lvReview.EndUpdate();
-							this.lblReviewSummary.Text = string.IsNullOrEmpty(aveScore) ? "レビューなし" : string.Format("新着分{0}件 総合評価{1}", this.lvReview.Items.Count, aveScore);
+							this.lblReviewSummary.Text = string.IsNullOrEmpty(aveScore) ? "レビューなし" : string.Format("新着分{0}件 総合評価{1}点", this.lvReview.Items.Count, aveScore);
+							this.tabpReview.Text = string.IsNullOrEmpty(aveScore) ? "レビュー(0)" : string.Format("レビュー({0};{1})", this.lvReview.Items.Count, aveScore);
 						} else {
 							this.lblReviewSummary.Text = "レビュー取得失敗";
+							this.tabpReview.Text = "レビュー(取得失敗)";
 							this.lvReview.Items.Clear();
 						}
 						this.txtReview.Clear();
@@ -318,6 +334,29 @@ namespace Yusen.GExplorer.UserInterfaces {
 			}
 		}
 		#endregion
+
+		private void tsmiCopyName_Click(object sender, EventArgs e) {
+			Clipboard.SetText(ContentClipboardUtility.ConvertToName(this.cont));
+		}
+		private void tsmiCopyUri_Click(object sender, EventArgs e) {
+			Clipboard.SetText(cont.ImageLargeUri.AbsoluteUri);
+		}
+		private void tsmiCopyBoth_Click(object sender, EventArgs e) {
+			string name = ContentClipboardUtility.ConvertToName(this.cont);
+			Uri uriImage = this.cont.ImageLargeUri;
+			Clipboard.SetText(name + Environment.NewLine + uriImage.AbsoluteUri);
+		}
+		private void tsmiCopyTriple_Click(object sender, EventArgs e) {
+			string name = ContentClipboardUtility.ConvertToName(this.cont);
+			Uri uriDetail = this.cont.ContentDetailUri;
+			Uri uriImage = this.cont.ImageLargeUri;
+			Clipboard.SetText(name + Environment.NewLine  + uriDetail.AbsoluteUri + Environment.NewLine + uriImage.AbsoluteUri);
+		}
+		private void tsmiCopyImage_Click(object sender, EventArgs e) {
+			if (null != this.pbImage.Image) {
+				Clipboard.SetImage(this.pbImage.Image);
+			}
+		}
 	}
 
 	interface IDetailViewBindingContract : IBindingContract {

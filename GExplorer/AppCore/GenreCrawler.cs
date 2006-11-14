@@ -245,12 +245,12 @@ namespace Yusen.GExplorer.AppCore {
 					int denominator = this.pagesWaiting.Count + numerator;
 					this.ReportProgressInPhase(100 * numerator / denominator, string.Format("{0}/{1} {2}", numerator, denominator, uri.PathAndQuery));
 				}
-
+				
 				List<UriLinkTypePair> links;
 				try {
 					links = this.parser.DownloadAndExtractLinks(uri);
 				} catch (Exception e){
-					this.IgnoreException(new CrawlException("一般ページの取得失敗．", e));
+					this.IgnoreException(new CrawlException(string.Format("<{0}> 一般ページの取得失敗．", uri.AbsolutePath), e));
 					this.pagesFailed.Add(uri);
 					continue;
 				}

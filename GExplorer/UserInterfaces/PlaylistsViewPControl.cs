@@ -17,7 +17,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 			public ContentListViewItem(GContentClass content)
 				: base(new string[] { content.ContentId, content.Title, content.SeriesNumber, content.Subtitle, content.DurationValue.ToString(), content.DeadlineValue.ToString() }) {
 				this.content = content;
-				base.UseItemStyleForSubItems = false;
+				//base.UseItemStyleForSubItems = false;
 			}
 			public GContentClass Content {
 				get { return this.content; }
@@ -324,7 +324,6 @@ namespace Yusen.GExplorer.UserInterfaces {
 		}
 
 		private void CopyToAnotherPlaylist(Playlist destination) {
-			if (destination == this.attachedPlaylist) return;
 			GContentClass[] conts = this.GetSelectedContents();
 			destination.BeginUpdate();
 			foreach (GContentClass cont in conts) {
@@ -333,14 +332,10 @@ namespace Yusen.GExplorer.UserInterfaces {
 			destination.EndUpdate();
 		}
 		private void MoveToAnotherPlaylist(Playlist destination) {
-			if (destination == this.attachedPlaylist) return;
-			GContentClass[] conts = this.GetSelectedContents();
-			destination.BeginUpdate();
-			foreach (GContentClass cont in conts) {
-				destination.AddContent(cont);
-			}
-			destination.EndUpdate();
+			//if (destination == this.attachedPlaylist) return;
 			this.attachedPlaylist.BeginUpdate();
+			this.CopyToAnotherPlaylist(destination);
+			GContentClass[] conts = this.GetSelectedContents();
 			foreach (GContentClass cont in conts) {
 				this.attachedPlaylist.RemoveContent(cont);
 			}
@@ -417,6 +412,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 		}
 		private void tspmiCmsMoveToAnother_PlaylistSelected(object sender, EventArgs e) {
 			this.MoveToAnotherPlaylist(this.tspmiCmsMoveToAnother.LastSelectedPlaylist);
+			this.lvContents.SelectedIndices.Clear();
 		}
 		private void tsmiCmsDelete_Click(object sender, EventArgs e) {
 			this.tsmiDelete.PerformClick();
@@ -503,6 +499,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 		}
 		private void tspmiMoveToAnother_PlaylistSelected(object sender, EventArgs e) {
 			this.MoveToAnotherPlaylist(this.tspmiMoveToAnother.LastSelectedPlaylist);
+			this.lvContents.SelectedIndices.Clear();
 		}
 		private void tsmiDelete_Click(object sender, EventArgs e) {
 			this.attachedPlaylist.BeginUpdate();
@@ -513,16 +510,16 @@ namespace Yusen.GExplorer.UserInterfaces {
 			this.lvContents.SelectedIndices.Clear();
 		}
 		private void tsmiCopyName_Click(object sender, EventArgs e) {
-			CPClipboardUtility.CopyNames(this.GetSelectedContents());
+			ContentClipboardUtility.CopyNames(this.GetSelectedContents());
 		}
 		private void tsmiCopyUri_Click(object sender, EventArgs e) {
-			CPClipboardUtility.CopyUris(this.GetSelectedContents());
+			ContentClipboardUtility.CopyUris(this.GetSelectedContents());
 		}
 		private void tsmiCopyNameAndUri_Click(object sender, EventArgs e) {
-			CPClipboardUtility.CopyNamesAndUris(this.GetSelectedContents());
+			ContentClipboardUtility.CopyNamesAndUris(this.GetSelectedContents());
 		}
 		private void tscpmiCopyOtherProperties_PropertySelected(object sender, EventArgs e) {
-			CPClipboardUtility.CopyContentProperties(this.GetSelectedContents(), (sender as ToolStripContentPropertyMenuItem).LastSelectedPropertyInfo);
+			ContentClipboardUtility.CopyContentProperties(this.GetSelectedContents(), (sender as ToolStripContentPropertyMenuItem).LastSelectedPropertyInfo);
 		}
 		private void tsecmiCommand_ExternalCommandSelected(object sender, EventArgs e) {
 			(sender as ToolStripExternalCommandMenuItem).LastSelectedExternalCommand.Execute(this.GetSelectedContents());
@@ -594,10 +591,10 @@ namespace Yusen.GExplorer.UserInterfaces {
 		public GContentClass LastSelectedContent {
 			get { return this.lastSelectedContent; }
 			private set {
-				if (this.lastSelectedContent != value) {
+				//if (this.lastSelectedContent != value) {
 					this.lastSelectedContent = value;
 					this.OnLastSelectedContentChanged();
-				}
+				//}
 			}
 		}
 

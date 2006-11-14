@@ -46,6 +46,7 @@
 			this.tsmiFilterTypeRegex = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripMenuItem7 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiChangeDestinationPlaylist = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiRedisplay = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripMenuItem5 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiAddToThePlaylist = new System.Windows.Forms.ToolStripMenuItem();
 			this.tspmiAddToAnotherPlaylist = new Yusen.GExplorer.UserInterfaces.ToolStripPlaylistMenuItem();
@@ -172,6 +173,7 @@
             this.tsmiFilterType,
             this.toolStripMenuItem7,
             this.tsmiChangeDestinationPlaylist,
+            this.tsmiRedisplay,
             this.toolStripMenuItem5,
             this.tsmiAddToThePlaylist,
             this.tspmiAddToAnotherPlaylist,
@@ -348,6 +350,14 @@
 			this.tsmiChangeDestinationPlaylist.Size = new System.Drawing.Size(241, 22);
 			this.tsmiChangeDestinationPlaylist.Text = "追加先のプレイリスト名を指定(&L)...";
 			this.tsmiChangeDestinationPlaylist.Click += new System.EventHandler(this.tsmiChangeDestinationPlaylist_Click);
+			// 
+			// tsmiRedisplay
+			// 
+			this.tsmiRedisplay.Name = "tsmiRedisplay";
+			this.tsmiRedisplay.ShortcutKeys = System.Windows.Forms.Keys.F5;
+			this.tsmiRedisplay.Size = new System.Drawing.Size(241, 22);
+			this.tsmiRedisplay.Text = "再表示(&Y)";
+			this.tsmiRedisplay.Click += new System.EventHandler(this.tsmiRedisplay_Click);
 			// 
 			// toolStripMenuItem5
 			// 
@@ -1063,5 +1073,6 @@
 		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem7;
 		private ToolStripClassificationRuleMenuItem tscrmiCmsRules;
 		private ToolStripClassificationRuleMenuItem tscrmiRules;
+		private System.Windows.Forms.ToolStripMenuItem tsmiRedisplay;
 	}
 }

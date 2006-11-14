@@ -61,6 +61,7 @@
 			this.inputBoxDialog1 = new Yusen.GExplorer.UserInterfaces.InputBoxDialog();
 			this.timerContentSelect = new System.Windows.Forms.Timer(this.components);
 			this.timerMessage = new System.Windows.Forms.Timer(this.components);
+			this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
 			this.menuStrip1.SuspendLayout();
 			this.toolStripContainer1.BottomToolStripPanel.SuspendLayout();
 			this.toolStripContainer1.ContentPanel.SuspendLayout();
@@ -199,6 +200,7 @@
             this.tsmiCacheViewer,
             this.tsmiRuleEditForm,
             this.tsmiExternalCommandsEditor,
+            this.toolStripMenuItem4,
             this.tsmiOptionsForm});
 			this.tsmiTools.Name = "tsmiTools";
 			this.tsmiTools.Size = new System.Drawing.Size(62, 17);
@@ -419,7 +421,7 @@
 			this.playlistsView1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.playlistsView1.Location = new System.Drawing.Point(0, 0);
 			this.playlistsView1.Name = "playlistsView1";
-			this.playlistsView1.PlaylistCollectionWidth = 85;
+			this.playlistsView1.PlaylistCollectionWidth = 77;
 			this.playlistsView1.Size = new System.Drawing.Size(546, 176);
 			this.playlistsView1.TabIndex = 0;
 			this.playlistsView1.LastSelectedContentChanged += new System.EventHandler(this.playlistsView1_LastSelectedContentChanged);
@@ -437,12 +439,12 @@
 			this.detailView1.Description3Style = "font-size:10px;";
 			this.detailView1.Description4Style = "font-size:10px; text-align:right;";
 			this.detailView1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.detailView1.ImageHeight = 142;
+			this.detailView1.ImageHeight = 135;
 			this.detailView1.LoadImage = true;
 			this.detailView1.LoadPage = true;
 			this.detailView1.Location = new System.Drawing.Point(0, 0);
 			this.detailView1.Name = "detailView1";
-			this.detailView1.ReviewListHeight = 150;
+			this.detailView1.ReviewListHeight = 173;
 			this.detailView1.Size = new System.Drawing.Size(242, 523);
 			this.detailView1.TabIndex = 0;
 			this.detailView1.StatusMessageChanged += new System.EventHandler(this.detailView1_StatusMessageChanged);
@@ -462,6 +464,11 @@
 			// 
 			this.timerMessage.Interval = 15000;
 			this.timerMessage.Tick += new System.EventHandler(this.timerMessage_Tick);
+			// 
+			// toolStripMenuItem4
+			// 
+			this.toolStripMenuItem4.Name = "toolStripMenuItem4";
+			this.toolStripMenuItem4.Size = new System.Drawing.Size(219, 6);
 			// 
 			// MainForm
 			// 
@@ -538,5 +545,6 @@
 		private CrawlResultView crawlResultView;
 		private System.Windows.Forms.Timer timerMessage;
 		private System.Windows.Forms.ToolStripMenuItem tsmiRuleEditForm;
+		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem4;
 	}
 }

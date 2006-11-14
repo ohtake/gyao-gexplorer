@@ -1,4 +1,4 @@
-﻿パソコンテレビ GyaO 専用ブラウザ GExplorer 2.1.1.0
+﻿パソコンテレビ GyaO 専用ブラウザ GExplorer 2.1.1.1
 
 ◆概要
 株式会社USENによる「パソコンテレビGyaO」を閲覧するためのブラウザです．
@@ -6,17 +6,17 @@
 ・プレイリストを作成し内蔵のプレーヤで連続再生ができます．
 
 ◆必要な環境
-.NET Framework 2.0 が必要です．
-Windows Vista ではプリインストールされています．
+.NET Framework の 2.0 以上が必要です．
+Windows Vista では 3.0 がプリインストールされています．
 Windows 98, Me, 2000, XP, 2003 ではインストールが必要です．
 Windows 95 にはインストールできません．
 
-.NET Framework 2.0 は Microsoft Update や Windows Update などで入手できますが
+.NET Framework は Microsoft Update や Windows Update などで入手できますが
 デフォルトでは選択されません．
 「高速」ではなく「カスタム」を選択するようにし
-「追加選択(ソフトウェア)」で .NET Framework 2.0 を追加してください．
+「追加選択(ソフトウェア)」で .NET Framework を追加してください．
 
-手作業でインストールする方法もありますが
+2.0 を手作業でインストールする方法もありますが
 CPUごとに別々のインストーラが用意されているので注意してください．
 Microsoft .NET Framework Version 2.0 再頒布可能パッケージ (x86)
 http://www.microsoft.com/downloads/details.aspx?FamilyID=0856eacb-4362-4b0d-8edd-aab15c5e04f5&DisplayLang=ja
@@ -24,6 +24,10 @@ Microsoft .NET Framework Version 2.0 再頒布可能パッケージ (x64)
 http://www.microsoft.com/downloads/details.aspx?FamilyID=b44a0000-acf8-4fa1-affb-40e78d788b00&DisplayLang=ja
 Microsoft .NET Framework Version 2.0 再頒布可能パッケージ (IA64)
 http://www.microsoft.com/downloads/details.aspx?FamilyID=53c2548b-bec7-4ab4-8cbe-33e07cfc83a7&DisplayLang=ja
+
+3.0 もあります．
+Microsoft .NET Framework 3.0 再頒布可能パッケージ
+http://www.microsoft.com/downloads/details.aspx?FamilyID=10cc340b-f857-4a14-83f5-25634c3bf043&DisplayLang=ja
 
 ◆Windowsのバージョンによる機能の制限
 ・Windows 98, Me, 2000 では以下の機能が利用できません．

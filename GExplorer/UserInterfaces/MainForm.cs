@@ -195,8 +195,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 		}
 		
 		private void crawlResultView_LastSelectedContentChanged(object sender, EventArgs e) {
-			GContentClass cont = this.crawlResultView.LastSelectedContent;
-			this.SetLastSelectContentDelayed(cont);
+			this.SetLastSelectContentDelayed(this.crawlResultView.LastSelectedContent);
 		}
 		private void playlistsView1_LastSelectedContentChanged(object sender, EventArgs e) {
 			this.SetLastSelectContentDelayed(this.playlistsView1.LastSelectedContent);

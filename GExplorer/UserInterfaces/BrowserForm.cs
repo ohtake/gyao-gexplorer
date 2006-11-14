@@ -316,6 +316,9 @@ namespace Yusen.GExplorer.UserInterfaces {
 				MessageBox.Show("フィル失敗\n\n" + ex.Message, "応募フォームのフィル", MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
 		}
+		private void tsmiOptions_Click(object sender, EventArgs e) {
+			Program.ShowOptionsForm();
+		}
 		#endregion
 
 		private void SetFormText(string htmlId, string innerText) {
@@ -325,6 +328,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 			}
 			elem.InnerText = innerText;
 		}
+
 	}
 
 	public sealed class BrowserFormOptions : FormOptionsBase {

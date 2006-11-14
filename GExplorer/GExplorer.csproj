@@ -111,7 +111,7 @@
     <Compile Include="UserInterfaces\CrawlResultView.Designer.cs">
       <DependentUpon>CrawlResultView.cs</DependentUpon>
     </Compile>
-    <Compile Include="UserInterfaces\CPClipboardUtility.cs" />
+    <Compile Include="UserInterfaces\ContentClipboardUtility.cs" />
     <Compile Include="UserInterfaces\ToolStripContentVisibilitiesSelector.cs">
       <SubType>Component</SubType>
     </Compile>

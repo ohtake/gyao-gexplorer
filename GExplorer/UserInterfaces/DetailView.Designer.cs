@@ -27,10 +27,22 @@
 			this.pbImage = new System.Windows.Forms.PictureBox();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabpDescription = new System.Windows.Forms.TabPage();
-			this.wbDescription = new System.Windows.Forms.WebBrowser();
 			this.tabpReview = new System.Windows.Forms.TabPage();
 			this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
 			this.scReview = new System.Windows.Forms.SplitContainer();
+			this.txtReview = new System.Windows.Forms.TextBox();
+			this.lblReviewSummary = new System.Windows.Forms.Label();
+			this.tabpContent = new System.Windows.Forms.TabPage();
+			this.pgProperty = new System.Windows.Forms.PropertyGrid();
+			this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+			this.tsmiDetailView = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiCopyName = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiCopyUri = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiCopyBoth = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiCopyTriple = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+			this.tsmiCopyImage = new System.Windows.Forms.ToolStripMenuItem();
+			this.wbDescription = new System.Windows.Forms.WebBrowser();
 			this.lvReview = new Yusen.GExplorer.UserInterfaces.DoubleBufferedListView();
 			this.chNeta = new System.Windows.Forms.ColumnHeader();
 			this.chScore = new System.Windows.Forms.ColumnHeader();
@@ -38,14 +50,6 @@
 			this.chTitle = new System.Windows.Forms.ColumnHeader();
 			this.chAuthor = new System.Windows.Forms.ColumnHeader();
 			this.chDate = new System.Windows.Forms.ColumnHeader();
-			this.txtReview = new System.Windows.Forms.TextBox();
-			this.lblReviewSummary = new System.Windows.Forms.Label();
-			this.tabpContent = new System.Windows.Forms.TabPage();
-			this.pgProperty = new System.Windows.Forms.PropertyGrid();
-			this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-			this.tsmiDetailView = new System.Windows.Forms.ToolStripMenuItem();
-			this.baz1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.baz2ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.scRoot.Panel1.SuspendLayout();
 			this.scRoot.Panel2.SuspendLayout();
 			this.scRoot.SuspendLayout();
@@ -76,7 +80,7 @@
 			// 
 			this.scRoot.Panel2.Controls.Add(this.tabControl1);
 			this.scRoot.Size = new System.Drawing.Size(246, 550);
-			this.scRoot.SplitterDistance = 192;
+			this.scRoot.SplitterDistance = 191;
 			this.scRoot.TabIndex = 0;
 			this.scRoot.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.scRoot_SplitterMoved);
 			// 
@@ -85,7 +89,7 @@
 			this.pbImage.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.pbImage.Location = new System.Drawing.Point(0, 0);
 			this.pbImage.Name = "pbImage";
-			this.pbImage.Size = new System.Drawing.Size(246, 192);
+			this.pbImage.Size = new System.Drawing.Size(246, 191);
 			this.pbImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
 			this.pbImage.TabIndex = 0;
 			this.pbImage.TabStop = false;
@@ -100,7 +104,7 @@
 			this.tabControl1.Multiline = true;
 			this.tabControl1.Name = "tabControl1";
 			this.tabControl1.SelectedIndex = 0;
-			this.tabControl1.Size = new System.Drawing.Size(246, 354);
+			this.tabControl1.Size = new System.Drawing.Size(246, 355);
 			this.tabControl1.TabIndex = 0;
 			// 
 			// tabpDescription
@@ -108,29 +112,17 @@
 			this.tabpDescription.Controls.Add(this.wbDescription);
 			this.tabpDescription.Location = new System.Drawing.Point(4, 21);
 			this.tabpDescription.Name = "tabpDescription";
-			this.tabpDescription.Size = new System.Drawing.Size(238, 329);
+			this.tabpDescription.Size = new System.Drawing.Size(238, 330);
 			this.tabpDescription.TabIndex = 0;
 			this.tabpDescription.Text = "説明文";
 			this.tabpDescription.UseVisualStyleBackColor = true;
-			// 
-			// wbDescription
-			// 
-			this.wbDescription.AllowNavigation = false;
-			this.wbDescription.AllowWebBrowserDrop = false;
-			this.wbDescription.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.wbDescription.Location = new System.Drawing.Point(0, 0);
-			this.wbDescription.MinimumSize = new System.Drawing.Size(20, 20);
-			this.wbDescription.Name = "wbDescription";
-			this.wbDescription.Size = new System.Drawing.Size(238, 329);
-			this.wbDescription.TabIndex = 0;
-			this.wbDescription.WebBrowserShortcutsEnabled = false;
 			// 
 			// tabpReview
 			// 
 			this.tabpReview.Controls.Add(this.tableLayoutPanel1);
 			this.tabpReview.Location = new System.Drawing.Point(4, 21);
 			this.tabpReview.Name = "tabpReview";
-			this.tabpReview.Size = new System.Drawing.Size(238, 329);
+			this.tabpReview.Size = new System.Drawing.Size(238, 330);
 			this.tabpReview.TabIndex = 1;
 			this.tabpReview.Text = "レビュー新着分";
 			this.tabpReview.UseVisualStyleBackColor = true;
@@ -147,7 +139,7 @@
 			this.tableLayoutPanel1.RowCount = 2;
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 18F));
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-			this.tableLayoutPanel1.Size = new System.Drawing.Size(238, 329);
+			this.tableLayoutPanel1.Size = new System.Drawing.Size(238, 330);
 			this.tableLayoutPanel1.TabIndex = 1;
 			// 
 			// scReview
@@ -164,10 +156,125 @@
 			// scReview.Panel2
 			// 
 			this.scReview.Panel2.Controls.Add(this.txtReview);
-			this.scReview.Size = new System.Drawing.Size(232, 305);
+			this.scReview.Size = new System.Drawing.Size(232, 306);
 			this.scReview.SplitterDistance = 153;
 			this.scReview.TabIndex = 0;
 			this.scReview.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.scReview_SplitterMoved);
+			// 
+			// txtReview
+			// 
+			this.txtReview.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.txtReview.Location = new System.Drawing.Point(0, 0);
+			this.txtReview.Multiline = true;
+			this.txtReview.Name = "txtReview";
+			this.txtReview.ReadOnly = true;
+			this.txtReview.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+			this.txtReview.Size = new System.Drawing.Size(232, 149);
+			this.txtReview.TabIndex = 0;
+			// 
+			// lblReviewSummary
+			// 
+			this.lblReviewSummary.AutoSize = true;
+			this.lblReviewSummary.Location = new System.Drawing.Point(3, 0);
+			this.lblReviewSummary.Name = "lblReviewSummary";
+			this.lblReviewSummary.Size = new System.Drawing.Size(101, 12);
+			this.lblReviewSummary.TabIndex = 1;
+			this.lblReviewSummary.Text = "lblReviewSummary";
+			// 
+			// tabpContent
+			// 
+			this.tabpContent.Controls.Add(this.pgProperty);
+			this.tabpContent.Location = new System.Drawing.Point(4, 21);
+			this.tabpContent.Name = "tabpContent";
+			this.tabpContent.Size = new System.Drawing.Size(238, 330);
+			this.tabpContent.TabIndex = 2;
+			this.tabpContent.Text = "プロパティ";
+			this.tabpContent.UseVisualStyleBackColor = true;
+			// 
+			// pgProperty
+			// 
+			this.pgProperty.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.pgProperty.Location = new System.Drawing.Point(0, 0);
+			this.pgProperty.Name = "pgProperty";
+			this.pgProperty.Size = new System.Drawing.Size(238, 330);
+			this.pgProperty.TabIndex = 0;
+			this.pgProperty.ToolbarVisible = false;
+			// 
+			// menuStrip1
+			// 
+			this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiDetailView});
+			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+			this.menuStrip1.Name = "menuStrip1";
+			this.menuStrip1.Size = new System.Drawing.Size(246, 24);
+			this.menuStrip1.TabIndex = 1;
+			this.menuStrip1.Text = "menuStrip1";
+			this.menuStrip1.Visible = false;
+			// 
+			// tsmiDetailView
+			// 
+			this.tsmiDetailView.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiCopyName,
+            this.tsmiCopyUri,
+            this.tsmiCopyBoth,
+            this.tsmiCopyTriple,
+            this.toolStripMenuItem1,
+            this.tsmiCopyImage});
+			this.tsmiDetailView.Name = "tsmiDetailView";
+			this.tsmiDetailView.Size = new System.Drawing.Size(68, 20);
+			this.tsmiDetailView.Text = "DetailView";
+			// 
+			// tsmiCopyName
+			// 
+			this.tsmiCopyName.Name = "tsmiCopyName";
+			this.tsmiCopyName.Size = new System.Drawing.Size(278, 22);
+			this.tsmiCopyName.Text = "名前をコピー(&N)";
+			this.tsmiCopyName.Click += new System.EventHandler(this.tsmiCopyName_Click);
+			// 
+			// tsmiCopyUri
+			// 
+			this.tsmiCopyUri.Name = "tsmiCopyUri";
+			this.tsmiCopyUri.Size = new System.Drawing.Size(278, 22);
+			this.tsmiCopyUri.Text = "画像URIをコピー(&U)";
+			this.tsmiCopyUri.Click += new System.EventHandler(this.tsmiCopyUri_Click);
+			// 
+			// tsmiCopyBoth
+			// 
+			this.tsmiCopyBoth.Name = "tsmiCopyBoth";
+			this.tsmiCopyBoth.Size = new System.Drawing.Size(278, 22);
+			this.tsmiCopyBoth.Text = "名前と画像URIをコピー(&B)";
+			this.tsmiCopyBoth.Click += new System.EventHandler(this.tsmiCopyBoth_Click);
+			// 
+			// tsmiCopyTriple
+			// 
+			this.tsmiCopyTriple.Name = "tsmiCopyTriple";
+			this.tsmiCopyTriple.Size = new System.Drawing.Size(278, 22);
+			this.tsmiCopyTriple.Text = "名前，詳細ページURI，画像URIをコピー(&T)";
+			this.tsmiCopyTriple.Click += new System.EventHandler(this.tsmiCopyTriple_Click);
+			// 
+			// toolStripMenuItem1
+			// 
+			this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+			this.toolStripMenuItem1.Size = new System.Drawing.Size(275, 6);
+			// 
+			// tsmiCopyImage
+			// 
+			this.tsmiCopyImage.Name = "tsmiCopyImage";
+			this.tsmiCopyImage.Size = new System.Drawing.Size(278, 22);
+			this.tsmiCopyImage.Text = "画像をコピー(&I)";
+			this.tsmiCopyImage.Click += new System.EventHandler(this.tsmiCopyImage_Click);
+			// 
+			// wbDescription
+			// 
+			this.wbDescription.AllowNavigation = false;
+			this.wbDescription.AllowWebBrowserDrop = false;
+			this.wbDescription.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.wbDescription.Location = new System.Drawing.Point(0, 0);
+			this.wbDescription.MinimumSize = new System.Drawing.Size(20, 20);
+			this.wbDescription.Name = "wbDescription";
+			this.wbDescription.Size = new System.Drawing.Size(238, 330);
+			this.wbDescription.TabIndex = 0;
+			this.wbDescription.WebBrowserShortcutsEnabled = false;
 			// 
 			// lvReview
 			// 
@@ -224,77 +331,6 @@
 			this.chDate.Text = "投稿日";
 			this.chDate.Width = 72;
 			// 
-			// txtReview
-			// 
-			this.txtReview.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.txtReview.Location = new System.Drawing.Point(0, 0);
-			this.txtReview.Multiline = true;
-			this.txtReview.Name = "txtReview";
-			this.txtReview.ReadOnly = true;
-			this.txtReview.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-			this.txtReview.Size = new System.Drawing.Size(232, 148);
-			this.txtReview.TabIndex = 0;
-			// 
-			// lblReviewSummary
-			// 
-			this.lblReviewSummary.AutoSize = true;
-			this.lblReviewSummary.Location = new System.Drawing.Point(3, 0);
-			this.lblReviewSummary.Name = "lblReviewSummary";
-			this.lblReviewSummary.Size = new System.Drawing.Size(101, 12);
-			this.lblReviewSummary.TabIndex = 1;
-			this.lblReviewSummary.Text = "lblReviewSummary";
-			// 
-			// tabpContent
-			// 
-			this.tabpContent.Controls.Add(this.pgProperty);
-			this.tabpContent.Location = new System.Drawing.Point(4, 21);
-			this.tabpContent.Name = "tabpContent";
-			this.tabpContent.Size = new System.Drawing.Size(238, 329);
-			this.tabpContent.TabIndex = 2;
-			this.tabpContent.Text = "プロパティ";
-			this.tabpContent.UseVisualStyleBackColor = true;
-			// 
-			// pgProperty
-			// 
-			this.pgProperty.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.pgProperty.Location = new System.Drawing.Point(0, 0);
-			this.pgProperty.Name = "pgProperty";
-			this.pgProperty.Size = new System.Drawing.Size(238, 329);
-			this.pgProperty.TabIndex = 0;
-			this.pgProperty.ToolbarVisible = false;
-			// 
-			// menuStrip1
-			// 
-			this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiDetailView});
-			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
-			this.menuStrip1.Name = "menuStrip1";
-			this.menuStrip1.Size = new System.Drawing.Size(246, 24);
-			this.menuStrip1.TabIndex = 1;
-			this.menuStrip1.Text = "menuStrip1";
-			this.menuStrip1.Visible = false;
-			// 
-			// tsmiDetailView
-			// 
-			this.tsmiDetailView.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.baz1ToolStripMenuItem,
-            this.baz2ToolStripMenuItem});
-			this.tsmiDetailView.Name = "tsmiDetailView";
-			this.tsmiDetailView.Size = new System.Drawing.Size(72, 20);
-			this.tsmiDetailView.Text = "DetailView";
-			// 
-			// baz1ToolStripMenuItem
-			// 
-			this.baz1ToolStripMenuItem.Name = "baz1ToolStripMenuItem";
-			this.baz1ToolStripMenuItem.Size = new System.Drawing.Size(93, 22);
-			this.baz1ToolStripMenuItem.Text = "baz1";
-			// 
-			// baz2ToolStripMenuItem
-			// 
-			this.baz2ToolStripMenuItem.Name = "baz2ToolStripMenuItem";
-			this.baz2ToolStripMenuItem.Size = new System.Drawing.Size(93, 22);
-			this.baz2ToolStripMenuItem.Text = "baz2";
-			// 
 			// DetailView
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -345,10 +381,14 @@
 		private System.Windows.Forms.PropertyGrid pgProperty;
 		private System.Windows.Forms.MenuStrip menuStrip1;
 		private System.Windows.Forms.ToolStripMenuItem tsmiDetailView;
-		private System.Windows.Forms.ToolStripMenuItem baz1ToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem baz2ToolStripMenuItem;
 		private System.Windows.Forms.PictureBox pbImage;
 		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
 		private System.Windows.Forms.Label lblReviewSummary;
+		private System.Windows.Forms.ToolStripMenuItem tsmiCopyName;
+		private System.Windows.Forms.ToolStripMenuItem tsmiCopyUri;
+		private System.Windows.Forms.ToolStripMenuItem tsmiCopyBoth;
+		private System.Windows.Forms.ToolStripMenuItem tsmiCopyTriple;
+		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
+		private System.Windows.Forms.ToolStripMenuItem tsmiCopyImage;
 	}
 }

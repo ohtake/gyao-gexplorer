@@ -23,15 +23,14 @@ namespace Yusen.GExplorer.UserInterfaces {
 			this.dgcGenre.DataSource = Program.CacheController.GDataSet.GGenre;
 			this.dgvPackage.DataSource = Program.CacheController.GDataSet.GPackage;
 			this.dgvContent.DataSource = Program.CacheController.GDataSet.GContent;
-			
-			
 		}
 
 		private void tsmiCViewInCrawlResultView_Click(object sender, EventArgs e) {
 			List<int> rowIndices = new List<int>();
 			foreach (DataGridViewCell cell in this.dgvContent.SelectedCells) {
-				if (!rowIndices.Contains(cell.RowIndex)) {
-					rowIndices.Add(cell.RowIndex);
+				int rowIndex = cell.RowIndex;
+				if(rowIndices.LastIndexOf(rowIndex) < 0){
+					rowIndices.Add(rowIndex);
 				}
 			}
 			rowIndices.Sort();

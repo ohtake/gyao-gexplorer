@@ -67,10 +67,10 @@ namespace Yusen.GExplorer.UserInterfaces {
 		public GContentClass LastSelectedContent {
 			get { return this.lastSelectedContent; }
 			private set {
-				if (this.lastSelectedContent != value) {
+				//if (this.lastSelectedContent != value) {
 					this.lastSelectedContent = value;
 					this.OnLastSelectedContentChanged();
-				}
+				//}
 			}
 		}
 

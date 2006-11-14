@@ -185,6 +185,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 		private bool incrementalFilterEnabled = true;
 		private bool caseInsensitiveFilter = true;
 		private readonly BackgroundImageLoader bgImgLoader = new BackgroundImageLoader(0);
+		private bool addingRules = false;
 		
 		public CrawlResultView() {
 			InitializeComponent();
@@ -363,6 +364,9 @@ namespace Yusen.GExplorer.UserInterfaces {
 			}
 		}
 		private void MakeupItems() {
+			bool ignoreNewFlag = (0 == this.result.SortedCKeysNew.Count)
+				|| (this.result.Contents.Count == this.result.SortedCKeysNew.Count);
+			bool ignoreModifiedFlag = (0 == this.result.SortedCKeysModified.Count);
 			SortedDictionary<int, ListViewGroup> dicGroups = new SortedDictionary<int, ListViewGroup>();
 			foreach (GContentClass cont in this.result.Contents) {
 				ListViewGroup group = null;
@@ -376,9 +380,9 @@ namespace Yusen.GExplorer.UserInterfaces {
 					}
 				}
 				ContentListViewItem clvi = new ContentListViewItem(cont, this.style, group);
-				if (result.SortedCKeysNew.BinarySearch(cont.ContentKey) >= 0) {
+				if (!ignoreNewFlag && result.SortedCKeysNew.BinarySearch(cont.ContentKey) >= 0) {
 					clvi.NewFlag = true;
-				} else if (result.SortedCKeysModified.BinarySearch(cont.ContentKey) >= 0) {
+				} else if (!ignoreModifiedFlag && result.SortedCKeysModified.BinarySearch(cont.ContentKey) >= 0) {
 					clvi.ModifiedFlag = true;
 				}
 				this.allClvi.Add(clvi);
@@ -439,22 +443,13 @@ namespace Yusen.GExplorer.UserInterfaces {
 		private void ContentClassificationRulesManager_ContentCllasificationRulesManagerChanged(object sender, EventArgs e) {
 			this.lvResult.BeginUpdate();
 			this.ApplyNgFavFlags();
-			this.DisplayItems();
+			if (!this.addingRules) this.DisplayItems();
 			this.lvResult.EndUpdate();
+			this.ChangeEnabilityOfMenuItems();
 		}
 		#endregion
-
+		
 		#region メインメニュー
-		private void tsmiChangeDestinationPlaylist_Click(object sender, EventArgs e) {
-			this.inputBoxDialog1.Title = "追加先のプレイリスト名を指定";
-			this.inputBoxDialog1.Message = "追加先のプレイリス名を入力してください．";
-			this.inputBoxDialog1.Input = this.tscbDestPlaylistName.Text;
-			switch (this.inputBoxDialog1.ShowDialog()) {
-				case DialogResult.OK:
-					this.tscbDestPlaylistName.Text = this.inputBoxDialog1.Input;
-					break;
-			}
-		}
 		private void tsmiVisibilitiesToumei_Click(object sender, EventArgs e) {
 			this.ContentVisibilities = ContentVisibilities.PresetToumei;
 		}
@@ -491,6 +486,19 @@ namespace Yusen.GExplorer.UserInterfaces {
 		private void tsmiFilterTypeRegex_Click(object sender, EventArgs e) {
 			this.FilterType = CrawlResultViewFilterType.Regex;
 		}
+		private void tsmiChangeDestinationPlaylist_Click(object sender, EventArgs e) {
+			this.inputBoxDialog1.Title = "追加先のプレイリスト名を指定";
+			this.inputBoxDialog1.Message = "追加先のプレイリス名を入力してください．";
+			this.inputBoxDialog1.Input = this.tscbDestPlaylistName.Text;
+			switch (this.inputBoxDialog1.ShowDialog()) {
+				case DialogResult.OK:
+					this.tscbDestPlaylistName.Text = this.inputBoxDialog1.Input;
+					break;
+			}
+		}
+		private void tsmiRedisplay_Click(object sender, EventArgs e) {
+			this.ViewCrawlResult(this.result);
+		}
 		private void tsmiAddToThePlaylist_Click(object sender, EventArgs e) {
 			Playlist pl = Program.PlaylistsManager.GetOrCreatePlaylistNamedAs(this.DestinationPlaylistName);
 			this.AddToPlaylistHelper(pl, this.GetSelectedContents());
@@ -504,20 +512,22 @@ namespace Yusen.GExplorer.UserInterfaces {
 			Program.PlayContent(conts[0], null);
 		}
 		private void tsmiCopyName_Click(object sender, EventArgs e) {
-			CPClipboardUtility.CopyNames(this.GetSelectedContents());
+			ContentClipboardUtility.CopyNames(this.GetSelectedContents());
 		}
 		private void tsmiCopyUri_Click(object sender, EventArgs e) {
-			CPClipboardUtility.CopyUris(this.GetSelectedContents());
+			ContentClipboardUtility.CopyUris(this.GetSelectedContents());
 		}
 		private void tsmiCopyNameAndUri_Click(object sender, EventArgs e) {
-			CPClipboardUtility.CopyNamesAndUris(this.GetSelectedContents());
+			ContentClipboardUtility.CopyNamesAndUris(this.GetSelectedContents());
 		}
 		private void tscpmiCopyOtherProperties_PropertySelected(object sender, EventArgs e) {
-			CPClipboardUtility.CopyContentProperties(this.GetSelectedContents(), (sender as ToolStripContentPropertyMenuItem).LastSelectedPropertyInfo);
+			ContentClipboardUtility.CopyContentProperties(this.GetSelectedContents(), (sender as ToolStripContentPropertyMenuItem).LastSelectedPropertyInfo);
 		}
 		private void tscrmiRules_SubmenuSelected(object sender, EventArgs e) {
 			ToolStripClassificationRuleMenuItem tscrmi = sender as ToolStripClassificationRuleMenuItem;
+			this.addingRules = true;
 			tscrmi.LastSelectedAction(this.GetSelectedContents());
+			this.addingRules = false;
 		}
 		private void tsecmiCommand_ExternalCommandSelected(object sender, EventArgs e) {
 			ExternalCommand ec = (sender as ToolStripExternalCommandMenuItem).LastSelectedExternalCommand;
@@ -789,7 +799,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 
 		private void ChangeEnabilityOfMenuItems() {
 			bool hasLvi = (this.lvResult.Items.Count > 0);
-			bool hasContent = (this.GetSelectedContents().Length > 0);
+			bool hasContent = (this.lvResult.SelectedItems.Count > 0);
 
 			this.tsmiSort.Enabled = hasLvi;
 			this.tsmiAddToThePlaylist.Enabled = hasContent;
@@ -799,6 +809,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 			this.tsmiCopyUri.Enabled = hasContent;
 			this.tsmiCopyNameAndUri.Enabled = hasContent;
 			this.tscpmiCopyOtherProperties.Enabled = hasContent;
+			this.tscrmiRules.Enabled = hasContent;
 			this.tsecmiCommand.Enabled = hasContent;
 
 			this.tsmiCmsAddToThePlaylist.Enabled = hasContent;
@@ -808,6 +819,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 			this.tsmiCmsCopyUri.Enabled = hasContent;
 			this.tsmiCmsCopyNameAndUri.Enabled = hasContent;
 			this.tscpmiCmsCopyOtherProperties.Enabled = hasContent;
+			this.tscrmiCmsRules.Enabled = hasContent;
 			this.tsecmiCmsCommand.Enabled = hasContent;
 		}
 		
@@ -983,6 +995,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 						this.lvResult.BeginUpdate();
 						this.DisplayItems();
 						this.lvResult.EndUpdate();
+						this.ChangeEnabilityOfMenuItems();
 					}
 
 					this.OnPropertyChanged("ContentVisibilities");
