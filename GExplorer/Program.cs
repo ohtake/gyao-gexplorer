@@ -10,6 +10,10 @@ using System.Windows.Forms;
 using Yusen.GExplorer.AppCore;
 using Yusen.GExplorer.UserInterfaces;
 using Yusen.GExplorer.GyaoModel;
+using System.Net;
+using Yusen.GExplorer.Utilities;
+using System.Runtime.InteropServices;
+using System.Text;
 
 namespace Yusen.GExplorer {
 	static class Program {
@@ -19,7 +23,8 @@ namespace Yusen.GExplorer {
 		private static PlaylistsManager playlistsManager;
 		private static ContentClassificationRulesManager contentClassificatinoRulesManager;
 		private static ExternalCommandsManager externalCommandsManager;
-		
+		private static CookieContainer cookieContainer;
+
 		private static PlayerForm playerForm = null;
 		private static BrowserForm browserForm = null;
 		private static CacheViewerForm cacheViewerForm = null;
@@ -41,6 +46,9 @@ namespace Yusen.GExplorer {
 		}
 		internal static ExternalCommandsManager ExternalCommandsManager {
 			get { return Program.externalCommandsManager; }
+		}
+		internal static CookieContainer CookieContainer {
+			get { return Program.cookieContainer; }
 		}
 		internal static void AddVirtualGenre(IVirtualGenre vgenre) {
 			Program.mainForm.AddVirtualGenre(vgenre);
@@ -97,7 +105,7 @@ namespace Yusen.GExplorer {
 			return path;
 		}
 
-		private const int InitializationSteps = 8;
+		private const int InitializationSteps = 9;
 		private const int SerializationSteps = 5;
 		private static SplashForm splashForm;
 		private static MainForm mainForm;
@@ -160,7 +168,7 @@ namespace Yusen.GExplorer {
 			if (!RootOptions.TryDeserialize(Path.Combine(Program.GetWorkingDirectory(WorkingDirectory.UserSettings), "RootOptions.xml"), out Program.rootOptions)) {
 				Program.rootOptions = new RootOptions();
 			}
-			
+
 			//アイコンの読み込み
 			Program.splashForm.StepProgress("アイコンの読み込み");
 			try {
@@ -171,10 +179,10 @@ namespace Yusen.GExplorer {
 				if (File.Exists(iconFileName)) {
 					BaseForm.CustomIcon = new Icon(iconFileName);
 				}
-			} catch(Exception e) {
+			} catch (Exception e) {
 				Program.DisplayException("アイコンの読み込みエラー", e);
 			}
-			
+
 			//ビットレートの設定
 			Program.splashForm.StepProgress("ビットレートの設定");
 			if (Program.RootOptions.AppBasicOptions.PromptBitrateOnStartup) {
@@ -188,24 +196,39 @@ namespace Yusen.GExplorer {
 					}
 				}
 			}
-
+			
+			//クッキー
+			Program.splashForm.StepProgress("クッキーの設定");
+			{
+				int cookieSize = 0;
+				if (!WindowsFunctions.InternetGetCookie(GUriBuilder.TopPageUri.AbsoluteUri, null, null, ref cookieSize)) {
+					Marshal.ThrowExceptionForHR(Marshal.GetHRForLastWin32Error());
+				}
+				StringBuilder cookieSb = new StringBuilder(cookieSize);
+				if (!WindowsFunctions.InternetGetCookie(GUriBuilder.TopPageUri.AbsoluteUri, null, cookieSb, ref cookieSize)) {
+					Marshal.ThrowExceptionForHR(Marshal.GetHRForLastWin32Error());
+				}
+				Program.cookieContainer = new CookieContainer();
+				Program.cookieContainer.SetCookies(GUriBuilder.TopPageUri, cookieSb.ToString().Replace(';', ','));
+			}
+			
 			Program.splashForm.StepProgress("キャッシュの初期化と読み込み");
-			Program.cacheController = new CacheController(Program.GetWorkingDirectory(WorkingDirectory.Cache));
+			Program.cacheController = new CacheController(Program.GetWorkingDirectory(WorkingDirectory.Cache), Program.CookieContainer);
 			if (Program.RootOptions.AppBasicOptions.UseDefaultGenres) {
 				Program.CacheController.ResetToDefaultGenres();
 			} else {
 				Program.CacheController.DeserializeGenreTable();
 			}
 			Program.cacheController.DeserializePackageAndContentTables();
-			
+
 			Program.splashForm.StepProgress("プレイリストコレクションの読み込み");
 			Program.playlistsManager = new PlaylistsManager();
 			Program.playlistsManager.DeserializePlaylists(Path.Combine(Program.GetWorkingDirectory(WorkingDirectory.UserSettings), "PlaylistCollection.xml"));
-			
+
 			Program.splashForm.StepProgress("仕分けルールの読み込み");
 			Program.contentClassificatinoRulesManager = new ContentClassificationRulesManager();
 			Program.contentClassificatinoRulesManager.TryDeserialize(Path.Combine(Program.GetWorkingDirectory(WorkingDirectory.UserSettings), "ContentClassificationRules.xml"));
-			
+
 			Program.splashForm.StepProgress("外部コマンドの読み込み");
 			Program.externalCommandsManager = new ExternalCommandsManager();
 			Program.externalCommandsManager.TryDeserialize(Path.Combine(Program.GetWorkingDirectory(WorkingDirectory.UserSettings), "ExternalCommands.xml"));

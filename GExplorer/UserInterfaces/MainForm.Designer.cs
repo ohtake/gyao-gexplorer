@@ -440,8 +440,8 @@
 			this.detailView1.Description4Style = "font-size:10px; text-align:right;";
 			this.detailView1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.detailView1.ImageHeight = 135;
-			this.detailView1.LoadImage = true;
-			this.detailView1.LoadPage = true;
+			this.detailView1.LoadImageEnabled = true;
+			this.detailView1.LoadPageEnabled = true;
 			this.detailView1.Location = new System.Drawing.Point(0, 0);
 			this.detailView1.Name = "detailView1";
 			this.detailView1.ReviewListHeight = 173;

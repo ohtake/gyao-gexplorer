@@ -164,7 +164,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 			this.gwbMain.Stop();
 		}
 		private void GoToAddressBarUri(object sender, EventArgs e) {
-			this.DocumentUri = new Uri(this.tscbAddress.Text);
+			this.gwbMain.Navigate(this.tscbAddress.Text);
 			this.gwbMain.Focus();
 		}
 		private void tscbAddress_KeyDown(object sender, KeyEventArgs e) {
@@ -197,7 +197,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 				if (string.IsNullOrEmpty(query)) {
 					this.tstbLivedoor.Focus();
 				} else {
-					this.DocumentUri = GUriBuilder.CreateLivedoorVideoGyaoSearchUri(query);
+					this.gwbMain.Navigate(GUriBuilder.CreateLivedoorVideoGyaoSearchUri(query));
 					this.gwbMain.Focus();
 				}
 			}
@@ -224,7 +224,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 
 		#region メニュー
 		private void tsmiOpenTop_Click(object sender, EventArgs e) {
-			this.DocumentUri = GUriBuilder.TopPageUri;
+			this.gwbMain.Navigate(GUriBuilder.TopPageUri);
 		}
 		private void tsmiSaveAs_Click(object sender, EventArgs e) {
 			this.gwbMain.ShowSaveAsDialog();
@@ -246,11 +246,11 @@ namespace Yusen.GExplorer.UserInterfaces {
 		}
 		private void tsgmiGenreTop_GenreSelected(object sender, EventArgs e) {
 			GGenreClass genre = this.tsgmiGenreTop.LastSelectedGenre;
-			this.DocumentUri = genre.GenreTopPageUri;
+			this.gwbMain.Navigate(genre.GenreTopPageUri);
 		}
 		private void tsgmiTimetableUpdated_GenreSelected(object sender, EventArgs e) {
 			GGenreClass genre = this.tsgmiTimetableUpdated.LastSelectedGenre;
-			this.DocumentUri = genre.TimetableRecentlyUpdatedFirstUri;
+			this.gwbMain.Navigate(genre.TimetableRecentlyUpdatedFirstUri);
 		}
 		private void tsmiExportContentListToCrawlResultView_Click(object sender, EventArgs e) {
 			//重複なしでキーを並べる

@@ -1,19 +1,17 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Collections.Generic;
+using System.Collections;
 using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Text;
-using System.Net;
-using System.Net.Cache;
-using System.IO;
+using System.Text.RegularExpressions;
+//using System.IO;
+//using System.Net;
+//using System.Net.Cache;
 using System.Windows.Forms;
+using System.Xml.Serialization;
 using Yusen.GExplorer.AppCore;
 using Yusen.GExplorer.GyaoModel;
 using Yusen.GExplorer.Utilities;
-using System.Xml.Serialization;
-using System.Text.RegularExpressions;
-using System.Collections;
 
 namespace Yusen.GExplorer.UserInterfaces {
 	sealed partial class CrawlResultView : UserControl, ICrawlResultViewBindingContract, INotifyPropertyChanged {
@@ -42,14 +40,17 @@ namespace Yusen.GExplorer.UserInterfaces {
 			private readonly ContentStyle style;
 			private readonly ListViewGroup packageGroup;
 			private bool imageRequestedAlready = false;
+			private bool newVisible = true;
 			private bool newFlag = false;
 			private bool modifiedFlag = false;
 			private bool filterFlag = false;
 			private bool isNg = false;
 			private bool isFav = false;
-
+			
+			private bool isSubitemsReady = false;
+			
 			public ContentListViewItem(GContentClass cont, ContentStyle style, ListViewGroup group)
-				: base(new string[] { cont.ContentId , cont.Title, cont.SeriesNumber, cont.Subtitle, cont.DurationValue.ToString(), cont.DeadlineValue.ToString(), cont.SummaryText}) {
+				: base(cont.ContentId) {
 				this.cont = cont;
 				this.style = style;
 				this.Group = group;
@@ -61,6 +62,10 @@ namespace Yusen.GExplorer.UserInterfaces {
 			public bool ImageRequestedAlready {
 				get { return this.imageRequestedAlready; }
 				set { this.imageRequestedAlready = value; }
+			}
+			public bool NewVisible {
+				get { return this.newVisible; }
+				set { this.newVisible = value; }
 			}
 			public bool NewFlag {
 				get { return this.newFlag; }
@@ -75,7 +80,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 				set { this.filterFlag = value; }
 			}
 			public void ApplyStyle() {
-				if (this.NewFlag) {
+				if (this.NewVisible && this.NewFlag) {
 					this.ForeColor = this.style.ColorNew;
 				} else if (this.modifiedFlag) {
 					this.ForeColor = this.style.ColorModified;
@@ -105,6 +110,20 @@ namespace Yusen.GExplorer.UserInterfaces {
 			}
 			public ListViewGroup PackageGroup {
 				get { return this.packageGroup; }
+			}
+			public bool IsSubitmesReady {
+				get { return this.isSubitemsReady; }
+			}
+			public void CreateSubitems() {
+				base.SubItems.AddRange(new string[]{
+					this.cont.Title,
+					this.cont.SeriesNumber,
+					this.cont.Subtitle,
+					this.cont.DurationValue.ToString(),
+					this.cont.DeadlineValue.ToString(),
+					this.cont.SummaryText
+				});
+				this.isSubitemsReady = true;
 			}
 		}
 		private sealed class ContentStyle {
@@ -184,7 +203,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 		private CrawlResultViewFilterType filterType = CrawlResultViewFilterType.Normal;
 		private bool incrementalFilterEnabled = true;
 		private bool caseInsensitiveFilter = true;
-		private readonly BackgroundImageLoader bgImgLoader = new BackgroundImageLoader(0);
+		private BackgroundImageLoader bgImgLoader;
 		private bool addingRules = false;
 		
 		public CrawlResultView() {
@@ -223,13 +242,13 @@ namespace Yusen.GExplorer.UserInterfaces {
 			this.comparerS = new StackableComparisonsComparer<ContentListViewItem>();
 			this.comparerF = new FilterFlagComparer(this.comparerS);
 			this.lvResult.ListViewItemSorter = this.comparerF;
-			this.ClearCrawlResult();
-			
+			this.bgImgLoader = new BackgroundImageLoader(Program.CookieContainer);
 			this.bgImgLoader.StartWorking();
 			this.Disposed += delegate {
 				this.bgImgLoader.Dispose();
 			};
-
+			this.ClearCrawlResult();
+			
 			//フィルタの対象のメニューを作成
 			List<ToolStripItem> filterObjects = new List<ToolStripItem>();
 			foreach (ColumnHeader ch in this.lvResult.Columns) {
@@ -364,9 +383,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 			}
 		}
 		private void MakeupItems() {
-			bool ignoreNewFlag = (0 == this.result.SortedCKeysNew.Count)
-				|| (this.result.Contents.Count == this.result.SortedCKeysNew.Count);
-			bool ignoreModifiedFlag = (0 == this.result.SortedCKeysModified.Count);
+			bool newVisible = this.result.SortedCKeysNew.Count < this.result.Contents.Count;
 			SortedDictionary<int, ListViewGroup> dicGroups = new SortedDictionary<int, ListViewGroup>();
 			foreach (GContentClass cont in this.result.Contents) {
 				ListViewGroup group = null;
@@ -380,9 +397,10 @@ namespace Yusen.GExplorer.UserInterfaces {
 					}
 				}
 				ContentListViewItem clvi = new ContentListViewItem(cont, this.style, group);
-				if (!ignoreNewFlag && result.SortedCKeysNew.BinarySearch(cont.ContentKey) >= 0) {
+				if (result.SortedCKeysNew.BinarySearch(cont.ContentKey) >= 0) {
 					clvi.NewFlag = true;
-				} else if (!ignoreModifiedFlag && result.SortedCKeysModified.BinarySearch(cont.ContentKey) >= 0) {
+					if (!newVisible) clvi.NewVisible = false;
+				} else if (result.SortedCKeysModified.BinarySearch(cont.ContentKey) >= 0) {
 					clvi.ModifiedFlag = true;
 				}
 				this.allClvi.Add(clvi);
@@ -439,6 +457,13 @@ namespace Yusen.GExplorer.UserInterfaces {
 			this.lvResult.EndUpdate();
 			
 			this.tslCount.Text = string.Format("{0}/{1}", lvis.Count, this.allClvi.Count);
+		}
+		private void CreateSubitemsForAllClvis() {
+			foreach (ContentListViewItem clvi in this.allClvi) {
+				if (!clvi.IsSubitmesReady) {
+					clvi.CreateSubitems();
+				}
+			}
 		}
 		private void ContentClassificationRulesManager_ContentCllasificationRulesManagerChanged(object sender, EventArgs e) {
 			this.lvResult.BeginUpdate();
@@ -726,9 +751,12 @@ namespace Yusen.GExplorer.UserInterfaces {
 		private void lvResult_DrawItem(object sender, DrawListViewItemEventArgs e) {
 			ContentListViewItem clvi = e.Item as ContentListViewItem;
 			if (clvi == null) goto defaultDraw;
+			if (!clvi.IsSubitmesReady) {
+				clvi.CreateSubitems();
+			}
 			if (this.lvResult.View == View.Details) goto defaultDraw;
 			if (clvi.ImageRequestedAlready) goto defaultDraw;
-
+			
 			clvi.ImageRequestedAlready = true;
 			Uri uri = clvi.Content.ImageSmallUri;
 			//キャッシュがあっても非同期の方が体感的には速いっぽいので
@@ -794,6 +822,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 			this.lvResult.Sort();
 		}
 		private void PushComparison(int idx) {
+			this.CreateSubitemsForAllClvis();
 			this.PushComparison(CrawlResultView.ContentComparisons[idx]);
 		}
 
@@ -908,8 +937,9 @@ namespace Yusen.GExplorer.UserInterfaces {
 				}
 			} else {
 				this.lvResult.ShowGroups = false;
+				this.CreateSubitemsForAllClvis();
+				int[] filterObjects = this.GetFilterObjectsList();
 				foreach (ContentListViewItem clvi in this.allClvi) {
-					int[] filterObjects = this.GetFilterObjectsList();
 					foreach (int oIdx in filterObjects) {
 						if (regex.Match(clvi.SubItems[oIdx].Text).Success) {
 							clvi.FilterFlag = true;

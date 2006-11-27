@@ -50,6 +50,7 @@
 			this.cmbDestination = new System.Windows.Forms.ComboBox();
 			this.btnAdd = new System.Windows.Forms.Button();
 			this.timerSelectionDelay = new System.Windows.Forms.Timer(this.components);
+			this.timerUpdateDelay = new System.Windows.Forms.Timer(this.components);
 			this.tableLayoutPanel1.SuspendLayout();
 			this.grpList.SuspendLayout();
 			this.cmsList.SuspendLayout();
@@ -316,6 +317,10 @@
 			this.timerSelectionDelay.Interval = 50;
 			this.timerSelectionDelay.Tick += new System.EventHandler(this.timerSelectionDelay_Tick);
 			// 
+			// timerUpdateDelay
+			// 
+			this.timerUpdateDelay.Tick += new System.EventHandler(this.timerUpdateDelay_Tick);
+			// 
 			// ContentClassificationRuleEditForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -363,5 +368,6 @@
 		private System.Windows.Forms.ContextMenuStrip cmsList;
 		private System.Windows.Forms.ToolStripMenuItem tsmiRemoveRule;
 		private System.Windows.Forms.Timer timerSelectionDelay;
+		private System.Windows.Forms.Timer timerUpdateDelay;
 	}
 }

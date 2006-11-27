@@ -394,6 +394,8 @@
 			// 
 			// tscbAddress
 			// 
+			this.tscbAddress.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
+			this.tscbAddress.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.AllUrl;
 			this.tscbAddress.Name = "tscbAddress";
 			this.tscbAddress.Size = new System.Drawing.Size(500, 25);
 			this.tscbAddress.Text = "tscbAddress";

@@ -29,11 +29,13 @@ namespace Yusen.GExplorer.AppCore {
 		private readonly GDataSet dataSet = new GDataSet();
 		private readonly List<GGenreClass> allGenres = new List<GGenreClass>();
 		private readonly SortedDictionary<int, GGenreClass> dicGenre = new SortedDictionary<int, GGenreClass>();
+		private readonly CookieContainer cookieContainer;
 		
 		private CacheController() {
 		}
-		public CacheController(string cacheDirectory) : this(){
+		public CacheController(string cacheDirectory, CookieContainer cookieContainer) : this(){
 			this.cacheDirectory = cacheDirectory;
+			this.cookieContainer = cookieContainer;
 		}
 		public IEnumerable<GGenreClass> GetEnumerableOfAllGenres() {
 			return this.allGenres;
@@ -140,6 +142,7 @@ namespace Yusen.GExplorer.AppCore {
 			TextReader reader = TextReader.Null;
 			try {
 				HttpWebRequest req = WebRequest.Create(uri) as HttpWebRequest;
+				req.CookieContainer = this.cookieContainer;
 				reader = new StreamReader(req.GetResponse().GetResponseStream(), this.encoding);
 				string allHtml = reader.ReadToEnd();
 				
@@ -217,6 +220,7 @@ namespace Yusen.GExplorer.AppCore {
 			TextReader reader = TextReader.Null;
 			try{
 				HttpWebRequest req = WebRequest.Create(pacUri) as HttpWebRequest;
+				req.CookieContainer = this.cookieContainer;
 				reader = new StreamReader(req.GetResponse().GetResponseStream(), this.encoding);
 				string allHtml = reader.ReadToEnd();
 

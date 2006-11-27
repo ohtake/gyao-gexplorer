@@ -183,6 +183,10 @@ namespace Yusen.GExplorer.UserInterfaces {
 			this.txtArg.SelectionLength = 0;
 			this.txtArg.SelectionStart = beforeCarret.Length + arg.Length;
 		}
+
+		private void tscpmiPropertyName_PropertySelected(object sender, EventArgs e) {
+			this.AppendArg(string.Format("{{{0}}}", this.tscpmiPropertyName.LastSelectedPropertyInfo.Name));
+		}
 	}
 	
 	public sealed class ExternalCommandsEditFormOptions : FormOptionsBase {

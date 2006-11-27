@@ -47,6 +47,65 @@ namespace Yusen.GExplorer.UserInterfaces {
 			}
 		}
 		#endregion
+		#region 仮想ジャンル
+		private sealed class MergedAllGenre : IVirtualGenre {
+			public MergedAllGenre() {
+			}
+			#region IVirtualGenre Members
+			public string ShortName {
+				get { return "全ジャンル"; }
+			}
+			public string LongName {
+				get { return "全ジャンルのクロール結果をマージ"; }
+			}
+			public Color Color {
+				get { return Color.Black; }
+			}
+			public CrawlResult GetCrawlResult() {
+				CrawlResult mergedResult = new CrawlResult();
+				foreach (GGenreClass genre in Program.CacheController.GetEnumerableOfAllGenres()) {
+					CrawlResult result;
+					if (Program.CacheController.TryDeserializeCrawlResult(genre, out result)) {
+						mergedResult.AppendResult(result);
+					}
+				}
+				mergedResult.SortListsNeedingSorting();
+				return mergedResult;
+			}
+			#endregion
+		}
+		private sealed class MergedOpenedGenre : IVirtualGenre {
+			private readonly GenreSelectControl owner;
+			public MergedOpenedGenre(GenreSelectControl owner) {
+				this.owner = owner;
+			}
+			#region IVirtualGenre Members
+			public string ShortName {
+				get { return "開ジャンル"; }
+			}
+			public string LongName {
+				get { return "開いているジャンルのクロール結果をマージ"; }
+			}
+			public Color Color {
+				get { return Color.Black; }
+			}
+			public CrawlResult GetCrawlResult() {
+				CrawlResult mergedResult = new CrawlResult();
+				foreach (GenreTabPage gtp in this.owner.tabcGsc.TabPages) {
+					GGenreTabPage ggtp = gtp as GGenreTabPage;
+					if (null != ggtp) {
+						CrawlResult result;
+						if (Program.CacheController.TryDeserializeCrawlResult(ggtp.Genre, out result)) {
+							mergedResult.AppendResult(result);
+						}
+					}
+				}
+				mergedResult.SortListsNeedingSorting();
+				return mergedResult;
+			}
+			#endregion
+		}
+		#endregion
 		#region その他内部クラス
 		private sealed class TabControlDoubleClickListener : NativeWindow{
 			public event EventHandler DoubleClick;
@@ -250,6 +309,16 @@ namespace Yusen.GExplorer.UserInterfaces {
 			if (this.AddTabIfNotExists(vgenre)) {
 				this.tabcGsc.SelectedIndex = this.tabcGsc.TabCount - 1;
 				this.HandleTabChangeInternal();
+			} else {
+				foreach (GenreTabPage gtp in this.tabcGsc.TabPages) {
+					VGenreTabPage vgtp = gtp as VGenreTabPage;
+					if (null != vgtp) {
+						if (vgtp.VirtualGenre.ShortName == vgenre.ShortName && vgtp.VirtualGenre.LongName == vgenre.LongName) {
+							this.tabcGsc.SelectedTab = vgtp;
+							break;
+						}
+					}
+				}
 			}
 		}
 		private void RemoveLeftTabs(GenreTabPage gtp) {
@@ -357,7 +426,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 			if (null == req) throw new InvalidOperationException();
 
 			this.InvokeOnCrawlStarted();
-			e.Result = new GenreCrawler(req.Genre, req.PreviousCrawlResult, Program.RootOptions.CrawlOptions, Program.CacheController, this.bwCrawl).GetResult();
+			e.Result = new GenreCrawler(req.Genre, req.PreviousCrawlResult, Program.RootOptions.CrawlOptions, Program.CacheController,Program.CookieContainer, this.bwCrawl).GetResult();
 			if (null == e.Result) {
 				e.Cancel = true;
 			}
@@ -573,12 +642,13 @@ namespace Yusen.GExplorer.UserInterfaces {
 
 		#region メインメニュー
 		private void tsgmiAddAndSelectGenre_GenreSelected(object sender, EventArgs e) {
+			GGenreClass lastGenre = this.tsgmiAddAndSelectGenre.LastSelectedGenre;
 			this.BeginUpdateGenreTabs();
-			if (this.AddTabIfNotExists(this.tsgmiAddAndSelectGenre.LastSelectedGenre)) {
+			if (this.AddTabIfNotExists(lastGenre)) {
 				this.tabcGsc.SelectedIndex = this.tabcGsc.TabCount - 1;
 			} else {
 				foreach (GGenreTabPage ggtp in this.tabcGsc.TabPages) {
-					if (this.tsgmiAddAndSelectGenre.LastSelectedGenre == ggtp.Genre) {
+					if (lastGenre == ggtp.Genre) {
 						this.tabcGsc.SelectedTab = ggtp;
 						break;
 					}
@@ -594,6 +664,12 @@ namespace Yusen.GExplorer.UserInterfaces {
 			}
 			if (!isSelected) this.tabcGsc.SelectedIndex = -1;
 			this.EndUpdateGenreTabs();
+		}
+		private void tsmiMergeAll_Click(object sender, EventArgs e) {
+			this.AddAndSelectVirtualGenre(new MergedAllGenre());
+		}
+		private void tsmiMergeOpened_Click(object sender, EventArgs e) {
+			this.AddAndSelectVirtualGenre(new MergedOpenedGenre(this));
 		}
 		private void tsmiGoToPrevTab_Click(object sender, EventArgs e) {
 			int tabIdx = this.tabcGsc.SelectedIndex;

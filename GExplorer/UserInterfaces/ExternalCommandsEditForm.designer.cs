@@ -214,28 +214,28 @@
             this.toolStripMenuItem2,
             this.tsmiCodepages});
 			this.cmsArgs.Name = "cmsArgs";
-			this.cmsArgs.Size = new System.Drawing.Size(156, 60);
+			this.cmsArgs.Size = new System.Drawing.Size(159, 60);
 			// 
 			// toolStripMenuItem1
 			// 
 			this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-			this.toolStripMenuItem1.Size = new System.Drawing.Size(152, 6);
+			this.toolStripMenuItem1.Size = new System.Drawing.Size(155, 6);
 			// 
 			// tsmiLiterals
 			// 
 			this.tsmiLiterals.Name = "tsmiLiterals";
-			this.tsmiLiterals.Size = new System.Drawing.Size(155, 22);
+			this.tsmiLiterals.Size = new System.Drawing.Size(158, 22);
 			this.tsmiLiterals.Text = "リテラル文字(&L)";
 			// 
 			// toolStripMenuItem2
 			// 
 			this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-			this.toolStripMenuItem2.Size = new System.Drawing.Size(152, 6);
+			this.toolStripMenuItem2.Size = new System.Drawing.Size(155, 6);
 			// 
 			// tsmiCodepages
 			// 
 			this.tsmiCodepages.Name = "tsmiCodepages";
-			this.tsmiCodepages.Size = new System.Drawing.Size(155, 22);
+			this.tsmiCodepages.Size = new System.Drawing.Size(158, 22);
 			this.tsmiCodepages.Text = "コードページ名(&C)";
 			// 
 			// btnUp
@@ -338,22 +338,23 @@
 			this.cmsDummy.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tscpmiPropertyName});
 			this.cmsDummy.Name = "cmsDummy";
-			this.cmsDummy.Size = new System.Drawing.Size(249, 26);
+			this.cmsDummy.Size = new System.Drawing.Size(246, 48);
 			// 
 			// tscpmiPropertyName
 			// 
 			this.tscpmiPropertyName.Name = "tscpmiPropertyName";
-			this.tscpmiPropertyName.Size = new System.Drawing.Size(248, 22);
+			this.tscpmiPropertyName.Size = new System.Drawing.Size(245, 22);
 			this.tscpmiPropertyName.Text = "ToolStripContentPropertyMenuItem";
+			this.tscpmiPropertyName.PropertySelected += new System.EventHandler(this.tscpmiPropertyName_PropertySelected);
 			// 
-			// ExternalCommandsEditor
+			// ExternalCommandsEditForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(352, 294);
 			this.Controls.Add(this.tableLayoutPanel3);
 			this.MinimumSize = new System.Drawing.Size(360, 320);
-			this.Name = "ExternalCommandsEditor";
+			this.Name = "ExternalCommandsEditForm";
 			this.Text = "外部コマンドエディタ";
 			this.Load += new System.EventHandler(this.ExternalCommandsEditor_Load);
 			this.grpDetail.ResumeLayout(false);

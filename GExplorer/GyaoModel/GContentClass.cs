@@ -224,6 +224,19 @@ namespace Yusen.GExplorer.GyaoModel {
 		public Uri RecommendationSmallUri {
 			get { return GUriBuilder.CreateRecommendationUri(this.ContentId, GBitrate.Standard); }
 		}
+		[Category("URI")]
+		[Description("レビュー一覧ページのURI．")]
+		[XmlIgnore]
+		public Uri ReviewListUri {
+			get { return GUriBuilder.CreateReviewListUri(this.ContentId, this.PackageId); }
+		}
+		[Category("URI")]
+		[Description("レビュー投稿ページのURI．")]
+		[XmlIgnore]
+		public Uri ReviewInputUri {
+			get { return GUriBuilder.CreateReviewInputUri(this.ContentId, this.PackageId); }
+		}
+
 		[Category("パーズ結果")]
 		[Description("配信期限のパーズ結果．")]
 		[XmlIgnore]

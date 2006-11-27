@@ -79,34 +79,8 @@ namespace Yusen.GExplorer.AppCore {
 	}
 
 	sealed class ContentClassificationRulesManager : IEnumerable<ContentClassificationRule> {
-		private struct EquivalentTitleInvertedListItem : IComparable<EquivalentTitleInvertedListItem> {
-			private readonly string title;
-			private readonly ContentClassificationRule[] rules;
-
-			public EquivalentTitleInvertedListItem(string title, ContentClassificationRule[] rules) {
-				this.title = title;
-				this.rules = rules;
-			}
-			public string Title {
-				get { return this.title; }
-			}
-			public ContentClassificationRule[] Rules {
-				get { return this.rules; }
-			}
-			public void UpdateLastApplied() {
-				foreach (ContentClassificationRule rule in this.rules) {
-					rule.LastApplied = DateTime.Now;
-				}
-			}
-			
-			#region IComparable<EquivalentTitleInvertedList> Members
-			public int CompareTo(EquivalentTitleInvertedListItem other) {
-				return this.title.CompareTo(other.title);
-			}
-			#endregion
-		}
-		
 		public event EventHandler ContentCllasificationRulesManagerChanged;
+		public event EventHandler LastAppliedTimeChanged;
 		
 		private List<ContentClassificationRule> rules;
 		private SortedDictionary<string, PropertyInfo> pInfos = new SortedDictionary<string, PropertyInfo>();
@@ -114,7 +88,7 @@ namespace Yusen.GExplorer.AppCore {
 		private int updateCount = 0;
 		private bool updatedFlag = false;
 
-		private List<EquivalentTitleInvertedListItem> accEqTitles = new List<EquivalentTitleInvertedListItem>();
+		private Dictionary<string, List<ContentClassificationRule>> accEqTitles = new Dictionary<string, List<ContentClassificationRule>>();
 		private List<ContentClassificationRule> accMiscRules = new List<ContentClassificationRule>();
 		
 		public ContentClassificationRulesManager() {
@@ -146,6 +120,12 @@ namespace Yusen.GExplorer.AppCore {
 				handler(this, EventArgs.Empty);
 			}
 		}
+		private void OnLastAppliedTimeChanged() {
+			EventHandler handler = this.LastAppliedTimeChanged;
+			if (null != handler) {
+				handler(this, EventArgs.Empty);
+			}
+		}
 		public bool IsUpdating {
 			get { return this.updateCount > 0; }
 		}
@@ -153,25 +133,21 @@ namespace Yusen.GExplorer.AppCore {
 		private void CreateAccelarationStructures() {
 			this.accEqTitles.Clear();
 			this.accMiscRules.Clear();
-
-			SortedDictionary<string, List<ContentClassificationRule>> dic = new SortedDictionary<string, List<ContentClassificationRule>>();
-
+			
 			foreach (ContentClassificationRule rule in this.rules) {
 				if (rule.Subject.Equals(ContentClassificationRule.SubjectTitle) && rule.Predicate == StringPredicate.StringEquals) {
-					List<ContentClassificationRule> invListItem;
-					if (!dic.TryGetValue(rule.Object, out invListItem)) {
-						invListItem = new List<ContentClassificationRule>();
-						dic.Add(rule.Object, invListItem);
+					List<ContentClassificationRule> list;
+					if (this.accEqTitles.TryGetValue(rule.Object, out list)) {
+						list.Add(rule);
+					} else {
+						list = new List<ContentClassificationRule>();
+						list.Add(rule);
+						this.accEqTitles.Add(rule.Object, list);
 					}
-					invListItem.Add(rule);
 				} else {
 					this.accMiscRules.Add(rule);
 				}
 			}
-			foreach (KeyValuePair<string, List<ContentClassificationRule>> pair in dic) {
-				this.accEqTitles.Add(new EquivalentTitleInvertedListItem(pair.Key, pair.Value.ToArray()));
-			}
-			this.accEqTitles.Sort();
 		}
 
 		#region シリアライズ・デシリアライズ
@@ -229,11 +205,13 @@ namespace Yusen.GExplorer.AppCore {
 		}
 		public ContentClassificationRule[] GetAppliableRulesFor(GContentClass cont) {
 			List<ContentClassificationRule> rules = new List<ContentClassificationRule>();
-			int titleInvListIndex = this.accEqTitles.BinarySearch(new EquivalentTitleInvertedListItem(cont.Title, null));
-			if (titleInvListIndex >= 0) {
-				EquivalentTitleInvertedListItem invListItem = this.accEqTitles[titleInvListIndex];
-				rules.AddRange(invListItem.Rules);
-				invListItem.UpdateLastApplied();
+			List<ContentClassificationRule> accList;
+			if (this.accEqTitles.TryGetValue(cont.Title, out accList)) {
+				rules.AddRange(accList);
+				DateTime now = DateTime.Now;
+				foreach (ContentClassificationRule rule in accList) {
+					rule.LastApplied = now;
+				}
 			}
 			foreach (ContentClassificationRule rule in this.accMiscRules) {
 				PropertyInfo pi;
@@ -266,6 +244,9 @@ namespace Yusen.GExplorer.AppCore {
 					rules.Add(rule);
 					rule.LastApplied = DateTime.Now;
 				}
+			}
+			if (rules.Count > 0) {
+				this.OnLastAppliedTimeChanged();
 			}
 			return rules.ToArray();
 		}

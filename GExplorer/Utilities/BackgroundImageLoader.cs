@@ -13,13 +13,19 @@ namespace Yusen.GExplorer.Utilities {
 		private readonly object workLock = new object();
 		private volatile bool working = false;
 		private volatile bool disposed = false;
+		private readonly CookieContainer cookieContainer;
 		private readonly int intervalMilliseconds;
 		
 		private AutoResetEvent autoResetEvent = new AutoResetEvent(false);
 		
-		public BackgroundImageLoader() : this(0){
+		public BackgroundImageLoader() : this(new CookieContainer()){
 		}
-		public BackgroundImageLoader(int intervalMilliseconds) {
+		public BackgroundImageLoader(CookieContainer cookieContainer) : this(cookieContainer, 0){
+		}
+		public BackgroundImageLoader(int intervalMilliseconds) : this(new CookieContainer(), intervalMilliseconds) {
+		}
+		public BackgroundImageLoader(CookieContainer cookieContainer, int intervalMilliseconds) {
+			this.cookieContainer = cookieContainer;
 			this.intervalMilliseconds = intervalMilliseconds;
 		}
 		
@@ -58,6 +64,7 @@ namespace Yusen.GExplorer.Utilities {
 					continue;
 				}
 				HttpWebRequest req = WebRequest.Create(task.Uri) as HttpWebRequest;
+				req.CookieContainer = this.cookieContainer;
 				req.CachePolicy = new RequestCachePolicy(RequestCacheLevel.CacheIfAvailable);
 				try {
 					HttpWebResponse res = req.GetResponse() as HttpWebResponse;
@@ -70,7 +77,9 @@ namespace Yusen.GExplorer.Utilities {
 				} catch {
 					task.InvokeCallback(null);
 				}
-				Thread.Sleep(this.intervalMilliseconds);
+				if (this.intervalMilliseconds > 0) {
+					Thread.Sleep(this.intervalMilliseconds);
+				}
 			}
 		}
 		

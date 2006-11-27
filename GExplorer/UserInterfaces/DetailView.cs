@@ -10,6 +10,7 @@ using System.Text.RegularExpressions;
 using System.Net;
 using System.IO;
 using System.Net.Cache;
+using System.Web;
 
 namespace Yusen.GExplorer.UserInterfaces {
 	sealed partial class DetailView : UserControl, IDetailViewBindingContract, INotifyPropertyChanged {
@@ -43,13 +44,8 @@ namespace Yusen.GExplorer.UserInterfaces {
 
 		private string statusMessage = string.Empty;
 
-		private bool loadImage = true;
-		private bool loadPage = true;
-
-		private readonly object objWcImage = new object();
-		private readonly WebClient wcImage = new WebClient();
-		private readonly object objWcPage = new object();
-		private readonly WebClient wcPage = new WebClient();
+		private bool loadImageEnabled = true;
+		private bool loadPageEnabled = true;
 
 		private GContentClass cont;
 		private string description1Style = DetailView.DefaultDescription1Style;
@@ -62,14 +58,8 @@ namespace Yusen.GExplorer.UserInterfaces {
 		}
 		private void DetailView_Load(object sender, EventArgs e) {
 			if (base.DesignMode) return;
-
-			this.wcImage.CachePolicy = new RequestCachePolicy(RequestCacheLevel.CacheIfAvailable);
-			this.wcPage.CachePolicy = new RequestCachePolicy(RequestCacheLevel.Default);
-			this.wcImage.OpenReadCompleted += new OpenReadCompletedEventHandler(wcImage_OpenReadCompleted);
-			this.wcPage.OpenReadCompleted += new OpenReadCompletedEventHandler(wcPage_OpenReadCompleted);
-
+			
 			this.wbDescription.DocumentText = "<html><body style='margin:0px;'></body></html>";
-
 			this.ChangeEnabilityOfMenuItems();
 		}
 
@@ -90,82 +80,86 @@ namespace Yusen.GExplorer.UserInterfaces {
 			this.cont = cont;
 			this.pgProperty.SelectedObject = cont;
 
-			if(this.LoadImage) this.LoadImageAsync();
-			if(this.LoadPage) this.LoadPageAsync();
-
+			if (this.LoadImageEnabled) this.LoadImageAsync();
+			if (this.LoadPageEnabled) this.LoadPageAsync();
+			
 			this.ChangeEnabilityOfMenuItems();
 		}
 
 		private void LoadImageAsync() {
-			lock (this.objWcImage) {
-				this.wcImage.CancelAsync();
-				this.wcImage.OpenReadAsync(cont.ImageLargeUri);
-			}
+			HttpWebRequest req = WebRequest.Create(this.cont.ImageLargeUri) as HttpWebRequest;
+			req.CachePolicy = new RequestCachePolicy(RequestCacheLevel.CacheIfAvailable);
+			req.CookieContainer = Program.CookieContainer;
+			IAsyncResult result = req.BeginGetResponse(new AsyncCallback(this.LoadImageAsyncCallback), req);
 		}
-		private void wcImage_OpenReadCompleted(object sender, OpenReadCompletedEventArgs e) {
-			lock (this.objWcImage) {
-				if (e.Cancelled) return;
-				if (null != e.Error) {
-					this.pbImage.Image = this.pbImage.ErrorImage;
-					this.StatusMessage = e.Error.Message;
-					return;
+		private void LoadImageAsyncCallback(IAsyncResult result) {
+			if (this.InvokeRequired) {
+				this.Invoke(new AsyncCallback(this.LoadImageAsyncCallback), result);
+				return;
+			}
+			try {
+				HttpWebResponse res = (result.AsyncState as HttpWebRequest).EndGetResponse(result) as HttpWebResponse;
+				using (Stream stream = res.GetResponseStream()) {
+					this.pbImage.Image = Image.FromStream(stream);
 				}
-				try {
-					this.pbImage.Image = Image.FromStream(e.Result);
-				} catch (WebException) {
-					this.pbImage.Image = this.pbImage.ErrorImage;
-				} catch(Exception ex) {
-					this.StatusMessage = ex.Message;
-				}
+			} catch (Exception e) {
+				this.pbImage.Image = this.pbImage.ErrorImage;
+				this.StatusMessage = e.Message;
 			}
 		}
 		private void LoadPageAsync() {
-			lock (this.objWcPage) {
-				this.wcPage.CancelAsync();
-				this.wcPage.OpenReadAsync(cont.ContentDetailUri);
-			}
+			HttpWebRequest req = WebRequest.Create(this.cont.ContentDetailUri) as HttpWebRequest;
+			req.CachePolicy = new RequestCachePolicy(RequestCacheLevel.Default);
+			req.CookieContainer = Program.CookieContainer;
+			IAsyncResult result = req.BeginGetResponse(new AsyncCallback(this.LoadPageAsyncCallback), req);
 		}
-		private void wcPage_OpenReadCompleted(object sender, OpenReadCompletedEventArgs e) {
-			lock (this.objWcPage) {
-				if (e.Cancelled) return;
-				if (null != e.Error) {
-					this.wbDescription.Document.Body.InnerHtml = string.Format("エラー: {0}", e.Error.Message);
-					return;
-				}
-				try {
-					using (TextReader reader = new StreamReader(e.Result, DetailView.encodingGyao)) {
-						string html = reader.ReadToEnd();
-						Match m = DetailView.regexDesc.Match(html);
-						if (m.Success) {
-							this.wbDescription.Document.Body.InnerHtml = string.Format(@"<p style=""{4}"">{0}</p><p style=""{5}"">{1}</p><p style=""{6}"">{2}</p><p style=""{7}"">{3}</p>",
-								m.Groups["Desc1"].Value, m.Groups["Desc2"].Value, m.Groups["Desc3"].Value, m.Groups["Desc4"].Value,
-								this.Description1Style, this.Description2Style, this.Description3Style, this.Description4Style);
-						} else {
-							this.wbDescription.Document.Body.InnerHtml = "エラー: 正規表現にマッチしなかった";
-						}
-						m = DetailView.regexReviewSummary.Match(html);
-						if (m.Success) {
-							string aveScore = m.Groups["Summary"].Value;
-							this.lvReview.BeginUpdate();
-							this.lvReview.Items.Clear();
-							for (m = DetailView.regexReviewPost.Match(html); m.Success; m = m.NextMatch()) {
-								this.lvReview.Items.Add(new ReviewPostListViewItem(m.Groups["NetaBare"].Success, m.Groups["Score"].Value, m.Groups["Denominator"].Value, m.Groups["Numerator"].Value, m.Groups["Title"].Value, m.Groups["Author"].Value, m.Groups["Posted"].Value, m.Groups["Body"].Value));
-							}
-							this.lvReview.EndUpdate();
-							this.lblReviewSummary.Text = string.IsNullOrEmpty(aveScore) ? "レビューなし" : string.Format("新着分{0}件 総合評価{1}点", this.lvReview.Items.Count, aveScore);
-							this.tabpReview.Text = string.IsNullOrEmpty(aveScore) ? "レビュー(0)" : string.Format("レビュー({0};{1})", this.lvReview.Items.Count, aveScore);
-						} else {
-							this.lblReviewSummary.Text = "レビュー取得失敗";
-							this.tabpReview.Text = "レビュー(取得失敗)";
-							this.lvReview.Items.Clear();
-						}
-						this.txtReview.Clear();
+		private void LoadPageAsyncCallback(IAsyncResult result) {
+			if (this.InvokeRequired) {
+				this.Invoke(new AsyncCallback(this.LoadPageAsyncCallback), result);
+				return;
+			}
+			try {
+				HttpWebResponse res = (result.AsyncState as HttpWebRequest).EndGetResponse(result) as HttpWebResponse;
+				using (TextReader reader = new StreamReader(res.GetResponseStream(), DetailView.encodingGyao)) {
+					string html = reader.ReadToEnd();
+					Match m = DetailView.regexDesc.Match(html);
+					if (m.Success) {
+						this.wbDescription.Document.Body.InnerHtml = string.Format(@"<p style=""{4}"">{0}</p><p style=""{5}"">{1}</p><p style=""{6}"">{2}</p><p style=""{7}"">{3}</p>",
+							m.Groups["Desc1"].Value, m.Groups["Desc2"].Value, m.Groups["Desc3"].Value, m.Groups["Desc4"].Value,
+							this.Description1Style, this.Description2Style, this.Description3Style, this.Description4Style);
+					} else {
+						this.wbDescription.Document.Body.InnerHtml = "エラー: 正規表現にマッチしなかった";
 					}
-				} catch (WebException ex) {
-					this.wbDescription.DocumentText = string.Format("エラー: {0}", ex.Message);
-				} catch (Exception ex){
-					this.StatusMessage = ex.Message;
+					m = DetailView.regexReviewSummary.Match(html);
+					if (m.Success) {
+						string aveScore = m.Groups["Summary"].Value;
+						this.lvReview.BeginUpdate();
+						this.lvReview.Items.Clear();
+						for (m = DetailView.regexReviewPost.Match(html); m.Success; m = m.NextMatch()) {
+							this.lvReview.Items.Add(new ReviewPostListViewItem(
+								m.Groups["NetaBare"].Success,
+								m.Groups["Score"].Value,
+								m.Groups["Denominator"].Value,
+								m.Groups["Numerator"].Value,
+								HttpUtility.HtmlDecode(m.Groups["Title"].Value),
+								HttpUtility.HtmlDecode(m.Groups["Author"].Value),
+								m.Groups["Posted"].Value,
+								HttpUtility.HtmlDecode(m.Groups["Body"].Value)));
+						}
+						this.lvReview.EndUpdate();
+						this.lblReviewSummary.Text = string.IsNullOrEmpty(aveScore) ? "レビューなし" : string.Format("新着分{0}件 総合評価{1}点", this.lvReview.Items.Count, aveScore);
+						this.tabpReview.Text = string.IsNullOrEmpty(aveScore) ? "レビュー(0)" : string.Format("レビュー({0};{1})", this.lvReview.Items.Count, aveScore);
+					} else {
+						this.lblReviewSummary.Text = "レビュー取得失敗";
+						this.tabpReview.Text = "レビュー(取得失敗)";
+						this.lvReview.Items.Clear();
+					}
+					this.txtReview.Clear();
 				}
+			} catch (WebException ex) {
+				this.wbDescription.DocumentText = string.Format("エラー: {0}", ex.Message);
+			} catch (Exception ex) {
+				this.StatusMessage = ex.Message;
 			}
 		}
 		private void lvReview_SelectedIndexChanged(object sender, EventArgs e) {
@@ -212,19 +206,19 @@ namespace Yusen.GExplorer.UserInterfaces {
 		}
 		#region IDetailViewBindingContract Members
 		[Browsable(false)]
-		public bool LoadImage {
-			get { return this.loadImage; }
+		public bool LoadImageEnabled {
+			get { return this.loadImageEnabled; }
 			set {
-				this.loadImage = value;
-				this.OnPropertyChanged("LoadImage");
+				this.loadImageEnabled = value;
+				this.OnPropertyChanged("LoadImageEnabled");
 			}
 		}
 		[Browsable(false)]
-		public bool LoadPage {
-			get { return this.loadPage; }
+		public bool LoadPageEnabled {
+			get { return this.loadPageEnabled; }
 			set {
-				this.loadPage = value;
-				this.OnPropertyChanged("LoadPage");
+				this.loadPageEnabled = value;
+				this.OnPropertyChanged("LoadPageEnabled");
 			}
 		}
 		[Browsable(false)]
@@ -360,8 +354,8 @@ namespace Yusen.GExplorer.UserInterfaces {
 	}
 
 	interface IDetailViewBindingContract : IBindingContract {
-		bool LoadImage { get;set;}
-		bool LoadPage { get;set;}
+		bool LoadImageEnabled { get;set;}
+		bool LoadPageEnabled { get;set;}
 		int ImageHeight { get;set;}
 
 		int ReviewListHeight { get;set;}
@@ -382,23 +376,23 @@ namespace Yusen.GExplorer.UserInterfaces {
 		}
 
 		#region IDetailViewBindingContract Members
-		private bool loadImage = true;
+		private bool loadImageEnabled = true;
 		[Category("情報取得")]
 		[DisplayName("画像")]
 		[Description("画像を取得します．")]
 		[DefaultValue(true)]
-		public bool LoadImage {
-			get { return this.loadImage; }
-			set { this.loadImage = value; }
+		public bool LoadImageEnabled {
+			get { return this.loadImageEnabled; }
+			set { this.loadImageEnabled = value; }
 		}
-		private bool loadPage = true;
+		private bool loadPageEnabled = true;
 		[Category("情報取得")]
 		[DisplayName("説明文とレビュー")]
 		[Description("説明文とレビューを取得します．")]
 		[DefaultValue(true)]
-		public bool LoadPage {
-			get { return this.loadPage; }
-			set { this.loadPage = value; }
+		public bool LoadPageEnabled {
+			get { return this.loadPageEnabled; }
+			set { this.loadPageEnabled = value; }
 		}
 
 		private int imageHeight = -1;

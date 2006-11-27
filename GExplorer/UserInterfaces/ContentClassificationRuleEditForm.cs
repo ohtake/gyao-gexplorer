@@ -77,15 +77,17 @@ namespace Yusen.GExplorer.UserInterfaces {
 
 			if (Program.ContentClassificationRulesManager == null) return;
 			Program.ContentClassificationRulesManager.ContentCllasificationRulesManagerChanged += new EventHandler(ContentClassificationRulesManager_ContentCllasificationRulesManagerChanged);
+			Program.ContentClassificationRulesManager.LastAppliedTimeChanged += new EventHandler(ContentClassificationRulesManager_LastAppliedTimeChanged);
 			this.Disposed += delegate {
 				Program.ContentClassificationRulesManager.ContentCllasificationRulesManagerChanged -= new EventHandler(ContentClassificationRulesManager_ContentCllasificationRulesManagerChanged);
+				Program.ContentClassificationRulesManager.LastAppliedTimeChanged -= new EventHandler(ContentClassificationRulesManager_LastAppliedTimeChanged);
 			};
 			this.UpdateRuleList();
 			
 			if (Program.RootOptions == null) return;
 			Program.RootOptions.ContentClassificationRuleEditFormOptions.ApplyFormBaseOptionsAndTrackValues(this);
 		}
-
+		
 		private void UpdateRuleList() {
 			this.lvRules.BeginUpdate();
 			this.lvRules.Items.Clear();
@@ -100,7 +102,10 @@ namespace Yusen.GExplorer.UserInterfaces {
 		private void ContentClassificationRulesManager_ContentCllasificationRulesManagerChanged(object sender, EventArgs e) {
 			this.UpdateRuleList();
 		}
-
+		private void ContentClassificationRulesManager_LastAppliedTimeChanged(object sender, EventArgs e) {
+			this.timerUpdateDelay.Start();
+		}
+		
 		private void UpdateDestinationDropDownItems() {
 			this.cmbDestination.BeginUpdate();
 			this.cmbDestination.Items.Clear();
@@ -153,6 +158,10 @@ namespace Yusen.GExplorer.UserInterfaces {
 			this.cmbPredicate.Text = this.lastSelectedRule.Predicate.ToString();
 			this.txtObject.Text = this.lastSelectedRule.Object;
 			this.cmbDestination.Text = this.lastSelectedRule.Destination;
+		}
+		private void timerUpdateDelay_Tick(object sender, EventArgs e) {
+			this.timerUpdateDelay.Stop();
+			this.UpdateRuleList();
 		}
 
 		private void tsmiRemoveRule_Click(object sender, EventArgs e) {

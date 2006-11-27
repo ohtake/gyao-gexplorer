@@ -21,28 +21,18 @@ namespace Yusen.GExplorer.UserInterfaces {
 		private const string StreamingServerName = "wms.cd.gyao.jp";
 		
 		private sealed class PageReaderWithCookie {
-			private static readonly Uri TopPageUri = new Uri("http://www.gyao.jp/");
 			private static readonly Encoding PageEncoding = Encoding.GetEncoding("Shift_JIS");
 			
 			private readonly CookieContainer cc;
 			
 			public PageReaderWithCookie() {
-				int cookieSize = 0;
-				if (!WindowsFunctions.InternetGetCookie(PageReaderWithCookie.TopPageUri.AbsoluteUri, null, null, ref cookieSize)) {
-					Marshal.ThrowExceptionForHR(Marshal.GetHRForLastWin32Error());
-				}
-				StringBuilder cookieSb = new StringBuilder(cookieSize);
-				if (!WindowsFunctions.InternetGetCookie(PageReaderWithCookie.TopPageUri.AbsoluteUri, null, cookieSb, ref cookieSize)) {
-					Marshal.ThrowExceptionForHR(Marshal.GetHRForLastWin32Error());
-				}
-				this.cc = new CookieContainer();
-				this.cc.SetCookies(PageReaderWithCookie.TopPageUri, cookieSb.ToString().Replace(';', ','));
+				this.cc = Program.CookieContainer;
 			}
 			
 			public string GetResponseText(Uri uri) {
 				HttpWebRequest req = WebRequest.Create(uri) as HttpWebRequest;
 				req.CookieContainer = this.cc;
-
+				
 				using (HttpWebResponse res = req.GetResponse() as HttpWebResponse)
 				using (Stream stream = res.GetResponseStream())
 				using (StreamReader reader = new StreamReader(stream, PageReaderWithCookie.PageEncoding)) {
@@ -309,7 +299,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 		private void UpdateTitlebarText() {
 			if (null == this.currentContent) {
 				if (null == this.currentPlaylist) {
-					this.Text = "PlayerForm2";
+					this.Text = "PlayerForm";
 				} else {
 					this.Text = string.Format("[{0}]", this.currentPlaylist.Name);
 				}

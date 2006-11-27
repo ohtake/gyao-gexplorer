@@ -53,12 +53,25 @@ namespace Yusen.GExplorer.GyaoModel {
 				+ "&recommend=1"
 				+ "&contents_id=" + contId);
 		}
+		public static Uri CreateReviewListUri(string contId, string pacId) {
+			return new Uri(
+				"http://www.gyao.jp/sityou_review/review_list.php?"
+				+ "contents_id=" + contId
+				+ "&pac_id=" + pacId);
+		}
+		public static Uri CreateReviewInputUri(string contId, string pacId) {
+			return new Uri(
+				"http://www.gyao.jp/sityou_review/review_input.php?"
+				+ "fromScene=reviewlist"
+				+ "&toScene=reviewinput"
+				+ "&contentsId=" + contId
+				+ "&pac_id=" + pacId);
+		}
 		
 		public static Uri CreateLivedoorVideoGyaoSearchUri(string query) {
-			//Encoding encoding = Encoding.GetEncoding("EUC-JP");
 			Uri uri = new Uri(string.Format(
 				"http://stream.search.livedoor.com/search/?svc=gyao&num=100&q={0}",
-				/*HttpUtility.UrlEncode(query, encoding)*/ query)/*, false*/);
+				query));
 			return uri;
 		}
 	}

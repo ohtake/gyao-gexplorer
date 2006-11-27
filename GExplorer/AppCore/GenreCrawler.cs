@@ -9,7 +9,7 @@ using System.IO;
 using Yusen.GExplorer.GyaoModel;
 
 namespace Yusen.GExplorer.AppCore {
-	sealed class GenreCrawler : IDisposable {
+	sealed class GenreCrawler{
 		private enum LinkType {
 			AnchorOrFrame,
 			Image,
@@ -33,23 +33,27 @@ namespace Yusen.GExplorer.AppCore {
 				return this.LinkType == other.LinkType && this.Uri.Equals(other.Uri);
 			}
 		}
-		private sealed class HtmlParserRegex : IDisposable {
+		private sealed class HtmlParserRegex{
 			private static readonly Regex regexLinks = new Regex(@"<(?:(?:a(?:rea)?) [^>]*?href=""|i?frame [^>]*src="")(.+?)""", RegexOptions.Compiled);
 			private static readonly Regex regexImgSrc = new Regex(@"<img src=""(.+?)""", RegexOptions.Compiled);
 			private const string beginComment = "<!--";
 			private const string endComment = "-->";
-
-			private readonly Encoding enc = Encoding.GetEncoding("Shift_JIS");
-			private readonly WebClient wc;
 			
-			public HtmlParserRegex() {
-				this.wc = new WebClient();
+			private readonly Encoding enc = Encoding.GetEncoding("Shift_JIS");
+			private readonly CookieContainer cookieContainer;
+			
+			public HtmlParserRegex(CookieContainer cookieContainer) {
+				this.cookieContainer = cookieContainer;
 			}
 			
 			public List<UriLinkTypePair> DownloadAndExtractLinks(Uri uri) {
 				List<UriLinkTypePair> links = new List<UriLinkTypePair>();
-				
-				using (TextReader reader = new StreamReader(this.wc.OpenRead(uri.AbsoluteUri), this.enc)) {
+
+				TextReader reader = TextReader.Null;
+				try {
+					HttpWebRequest req = WebRequest.Create(uri) as HttpWebRequest;
+					req.CookieContainer = this.cookieContainer;
+					reader = new StreamReader(req.GetResponse().GetResponseStream(), this.enc);
 					string line;
 					bool isInComment = false;
 					while (null != (line = reader.ReadLine())) {
@@ -85,21 +89,11 @@ namespace Yusen.GExplorer.AppCore {
 							}
 						}
 					}
+				} catch {
+					reader.Close();
+					throw;
 				}
 				return links;
-			}
-			
-			private void Dispose(bool disposing) {
-				if (disposing) {
-					this.wc.Dispose();
-				}
-			}
-			public void Dispose() {
-				this.Dispose(true);
-				GC.SuppressFinalize(this);
-			}
-			~HtmlParserRegex() {
-				this.Dispose(false);
 			}
 		}
 		
@@ -166,10 +160,11 @@ namespace Yusen.GExplorer.AppCore {
 		private readonly GGenreClass genre;
 		private readonly CrawlResult prevResult;
 		private readonly CrawlOptions options;
-		private readonly CacheController cc;
+		private readonly CacheController cacheController;
+		private readonly CookieContainer cookieContainer;
 		private readonly BackgroundWorker bw;
 		
-		private readonly HtmlParserRegex parser = new HtmlParserRegex();
+		private readonly HtmlParserRegex parser;
 		private readonly CrawlProgressState ps;
 		
 		private Queue<Uri> pagesWaiting = new Queue<Uri>();
@@ -189,13 +184,16 @@ namespace Yusen.GExplorer.AppCore {
 		private GenreCrawler() {
 			this.ps = new CrawlProgressState(this);
 		}
-		public GenreCrawler(GGenreClass genre, CrawlResult prevResult, CrawlOptions options, CacheController cm, BackgroundWorker bw)
+		public GenreCrawler(GGenreClass genre, CrawlResult prevResult, CrawlOptions options, CacheController cacheController, CookieContainer cookieContainer, BackgroundWorker bw)
 			: this() {
 			this.genre = genre;
 			this.prevResult = prevResult;
 			this.options = options;
-			this.cc = cm;
+			this.cacheController = cacheController;
+			this.cookieContainer = cookieContainer;
 			this.bw = bw;
+
+			this.parser = new HtmlParserRegex(cookieContainer);
 		}
 		
 		public CrawlResult GetResult() {
@@ -306,7 +304,7 @@ namespace Yusen.GExplorer.AppCore {
 				
 				GPackageClass pac;
 				List<GContentClass> conts;
-				if (this.cc.TryFetchPackage(pacKey, out pac, out conts)) {
+				if (this.cacheController.TryFetchPackage(pacKey, out pac, out conts)) {
 					if (!pac.GenreKey.HasValue || this.genre.GenreKey != pac.GenreKey) {
 						this.IgnoreException(new CrawlException(string.Format("<{0}> 他ジャンルにより無視．", GConvert.ToPackageId(pacKey))));
 						this.pacsFailed.Add(pacKey);
@@ -334,7 +332,7 @@ namespace Yusen.GExplorer.AppCore {
 					this.ReportProgressInPhase(100 * numerator / denominator, string.Format("{0}/{1} {2}", numerator, denominator, GConvert.ToContentId(contKey)));
 				}
 				GContentClass cont;
-				if (this.cc.TryFindContentOrTryFetchContent(contKey, out cont)) {
+				if (this.cacheController.TryFindContentOrTryFetchContent(contKey, out cont)) {
 					if (!cont.GenreKey.HasValue || this.genre.GenreKey != cont.GenreKey.Value) {
 						this.IgnoreException(new CrawlException(string.Format("<{0}> 他ジャンルにより無視．", GConvert.ToContentId(contKey))));
 						this.contsFailed.Add(contKey);
@@ -347,7 +345,7 @@ namespace Yusen.GExplorer.AppCore {
 						} else {
 							GPackageClass pac;
 							List<GContentClass> conts;
-							if (this.cc.TryFetchPackage(pacKey, out pac, out conts)) {
+							if (this.cacheController.TryFetchPackage(pacKey, out pac, out conts)) {
 								this.pacsSuccess.Add(pacKey, pac);
 								foreach (GContentClass contInPac in conts) {
 									this.contsSuccess.Add(contInPac.ContentKey, contInPac);
@@ -420,29 +418,16 @@ namespace Yusen.GExplorer.AppCore {
 			return dic;
 		}
 		private bool CheckIfModified(GContentClass a, GContentClass b) {
-			if (a.ContentKey != b.ContentKey) return false;
-			if (a.PackgeKey != b.PackgeKey) return false;
-			if (a.GenreKey != b.GenreKey) return false;
-			if (a.Title != b.Title) return false;
-			if (a.SeriesNumber != b.SeriesNumber) return false;
-			if (a.Subtitle != b.Subtitle) return false;
-			if (a.SummaryHtml != b.SummaryHtml) return false;
-			if (a.DurationValue != b.DurationValue) return false;
-			if (a.DeadlineText != b.DeadlineText) return false;
+			if (a.ContentKey != b.ContentKey) return true;
+			if (a.PackgeKey != b.PackgeKey) return true;
+			if (a.GenreKey != b.GenreKey) return true;
+			if (a.Title != b.Title) return true;
+			if (a.SeriesNumber != b.SeriesNumber) return true;
+			if (a.Subtitle != b.Subtitle) return true;
+			if (a.SummaryHtml != b.SummaryHtml) return true;
+			if (a.DurationValue != b.DurationValue) return true;
+			if (a.DeadlineText != b.DeadlineText) return true;
 			return false;
-		}
-
-		private void Dispose(bool disposing) {
-			if (disposing) {
-				this.parser.Dispose();
-			}
-		}
-		public void Dispose() {
-			this.Dispose(true);
-			GC.SuppressFinalize(this);
-		}
-		~GenreCrawler() {
-			this.Dispose(false);
 		}
 	}
 	
