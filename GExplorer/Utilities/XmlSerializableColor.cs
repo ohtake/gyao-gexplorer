@@ -7,7 +7,7 @@ using System.Globalization;
 
 namespace Yusen.GExplorer.Utilities {
 	[TypeConverter(typeof(XmlSerializableColorConverter))]
-	public struct XmlSerializableColor {
+	public struct XmlSerializableColor : IEquatable<XmlSerializableColor>{
 		private bool isNamedColor;
 		private string name;
 		private byte red;
@@ -65,6 +65,26 @@ namespace Yusen.GExplorer.Utilities {
 			} else {
 				return Color.FromArgb(this.alpha, this.red, this.green, this.blue);
 			}
+		}
+
+		#region IEquatable<XmlSerializableColor> Members
+		public bool Equals(XmlSerializableColor other) {
+			return this.ToColor() == other.ToColor();
+		}
+		#endregion
+		
+		public override bool Equals(object obj) {
+			if (obj is XmlSerializableColor) {
+				return this.Equals((XmlSerializableColor)obj);
+			} else {
+				return false;
+			}
+		}
+		public override int GetHashCode() {
+			return this.ToColor().GetHashCode();
+		}
+		public override string ToString() {
+			return this.ToColor().ToString();
 		}
 	}
 

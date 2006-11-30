@@ -7,13 +7,13 @@ using System.IO;
 using System.Drawing;
 using System.Media;
 using System.Windows.Forms;
+using System.Net;
+using System.Runtime.InteropServices;
+using System.Text;
 using Yusen.GExplorer.AppCore;
 using Yusen.GExplorer.UserInterfaces;
 using Yusen.GExplorer.GyaoModel;
-using System.Net;
 using Yusen.GExplorer.Utilities;
-using System.Runtime.InteropServices;
-using System.Text;
 
 namespace Yusen.GExplorer {
 	static class Program {
@@ -199,7 +199,8 @@ namespace Yusen.GExplorer {
 			
 			//クッキー
 			Program.splashForm.StepProgress("クッキーの設定");
-			{
+			Program.cookieContainer = new CookieContainer();
+			try {
 				int cookieSize = 0;
 				if (!WindowsFunctions.InternetGetCookie(GUriBuilder.TopPageUri.AbsoluteUri, null, null, ref cookieSize)) {
 					Marshal.ThrowExceptionForHR(Marshal.GetHRForLastWin32Error());
@@ -208,8 +209,9 @@ namespace Yusen.GExplorer {
 				if (!WindowsFunctions.InternetGetCookie(GUriBuilder.TopPageUri.AbsoluteUri, null, cookieSb, ref cookieSize)) {
 					Marshal.ThrowExceptionForHR(Marshal.GetHRForLastWin32Error());
 				}
-				Program.cookieContainer = new CookieContainer();
 				Program.cookieContainer.SetCookies(GUriBuilder.TopPageUri, cookieSb.ToString().Replace(';', ','));
+			} catch (Exception e) {
+				Program.DisplayException("クッキーの読み込み失敗", e);
 			}
 			
 			Program.splashForm.StepProgress("キャッシュの初期化と読み込み");

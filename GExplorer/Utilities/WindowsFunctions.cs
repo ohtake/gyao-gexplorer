@@ -17,11 +17,10 @@ namespace Yusen.GExplorer.Utilities {
 			[In] int cx,
 			[In] int cy,
 			[In] SetWindowsPosFlags uFlags);
-#endif
-
 		[DllImport("user32.dll",
 			CallingConvention = CallingConvention.Winapi)]
 		public static extern IntPtr GetFocus();
+#endif
 
 		[DllImport("user32.dll",
 			CallingConvention = CallingConvention.Winapi)]

@@ -6,11 +6,11 @@ using System.Windows.Forms;
 
 namespace Yusen.GExplorer.UserInterfaces {
 	static class BindingContractUtility {
-		public static void BindAllProperties<TControl, TIBindingContract>(TControl control, TIBindingContract options)
+		public static void BindAllProperties<TControl, TIBindingContract>(TControl control, TIBindingContract target)
 			where TControl : Control, TIBindingContract, INotifyPropertyChanged
 			where TIBindingContract : IBindingContract {
 			foreach (PropertyInfo pi in typeof(TIBindingContract).GetProperties()) {
-				control.DataBindings.Add(pi.Name, options, pi.Name, false, DataSourceUpdateMode.OnPropertyChanged);
+				control.DataBindings.Add(pi.Name, target, pi.Name, false, DataSourceUpdateMode.OnPropertyChanged);
 			}
 		}
 	}

@@ -2,15 +2,13 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.Data;
 using System.Text;
-using System.Windows.Forms;
-using Yusen.GExplorer.GyaoModel;
 using System.Text.RegularExpressions;
-using System.Net;
-using System.IO;
-using System.Net.Cache;
+using System.Windows.Forms;
 using System.Web;
+using System.Net.Cache;
+using Yusen.GExplorer.GyaoModel;
+using Yusen.GExplorer.Utilities;
 
 namespace Yusen.GExplorer.UserInterfaces {
 	sealed partial class DetailView : UserControl, IDetailViewBindingContract, INotifyPropertyChanged {
@@ -19,7 +17,6 @@ namespace Yusen.GExplorer.UserInterfaces {
 		public const string DefaultDescription3Style = "font-size:10px;";
 		public const string DefaultDescription4Style = "font-size:10px; text-align:right;";
 
-		private static readonly Encoding encodingGyao = Encoding.GetEncoding("Shift_JIS");
 		private static readonly Regex regexDesc = new Regex(@"<table width=""296"" border=""0"" cellspacing=""0"" cellpadding=""0"">\r?\n<tr>\r?\n<td align=""left"">(?<Desc1>.*?)</td>\r?\n</tr>\r?\n</table>\r?\n</div>\r?\n<div class=""marginT10"">\r?\n<table width=""296"" border=""0"" cellspacing=""0"" cellpadding=""0"">\r?\n<tr>\r?\n<td align=""left"">\r?\n(?<Desc2>.*?)</td>\r?\n</tr>\r?\n</table>\r?\n</div>\r?\n<div class=""marginT10"">\r?\n<table width=""296"" border=""0"" cellspacing=""0"" cellpadding=""0"">\r?\n<tr>\r?\n<td align=""(left|center)""( class=""text10"")?>\r?\n(?<Desc3>[\s\S]*?)</td>\r?\n</tr>\r?\n</table>\r?\n</div>\r?\n<div class=""marginT10"">\r?\n<table width=""296"" border=""0"" cellspacing=""0"" cellpadding=""0"">\r?\n<tr>\r?\n<td align=""right""( class=""text10"")?>\r?\n(?<Desc4>.*?)</td>\r?\n</tr>\r?\n</table>", RegexOptions.Compiled | RegexOptions.ExplicitCapture);
 		private static readonly Regex regexReviewSummary = new Regex(@"<td width=""115"" class=""title12b"" bgcolor=""#666666"" align=""left"">(?:<span class=""marginR10"">(?<Summary>.*?)点?</span>)?</td>", RegexOptions.Compiled | RegexOptions.ExplicitCapture);
 		private static readonly Regex regexReviewPost = new Regex(@"<td width=""210"" height=""25"" class=""bk12b"">(?<Title>.*?)</td>\r?\n<td width=""140"" class=""bk10"">投稿者：(?<Author>.*?)</td>\r?\n<td width=""118"" align=""center"" class=""bk10"">投稿日：(?<Posted>.*?) </td>\r?\n<td width=""102"" align=""center"">\r?\n<table width=""85"" border=""0"" cellspacing=""0"" cellpadding=""0"">\r?\n(<td><img src = ""http://www\.gyao\.jp/common/images/star_(w|half_n|half_w)\.gif"" width=""15"" height=""15"" border=""0""> </td>\r?\n){5} \r?\n</table>\r?\n</td>\r?\n<td width=""50"" align=""right"" class=""bk10"">(?<Score>\d+)点</td>\r?\n</tr>\r?\n</table>\r?\n</td></tr>\r?\n<tr><td><table width=""620"" border=""0"" cellspacing=""0"" cellpadding=""0"">\r?\n(?<NetaBare><tr><td><img src=""http://www\.gyao\.jp/common/images/neta\.gif"" alt=""ネタバレ"" width=""40"" height=""15"" border=""0""></td>\r?\n)?<td align=""right"" height=""35"" class=""bk10"">(?<Denominator>\d+)人中(?<Numerator>\d+)人が「この番組レビューは参考になる」と評価しています。</td></tr>\r?\n</table></td></tr>\r?\n<tr><td><p class=""marginT5B5"">(?<Body>.*?)</p></td></tr>", RegexOptions.Compiled | RegexOptions.ExplicitCapture);
@@ -47,6 +44,9 @@ namespace Yusen.GExplorer.UserInterfaces {
 		private bool loadImageEnabled = true;
 		private bool loadPageEnabled = true;
 
+		private readonly BackgroundImageLoader bgImageLoader = new BackgroundImageLoader(Program.CookieContainer, new RequestCachePolicy(RequestCacheLevel.CacheIfAvailable));
+		private readonly BackgroundTextLoader bgTextLoader = new BackgroundTextLoader(Encoding.GetEncoding("Shift_JIS"), Program.CookieContainer, new RequestCachePolicy(RequestCacheLevel.Default));
+		
 		private GContentClass cont;
 		private string description1Style = DetailView.DefaultDescription1Style;
 		private string description2Style = DetailView.DefaultDescription2Style;
@@ -61,6 +61,13 @@ namespace Yusen.GExplorer.UserInterfaces {
 			
 			this.wbDescription.DocumentText = "<html><body style='margin:0px;'></body></html>";
 			this.ChangeEnabilityOfMenuItems();
+			
+			this.bgImageLoader.StartWorking();
+			this.bgTextLoader.StartWorking();
+			this.Disposed += delegate {
+				this.bgImageLoader.Dispose();
+				this.bgTextLoader.Dispose();
+			};
 		}
 
 		private void ChangeEnabilityOfMenuItems() {
@@ -80,88 +87,80 @@ namespace Yusen.GExplorer.UserInterfaces {
 			this.cont = cont;
 			this.pgProperty.SelectedObject = cont;
 
-			if (this.LoadImageEnabled) this.LoadImageAsync();
-			if (this.LoadPageEnabled) this.LoadPageAsync();
+			if (this.LoadImageEnabled) {
+				this.bgImageLoader.ClearTasks();
+				this.bgImageLoader.AddTaskFirst(new BackgroundImageLoadTask(cont.ImageLargeUri, this.BackgroundImageLoadCompletedCallback, cont));
+			}
+			if (this.LoadPageEnabled) {
+				this.bgTextLoader.ClearTasks();
+				this.bgTextLoader.AddTaskFirst(new BacktroundTextLoadTask(cont.ContentDetailUri, this.BackgroundTextLoadCompletedCallback, cont));
+			}
 			
 			this.ChangeEnabilityOfMenuItems();
 		}
 
-		private void LoadImageAsync() {
-			HttpWebRequest req = WebRequest.Create(this.cont.ImageLargeUri) as HttpWebRequest;
-			req.CachePolicy = new RequestCachePolicy(RequestCacheLevel.CacheIfAvailable);
-			req.CookieContainer = Program.CookieContainer;
-			IAsyncResult result = req.BeginGetResponse(new AsyncCallback(this.LoadImageAsyncCallback), req);
-		}
-		private void LoadImageAsyncCallback(IAsyncResult result) {
+		private bool BackgroundImageLoadCompletedCallback(Image image, object userState) {
+			if (!object.ReferenceEquals(userState, this.cont)) return false;
 			if (this.InvokeRequired) {
-				this.Invoke(new AsyncCallback(this.LoadImageAsyncCallback), result);
-				return;
-			}
-			try {
-				HttpWebResponse res = (result.AsyncState as HttpWebRequest).EndGetResponse(result) as HttpWebResponse;
-				using (Stream stream = res.GetResponseStream()) {
-					this.pbImage.Image = Image.FromStream(stream);
+				return (bool)this.Invoke(new BackgroundImageLoadCompletedCallback(this.BackgroundImageLoadCompletedCallback), image, userState);
+			} else {
+				if (image == null) {
+					this.pbImage.Image = this.pbImage.ErrorImage;
+					return false;
 				}
-			} catch (Exception e) {
-				this.pbImage.Image = this.pbImage.ErrorImage;
-				this.StatusMessage = e.Message;
+				this.pbImage.Image = image;
+				return true;
 			}
 		}
-		private void LoadPageAsync() {
-			HttpWebRequest req = WebRequest.Create(this.cont.ContentDetailUri) as HttpWebRequest;
-			req.CachePolicy = new RequestCachePolicy(RequestCacheLevel.Default);
-			req.CookieContainer = Program.CookieContainer;
-			IAsyncResult result = req.BeginGetResponse(new AsyncCallback(this.LoadPageAsyncCallback), req);
-		}
-		private void LoadPageAsyncCallback(IAsyncResult result) {
+		private void BackgroundTextLoadCompletedCallback(string text, object userState) {
+			if (!object.ReferenceEquals(userState, this.cont)) return;
 			if (this.InvokeRequired) {
-				this.Invoke(new AsyncCallback(this.LoadPageAsyncCallback), result);
-				return;
-			}
-			try {
-				HttpWebResponse res = (result.AsyncState as HttpWebRequest).EndGetResponse(result) as HttpWebResponse;
-				using (TextReader reader = new StreamReader(res.GetResponseStream(), DetailView.encodingGyao)) {
-					string html = reader.ReadToEnd();
-					Match m = DetailView.regexDesc.Match(html);
-					if (m.Success) {
-						this.wbDescription.Document.Body.InnerHtml = string.Format(@"<p style=""{4}"">{0}</p><p style=""{5}"">{1}</p><p style=""{6}"">{2}</p><p style=""{7}"">{3}</p>",
-							m.Groups["Desc1"].Value, m.Groups["Desc2"].Value, m.Groups["Desc3"].Value, m.Groups["Desc4"].Value,
-							this.Description1Style, this.Description2Style, this.Description3Style, this.Description4Style);
-					} else {
-						this.wbDescription.Document.Body.InnerHtml = "エラー: 正規表現にマッチしなかった";
-					}
-					m = DetailView.regexReviewSummary.Match(html);
-					if (m.Success) {
-						string aveScore = m.Groups["Summary"].Value;
-						this.lvReview.BeginUpdate();
-						this.lvReview.Items.Clear();
-						for (m = DetailView.regexReviewPost.Match(html); m.Success; m = m.NextMatch()) {
-							this.lvReview.Items.Add(new ReviewPostListViewItem(
-								m.Groups["NetaBare"].Success,
-								m.Groups["Score"].Value,
-								m.Groups["Denominator"].Value,
-								m.Groups["Numerator"].Value,
-								HttpUtility.HtmlDecode(m.Groups["Title"].Value),
-								HttpUtility.HtmlDecode(m.Groups["Author"].Value),
-								m.Groups["Posted"].Value,
-								HttpUtility.HtmlDecode(m.Groups["Body"].Value)));
-						}
-						this.lvReview.EndUpdate();
-						this.lblReviewSummary.Text = string.IsNullOrEmpty(aveScore) ? "レビューなし" : string.Format("新着分{0}件 総合評価{1}点", this.lvReview.Items.Count, aveScore);
-						this.tabpReview.Text = string.IsNullOrEmpty(aveScore) ? "レビュー(0)" : string.Format("レビュー({0};{1})", this.lvReview.Items.Count, aveScore);
-					} else {
-						this.lblReviewSummary.Text = "レビュー取得失敗";
-						this.tabpReview.Text = "レビュー(取得失敗)";
-						this.lvReview.Items.Clear();
-					}
+				this.Invoke(new BackgroundTextLoadCompletedCallback(this.BackgroundTextLoadCompletedCallback), text, userState);
+			} else {
+				if (text == null) {
+					this.wbDescription.Document.Body.InnerHtml = "取得失敗";
+					this.lblReviewSummary.Text = "レビュー取得失敗";
+					this.tabpReview.Text = "レビュー(取得失敗)";
+					this.lvReview.Items.Clear();
 					this.txtReview.Clear();
+					return;
 				}
-			} catch (WebException ex) {
-				this.wbDescription.DocumentText = string.Format("エラー: {0}", ex.Message);
-			} catch (Exception ex) {
-				this.StatusMessage = ex.Message;
+				Match m = DetailView.regexDesc.Match(text);
+				if (m.Success) {
+					this.wbDescription.Document.Body.InnerHtml = string.Format(@"<p style=""{4}"">{0}</p><p style=""{5}"">{1}</p><p style=""{6}"">{2}</p><p style=""{7}"">{3}</p>",
+						m.Groups["Desc1"].Value, m.Groups["Desc2"].Value, m.Groups["Desc3"].Value, m.Groups["Desc4"].Value,
+						this.Description1Style, this.Description2Style, this.Description3Style, this.Description4Style);
+				} else {
+					this.wbDescription.Document.Body.InnerHtml = "エラー: 正規表現にマッチしなかった";
+				}
+				m = DetailView.regexReviewSummary.Match(text);
+				if (m.Success) {
+					string aveScore = m.Groups["Summary"].Value;
+					this.lvReview.BeginUpdate();
+					this.lvReview.Items.Clear();
+					for (m = DetailView.regexReviewPost.Match(text); m.Success; m = m.NextMatch()) {
+						this.lvReview.Items.Add(new ReviewPostListViewItem(
+							m.Groups["NetaBare"].Success,
+							m.Groups["Score"].Value,
+							m.Groups["Denominator"].Value,
+							m.Groups["Numerator"].Value,
+							HttpUtility.HtmlDecode(m.Groups["Title"].Value),
+							HttpUtility.HtmlDecode(m.Groups["Author"].Value),
+							m.Groups["Posted"].Value,
+							HttpUtility.HtmlDecode(m.Groups["Body"].Value)));
+					}
+					this.lvReview.EndUpdate();
+					this.lblReviewSummary.Text = string.IsNullOrEmpty(aveScore) ? "レビューなし" : string.Format("新着分{0}件 総合評価{1}点", this.lvReview.Items.Count, aveScore);
+					this.tabpReview.Text = string.IsNullOrEmpty(aveScore) ? "レビュー(0)" : string.Format("レビュー({0};{1})", this.lvReview.Items.Count, aveScore);
+				} else {
+					this.lblReviewSummary.Text = "レビュー取得失敗";
+					this.tabpReview.Text = "レビュー(取得失敗)";
+					this.lvReview.Items.Clear();
+				}
+				this.txtReview.Clear();
 			}
 		}
+		
 		private void lvReview_SelectedIndexChanged(object sender, EventArgs e) {
 			if (this.lvReview.SelectedItems.Count > 0) {
 				this.txtReview.Text = (this.lvReview.SelectedItems[0] as ReviewPostListViewItem).Body;

@@ -8,6 +8,7 @@ using Yusen.GExplorer.GyaoModel;
 using Yusen.GExplorer.AppCore;
 using System.Threading;
 using Yusen.GExplorer.Utilities;
+using System.Diagnostics;
 
 namespace Yusen.GExplorer.UserInterfaces {
 	partial class GenreSelectControl : UserControl {
@@ -134,20 +135,15 @@ namespace Yusen.GExplorer.UserInterfaces {
 		private sealed class CrawlRequestObject {
 			private readonly GGenreClass genre;
 			private readonly CrawlResult prevResult;
-			private readonly DateTime created;
 			public CrawlRequestObject(GGenreClass genre, CrawlResult prevResult) {
 				this.genre = genre;
 				this.prevResult = prevResult;
-				this.created = DateTime.Now;
 			}
 			public GGenreClass Genre {
 				get { return this.genre; }
 			}
 			public CrawlResult PreviousCrawlResult {
 				get { return this.prevResult; }
-			}
-			public DateTime Created {
-				get { return this.created; }
 			}
 		}
 		#endregion
@@ -163,6 +159,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 		private CrawlResult selectedCrawlResult = null;
 		private CrawlRequestObject lastRequest = null;
 		private GenreTabPage lastContextMenuSource = null;
+		private Stopwatch stopwatch = new Stopwatch();
 		private string statusMessage = string.Empty;
 		private int requiredHeight = -1;
 
@@ -426,6 +423,8 @@ namespace Yusen.GExplorer.UserInterfaces {
 			if (null == req) throw new InvalidOperationException();
 
 			this.InvokeOnCrawlStarted();
+			this.stopwatch.Reset();
+			this.stopwatch.Start();
 			e.Result = new GenreCrawler(req.Genre, req.PreviousCrawlResult, Program.RootOptions.CrawlOptions, Program.CacheController,Program.CookieContainer, this.bwCrawl).GetResult();
 			if (null == e.Result) {
 				e.Cancel = true;
@@ -439,17 +438,16 @@ namespace Yusen.GExplorer.UserInterfaces {
 			}
 		}
 		private void bwCrawl_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e) {
+			this.stopwatch.Stop();
 			this.InvokeOnCrawlEnded();
 			if (e.Cancelled) {
-				this.StatusMessage = string.Format("クロールを中止しました．クロール時間: {0}", DateTime.Now - this.lastRequest.Created);
+				this.StatusMessage = string.Format("クロールを中止しました．クロール時間: {0}", this.stopwatch.Elapsed);
 				return;
 			}
 			if (null != e.Error) {
 				Program.DisplayException("クロール中にキャッチされなかった例外", e.Error);
 				return;
 			}
-			
-			TimeSpan crawlTime = DateTime.Now - this.lastRequest.Created;
 			
 			CrawlResult result = e.Result as CrawlResult;
 			Program.CacheController.SerializeCrawlResult(this.lastRequest.Genre, result);
@@ -496,15 +494,14 @@ namespace Yusen.GExplorer.UserInterfaces {
 				count += pair.Value.Count;
 			}
 			Program.PlaylistsManager.EndUpdate();
-			
-			this.StatusMessage = string.Format("クロール完了．クロール時間: {0}   新着コンテンツのプレイリストへの仕分け: {1}", crawlTime, count);
+
+			this.StatusMessage = string.Format("クロール完了．クロール時間: {0}   新着コンテンツのプレイリストへの仕分け: {1}", this.stopwatch.Elapsed, count);
 		}
 		public void RequestCrawlCancellation() {
 			this.bwCrawl.CancelAsync();
 		}
 		#endregion
 		
-
 		#region タブコントロールのイベントハンドラ
 		private void tabcGsc_DrawItem(object sender, DrawItemEventArgs e) {
 			GenreTabPage gtp = this.tabcGsc.TabPages[e.Index] as GenreTabPage;
@@ -593,7 +590,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 			this.RecalcurateRequiredHeight();
 		}
 		#endregion
-
+		
 		private void tcDoubleClickListener_DoubleClick(object sender, EventArgs e) {
 			this.tsmiStartCrawl.PerformClick();
 		}

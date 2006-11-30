@@ -4,9 +4,7 @@ using System.Collections.Generic;
 using System.Collections;
 using System.Drawing;
 using System.Text.RegularExpressions;
-//using System.IO;
-//using System.Net;
-//using System.Net.Cache;
+using System.Net.Cache;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 using Yusen.GExplorer.AppCore;
@@ -242,7 +240,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 			this.comparerS = new StackableComparisonsComparer<ContentListViewItem>();
 			this.comparerF = new FilterFlagComparer(this.comparerS);
 			this.lvResult.ListViewItemSorter = this.comparerF;
-			this.bgImgLoader = new BackgroundImageLoader(Program.CookieContainer);
+			this.bgImgLoader = new BackgroundImageLoader(Program.CookieContainer, new RequestCachePolicy(RequestCacheLevel.CacheIfAvailable));
 			this.bgImgLoader.StartWorking();
 			this.Disposed += delegate {
 				this.bgImgLoader.Dispose();
@@ -759,22 +757,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 			
 			clvi.ImageRequestedAlready = true;
 			Uri uri = clvi.Content.ImageSmallUri;
-			//キャッシュがあっても非同期の方が体感的には速いっぽいので
-			/*try {
-				HttpWebRequest req = WebRequest.Create(uri) as HttpWebRequest;
-				req.CachePolicy = new RequestCachePolicy(RequestCacheLevel.CacheOnly);
-				HttpWebResponse res = req.GetResponse() as HttpWebResponse;
-				using (Stream stream = res.GetResponseStream()) {
-					using (Image img = Image.FromStream(stream)) {
-						int idx = this.ilLarge.Images.Add(img, this.ilLarge.TransparentColor);
-						if (idx >= 0) {
-							clvi.ImageIndex = idx;
-						}
-					}
-				}
-			} catch (WebException) {*/
-			this.bgImgLoader.PushTask(new BackgroundImageLoadTask(uri, this.BackgroundImageLoadCompletedCallback, clvi));
-		//}
+			this.bgImgLoader.AddTaskFirst(new BackgroundImageLoadTask(uri, this.BackgroundImageLoadCompletedCallback, clvi));
 		defaultDraw:
 			e.DrawDefault = true;
 		}
@@ -796,10 +779,12 @@ namespace Yusen.GExplorer.UserInterfaces {
 		}
 		private bool BackgroundImageLoadCompletedCallback(Image image, object userState) {
 			if (this.InvokeRequired) {
+				if (image == null) return false;
 				return (bool)this.Invoke(new BackgroundImageLoadCompletedCallback(this.BackgroundImageLoadCompletedCallback), image, userState);
 			} else {
+				if (image == null) return false;
 				ContentListViewItem clvi = userState as ContentListViewItem;
-				if (null != clvi) {
+				if (null != clvi && this.allClvi.Contains(clvi)) {
 					int idx = this.ilLarge.Images.Add(image, this.ilLarge.TransparentColor);
 					if (idx >= 0) {
 						clvi.ImageIndex = idx;

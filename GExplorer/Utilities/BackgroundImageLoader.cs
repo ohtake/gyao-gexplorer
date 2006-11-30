@@ -1,134 +1,42 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Collections.Generic;
-using System.Threading;
 using System.Net;
 using System.Net.Cache;
 using System.IO;
 using System.Drawing;
 
 namespace Yusen.GExplorer.Utilities {
-	sealed class BackgroundImageLoader : IDisposable{
-		private readonly Stack<BackgroundImageLoadTask> stack = new Stack<BackgroundImageLoadTask>();
-		private readonly object workLock = new object();
-		private volatile bool working = false;
-		private volatile bool disposed = false;
+	sealed class BackgroundImageLoader : SuccesiveTaskWorkerBase<BackgroundImageLoadTask>{
 		private readonly CookieContainer cookieContainer;
-		private readonly int intervalMilliseconds;
-		
-		private AutoResetEvent autoResetEvent = new AutoResetEvent(false);
-		
-		public BackgroundImageLoader() : this(new CookieContainer()){
+		private readonly RequestCachePolicy requestCachePolicy;
+
+		private BackgroundImageLoader(){
 		}
-		public BackgroundImageLoader(CookieContainer cookieContainer) : this(cookieContainer, 0){
-		}
-		public BackgroundImageLoader(int intervalMilliseconds) : this(new CookieContainer(), intervalMilliseconds) {
-		}
-		public BackgroundImageLoader(CookieContainer cookieContainer, int intervalMilliseconds) {
+		public BackgroundImageLoader(CookieContainer cookieContainer, RequestCachePolicy requestCachePolicy){
 			this.cookieContainer = cookieContainer;
-			this.intervalMilliseconds = intervalMilliseconds;
+			this.requestCachePolicy = requestCachePolicy;
 		}
 		
-		public void PushTask(BackgroundImageLoadTask task) {
-			if (this.disposed) throw new InvalidOperationException();
-			lock (this.stack) {
-				this.stack.Push(task);
-				this.autoResetEvent.Set();
-			}
-		}
-		public void ClearTasks() {
-			if (this.disposed) throw new InvalidOperationException();
-			lock (this.stack) {
-				this.stack.Clear();
-			}
-		}
-		public int StackLength {
-			get {
-				lock (this.stack) {
-					return this.stack.Count;
-				}
-			}
-		}
-		
-		private void Work(object o) {
-			while (true) {
-				if (!this.IsWorking) return;
-				BackgroundImageLoadTask task = null;
-				lock (this.stack) {
-					if (this.stack.Count > 0) {
-						task = this.stack.Pop();
+		protected override void DoTask(BackgroundImageLoadTask task) {
+			HttpWebRequest req = WebRequest.Create(task.Uri) as HttpWebRequest;
+			req.CookieContainer = this.cookieContainer;
+			req.CachePolicy = this.requestCachePolicy;
+			try {
+				HttpWebResponse res = req.GetResponse() as HttpWebResponse;
+				using (Stream stream = res.GetResponseStream()) {
+					Image img = Image.FromStream(stream);
+					if (!task.InvokeCallback(img)) {
+						img.Dispose();
 					}
 				}
-				if (null == task) {
-					this.autoResetEvent.WaitOne();
-					continue;
-				}
-				HttpWebRequest req = WebRequest.Create(task.Uri) as HttpWebRequest;
-				req.CookieContainer = this.cookieContainer;
-				req.CachePolicy = new RequestCachePolicy(RequestCacheLevel.CacheIfAvailable);
-				try {
-					HttpWebResponse res = req.GetResponse() as HttpWebResponse;
-					using (Stream stream = res.GetResponseStream()) {
-						Image img = Image.FromStream(stream);
-						if (!task.InvokeCallback(img)) {
-							img.Dispose();
-						}
-					}
-				} catch {
-					task.InvokeCallback(null);
-				}
-				if (this.intervalMilliseconds > 0) {
-					Thread.Sleep(this.intervalMilliseconds);
-				}
+			} catch {
+				task.InvokeCallback(null);
 			}
-		}
-		
-		public void StartWorking() {
-			lock (this.workLock) {
-				if (this.disposed) throw new InvalidOperationException();
-				if (this.IsWorking) throw new InvalidOperationException();
-
-				this.IsWorking = true;
-				if (!ThreadPool.QueueUserWorkItem(new WaitCallback(this.Work))) {
-					this.IsWorking = false;
-					throw new InvalidOperationException();
-				}
-			}
-		}
-		public void StopWorking() {
-			lock (this.workLock) {
-				if (this.disposed) throw new InvalidOperationException();
-				if (!this.IsWorking) throw new InvalidOperationException();
-
-				this.IsWorking = false;
-				this.autoResetEvent.Set();
-			}
-		}
-		public bool IsWorking {
-			get { return this.working; }
-			private set { this.working = value; }
-		}
-
-		private void Dispose(bool disposing) {
-			if (disposing) {
-				lock (this.workLock) {
-					if (this.IsWorking) this.StopWorking();
-				}
-				this.autoResetEvent.Close();
-				this.disposed = true;
-			}
-		}
-
-		public void Dispose() {
-			this.Dispose(true);
-			GC.SuppressFinalize(this);
-		}
-		~BackgroundImageLoader() {
-			this.Dispose(false);
 		}
 	}
 
-	sealed class BackgroundImageLoadTask {
+	sealed class BackgroundImageLoadTask : SuccessiveTaskBase{
 		private Uri uri;
 		private BackgroundImageLoadCompletedCallback callback;
 		private object userState;

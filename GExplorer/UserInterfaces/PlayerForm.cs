@@ -560,6 +560,12 @@ namespace Yusen.GExplorer.UserInterfaces {
 		private void tsmiBrowseRecommended_Click(object sender, EventArgs e) {
 			Program.BrowsePage(Program.RootOptions.AppBasicOptions.GetRecomendationUriOf(this.currentContent));
 		}
+		private void tsmiBrowseReviewList_Click(object sender, EventArgs e) {
+			Program.BrowsePage(this.currentContent.ReviewListUri);
+		}
+		private void tsmiBrowseReviewInput_Click(object sender, EventArgs e) {
+			Program.BrowsePage(this.currentContent.ReviewInputUri);
+		}
 		private void tsmiShowOptionsForm_Click(object sender, EventArgs e) {
 			Program.ShowOptionsForm();
 		}
@@ -825,7 +831,6 @@ namespace Yusen.GExplorer.UserInterfaces {
 			}
 		}
 		#endregion
-
 	}
 	
 	interface IPlayerFormBindingContract : IBindingContract{

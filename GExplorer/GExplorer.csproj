@@ -247,6 +247,8 @@
     <Compile Include="UserInterfaces\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Utilities\BackgroundTextLoader.cs" />
+    <Compile Include="Utilities\SuccesiveTaskWorkerBase.cs" />
     <Compile Include="Utilities\Migemo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
