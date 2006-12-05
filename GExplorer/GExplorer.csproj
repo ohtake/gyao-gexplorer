@@ -13,6 +13,8 @@
     <IsWebBootstrapper>true</IsWebBootstrapper>
     <StartupObject>
     </StartupObject>
+    <TargetZone>LocalIntranet</TargetZone>
+    <GenerateManifests>false</GenerateManifests>
     <PublishUrl>http://localhost/GExplorer/</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Web</InstallFrom>
@@ -98,6 +100,12 @@
     </Compile>
     <Compile Include="UserInterfaces\ContentVisibilitiesSelector.Designer.cs">
       <DependentUpon>ContentVisibilitiesSelector.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserInterfaces\RegistrationForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UserInterfaces\RegistrationForm.Designer.cs">
+      <DependentUpon>RegistrationForm.cs</DependentUpon>
     </Compile>
     <Compile Include="UserInterfaces\ToolStripClassificationRuleMenuItem.cs">
       <SubType>Component</SubType>
@@ -271,6 +279,10 @@
     <EmbeddedResource Include="UserInterfaces\ContentVisibilitiesSelector.resx">
       <SubType>Designer</SubType>
       <DependentUpon>ContentVisibilitiesSelector.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserInterfaces\RegistrationForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>RegistrationForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UserInterfaces\ToolStripClassificationRuleMenuItem.resx">
       <DependentUpon>ToolStripClassificationRuleMenuItem.cs</DependentUpon>

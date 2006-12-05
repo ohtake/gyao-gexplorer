@@ -15,6 +15,7 @@ using Yusen.GExplorer.GyaoModel;
 using Yusen.GExplorer.AppCore;
 using Marshal = System.Runtime.InteropServices.Marshal;
 using DRegion = System.Drawing.Region;
+using System.Net.Cache;
 
 namespace Yusen.GExplorer.UserInterfaces {
 	public sealed partial class PlayerForm : BaseForm, INotifyPropertyChanged, IPlayerFormBindingContract {
@@ -86,7 +87,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 		private PlayerFormOptions options;
 		private readonly ScreenSaveListener ssl = new ScreenSaveListener();
 		private readonly Random rand = new Random();
-
+		
 		public PlayerForm() {
 			InitializeComponent();
 			
@@ -256,6 +257,8 @@ namespace Yusen.GExplorer.UserInterfaces {
 			this.tsmiNextContentWithDelete.Enabled = hasBoth;
 			this.tsmiBrowseDetail.Enabled = hasContent;
 			this.tsmiBrowseRecommended.Enabled = hasContent;
+			this.tsmiBrowseReviewList.Enabled = hasContent;
+			this.tsmiBrowseReviewInput.Enabled = hasContent;
 		}
 		private void ModifyVolume() {
 			if(this.IsCm) {
@@ -778,6 +781,8 @@ namespace Yusen.GExplorer.UserInterfaces {
 		}
 
 		#region IPlayerFormBindingContract Members
+		[Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public bool IsAlwaysTopMost {
 			get {
 				return this.TopMost;
@@ -794,6 +799,8 @@ namespace Yusen.GExplorer.UserInterfaces {
 				this.OnPropertyChanged("IsAlwaysTopMost");
 			}
 		}
+		[Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public bool IsAlwaysBottomMost {
 			get {
 				return this.isAlwaysBottomMost;
@@ -812,6 +819,8 @@ namespace Yusen.GExplorer.UserInterfaces {
 				this.OnPropertyChanged("IsAlwaysBottomMost");
 			}
 		}
+		[Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public bool HideUiOnDeactivatedEnabled {
 			get { return this.hideUiOnDeactivatedEnabled; }
 			set {
@@ -822,12 +831,14 @@ namespace Yusen.GExplorer.UserInterfaces {
 				this.OnPropertyChanged("HideUiOnDeactivatedEnabled");
 			}
 		}
+		[Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public bool SuspendScreenSaverEnabled {
 			get { return this.ssl.Enabled;}
 			set {
 				if (this.ssl.Enabled == value) return;
 				this.ssl.Enabled = value;
-				//this.OnPropertyChanged("SuspendScreenSaverEnabled");
+				this.OnPropertyChanged("SuspendScreenSaverEnabled");
 			}
 		}
 		#endregion

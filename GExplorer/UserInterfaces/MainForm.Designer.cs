@@ -27,11 +27,11 @@
 			this.menuStrip1 = new System.Windows.Forms.MenuStrip();
 			this.tsmiFile = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiCreateNewPlaylist = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
+			this.tsSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiBrowseTopPage = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiBrowsePackagePage = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiBrowseContentPage = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+			this.tsSeparator3 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiQuit = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiGenreTab = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiCrawlResultView = new System.Windows.Forms.ToolStripMenuItem();
@@ -40,7 +40,7 @@
 			this.tsmiDetailView = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiTools = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiSearchLivedoorGyaO = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
+			this.tsSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiCacheViewer = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiRuleEditForm = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiExternalCommandsEditor = new System.Windows.Forms.ToolStripMenuItem();
@@ -61,7 +61,7 @@
 			this.inputBoxDialog1 = new Yusen.GExplorer.UserInterfaces.InputBoxDialog();
 			this.timerContentSelect = new System.Windows.Forms.Timer(this.components);
 			this.timerMessage = new System.Windows.Forms.Timer(this.components);
-			this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
+			this.tsSeparator4 = new System.Windows.Forms.ToolStripSeparator();
 			this.menuStrip1.SuspendLayout();
 			this.toolStripContainer1.BottomToolStripPanel.SuspendLayout();
 			this.toolStripContainer1.ContentPanel.SuspendLayout();
@@ -104,11 +104,11 @@
 			// 
 			this.tsmiFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiCreateNewPlaylist,
-            this.toolStripMenuItem2,
+            this.tsSeparator1,
             this.tsmiBrowseTopPage,
             this.tsmiBrowsePackagePage,
             this.tsmiBrowseContentPage,
-            this.toolStripMenuItem1,
+            this.tsSeparator3,
             this.tsmiQuit});
 			this.tsmiFile.Name = "tsmiFile";
 			this.tsmiFile.Size = new System.Drawing.Size(67, 17);
@@ -123,8 +123,8 @@
 			// 
 			// toolStripMenuItem2
 			// 
-			this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-			this.toolStripMenuItem2.Size = new System.Drawing.Size(223, 6);
+			this.tsSeparator1.Name = "toolStripMenuItem2";
+			this.tsSeparator1.Size = new System.Drawing.Size(223, 6);
 			// 
 			// tsmiBrowseTopPage
 			// 
@@ -151,8 +151,8 @@
 			// 
 			// toolStripMenuItem1
 			// 
-			this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-			this.toolStripMenuItem1.Size = new System.Drawing.Size(223, 6);
+			this.tsSeparator3.Name = "toolStripMenuItem1";
+			this.tsSeparator3.Size = new System.Drawing.Size(223, 6);
 			// 
 			// tsmiQuit
 			// 
@@ -196,11 +196,11 @@
 			// 
 			this.tsmiTools.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiSearchLivedoorGyaO,
-            this.toolStripMenuItem3,
+            this.tsSeparator2,
             this.tsmiCacheViewer,
             this.tsmiRuleEditForm,
             this.tsmiExternalCommandsEditor,
-            this.toolStripMenuItem4,
+            this.tsSeparator4,
             this.tsmiOptionsForm});
 			this.tsmiTools.Name = "tsmiTools";
 			this.tsmiTools.Size = new System.Drawing.Size(62, 17);
@@ -217,8 +217,8 @@
 			// 
 			// toolStripMenuItem3
 			// 
-			this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-			this.toolStripMenuItem3.Size = new System.Drawing.Size(219, 6);
+			this.tsSeparator2.Name = "toolStripMenuItem3";
+			this.tsSeparator2.Size = new System.Drawing.Size(219, 6);
 			// 
 			// tsmiCacheViewer
 			// 
@@ -386,29 +386,7 @@
 			// 
 			// crawlResultView
 			// 
-			this.crawlResultView.CaseInsensitiveFilter = true;
-			this.crawlResultView.ColorFilter = System.Drawing.Color.LemonChiffon;
-			this.crawlResultView.ColorModified = System.Drawing.Color.Orange;
-			this.crawlResultView.ColorNew = System.Drawing.Color.Red;
-			this.crawlResultView.ColWidthDeadline = 80;
-			this.crawlResultView.ColWidthDuration = 52;
-			this.crawlResultView.ColWidthId = 66;
-			this.crawlResultView.ColWidthSeriesNumber = 50;
-			this.crawlResultView.ColWidthSubtitle = 70;
-			this.crawlResultView.ColWidthSummary = 135;
-			this.crawlResultView.ColWidthTitle = 55;
-			this.crawlResultView.ContentVisibilities = ((Yusen.GExplorer.UserInterfaces.ContentVisibilities)(((((Yusen.GExplorer.UserInterfaces.ContentVisibilities.NgFalse | Yusen.GExplorer.UserInterfaces.ContentVisibilities.FavTrue)
-						| Yusen.GExplorer.UserInterfaces.ContentVisibilities.FavFalse)
-						| Yusen.GExplorer.UserInterfaces.ContentVisibilities.NewTrue)
-						| Yusen.GExplorer.UserInterfaces.ContentVisibilities.NewFalse)));
-			this.crawlResultView.CrvView = Yusen.GExplorer.UserInterfaces.CrawlResultViewView.Details;
-			this.crawlResultView.DestinationPlaylistName = "My Playlist 1";
 			this.crawlResultView.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.crawlResultView.FilterBarVisible = false;
-			this.crawlResultView.FilterType = Yusen.GExplorer.UserInterfaces.CrawlResultViewFilterType.Normal;
-			this.crawlResultView.GroupingAtTheBegining = true;
-			this.crawlResultView.IncrementalFilterEnabled = true;
-			this.crawlResultView.LastSelectingPlaylist = null;
 			this.crawlResultView.Location = new System.Drawing.Point(0, 0);
 			this.crawlResultView.Name = "crawlResultView";
 			this.crawlResultView.Size = new System.Drawing.Size(546, 296);
@@ -421,30 +399,16 @@
 			this.playlistsView1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.playlistsView1.Location = new System.Drawing.Point(0, 0);
 			this.playlistsView1.Name = "playlistsView1";
-			this.playlistsView1.PlaylistCollectionWidth = 77;
 			this.playlistsView1.Size = new System.Drawing.Size(546, 176);
 			this.playlistsView1.TabIndex = 0;
 			this.playlistsView1.LastSelectedContentChanged += new System.EventHandler(this.playlistsView1_LastSelectedContentChanged);
 			// 
 			// detailView1
 			// 
-			this.detailView1.ColWidthAuthor = 50;
-			this.detailView1.ColWidthNetabare = 14;
-			this.detailView1.ColWidthPosted = 72;
-			this.detailView1.ColWidthRef = 42;
-			this.detailView1.ColWidthScore = 24;
-			this.detailView1.ColWidthTitle = 80;
-			this.detailView1.Description1Style = "font-size:12px;";
-			this.detailView1.Description2Style = "font-size:12px;";
-			this.detailView1.Description3Style = "font-size:10px;";
-			this.detailView1.Description4Style = "font-size:10px; text-align:right;";
 			this.detailView1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.detailView1.ImageHeight = 135;
-			this.detailView1.LoadImageEnabled = true;
-			this.detailView1.LoadPageEnabled = true;
 			this.detailView1.Location = new System.Drawing.Point(0, 0);
 			this.detailView1.Name = "detailView1";
-			this.detailView1.ReviewListHeight = 173;
 			this.detailView1.Size = new System.Drawing.Size(242, 523);
 			this.detailView1.TabIndex = 0;
 			this.detailView1.StatusMessageChanged += new System.EventHandler(this.detailView1_StatusMessageChanged);
@@ -467,8 +431,8 @@
 			// 
 			// toolStripMenuItem4
 			// 
-			this.toolStripMenuItem4.Name = "toolStripMenuItem4";
-			this.toolStripMenuItem4.Size = new System.Drawing.Size(219, 6);
+			this.tsSeparator4.Name = "toolStripMenuItem4";
+			this.tsSeparator4.Size = new System.Drawing.Size(219, 6);
 			// 
 			// MainForm
 			// 
@@ -520,7 +484,7 @@
 		private PlaylistsView playlistsView1;
 		private System.Windows.Forms.ToolStripMenuItem tsmiQuit;
 		private System.Windows.Forms.ToolStripMenuItem tsmiCreateNewPlaylist;
-		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
+		private System.Windows.Forms.ToolStripSeparator tsSeparator3;
 		private InputBoxDialog inputBoxDialog1;
 		private System.Windows.Forms.SplitContainer splitContainer3;
 		private System.Windows.Forms.ToolStripProgressBar tspbProgress;
@@ -534,17 +498,17 @@
 		private System.Windows.Forms.ToolStripMenuItem tsmiPlaylistCollection;
 		private System.Windows.Forms.ToolStripMenuItem tsmiPlaylist;
 		private System.Windows.Forms.ToolStripMenuItem tsmiDetailView;
-		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
+		private System.Windows.Forms.ToolStripSeparator tsSeparator1;
 		private System.Windows.Forms.ToolStripMenuItem tsmiBrowseTopPage;
 		private System.Windows.Forms.ToolStripMenuItem tsmiBrowsePackagePage;
 		private System.Windows.Forms.ToolStripMenuItem tsmiBrowseContentPage;
 		private System.Windows.Forms.ToolStripMenuItem tsmiSearchLivedoorGyaO;
-		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
+		private System.Windows.Forms.ToolStripSeparator tsSeparator2;
 		private System.Windows.Forms.Timer timerContentSelect;
 		private System.Windows.Forms.ToolStripMenuItem tsmiExternalCommandsEditor;
 		private CrawlResultView crawlResultView;
 		private System.Windows.Forms.Timer timerMessage;
 		private System.Windows.Forms.ToolStripMenuItem tsmiRuleEditForm;
-		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem4;
+		private System.Windows.Forms.ToolStripSeparator tsSeparator4;
 	}
 }

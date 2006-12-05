@@ -60,6 +60,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 			if (base.DesignMode) return;
 			
 			this.wbDescription.DocumentText = "<html><body style='margin:0px;'></body></html>";
+			
 			this.ChangeEnabilityOfMenuItems();
 			
 			this.bgImageLoader.StartWorking();
@@ -205,6 +206,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 		}
 		#region IDetailViewBindingContract Members
 		[Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public bool LoadImageEnabled {
 			get { return this.loadImageEnabled; }
 			set {
@@ -213,6 +215,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 			}
 		}
 		[Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public bool LoadPageEnabled {
 			get { return this.loadPageEnabled; }
 			set {
@@ -221,6 +224,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 			}
 		}
 		[Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public int ImageHeight {
 			get {
 				return this.scRoot.SplitterDistance;
@@ -231,6 +235,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 			}
 		}
 		[Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public int ReviewListHeight {
 			get { return this.scReview.SplitterDistance; }
 			set {
@@ -239,6 +244,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 			}
 		}
 		[Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public int ColWidthNetabare {
 			get { return this.chNeta.Width; }
 			set {
@@ -247,6 +253,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 			}
 		}
 		[Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public int ColWidthScore {
 			get { return this.chScore.Width; }
 			set {
@@ -255,6 +262,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 			}
 		}
 		[Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public int ColWidthRef {
 			get { return this.chRef.Width; }
 			set {
@@ -263,6 +271,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 			}
 		}
 		[Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public int ColWidthTitle {
 			get { return this.chTitle.Width; }
 			set {
@@ -271,6 +280,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 			}
 		}
 		[Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public int ColWidthAuthor {
 			get { return this.chAuthor.Width; }
 			set {
@@ -279,6 +289,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 			}
 		}
 		[Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public int ColWidthPosted {
 			get { return this.chDate.Width; }
 			set {
@@ -287,6 +298,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 			}
 		}
 		[Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public string Description1Style {
 			get { return this.description1Style; }
 			set {
@@ -297,6 +309,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 			}
 		}
 		[Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public string Description2Style {
 			get { return this.description2Style; }
 			set {
@@ -307,6 +320,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 			}
 		}
 		[Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public string Description3Style {
 			get { return this.description3Style; }
 			set {
@@ -317,6 +331,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 			}
 		}
 		[Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public string Description4Style {
 			get { return this.description4Style; }
 			set {

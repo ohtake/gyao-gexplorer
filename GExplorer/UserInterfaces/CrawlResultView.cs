@@ -844,6 +844,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 			options.NeutralizeUnspecificValues(this);
 			BindingContractUtility.BindAllProperties<CrawlResultView, ICrawlResultViewBindingContract>(this, options);
 		}
+		[Browsable(false)]
 		public GContentClass LastSelectedContent {
 			get { return this.lastSelectedContent; }
 			private set {
@@ -853,9 +854,10 @@ namespace Yusen.GExplorer.UserInterfaces {
 				//}
 			}
 		}
+		[Browsable(false)]
 		public Playlist LastSelectingPlaylist {
 			get { return this.lastSelectingPlaylist; }
-			set {
+			private set {
 				this.lastSelectingPlaylist = value;
 				this.OnLastSelectingPlaylistChanged();
 			}
@@ -982,6 +984,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 		
 		#region ICrawlResultViewBindingContract Members
 		[Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public string DestinationPlaylistName {
 			get { return this.tscbDestPlaylistName.Text; }
 			set {
@@ -990,6 +993,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 			}
 		}
 		[Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public ContentVisibilities ContentVisibilities {
 			get { return this.contentVisibilities; }
 			set {
@@ -1018,6 +1022,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 			}
 		}
 		[Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public CrawlResultViewView CrvView {
 			get { return this.crvView; }
 			set {
@@ -1054,6 +1059,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 			}
 		}
 		[Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public Color ColorNew {
 			get { return this.style.ColorNew; }
 			set {
@@ -1063,6 +1069,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 			}
 		}
 		[Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public Color ColorModified {
 			get { return this.style.ColorModified; }
 			set {
@@ -1072,6 +1079,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 			}
 		}
 		[Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public Color ColorFilter {
 			get { return this.style.ColorFilter; }
 			set {
@@ -1081,11 +1089,13 @@ namespace Yusen.GExplorer.UserInterfaces {
 			}
 		}
 		[Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public bool GroupingAtTheBegining {
 			get { return this.groupingAtTheBegining; }
 			set { this.groupingAtTheBegining = value; }
 		}
 		[Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public bool FilterBarVisible {
 			get {
 				return this.tsFilter.Visible;
@@ -1104,6 +1114,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 			}
 		}
 		[Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public CrawlResultViewFilterType FilterType {
 			get { return this.filterType; }
 			set {
@@ -1139,6 +1150,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 			}
 		}
 		[Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public bool IncrementalFilterEnabled {
 			get { return this.incrementalFilterEnabled; }
 			set {
@@ -1150,6 +1162,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 			}
 		}
 		[Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public bool CaseInsensitiveFilter {
 			get { return this.caseInsensitiveFilter; }
 			set {
@@ -1159,6 +1172,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 			}
 		}
 		[Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public int ColWidthId {
 			get { return this.chId.Width; }
 			set {
@@ -1167,6 +1181,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 			}
 		}
 		[Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public int ColWidthTitle {
 			get { return this.chTitle.Width; }
 			set {
@@ -1175,6 +1190,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 			}
 		}
 		[Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public int ColWidthSeriesNumber {
 			get { return this.chSeriesNumber.Width; }
 			set {
@@ -1183,6 +1199,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 			}
 		}
 		[Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public int ColWidthSubtitle {
 			get { return this.chSubtitle.Width; }
 			set {
@@ -1191,6 +1208,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 			}
 		}
 		[Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public int ColWidthDuration {
 			get { return this.chDuration.Width; }
 			set {
@@ -1199,6 +1217,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 			}
 		}
 		[Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public int ColWidthDeadline {
 			get { return this.chDeadline.Width; }
 			set {
@@ -1207,6 +1226,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 			}
 		}
 		[Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public int ColWidthSummary {
 			get { return this.chSummary.Width; }
 			set {

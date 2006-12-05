@@ -5,15 +5,12 @@ using System.Drawing;
 using System.Data;
 using System.Text;
 using System.Windows.Forms;
+using System.Diagnostics;
 
 namespace Yusen.GExplorer.UserInterfaces {
 	public partial class EasterEggControl : UserControl {
 		public EasterEggControl() {
 			InitializeComponent();
-		}
-
-		private void btnCopyAA_Click(object sender, EventArgs e) {
-			Clipboard.SetText(this.lblCinnamon.Text);
 		}
 	}
 }

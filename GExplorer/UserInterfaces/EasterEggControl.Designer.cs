@@ -25,14 +25,14 @@
 		private void InitializeComponent() {
 			this.lblMessage = new System.Windows.Forms.Label();
 			this.lblCinnamon = new System.Windows.Forms.Label();
-			this.btnCopyAA = new System.Windows.Forms.Button();
+			this.lblNotes = new System.Windows.Forms.Label();
 			this.SuspendLayout();
 			// 
 			// lblMessage
 			// 
 			this.lblMessage.Anchor = System.Windows.Forms.AnchorStyles.None;
 			this.lblMessage.AutoSize = true;
-			this.lblMessage.Location = new System.Drawing.Point(15, 119);
+			this.lblMessage.Location = new System.Drawing.Point(14, 105);
 			this.lblMessage.Name = "lblMessage";
 			this.lblMessage.Size = new System.Drawing.Size(90, 24);
 			this.lblMessage.TabIndex = 3;
@@ -44,32 +44,31 @@
 			this.lblCinnamon.Anchor = System.Windows.Forms.AnchorStyles.None;
 			this.lblCinnamon.AutoSize = true;
 			this.lblCinnamon.Font = new System.Drawing.Font("MS PGothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.lblCinnamon.Location = new System.Drawing.Point(8, 60);
+			this.lblCinnamon.Location = new System.Drawing.Point(7, 45);
 			this.lblCinnamon.Name = "lblCinnamon";
 			this.lblCinnamon.Size = new System.Drawing.Size(104, 48);
 			this.lblCinnamon.TabIndex = 2;
 			this.lblCinnamon.Text = "　＿　　　 ＿\r\n（＿(,,・ω・)＿）\r\n　　 ＠＿）";
 			// 
-			// btnCopyAA
+			// lblNotes
 			// 
-			this.btnCopyAA.Anchor = System.Windows.Forms.AnchorStyles.None;
-			this.btnCopyAA.Location = new System.Drawing.Point(13, 155);
-			this.btnCopyAA.Name = "btnCopyAA";
-			this.btnCopyAA.Size = new System.Drawing.Size(94, 23);
-			this.btnCopyAA.TabIndex = 4;
-			this.btnCopyAA.Text = "AAをコピー(&C)";
-			this.btnCopyAA.UseVisualStyleBackColor = true;
-			this.btnCopyAA.Click += new System.EventHandler(this.btnCopyAA_Click);
+			this.lblNotes.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.lblNotes.AutoSize = true;
+			this.lblNotes.Location = new System.Drawing.Point(0, 161);
+			this.lblNotes.Name = "lblNotes";
+			this.lblNotes.Size = new System.Drawing.Size(118, 48);
+			this.lblNotes.TabIndex = 5;
+			this.lblNotes.Text = "アプリケーション作成者と\r\nこのキャラクタの\r\n著作関係者とは\r\n一切関係はありません";
 			// 
 			// EasterEggControl
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.Controls.Add(this.btnCopyAA);
+			this.Controls.Add(this.lblNotes);
 			this.Controls.Add(this.lblMessage);
 			this.Controls.Add(this.lblCinnamon);
 			this.Name = "EasterEggControl";
-			this.Size = new System.Drawing.Size(120, 250);
+			this.Size = new System.Drawing.Size(120, 264);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -79,6 +78,6 @@
 
 		private System.Windows.Forms.Label lblMessage;
 		private System.Windows.Forms.Label lblCinnamon;
-		private System.Windows.Forms.Button btnCopyAA;
+		private System.Windows.Forms.Label lblNotes;
 	}
 }

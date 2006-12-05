@@ -167,6 +167,8 @@ namespace Yusen.GExplorer.UserInterfaces {
 		#endregion
 
 		#region IMainFormBindingContract Members
+		[Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public int CrawlResultViewWidth {
 			get { return this.splitContainer1.SplitterDistance; }
 			set {
@@ -174,6 +176,8 @@ namespace Yusen.GExplorer.UserInterfaces {
 				this.OnPropertyChanged("CrawlResultViewWidth");
 			}
 		}
+		[Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public int CrawlResultViewHeight {
 			get { return this.splitContainer2.SplitterDistance; }
 			set {

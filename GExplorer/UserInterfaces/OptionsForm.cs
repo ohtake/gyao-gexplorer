@@ -76,6 +76,8 @@ namespace Yusen.GExplorer.UserInterfaces {
 		}
 
 		#region IOptionsFormBindingContract Members
+		[Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public int TreeViewWidth {
 			get { return this.splitContainer1.SplitterDistance;}
 			set {
@@ -83,7 +85,6 @@ namespace Yusen.GExplorer.UserInterfaces {
 				this.OnPropertyChanged("TreeViewWidth");
 			}
 		}
-
 		#endregion
 
 		private void splitContainer1_SplitterMoved(object sender, SplitterEventArgs e) {

@@ -42,7 +42,7 @@ namespace Yusen.GExplorer.Utilities {
 			[In] string lpszUrl,
 			[In] string lpszCookieName,
 			[Out] StringBuilder lpszCookieData,
-			[In,Out] ref int lpdwSize);
+			[In,Out,MarshalAs(UnmanagedType.U4)] ref int lpdwSize);
 #if false
 		[DllImport("wininet.dll",
 			CharSet = CharSet.Auto,

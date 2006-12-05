@@ -18,6 +18,7 @@ using Yusen.GExplorer.Utilities;
 namespace Yusen.GExplorer {
 	static class Program {
 		internal static readonly string ApplicationName = Application.ProductName + " " + Application.ProductVersion;
+
 		private static RootOptions rootOptions;
 		private static CacheController cacheController;
 		private static PlaylistsManager playlistsManager;
@@ -138,7 +139,7 @@ namespace Yusen.GExplorer {
 
 			Program.splashForm = new SplashForm();
 			Program.splashForm.Initialize("起動中です．．．", Program.InitializationSteps + 1);
-			Program.InitializeProgram2();
+			Program.InitializeProgram();
 			Program.mainForm.Load += delegate {
 				Program.splashForm.EndProgress();
 				Program.splashForm.Dispose();
@@ -147,7 +148,7 @@ namespace Yusen.GExplorer {
 			
 			Application.Run(Program.mainForm);
 		}
-		
+
 		private static bool CheckMultipleExecution() {
 			Process curProc = Process.GetCurrentProcess();
 			foreach(Process p in Process.GetProcesses()) {
@@ -163,13 +164,12 @@ namespace Yusen.GExplorer {
 			}
 			return false;
 		}
-		private static void InitializeProgram2() {
+		private static void InitializeProgram() {
 			Program.splashForm.StepProgress("ルートオプションの読み込み");
 			if (!RootOptions.TryDeserialize(Path.Combine(Program.GetWorkingDirectory(WorkingDirectory.UserSettings), "RootOptions.xml"), out Program.rootOptions)) {
 				Program.rootOptions = new RootOptions();
 			}
-
-			//アイコンの読み込み
+			
 			Program.splashForm.StepProgress("アイコンの読み込み");
 			try {
 				string iconFileName = Program.RootOptions.AppBasicOptions.IconFile;
@@ -182,8 +182,55 @@ namespace Yusen.GExplorer {
 			} catch (Exception e) {
 				Program.DisplayException("アイコンの読み込みエラー", e);
 			}
-
-			//ビットレートの設定
+			
+			Program.splashForm.StepProgress("クッキーの設定");
+			Program.cookieContainer = new CookieContainer();
+			try {
+			retry:
+				int cookieSize = 0;
+				if (!WindowsFunctions.InternetGetCookie(GUriBuilder.TopPageUri.AbsoluteUri, null, null, ref cookieSize)) {
+					if (Marshal.GetLastWin32Error() != (int)WinError.ERROR_NO_MORE_ITEMS) {
+						Marshal.ThrowExceptionForHR(Marshal.GetHRForLastWin32Error());
+					} else {
+						switch (MessageBox.Show("クッキーの読み込みに失敗しました．GyaOのトップページから視聴登録を行ってください．\n\n・はい: 視聴登録用のウィンドウを開く\n・いいえ: この警告を無視してアプリケーションを起動する\n・キャンセル: アプリケーションを終了する", "クッキーの読み込み失敗", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning)) {
+							case DialogResult.Yes:
+								RegistrationForm regForm = new RegistrationForm();
+								regForm.ShowDialog();
+								regForm.Dispose();
+								goto retry;
+							case DialogResult.No:
+								break;
+							case DialogResult.Cancel:
+								Environment.Exit(0);
+								return;
+						}
+					}
+				} else {
+					StringBuilder cookieSb = new StringBuilder(cookieSize);
+					if (!WindowsFunctions.InternetGetCookie(GUriBuilder.TopPageUri.AbsoluteUri, null, cookieSb, ref cookieSize)) {
+						Marshal.ThrowExceptionForHR(Marshal.GetHRForLastWin32Error());
+					}
+					string cookieStr = cookieSb.ToString();
+					if (!cookieStr.Contains("Cookie_UserId")) {
+						switch (MessageBox.Show("クッキーに Cookie_UserId がありません．GyaOのトップページから視聴登録を行ってください．\n\n・はい: 視聴登録用のウィンドウを開く\n・いいえ: この警告を無視してアプリケーションを起動する\n・キャンセル: アプリケーションを終了する\n\nクッキーの中身:\n" + cookieStr, "Cookie_UserId がない", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning)) {
+							case DialogResult.Yes:
+								RegistrationForm regForm = new RegistrationForm();
+								regForm.ShowDialog();
+								regForm.Dispose();
+								goto retry;
+							case DialogResult.No:
+								break;
+							case DialogResult.Cancel:
+								Environment.Exit(0);
+								return;
+						}
+					}
+					Program.cookieContainer.SetCookies(GUriBuilder.TopPageUri, cookieSb.ToString().Replace(';', ','));
+				}
+			} catch (Exception e) {
+				Program.DisplayException("クッキーの読み込み失敗", e);
+			}
+			
 			Program.splashForm.StepProgress("ビットレートの設定");
 			if (Program.RootOptions.AppBasicOptions.PromptBitrateOnStartup) {
 				using (BitrateForm brf = new BitrateForm()) {
@@ -195,23 +242,6 @@ namespace Yusen.GExplorer {
 							break;
 					}
 				}
-			}
-			
-			//クッキー
-			Program.splashForm.StepProgress("クッキーの設定");
-			Program.cookieContainer = new CookieContainer();
-			try {
-				int cookieSize = 0;
-				if (!WindowsFunctions.InternetGetCookie(GUriBuilder.TopPageUri.AbsoluteUri, null, null, ref cookieSize)) {
-					Marshal.ThrowExceptionForHR(Marshal.GetHRForLastWin32Error());
-				}
-				StringBuilder cookieSb = new StringBuilder(cookieSize);
-				if (!WindowsFunctions.InternetGetCookie(GUriBuilder.TopPageUri.AbsoluteUri, null, cookieSb, ref cookieSize)) {
-					Marshal.ThrowExceptionForHR(Marshal.GetHRForLastWin32Error());
-				}
-				Program.cookieContainer.SetCookies(GUriBuilder.TopPageUri, cookieSb.ToString().Replace(';', ','));
-			} catch (Exception e) {
-				Program.DisplayException("クッキーの読み込み失敗", e);
 			}
 			
 			Program.splashForm.StepProgress("キャッシュの初期化と読み込み");
@@ -234,7 +264,7 @@ namespace Yusen.GExplorer {
 			Program.splashForm.StepProgress("外部コマンドの読み込み");
 			Program.externalCommandsManager = new ExternalCommandsManager();
 			Program.externalCommandsManager.TryDeserialize(Path.Combine(Program.GetWorkingDirectory(WorkingDirectory.UserSettings), "ExternalCommands.xml"));
-
+			
 			Program.splashForm.StepProgress("メインフォームの作成");
 			Program.mainForm = new MainForm();
 		}
@@ -257,7 +287,7 @@ namespace Yusen.GExplorer {
 			Program.OnProgramSerializationProgress(step++, "ルートオプションの保存");
 			Program.rootOptions.Serialize(Path.Combine(Program.GetWorkingDirectory(WorkingDirectory.UserSettings), "RootOptions.xml"));
 		}
-
+		
 		private static void Application_ThreadException(object sender, ThreadExceptionEventArgs e) {
 			Program.DisplayException("Application.ThreadException", e.Exception);
 		}

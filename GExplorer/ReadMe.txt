@@ -1,4 +1,4 @@
-﻿パソコンテレビ GyaO 専用ブラウザ GExplorer 2.1.1.3
+﻿パソコンテレビ GyaO 専用ブラウザ GExplorer 2.1.1.4
 
 ◆概要
 株式会社USENによる「パソコンテレビGyaO」を閲覧するためのブラウザです．
@@ -25,7 +25,7 @@ http://www.microsoft.com/downloads/details.aspx?FamilyID=b44a0000-acf8-4fa1-affb
 Microsoft .NET Framework Version 2.0 再頒布可能パッケージ (IA64)
 http://www.microsoft.com/downloads/details.aspx?FamilyID=53c2548b-bec7-4ab4-8cbe-33e07cfc83a7&DisplayLang=ja
 
-3.0 もあります．
+XP SP-2 以降ならば 3.0 も利用できます．
 Microsoft .NET Framework 3.0 再頒布可能パッケージ
 http://www.microsoft.com/downloads/details.aspx?FamilyID=10cc340b-f857-4a14-83f5-25634c3bf043&DisplayLang=ja
 
@@ -63,10 +63,6 @@ http://www.kaoriya.net/#CMIGEMO
 上記サイトから「バイナリ(DLL)リリース版 for Windows」をダウンロード．
 必須ファイルは migemo.dll と dict ディレクトリ内の全辞書ファイル．
 migemo.dll と dict を GExplorer.exe と同じディレクトリにおいてください．
-
-◆クッキー
-動画を再生する場合に IE に GyaO のクッキーが食わせてあることが必要です．
-あらかじめ IE でユーザ登録を済ませておいてください．
 
 ◆プロクシ
 インターネットオプションで設定されているプロクシを利用します．

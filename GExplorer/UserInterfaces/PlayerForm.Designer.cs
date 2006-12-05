@@ -74,14 +74,14 @@
 			this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiBrowseDetail = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiBrowseRecommended = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiBrowseReviewList = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiBrowseReviewInput = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiShowOptionsForm = new System.Windows.Forms.ToolStripMenuItem();
 			this.tshmiHelp = new Yusen.GExplorer.UserInterfaces.ToolStripHelpMenuItem();
 			this.inputBoxDialog1 = new Yusen.GExplorer.UserInterfaces.InputBoxDialog();
 			this.timerAutoVolume = new System.Windows.Forms.Timer(this.components);
 			this.timerSkipGyaoCm = new System.Windows.Forms.Timer(this.components);
-			this.tsmiBrowseReviewList = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiBrowseReviewInput = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripContainer1.BottomToolStripPanel.SuspendLayout();
 			this.toolStripContainer1.ContentPanel.SuspendLayout();
 			this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
@@ -105,7 +105,7 @@
 			// toolStripContainer1.ContentPanel
 			// 
 			this.toolStripContainer1.ContentPanel.Controls.Add(this.splitContainer2);
-			this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(644, 544);
+			this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(644, 546);
 			this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.toolStripContainer1.Location = new System.Drawing.Point(0, 0);
 			this.toolStripContainer1.Name = "toolStripContainer1";
@@ -228,7 +228,7 @@
 			this.splitContainer2.Panel2.Controls.Add(this.tableLayoutPanel1);
 			this.splitContainer2.Panel2Collapsed = true;
 			this.splitContainer2.Panel2MinSize = 120;
-			this.splitContainer2.Size = new System.Drawing.Size(644, 544);
+			this.splitContainer2.Size = new System.Drawing.Size(644, 546);
 			this.splitContainer2.SplitterDistance = 523;
 			this.splitContainer2.SplitterWidth = 1;
 			this.splitContainer2.TabIndex = 1;
@@ -236,9 +236,8 @@
 			// playlistsView1
 			// 
 			this.playlistsView1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.playlistsView1.Location = new System.Drawing.Point(0, 344);
+			this.playlistsView1.Location = new System.Drawing.Point(0, 346);
 			this.playlistsView1.Name = "playlistsView1";
-			this.playlistsView1.PlaylistCollectionWidth = 140;
 			this.playlistsView1.Size = new System.Drawing.Size(600, 200);
 			this.playlistsView1.TabIndex = 3;
 			this.playlistsView1.Leave += new System.EventHandler(this.playlistsView1_Leave);
@@ -250,7 +249,7 @@
 			this.wmpMain.Location = new System.Drawing.Point(0, 0);
 			this.wmpMain.Name = "wmpMain";
 			this.wmpMain.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("wmpMain.OcxState")));
-			this.wmpMain.Size = new System.Drawing.Size(644, 544);
+			this.wmpMain.Size = new System.Drawing.Size(644, 546);
 			this.wmpMain.TabIndex = 0;
 			this.wmpMain.Text = "axWindowsMediaPlayer1";
 			this.wmpMain.PlayStateChange += new AxWMPLib._WMPOCXEvents_PlayStateChangeEventHandler(this.wmpMain_PlayStateChange);
@@ -279,6 +278,7 @@
 			this.wbBanner.Margin = new System.Windows.Forms.Padding(0);
 			this.wbBanner.MinimumSize = new System.Drawing.Size(20, 20);
 			this.wbBanner.Name = "wbBanner";
+			this.wbBanner.ScriptErrorsSuppressed = true;
 			this.wbBanner.ScrollBarsEnabled = false;
 			this.wbBanner.Size = new System.Drawing.Size(96, 600);
 			this.wbBanner.TabIndex = 0;
@@ -304,7 +304,7 @@
 			this.menuStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
-			this.menuStrip1.Size = new System.Drawing.Size(644, 23);
+			this.menuStrip1.Size = new System.Drawing.Size(644, 21);
 			this.menuStrip1.TabIndex = 0;
 			this.menuStrip1.Text = "menuStrip1";
 			// 
@@ -593,6 +593,20 @@
 			this.tsmiBrowseRecommended.Text = "おすすめページを表示(&R)";
 			this.tsmiBrowseRecommended.Click += new System.EventHandler(this.tsmiBrowseRecommended_Click);
 			// 
+			// tsmiBrowseReviewList
+			// 
+			this.tsmiBrowseReviewList.Name = "tsmiBrowseReviewList";
+			this.tsmiBrowseReviewList.Size = new System.Drawing.Size(244, 22);
+			this.tsmiBrowseReviewList.Text = "レビュー一覧ページを表示(&L)";
+			this.tsmiBrowseReviewList.Click += new System.EventHandler(this.tsmiBrowseReviewList_Click);
+			// 
+			// tsmiBrowseReviewInput
+			// 
+			this.tsmiBrowseReviewInput.Name = "tsmiBrowseReviewInput";
+			this.tsmiBrowseReviewInput.Size = new System.Drawing.Size(244, 22);
+			this.tsmiBrowseReviewInput.Text = "レビュー投稿ページを表示(&C)";
+			this.tsmiBrowseReviewInput.Click += new System.EventHandler(this.tsmiBrowseReviewInput_Click);
+			// 
 			// toolStripMenuItem4
 			// 
 			this.toolStripMenuItem4.Name = "toolStripMenuItem4";
@@ -624,20 +638,6 @@
 			// timerSkipGyaoCm
 			// 
 			this.timerSkipGyaoCm.Tick += new System.EventHandler(this.timerSkipGyaoCm_Tick);
-			// 
-			// tsmiBrowseReviewList
-			// 
-			this.tsmiBrowseReviewList.Name = "tsmiBrowseReviewList";
-			this.tsmiBrowseReviewList.Size = new System.Drawing.Size(244, 22);
-			this.tsmiBrowseReviewList.Text = "レビュー一覧ページを表示(&L)";
-			this.tsmiBrowseReviewList.Click += new System.EventHandler(this.tsmiBrowseReviewList_Click);
-			// 
-			// tsmiBrowseReviewInput
-			// 
-			this.tsmiBrowseReviewInput.Name = "tsmiBrowseReviewInput";
-			this.tsmiBrowseReviewInput.Size = new System.Drawing.Size(244, 22);
-			this.tsmiBrowseReviewInput.Text = "レビュー投稿ページを表示(&C)";
-			this.tsmiBrowseReviewInput.Click += new System.EventHandler(this.tsmiBrowseReviewInput_Click);
 			// 
 			// PlayerForm
 			// 

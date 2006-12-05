@@ -49,7 +49,9 @@ namespace Yusen.GExplorer.UserInterfaces {
 
 			this.ContentVisibilities = ContentVisibilities.PresetToumei;
 		}
-		
+
+		[Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public ContentVisibilities ContentVisibilities {
 			get {
 				return this.contentVisibilities;

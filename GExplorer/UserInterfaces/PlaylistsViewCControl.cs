@@ -445,6 +445,8 @@ namespace Yusen.GExplorer.UserInterfaces {
 		}
 
 		#region IPlaylistsViewCControlBindingContract Members
+		[Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public int ColWidthName {
 			get {
 				return this.chName.Width;
@@ -454,6 +456,8 @@ namespace Yusen.GExplorer.UserInterfaces {
 				this.OnPropertyChanged(PlaylistsViewCControl.ColWidthPropertyNames[0]);
 			}
 		}
+		[Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public int ColWidthCount {
 			get {
 				return this.chCount.Width;
@@ -463,6 +467,8 @@ namespace Yusen.GExplorer.UserInterfaces {
 				this.OnPropertyChanged(PlaylistsViewCControl.ColWidthPropertyNames[1]);
 			}
 		}
+		[Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public int ColWidthTime {
 			get {
 				return this.chTime.Width;
@@ -472,6 +478,8 @@ namespace Yusen.GExplorer.UserInterfaces {
 				this.OnPropertyChanged(PlaylistsViewCControl.ColWidthPropertyNames[2]);
 			}
 		}
+		[Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public int ColWidthCreated {
 			get {
 				return this.chCreated.Width;
@@ -481,6 +489,8 @@ namespace Yusen.GExplorer.UserInterfaces {
 				this.OnPropertyChanged(PlaylistsViewCControl.ColWidthPropertyNames[3]);
 			}
 		}
+		[Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public int ColWidthModified {
 			get {
 				return this.chModified.Width;

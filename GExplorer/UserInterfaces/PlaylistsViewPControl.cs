@@ -539,6 +539,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 
 		#region IPlaylistsViewPControlBindingContract Members
 		[Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public int ColWidthId {
 			get { return this.chId.Width;}
 			set {
@@ -547,6 +548,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 			}
 		}
 		[Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public int ColWidthTitle {
 			get { return this.chTitle.Width; }
 			set {
@@ -555,6 +557,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 			}
 		}
 		[Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public int ColWidthSeriesNumber {
 			get { return this.chSeriesNumber.Width; }
 			set {
@@ -563,6 +566,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 			}
 		}
 		[Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public int ColWidthSubtitle {
 			get { return this.chSubtitle.Width; }
 			set {
@@ -571,6 +575,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 			}
 		}
 		[Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public int ColWidthDuration {
 			get { return this.chDuration.Width; }
 			set {
@@ -579,6 +584,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 			}
 		}
 		[Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public int ColWidthDeadline {
 			get { return this.chDeadline.Width; }
 			set {

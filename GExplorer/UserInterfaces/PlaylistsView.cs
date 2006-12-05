@@ -79,7 +79,8 @@ namespace Yusen.GExplorer.UserInterfaces {
 		}
 
 		#region IPlaylistsViewBindingContract Members
-
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+		[Browsable(false)]
 		public int PlaylistCollectionWidth {
 			get { return this.splitContainer1.SplitterDistance;}
 			set {
