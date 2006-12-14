@@ -252,23 +252,16 @@ namespace Yusen.GExplorer.UserInterfaces {
 				return;
 			}
 			GContentClass[] selectedConts = this.GetSelectedContents();
-			if (selectedConts.Length == 0) {
-				this.OnStatusMessageChanged(
-					this.attachedPlaylist.Name,
-					this.attachedPlaylist.ContentCount.ToString(),
-					this.attachedPlaylist.SubtotalTime.ToString());
-			} else {
-				TimeSpan time = TimeSpan.Zero;
-				foreach (GContentClass cont in selectedConts) {
-					if (cont.DurationValue.HasValue) {
-						time += cont.DurationValue.Value;
-					}
+			TimeSpan time = TimeSpan.Zero;
+			foreach (GContentClass cont in selectedConts) {
+				if (cont.DurationValue.HasValue) {
+					time += cont.DurationValue.Value;
 				}
-				this.OnStatusMessageChanged(
-					this.attachedPlaylist.Name,
-					string.Format("{0}/{1}", selectedConts.Length, this.attachedPlaylist.ContentCount),
-					string.Format("{0}/{1}", time ,this.attachedPlaylist.SubtotalTime));
 			}
+			this.OnStatusMessageChanged(
+				this.attachedPlaylist.Name,
+				string.Format("{0}/{1}", selectedConts.Length, this.attachedPlaylist.ContentCount),
+				string.Format("{0}/{1}", time ,this.attachedPlaylist.SubtotalTime));
 		}
 		private void ChangeEnabilityOfMenuItems() {
 			bool isSelected = (this.lvContents.SelectedIndices.Count > 0);

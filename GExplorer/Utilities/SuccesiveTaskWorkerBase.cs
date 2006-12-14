@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Threading;
 
 namespace Yusen.GExplorer.Utilities {
-	abstract class SuccesiveTaskWorkerBase<TTask> : IDisposable
-		where TTask : SuccessiveTaskBase {
+	abstract class SuccesiveTaskWorkerBase<TTask, TTaskCompletedEventArgs> : IDisposable
+		where TTask : SuccessiveTaskBase
+		where TTaskCompletedEventArgs : SuccessiveTaskCompletedEventArgs{
+		public event EventHandler<TTaskCompletedEventArgs> TaskCompleted;
+		
 		private readonly LinkedList<TTask> tasks = new LinkedList<TTask>();
 		private readonly object workLock = new object();
 		private volatile bool working = false;
@@ -38,8 +41,14 @@ namespace Yusen.GExplorer.Utilities {
 				}
 			}
 		}
-		
-		protected abstract void DoTask(TTask task);
+
+		protected virtual void OnTaskComplated(TTaskCompletedEventArgs e) {
+			EventHandler<TTaskCompletedEventArgs> handler = this.TaskCompleted;
+			if (null != handler) {
+				handler(this, e);
+			}
+		}
+		protected abstract TTaskCompletedEventArgs DoTask(TTask task);
 		
 		private void Work(object o) {
 			while (true) {
@@ -55,7 +64,8 @@ namespace Yusen.GExplorer.Utilities {
 					this.autoResetEvent.WaitOne();
 					continue;
 				}
-				this.DoTask(task);
+				TTaskCompletedEventArgs e = this.DoTask(task);
+				this.OnTaskComplated(e);
 			}
 		}
 		
@@ -103,5 +113,8 @@ namespace Yusen.GExplorer.Utilities {
 	}
 	
 	abstract class SuccessiveTaskBase {
+	}
+	
+	class SuccessiveTaskCompletedEventArgs : EventArgs {
 	}
 }

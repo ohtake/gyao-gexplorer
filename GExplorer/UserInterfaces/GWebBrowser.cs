@@ -249,8 +249,8 @@ namespace Yusen.GExplorer.UserInterfaces {
 		}
 		private void tspmiAddToPlaylist_PlaylistSelected(object sender, EventArgs e) {
 			int contKey = this.dicContent[this.clickedContent];
-			GContentClass cont;
-			if (Program.CacheController.TryFindContentOrTryFetchContent(contKey, out cont)) {
+			GContentClass cont = Program.CacheController.FindContentOrFetchContent(contKey);
+			if(cont != null){
 				this.tspmiAddToPlaylist.LastSelectedPlaylist.AddContent(cont);
 			} else {
 				MessageBox.Show(string.Format("{0}のキャッシュを持っておらず，なおかつ{0}の詳細ページからも情報を取得できなかった．", GConvert.ToContentId(contKey)), "コンテンツの取得エラー", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -258,8 +258,8 @@ namespace Yusen.GExplorer.UserInterfaces {
 		}
 		private void tsmiContentPlayWithoutAdding_Click(object sender, EventArgs e) {
 			int contKey = this.dicContent[this.clickedContent];
-			GContentClass cont;
-			if (Program.CacheController.TryFindContentOrTryFetchContent(contKey, out cont)) {
+			GContentClass cont = Program.CacheController.FindContentOrFetchContent(contKey);
+			if (cont != null) {
 				Program.PlayContent(cont, null);
 			} else {
 				MessageBox.Show(string.Format("{0}のキャッシュを持っておらず，なおかつ{0}の詳細ページからも情報を取得できなかった．", GConvert.ToContentId(contKey)), "コンテンツの取得エラー", MessageBoxButtons.OK, MessageBoxIcon.Error);

@@ -16,10 +16,16 @@ namespace Yusen.GExplorer.UserInterfaces {
 		public const string DefaultDescription2Style = "font-size:12px;";
 		public const string DefaultDescription3Style = "font-size:10px;";
 		public const string DefaultDescription4Style = "font-size:10px; text-align:right;";
-
-		private static readonly Regex regexDesc = new Regex(@"<table width=""296"" border=""0"" cellspacing=""0"" cellpadding=""0"">\r?\n<tr>\r?\n<td align=""left"">(?<Desc1>.*?)</td>\r?\n</tr>\r?\n</table>\r?\n</div>\r?\n<div class=""marginT10"">\r?\n<table width=""296"" border=""0"" cellspacing=""0"" cellpadding=""0"">\r?\n<tr>\r?\n<td align=""left"">\r?\n(?<Desc2>.*?)</td>\r?\n</tr>\r?\n</table>\r?\n</div>\r?\n<div class=""marginT10"">\r?\n<table width=""296"" border=""0"" cellspacing=""0"" cellpadding=""0"">\r?\n<tr>\r?\n<td align=""(left|center)""( class=""text10"")?>\r?\n(?<Desc3>[\s\S]*?)</td>\r?\n</tr>\r?\n</table>\r?\n</div>\r?\n<div class=""marginT10"">\r?\n<table width=""296"" border=""0"" cellspacing=""0"" cellpadding=""0"">\r?\n<tr>\r?\n<td align=""right""( class=""text10"")?>\r?\n(?<Desc4>.*?)</td>\r?\n</tr>\r?\n</table>", RegexOptions.Compiled | RegexOptions.ExplicitCapture);
-		private static readonly Regex regexReviewSummary = new Regex(@"<td width=""115"" class=""title12b"" bgcolor=""#666666"" align=""left"">(?:<span class=""marginR10"">(?<Summary>.*?)点?</span>)?</td>", RegexOptions.Compiled | RegexOptions.ExplicitCapture);
-		private static readonly Regex regexReviewPost = new Regex(@"<td width=""210"" height=""25"" class=""bk12b"">(?<Title>.*?)</td>\r?\n<td width=""140"" class=""bk10"">投稿者：(?<Author>.*?)</td>\r?\n<td width=""118"" align=""center"" class=""bk10"">投稿日：(?<Posted>.*?) </td>\r?\n<td width=""102"" align=""center"">\r?\n<table width=""85"" border=""0"" cellspacing=""0"" cellpadding=""0"">\r?\n(<td><img src = ""http://www\.gyao\.jp/common/images/star_(w|half_n|half_w)\.gif"" width=""15"" height=""15"" border=""0""> </td>\r?\n){5} \r?\n</table>\r?\n</td>\r?\n<td width=""50"" align=""right"" class=""bk10"">(?<Score>\d+)点</td>\r?\n</tr>\r?\n</table>\r?\n</td></tr>\r?\n<tr><td><table width=""620"" border=""0"" cellspacing=""0"" cellpadding=""0"">\r?\n(?<NetaBare><tr><td><img src=""http://www\.gyao\.jp/common/images/neta\.gif"" alt=""ネタバレ"" width=""40"" height=""15"" border=""0""></td>\r?\n)?<td align=""right"" height=""35"" class=""bk10"">(?<Denominator>\d+)人中(?<Numerator>\d+)人が「この番組レビューは参考になる」と評価しています。</td></tr>\r?\n</table></td></tr>\r?\n<tr><td><p class=""marginT5B5"">(?<Body>.*?)</p></td></tr>", RegexOptions.Compiled | RegexOptions.ExplicitCapture);
+		
+		private static readonly Regex regexDesc = new Regex(
+			@"<table width=""296"" border=""0"" cellspacing=""0"" cellpadding=""0"">\r?\n<tr>\r?\n<td align=""left"">(?<Desc1>.*?)</td>\r?\n</tr>\r?\n</table>\r?\n</div>\r?\n<div class=""marginT10"">\r?\n<table width=""296"" border=""0"" cellspacing=""0"" cellpadding=""0"">\r?\n<tr>\r?\n<td align=""left"">\r?\n(?<Desc2>.*?)</td>\r?\n</tr>\r?\n</table>\r?\n</div>\r?\n<div class=""marginT10"">\r?\n<table width=""296"" border=""0"" cellspacing=""0"" cellpadding=""0"">\r?\n<tr>\r?\n<td align=""(left|center)""( class=""text10"")?>\r?\n(?<Desc3>[\s\S]*?)</td>\r?\n</tr>\r?\n</table>\r?\n</div>\r?\n<div class=""marginT10"">\r?\n<table width=""296"" border=""0"" cellspacing=""0"" cellpadding=""0"">\r?\n<tr>\r?\n<td align=""right""( class=""text10"")?>\r?\n(?<Desc4>.*?)</td>\r?\n</tr>\r?\n</table>",
+			RegexOptions.Compiled | RegexOptions.ExplicitCapture);
+		private static readonly Regex regexReviewSummary = new Regex(
+			@"<td width=""115"" class=""title12b"" bgcolor=""#666666"" align=""left"">(?:<span class=""marginR10"">(?<Summary>.*?)点?</span>)?</td>",
+			RegexOptions.Compiled | RegexOptions.ExplicitCapture);
+		private static readonly Regex regexReviewPost = new Regex(
+			@"<td width=""210"" height=""25"" class=""bk12b"">(?<Title>.*?)</td>\r?\n<td width=""140"" class=""bk10"">投稿者：(?<Author>.*?)</td>\r?\n<td width=""118"" align=""center"" class=""bk10"">投稿日：(?<Posted>.*?) </td>\r?\n<td width=""102"" align=""center"">\r?\n<table width=""85"" border=""0"" cellspacing=""0"" cellpadding=""0"">\r?\n(<td><img src = ""http://www\.gyao\.jp/common/images/star_(w|half_n|half_w)\.gif"" width=""15"" height=""15"" border=""0""> </td>\r?\n){5} \r?\n</table>\r?\n</td>\r?\n<td width=""50"" align=""right"" class=""bk10"">(?<Score>\d+)点</td>\r?\n</tr>\r?\n</table>\r?\n</td></tr>\r?\n<tr><td><table width=""620"" border=""0"" cellspacing=""0"" cellpadding=""0"">\r?\n(?<NetaBare><tr><td><img src=""http://www\.gyao\.jp/common/images/neta\.gif"" alt=""ネタバレ"" width=""40"" height=""15"" border=""0""></td>\r?\n)?<td align=""right"" height=""35"" class=""bk10"">(?<Denominator>\d+)人中(?<Numerator>\d+)人が「この番組レビューは参考になる」と評価しています。</td></tr>\r?\n</table></td></tr>\r?\n<tr><td><p class=""marginT5B5"">(?<Body>.*?)</p></td></tr>",
+			RegexOptions.Compiled | RegexOptions.ExplicitCapture);
 		private static readonly string[] ColWidthPropertyNames = new string[] {
 			"ColWidthNetabare", "ColWidthScore", "ColWidthRef", "ColWidthTitle", "ColWidthAuthor", "ColWidthPosted",
 		};
@@ -40,12 +46,12 @@ namespace Yusen.GExplorer.UserInterfaces {
 		public event EventHandler StatusMessageChanged;
 
 		private string statusMessage = string.Empty;
-
+		
 		private bool loadImageEnabled = true;
 		private bool loadPageEnabled = true;
-
-		private readonly BackgroundImageLoader bgImageLoader = new BackgroundImageLoader(Program.CookieContainer, new RequestCachePolicy(RequestCacheLevel.CacheIfAvailable));
-		private readonly BackgroundTextLoader bgTextLoader = new BackgroundTextLoader(Encoding.GetEncoding("Shift_JIS"), Program.CookieContainer, new RequestCachePolicy(RequestCacheLevel.Default));
+		
+		private readonly BackgroundImageLoader bgImageLoader = new BackgroundImageLoader(Program.CookieContainer, new RequestCachePolicy(RequestCacheLevel.CacheIfAvailable), DetailViewOptions.ImageTimeoutDefaultValue);
+		private readonly BackgroundTextLoader bgTextLoader = new BackgroundTextLoader(Encoding.GetEncoding("Shift_JIS"), Program.CookieContainer, new RequestCachePolicy(RequestCacheLevel.Default), DetailViewOptions.PageTimeoutDefaultValue);
 		
 		private GContentClass cont;
 		private string description1Style = DetailView.DefaultDescription1Style;
@@ -62,10 +68,14 @@ namespace Yusen.GExplorer.UserInterfaces {
 			this.wbDescription.DocumentText = "<html><body style='margin:0px;'></body></html>";
 			
 			this.ChangeEnabilityOfMenuItems();
-			
+
+			this.bgImageLoader.TaskCompleted += new EventHandler<BackgroundImageLoadTaskComletedEventArgs>(bgImageLoader_TaskCompleted);
+			this.bgTextLoader.TaskCompleted += new EventHandler<BackgroundTextLoadTaskCompletedEventArgs>(bgTextLoader_TaskCompleted);
 			this.bgImageLoader.StartWorking();
 			this.bgTextLoader.StartWorking();
 			this.Disposed += delegate {
+				this.bgImageLoader.TaskCompleted -= new EventHandler<BackgroundImageLoadTaskComletedEventArgs>(bgImageLoader_TaskCompleted);
+				this.bgTextLoader.TaskCompleted -= new EventHandler<BackgroundTextLoadTaskCompletedEventArgs>(bgTextLoader_TaskCompleted);
 				this.bgImageLoader.Dispose();
 				this.bgTextLoader.Dispose();
 			};
@@ -90,42 +100,45 @@ namespace Yusen.GExplorer.UserInterfaces {
 
 			if (this.LoadImageEnabled) {
 				this.bgImageLoader.ClearTasks();
-				this.bgImageLoader.AddTaskFirst(new BackgroundImageLoadTask(cont.ImageLargeUri, this.BackgroundImageLoadCompletedCallback, cont));
+				this.bgImageLoader.AddTaskFirst(new BackgroundImageLoadTask(cont.ImageLargeUri, cont));
 			}
 			if (this.LoadPageEnabled) {
 				this.bgTextLoader.ClearTasks();
-				this.bgTextLoader.AddTaskFirst(new BacktroundTextLoadTask(cont.ContentDetailUri, this.BackgroundTextLoadCompletedCallback, cont));
+				this.bgTextLoader.AddTaskFirst(new BackgroundTextLoadTask(cont.ContentDetailUri, cont));
 			}
 			
 			this.ChangeEnabilityOfMenuItems();
 		}
 
-		private bool BackgroundImageLoadCompletedCallback(Image image, object userState) {
-			if (!object.ReferenceEquals(userState, this.cont)) return false;
+		private void bgImageLoader_TaskCompleted(object sender, BackgroundImageLoadTaskComletedEventArgs e) {
+			if (!object.ReferenceEquals(e.UserState, this.cont)) return;
 			if (this.InvokeRequired) {
-				return (bool)this.Invoke(new BackgroundImageLoadCompletedCallback(this.BackgroundImageLoadCompletedCallback), image, userState);
+				this.Invoke(new EventHandler<BackgroundImageLoadTaskComletedEventArgs>(this.bgImageLoader_TaskCompleted), sender, e);
 			} else {
-				if (image == null) {
+				if (e.Success) {
+					this.pbImage.Image = e.Image;
+					e.DisposeImage = false;
+				} else {
 					this.pbImage.Image = this.pbImage.ErrorImage;
-					return false;
+					this.StatusMessage = string.Format("詳細ビューの画像読み込みエラー: {0}", e.Error.Message);
 				}
-				this.pbImage.Image = image;
-				return true;
 			}
 		}
-		private void BackgroundTextLoadCompletedCallback(string text, object userState) {
-			if (!object.ReferenceEquals(userState, this.cont)) return;
+		private void bgTextLoader_TaskCompleted(object sender, BackgroundTextLoadTaskCompletedEventArgs e) {
+			if (!object.ReferenceEquals(e.UserState, this.cont)) return;
 			if (this.InvokeRequired) {
-				this.Invoke(new BackgroundTextLoadCompletedCallback(this.BackgroundTextLoadCompletedCallback), text, userState);
+				this.Invoke(new EventHandler<BackgroundTextLoadTaskCompletedEventArgs>(this.bgTextLoader_TaskCompleted), sender, e);
 			} else {
-				if (text == null) {
+				if(!e.Success){
 					this.wbDescription.Document.Body.InnerHtml = "取得失敗";
 					this.lblReviewSummary.Text = "レビュー取得失敗";
 					this.tabpReview.Text = "レビュー(取得失敗)";
 					this.lvReview.Items.Clear();
 					this.txtReview.Clear();
+					this.StatusMessage = string.Format("詳細ビューでの詳細ページ取得エラー: {0}", e.Error.Message);
 					return;
 				}
+				string text = e.Text;
 				Match m = DetailView.regexDesc.Match(text);
 				if (m.Success) {
 					this.wbDescription.Document.Body.InnerHtml = string.Format(@"<p style=""{4}"">{0}</p><p style=""{5}"">{1}</p><p style=""{6}"">{2}</p><p style=""{7}"">{3}</p>",
@@ -221,6 +234,24 @@ namespace Yusen.GExplorer.UserInterfaces {
 			set {
 				this.loadPageEnabled = value;
 				this.OnPropertyChanged("LoadPageEnabled");
+			}
+		}
+		[Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+		public int ImageTimeout {
+			get { return this.bgImageLoader.Timeout; }
+			set {
+				this.bgImageLoader.Timeout = value;
+				this.OnPropertyChanged("ImageTimeout");
+			}
+		}
+		[Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+		public int PageTimeout {
+			get { return this.bgTextLoader.Timeout; }
+			set {
+				this.bgTextLoader.Timeout = value;
+				this.OnPropertyChanged("PageTimeout");
 			}
 		}
 		[Browsable(false)]
@@ -370,6 +401,8 @@ namespace Yusen.GExplorer.UserInterfaces {
 	interface IDetailViewBindingContract : IBindingContract {
 		bool LoadImageEnabled { get;set;}
 		bool LoadPageEnabled { get;set;}
+		int ImageTimeout { get;set;}
+		int PageTimeout { get;set;}
 		int ImageHeight { get;set;}
 
 		int ReviewListHeight { get;set;}
@@ -386,13 +419,16 @@ namespace Yusen.GExplorer.UserInterfaces {
 		string Description4Style { get;set;}
 	}
 	public sealed class DetailViewOptions : IDetailViewBindingContract {
+		internal const int ImageTimeoutDefaultValue = 5000;
+		internal const int PageTimeoutDefaultValue = 5000;
+		
 		public DetailViewOptions() {
 		}
 
 		#region IDetailViewBindingContract Members
 		private bool loadImageEnabled = true;
-		[Category("情報取得")]
-		[DisplayName("画像")]
+		[Category("通信")]
+		[DisplayName("画像の取得")]
 		[Description("画像を取得します．")]
 		[DefaultValue(true)]
 		public bool LoadImageEnabled {
@@ -400,15 +436,33 @@ namespace Yusen.GExplorer.UserInterfaces {
 			set { this.loadImageEnabled = value; }
 		}
 		private bool loadPageEnabled = true;
-		[Category("情報取得")]
-		[DisplayName("説明文とレビュー")]
+		[Category("通信")]
+		[DisplayName("説明文とレビューの取得")]
 		[Description("説明文とレビューを取得します．")]
 		[DefaultValue(true)]
 		public bool LoadPageEnabled {
 			get { return this.loadPageEnabled; }
 			set { this.loadPageEnabled = value; }
 		}
-
+		private int imageTimeout = DetailViewOptions.ImageTimeoutDefaultValue;
+		[Category("通信")]
+		[DisplayName("画像のタイムアウト")]
+		[Description("画像を取得するさいのタイムアウトをミリ秒で指定します．")]
+		[DefaultValue(DetailViewOptions.ImageTimeoutDefaultValue)]
+		public int ImageTimeout {
+			get { return this.imageTimeout; }
+			set { this.imageTimeout = value; }
+		}
+		private int pageTimeout = DetailViewOptions.PageTimeoutDefaultValue;
+		[Category("通信")]
+		[DisplayName("説明文とレビューのタイムアウト")]
+		[Description("説明文とレビューを取得するさいのタイムアウトをミリ秒で指定します．")]
+		[DefaultValue(DetailViewOptions.PageTimeoutDefaultValue)]
+		public int PageTimeout {
+			get { return this.pageTimeout; }
+			set { this.pageTimeout = value; }
+		}
+		
 		private int imageHeight = -1;
 		[Category("スプリッタの位置")]
 		[DisplayName("画像の高さ")]

@@ -230,26 +230,17 @@ namespace Yusen.GExplorer.UserInterfaces {
 			}
 		}
 		private void UpdateStatusMessages() {
-			string pCount;
-			string cCount;
-			string time;
 			Playlist[] selectedLists = this.GetSelectedPlaylists();
-			if (selectedLists.Length == 0) {
-				pCount = this.plManager.PlaylistsCount.ToString();
-				cCount = this.plManager.GrandTotalContentsCount.ToString();
-				time = this.plManager.GrandTotalTime.ToString();
-			} else {
-				int contCount = 0;
-				TimeSpan tspan = TimeSpan.Zero;
-				foreach (Playlist pl in selectedLists) {
-					contCount += pl.ContentCount;
-					tspan += pl.SubtotalTime;
-				}
-				pCount = string.Format("{0}/{1}", selectedLists.Length, this.plManager.PlaylistsCount);
-				cCount = string.Format("{0}/{1}", contCount, this.plManager.GrandTotalContentsCount);
-				time = string.Format("{0}/{1}", tspan, this.plManager.GrandTotalTime);
+			int contCount = 0;
+			TimeSpan tspan = TimeSpan.Zero;
+			foreach (Playlist pl in selectedLists) {
+				contCount += pl.ContentCount;
+				tspan += pl.SubtotalTime;
 			}
-			this.OnStatusMessagesChanged(pCount, cCount, time);
+			this.OnStatusMessagesChanged(
+				string.Format("{0}/{1}", selectedLists.Length, this.plManager.PlaylistsCount),
+				string.Format("{0}/{1}", contCount, this.plManager.GrandTotalContentsCount),
+				string.Format("{0}/{1}", tspan, this.plManager.GrandTotalTime));
 		}
 
 		private Playlist[] GetSelectedPlaylists() {

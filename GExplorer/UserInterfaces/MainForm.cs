@@ -204,6 +204,16 @@ namespace Yusen.GExplorer.UserInterfaces {
 		private void playlistsView1_LastSelectedContentChanged(object sender, EventArgs e) {
 			this.SetLastSelectContentDelayed(this.playlistsView1.LastSelectedContent);
 		}
+		private void crawlResultView_LastSelectingPlaylistChanged(object sender, EventArgs e) {
+			this.playlistsView1.SelectPlaylist(this.crawlResultView.LastSelectingPlaylist);
+		}
+		private void crawlResultView_StatusMessageChanged(object sender, EventArgs e) {
+			this.SetTemporalStatusMessage(this.crawlResultView.StatusMessage);
+		}
+		private void detailView1_StatusMessageChanged(object sender, EventArgs e) {
+			this.SetTemporalStatusMessage(this.detailView1.StatusMessage);
+		}
+	
 		private void SetLastSelectContentDelayed(GContentClass cont) {
 			this.lastSelectedContent = cont;
 			this.timerContentSelect.Start();
@@ -223,14 +233,6 @@ namespace Yusen.GExplorer.UserInterfaces {
 			this.tsslMessage.Text = string.Empty;
 		}
 		
-		private void detailView1_StatusMessageChanged(object sender, EventArgs e) {
-			this.SetTemporalStatusMessage(this.detailView1.StatusMessage);
-		}
-
-		private void crawlResultView_LastSelectingPlaylistChanged(object sender, EventArgs e) {
-			this.playlistsView1.SelectPlaylist(this.crawlResultView.LastSelectingPlaylist);
-		}
-
 	}
 	
 	interface IMainFormBindingContract : IBindingContract {

@@ -8,19 +8,20 @@ using System.Drawing;
 using System.Runtime.Serialization.Formatters.Binary;
 using Yusen.GExplorer.GyaoModel;
 using Yusen.GExplorer.Utilities;
+using System.ComponentModel;
 
 namespace Yusen.GExplorer.AppCore {
 	sealed class CacheController {
 		private static readonly Regex regexPackagePackage = new Regex(
-			@"<td width=""658"" class=""title12b"">(?<PackageName>.*?)<!-- パックタイトル -->[\s\S]*?<b>(?<CatchCopy>.*?)<!-- パックキャッチコピー --></b>[\s\S]*?<td>(?<PackageText1>.*?)<!-- パックテキスト１ --></td>",
+			@"<td width=""658"" class=""title12b"">(?<PackageName>.*?)<!-- パックタイトル -->[\s\S]{0,1000}?<b>(?<CatchCopy>.*?)<!-- パックキャッチコピー --></b>[\s\S]{0,100}?<td>(?<PackageText1>.*?)<!-- パックテキスト１ --></td>",
 			RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.ExplicitCapture);
 		private static readonly Regex regexPackageContent = new Regex(
-			@"<td align=""left"" class=""title12"">(?<SeriesNumber>.*?)<!-- シリーズ番号 --><img src=""http://www\.gyao\.jp/common/images/spacer\.gif"" width=""10"" height=""1"">(?<Subtitle>.*?)<!-- サブタイトル --></td>[\s\S]+?<img src=""/img/info/[a-z]*?/{1,2}(?<ContentId>cnt\d{7})_s.jpg"" width=""80"" height=""60"" border=""0""><!-- サムネイル -->[\s\S]*?<td width=""235"" valign=""top"">(?<Summary>.*?)<!-- サマリー --></td>[\s\S]*?<td width=""80"" height=""13"" class=""bk10"" align=""left"">(?<Duration>.*?)</td>[\s\S]*?<td height=""14"" colspan=""2"" class=""bk10"">[\r\n]{1,2}(?<Deadline>.*?)</t[dr]>",
+			@"<td align=""left"" class=""title12"">(?<SeriesNumber>.*?)<!-- シリーズ番号 --><img src=""http://www\.gyao\.jp/common/images/spacer\.gif"" width=""10"" height=""1"">(?<Subtitle>.*?)<!-- サブタイトル --></td>[\s\S]{0,500}?<img src=""/img/info/[a-z]*?/{1,2}(?<ContentId>cnt\d{7})_s.jpg"" width=""80"" height=""60"" border=""0""><!-- サムネイル --></td>\r?\n<td width=""235"" valign=""top"">(?<Summary>.*?)<!-- サマリー --></td>\r?\n<td width=""315"" align=""right"" valign=""bottom"">[\s\S]{0,1500}?<td width=""80"" height=""13"" class=""bk10"" align=""left"">(?<Duration>.*?)</td>[\s\S]{0,100}?<td height=""14"" colspan=""2"" class=""bk10"">[\r\n]{1,2}(?<Deadline>.*?)</t[dr]>",
 			RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.ExplicitCapture);
 			// "/{1,2}"は村上さん対策
 		private static readonly Regex regexContentPage = new Regex(
 			//@"<a href=""http://www\.gyao\.jp/sityou/catetop/genre_id/(?<GenreIdNavigation>gen\d{7})/"">.*?[\r\n]{1,2}(<a href=""http://www\.gyao\.jp/sityou/catelist/pac_id/(?<PackageIdNavigation>pac\d{7})/"">)?[\s\S]*?<td width=""459"" class=""title12b"">(?<Title>.*?)</td>[\s\S]*?((?<SeriesNumber>.*?)<!-- シリーズ番号 -->)?(&nbsp;&nbsp;&nbsp;)?(?<Subtitle>.*?)<!-- サブタイトル -->[\s\S]*?<b>[^:]*時間[^:]* : (?<Duration>.*?)</b>[\s\S]*?<td align=""left"">(?<Description1>.*?)</td>([\s\S]*?<td align=""left"">[\r\n]{1,2}(?<Description2>.*?)</td>[\s\S]*?<td align=""left"" class=""text10"">[\r\n]{1,2}(?<Description3>.*?)</td>[\s\S]*?<td align=""right"" class=""text10"">[\r\n]{1,2}(?<Description4>.*?)</td>)?([\s\S]*<div><a href=""http://www\.gyao\.jp/sityou_review/review_list\.php\?contents_id=cnt\d{7}&pac_id=(?<PackageIdReview>pac\d{7})"">)?",
-			@"<td width=""459"" class=""title12b"">(?<Title>.*?)</td>[\s\S]*?((?<SeriesNumber>.*?)<!-- シリーズ番号 -->)?(&nbsp;&nbsp;&nbsp;)?(?<Subtitle>.*?)<!-- サブタイトル -->[\s\S]*?<b>[^:]*時間[^:]* : (?<Duration>.*?)</b>",
+			@"<td width=""459"" class=""title12b"">(?<Title>.*?)</td>[\s\S]{0,1000}?((?<SeriesNumber>.*?)<!-- シリーズ番号 -->)?(&nbsp;&nbsp;&nbsp;)?(?<Subtitle>.*?)<!-- サブタイトル -->[\s\S]{0,100}?<b>番組時間(（CM時間を除く）)? : (?<Duration>.*?)</b>",
 			RegexOptions.Compiled | RegexOptions.ExplicitCapture | RegexOptions.Multiline);
 		
 		private readonly string cacheDirectory;
@@ -30,12 +31,15 @@ namespace Yusen.GExplorer.AppCore {
 		private readonly List<GGenreClass> allGenres = new List<GGenreClass>();
 		private readonly SortedDictionary<int, GGenreClass> dicGenre = new SortedDictionary<int, GGenreClass>();
 		private readonly CookieContainer cookieContainer;
-		
+
+		private readonly CacheControllerOptions options;
+
 		private CacheController() {
 		}
-		public CacheController(string cacheDirectory, CookieContainer cookieContainer) : this(){
+		public CacheController(string cacheDirectory, CookieContainer cookieContainer, CacheControllerOptions options) : this(){
 			this.cacheDirectory = cacheDirectory;
 			this.cookieContainer = cookieContainer;
+			this.options = options;
 		}
 		public IEnumerable<GGenreClass> GetEnumerableOfAllGenres() {
 			return this.allGenres;
@@ -137,12 +141,14 @@ namespace Yusen.GExplorer.AppCore {
 				return false;
 			}
 		}
-		private bool TryFetchContent(int contKey, out GContentClass content) {
+		private GContentClass FetchContent(int contKey) {
 			Uri uri = GUriBuilder.CreateContentDetailUri(contKey);
 			TextReader reader = TextReader.Null;
 			try {
 				HttpWebRequest req = WebRequest.Create(uri) as HttpWebRequest;
 				req.CookieContainer = this.cookieContainer;
+				req.Timeout = this.options.Timeout;
+				
 				reader = new StreamReader(req.GetResponse().GetResponseStream(), this.encoding);
 				string allHtml = reader.ReadToEnd();
 				
@@ -167,8 +173,7 @@ namespace Yusen.GExplorer.AppCore {
 					subtitle = HtmlUtility.HtmlToText(match.Groups["Subtitle"].Value);
 					durationText = match.Groups["Duration"].Value;
 				} else {
-					content = null;
-					return false;
+					throw new Exception(string.Format("詳細ページの解釈に失敗．{0}", GConvert.ToContentId(contKey)));
 				}
 				
 				GDataSet.GContentRow row = this.dataSet.GContent.NewGContentRow();
@@ -186,19 +191,17 @@ namespace Yusen.GExplorer.AppCore {
 				row.LastModified = now;
 				
 				this.dataSet.GContent.AddGContentRow(row);
-				content = new GContentClass(row, this.FindPackage(row), this.GetCachedGenre(row));
-				return true;
+				return new GContentClass(row, this.FindPackage(row), this.GetCachedGenre(row));
 			} finally {
 				reader.Dispose();
 			}
 		}
-		public bool TryFindContentOrTryFetchContent(int contKey, out GContentClass content){
-			if (this.TryFindContent(contKey, out content)) {
-				return true;
-			} else if (this.TryFetchContent(contKey, out content)) {
-				return true;
+		public GContentClass FindContentOrFetchContent(int contKey) {
+			GContentClass cont;
+			if (this.TryFindContent(contKey, out cont)) {
+				return cont;
 			} else {
-				return false;
+				return this.FetchContent(contKey);
 			}
 		}
 
@@ -214,13 +217,15 @@ namespace Yusen.GExplorer.AppCore {
 			if (crow.IsPackageKeyNull()) return null;
 			else return this.FindPackage(crow.PackageKey);
 		}
-		public bool TryFetchPackage(int pacKey, out GPackageClass package, out List<GContentClass> contents) {
+		public GPackageClass FetchPackage(int pacKey, out List<GContentClass> contents) {
 			Uri pacUri = GUriBuilder.CreatePackagePageUri(pacKey);
 			List<GContentClass> children = new List<GContentClass>();
 			TextReader reader = TextReader.Null;
 			try{
 				HttpWebRequest req = WebRequest.Create(pacUri) as HttpWebRequest;
 				req.CookieContainer = this.cookieContainer;
+				req.Timeout = this.options.Timeout;
+				
 				reader = new StreamReader(req.GetResponse().GetResponseStream(), this.encoding);
 				string allHtml = reader.ReadToEnd();
 
@@ -241,11 +246,10 @@ namespace Yusen.GExplorer.AppCore {
 					packageCatch = HtmlUtility.HtmlToText(matchPackage.Groups["CatchCopy"].Value);
 					packageText = HtmlUtility.HtmlToText(matchPackage.Groups["PackageText1"].Value);
 				} else {
-					goto failed;
+					throw new Exception("パッケージの情報を取れなかった．");
 				}
 				
-				package = this.CreatePackageAndStoreOrUpdate(pacKey, genre, packageName, packageCatch, packageText);
-				
+				GPackageClass package = this.CreatePackageAndStoreOrUpdate(pacKey, genre, packageName, packageCatch, packageText);
 				for (Match matchContent = CacheController.regexPackageContent.Match(allHtml); matchContent.Success; matchContent = matchContent.NextMatch()) {
 					string id = matchContent.Groups["ContentId"].Value;
 					string seriesNumber = HtmlUtility.HtmlToText(matchContent.Groups["SeriesNumber"].Value);
@@ -253,24 +257,19 @@ namespace Yusen.GExplorer.AppCore {
 					TimeSpan durationValue = GConvert.ToTimeSpan(matchContent.Groups["Duration"].Value);
 					string summaryHtml = matchContent.Groups["Summary"].Value;
 					string deadlineText = HtmlUtility.HtmlToText(matchContent.Groups["Deadline"].Value);
-					
+
 					children.Add(this.CreateContentAndStoreOrUpdate(GConvert.ToContentKey(id), package, genre, packageName, seriesNumber, subtitle, summaryHtml, durationValue, deadlineText));
 				}
 
 				if (children.Count < 1) {
-					goto failed;
+					throw new Exception("シリーズ一覧ページからコンテンツをひとつも取得できなかった．");
 				}
 				
 				contents = children;
-				return true;
+				return package;
 			}finally{
 				reader.Close();
 			}
-
-		failed:
-			package = null;
-			contents = null;
-			return false;
 		}
 
 		private GPackageClass CreatePackageAndStoreOrUpdate(int packageKey, GGenreClass genre, string pacTitle, string pacCatch, string pacText) {
@@ -375,6 +374,21 @@ namespace Yusen.GExplorer.AppCore {
 				this.dataSet.GContent.AddGContentRow(row);
 				return new GContentClass(row, package, genre);
 			}
+		}
+	}
+	
+	public sealed class CacheControllerOptions {
+		public CacheControllerOptions() {
+		}
+		
+		private int timeout = 5000;
+		[Category("通信")]
+		[DisplayName("タイムアウト")]
+		[Description("シリーズ一覧ページと詳細ページを取得するときのタイムアウトをミリ秒で指定します．")]
+		[DefaultValue(5000)]
+		public int Timeout {
+			get { return this.timeout; }
+			set { this.timeout = value; }
 		}
 	}
 }

@@ -245,7 +245,7 @@ namespace Yusen.GExplorer {
 			}
 			
 			Program.splashForm.StepProgress("キャッシュの初期化と読み込み");
-			Program.cacheController = new CacheController(Program.GetWorkingDirectory(WorkingDirectory.Cache), Program.CookieContainer);
+			Program.cacheController = new CacheController(Program.GetWorkingDirectory(WorkingDirectory.Cache), Program.CookieContainer, Program.RootOptions.CacheControllerOptions);
 			if (Program.RootOptions.AppBasicOptions.UseDefaultGenres) {
 				Program.CacheController.ResetToDefaultGenres();
 			} else {

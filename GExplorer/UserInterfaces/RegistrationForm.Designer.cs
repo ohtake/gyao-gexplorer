@@ -76,15 +76,15 @@
 			// 
 			this.btnOpenTop.Location = new System.Drawing.Point(3, 3);
 			this.btnOpenTop.Name = "btnOpenTop";
-			this.btnOpenTop.Size = new System.Drawing.Size(155, 23);
+			this.btnOpenTop.Size = new System.Drawing.Size(164, 23);
 			this.btnOpenTop.TabIndex = 0;
-			this.btnOpenTop.Text = "GyaOのトップページ開く(&O)";
+			this.btnOpenTop.Text = "GyaOのトップページを開く(&O)";
 			this.btnOpenTop.UseVisualStyleBackColor = true;
 			this.btnOpenTop.Click += new System.EventHandler(this.btnOpenTop_Click);
 			// 
 			// btnClose
 			// 
-			this.btnClose.Location = new System.Drawing.Point(164, 3);
+			this.btnClose.Location = new System.Drawing.Point(173, 3);
 			this.btnClose.Name = "btnClose";
 			this.btnClose.Size = new System.Drawing.Size(242, 23);
 			this.btnClose.TabIndex = 1;
@@ -94,9 +94,9 @@
 			// 
 			// btnQuit
 			// 
-			this.btnQuit.Location = new System.Drawing.Point(412, 3);
+			this.btnQuit.Location = new System.Drawing.Point(421, 3);
 			this.btnQuit.Name = "btnQuit";
-			this.btnQuit.Size = new System.Drawing.Size(158, 23);
+			this.btnQuit.Size = new System.Drawing.Size(165, 23);
 			this.btnQuit.TabIndex = 2;
 			this.btnQuit.Text = "アプリケーションを終了する(&Q)";
 			this.btnQuit.UseVisualStyleBackColor = true;

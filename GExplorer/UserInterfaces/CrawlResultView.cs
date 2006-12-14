@@ -183,11 +183,13 @@ namespace Yusen.GExplorer.UserInterfaces {
 		public event PropertyChangedEventHandler PropertyChanged;
 		public event EventHandler LastSelectedContentChanged;
 		public event EventHandler LastSelectingPlaylistChanged;
-		
+		public event EventHandler StatusMessageChanged;
+
 		private CrawlResult result;
 		private List<ListViewGroup> allGroups = new List<ListViewGroup>();
 		private List<ContentListViewItem> allClvi = new List<ContentListViewItem>();
-		
+
+		private string statusMessage = string.Empty;
 		private GContentClass lastSelectedContent;
 		private Playlist lastSelectingPlaylist;
 		private FilterFlagComparer comparerF;
@@ -240,9 +242,11 @@ namespace Yusen.GExplorer.UserInterfaces {
 			this.comparerS = new StackableComparisonsComparer<ContentListViewItem>();
 			this.comparerF = new FilterFlagComparer(this.comparerS);
 			this.lvResult.ListViewItemSorter = this.comparerF;
-			this.bgImgLoader = new BackgroundImageLoader(Program.CookieContainer, new RequestCachePolicy(RequestCacheLevel.CacheIfAvailable));
+			this.bgImgLoader = new BackgroundImageLoader(Program.CookieContainer, new RequestCachePolicy(RequestCacheLevel.CacheIfAvailable), CrawlResultViewOptions.ThumbnailTimeoutDefaultValue);
 			this.bgImgLoader.StartWorking();
+			this.bgImgLoader.TaskCompleted += new EventHandler<BackgroundImageLoadTaskComletedEventArgs>(bgImgLoader_TaskCompleted);
 			this.Disposed += delegate {
+				this.bgImgLoader.TaskCompleted -= new EventHandler<BackgroundImageLoadTaskComletedEventArgs>(bgImgLoader_TaskCompleted);
 				this.bgImgLoader.Dispose();
 			};
 			this.ClearCrawlResult();
@@ -288,7 +292,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 				Program.ContentClassificationRulesManager.ContentCllasificationRulesManagerChanged -= new EventHandler(ContentClassificationRulesManager_ContentCllasificationRulesManagerChanged);
 			};
 		}
-		
+
 		private void OnPropertyChanged(string propertyName) {
 			PropertyChangedEventHandler handler = this.PropertyChanged;
 			if (null != handler) {
@@ -757,7 +761,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 			
 			clvi.ImageRequestedAlready = true;
 			Uri uri = clvi.Content.ImageSmallUri;
-			this.bgImgLoader.AddTaskFirst(new BackgroundImageLoadTask(uri, this.BackgroundImageLoadCompletedCallback, clvi));
+			this.bgImgLoader.AddTaskFirst(new BackgroundImageLoadTask(uri, clvi));
 		defaultDraw:
 			e.DrawDefault = true;
 		}
@@ -777,22 +781,35 @@ namespace Yusen.GExplorer.UserInterfaces {
 			}
 			playlist.EndUpdate();
 		}
-		private bool BackgroundImageLoadCompletedCallback(Image image, object userState) {
+
+		private void bgImgLoader_TaskCompleted(object sender, BackgroundImageLoadTaskComletedEventArgs e) {
 			if (this.InvokeRequired) {
-				if (image == null) return false;
-				return (bool)this.Invoke(new BackgroundImageLoadCompletedCallback(this.BackgroundImageLoadCompletedCallback), image, userState);
+				this.Invoke(new EventHandler<BackgroundImageLoadTaskComletedEventArgs>(this.bgImgLoader_TaskCompleted), sender, e);
 			} else {
-				if (image == null) return false;
-				ContentListViewItem clvi = userState as ContentListViewItem;
-				if (null != clvi && this.allClvi.Contains(clvi)) {
-					int idx = this.ilLarge.Images.Add(image, this.ilLarge.TransparentColor);
+				ContentListViewItem clvi = e.UserState as ContentListViewItem;
+				if (null == clvi || !this.allClvi.Contains(clvi)) {
+					e.DisposeImage = true;
+					return;
+				}
+				
+				if (e.Success) {
+					e.DisposeImage = true;
+					int idx = this.ilLarge.Images.Add(e.Image, this.ilLarge.TransparentColor);
 					if (idx >= 0) {
 						clvi.ImageIndex = idx;
 					}
+				} else {
+					this.StatusMessage = string.Format("クロール結果ビューでのサムネイル読み込みエラー: {0}", e.Error.Message);
+					using (Image image = SystemIcons.Error.ToBitmap()) {
+						int idx = this.ilLarge.Images.Add(image, this.ilLarge.TransparentColor);
+						if (idx >= 0) {
+							clvi.ImageIndex = idx;
+						}
+					}
 				}
-				return false;
 			}
 		}
+		
 		private GContentClass[] GetSelectedContents() {
 			List<GContentClass> conts = new List<GContentClass>();
 			foreach (ContentListViewItem clvi in this.lvResult.SelectedItems) {
@@ -843,6 +860,16 @@ namespace Yusen.GExplorer.UserInterfaces {
 		public void BindToOptions(CrawlResultViewOptions options) {
 			options.NeutralizeUnspecificValues(this);
 			BindingContractUtility.BindAllProperties<CrawlResultView, ICrawlResultViewBindingContract>(this, options);
+		}
+		public string StatusMessage {
+			get { return this.statusMessage; }
+			private set {
+				this.statusMessage = value;
+				EventHandler handler = this.StatusMessageChanged;
+				if (null != handler) {
+					handler(this, EventArgs.Empty);
+				}
+			}
 		}
 		[Browsable(false)]
 		public GContentClass LastSelectedContent {
@@ -1234,6 +1261,15 @@ namespace Yusen.GExplorer.UserInterfaces {
 				this.OnPropertyChanged(CrawlResultView.ColWidthPropertyNames[6]);
 			}
 		}
+		[Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+		public int ThumbnailTimeout {
+			get {return this.bgImgLoader.Timeout;}
+			set {
+				this.bgImgLoader.Timeout = value;
+				this.OnPropertyChanged("ThumbnailTimeout");
+			}
+		}
 		#endregion
 	}
 	
@@ -1257,9 +1293,9 @@ namespace Yusen.GExplorer.UserInterfaces {
 		Color ColorNew { get;set;}
 		Color ColorModified { get;set;}
 		Color ColorFilter { get;set;}
-
+		
 		bool GroupingAtTheBegining { get;set;}
-
+		
 		bool FilterBarVisible { get;set;}
 		CrawlResultViewFilterType FilterType { get;set;}
 		bool IncrementalFilterEnabled { get;set;}
@@ -1272,8 +1308,12 @@ namespace Yusen.GExplorer.UserInterfaces {
 		int ColWidthDuration { get;set;}
 		int ColWidthDeadline { get;set;}
 		int ColWidthSummary { get;set;}
+
+		int ThumbnailTimeout { get;set;}
 	}
 	public sealed class CrawlResultViewOptions : ICrawlResultViewBindingContract {
+		internal const int ThumbnailTimeoutDefaultValue = 5000;
+		
 		public CrawlResultViewOptions() {
 		}
 		
@@ -1448,8 +1488,18 @@ namespace Yusen.GExplorer.UserInterfaces {
 			get { return this.colWidthSummary; }
 			set { this.colWidthSummary = value; }
 		}
+		private int thumbnailTimeout = CrawlResultViewOptions.ThumbnailTimeoutDefaultValue;
+		[Category("通信")]
+		[DisplayName("サムネイルのタイムアウト")]
+		[Description("サムネイルを取得するときのタイムアウトをミリ秒で指定します．")]
+		[DefaultValue(CrawlResultViewOptions.ThumbnailTimeoutDefaultValue)]
+		public int ThumbnailTimeout {
+			get { return this.thumbnailTimeout; }
+			set { this.thumbnailTimeout = value; }
+		}
 		#endregion
 
+		
 		[Browsable(false)]
 		public XmlSerializableColor ColorNewXmlSerializable {
 			get { return new XmlSerializableColor(this.ColorNew); }
@@ -1465,7 +1515,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 			get { return new XmlSerializableColor(this.ColorFilter); }
 			set { this.ColorFilter = value.ToColor(); }
 		}
-		
+
 		internal void NeutralizeUnspecificValues(CrawlResultView crv) {
 			if (this.ColWidthId < 0) this.ColWidthId = crv.ColWidthId;
 			if (this.ColWidthTitle < 0) this.ColWidthTitle = crv.ColWidthTitle;

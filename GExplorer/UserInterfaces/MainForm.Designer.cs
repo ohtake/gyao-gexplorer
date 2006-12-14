@@ -44,6 +44,7 @@
 			this.tsmiCacheViewer = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiRuleEditForm = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiExternalCommandsEditor = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsSeparator4 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiOptionsForm = new System.Windows.Forms.ToolStripMenuItem();
 			this.tshmiHelp = new Yusen.GExplorer.UserInterfaces.ToolStripHelpMenuItem();
 			this.tsmiAbortCrawl = new System.Windows.Forms.ToolStripMenuItem();
@@ -61,7 +62,6 @@
 			this.inputBoxDialog1 = new Yusen.GExplorer.UserInterfaces.InputBoxDialog();
 			this.timerContentSelect = new System.Windows.Forms.Timer(this.components);
 			this.timerMessage = new System.Windows.Forms.Timer(this.components);
-			this.tsSeparator4 = new System.Windows.Forms.ToolStripSeparator();
 			this.menuStrip1.SuspendLayout();
 			this.toolStripContainer1.BottomToolStripPanel.SuspendLayout();
 			this.toolStripContainer1.ContentPanel.SuspendLayout();
@@ -96,7 +96,7 @@
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
 			this.menuStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-			this.menuStrip1.Size = new System.Drawing.Size(792, 21);
+			this.menuStrip1.Size = new System.Drawing.Size(864, 26);
 			this.menuStrip1.TabIndex = 0;
 			this.menuStrip1.Text = "menuStrip1";
 			// 
@@ -111,86 +111,86 @@
             this.tsSeparator3,
             this.tsmiQuit});
 			this.tsmiFile.Name = "tsmiFile";
-			this.tsmiFile.Size = new System.Drawing.Size(67, 17);
+			this.tsmiFile.Size = new System.Drawing.Size(85, 22);
 			this.tsmiFile.Text = "ファイル(&F)";
 			// 
 			// tsmiCreateNewPlaylist
 			// 
 			this.tsmiCreateNewPlaylist.Name = "tsmiCreateNewPlaylist";
-			this.tsmiCreateNewPlaylist.Size = new System.Drawing.Size(226, 22);
+			this.tsmiCreateNewPlaylist.Size = new System.Drawing.Size(264, 22);
 			this.tsmiCreateNewPlaylist.Text = "プレイリストの新規作成(&N)...";
 			this.tsmiCreateNewPlaylist.Click += new System.EventHandler(this.tsmiCreateNewPlaylist_Click);
 			// 
-			// toolStripMenuItem2
+			// tsSeparator1
 			// 
-			this.tsSeparator1.Name = "toolStripMenuItem2";
-			this.tsSeparator1.Size = new System.Drawing.Size(223, 6);
+			this.tsSeparator1.Name = "tsSeparator1";
+			this.tsSeparator1.Size = new System.Drawing.Size(261, 6);
 			// 
 			// tsmiBrowseTopPage
 			// 
 			this.tsmiBrowseTopPage.Image = global::Yusen.GExplorer.Properties.Resources.home;
 			this.tsmiBrowseTopPage.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tsmiBrowseTopPage.Name = "tsmiBrowseTopPage";
-			this.tsmiBrowseTopPage.Size = new System.Drawing.Size(226, 22);
+			this.tsmiBrowseTopPage.Size = new System.Drawing.Size(264, 22);
 			this.tsmiBrowseTopPage.Text = "トップページを開く(&T)";
 			this.tsmiBrowseTopPage.Click += new System.EventHandler(this.tsmiBrowseTopPage_Click);
 			// 
 			// tsmiBrowsePackagePage
 			// 
 			this.tsmiBrowsePackagePage.Name = "tsmiBrowsePackagePage";
-			this.tsmiBrowsePackagePage.Size = new System.Drawing.Size(226, 22);
+			this.tsmiBrowsePackagePage.Size = new System.Drawing.Size(264, 22);
 			this.tsmiBrowsePackagePage.Text = "パッケージIDを指定して開く(&P)...";
 			this.tsmiBrowsePackagePage.Click += new System.EventHandler(this.tsmiBrowsePackagePage_Click);
 			// 
 			// tsmiBrowseContentPage
 			// 
 			this.tsmiBrowseContentPage.Name = "tsmiBrowseContentPage";
-			this.tsmiBrowseContentPage.Size = new System.Drawing.Size(226, 22);
+			this.tsmiBrowseContentPage.Size = new System.Drawing.Size(264, 22);
 			this.tsmiBrowseContentPage.Text = "コンテンツIDを指定して開く(&C)...";
 			this.tsmiBrowseContentPage.Click += new System.EventHandler(this.tsmiBrowseContentPage_Click);
 			// 
-			// toolStripMenuItem1
+			// tsSeparator3
 			// 
-			this.tsSeparator3.Name = "toolStripMenuItem1";
-			this.tsSeparator3.Size = new System.Drawing.Size(223, 6);
+			this.tsSeparator3.Name = "tsSeparator3";
+			this.tsSeparator3.Size = new System.Drawing.Size(261, 6);
 			// 
 			// tsmiQuit
 			// 
 			this.tsmiQuit.Name = "tsmiQuit";
 			this.tsmiQuit.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Q)));
-			this.tsmiQuit.Size = new System.Drawing.Size(226, 22);
+			this.tsmiQuit.Size = new System.Drawing.Size(264, 22);
 			this.tsmiQuit.Text = "終了(&Q)";
 			this.tsmiQuit.Click += new System.EventHandler(this.tsmiQuit_Click);
 			// 
 			// tsmiGenreTab
 			// 
 			this.tsmiGenreTab.Name = "tsmiGenreTab";
-			this.tsmiGenreTab.Size = new System.Drawing.Size(88, 17);
+			this.tsmiGenreTab.Size = new System.Drawing.Size(111, 22);
 			this.tsmiGenreTab.Text = "ジャンルタブ(&G)";
 			// 
 			// tsmiCrawlResultView
 			// 
 			this.tsmiCrawlResultView.Name = "tsmiCrawlResultView";
-			this.tsmiCrawlResultView.Size = new System.Drawing.Size(98, 17);
+			this.tsmiCrawlResultView.Size = new System.Drawing.Size(114, 22);
 			this.tsmiCrawlResultView.Text = "クロール結果(&W)";
 			// 
 			// tsmiPlaylistCollection
 			// 
 			this.tsmiPlaylistCollection.Name = "tsmiPlaylistCollection";
-			this.tsmiPlaylistCollection.Size = new System.Drawing.Size(109, 17);
-			this.tsmiPlaylistCollection.Text = "プレイリスト一覧(&C)";
+			this.tsmiPlaylistCollection.Size = new System.Drawing.Size(98, 22);
+			this.tsmiPlaylistCollection.Text = "リスト一覧(&C)";
 			// 
 			// tsmiPlaylist
 			// 
 			this.tsmiPlaylist.Name = "tsmiPlaylist";
-			this.tsmiPlaylist.Size = new System.Drawing.Size(84, 17);
-			this.tsmiPlaylist.Text = "プレイリスト(&P)";
+			this.tsmiPlaylist.Size = new System.Drawing.Size(73, 22);
+			this.tsmiPlaylist.Text = "リスト(&L)";
 			// 
 			// tsmiDetailView
 			// 
 			this.tsmiDetailView.Name = "tsmiDetailView";
-			this.tsmiDetailView.Size = new System.Drawing.Size(84, 17);
-			this.tsmiDetailView.Text = "詳細ビュー(&D)";
+			this.tsmiDetailView.Size = new System.Drawing.Size(63, 22);
+			this.tsmiDetailView.Text = "詳細(&D)";
 			// 
 			// tsmiTools
 			// 
@@ -203,7 +203,7 @@
             this.tsSeparator4,
             this.tsmiOptionsForm});
 			this.tsmiTools.Name = "tsmiTools";
-			this.tsmiTools.Size = new System.Drawing.Size(62, 17);
+			this.tsmiTools.Size = new System.Drawing.Size(74, 22);
 			this.tsmiTools.Text = "ツール(&T)";
 			// 
 			// tsmiSearchLivedoorGyaO
@@ -211,54 +211,59 @@
 			this.tsmiSearchLivedoorGyaO.Image = global::Yusen.GExplorer.Properties.Resources.searchWeb;
 			this.tsmiSearchLivedoorGyaO.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tsmiSearchLivedoorGyaO.Name = "tsmiSearchLivedoorGyaO";
-			this.tsmiSearchLivedoorGyaO.Size = new System.Drawing.Size(222, 22);
+			this.tsmiSearchLivedoorGyaO.Size = new System.Drawing.Size(243, 22);
 			this.tsmiSearchLivedoorGyaO.Text = "livedoor動画でGyaO検索(&L)...";
 			this.tsmiSearchLivedoorGyaO.Click += new System.EventHandler(this.tsmiSearchLivedoorGyaO_Click);
 			// 
-			// toolStripMenuItem3
+			// tsSeparator2
 			// 
-			this.tsSeparator2.Name = "toolStripMenuItem3";
-			this.tsSeparator2.Size = new System.Drawing.Size(219, 6);
+			this.tsSeparator2.Name = "tsSeparator2";
+			this.tsSeparator2.Size = new System.Drawing.Size(240, 6);
 			// 
 			// tsmiCacheViewer
 			// 
 			this.tsmiCacheViewer.Name = "tsmiCacheViewer";
-			this.tsmiCacheViewer.Size = new System.Drawing.Size(222, 22);
+			this.tsmiCacheViewer.Size = new System.Drawing.Size(243, 22);
 			this.tsmiCacheViewer.Text = "キャッシュビューア(&C)";
 			this.tsmiCacheViewer.Click += new System.EventHandler(this.tsmiCacheViewer_Click);
 			// 
 			// tsmiRuleEditForm
 			// 
 			this.tsmiRuleEditForm.Name = "tsmiRuleEditForm";
-			this.tsmiRuleEditForm.Size = new System.Drawing.Size(222, 22);
+			this.tsmiRuleEditForm.Size = new System.Drawing.Size(243, 22);
 			this.tsmiRuleEditForm.Text = "仕分けルールエディタ(&R)";
 			this.tsmiRuleEditForm.Click += new System.EventHandler(this.tsmiRuleEditForm_Click);
 			// 
 			// tsmiExternalCommandsEditor
 			// 
 			this.tsmiExternalCommandsEditor.Name = "tsmiExternalCommandsEditor";
-			this.tsmiExternalCommandsEditor.Size = new System.Drawing.Size(222, 22);
+			this.tsmiExternalCommandsEditor.Size = new System.Drawing.Size(243, 22);
 			this.tsmiExternalCommandsEditor.Text = "外部コマンドエディタ(&X)";
 			this.tsmiExternalCommandsEditor.Click += new System.EventHandler(this.tsmiExternalCommandsEditor_Click);
+			// 
+			// tsSeparator4
+			// 
+			this.tsSeparator4.Name = "tsSeparator4";
+			this.tsSeparator4.Size = new System.Drawing.Size(240, 6);
 			// 
 			// tsmiOptionsForm
 			// 
 			this.tsmiOptionsForm.Name = "tsmiOptionsForm";
-			this.tsmiOptionsForm.Size = new System.Drawing.Size(222, 22);
+			this.tsmiOptionsForm.Size = new System.Drawing.Size(243, 22);
 			this.tsmiOptionsForm.Text = "オプション(&O)";
 			this.tsmiOptionsForm.Click += new System.EventHandler(this.tsmiOptionsForm_Click);
 			// 
 			// tshmiHelp
 			// 
 			this.tshmiHelp.Name = "tshmiHelp";
-			this.tshmiHelp.Size = new System.Drawing.Size(63, 17);
+			this.tshmiHelp.Size = new System.Drawing.Size(75, 22);
 			this.tshmiHelp.Text = "ヘルプ(&H)";
 			// 
 			// tsmiAbortCrawl
 			// 
 			this.tsmiAbortCrawl.Enabled = false;
 			this.tsmiAbortCrawl.Name = "tsmiAbortCrawl";
-			this.tsmiAbortCrawl.Size = new System.Drawing.Size(127, 17);
+			this.tsmiAbortCrawl.Size = new System.Drawing.Size(150, 22);
 			this.tsmiAbortCrawl.Text = "<<クロール中止(&A)>>";
 			this.tsmiAbortCrawl.Click += new System.EventHandler(this.tsmiAbortCrawl_Click);
 			// 
@@ -272,11 +277,11 @@
 			// toolStripContainer1.ContentPanel
 			// 
 			this.toolStripContainer1.ContentPanel.Controls.Add(this.splitContainer1);
-			this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(792, 523);
+			this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(864, 574);
 			this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.toolStripContainer1.Location = new System.Drawing.Point(0, 0);
 			this.toolStripContainer1.Name = "toolStripContainer1";
-			this.toolStripContainer1.Size = new System.Drawing.Size(792, 566);
+			this.toolStripContainer1.Size = new System.Drawing.Size(864, 623);
 			this.toolStripContainer1.TabIndex = 1;
 			this.toolStripContainer1.Text = "toolStripContainer1";
 			// 
@@ -294,7 +299,7 @@
 			this.statusStrip1.Location = new System.Drawing.Point(0, 0);
 			this.statusStrip1.Name = "statusStrip1";
 			this.statusStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-			this.statusStrip1.Size = new System.Drawing.Size(792, 22);
+			this.statusStrip1.Size = new System.Drawing.Size(864, 23);
 			this.statusStrip1.TabIndex = 0;
 			// 
 			// tspbProgress
@@ -305,7 +310,7 @@
 			// tsslMessage
 			// 
 			this.tsslMessage.Name = "tsslMessage";
-			this.tsslMessage.Size = new System.Drawing.Size(109, 13);
+			this.tsslMessage.Size = new System.Drawing.Size(134, 18);
 			this.tsslMessage.Text = "toolStripStatusLabel1";
 			// 
 			// splitContainer1
@@ -321,8 +326,8 @@
 			// splitContainer1.Panel2
 			// 
 			this.splitContainer1.Panel2.Controls.Add(this.detailView1);
-			this.splitContainer1.Size = new System.Drawing.Size(792, 523);
-			this.splitContainer1.SplitterDistance = 546;
+			this.splitContainer1.Size = new System.Drawing.Size(864, 574);
+			this.splitContainer1.SplitterDistance = 600;
 			this.splitContainer1.TabIndex = 1;
 			this.splitContainer1.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.splitContainer1_SplitterMoved);
 			// 
@@ -341,8 +346,8 @@
 			// splitContainer2.Panel2
 			// 
 			this.splitContainer2.Panel2.Controls.Add(this.playlistsView1);
-			this.splitContainer2.Size = new System.Drawing.Size(546, 523);
-			this.splitContainer2.SplitterDistance = 343;
+			this.splitContainer2.Size = new System.Drawing.Size(600, 574);
+			this.splitContainer2.SplitterDistance = 400;
 			this.splitContainer2.TabIndex = 0;
 			this.splitContainer2.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.splitContainer2_SplitterMoved);
 			// 
@@ -364,7 +369,7 @@
 			// 
 			this.splitContainer3.Panel2.Controls.Add(this.crawlResultView);
 			this.splitContainer3.Panel2MinSize = 0;
-			this.splitContainer3.Size = new System.Drawing.Size(546, 343);
+			this.splitContainer3.Size = new System.Drawing.Size(600, 400);
 			this.splitContainer3.SplitterDistance = 46;
 			this.splitContainer3.SplitterWidth = 1;
 			this.splitContainer3.TabIndex = 1;
@@ -375,7 +380,7 @@
 			this.genreSelctControl1.Location = new System.Drawing.Point(0, 0);
 			this.genreSelctControl1.Margin = new System.Windows.Forms.Padding(0);
 			this.genreSelctControl1.Name = "genreSelctControl1";
-			this.genreSelctControl1.Size = new System.Drawing.Size(546, 46);
+			this.genreSelctControl1.Size = new System.Drawing.Size(600, 46);
 			this.genreSelctControl1.TabIndex = 0;
 			this.genreSelctControl1.CrawlStarted += new System.EventHandler(this.genreSelctControl1_CrawlStarted);
 			this.genreSelctControl1.CrawlResultSelected += new System.EventHandler(this.genreSelctControl1_CrawlResultSelected);
@@ -389,27 +394,27 @@
 			this.crawlResultView.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.crawlResultView.Location = new System.Drawing.Point(0, 0);
 			this.crawlResultView.Name = "crawlResultView";
-			this.crawlResultView.Size = new System.Drawing.Size(546, 296);
+			this.crawlResultView.Size = new System.Drawing.Size(600, 353);
 			this.crawlResultView.TabIndex = 0;
 			this.crawlResultView.LastSelectedContentChanged += new System.EventHandler(this.crawlResultView_LastSelectedContentChanged);
 			this.crawlResultView.LastSelectingPlaylistChanged += new System.EventHandler(this.crawlResultView_LastSelectingPlaylistChanged);
+			this.crawlResultView.StatusMessageChanged += new System.EventHandler(this.crawlResultView_StatusMessageChanged);
 			// 
 			// playlistsView1
 			// 
 			this.playlistsView1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.playlistsView1.Location = new System.Drawing.Point(0, 0);
 			this.playlistsView1.Name = "playlistsView1";
-			this.playlistsView1.Size = new System.Drawing.Size(546, 176);
+			this.playlistsView1.Size = new System.Drawing.Size(600, 170);
 			this.playlistsView1.TabIndex = 0;
 			this.playlistsView1.LastSelectedContentChanged += new System.EventHandler(this.playlistsView1_LastSelectedContentChanged);
 			// 
 			// detailView1
 			// 
 			this.detailView1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.detailView1.ImageHeight = 135;
 			this.detailView1.Location = new System.Drawing.Point(0, 0);
 			this.detailView1.Name = "detailView1";
-			this.detailView1.Size = new System.Drawing.Size(242, 523);
+			this.detailView1.Size = new System.Drawing.Size(260, 574);
 			this.detailView1.TabIndex = 0;
 			this.detailView1.StatusMessageChanged += new System.EventHandler(this.detailView1_StatusMessageChanged);
 			// 
@@ -429,16 +434,11 @@
 			this.timerMessage.Interval = 15000;
 			this.timerMessage.Tick += new System.EventHandler(this.timerMessage_Tick);
 			// 
-			// toolStripMenuItem4
-			// 
-			this.tsSeparator4.Name = "toolStripMenuItem4";
-			this.tsSeparator4.Size = new System.Drawing.Size(219, 6);
-			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(792, 566);
+			this.ClientSize = new System.Drawing.Size(864, 623);
 			this.Controls.Add(this.toolStripContainer1);
 			this.MainMenuStrip = this.menuStrip1;
 			this.Name = "MainForm";

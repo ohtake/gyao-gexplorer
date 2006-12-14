@@ -95,21 +95,21 @@
             this.tsecmiCmsCommand});
 			this.cmsContents.Name = "contextMenuStrip1";
 			this.cmsContents.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-			this.cmsContents.Size = new System.Drawing.Size(212, 242);
+			this.cmsContents.Size = new System.Drawing.Size(248, 242);
 			// 
 			// tsmiCmsPlay
 			// 
 			this.tsmiCmsPlay.Image = global::Yusen.GExplorer.Properties.Resources.Play;
 			this.tsmiCmsPlay.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tsmiCmsPlay.Name = "tsmiCmsPlay";
-			this.tsmiCmsPlay.Size = new System.Drawing.Size(211, 22);
+			this.tsmiCmsPlay.Size = new System.Drawing.Size(247, 22);
 			this.tsmiCmsPlay.Text = "再生(&P)";
 			this.tsmiCmsPlay.Click += new System.EventHandler(this.tsmiCmsPlay_Click);
 			// 
 			// toolStripMenuItem3
 			// 
 			this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-			this.toolStripMenuItem3.Size = new System.Drawing.Size(208, 6);
+			this.toolStripMenuItem3.Size = new System.Drawing.Size(244, 6);
 			// 
 			// tsmiCmsRearrange
 			// 
@@ -119,7 +119,7 @@
             this.tsmiCmsRearrangeDown,
             this.tsmiCmsRearrangeToBottom});
 			this.tsmiCmsRearrange.Name = "tsmiCmsRearrange";
-			this.tsmiCmsRearrange.Size = new System.Drawing.Size(211, 22);
+			this.tsmiCmsRearrange.Size = new System.Drawing.Size(247, 22);
 			this.tsmiCmsRearrange.Text = "リスト内を移動(&R)";
 			// 
 			// tsmiCmsRearrangeToTop
@@ -127,7 +127,7 @@
 			this.tsmiCmsRearrangeToTop.Name = "tsmiCmsRearrangeToTop";
 			this.tsmiCmsRearrangeToTop.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Alt)
 						| System.Windows.Forms.Keys.Up)));
-			this.tsmiCmsRearrangeToTop.Size = new System.Drawing.Size(211, 22);
+			this.tsmiCmsRearrangeToTop.Size = new System.Drawing.Size(240, 22);
 			this.tsmiCmsRearrangeToTop.Text = "最上部へ(&T)";
 			this.tsmiCmsRearrangeToTop.Click += new System.EventHandler(this.tsmiCmsRearrangeToTop_Click);
 			// 
@@ -137,7 +137,7 @@
 			this.tsmiCmsRearrangeUp.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tsmiCmsRearrangeUp.Name = "tsmiCmsRearrangeUp";
 			this.tsmiCmsRearrangeUp.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.Up)));
-			this.tsmiCmsRearrangeUp.Size = new System.Drawing.Size(211, 22);
+			this.tsmiCmsRearrangeUp.Size = new System.Drawing.Size(240, 22);
 			this.tsmiCmsRearrangeUp.Text = "上へ(&U)";
 			this.tsmiCmsRearrangeUp.Click += new System.EventHandler(this.tsmiCmsRearrangeUp_Click);
 			// 
@@ -147,7 +147,7 @@
 			this.tsmiCmsRearrangeDown.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tsmiCmsRearrangeDown.Name = "tsmiCmsRearrangeDown";
 			this.tsmiCmsRearrangeDown.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.Down)));
-			this.tsmiCmsRearrangeDown.Size = new System.Drawing.Size(211, 22);
+			this.tsmiCmsRearrangeDown.Size = new System.Drawing.Size(240, 22);
 			this.tsmiCmsRearrangeDown.Text = "下へ(&D)";
 			this.tsmiCmsRearrangeDown.Click += new System.EventHandler(this.tsmiCmsRearrangeDown_Click);
 			// 
@@ -156,21 +156,21 @@
 			this.tsmiCmsRearrangeToBottom.Name = "tsmiCmsRearrangeToBottom";
 			this.tsmiCmsRearrangeToBottom.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Alt)
 						| System.Windows.Forms.Keys.Down)));
-			this.tsmiCmsRearrangeToBottom.Size = new System.Drawing.Size(211, 22);
+			this.tsmiCmsRearrangeToBottom.Size = new System.Drawing.Size(240, 22);
 			this.tsmiCmsRearrangeToBottom.Text = "最下部へ(&B)";
 			this.tsmiCmsRearrangeToBottom.Click += new System.EventHandler(this.tsmiCmsRearrangeToBottom_Click);
 			// 
 			// tspmiCmsCopyToAnother
 			// 
 			this.tspmiCmsCopyToAnother.Name = "tspmiCmsCopyToAnother";
-			this.tspmiCmsCopyToAnother.Size = new System.Drawing.Size(211, 22);
+			this.tspmiCmsCopyToAnother.Size = new System.Drawing.Size(247, 22);
 			this.tspmiCmsCopyToAnother.Text = "別のリストに複製(&C)";
 			this.tspmiCmsCopyToAnother.PlaylistSelected += new System.EventHandler(this.tspmiCmsCopyToAnother_PlaylistSelected);
 			// 
 			// tspmiCmsMoveToAnother
 			// 
 			this.tspmiCmsMoveToAnother.Name = "tspmiCmsMoveToAnother";
-			this.tspmiCmsMoveToAnother.Size = new System.Drawing.Size(211, 22);
+			this.tspmiCmsMoveToAnother.Size = new System.Drawing.Size(247, 22);
 			this.tspmiCmsMoveToAnother.Text = "別のリストに移動(&M)";
 			this.tspmiCmsMoveToAnother.PlaylistSelected += new System.EventHandler(this.tspmiCmsMoveToAnother_PlaylistSelected);
 			// 
@@ -180,26 +180,26 @@
 			this.tsmiCmsDelete.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tsmiCmsDelete.Name = "tsmiCmsDelete";
 			this.tsmiCmsDelete.ShortcutKeys = System.Windows.Forms.Keys.Delete;
-			this.tsmiCmsDelete.Size = new System.Drawing.Size(211, 22);
+			this.tsmiCmsDelete.Size = new System.Drawing.Size(247, 22);
 			this.tsmiCmsDelete.Text = "削除(&D)";
 			this.tsmiCmsDelete.Click += new System.EventHandler(this.tsmiCmsDelete_Click);
 			// 
 			// toolStripMenuItem4
 			// 
 			this.toolStripMenuItem4.Name = "toolStripMenuItem4";
-			this.toolStripMenuItem4.Size = new System.Drawing.Size(208, 6);
+			this.toolStripMenuItem4.Size = new System.Drawing.Size(244, 6);
 			// 
 			// tsmiCmsCopyName
 			// 
 			this.tsmiCmsCopyName.Name = "tsmiCmsCopyName";
-			this.tsmiCmsCopyName.Size = new System.Drawing.Size(211, 22);
+			this.tsmiCmsCopyName.Size = new System.Drawing.Size(247, 22);
 			this.tsmiCmsCopyName.Text = "名前をコピー(&N)";
 			this.tsmiCmsCopyName.Click += new System.EventHandler(this.tsmiCmsCopyName_Click);
 			// 
 			// tsmiCmsCopyUri
 			// 
 			this.tsmiCmsCopyUri.Name = "tsmiCmsCopyUri";
-			this.tsmiCmsCopyUri.Size = new System.Drawing.Size(211, 22);
+			this.tsmiCmsCopyUri.Size = new System.Drawing.Size(247, 22);
 			this.tsmiCmsCopyUri.Text = "URIをコピー(&U)";
 			this.tsmiCmsCopyUri.Click += new System.EventHandler(this.tsmiCmsCopyUri_Click);
 			// 
@@ -209,26 +209,26 @@
 			this.tsmiCmsCopyNameAndUri.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tsmiCmsCopyNameAndUri.Name = "tsmiCmsCopyNameAndUri";
 			this.tsmiCmsCopyNameAndUri.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
-			this.tsmiCmsCopyNameAndUri.Size = new System.Drawing.Size(211, 22);
+			this.tsmiCmsCopyNameAndUri.Size = new System.Drawing.Size(247, 22);
 			this.tsmiCmsCopyNameAndUri.Text = "名前とURIをコピー(&B)";
 			this.tsmiCmsCopyNameAndUri.Click += new System.EventHandler(this.tsmiCmsCopyNameAndUri_Click);
 			// 
 			// tscpmiCmsCopyOtherProperties
 			// 
 			this.tscpmiCmsCopyOtherProperties.Name = "tscpmiCmsCopyOtherProperties";
-			this.tscpmiCmsCopyOtherProperties.Size = new System.Drawing.Size(211, 22);
+			this.tscpmiCmsCopyOtherProperties.Size = new System.Drawing.Size(247, 22);
 			this.tscpmiCmsCopyOtherProperties.Text = "その他のコピー(&O)";
 			this.tscpmiCmsCopyOtherProperties.PropertySelected += new System.EventHandler(this.tscpmiCmsCopyOtherProperties_PropertySelected);
 			// 
 			// toolStripMenuItem7
 			// 
 			this.toolStripMenuItem7.Name = "toolStripMenuItem7";
-			this.toolStripMenuItem7.Size = new System.Drawing.Size(208, 6);
+			this.toolStripMenuItem7.Size = new System.Drawing.Size(244, 6);
 			// 
 			// tsecmiCmsCommand
 			// 
 			this.tsecmiCmsCommand.Name = "tsecmiCmsCommand";
-			this.tsecmiCmsCommand.Size = new System.Drawing.Size(211, 22);
+			this.tsecmiCmsCommand.Size = new System.Drawing.Size(247, 22);
 			this.tsecmiCmsCommand.Text = "外部コマンド(&X)";
 			this.tsecmiCmsCommand.ExternalCommandSelected += new System.EventHandler(this.tsecmiCmsCommand_ExternalCommandSelected);
 			// 
@@ -265,40 +265,40 @@
             this.toolStripMenuItem6,
             this.tsecmiCommand});
 			this.tsmiPVP.Name = "tsmiPVP";
-			this.tsmiPVP.Size = new System.Drawing.Size(39, 20);
+			this.tsmiPVP.Size = new System.Drawing.Size(42, 20);
 			this.tsmiPVP.Text = "PVP";
 			// 
 			// tsmiSort
 			// 
 			this.tsmiSort.Name = "tsmiSort";
-			this.tsmiSort.Size = new System.Drawing.Size(187, 22);
+			this.tsmiSort.Size = new System.Drawing.Size(225, 22);
 			this.tsmiSort.Text = "ソート(&S)";
 			// 
 			// tsmiRenamePlaylist
 			// 
 			this.tsmiRenamePlaylist.Name = "tsmiRenamePlaylist";
-			this.tsmiRenamePlaylist.Size = new System.Drawing.Size(187, 22);
+			this.tsmiRenamePlaylist.Size = new System.Drawing.Size(225, 22);
 			this.tsmiRenamePlaylist.Text = "プレイリスト名の変更(&L)...";
 			this.tsmiRenamePlaylist.Click += new System.EventHandler(this.tsmiRenamePlaylist_Click);
 			// 
 			// toolStripMenuItem2
 			// 
 			this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-			this.toolStripMenuItem2.Size = new System.Drawing.Size(184, 6);
+			this.toolStripMenuItem2.Size = new System.Drawing.Size(222, 6);
 			// 
 			// tsmiPlay
 			// 
 			this.tsmiPlay.Image = global::Yusen.GExplorer.Properties.Resources.Play;
 			this.tsmiPlay.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tsmiPlay.Name = "tsmiPlay";
-			this.tsmiPlay.Size = new System.Drawing.Size(187, 22);
+			this.tsmiPlay.Size = new System.Drawing.Size(225, 22);
 			this.tsmiPlay.Text = "再生(&P)";
 			this.tsmiPlay.Click += new System.EventHandler(this.tsmiPlay_Click);
 			// 
 			// toolStripMenuItem1
 			// 
 			this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-			this.toolStripMenuItem1.Size = new System.Drawing.Size(184, 6);
+			this.toolStripMenuItem1.Size = new System.Drawing.Size(222, 6);
 			// 
 			// tsmiRearrange
 			// 
@@ -308,13 +308,13 @@
             this.tsmiRearrangeDown,
             this.tsmiRearrangeToBottom});
 			this.tsmiRearrange.Name = "tsmiRearrange";
-			this.tsmiRearrange.Size = new System.Drawing.Size(187, 22);
+			this.tsmiRearrange.Size = new System.Drawing.Size(225, 22);
 			this.tsmiRearrange.Text = "リスト内を移動(&R)";
 			// 
 			// tsmiRearrangeToTop
 			// 
 			this.tsmiRearrangeToTop.Name = "tsmiRearrangeToTop";
-			this.tsmiRearrangeToTop.Size = new System.Drawing.Size(132, 22);
+			this.tsmiRearrangeToTop.Size = new System.Drawing.Size(142, 22);
 			this.tsmiRearrangeToTop.Text = "最上部へ(&T)";
 			this.tsmiRearrangeToTop.Click += new System.EventHandler(this.tsmiRearrangeToTop_Click);
 			// 
@@ -323,7 +323,7 @@
 			this.tsmiRearrangeUp.Image = global::Yusen.GExplorer.Properties.Resources.BuilderDialog_moveup;
 			this.tsmiRearrangeUp.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tsmiRearrangeUp.Name = "tsmiRearrangeUp";
-			this.tsmiRearrangeUp.Size = new System.Drawing.Size(132, 22);
+			this.tsmiRearrangeUp.Size = new System.Drawing.Size(142, 22);
 			this.tsmiRearrangeUp.Text = "上へ(&U)";
 			this.tsmiRearrangeUp.Click += new System.EventHandler(this.tsmiRearrangeUp_Click);
 			// 
@@ -332,28 +332,28 @@
 			this.tsmiRearrangeDown.Image = global::Yusen.GExplorer.Properties.Resources.BuilderDialog_movedown;
 			this.tsmiRearrangeDown.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tsmiRearrangeDown.Name = "tsmiRearrangeDown";
-			this.tsmiRearrangeDown.Size = new System.Drawing.Size(132, 22);
+			this.tsmiRearrangeDown.Size = new System.Drawing.Size(142, 22);
 			this.tsmiRearrangeDown.Text = "下へ(&D)";
 			this.tsmiRearrangeDown.Click += new System.EventHandler(this.tsmiRearrangeDown_Click);
 			// 
 			// tsmiRearrangeToBottom
 			// 
 			this.tsmiRearrangeToBottom.Name = "tsmiRearrangeToBottom";
-			this.tsmiRearrangeToBottom.Size = new System.Drawing.Size(132, 22);
+			this.tsmiRearrangeToBottom.Size = new System.Drawing.Size(142, 22);
 			this.tsmiRearrangeToBottom.Text = "最下部へ(&B)";
 			this.tsmiRearrangeToBottom.Click += new System.EventHandler(this.tsmiRearrangeToBottom_Click);
 			// 
 			// tspmiCopyToAnother
 			// 
 			this.tspmiCopyToAnother.Name = "tspmiCopyToAnother";
-			this.tspmiCopyToAnother.Size = new System.Drawing.Size(187, 22);
+			this.tspmiCopyToAnother.Size = new System.Drawing.Size(225, 22);
 			this.tspmiCopyToAnother.Text = "別のリストに複製(&C)";
 			this.tspmiCopyToAnother.PlaylistSelected += new System.EventHandler(this.tspmiCopyToAnother_PlaylistSelected);
 			// 
 			// tspmiMoveToAnother
 			// 
 			this.tspmiMoveToAnother.Name = "tspmiMoveToAnother";
-			this.tspmiMoveToAnother.Size = new System.Drawing.Size(187, 22);
+			this.tspmiMoveToAnother.Size = new System.Drawing.Size(225, 22);
 			this.tspmiMoveToAnother.Text = "別のリストに移動(&M)";
 			this.tspmiMoveToAnother.PlaylistSelected += new System.EventHandler(this.tspmiMoveToAnother_PlaylistSelected);
 			// 
@@ -362,26 +362,26 @@
 			this.tsmiDelete.Image = global::Yusen.GExplorer.Properties.Resources.Delete;
 			this.tsmiDelete.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tsmiDelete.Name = "tsmiDelete";
-			this.tsmiDelete.Size = new System.Drawing.Size(187, 22);
+			this.tsmiDelete.Size = new System.Drawing.Size(225, 22);
 			this.tsmiDelete.Text = "削除(&D)";
 			this.tsmiDelete.Click += new System.EventHandler(this.tsmiDelete_Click);
 			// 
 			// toolStripMenuItem5
 			// 
 			this.toolStripMenuItem5.Name = "toolStripMenuItem5";
-			this.toolStripMenuItem5.Size = new System.Drawing.Size(184, 6);
+			this.toolStripMenuItem5.Size = new System.Drawing.Size(222, 6);
 			// 
 			// tsmiCopyName
 			// 
 			this.tsmiCopyName.Name = "tsmiCopyName";
-			this.tsmiCopyName.Size = new System.Drawing.Size(187, 22);
+			this.tsmiCopyName.Size = new System.Drawing.Size(225, 22);
 			this.tsmiCopyName.Text = "名前をコピー(&N)";
 			this.tsmiCopyName.Click += new System.EventHandler(this.tsmiCopyName_Click);
 			// 
 			// tsmiCopyUri
 			// 
 			this.tsmiCopyUri.Name = "tsmiCopyUri";
-			this.tsmiCopyUri.Size = new System.Drawing.Size(187, 22);
+			this.tsmiCopyUri.Size = new System.Drawing.Size(225, 22);
 			this.tsmiCopyUri.Text = "URIをコピー(&U)";
 			this.tsmiCopyUri.Click += new System.EventHandler(this.tsmiCopyUri_Click);
 			// 
@@ -390,26 +390,26 @@
 			this.tsmiCopyNameAndUri.Image = global::Yusen.GExplorer.Properties.Resources.Copy;
 			this.tsmiCopyNameAndUri.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.tsmiCopyNameAndUri.Name = "tsmiCopyNameAndUri";
-			this.tsmiCopyNameAndUri.Size = new System.Drawing.Size(187, 22);
+			this.tsmiCopyNameAndUri.Size = new System.Drawing.Size(225, 22);
 			this.tsmiCopyNameAndUri.Text = "名前とURIをコピー(&B)";
 			this.tsmiCopyNameAndUri.Click += new System.EventHandler(this.tsmiCopyNameAndUri_Click);
 			// 
 			// tscpmiCopyOtherProperties
 			// 
 			this.tscpmiCopyOtherProperties.Name = "tscpmiCopyOtherProperties";
-			this.tscpmiCopyOtherProperties.Size = new System.Drawing.Size(187, 22);
+			this.tscpmiCopyOtherProperties.Size = new System.Drawing.Size(225, 22);
 			this.tscpmiCopyOtherProperties.Text = "その他のコピー(&O)";
 			this.tscpmiCopyOtherProperties.PropertySelected += new System.EventHandler(this.tscpmiCopyOtherProperties_PropertySelected);
 			// 
 			// toolStripMenuItem6
 			// 
 			this.toolStripMenuItem6.Name = "toolStripMenuItem6";
-			this.toolStripMenuItem6.Size = new System.Drawing.Size(184, 6);
+			this.toolStripMenuItem6.Size = new System.Drawing.Size(222, 6);
 			// 
 			// tsecmiCommand
 			// 
 			this.tsecmiCommand.Name = "tsecmiCommand";
-			this.tsecmiCommand.Size = new System.Drawing.Size(187, 22);
+			this.tsecmiCommand.Size = new System.Drawing.Size(225, 22);
 			this.tsecmiCommand.Text = "外部コマンド(&X)";
 			this.tsecmiCommand.ExternalCommandSelected += new System.EventHandler(this.tsecmiCommand_ExternalCommandSelected);
 			// 
@@ -430,7 +430,7 @@
 			this.lvContents.Name = "lvContents";
 			this.lvContents.ShowGroups = false;
 			this.lvContents.ShowItemToolTips = true;
-			this.lvContents.Size = new System.Drawing.Size(393, 150);
+			this.lvContents.Size = new System.Drawing.Size(456, 150);
 			this.lvContents.TabIndex = 0;
 			this.lvContents.UseCompatibleStateImageBehavior = false;
 			this.lvContents.View = System.Windows.Forms.View.Details;
@@ -449,16 +449,17 @@
 			// chTitle
 			// 
 			this.chTitle.Text = "タイトル";
-			this.chTitle.Width = 66;
+			this.chTitle.Width = 80;
 			// 
 			// chSeriesNumber
 			// 
 			this.chSeriesNumber.Text = "シリーズ番号";
-			this.chSeriesNumber.Width = 48;
+			this.chSeriesNumber.Width = 65;
 			// 
 			// chSubtitle
 			// 
 			this.chSubtitle.Text = "サブタイトル";
+			this.chSubtitle.Width = 70;
 			// 
 			// chDuration
 			// 
@@ -488,7 +489,7 @@
 			this.Controls.Add(this.menuStrip1);
 			this.Controls.Add(this.lvContents);
 			this.Name = "PlaylistsViewPControl";
-			this.Size = new System.Drawing.Size(393, 150);
+			this.Size = new System.Drawing.Size(456, 150);
 			this.Load += new System.EventHandler(this.PlaylistsViewPControl_Load);
 			this.cmsContents.ResumeLayout(false);
 			this.menuStrip1.ResumeLayout(false);

@@ -39,11 +39,14 @@ namespace Yusen.GExplorer.AppCore {
 			private const string beginComment = "<!--";
 			private const string endComment = "-->";
 			
-			private readonly Encoding enc = Encoding.GetEncoding("Shift_JIS");
+			private readonly Encoding enc;
 			private readonly CookieContainer cookieContainer;
+			private readonly CrawlOptions options;
 			
-			public HtmlParserRegex(CookieContainer cookieContainer) {
+			public HtmlParserRegex(Encoding encoding, CookieContainer cookieContainer, CrawlOptions options) {
+				this.enc = encoding;
 				this.cookieContainer = cookieContainer;
+				this.options = options;
 			}
 			
 			public List<UriLinkTypePair> DownloadAndExtractLinks(Uri uri) {
@@ -53,6 +56,8 @@ namespace Yusen.GExplorer.AppCore {
 				try {
 					HttpWebRequest req = WebRequest.Create(uri) as HttpWebRequest;
 					req.CookieContainer = this.cookieContainer;
+					req.Timeout = this.options.Timeout;
+					
 					reader = new StreamReader(req.GetResponse().GetResponseStream(), this.enc);
 					string line;
 					bool isInComment = false;
@@ -193,7 +198,7 @@ namespace Yusen.GExplorer.AppCore {
 			this.cookieContainer = cookieContainer;
 			this.bw = bw;
 
-			this.parser = new HtmlParserRegex(cookieContainer);
+			this.parser = new HtmlParserRegex(Encoding.GetEncoding("Shift_JIS"), cookieContainer, this.options);
 		}
 		
 		public CrawlResult GetResult() {
@@ -233,14 +238,14 @@ namespace Yusen.GExplorer.AppCore {
 		private void CrawlPages() {
 			while (this.pagesWaiting.Count > 0) {
 				if (this.bw.CancellationPending) return;
-				if (this.pagesSuccess.Count + this.pagesFailed.Count > this.options.MaxNormalPages) {
+				if (this.pagesSuccess.Count + this.pagesFailed.Count >= this.options.MaxNormalPages) {
 					this.IgnoreException(new CrawlException("一般ページ数の取得数の上限に達した．"));
 					return;
 				}
 				Uri uri = this.pagesWaiting.Dequeue();
 				{
 					int numerator = this.pagesSuccess.Count + this.pagesFailed.Count;
-					int denominator = this.pagesWaiting.Count + numerator;
+					int denominator = this.pagesWaiting.Count + numerator + 1;
 					this.ReportProgressInPhase(100 * numerator / denominator, string.Format("{0}/{1} {2}", numerator, denominator, uri.PathAndQuery));
 				}
 				
@@ -302,9 +307,9 @@ namespace Yusen.GExplorer.AppCore {
 					this.ReportProgressInPhase(100 * numerator / denominator, string.Format("{0}/{1} {2}", numerator, denominator, GConvert.ToPackageId(pacKey)));
 				}
 				
-				GPackageClass pac;
-				List<GContentClass> conts;
-				if (this.cacheController.TryFetchPackage(pacKey, out pac, out conts)) {
+				try {
+					List<GContentClass> conts;
+					GPackageClass pac = this.cacheController.FetchPackage(pacKey, out conts);
 					if (!pac.GenreKey.HasValue || this.genre.GenreKey != pac.GenreKey) {
 						this.IgnoreException(new CrawlException(string.Format("<{0}> 他ジャンルにより無視．", GConvert.ToPackageId(pacKey))));
 						this.pacsFailed.Add(pacKey);
@@ -314,9 +319,9 @@ namespace Yusen.GExplorer.AppCore {
 					foreach (GContentClass cont in conts) {
 						this.contsSuccess.Add(cont.ContentKey, cont);
 					}
-				} else {
-					this.IgnoreException(new CrawlException(string.Format("<{0}> 取得失敗．", GConvert.ToPackageId(pacKey))));
+				} catch (Exception e) {
 					this.pacsFailed.Add(pacKey);
+					this.IgnoreException(new CrawlException(string.Format("<{0}> 取得失敗．", GConvert.ToPackageId(pacKey)), e));
 				}
 			}
 		}
@@ -332,35 +337,39 @@ namespace Yusen.GExplorer.AppCore {
 					this.ReportProgressInPhase(100 * numerator / denominator, string.Format("{0}/{1} {2}", numerator, denominator, GConvert.ToContentId(contKey)));
 				}
 				GContentClass cont;
-				if (this.cacheController.TryFindContentOrTryFetchContent(contKey, out cont)) {
-					if (!cont.GenreKey.HasValue || this.genre.GenreKey != cont.GenreKey.Value) {
-						this.IgnoreException(new CrawlException(string.Format("<{0}> 他ジャンルにより無視．", GConvert.ToContentId(contKey))));
-						this.contsFailed.Add(contKey);
-						continue;
-					}
-					if (cont.PackgeKey.HasValue) {
-						int pacKey = cont.PackgeKey.Value;
-						if (this.pacsSuccess.ContainsKey(pacKey) || this.pacsFailed.Contains(pacKey)) {
-							this.contsSuccess.Add(contKey, cont);
-						} else {
-							GPackageClass pac;
-							List<GContentClass> conts;
-							if (this.cacheController.TryFetchPackage(pacKey, out pac, out conts)) {
-								this.pacsSuccess.Add(pacKey, pac);
-								foreach (GContentClass contInPac in conts) {
-									this.contsSuccess.Add(contInPac.ContentKey, contInPac);
-								}
-							} else {
-								this.contsSuccess.Add(contKey, cont);
-								this.pacsFailed.Add(pacKey);
-							}
-						}
-					} else {
+				try {
+					cont = this.cacheController.FindContentOrFetchContent(contKey);
+				} catch(Exception e) {
+					this.contsFailed.Add(contKey);
+					this.IgnoreException(new CrawlException(string.Format("<{0}> 取得失敗．", GConvert.ToContentId(contKey)), e));
+					continue;
+				}
+				
+				if (!cont.GenreKey.HasValue || this.genre.GenreKey != cont.GenreKey.Value) {
+					this.IgnoreException(new CrawlException(string.Format("<{0}> 他ジャンルにより無視．", GConvert.ToContentId(contKey))));
+					this.contsFailed.Add(contKey);
+					continue;
+				}
+				if (cont.PackgeKey.HasValue) {
+					int pacKey = cont.PackgeKey.Value;
+					if (this.pacsSuccess.ContainsKey(pacKey) || this.pacsFailed.Contains(pacKey)) {
 						this.contsSuccess.Add(contKey, cont);
+					} else {
+						try {
+							List<GContentClass> conts;
+							GPackageClass pac = this.cacheController.FetchPackage(pacKey, out conts);
+							this.pacsSuccess.Add(pacKey, pac);
+							foreach (GContentClass contInPac in conts) {
+								this.contsSuccess.Add(contInPac.ContentKey, contInPac);
+							}
+						} catch (Exception e) {
+							this.contsSuccess.Add(contKey, cont);
+							this.pacsFailed.Add(pacKey);
+							this.IgnoreException(new CrawlException(string.Format("<{0}> 取得失敗．", GConvert.ToPackageId(pacKey)), e));
+						}
 					}
 				} else {
-					this.IgnoreException(new CrawlException(string.Format("<{0}> 取得失敗．", GConvert.ToContentId(contKey))));
-					this.contsFailed.Add(contKey);
+					this.contsSuccess.Add(contKey, cont);
 				}
 			}
 		}
@@ -436,7 +445,7 @@ namespace Yusen.GExplorer.AppCore {
 		}
 		
 		private int maxNormalPages = 16;
-		[Category("一般ページ")]
+		[Category("上限")]
 		[DisplayName("一般ページ数の上限")]
 		[Description("クローラが一般ページをクロールする際の一般ページ数の上限を指定します．")]
 		[DefaultValue(16)]
@@ -444,8 +453,18 @@ namespace Yusen.GExplorer.AppCore {
 			get { return this.maxNormalPages; }
 			set { this.maxNormalPages = value; }
 		}
+		
+		private int timeout = 5000;
+		[Category("通信")]
+		[DisplayName("タイムアウト")]
+		[Description("一般ページを取得するときのタイムアウトをミリ秒で指定します．")]
+		[DefaultValue(5000)]
+		public int Timeout {
+			get { return this.timeout; }
+			set { this.timeout = value; }
+		}
 	}
-
+	
 	interface ICrawlProgressState {
 		int TotalPercentage { get;}
 		string TotalMessage { get;}

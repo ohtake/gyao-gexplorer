@@ -27,6 +27,14 @@ namespace Yusen.GExplorer {
 			get { return this.crawlOptions; }
 			set { this.crawlOptions = value; }
 		}
+
+		private CacheControllerOptions cacheControllerOptions = new CacheControllerOptions();
+		[Browsable(false)]
+		[SubOptions("キャッシュコントローラ", "キャッシュコントローラの動作に関する設定")]
+		public CacheControllerOptions CacheControllerOptions {
+			get { return this.cacheControllerOptions; }
+			set { this.cacheControllerOptions = value; }
+		}
 		
 		private MainFormOptions mainFormOptions = new MainFormOptions();
 		[Browsable(false)]

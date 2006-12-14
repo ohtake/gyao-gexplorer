@@ -25,14 +25,17 @@ namespace Yusen.GExplorer.UserInterfaces {
 			private static readonly Encoding PageEncoding = Encoding.GetEncoding("Shift_JIS");
 			
 			private readonly CookieContainer cc;
+			private readonly int timeout;
 			
-			public PageReaderWithCookie() {
-				this.cc = Program.CookieContainer;
+			public PageReaderWithCookie(CookieContainer cc, int timeout) {
+				this.cc = cc;
+				this.timeout = timeout;
 			}
 			
 			public string GetResponseText(Uri uri) {
 				HttpWebRequest req = WebRequest.Create(uri) as HttpWebRequest;
 				req.CookieContainer = this.cc;
+				req.Timeout = this.timeout;
 				
 				using (HttpWebResponse res = req.GetResponse() as HttpWebResponse)
 				using (Stream stream = res.GetResponseStream())
@@ -101,16 +104,17 @@ namespace Yusen.GExplorer.UserInterfaces {
 			if (null != playlist) {
 				this.playlistsView1.SelectPlaylist(playlist);
 			}
-
+			
 			this.currentContent = cont;
 			this.currentChapter = this.options.ChapterModeFromBegining ? 1 : (int?)null;
-
+			
 			if (null == this.currentContent) {
 				this.tsddbPlaylist.Text = "プレイリスト";
 			} else {
 				this.tsddbPlaylist.Text = this.currentContent.ContentId;
 			}
 			
+			this.tspmddbMode.ClearClipInfo();
 			this.UpdateTitlebarText();
 			this.UpdateEnabilityDependingOnContentPlaylistPossesstion();
 			this.OpenVideo();
@@ -159,7 +163,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 				Application.DoEvents();
 			}
 			
-			PageReaderWithCookie pageReader = new PageReaderWithCookie();
+			PageReaderWithCookie pageReader = new PageReaderWithCookie(Program.CookieContainer, this.options.PlaylistTimeout);
 			
 			//再生ページ取得
 			Uri playerPageUri = Program.RootOptions.AppBasicOptions.GetPlayerUriOf(this.currentContent);
@@ -900,7 +904,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 		}
 		
 		private bool suspendScreenSaverEnabled = false;
-		[Category("スクリーンセーバ")]
+		[Category("表示")]
 		[DisplayName("スクリーンセーバを抑止")]
 		[Description("アプリケーションがアクティブなときにスクリーンセーバの起動を抑止します．")]
 		[DefaultValue(false)]
@@ -1024,6 +1028,16 @@ namespace Yusen.GExplorer.UserInterfaces {
 			set { this.disableAdultCheckDialog = value; }
 		}
 
+		private int playlistTimeout = 5000;
+		[Category("通信")]
+		[DisplayName("プレイリストのタイムアウト")]
+		[Description("プレイリストを取得するさいのタイムアウトをミリ秒で指定します．")]
+		[DefaultValue(5000)]
+		public int PlaylistTimeout {
+			get { return this.playlistTimeout; }
+			set { this.playlistTimeout = value; }
+		}
+		
 		private string streamingServerAltAddress = string.Empty;
 		[Category("不具合対策")]
 		[DisplayName("wms.cd.gyao.jp のIPアドレス")]
@@ -1037,7 +1051,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 				this.streamingServerAltAddress = value.Trim();
 			}
 		}
-
+		
 		private PlaylistsViewOptions playlistsViewOptions = new PlaylistsViewOptions();
 		[Browsable(false)]
 		[SubOptions("プレイリストビュー", "プレイリストビューに関する設定")]
