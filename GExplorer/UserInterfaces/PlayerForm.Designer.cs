@@ -40,7 +40,7 @@
 			this.wmpMain = new AxWMPLib.AxWindowsMediaPlayer();
 			this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
 			this.wbBanner = new System.Windows.Forms.WebBrowser();
-			this.easterEggControl1 = new Yusen.GExplorer.UserInterfaces.EasterEggControl();
+			this.happyControl1 = new Yusen.GExplorer.Cinnamoroll.HappyControl();
 			this.menuStrip1 = new System.Windows.Forms.MenuStrip();
 			this.tsmiFile = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiPlayChapter = new System.Windows.Forms.ToolStripMenuItem();
@@ -260,7 +260,7 @@
 			this.tableLayoutPanel1.ColumnCount = 1;
 			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
 			this.tableLayoutPanel1.Controls.Add(this.wbBanner, 0, 0);
-			this.tableLayoutPanel1.Controls.Add(this.easterEggControl1, 0, 1);
+			this.tableLayoutPanel1.Controls.Add(this.happyControl1, 0, 1);
 			this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
 			this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -286,11 +286,11 @@
 			// 
 			// easterEggControl1
 			// 
-			this.easterEggControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.easterEggControl1.Location = new System.Drawing.Point(3, 603);
-			this.easterEggControl1.Name = "easterEggControl1";
-			this.easterEggControl1.Size = new System.Drawing.Size(90, 1);
-			this.easterEggControl1.TabIndex = 1;
+			this.happyControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.happyControl1.Location = new System.Drawing.Point(3, 603);
+			this.happyControl1.Name = "easterEggControl1";
+			this.happyControl1.Size = new System.Drawing.Size(90, 1);
+			this.happyControl1.TabIndex = 1;
 			// 
 			// menuStrip1
 			// 
@@ -727,7 +727,7 @@
 		private System.Windows.Forms.ToolStripMenuItem tsmiCopyClipResolution;
 		private System.Windows.Forms.ToolStripMenuItem tsmiViewBottomMost;
 		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
-		private Yusen.GExplorer.UserInterfaces.EasterEggControl easterEggControl1;
+		private Yusen.GExplorer.Cinnamoroll.HappyControl happyControl1;
 		private PlaylistsView playlistsView1;
 		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem4;
 		private System.Windows.Forms.ToolStripMenuItem tsmiShowOptionsForm;

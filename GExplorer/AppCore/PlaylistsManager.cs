@@ -192,7 +192,7 @@ namespace Yusen.GExplorer.AppCore {
 		}
 	}
 
-	public sealed class Playlist/* : IEnumerable<GContentClass>*/{
+	public sealed class Playlist /* : IEnumerable<GContentClass>*/{
 		public event EventHandler PlaylistChanged;
 		public event EventHandler PlaylistDestroyed;
 

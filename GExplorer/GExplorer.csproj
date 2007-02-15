@@ -75,6 +75,7 @@
     <Compile Include="AppCore\ContentClassificationRule.cs" />
     <Compile Include="AppCore\ExternalCommand.cs" />
     <Compile Include="AppCore\VirtualGenres.cs" />
+    <Compile Include="Cinnamoroll\CinnamonFriend.cs" />
     <Compile Include="UserInterfaces\BindingContract.cs" />
     <Compile Include="AppCore\PlaylistsManager.cs" />
     <Compile Include="UserInterfaces\BitrateForm.cs">
@@ -218,11 +219,11 @@
     <Compile Include="UserInterfaces\DetailView.Designer.cs">
       <DependentUpon>DetailView.cs</DependentUpon>
     </Compile>
-    <Compile Include="UserInterfaces\EasterEggControl.cs">
+    <Compile Include="Cinnamoroll\HappyControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UserInterfaces\EasterEggControl.Designer.cs">
-      <DependentUpon>EasterEggControl.cs</DependentUpon>
+    <Compile Include="Cinnamoroll\HappyControl.Designer.cs">
+      <DependentUpon>HappyControl.cs</DependentUpon>
     </Compile>
     <Compile Include="UserInterfaces\ExceptionDialog.cs">
       <SubType>Component</SubType>
@@ -296,9 +297,9 @@
       <SubType>Designer</SubType>
       <DependentUpon>DetailView.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UserInterfaces\EasterEggControl.resx">
+    <EmbeddedResource Include="Cinnamoroll\HappyControl.resx">
       <SubType>Designer</SubType>
-      <DependentUpon>EasterEggControl.cs</DependentUpon>
+      <DependentUpon>HappyControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UserInterfaces\ExceptionForm.resx">
       <DependentUpon>ExceptionForm.cs</DependentUpon>

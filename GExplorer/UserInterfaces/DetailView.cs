@@ -1,4 +1,6 @@
-﻿using System;
+﻿//#define PATCH_FOR_INVISIBLE_TEXT_IN_VISTA
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -372,6 +374,18 @@ namespace Yusen.GExplorer.UserInterfaces {
 				}
 			}
 		}
+#if PATCH_FOR_INVISIBLE_TEXT_IN_VISTA
+		[Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+		public bool EnablePatchForInvisibleTextInVista {
+			get {
+				return this.txtReview.BorderStyle == BorderStyle.Fixed3D;
+			}
+			set {
+				this.txtReview.BorderStyle = value ? BorderStyle.None : BorderStyle.Fixed3D;
+			}
+		}
+#endif
 		#endregion
 
 		private void tsmiCopyName_Click(object sender, EventArgs e) {
@@ -417,6 +431,10 @@ namespace Yusen.GExplorer.UserInterfaces {
 		string Description2Style { get;set;}
 		string Description3Style { get;set;}
 		string Description4Style { get;set;}
+
+#if PATCH_FOR_INVISIBLE_TEXT_IN_VISTA
+		bool EnablePatchForInvisibleTextInVista { get;set;}
+#endif
 	}
 	public sealed class DetailViewOptions : IDetailViewBindingContract {
 		internal const int ImageTimeoutDefaultValue = 5000;
@@ -573,6 +591,17 @@ namespace Yusen.GExplorer.UserInterfaces {
 			get { return this.description4Style;}
 			set { this.description4Style = value; }
 		}
+#if PATCH_FOR_INVISIBLE_TEXT_IN_VISTA
+		private bool enablePatchForInvisibleTextInVista = false;
+		[Category("不具合対策")]
+		[DisplayName("Vistaでのレビューテキスト")]
+		[Description("Vistaでレビューテキストにマウスオーバーするとテキストボックスの文字が消える現象にいい加減に対策してみる．")]
+		[DefaultValue(false)]
+		public bool EnablePatchForInvisibleTextInVista {
+			get { return this.enablePatchForInvisibleTextInVista; }
+			set { this.enablePatchForInvisibleTextInVista = value; }
+		}
+#endif
 		#endregion
 		
 		internal void NeutralizeUnspecificValues(DetailView dview) {

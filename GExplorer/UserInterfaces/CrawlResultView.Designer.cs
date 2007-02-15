@@ -49,12 +49,16 @@
 			this.tsmiRedisplay = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripMenuItem5 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiAddToThePlaylist = new System.Windows.Forms.ToolStripMenuItem();
+			this.tspmiAddToAnotherPlaylist = new Yusen.GExplorer.UserInterfaces.ToolStripPlaylistMenuItem();
 			this.tsmiPlay = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiCopyName = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiCopyUri = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiCopyNameAndUri = new System.Windows.Forms.ToolStripMenuItem();
+			this.tscpmiCopyOtherProperties = new Yusen.GExplorer.UserInterfaces.ToolStripContentPropertyMenuItem();
 			this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
+			this.tscrmiRules = new Yusen.GExplorer.UserInterfaces.ToolStripClassificationRuleMenuItem();
+			this.tsecmiCommand = new Yusen.GExplorer.UserInterfaces.ToolStripExternalCommandMenuItem();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsddbPages = new System.Windows.Forms.ToolStripDropDownButton();
 			this.tsddbErrors = new System.Windows.Forms.ToolStripDropDownButton();
@@ -62,6 +66,7 @@
 			this.tslTime = new System.Windows.Forms.ToolStripLabel();
 			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsddbVisibilities = new System.Windows.Forms.ToolStripDropDownButton();
+			this.tscvsTVisibilities = new Yusen.GExplorer.UserInterfaces.ToolStripContentVisibilitiesSelector();
 			this.tssbView = new System.Windows.Forms.ToolStripSplitButton();
 			this.tsmiTViewDetails = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiTViewTile = new System.Windows.Forms.ToolStripMenuItem();
@@ -70,14 +75,26 @@
 			this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
 			this.tscbDestPlaylistName = new System.Windows.Forms.ToolStripComboBox();
 			this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
+			this.lvResult = new Yusen.GExplorer.UserInterfaces.DoubleBufferedListView();
+			this.chId = new System.Windows.Forms.ColumnHeader();
+			this.chTitle = new System.Windows.Forms.ColumnHeader();
+			this.chSeriesNumber = new System.Windows.Forms.ColumnHeader();
+			this.chSubtitle = new System.Windows.Forms.ColumnHeader();
+			this.chDuration = new System.Windows.Forms.ColumnHeader();
+			this.chDeadline = new System.Windows.Forms.ColumnHeader();
+			this.chSummary = new System.Windows.Forms.ColumnHeader();
 			this.cmsResult = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.tsmiCmsAddToThePlaylist = new System.Windows.Forms.ToolStripMenuItem();
+			this.tspmiCmsAddToAnotherPlaylist = new Yusen.GExplorer.UserInterfaces.ToolStripPlaylistMenuItem();
 			this.tsmiCmsPlay = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiCmsCopyName = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiCmsCopyUri = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiCmsCopyNameAndUri = new System.Windows.Forms.ToolStripMenuItem();
+			this.tscpmiCmsCopyOtherProperties = new Yusen.GExplorer.UserInterfaces.ToolStripContentPropertyMenuItem();
 			this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
+			this.tscrmiCmsRules = new Yusen.GExplorer.UserInterfaces.ToolStripClassificationRuleMenuItem();
+			this.tsecmiCmsCommand = new Yusen.GExplorer.UserInterfaces.ToolStripExternalCommandMenuItem();
 			this.ilLarge = new System.Windows.Forms.ImageList(this.components);
 			this.tsFilter = new System.Windows.Forms.ToolStrip();
 			this.tslFilter = new System.Windows.Forms.ToolStripLabel();
@@ -102,23 +119,6 @@
 			this.tsmiFilterTargetUncheckAll = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiFilterTargetToggleAll = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-			this.lvResult = new Yusen.GExplorer.UserInterfaces.DoubleBufferedListView();
-			this.chId = new System.Windows.Forms.ColumnHeader();
-			this.chTitle = new System.Windows.Forms.ColumnHeader();
-			this.chSeriesNumber = new System.Windows.Forms.ColumnHeader();
-			this.chSubtitle = new System.Windows.Forms.ColumnHeader();
-			this.chDuration = new System.Windows.Forms.ColumnHeader();
-			this.chDeadline = new System.Windows.Forms.ColumnHeader();
-			this.chSummary = new System.Windows.Forms.ColumnHeader();
-			this.tspmiAddToAnotherPlaylist = new Yusen.GExplorer.UserInterfaces.ToolStripPlaylistMenuItem();
-			this.tscpmiCopyOtherProperties = new Yusen.GExplorer.UserInterfaces.ToolStripContentPropertyMenuItem();
-			this.tscrmiRules = new Yusen.GExplorer.UserInterfaces.ToolStripClassificationRuleMenuItem();
-			this.tsecmiCommand = new Yusen.GExplorer.UserInterfaces.ToolStripExternalCommandMenuItem();
-			this.tscvsTVisibilities = new Yusen.GExplorer.UserInterfaces.ToolStripContentVisibilitiesSelector();
-			this.tspmiCmsAddToAnotherPlaylist = new Yusen.GExplorer.UserInterfaces.ToolStripPlaylistMenuItem();
-			this.tscpmiCmsCopyOtherProperties = new Yusen.GExplorer.UserInterfaces.ToolStripContentPropertyMenuItem();
-			this.tscrmiCmsRules = new Yusen.GExplorer.UserInterfaces.ToolStripClassificationRuleMenuItem();
-			this.tsecmiCmsCommand = new Yusen.GExplorer.UserInterfaces.ToolStripExternalCommandMenuItem();
 			this.inputBoxDialog1 = new Yusen.GExplorer.UserInterfaces.InputBoxDialog();
 			this.exceptionDialog1 = new Yusen.GExplorer.UserInterfaces.ExceptionDialog();
 			this.tsResult.SuspendLayout();
@@ -150,7 +150,7 @@
 			this.tsResult.Location = new System.Drawing.Point(0, 0);
 			this.tsResult.Name = "tsResult";
 			this.tsResult.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-			this.tsResult.Size = new System.Drawing.Size(600, 30);
+			this.tsResult.Size = new System.Drawing.Size(600, 26);
 			this.tsResult.Stretch = true;
 			this.tsResult.TabIndex = 0;
 			this.tsResult.Text = "toolStrip1";
@@ -373,6 +373,13 @@
 			this.tsmiAddToThePlaylist.Text = "指定したプレイリストに追加(&A)";
 			this.tsmiAddToThePlaylist.Click += new System.EventHandler(this.tsmiAddToThePlaylist_Click);
 			// 
+			// tspmiAddToAnotherPlaylist
+			// 
+			this.tspmiAddToAnotherPlaylist.Name = "tspmiAddToAnotherPlaylist";
+			this.tspmiAddToAnotherPlaylist.Size = new System.Drawing.Size(273, 22);
+			this.tspmiAddToAnotherPlaylist.Text = "他のプレイリストに追加(&D)";
+			this.tspmiAddToAnotherPlaylist.PlaylistSelected += new System.EventHandler(this.tspmiAddToAnotherPlaylist_PlaylistSelected);
+			// 
 			// tsmiPlay
 			// 
 			this.tsmiPlay.Image = global::Yusen.GExplorer.Properties.Resources.Play;
@@ -410,10 +417,31 @@
 			this.tsmiCopyNameAndUri.Text = "名前とURIをコピー(&B)";
 			this.tsmiCopyNameAndUri.Click += new System.EventHandler(this.tsmiCopyNameAndUri_Click);
 			// 
+			// tscpmiCopyOtherProperties
+			// 
+			this.tscpmiCopyOtherProperties.Name = "tscpmiCopyOtherProperties";
+			this.tscpmiCopyOtherProperties.Size = new System.Drawing.Size(273, 22);
+			this.tscpmiCopyOtherProperties.Text = "その他のコピー(&O)";
+			this.tscpmiCopyOtherProperties.PropertySelected += new System.EventHandler(this.tscpmiCopyOtherProperties_PropertySelected);
+			// 
 			// toolStripMenuItem4
 			// 
 			this.toolStripMenuItem4.Name = "toolStripMenuItem4";
 			this.toolStripMenuItem4.Size = new System.Drawing.Size(270, 6);
+			// 
+			// tscrmiRules
+			// 
+			this.tscrmiRules.Name = "tscrmiRules";
+			this.tscrmiRules.Size = new System.Drawing.Size(273, 22);
+			this.tscrmiRules.Text = "仕分けルール関連(&R)";
+			this.tscrmiRules.SubmenuSelected += new System.EventHandler(this.tscrmiRules_SubmenuSelected);
+			// 
+			// tsecmiCommand
+			// 
+			this.tsecmiCommand.Name = "tsecmiCommand";
+			this.tsecmiCommand.Size = new System.Drawing.Size(273, 22);
+			this.tsecmiCommand.Text = "外部コマンド(&X)";
+			this.tsecmiCommand.ExternalCommandSelected += new System.EventHandler(this.tsecmiCommand_ExternalCommandSelected);
 			// 
 			// toolStripSeparator1
 			// 
@@ -473,6 +501,18 @@
 			this.tsddbVisibilities.Size = new System.Drawing.Size(58, 23);
 			this.tsddbVisibilities.Text = "F**";
 			this.tsddbVisibilities.ToolTipText = "表示条件";
+			// 
+			// tscvsTVisibilities
+			// 
+			this.tscvsTVisibilities.BackColor = System.Drawing.Color.Transparent;
+			this.tscvsTVisibilities.ContentVisibilities = ((Yusen.GExplorer.UserInterfaces.ContentVisibilities)(((((Yusen.GExplorer.UserInterfaces.ContentVisibilities.NgFalse | Yusen.GExplorer.UserInterfaces.ContentVisibilities.FavTrue)
+						| Yusen.GExplorer.UserInterfaces.ContentVisibilities.FavFalse)
+						| Yusen.GExplorer.UserInterfaces.ContentVisibilities.NewTrue)
+						| Yusen.GExplorer.UserInterfaces.ContentVisibilities.NewFalse)));
+			this.tscvsTVisibilities.Name = "tscvsTVisibilities";
+			this.tscvsTVisibilities.Size = new System.Drawing.Size(266, 136);
+			this.tscvsTVisibilities.Text = "toolStripContentVisibilitiesSelector1";
+			this.tscvsTVisibilities.ContentVisibilitiesChanged += new System.EventHandler(this.tscvsTVisibilities_ContentVisibilitiesChanged);
 			// 
 			// tssbView
 			// 
@@ -544,7 +584,7 @@
 			// toolStripContainer1.ContentPanel
 			// 
 			this.toolStripContainer1.ContentPanel.Controls.Add(this.lvResult);
-			this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(600, 295);
+			this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(600, 299);
 			this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.toolStripContainer1.Location = new System.Drawing.Point(0, 0);
 			this.toolStripContainer1.Name = "toolStripContainer1";
@@ -556,6 +596,74 @@
 			// 
 			this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.tsResult);
 			this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.tsFilter);
+			// 
+			// lvResult
+			// 
+			this.lvResult.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.chId,
+            this.chTitle,
+            this.chSeriesNumber,
+            this.chSubtitle,
+            this.chDuration,
+            this.chDeadline,
+            this.chSummary});
+			this.lvResult.ContextMenuStrip = this.cmsResult;
+			this.lvResult.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.lvResult.FullRowSelect = true;
+			this.lvResult.HideSelection = false;
+			this.lvResult.LargeImageList = this.ilLarge;
+			this.lvResult.Location = new System.Drawing.Point(0, 0);
+			this.lvResult.Name = "lvResult";
+			this.lvResult.OwnerDraw = true;
+			this.lvResult.ShowItemToolTips = true;
+			this.lvResult.Size = new System.Drawing.Size(600, 299);
+			this.lvResult.TabIndex = 0;
+			this.lvResult.TileSize = new System.Drawing.Size(150, 100);
+			this.lvResult.UseCompatibleStateImageBehavior = false;
+			this.lvResult.View = System.Windows.Forms.View.Details;
+			this.lvResult.ColumnWidthChanged += new System.Windows.Forms.ColumnWidthChangedEventHandler(this.lvResult_ColumnWidthChanged);
+			this.lvResult.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.lvResult_MouseDoubleClick);
+			this.lvResult.DrawItem += new System.Windows.Forms.DrawListViewItemEventHandler(this.lvResult_DrawItem);
+			this.lvResult.SelectedIndexChanged += new System.EventHandler(this.lvResult_SelectedIndexChanged);
+			this.lvResult.DrawSubItem += new System.Windows.Forms.DrawListViewSubItemEventHandler(this.lvResult_DrawSubItem);
+			this.lvResult.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lvResult_KeyDown);
+			this.lvResult.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.lvResult_ColumnClick);
+			this.lvResult.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.lvResult_ItemSelectionChanged);
+			this.lvResult.DrawColumnHeader += new System.Windows.Forms.DrawListViewColumnHeaderEventHandler(this.lvResult_DrawColumnHeader);
+			// 
+			// chId
+			// 
+			this.chId.Text = "contents_id";
+			this.chId.Width = 66;
+			// 
+			// chTitle
+			// 
+			this.chTitle.Text = "タイトル";
+			// 
+			// chSeriesNumber
+			// 
+			this.chSeriesNumber.Text = "シリーズ番号";
+			this.chSeriesNumber.Width = 65;
+			// 
+			// chSubtitle
+			// 
+			this.chSubtitle.Text = "サブタイトル";
+			this.chSubtitle.Width = 70;
+			// 
+			// chDuration
+			// 
+			this.chDuration.Text = "時間";
+			this.chDuration.Width = 52;
+			// 
+			// chDeadline
+			// 
+			this.chDeadline.Text = "期限";
+			this.chDeadline.Width = 80;
+			// 
+			// chSummary
+			// 
+			this.chSummary.Text = "サマリー";
+			this.chSummary.Width = 150;
 			// 
 			// cmsResult
 			// 
@@ -582,6 +690,13 @@
 			this.tsmiCmsAddToThePlaylist.Size = new System.Drawing.Size(250, 22);
 			this.tsmiCmsAddToThePlaylist.Text = "指定したプレイリストに追加(&A)";
 			this.tsmiCmsAddToThePlaylist.Click += new System.EventHandler(this.tsmiCmsAddToThePlaylist_Click);
+			// 
+			// tspmiCmsAddToAnotherPlaylist
+			// 
+			this.tspmiCmsAddToAnotherPlaylist.Name = "tspmiCmsAddToAnotherPlaylist";
+			this.tspmiCmsAddToAnotherPlaylist.Size = new System.Drawing.Size(250, 22);
+			this.tspmiCmsAddToAnotherPlaylist.Text = "他のプレイリストに追加(&D)";
+			this.tspmiCmsAddToAnotherPlaylist.PlaylistSelected += new System.EventHandler(this.tspmiCmsAddToAnotherPlaylist_PlaylistSelected);
 			// 
 			// tsmiCmsPlay
 			// 
@@ -622,10 +737,31 @@
 			this.tsmiCmsCopyNameAndUri.Text = "名前とURIをコピー(&B)";
 			this.tsmiCmsCopyNameAndUri.Click += new System.EventHandler(this.tsmiCmsCopyNameAndUri_Click);
 			// 
+			// tscpmiCmsCopyOtherProperties
+			// 
+			this.tscpmiCmsCopyOtherProperties.Name = "tscpmiCmsCopyOtherProperties";
+			this.tscpmiCmsCopyOtherProperties.Size = new System.Drawing.Size(250, 22);
+			this.tscpmiCmsCopyOtherProperties.Text = "その他をコピー(&O)";
+			this.tscpmiCmsCopyOtherProperties.PropertySelected += new System.EventHandler(this.tscpmiCmsCopyOtherProperties_PropertySelected);
+			// 
 			// toolStripMenuItem2
 			// 
 			this.toolStripMenuItem2.Name = "toolStripMenuItem2";
 			this.toolStripMenuItem2.Size = new System.Drawing.Size(247, 6);
+			// 
+			// tscrmiCmsRules
+			// 
+			this.tscrmiCmsRules.Name = "tscrmiCmsRules";
+			this.tscrmiCmsRules.Size = new System.Drawing.Size(250, 22);
+			this.tscrmiCmsRules.Text = "仕分けルール関連(&R)";
+			this.tscrmiCmsRules.SubmenuSelected += new System.EventHandler(this.tscrmiCmsRules_SubmenuSelected);
+			// 
+			// tsecmiCmsCommand
+			// 
+			this.tsecmiCmsCommand.Name = "tsecmiCmsCommand";
+			this.tsecmiCmsCommand.Size = new System.Drawing.Size(250, 22);
+			this.tsecmiCmsCommand.Text = "外部コマンド(&X)";
+			this.tsecmiCmsCommand.ExternalCommandSelected += new System.EventHandler(this.tsecmiCmsCommand_ExternalCommandSelected);
 			// 
 			// ilLarge
 			// 
@@ -650,7 +786,7 @@
             this.tstbFilter,
             this.tslRegex,
             this.tstbAnswer});
-			this.tsFilter.Location = new System.Drawing.Point(0, 30);
+			this.tsFilter.Location = new System.Drawing.Point(0, 26);
 			this.tsFilter.Name = "tsFilter";
 			this.tsFilter.Size = new System.Drawing.Size(600, 25);
 			this.tsFilter.Stretch = true;
@@ -803,142 +939,6 @@
 			// 
 			this.toolStripSeparator3.Name = "toolStripSeparator3";
 			this.toolStripSeparator3.Size = new System.Drawing.Size(153, 6);
-			// 
-			// lvResult
-			// 
-			this.lvResult.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.chId,
-            this.chTitle,
-            this.chSeriesNumber,
-            this.chSubtitle,
-            this.chDuration,
-            this.chDeadline,
-            this.chSummary});
-			this.lvResult.ContextMenuStrip = this.cmsResult;
-			this.lvResult.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.lvResult.FullRowSelect = true;
-			this.lvResult.HideSelection = false;
-			this.lvResult.LargeImageList = this.ilLarge;
-			this.lvResult.Location = new System.Drawing.Point(0, 0);
-			this.lvResult.Name = "lvResult";
-			this.lvResult.OwnerDraw = true;
-			this.lvResult.ShowItemToolTips = true;
-			this.lvResult.Size = new System.Drawing.Size(600, 295);
-			this.lvResult.TabIndex = 0;
-			this.lvResult.TileSize = new System.Drawing.Size(150, 100);
-			this.lvResult.UseCompatibleStateImageBehavior = false;
-			this.lvResult.View = System.Windows.Forms.View.Details;
-			this.lvResult.ColumnWidthChanged += new System.Windows.Forms.ColumnWidthChangedEventHandler(this.lvResult_ColumnWidthChanged);
-			this.lvResult.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.lvResult_MouseDoubleClick);
-			this.lvResult.DrawItem += new System.Windows.Forms.DrawListViewItemEventHandler(this.lvResult_DrawItem);
-			this.lvResult.SelectedIndexChanged += new System.EventHandler(this.lvResult_SelectedIndexChanged);
-			this.lvResult.DrawSubItem += new System.Windows.Forms.DrawListViewSubItemEventHandler(this.lvResult_DrawSubItem);
-			this.lvResult.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lvResult_KeyDown);
-			this.lvResult.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.lvResult_ColumnClick);
-			this.lvResult.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.lvResult_ItemSelectionChanged);
-			this.lvResult.DrawColumnHeader += new System.Windows.Forms.DrawListViewColumnHeaderEventHandler(this.lvResult_DrawColumnHeader);
-			// 
-			// chId
-			// 
-			this.chId.Text = "contents_id";
-			this.chId.Width = 66;
-			// 
-			// chTitle
-			// 
-			this.chTitle.Text = "タイトル";
-			// 
-			// chSeriesNumber
-			// 
-			this.chSeriesNumber.Text = "シリーズ番号";
-			this.chSeriesNumber.Width = 65;
-			// 
-			// chSubtitle
-			// 
-			this.chSubtitle.Text = "サブタイトル";
-			this.chSubtitle.Width = 70;
-			// 
-			// chDuration
-			// 
-			this.chDuration.Text = "時間";
-			this.chDuration.Width = 52;
-			// 
-			// chDeadline
-			// 
-			this.chDeadline.Text = "期限";
-			this.chDeadline.Width = 80;
-			// 
-			// chSummary
-			// 
-			this.chSummary.Text = "サマリー";
-			this.chSummary.Width = 150;
-			// 
-			// tspmiAddToAnotherPlaylist
-			// 
-			this.tspmiAddToAnotherPlaylist.Name = "tspmiAddToAnotherPlaylist";
-			this.tspmiAddToAnotherPlaylist.Size = new System.Drawing.Size(273, 22);
-			this.tspmiAddToAnotherPlaylist.Text = "他のプレイリストに追加(&D)";
-			this.tspmiAddToAnotherPlaylist.PlaylistSelected += new System.EventHandler(this.tspmiAddToAnotherPlaylist_PlaylistSelected);
-			// 
-			// tscpmiCopyOtherProperties
-			// 
-			this.tscpmiCopyOtherProperties.Name = "tscpmiCopyOtherProperties";
-			this.tscpmiCopyOtherProperties.Size = new System.Drawing.Size(273, 22);
-			this.tscpmiCopyOtherProperties.Text = "その他のコピー(&O)";
-			this.tscpmiCopyOtherProperties.PropertySelected += new System.EventHandler(this.tscpmiCopyOtherProperties_PropertySelected);
-			// 
-			// tscrmiRules
-			// 
-			this.tscrmiRules.Name = "tscrmiRules";
-			this.tscrmiRules.Size = new System.Drawing.Size(273, 22);
-			this.tscrmiRules.Text = "仕分けルール関連(&R)";
-			this.tscrmiRules.SubmenuSelected += new System.EventHandler(this.tscrmiRules_SubmenuSelected);
-			// 
-			// tsecmiCommand
-			// 
-			this.tsecmiCommand.Name = "tsecmiCommand";
-			this.tsecmiCommand.Size = new System.Drawing.Size(273, 22);
-			this.tsecmiCommand.Text = "外部コマンド(&X)";
-			this.tsecmiCommand.ExternalCommandSelected += new System.EventHandler(this.tsecmiCommand_ExternalCommandSelected);
-			// 
-			// tscvsTVisibilities
-			// 
-			this.tscvsTVisibilities.BackColor = System.Drawing.Color.Transparent;
-			this.tscvsTVisibilities.ContentVisibilities = ((Yusen.GExplorer.UserInterfaces.ContentVisibilities)(((((Yusen.GExplorer.UserInterfaces.ContentVisibilities.NgFalse | Yusen.GExplorer.UserInterfaces.ContentVisibilities.FavTrue)
-						| Yusen.GExplorer.UserInterfaces.ContentVisibilities.FavFalse)
-						| Yusen.GExplorer.UserInterfaces.ContentVisibilities.NewTrue)
-						| Yusen.GExplorer.UserInterfaces.ContentVisibilities.NewFalse)));
-			this.tscvsTVisibilities.Name = "tscvsTVisibilities";
-			this.tscvsTVisibilities.Size = new System.Drawing.Size(266, 136);
-			this.tscvsTVisibilities.Text = "toolStripContentVisibilitiesSelector1";
-			this.tscvsTVisibilities.ContentVisibilitiesChanged += new System.EventHandler(this.tscvsTVisibilities_ContentVisibilitiesChanged);
-			// 
-			// tspmiCmsAddToAnotherPlaylist
-			// 
-			this.tspmiCmsAddToAnotherPlaylist.Name = "tspmiCmsAddToAnotherPlaylist";
-			this.tspmiCmsAddToAnotherPlaylist.Size = new System.Drawing.Size(250, 22);
-			this.tspmiCmsAddToAnotherPlaylist.Text = "他のプレイリストに追加(&D)";
-			this.tspmiCmsAddToAnotherPlaylist.PlaylistSelected += new System.EventHandler(this.tspmiCmsAddToAnotherPlaylist_PlaylistSelected);
-			// 
-			// tscpmiCmsCopyOtherProperties
-			// 
-			this.tscpmiCmsCopyOtherProperties.Name = "tscpmiCmsCopyOtherProperties";
-			this.tscpmiCmsCopyOtherProperties.Size = new System.Drawing.Size(250, 22);
-			this.tscpmiCmsCopyOtherProperties.Text = "その他をコピー(&O)";
-			this.tscpmiCmsCopyOtherProperties.PropertySelected += new System.EventHandler(this.tscpmiCmsCopyOtherProperties_PropertySelected);
-			// 
-			// tscrmiCmsRules
-			// 
-			this.tscrmiCmsRules.Name = "tscrmiCmsRules";
-			this.tscrmiCmsRules.Size = new System.Drawing.Size(250, 22);
-			this.tscrmiCmsRules.Text = "仕分けルール関連(&R)";
-			this.tscrmiCmsRules.SubmenuSelected += new System.EventHandler(this.tscrmiCmsRules_SubmenuSelected);
-			// 
-			// tsecmiCmsCommand
-			// 
-			this.tsecmiCmsCommand.Name = "tsecmiCmsCommand";
-			this.tsecmiCmsCommand.Size = new System.Drawing.Size(250, 22);
-			this.tsecmiCmsCommand.Text = "外部コマンド(&X)";
-			this.tsecmiCmsCommand.ExternalCommandSelected += new System.EventHandler(this.tsecmiCmsCommand_ExternalCommandSelected);
 			// 
 			// inputBoxDialog1
 			// 

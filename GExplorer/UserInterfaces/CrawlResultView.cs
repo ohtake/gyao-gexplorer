@@ -14,7 +14,8 @@ using Yusen.GExplorer.Utilities;
 namespace Yusen.GExplorer.UserInterfaces {
 	sealed partial class CrawlResultView : UserControl, ICrawlResultViewBindingContract, INotifyPropertyChanged {
 		internal const string DefaultDestinationPlaylistName = "My Playlist 1";
-		
+		private const int NeighboringThreshold = 50;
+
 		private sealed class FilterFlagComparer : IComparer<ContentListViewItem>, IComparer {
 			private IComparer<ContentListViewItem> anotherComparer;
 			public FilterFlagComparer(IComparer<ContentListViewItem> anotherComparer) {
@@ -331,7 +332,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 			this.ApplyNgFavFlags();
 			if(this.GroupingAtTheBegining) this.AddGroups();
 			this.DisplayItems();
-			
+
 			this.lvResult.EndUpdate();
 			
 			this.ChangeEnabilityOfMenuItems();
@@ -755,6 +756,16 @@ namespace Yusen.GExplorer.UserInterfaces {
 			if (clvi == null) goto defaultDraw;
 			if (!clvi.IsSubitmesReady) {
 				clvi.CreateSubitems();
+#if true
+				//自アイテムのサブアイテムが未準備だったのだから近所のも未準備だろう
+				int max = Math.Min(this.allClvi.Count, e.ItemIndex + CrawlResultView.NeighboringThreshold);
+				for (int i = e.ItemIndex + 1; i < max; i++) {
+					ContentListViewItem neighborClvi = this.allClvi[i];
+					if (!neighborClvi.IsSubitmesReady) {
+						neighborClvi.CreateSubitems();
+					}
+				}
+#endif
 			}
 			if (this.lvResult.View == View.Details) goto defaultDraw;
 			if (clvi.ImageRequestedAlready) goto defaultDraw;

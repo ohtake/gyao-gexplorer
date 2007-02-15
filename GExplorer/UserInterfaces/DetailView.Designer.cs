@@ -31,13 +31,6 @@
 			this.tabpReview = new System.Windows.Forms.TabPage();
 			this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
 			this.scReview = new System.Windows.Forms.SplitContainer();
-			this.lvReview = new Yusen.GExplorer.UserInterfaces.DoubleBufferedListView();
-			this.chNeta = new System.Windows.Forms.ColumnHeader();
-			this.chScore = new System.Windows.Forms.ColumnHeader();
-			this.chRef = new System.Windows.Forms.ColumnHeader();
-			this.chTitle = new System.Windows.Forms.ColumnHeader();
-			this.chAuthor = new System.Windows.Forms.ColumnHeader();
-			this.chDate = new System.Windows.Forms.ColumnHeader();
 			this.txtReview = new System.Windows.Forms.TextBox();
 			this.lblReviewSummary = new System.Windows.Forms.Label();
 			this.tabpContent = new System.Windows.Forms.TabPage();
@@ -50,6 +43,13 @@
 			this.tsmiCopyTriple = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiCopyImage = new System.Windows.Forms.ToolStripMenuItem();
+			this.lvReview = new Yusen.GExplorer.UserInterfaces.DoubleBufferedListView();
+			this.chNeta = new System.Windows.Forms.ColumnHeader();
+			this.chScore = new System.Windows.Forms.ColumnHeader();
+			this.chRef = new System.Windows.Forms.ColumnHeader();
+			this.chTitle = new System.Windows.Forms.ColumnHeader();
+			this.chAuthor = new System.Windows.Forms.ColumnHeader();
+			this.chDate = new System.Windows.Forms.ColumnHeader();
 			this.scRoot.Panel1.SuspendLayout();
 			this.scRoot.Panel2.SuspendLayout();
 			this.scRoot.SuspendLayout();
@@ -173,61 +173,6 @@
 			this.scReview.TabIndex = 0;
 			this.scReview.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.scReview_SplitterMoved);
 			// 
-			// lvReview
-			// 
-			this.lvReview.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.chNeta,
-            this.chScore,
-            this.chRef,
-            this.chTitle,
-            this.chAuthor,
-            this.chDate});
-			this.lvReview.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.lvReview.FullRowSelect = true;
-			this.lvReview.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
-			this.lvReview.HideSelection = false;
-			this.lvReview.Location = new System.Drawing.Point(0, 0);
-			this.lvReview.MultiSelect = false;
-			this.lvReview.Name = "lvReview";
-			this.lvReview.ShowItemToolTips = true;
-			this.lvReview.Size = new System.Drawing.Size(232, 152);
-			this.lvReview.TabIndex = 0;
-			this.lvReview.UseCompatibleStateImageBehavior = false;
-			this.lvReview.View = System.Windows.Forms.View.Details;
-			this.lvReview.ColumnWidthChanged += new System.Windows.Forms.ColumnWidthChangedEventHandler(this.lvReview_ColumnWidthChanged);
-			this.lvReview.SelectedIndexChanged += new System.EventHandler(this.lvReview_SelectedIndexChanged);
-			// 
-			// chNeta
-			// 
-			this.chNeta.Text = "ネタバレ";
-			this.chNeta.Width = 14;
-			// 
-			// chScore
-			// 
-			this.chScore.Text = "評価";
-			this.chScore.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			this.chScore.Width = 24;
-			// 
-			// chRef
-			// 
-			this.chRef.Text = "参考";
-			this.chRef.Width = 42;
-			// 
-			// chTitle
-			// 
-			this.chTitle.Text = "タイトル";
-			this.chTitle.Width = 80;
-			// 
-			// chAuthor
-			// 
-			this.chAuthor.Text = "投稿者";
-			this.chAuthor.Width = 50;
-			// 
-			// chDate
-			// 
-			this.chDate.Text = "投稿日";
-			this.chDate.Width = 72;
-			// 
 			// txtReview
 			// 
 			this.txtReview.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -329,6 +274,61 @@
 			this.tsmiCopyImage.Size = new System.Drawing.Size(318, 22);
 			this.tsmiCopyImage.Text = "画像をコピー(&I)";
 			this.tsmiCopyImage.Click += new System.EventHandler(this.tsmiCopyImage_Click);
+			// 
+			// lvReview
+			// 
+			this.lvReview.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.chNeta,
+            this.chScore,
+            this.chRef,
+            this.chTitle,
+            this.chAuthor,
+            this.chDate});
+			this.lvReview.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.lvReview.FullRowSelect = true;
+			this.lvReview.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+			this.lvReview.HideSelection = false;
+			this.lvReview.Location = new System.Drawing.Point(0, 0);
+			this.lvReview.MultiSelect = false;
+			this.lvReview.Name = "lvReview";
+			this.lvReview.ShowItemToolTips = true;
+			this.lvReview.Size = new System.Drawing.Size(232, 152);
+			this.lvReview.TabIndex = 0;
+			this.lvReview.UseCompatibleStateImageBehavior = false;
+			this.lvReview.View = System.Windows.Forms.View.Details;
+			this.lvReview.ColumnWidthChanged += new System.Windows.Forms.ColumnWidthChangedEventHandler(this.lvReview_ColumnWidthChanged);
+			this.lvReview.SelectedIndexChanged += new System.EventHandler(this.lvReview_SelectedIndexChanged);
+			// 
+			// chNeta
+			// 
+			this.chNeta.Text = "ネタバレ";
+			this.chNeta.Width = 14;
+			// 
+			// chScore
+			// 
+			this.chScore.Text = "評価";
+			this.chScore.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			this.chScore.Width = 24;
+			// 
+			// chRef
+			// 
+			this.chRef.Text = "参考";
+			this.chRef.Width = 42;
+			// 
+			// chTitle
+			// 
+			this.chTitle.Text = "タイトル";
+			this.chTitle.Width = 80;
+			// 
+			// chAuthor
+			// 
+			this.chAuthor.Text = "投稿者";
+			this.chAuthor.Width = 50;
+			// 
+			// chDate
+			// 
+			this.chDate.Text = "投稿日";
+			this.chDate.Width = 72;
 			// 
 			// DetailView
 			// 

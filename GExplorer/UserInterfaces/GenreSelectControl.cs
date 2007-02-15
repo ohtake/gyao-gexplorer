@@ -4,11 +4,11 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using System.Threading;
+using System.Diagnostics;
 using Yusen.GExplorer.GyaoModel;
 using Yusen.GExplorer.AppCore;
-using System.Threading;
 using Yusen.GExplorer.Utilities;
-using System.Diagnostics;
 
 namespace Yusen.GExplorer.UserInterfaces {
 	partial class GenreSelectControl : UserControl {

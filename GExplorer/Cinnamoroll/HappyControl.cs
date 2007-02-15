@@ -7,9 +7,9 @@ using System.Text;
 using System.Windows.Forms;
 using System.Diagnostics;
 
-namespace Yusen.GExplorer.UserInterfaces {
-	public partial class EasterEggControl : UserControl {
-		public EasterEggControl() {
+namespace Yusen.GExplorer.Cinnamoroll {
+	public partial class HappyControl : UserControl {
+		public HappyControl() {
 			InitializeComponent();
 		}
 	}

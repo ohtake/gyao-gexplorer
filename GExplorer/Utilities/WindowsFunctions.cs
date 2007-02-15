@@ -31,6 +31,25 @@ namespace Yusen.GExplorer.Utilities {
 		public static extern uint GetWindowThreadProcessId(
 			[In] IntPtr hWnd,
 			[Out] out int lpdwProcessId);
+
+		[DllImport("user32.dll",
+			CharSet = CharSet.Auto,
+			CallingConvention=CallingConvention.Winapi)]
+		public static extern IntPtr SendMessage(
+			[In] IntPtr hWnd,
+			[In] uint Msg,
+			[In] IntPtr wParam,
+			[In] IntPtr lParam);
+
+		[DllImport("user32.dll",
+			CharSet=CharSet.Auto,
+			CallingConvention=CallingConvention.Winapi)]
+		public static extern IntPtr FindWindowEx(
+			[In] IntPtr hwndParent,
+			[In] IntPtr hwndChildAfter,
+			[In] string lpszClass,
+			[In] string lpszWindow);
+
 		#endregion
 		
 		#region WinInet.h
