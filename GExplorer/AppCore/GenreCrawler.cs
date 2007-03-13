@@ -146,14 +146,7 @@ namespace Yusen.GExplorer.AppCore {
 		}
 		
 		private const int MaxPhases = 4;
-		private static readonly Regex regexPackagePackage = new Regex(
-			@"<a href=""http://www\.gyao\.jp/sityou/catetop/genre_id/(?<GenreId>gen\d{7})/"">[\s\S]*?<td width=""658"" class=""title12b"">(?<PackageName>.*?)<!-- パックタイトル -->[\s\S]*?<b>(?<CatchCopy>.*?)<!-- パックキャッチコピー --></b>[\s\S]*?<td>(?<PackageText1>.*?)<!-- パックテキスト１ --></td>",
-			RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.ExplicitCapture);
-		private static readonly Regex regexPackageContent = new Regex(
-			@"<img src=""/img/info/[a-z]*?/{1,2}(?<ContentId>cnt\d{7})_s.jpg"" width=""80"" height=""60"" border=""0""><!-- サムネイル -->[\s\S]*?<td width=""235"" valign=""top"">(?<Summary>.*?)<!-- サマリー --></td>[\s\S]*?<td height=""14"" colspan=""2"" class=""bk10"">[\r\n]{1,2}(?<Deadline>.*?)</t[dr]>",
-			RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.ExplicitCapture);
-			// "/{1,2}"は村上さん対策
-		
+
 		private static UriLinkTypePair ConvertUriWithoutQueryAndFragment(UriLinkTypePair pair) {
 			if (string.IsNullOrEmpty(pair.Uri.Fragment) && string.IsNullOrEmpty(pair.Uri.Query)) {
 				return pair;
@@ -303,7 +296,7 @@ namespace Yusen.GExplorer.AppCore {
 				int pacKey = this.pacsWaiting.Dequeue();
 				{
 					int numerator = this.pacsSuccess.Count + this.pacsFailed.Count;
-					int denominator = this.pacsWaiting.Count + numerator;
+					int denominator = this.pacsWaiting.Count + numerator + 1;
 					this.ReportProgressInPhase(100 * numerator / denominator, string.Format("{0}/{1} {2}", numerator, denominator, GConvert.ToPackageId(pacKey)));
 				}
 				
@@ -333,7 +326,7 @@ namespace Yusen.GExplorer.AppCore {
 				if(this.contsSuccess.ContainsKey(contKey)) continue;
 				{
 					int numerator = this.contsSuccess.Count + this.contsFailed.Count;
-					int denominator = this.contsWaiting.Count + numerator;
+					int denominator = this.contsWaiting.Count + numerator +1;
 					this.ReportProgressInPhase(100 * numerator / denominator, string.Format("{0}/{1} {2}", numerator, denominator, GConvert.ToContentId(contKey)));
 				}
 				GContentClass cont;
@@ -454,11 +447,11 @@ namespace Yusen.GExplorer.AppCore {
 			set { this.maxNormalPages = value; }
 		}
 		
-		private int timeout = 5000;
+		private int timeout = 8000;
 		[Category("通信")]
 		[DisplayName("タイムアウト")]
 		[Description("一般ページを取得するときのタイムアウトをミリ秒で指定します．")]
-		[DefaultValue(5000)]
+		[DefaultValue(8000)]
 		public int Timeout {
 			get { return this.timeout; }
 			set { this.timeout = value; }

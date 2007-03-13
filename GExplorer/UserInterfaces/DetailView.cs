@@ -14,19 +14,23 @@ using Yusen.GExplorer.Utilities;
 
 namespace Yusen.GExplorer.UserInterfaces {
 	sealed partial class DetailView : UserControl, IDetailViewBindingContract, INotifyPropertyChanged {
-		public const string DefaultDescription1Style = "font-size:12px;";
-		public const string DefaultDescription2Style = "font-size:12px;";
-		public const string DefaultDescription3Style = "font-size:10px;";
-		public const string DefaultDescription4Style = "font-size:10px; text-align:right;";
-		
 		private static readonly Regex regexDesc = new Regex(
 			@"<table width=""296"" border=""0"" cellspacing=""0"" cellpadding=""0"">\r?\n<tr>\r?\n<td align=""left"">(?<Desc1>.*?)</td>\r?\n</tr>\r?\n</table>\r?\n</div>\r?\n<div class=""marginT10"">\r?\n<table width=""296"" border=""0"" cellspacing=""0"" cellpadding=""0"">\r?\n<tr>\r?\n<td align=""left"">\r?\n(?<Desc2>.*?)</td>\r?\n</tr>\r?\n</table>\r?\n</div>\r?\n<div class=""marginT10"">\r?\n<table width=""296"" border=""0"" cellspacing=""0"" cellpadding=""0"">\r?\n<tr>\r?\n<td align=""(left|center)""( class=""text10"")?>\r?\n(?<Desc3>[\s\S]*?)</td>\r?\n</tr>\r?\n</table>\r?\n</div>\r?\n<div class=""marginT10"">\r?\n<table width=""296"" border=""0"" cellspacing=""0"" cellpadding=""0"">\r?\n<tr>\r?\n<td align=""right""( class=""text10"")?>\r?\n(?<Desc4>.*?)</td>\r?\n</tr>\r?\n</table>",
 			RegexOptions.Compiled | RegexOptions.ExplicitCapture);
-		private static readonly Regex regexReviewSummary = new Regex(
-			@"<td width=""115"" class=""title12b"" bgcolor=""#666666"" align=""left"">(?:<span class=""marginR10"">(?<Summary>.*?)点?</span>)?</td>",
+		private static readonly Regex regexText = new Regex(
+			@"<div class=""txt_area02"">(?:\r|\n|\r\n)<ul>(?<Text>[\s\S]{0,5000}?)</ul>(?:\r|\n|\r\n)</div>",
+			RegexOptions.Compiled | RegexOptions.ExplicitCapture);
+		private static readonly Regex regexIgnoreText = new Regex(
+			@"<li>(?:\r|\n|\r\n)<p class=""ttl"">総合評価</p><p class=""star""><img src=""/recommend/img/star_\d+\.gif"" /></p><p class=""point"">10点中(?:\r|\n|\r\n)  \d+  点</p>(?:\r|\n|\r\n)<p class=""clear""></p>(?:\r|\n|\r\n)</li>|<li><a href=""mailto:address\?subject=&body=http://www\.gyao\.jp/sityou/catedetail/contents_id/cnt\d+/""><img src=""/sityou/img/img_info_friends\.gif"" /></a></li>",
+			RegexOptions.Compiled | RegexOptions.ExplicitCapture);
+		private static readonly Regex regexReviewCount = new Regex(
+			@"<p class=""revnum"">レビュー投稿数&nbsp;<span class=""num"">(?<Count>\d+)</span>",
+			RegexOptions.Compiled | RegexOptions.ExplicitCapture);
+		private static readonly Regex regexReviewAverageScore = new Regex(
+			@"<p class=""ttl"">総合評価</p><p class=""star""><img src=""/recommend/img/star_(?<Score>\d+)\.gif"" />",
 			RegexOptions.Compiled | RegexOptions.ExplicitCapture);
 		private static readonly Regex regexReviewPost = new Regex(
-			@"<td width=""210"" height=""25"" class=""bk12b"">(?<Title>.*?)</td>\r?\n<td width=""140"" class=""bk10"">投稿者：(?<Author>.*?)</td>\r?\n<td width=""118"" align=""center"" class=""bk10"">投稿日：(?<Posted>.*?) </td>\r?\n<td width=""102"" align=""center"">\r?\n<table width=""85"" border=""0"" cellspacing=""0"" cellpadding=""0"">\r?\n(<td><img src = ""http://www\.gyao\.jp/common/images/star_(w|half_n|half_w)\.gif"" width=""15"" height=""15"" border=""0""> </td>\r?\n){5} \r?\n</table>\r?\n</td>\r?\n<td width=""50"" align=""right"" class=""bk10"">(?<Score>\d+)点</td>\r?\n</tr>\r?\n</table>\r?\n</td></tr>\r?\n<tr><td><table width=""620"" border=""0"" cellspacing=""0"" cellpadding=""0"">\r?\n(?<NetaBare><tr><td><img src=""http://www\.gyao\.jp/common/images/neta\.gif"" alt=""ネタバレ"" width=""40"" height=""15"" border=""0""></td>\r?\n)?<td align=""right"" height=""35"" class=""bk10"">(?<Denominator>\d+)人中(?<Numerator>\d+)人が「この番組レビューは参考になる」と評価しています。</td></tr>\r?\n</table></td></tr>\r?\n<tr><td><p class=""marginT5B5"">(?<Body>.*?)</p></td></tr>",
+			@"<!--top-->(?:\r|\n|\r\n)<div class=""top"">(?:\r|\n|\r\n)<p class=""ttl"">(?<Title>.+?)</p>(?:\r|\n|\r\n)<p class=""date"">投稿日：(?<Posted>.+?)</p>(?:\r|\n|\r\n)<p class=""star""><img src=""/recommend/img/star_0*(?<Score>\d+)\.gif"" /></p>(?:\r|\n|\r\n)<p class=""point"">\d+点</p>(?:\r|\n|\r\n)<p class=""poster"">投稿者：(?<Author>.+?)</p>(?:\r|\n|\r\n)(?<NetaBare><p class=""neta""><img src=""/common/images/neta.gif"" /></p>(?:\r|\n|\r\n))?<p class=""ref_num"">(?<Denominator>\d+)人中(?<Numerator>\d+)人が「この番組レビューは参考になる」と評価しています。</p>(?:\r|\n|\r\n)<div class=""clear""></div>(?:\r|\n|\r\n)</div>(?:\r|\n|\r\n)<!--top-->(?:\r|\n|\r\n)<!--middle-->(?:\r|\n|\r\n)<div class=""middle"">(?<Body>.+?)</div>(?:\r|\n|\r\n)<!--middle-->",
 			RegexOptions.Compiled | RegexOptions.ExplicitCapture);
 		private static readonly string[] ColWidthPropertyNames = new string[] {
 			"ColWidthNetabare", "ColWidthScore", "ColWidthRef", "ColWidthTitle", "ColWidthAuthor", "ColWidthPosted",
@@ -56,10 +60,6 @@ namespace Yusen.GExplorer.UserInterfaces {
 		private readonly BackgroundTextLoader bgTextLoader = new BackgroundTextLoader(Encoding.GetEncoding("Shift_JIS"), Program.CookieContainer, new RequestCachePolicy(RequestCacheLevel.Default), DetailViewOptions.PageTimeoutDefaultValue);
 		
 		private GContentClass cont;
-		private string description1Style = DetailView.DefaultDescription1Style;
-		private string description2Style = DetailView.DefaultDescription2Style;
-		private string description3Style = DetailView.DefaultDescription3Style;
-		private string description4Style = DetailView.DefaultDescription4Style;
 		
 		public DetailView() {
 			InitializeComponent();
@@ -67,7 +67,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 		private void DetailView_Load(object sender, EventArgs e) {
 			if (base.DesignMode) return;
 			
-			this.wbDescription.DocumentText = "<html><body style='margin:0px;'></body></html>";
+			this.wbDescription.DocumentText = "<html><head><style type='text/css'>body{font-size:12px;line-height:1.4;}ul{list-style:none;margin:0;}li{margin-bottom:1em;}li.copyright{text-align:right;}</style></head><body style='margin:0px;'></body></html>";
 			
 			this.ChangeEnabilityOfMenuItems();
 
@@ -133,7 +133,6 @@ namespace Yusen.GExplorer.UserInterfaces {
 			} else {
 				if(!e.Success){
 					this.wbDescription.Document.Body.InnerHtml = "取得失敗";
-					this.lblReviewSummary.Text = "レビュー取得失敗";
 					this.tabpReview.Text = "レビュー(取得失敗)";
 					this.lvReview.Items.Clear();
 					this.txtReview.Clear();
@@ -141,17 +140,20 @@ namespace Yusen.GExplorer.UserInterfaces {
 					return;
 				}
 				string text = e.Text;
-				Match m = DetailView.regexDesc.Match(text);
+				Match m = DetailView.regexText.Match(text);
 				if (m.Success) {
-					this.wbDescription.Document.Body.InnerHtml = string.Format(@"<p style=""{4}"">{0}</p><p style=""{5}"">{1}</p><p style=""{6}"">{2}</p><p style=""{7}"">{3}</p>",
-						m.Groups["Desc1"].Value, m.Groups["Desc2"].Value, m.Groups["Desc3"].Value, m.Groups["Desc4"].Value,
-						this.Description1Style, this.Description2Style, this.Description3Style, this.Description4Style);
+					string desc = m.Groups["Text"].Value;
+					desc = DetailView.regexIgnoreText.Replace(desc, string.Empty);
+					this.wbDescription.Document.Body.InnerHtml = string.Format("<ul>{0}</ul>", desc);
 				} else {
 					this.wbDescription.Document.Body.InnerHtml = "エラー: 正規表現にマッチしなかった";
 				}
-				m = DetailView.regexReviewSummary.Match(text);
+				m = DetailView.regexReviewCount.Match(text);
 				if (m.Success) {
-					string aveScore = m.Groups["Summary"].Value;
+					int reviewCount = int.Parse(m.Groups["Count"].Value);
+					m = DetailView.regexReviewAverageScore.Match(text);
+					if (!m.Success) goto reviewFail;
+					int aveScore = int.Parse(m.Groups["Score"].Value);
 					this.lvReview.BeginUpdate();
 					this.lvReview.Items.Clear();
 					for (m = DetailView.regexReviewPost.Match(text); m.Success; m = m.NextMatch()) {
@@ -166,13 +168,15 @@ namespace Yusen.GExplorer.UserInterfaces {
 							HttpUtility.HtmlDecode(m.Groups["Body"].Value)));
 					}
 					this.lvReview.EndUpdate();
-					this.lblReviewSummary.Text = string.IsNullOrEmpty(aveScore) ? "レビューなし" : string.Format("新着分{0}件 総合評価{1}点", this.lvReview.Items.Count, aveScore);
-					this.tabpReview.Text = string.IsNullOrEmpty(aveScore) ? "レビュー(0)" : string.Format("レビュー({0};{1})", this.lvReview.Items.Count, aveScore);
+					this.tabpReview.Text = string.Format("レビュー({0};{1})", reviewCount, aveScore);
+					goto reviewEnd;
 				} else {
-					this.lblReviewSummary.Text = "レビュー取得失敗";
-					this.tabpReview.Text = "レビュー(取得失敗)";
-					this.lvReview.Items.Clear();
+					goto reviewFail;
 				}
+			reviewFail:
+				this.tabpReview.Text = "レビュー(なし or 取得失敗)";
+				this.lvReview.Items.Clear();
+			reviewEnd:
 				this.txtReview.Clear();
 			}
 		}
@@ -330,50 +334,6 @@ namespace Yusen.GExplorer.UserInterfaces {
 				this.OnPropertyChanged("ColWidthPosted");
 			}
 		}
-		[Browsable(false)]
-		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public string Description1Style {
-			get { return this.description1Style; }
-			set {
-				if (this.description1Style != value) {
-					this.description1Style = value;
-					this.OnPropertyChanged("Description1Style");
-				}
-			}
-		}
-		[Browsable(false)]
-		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public string Description2Style {
-			get { return this.description2Style; }
-			set {
-				if (this.description2Style != value) {
-					this.description2Style = value;
-					this.OnPropertyChanged("Description2Style");
-				}
-			}
-		}
-		[Browsable(false)]
-		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public string Description3Style {
-			get { return this.description3Style; }
-			set {
-				if (this.description3Style != value) {
-					this.description3Style = value;
-					this.OnPropertyChanged("Description3Style");
-				}
-			}
-		}
-		[Browsable(false)]
-		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public string Description4Style {
-			get { return this.description4Style; }
-			set {
-				if (this.description4Style != value) {
-					this.description4Style = value;
-					this.OnPropertyChanged("Description4Style");
-				}
-			}
-		}
 #if PATCH_FOR_INVISIBLE_TEXT_IN_VISTA
 		[Browsable(false)]
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -410,6 +370,17 @@ namespace Yusen.GExplorer.UserInterfaces {
 				Clipboard.SetImage(this.pbImage.Image);
 			}
 		}
+
+		private void btnReviewList_Click(object sender, EventArgs e) {
+			if (null != this.cont) {
+				Program.BrowsePage(this.cont.ReviewListUri);
+			}
+		}
+		private void btnReviewInput_Click(object sender, EventArgs e) {
+			if (null != this.cont) {
+				Program.BrowsePage(this.cont.ReviewInputUri);
+			}
+		}
 	}
 
 	interface IDetailViewBindingContract : IBindingContract {
@@ -427,18 +398,13 @@ namespace Yusen.GExplorer.UserInterfaces {
 		int ColWidthAuthor { get;set;}
 		int ColWidthPosted { get;set;}
 
-		string Description1Style { get;set;}
-		string Description2Style { get;set;}
-		string Description3Style { get;set;}
-		string Description4Style { get;set;}
-
 #if PATCH_FOR_INVISIBLE_TEXT_IN_VISTA
 		bool EnablePatchForInvisibleTextInVista { get;set;}
 #endif
 	}
 	public sealed class DetailViewOptions : IDetailViewBindingContract {
-		internal const int ImageTimeoutDefaultValue = 5000;
-		internal const int PageTimeoutDefaultValue = 5000;
+		internal const int ImageTimeoutDefaultValue = 8000;
+		internal const int PageTimeoutDefaultValue = 8000;
 		
 		public DetailViewOptions() {
 		}
@@ -555,42 +521,6 @@ namespace Yusen.GExplorer.UserInterfaces {
 			set { this.colWidthPosted = value; }
 		}
 
-		private string description1Style = DetailView.DefaultDescription1Style;
-		[Category("説明文")]
-		[DisplayName("説明文1のスタイル")]
-		[Description("説明文1の表示に用いる HTML の style 属性を指定します．入力チェックは行っていないので不正な文字列を指定しないでください．変更は再表示後に有効になります．")]
-		[DefaultValue(DetailView.DefaultDescription1Style)]
-		public string Description1Style {
-			get { return this.description1Style; }
-			set { this.description1Style = value; }
-		}
-		private string description2Style = DetailView.DefaultDescription2Style;
-		[Category("説明文")]
-		[DisplayName("説明文2のスタイル")]
-		[Description("説明文2の表示に用いる HTML の style 属性を指定します．入力チェックは行っていないので不正な文字列を指定しないでください．変更は再表示後に有効になります．")]
-		[DefaultValue(DetailView.DefaultDescription2Style)]
-		public string Description2Style {
-			get { return this.description2Style; }
-			set { this.description2Style = value; }
-		}
-		private string description3Style = DetailView.DefaultDescription3Style;
-		[Category("説明文")]
-		[DisplayName("説明文3のスタイル")]
-		[Description("説明文3の表示に用いる HTML の style 属性を指定します．入力チェックは行っていないので不正な文字列を指定しないでください．変更は再表示後に有効になります．")]
-		[DefaultValue(DetailView.DefaultDescription3Style)]
-		public string Description3Style {
-			get { return this.description3Style; }
-			set { this.description3Style = value; }
-		}
-		private string description4Style = DetailView.DefaultDescription4Style;
-		[Category("説明文")]
-		[DisplayName("説明文4のスタイル")]
-		[Description("説明文4の表示に用いる HTML の style 属性を指定します．入力チェックは行っていないので不正な文字列を指定しないでください．変更は再表示後に有効になります．")]
-		[DefaultValue(DetailView.DefaultDescription4Style)]
-		public string Description4Style {
-			get { return this.description4Style;}
-			set { this.description4Style = value; }
-		}
 #if PATCH_FOR_INVISIBLE_TEXT_IN_VISTA
 		private bool enablePatchForInvisibleTextInVista = false;
 		[Category("不具合対策")]

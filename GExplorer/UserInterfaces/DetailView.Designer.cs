@@ -31,8 +31,17 @@
 			this.tabpReview = new System.Windows.Forms.TabPage();
 			this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
 			this.scReview = new System.Windows.Forms.SplitContainer();
+			this.lvReview = new Yusen.GExplorer.UserInterfaces.DoubleBufferedListView();
+			this.chNeta = new System.Windows.Forms.ColumnHeader();
+			this.chScore = new System.Windows.Forms.ColumnHeader();
+			this.chRef = new System.Windows.Forms.ColumnHeader();
+			this.chTitle = new System.Windows.Forms.ColumnHeader();
+			this.chAuthor = new System.Windows.Forms.ColumnHeader();
+			this.chDate = new System.Windows.Forms.ColumnHeader();
 			this.txtReview = new System.Windows.Forms.TextBox();
-			this.lblReviewSummary = new System.Windows.Forms.Label();
+			this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+			this.btnReviewList = new System.Windows.Forms.Button();
+			this.btnReviewInput = new System.Windows.Forms.Button();
 			this.tabpContent = new System.Windows.Forms.TabPage();
 			this.pgProperty = new System.Windows.Forms.PropertyGrid();
 			this.menuStrip1 = new System.Windows.Forms.MenuStrip();
@@ -43,13 +52,6 @@
 			this.tsmiCopyTriple = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiCopyImage = new System.Windows.Forms.ToolStripMenuItem();
-			this.lvReview = new Yusen.GExplorer.UserInterfaces.DoubleBufferedListView();
-			this.chNeta = new System.Windows.Forms.ColumnHeader();
-			this.chScore = new System.Windows.Forms.ColumnHeader();
-			this.chRef = new System.Windows.Forms.ColumnHeader();
-			this.chTitle = new System.Windows.Forms.ColumnHeader();
-			this.chAuthor = new System.Windows.Forms.ColumnHeader();
-			this.chDate = new System.Windows.Forms.ColumnHeader();
 			this.scRoot.Panel1.SuspendLayout();
 			this.scRoot.Panel2.SuspendLayout();
 			this.scRoot.SuspendLayout();
@@ -61,6 +63,7 @@
 			this.scReview.Panel1.SuspendLayout();
 			this.scReview.Panel2.SuspendLayout();
 			this.scReview.SuspendLayout();
+			this.flowLayoutPanel1.SuspendLayout();
 			this.tabpContent.SuspendLayout();
 			this.menuStrip1.SuspendLayout();
 			this.SuspendLayout();
@@ -143,21 +146,21 @@
 			// 
 			this.tableLayoutPanel1.ColumnCount = 1;
 			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-			this.tableLayoutPanel1.Controls.Add(this.scReview, 0, 1);
-			this.tableLayoutPanel1.Controls.Add(this.lblReviewSummary, 0, 0);
+			this.tableLayoutPanel1.Controls.Add(this.scReview, 0, 0);
+			this.tableLayoutPanel1.Controls.Add(this.flowLayoutPanel1, 0, 1);
 			this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
 			this.tableLayoutPanel1.Name = "tableLayoutPanel1";
 			this.tableLayoutPanel1.RowCount = 2;
-			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 18F));
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 36F));
 			this.tableLayoutPanel1.Size = new System.Drawing.Size(238, 329);
 			this.tableLayoutPanel1.TabIndex = 1;
 			// 
 			// scReview
 			// 
 			this.scReview.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.scReview.Location = new System.Drawing.Point(3, 21);
+			this.scReview.Location = new System.Drawing.Point(3, 3);
 			this.scReview.Name = "scReview";
 			this.scReview.Orientation = System.Windows.Forms.Orientation.Horizontal;
 			// 
@@ -168,10 +171,65 @@
 			// scReview.Panel2
 			// 
 			this.scReview.Panel2.Controls.Add(this.txtReview);
-			this.scReview.Size = new System.Drawing.Size(232, 305);
-			this.scReview.SplitterDistance = 152;
+			this.scReview.Size = new System.Drawing.Size(232, 287);
+			this.scReview.SplitterDistance = 143;
 			this.scReview.TabIndex = 0;
 			this.scReview.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.scReview_SplitterMoved);
+			// 
+			// lvReview
+			// 
+			this.lvReview.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.chNeta,
+            this.chScore,
+            this.chRef,
+            this.chTitle,
+            this.chAuthor,
+            this.chDate});
+			this.lvReview.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.lvReview.FullRowSelect = true;
+			this.lvReview.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+			this.lvReview.HideSelection = false;
+			this.lvReview.Location = new System.Drawing.Point(0, 0);
+			this.lvReview.MultiSelect = false;
+			this.lvReview.Name = "lvReview";
+			this.lvReview.ShowItemToolTips = true;
+			this.lvReview.Size = new System.Drawing.Size(232, 143);
+			this.lvReview.TabIndex = 0;
+			this.lvReview.UseCompatibleStateImageBehavior = false;
+			this.lvReview.View = System.Windows.Forms.View.Details;
+			this.lvReview.ColumnWidthChanged += new System.Windows.Forms.ColumnWidthChangedEventHandler(this.lvReview_ColumnWidthChanged);
+			this.lvReview.SelectedIndexChanged += new System.EventHandler(this.lvReview_SelectedIndexChanged);
+			// 
+			// chNeta
+			// 
+			this.chNeta.Text = "ネタバレ";
+			this.chNeta.Width = 14;
+			// 
+			// chScore
+			// 
+			this.chScore.Text = "評価";
+			this.chScore.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			this.chScore.Width = 24;
+			// 
+			// chRef
+			// 
+			this.chRef.Text = "参考";
+			this.chRef.Width = 42;
+			// 
+			// chTitle
+			// 
+			this.chTitle.Text = "タイトル";
+			this.chTitle.Width = 80;
+			// 
+			// chAuthor
+			// 
+			this.chAuthor.Text = "投稿者";
+			this.chAuthor.Width = 50;
+			// 
+			// chDate
+			// 
+			this.chDate.Text = "投稿日";
+			this.chDate.Width = 72;
 			// 
 			// txtReview
 			// 
@@ -181,17 +239,39 @@
 			this.txtReview.Name = "txtReview";
 			this.txtReview.ReadOnly = true;
 			this.txtReview.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-			this.txtReview.Size = new System.Drawing.Size(232, 149);
+			this.txtReview.Size = new System.Drawing.Size(232, 140);
 			this.txtReview.TabIndex = 0;
 			// 
-			// lblReviewSummary
+			// flowLayoutPanel1
 			// 
-			this.lblReviewSummary.AutoSize = true;
-			this.lblReviewSummary.Location = new System.Drawing.Point(3, 0);
-			this.lblReviewSummary.Name = "lblReviewSummary";
-			this.lblReviewSummary.Size = new System.Drawing.Size(101, 12);
-			this.lblReviewSummary.TabIndex = 1;
-			this.lblReviewSummary.Text = "lblReviewSummary";
+			this.flowLayoutPanel1.Controls.Add(this.btnReviewList);
+			this.flowLayoutPanel1.Controls.Add(this.btnReviewInput);
+			this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 296);
+			this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+			this.flowLayoutPanel1.Size = new System.Drawing.Size(232, 30);
+			this.flowLayoutPanel1.TabIndex = 1;
+			this.flowLayoutPanel1.WrapContents = false;
+			// 
+			// btnReviewList
+			// 
+			this.btnReviewList.Location = new System.Drawing.Point(3, 3);
+			this.btnReviewList.Name = "btnReviewList";
+			this.btnReviewList.Size = new System.Drawing.Size(70, 23);
+			this.btnReviewList.TabIndex = 0;
+			this.btnReviewList.Text = "一覧(&V)";
+			this.btnReviewList.UseVisualStyleBackColor = true;
+			this.btnReviewList.Click += new System.EventHandler(this.btnReviewList_Click);
+			// 
+			// btnReviewInput
+			// 
+			this.btnReviewInput.Location = new System.Drawing.Point(79, 3);
+			this.btnReviewInput.Name = "btnReviewInput";
+			this.btnReviewInput.Size = new System.Drawing.Size(70, 23);
+			this.btnReviewInput.TabIndex = 1;
+			this.btnReviewInput.Text = "投稿(&P)";
+			this.btnReviewInput.UseVisualStyleBackColor = true;
+			this.btnReviewInput.Click += new System.EventHandler(this.btnReviewInput_Click);
 			// 
 			// tabpContent
 			// 
@@ -275,61 +355,6 @@
 			this.tsmiCopyImage.Text = "画像をコピー(&I)";
 			this.tsmiCopyImage.Click += new System.EventHandler(this.tsmiCopyImage_Click);
 			// 
-			// lvReview
-			// 
-			this.lvReview.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.chNeta,
-            this.chScore,
-            this.chRef,
-            this.chTitle,
-            this.chAuthor,
-            this.chDate});
-			this.lvReview.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.lvReview.FullRowSelect = true;
-			this.lvReview.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
-			this.lvReview.HideSelection = false;
-			this.lvReview.Location = new System.Drawing.Point(0, 0);
-			this.lvReview.MultiSelect = false;
-			this.lvReview.Name = "lvReview";
-			this.lvReview.ShowItemToolTips = true;
-			this.lvReview.Size = new System.Drawing.Size(232, 152);
-			this.lvReview.TabIndex = 0;
-			this.lvReview.UseCompatibleStateImageBehavior = false;
-			this.lvReview.View = System.Windows.Forms.View.Details;
-			this.lvReview.ColumnWidthChanged += new System.Windows.Forms.ColumnWidthChangedEventHandler(this.lvReview_ColumnWidthChanged);
-			this.lvReview.SelectedIndexChanged += new System.EventHandler(this.lvReview_SelectedIndexChanged);
-			// 
-			// chNeta
-			// 
-			this.chNeta.Text = "ネタバレ";
-			this.chNeta.Width = 14;
-			// 
-			// chScore
-			// 
-			this.chScore.Text = "評価";
-			this.chScore.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			this.chScore.Width = 24;
-			// 
-			// chRef
-			// 
-			this.chRef.Text = "参考";
-			this.chRef.Width = 42;
-			// 
-			// chTitle
-			// 
-			this.chTitle.Text = "タイトル";
-			this.chTitle.Width = 80;
-			// 
-			// chAuthor
-			// 
-			this.chAuthor.Text = "投稿者";
-			this.chAuthor.Width = 50;
-			// 
-			// chDate
-			// 
-			this.chDate.Text = "投稿日";
-			this.chDate.Width = 72;
-			// 
 			// DetailView
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -347,11 +372,11 @@
 			this.tabpDescription.ResumeLayout(false);
 			this.tabpReview.ResumeLayout(false);
 			this.tableLayoutPanel1.ResumeLayout(false);
-			this.tableLayoutPanel1.PerformLayout();
 			this.scReview.Panel1.ResumeLayout(false);
 			this.scReview.Panel2.ResumeLayout(false);
 			this.scReview.Panel2.PerformLayout();
 			this.scReview.ResumeLayout(false);
+			this.flowLayoutPanel1.ResumeLayout(false);
 			this.tabpContent.ResumeLayout(false);
 			this.menuStrip1.ResumeLayout(false);
 			this.menuStrip1.PerformLayout();
@@ -382,12 +407,14 @@
 		private System.Windows.Forms.ToolStripMenuItem tsmiDetailView;
 		private System.Windows.Forms.PictureBox pbImage;
 		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-		private System.Windows.Forms.Label lblReviewSummary;
 		private System.Windows.Forms.ToolStripMenuItem tsmiCopyName;
 		private System.Windows.Forms.ToolStripMenuItem tsmiCopyUri;
 		private System.Windows.Forms.ToolStripMenuItem tsmiCopyBoth;
 		private System.Windows.Forms.ToolStripMenuItem tsmiCopyTriple;
 		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
 		private System.Windows.Forms.ToolStripMenuItem tsmiCopyImage;
+		private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+		private System.Windows.Forms.Button btnReviewList;
+		private System.Windows.Forms.Button btnReviewInput;
 	}
 }

@@ -1028,11 +1028,11 @@ namespace Yusen.GExplorer.UserInterfaces {
 			set { this.disableAdultCheckDialog = value; }
 		}
 
-		private int playlistTimeout = 5000;
+		private int playlistTimeout = 8000;
 		[Category("通信")]
 		[DisplayName("プレイリストのタイムアウト")]
 		[Description("プレイリストを取得するさいのタイムアウトをミリ秒で指定します．")]
-		[DefaultValue(5000)]
+		[DefaultValue(8000)]
 		public int PlaylistTimeout {
 			get { return this.playlistTimeout; }
 			set { this.playlistTimeout = value; }
