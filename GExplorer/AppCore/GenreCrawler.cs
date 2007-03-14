@@ -346,14 +346,18 @@ namespace Yusen.GExplorer.AppCore {
 				if (cont.PackgeKey.HasValue) {
 					int pacKey = cont.PackgeKey.Value;
 					if (this.pacsSuccess.ContainsKey(pacKey) || this.pacsFailed.Contains(pacKey)) {
-						this.contsSuccess.Add(contKey, cont);
+						this.contsSuccess.Add(cont.ContentKey, cont);
 					} else {
 						try {
 							List<GContentClass> conts;
 							GPackageClass pac = this.cacheController.FetchPackage(pacKey, out conts);
 							this.pacsSuccess.Add(pacKey, pac);
 							foreach (GContentClass contInPac in conts) {
-								this.contsSuccess.Add(contInPac.ContentKey, contInPac);
+								if (!this.contsSuccess.ContainsKey(contInPac.ContentKey)) {
+									this.contsSuccess.Add(contInPac.ContentKey, contInPac);
+								} else {
+									this.contsSuccess[contInPac.ContentKey] = contInPac;
+								}
 							}
 						} catch (Exception e) {
 							this.contsSuccess.Add(contKey, cont);
@@ -362,7 +366,7 @@ namespace Yusen.GExplorer.AppCore {
 						}
 					}
 				} else {
-					this.contsSuccess.Add(contKey, cont);
+					this.contsSuccess.Add(cont.ContentKey, cont);
 				}
 			}
 		}
@@ -370,14 +374,14 @@ namespace Yusen.GExplorer.AppCore {
 			this.ReportProgressInPhase(0, "作成中");
 			List<int> cksDone = new List<int>();
 			CrawlResult result = new CrawlResult();
-			
+
 			foreach (GContentClass cont in this.contsSuccess.Values) {
 				result.Contents.Add(cont);
 			}
 			result.VisitedPages.AddRange(this.pagesSuccess);
 			result.NotVisitedPages.AddRange(this.pagesWaiting);
 			result.Exceptions.AddRange(this.exceptions);
-			
+
 			//比較
 			if (null != prevResult) {
 				SortedDictionary<int, GContentClass> prevDic = this.CreateContentsSortedDictionary(this.prevResult.Contents);

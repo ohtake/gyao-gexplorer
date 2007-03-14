@@ -125,7 +125,11 @@ namespace Yusen.GExplorer.UserInterfaces {
 			if (status.Contains("&")) {
 				status = status.Replace("&", "&&");
 			}
-			this.toolStripStatusLabel1.Text = status;
+			if (string.IsNullOrEmpty(status)) {
+				this.toolStripStatusLabel1.Text = " ";
+			} else {
+				this.toolStripStatusLabel1.Text = status;
+			}
 		}
 		private void gwbMain_ProgressChanged(object sender, WebBrowserProgressChangedEventArgs e) {
 			this.toolStripProgressBar1.Maximum = (int)e.MaximumProgress;

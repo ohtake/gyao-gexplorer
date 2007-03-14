@@ -122,6 +122,7 @@
 			this.inputBoxDialog1 = new Yusen.GExplorer.UserInterfaces.InputBoxDialog();
 			this.exceptionDialog1 = new Yusen.GExplorer.UserInterfaces.ExceptionDialog();
 			this.tsResult.SuspendLayout();
+			this.toolStripContainer1.BottomToolStripPanel.SuspendLayout();
 			this.toolStripContainer1.ContentPanel.SuspendLayout();
 			this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
 			this.toolStripContainer1.SuspendLayout();
@@ -581,6 +582,10 @@
 			// toolStripContainer1
 			// 
 			// 
+			// toolStripContainer1.BottomToolStripPanel
+			// 
+			this.toolStripContainer1.BottomToolStripPanel.Controls.Add(this.tsFilter);
+			// 
 			// toolStripContainer1.ContentPanel
 			// 
 			this.toolStripContainer1.ContentPanel.Controls.Add(this.lvResult);
@@ -595,7 +600,6 @@
 			// toolStripContainer1.TopToolStripPanel
 			// 
 			this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.tsResult);
-			this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.tsFilter);
 			// 
 			// lvResult
 			// 
@@ -786,7 +790,7 @@
             this.tstbFilter,
             this.tslRegex,
             this.tstbAnswer});
-			this.tsFilter.Location = new System.Drawing.Point(0, 26);
+			this.tsFilter.Location = new System.Drawing.Point(0, 0);
 			this.tsFilter.Name = "tsFilter";
 			this.tsFilter.Size = new System.Drawing.Size(600, 25);
 			this.tsFilter.Stretch = true;
@@ -961,6 +965,8 @@
 			this.Load += new System.EventHandler(this.CrawlResultView_Load);
 			this.tsResult.ResumeLayout(false);
 			this.tsResult.PerformLayout();
+			this.toolStripContainer1.BottomToolStripPanel.ResumeLayout(false);
+			this.toolStripContainer1.BottomToolStripPanel.PerformLayout();
 			this.toolStripContainer1.ContentPanel.ResumeLayout(false);
 			this.toolStripContainer1.TopToolStripPanel.ResumeLayout(false);
 			this.toolStripContainer1.TopToolStripPanel.PerformLayout();

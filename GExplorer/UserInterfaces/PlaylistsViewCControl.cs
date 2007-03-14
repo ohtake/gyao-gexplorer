@@ -502,7 +502,6 @@ namespace Yusen.GExplorer.UserInterfaces {
 			options.NeutralizeUnspecificValues(this);
 			BindingContractUtility.BindAllProperties<PlaylistsViewCControl, IPlaylistsViewCControlBindingContract>(this, options);
 		}
-		
 	}
 
 	interface IPlaylistsViewCControlBindingContract : IBindingContract {

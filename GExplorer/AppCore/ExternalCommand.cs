@@ -58,7 +58,12 @@ namespace Yusen.GExplorer.AppCore {
 				if (ExternalCommand.dicLiteralsEU.ContainsKey(match.Value)) {
 					return ExternalCommand.UnescapeLiteral(match.Value);
 				} else {
-					PropertyInfo pi = typeof(GContentClass).GetProperty(match.Groups["PropName"].Value);
+					string propName = match.Groups["PropName"].Value;
+					PropertyInfo pi = typeof(GContentClass).GetProperty(propName);
+					if (null == pi) {
+						throw new InvalidOperationException(string.Format("{0} というプロパティはないみたい．", propName));
+					}
+					
 					Encoding encoding = null;
 					string codePageName = match.Groups["CodePageName"].Value;
 					if (!string.IsNullOrEmpty(codePageName)) {

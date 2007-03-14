@@ -5,13 +5,14 @@ using System.Drawing;
 using System.Windows.Forms;
 using Yusen.GExplorer.AppCore;
 using Yusen.GExplorer.GyaoModel;
+using Yusen.GExplorer.Cinnamoroll;
 
 namespace Yusen.GExplorer.UserInterfaces {
 	sealed partial class MainForm : BaseForm, IMainFormBindingContract, INotifyPropertyChanged {
 		public event PropertyChangedEventHandler PropertyChanged;
 
 		private GContentClass lastSelectedContent;
-		
+
 		public MainForm() {
 			InitializeComponent();
 			
@@ -23,11 +24,12 @@ namespace Yusen.GExplorer.UserInterfaces {
 
 			if (base.DesignMode) return;
 			this.Text = Program.ApplicationName;
+
 		}
 
 		private void MainForm_Load(object sender, EventArgs e) {
 			if (base.DesignMode) return;
-			this.tsslMessage.Text = string.Empty;
+			this.SetDefaultStatusText();
 			Program.ProgramSerializationProgress += new ProgressChangedEventHandler(Program_ProgramSerializationProgress);
 
 			if (null == Program.RootOptions) return;
@@ -213,7 +215,18 @@ namespace Yusen.GExplorer.UserInterfaces {
 		private void detailView1_StatusMessageChanged(object sender, EventArgs e) {
 			this.SetTemporalStatusMessage(this.detailView1.StatusMessage);
 		}
-	
+
+		private void SetDefaultStatusText() {
+			DateTime now = DateTime.Now;
+			CinnamonFriend friend = CinnamonFriend.WhoseBirthday(now.Month, now.Day);
+			
+			if (null == friend) {
+				this.tsslMessage.Text = " ";
+			} else {
+				this.tsslMessage.Text = string.Format("{0}月{1}日は{2}の誕生日です．",
+					friend.BirthMonth, friend.BirthDay, friend.JapaneseName);
+			}
+		}
 		private void SetLastSelectContentDelayed(GContentClass cont) {
 			this.lastSelectedContent = cont;
 			this.timerContentSelect.Start();
@@ -230,9 +243,8 @@ namespace Yusen.GExplorer.UserInterfaces {
 		}
 		private void timerMessage_Tick(object sender, EventArgs e) {
 			this.timerMessage.Stop();
-			this.tsslMessage.Text = string.Empty;
+			this.SetDefaultStatusText();
 		}
-		
 	}
 	
 	interface IMainFormBindingContract : IBindingContract {
