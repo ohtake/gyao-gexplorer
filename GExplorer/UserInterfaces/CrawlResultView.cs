@@ -319,20 +319,18 @@ namespace Yusen.GExplorer.UserInterfaces {
 				this.ClearCrawlResult();
 				return;
 			}
-			
 			this.lvResult.BeginUpdate();
 			this.ClearCrawlResult();
 			this.result = result;
-			
+
 			this.lvResult.ShowGroups = true;
-			
+
 			this.MakeupToolbar();
 			this.MakeupItems();
 			this.ApplyContentStyle();
 			this.ApplyNgFavFlags();
-			if(this.GroupingAtTheBegining) this.AddGroups();
+			if (this.GroupingAtTheBegining) this.AddGroups();
 			this.DisplayItems();
-
 			this.lvResult.EndUpdate();
 			
 			this.ChangeEnabilityOfMenuItems();
@@ -1323,7 +1321,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 		int ThumbnailTimeout { get;set;}
 	}
 	public sealed class CrawlResultViewOptions : ICrawlResultViewBindingContract {
-		internal const int ThumbnailTimeoutDefaultValue = 5000;
+		internal const int ThumbnailTimeoutDefaultValue = 8000;
 		
 		public CrawlResultViewOptions() {
 		}

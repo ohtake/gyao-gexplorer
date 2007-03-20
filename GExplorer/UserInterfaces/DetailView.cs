@@ -11,12 +11,11 @@ using System.Web;
 using System.Net.Cache;
 using Yusen.GExplorer.GyaoModel;
 using Yusen.GExplorer.Utilities;
+using System.ComponentModel.Design;
+using System.Drawing.Design;
 
 namespace Yusen.GExplorer.UserInterfaces {
 	sealed partial class DetailView : UserControl, IDetailViewBindingContract, INotifyPropertyChanged {
-		private static readonly Regex regexDesc = new Regex(
-			@"<table width=""296"" border=""0"" cellspacing=""0"" cellpadding=""0"">\r?\n<tr>\r?\n<td align=""left"">(?<Desc1>.*?)</td>\r?\n</tr>\r?\n</table>\r?\n</div>\r?\n<div class=""marginT10"">\r?\n<table width=""296"" border=""0"" cellspacing=""0"" cellpadding=""0"">\r?\n<tr>\r?\n<td align=""left"">\r?\n(?<Desc2>.*?)</td>\r?\n</tr>\r?\n</table>\r?\n</div>\r?\n<div class=""marginT10"">\r?\n<table width=""296"" border=""0"" cellspacing=""0"" cellpadding=""0"">\r?\n<tr>\r?\n<td align=""(left|center)""( class=""text10"")?>\r?\n(?<Desc3>[\s\S]*?)</td>\r?\n</tr>\r?\n</table>\r?\n</div>\r?\n<div class=""marginT10"">\r?\n<table width=""296"" border=""0"" cellspacing=""0"" cellpadding=""0"">\r?\n<tr>\r?\n<td align=""right""( class=""text10"")?>\r?\n(?<Desc4>.*?)</td>\r?\n</tr>\r?\n</table>",
-			RegexOptions.Compiled | RegexOptions.ExplicitCapture);
 		private static readonly Regex regexText = new Regex(
 			@"<div class=""txt_area02"">(?:\r|\n|\r\n)<ul>(?<Text>[\s\S]{0,5000}?)</ul>(?:\r|\n|\r\n)</div>",
 			RegexOptions.Compiled | RegexOptions.ExplicitCapture);
@@ -55,6 +54,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 		
 		private bool loadImageEnabled = true;
 		private bool loadPageEnabled = true;
+		private string descriptionStyle = string.Empty;
 		
 		private readonly BackgroundImageLoader bgImageLoader = new BackgroundImageLoader(Program.CookieContainer, new RequestCachePolicy(RequestCacheLevel.CacheIfAvailable), DetailViewOptions.ImageTimeoutDefaultValue);
 		private readonly BackgroundTextLoader bgTextLoader = new BackgroundTextLoader(Encoding.GetEncoding("Shift_JIS"), Program.CookieContainer, new RequestCachePolicy(RequestCacheLevel.Default), DetailViewOptions.PageTimeoutDefaultValue);
@@ -67,7 +67,45 @@ namespace Yusen.GExplorer.UserInterfaces {
 		private void DetailView_Load(object sender, EventArgs e) {
 			if (base.DesignMode) return;
 			
-			this.wbDescription.DocumentText = "<html><head><style type='text/css'>body{font-size:12px;line-height:1.4;}ul{list-style:none;margin:0;}li{margin-bottom:1em;}li.copyright{text-align:right;}</style></head><body style='margin:0px;'></body></html>";
+			this.wbDescription.DocumentText =
+@"<html>
+<head>
+	<style type=""text/css"">
+	body{
+		margin:0;
+		font-size:12px;
+		line-height:1.4;
+		color:black;
+		background-color:white;
+	}
+	ul{
+		margin:0;
+		list-style:none;
+	}
+	li{
+		margin-bottom:1em;
+	}
+	li.sche_txt{
+		font-weight:bold;
+		color:red;
+	}
+	li.subtxt{
+		font-size:80%;
+	}
+	li.copyright{
+		text-align:right;
+		color:gray;
+	}
+	</style>
+</head>
+<body>
+<!--
+<ul style=""オプションのスタイル"">
+	説明文本体
+</ul>
+-->
+</body>
+</html>";
 			
 			this.ChangeEnabilityOfMenuItems();
 
@@ -144,7 +182,8 @@ namespace Yusen.GExplorer.UserInterfaces {
 				if (m.Success) {
 					string desc = m.Groups["Text"].Value;
 					desc = DetailView.regexIgnoreText.Replace(desc, string.Empty);
-					this.wbDescription.Document.Body.InnerHtml = string.Format("<ul>{0}</ul>", desc);
+					this.wbDescription.Document.Body.InnerHtml = string.Format(
+						@"<ul style=""{1}"">{0}</ul>", desc, this.descriptionStyle);
 				} else {
 					this.wbDescription.Document.Body.InnerHtml = "エラー: 正規表現にマッチしなかった";
 				}
@@ -168,13 +207,13 @@ namespace Yusen.GExplorer.UserInterfaces {
 							HttpUtility.HtmlDecode(m.Groups["Body"].Value)));
 					}
 					this.lvReview.EndUpdate();
-					this.tabpReview.Text = string.Format("レビュー({0};{1})", reviewCount, aveScore);
+					this.tabpReview.Text = string.Format("レビュー(数{0} 評価{1})", reviewCount, aveScore);
 					goto reviewEnd;
 				} else {
 					goto reviewFail;
 				}
 			reviewFail:
-				this.tabpReview.Text = "レビュー(なし or 取得失敗)";
+				this.tabpReview.Text = "レビュー(無いか取得失敗)";
 				this.lvReview.Items.Clear();
 			reviewEnd:
 				this.txtReview.Clear();
@@ -258,6 +297,15 @@ namespace Yusen.GExplorer.UserInterfaces {
 			set {
 				this.bgTextLoader.Timeout = value;
 				this.OnPropertyChanged("PageTimeout");
+			}
+		}
+		[Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+		public string DescriptionStyle {
+			get { return this.descriptionStyle; }
+			set {
+				this.descriptionStyle = value;
+				this.OnPropertyChanged("DescriptionStyle");
 			}
 		}
 		[Browsable(false)]
@@ -388,9 +436,11 @@ namespace Yusen.GExplorer.UserInterfaces {
 		bool LoadPageEnabled { get;set;}
 		int ImageTimeout { get;set;}
 		int PageTimeout { get;set;}
+		string DescriptionStyle { get;set;}
+		
 		int ImageHeight { get;set;}
-
 		int ReviewListHeight { get;set;}
+		
 		int ColWidthNetabare { get;set;}
 		int ColWidthScore { get;set;}
 		int ColWidthRef { get;set;}
@@ -445,6 +495,16 @@ namespace Yusen.GExplorer.UserInterfaces {
 		public int PageTimeout {
 			get { return this.pageTimeout; }
 			set { this.pageTimeout = value; }
+		}
+		private string descriptionStyle = "font-size:100%;";
+		[Category("説明文")]
+		[DisplayName("説明文のUL要素のスタイル")]
+		[Description("説明文のUL要素のstyle属性を指定します．入力チェックは行っていないので不正な文字列を指定しないでください．変更は再表示後に有効になります．")]
+		[DefaultValue("font-size:100%;")]
+		[Editor(typeof(MultilineStringEditor), typeof(UITypeEditor))]
+		public string DescriptionStyle {
+			get { return this.descriptionStyle; }
+			set { this.descriptionStyle = value; }
 		}
 		
 		private int imageHeight = -1;

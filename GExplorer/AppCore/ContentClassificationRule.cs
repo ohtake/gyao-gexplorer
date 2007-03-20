@@ -217,9 +217,13 @@ namespace Yusen.GExplorer.AppCore {
 				PropertyInfo pi;
 				if (!this.pInfos.TryGetValue(rule.Subject, out pi)) {
 					pi = typeof(GContentClass).GetProperty(rule.Subject);
+					if (null == pi) {
+						throw new InvalidOperationException(string.Format("プロパティ {0} は存在しないっぽい．", rule.Subject));
+					}
 					this.pInfos.Add(rule.Subject, pi);
 				}
-				string sbjValue = pi.GetValue(cont, null).ToString();
+				object sbjValueObject = pi.GetValue(cont, null);
+				string sbjValue = (sbjValueObject == null) ? string.Empty : sbjValueObject.ToString();
 				bool flag;
 				switch (rule.Predicate) {
 					case StringPredicate.StringEquals:

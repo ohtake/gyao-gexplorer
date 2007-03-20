@@ -19,7 +19,7 @@ namespace Yusen.GExplorer.AppCore {
 			@"<div class=""left_part""><img src=""/img/info/[a-z]+/(?<ContentId>cnt\d{7})_s\.jpg"" /></div>(?:\r|\n|\r\n)<div class=""middle_part"">(?:\r|\n|\r\n)<p class=""ser_num"">(?<SeriesNumber>.*)&nbsp;&nbsp;(?<Subtitle>.*)</p>(?:\r|\n|\r\n)<p class=""summary"">(?<Summary>.*)</p>[\s\S]{0,1000}?<p class=""time"">(?<Duration>.*?)</p>(?:\r|\n|\r\n)<p class=""end_date"">(?<Deadline>.*?)</p>",
 			RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.ExplicitCapture);
 		private static readonly Regex regexContentPage = new Regex(
-			@"<p class=""title""><span class=""pacttl"">(?<Title>.*?)</span>(?:\r|\n|\r\n)<br />(?:\r|\n|\r\n)(?:(?:(?<SeriesNumber>.*?)　)?(?<Subtitle>.*?))?</p>(?:\r|\n|\r\n)<p class=""time"">番組時間(?:（CM除く）)?：(?<Duration>.*?)</p>[\s\S]{0,1500}?<p class=""period"">放送期間：(?<Deadline>.*?)</p>",
+			@"<p class=""title""><span class=""pacttl"">(?<Title>.*?)</span>(?:\r|\n|\r\n)<br />(?:\r|\n|\r\n)(?:(?:(?<SeriesNumber>.*?)　)?(?<Subtitle>.*?))?</p>(?:\r|\n|\r\n)<p class=""time"">番組時間(?:（CM除く）)?：(?<Duration>.*?)</p>[\s\S]{0,1500}?(?:<p class=""period"">放送期間：(?<Deadline>.*?)</p>)?",
 			RegexOptions.Compiled | RegexOptions.ExplicitCapture | RegexOptions.Multiline);
 		
 		private readonly string cacheDirectory;

@@ -773,13 +773,15 @@ namespace Yusen.GExplorer.UserInterfaces {
 		protected override void WndProc(ref Message m) {
 			switch ((WM)m.Msg) {
 				case WM.WINDOWPOSCHANGING:
-					if (!this.IsAlwaysBottomMost) break;
-					//最背面処理
-					WINDOWPOS wp = (WINDOWPOS)m.GetLParam(typeof(WINDOWPOS));
-					wp.hwndInsertAfter = new IntPtr((int)SetWindowPosInsertAfterSpecialValues.BOTTOM);
-					Marshal.StructureToPtr(wp, m.LParam, true);
-					m.Result = IntPtr.Zero;
-					return;
+					if (this.IsAlwaysBottomMost) {
+						//最背面処理
+						WINDOWPOS wp = (WINDOWPOS)m.GetLParam(typeof(WINDOWPOS));
+						wp.hwndInsertAfter = new IntPtr((int)SetWindowPosInsertAfterSpecialValues.BOTTOM);
+						Marshal.StructureToPtr(wp, m.LParam, true);
+						m.Result = IntPtr.Zero;
+						return;
+					}
+					break;
 			}
 			base.WndProc(ref m);
 		}
