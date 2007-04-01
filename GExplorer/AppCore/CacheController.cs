@@ -19,9 +19,12 @@ namespace Yusen.GExplorer.AppCore {
 			@"<div class=""left_part""><img src=""/img/info/[a-z]+/(?<ContentId>cnt\d{7})_s\.jpg"" /></div>(?:\r|\n|\r\n)<div class=""middle_part"">(?:\r|\n|\r\n)<p class=""ser_num"">(?<SeriesNumber>.*)&nbsp;&nbsp;(?<Subtitle>.*)</p>(?:\r|\n|\r\n)<p class=""summary"">(?<Summary>.*)</p>[\s\S]{0,1000}?<p class=""time"">(?<Duration>.*?)</p>(?:\r|\n|\r\n)<p class=""end_date"">(?<Deadline>.*?)</p>",
 			RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.ExplicitCapture);
 		private static readonly Regex regexContentPage = new Regex(
-			@"<p class=""title""><span class=""pacttl"">(?<Title>.*?)</span>(?:\r|\n|\r\n)<br />(?:\r|\n|\r\n)(?:(?:(?<SeriesNumber>.*?)　)?(?<Subtitle>.*?))?</p>(?:\r|\n|\r\n)<p class=""time"">番組時間(?:（CM除く）)?：(?<Duration>.*?)</p>[\s\S]{0,1500}?(?:<p class=""period"">放送期間：(?<Deadline>.*?)</p>)?",
+			@"<p class=""title""><span class=""pacttl"">(?<Title>.*?)</span>(?:\r|\n|\r\n)<br />(?:\r|\n|\r\n)(?:(?:(?<SeriesNumber>.*?)　)?(?<Subtitle>.*?))?</p>(?:\r|\n|\r\n)<p class=""time"">番組時間(?:（CM除く）)?：(?<Duration>.*?)</p>(?:[\s\S]{0,1500}?<p class=""period"">放送期間：(?<Deadline>.*?)</p>)?",
 			RegexOptions.Compiled | RegexOptions.ExplicitCapture | RegexOptions.Multiline);
-		
+		private static readonly Regex regexInputPacId = new Regex(
+			@"<input\s+type\s+=\s+hidden\s+name=""pacID""\s+value=\s+pac\d{7}\s*>",
+			RegexOptions.Compiled | RegexOptions.ExplicitCapture | RegexOptions.Singleline);
+
 		private readonly string cacheDirectory;
 		private readonly Encoding encoding = Encoding.GetEncoding("Shift_JIS");
 		
@@ -164,8 +167,11 @@ namespace Yusen.GExplorer.AppCore {
 					if(GIdExtractor.TryExtractGenreId(allHtml, out id)){
 						genreId = id;
 					}
-					if (GIdExtractor.TryExtractPackageId(allHtml, out id)) {
-						packageId = id;
+					Match matchPacId = CacheController.regexInputPacId.Match(allHtml);
+					if (matchPacId.Success) {
+						if (GIdExtractor.TryExtractPackageId(matchPacId.Value, out id)) {
+							packageId = id;
+						}
 					}
 					title = HtmlUtility.HtmlToText(match.Groups["Title"].Value);
 					seriesNumber = HtmlUtility.HtmlToText(match.Groups["SeriesNumber"].Value);
@@ -277,7 +283,7 @@ namespace Yusen.GExplorer.AppCore {
 			GDataSet.GPackageRow row = this.dataSet.GPackage.FindByPackageKey(packageKey);
 			if (null != row) {
 				bool updateFlag = false;
-				if (row.IsGenreKeyNull() != genreKey.HasValue && (row.IsGenreKeyNull() && row.GenreKey != genreKey.Value)) {
+				if (genreKey.HasValue && (row.IsGenreKeyNull() || genreKey.Value != row.GenreKey)) {
 					row.GenreKey = genreKey.Value;
 					updateFlag = true;
 				}
@@ -319,11 +325,11 @@ namespace Yusen.GExplorer.AppCore {
 			GDataSet.GContentRow row = this.dataSet.GContent.FindByContentKey(contKey);
 			if (null != row) {
 				bool updateFlag = false;
-				if (row.IsPackageKeyNull() != pacKey.HasValue && (row.IsPackageKeyNull() && row.PackageKey != pacKey.Value)) {
+				if (pacKey.HasValue && (row.IsPackageKeyNull() || pacKey.Value != row.PackageKey)) {
 					row.PackageKey = pacKey.Value;
 					updateFlag = true;
 				}
-				if (row.IsGenreKeyNull() != genreKey.HasValue && (row.IsGenreKeyNull() && row.GenreKey != genreKey.Value )) {
+				if (genreKey.HasValue && (row.IsGenreKeyNull() || genreKey.Value != row.GenreKey)) {
 					row.GenreKey = genreKey.Value;
 					updateFlag = true;
 				}
