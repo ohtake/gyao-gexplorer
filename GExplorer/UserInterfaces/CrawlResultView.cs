@@ -594,7 +594,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 			if (!this.tsddbPages.HasDropDownItems) {
 				List<ToolStripItem> items = new List<ToolStripItem>();
 				foreach (Uri uri in this.result.VisitedPages) {
-					ToolStripMenuItem tsmi = new ToolStripMenuItem(uri.PathAndQuery);
+					ToolStripMenuItem tsmi = new ToolStripMenuItem(uri.PathAndQuery.Replace("&", "&&"));
 					tsmi.Tag = uri;
 					tsmi.Click += delegate(object sender2, EventArgs e2) {
 						Program.BrowsePage((sender2 as ToolStripMenuItem).Tag as Uri);
@@ -604,7 +604,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 				if (this.result.NotVisitedPages.Count > 0) {
 					items.Add(new ToolStripSeparator());
 					foreach (Uri uri in this.result.NotVisitedPages) {
-						ToolStripMenuItem tsmi = new ToolStripMenuItem(uri.PathAndQuery);
+						ToolStripMenuItem tsmi = new ToolStripMenuItem(uri.PathAndQuery.Replace("&", "&&"));
 						tsmi.Tag = uri;
 						tsmi.Click += delegate(object sender2, EventArgs e2) {
 							Program.BrowsePage((sender2 as ToolStripMenuItem).Tag as Uri);

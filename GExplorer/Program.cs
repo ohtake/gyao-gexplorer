@@ -192,7 +192,7 @@ namespace Yusen.GExplorer {
 					if (Marshal.GetLastWin32Error() != (int)WinError.ERROR_NO_MORE_ITEMS) {
 						Marshal.ThrowExceptionForHR(Marshal.GetHRForLastWin32Error());
 					} else {
-						switch (MessageBox.Show("クッキーの読み込みに失敗しました．GyaOのトップページから視聴登録を行ってください．\n\n・はい: 視聴登録用のウィンドウを開く\n・いいえ: この警告を無視してアプリケーションを起動する\n・キャンセル: アプリケーションを終了する", "クッキーの読み込み失敗", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning)) {
+						switch (MessageBox.Show("クッキーの読み込みに失敗しました．視聴設定ページで視聴設定を行ってください．\n\n・はい: 視聴設定用のウィンドウを開く\n・いいえ: この警告を無視してアプリケーションを起動する\n・キャンセル: アプリケーションを終了する", "クッキーの読み込み失敗", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning)) {
 							case DialogResult.Yes:
 								RegistrationForm regForm = new RegistrationForm();
 								regForm.ShowDialog();
@@ -212,7 +212,7 @@ namespace Yusen.GExplorer {
 					}
 					string cookieStr = cookieSb.ToString();
 					if (!cookieStr.Contains("Cookie_UserId")) {
-						switch (MessageBox.Show("クッキーに Cookie_UserId がありません．GyaOのトップページから視聴登録を行ってください．\n\n・はい: 視聴登録用のウィンドウを開く\n・いいえ: この警告を無視してアプリケーションを起動する\n・キャンセル: アプリケーションを終了する\n\nクッキーの中身:\n" + cookieStr, "Cookie_UserId がない", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning)) {
+						switch (MessageBox.Show("クッキーに Cookie_UserId がありません．視聴設定ページで視聴設定を行ってください．\n\n・はい: 視聴設定用のウィンドウを開く\n・いいえ: この警告を無視してアプリケーションを起動する\n・キャンセル: アプリケーションを終了する\n\nクッキーの中身:\n" + cookieStr, "Cookie_UserId がない", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning)) {
 							case DialogResult.Yes:
 								RegistrationForm regForm = new RegistrationForm();
 								regForm.ShowDialog();

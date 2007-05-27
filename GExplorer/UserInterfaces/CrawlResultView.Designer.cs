@@ -75,6 +75,23 @@
 			this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
 			this.tscbDestPlaylistName = new System.Windows.Forms.ToolStripComboBox();
 			this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
+			this.tsFilter = new System.Windows.Forms.ToolStrip();
+			this.tslFilter = new System.Windows.Forms.ToolStripLabel();
+			this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
+			this.tsbFilterTypeNormal = new System.Windows.Forms.ToolStripButton();
+			this.tsbFilterTypeMigemo = new System.Windows.Forms.ToolStripButton();
+			this.tsbFilterTypeRegex = new System.Windows.Forms.ToolStripButton();
+			this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
+			this.tsddbFilterObjects = new System.Windows.Forms.ToolStripDropDownButton();
+			this.tsmiFilterObjectsAll = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiFilterObjectsNone = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiFilterObjectsToggle = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+			this.toolStripSeparator13 = new System.Windows.Forms.ToolStripSeparator();
+			this.tslQuery = new System.Windows.Forms.ToolStripLabel();
+			this.tstbFilter = new System.Windows.Forms.ToolStripTextBox();
+			this.tslRegex = new System.Windows.Forms.ToolStripLabel();
+			this.tstbAnswer = new System.Windows.Forms.ToolStripTextBox();
 			this.lvResult = new Yusen.GExplorer.UserInterfaces.DoubleBufferedListView();
 			this.chId = new System.Windows.Forms.ColumnHeader();
 			this.chTitle = new System.Windows.Forms.ColumnHeader();
@@ -96,23 +113,6 @@
 			this.tscrmiCmsRules = new Yusen.GExplorer.UserInterfaces.ToolStripClassificationRuleMenuItem();
 			this.tsecmiCmsCommand = new Yusen.GExplorer.UserInterfaces.ToolStripExternalCommandMenuItem();
 			this.ilLarge = new System.Windows.Forms.ImageList(this.components);
-			this.tsFilter = new System.Windows.Forms.ToolStrip();
-			this.tslFilter = new System.Windows.Forms.ToolStripLabel();
-			this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
-			this.tsbFilterTypeNormal = new System.Windows.Forms.ToolStripButton();
-			this.tsbFilterTypeMigemo = new System.Windows.Forms.ToolStripButton();
-			this.tsbFilterTypeRegex = new System.Windows.Forms.ToolStripButton();
-			this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
-			this.tsddbFilterObjects = new System.Windows.Forms.ToolStripDropDownButton();
-			this.tsmiFilterObjectsAll = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiFilterObjectsNone = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiFilterObjectsToggle = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
-			this.toolStripSeparator13 = new System.Windows.Forms.ToolStripSeparator();
-			this.tslQuery = new System.Windows.Forms.ToolStripLabel();
-			this.tstbFilter = new System.Windows.Forms.ToolStripTextBox();
-			this.tslRegex = new System.Windows.Forms.ToolStripLabel();
-			this.tstbAnswer = new System.Windows.Forms.ToolStripTextBox();
 			this.timerSelectionDelay = new System.Windows.Forms.Timer(this.components);
 			this.timerFilterDelay = new System.Windows.Forms.Timer(this.components);
 			this.tsmiFilterTargetCheckAll = new System.Windows.Forms.ToolStripMenuItem();
@@ -126,8 +126,8 @@
 			this.toolStripContainer1.ContentPanel.SuspendLayout();
 			this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
 			this.toolStripContainer1.SuspendLayout();
-			this.cmsResult.SuspendLayout();
 			this.tsFilter.SuspendLayout();
+			this.cmsResult.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// tsResult
@@ -601,6 +601,145 @@
 			// 
 			this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.tsResult);
 			// 
+			// tsFilter
+			// 
+			this.tsFilter.Dock = System.Windows.Forms.DockStyle.None;
+			this.tsFilter.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+			this.tsFilter.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tslFilter,
+            this.toolStripSeparator9,
+            this.tsbFilterTypeNormal,
+            this.tsbFilterTypeMigemo,
+            this.tsbFilterTypeRegex,
+            this.toolStripSeparator5,
+            this.tsddbFilterObjects,
+            this.toolStripSeparator13,
+            this.tslQuery,
+            this.tstbFilter,
+            this.tslRegex,
+            this.tstbAnswer});
+			this.tsFilter.Location = new System.Drawing.Point(0, 0);
+			this.tsFilter.Name = "tsFilter";
+			this.tsFilter.Size = new System.Drawing.Size(600, 25);
+			this.tsFilter.Stretch = true;
+			this.tsFilter.TabIndex = 4;
+			this.tsFilter.Text = "tsFilter";
+			// 
+			// tslFilter
+			// 
+			this.tslFilter.Name = "tslFilter";
+			this.tslFilter.Size = new System.Drawing.Size(44, 22);
+			this.tslFilter.Text = "絞込み";
+			// 
+			// toolStripSeparator9
+			// 
+			this.toolStripSeparator9.Name = "toolStripSeparator9";
+			this.toolStripSeparator9.Size = new System.Drawing.Size(6, 25);
+			// 
+			// tsbFilterTypeNormal
+			// 
+			this.tsbFilterTypeNormal.AutoToolTip = false;
+			this.tsbFilterTypeNormal.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+			this.tsbFilterTypeNormal.Name = "tsbFilterTypeNormal";
+			this.tsbFilterTypeNormal.Size = new System.Drawing.Size(23, 22);
+			this.tsbFilterTypeNormal.Text = "&N";
+			this.tsbFilterTypeNormal.ToolTipText = "Normal";
+			this.tsbFilterTypeNormal.Click += new System.EventHandler(this.tsbFilterTypeNormal_Click);
+			// 
+			// tsbFilterTypeMigemo
+			// 
+			this.tsbFilterTypeMigemo.AutoToolTip = false;
+			this.tsbFilterTypeMigemo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+			this.tsbFilterTypeMigemo.Name = "tsbFilterTypeMigemo";
+			this.tsbFilterTypeMigemo.Size = new System.Drawing.Size(23, 22);
+			this.tsbFilterTypeMigemo.Text = "&M";
+			this.tsbFilterTypeMigemo.ToolTipText = "Migemo";
+			this.tsbFilterTypeMigemo.Click += new System.EventHandler(this.tsbFilterTypeMigemo_Click);
+			// 
+			// tsbFilterTypeRegex
+			// 
+			this.tsbFilterTypeRegex.AutoToolTip = false;
+			this.tsbFilterTypeRegex.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+			this.tsbFilterTypeRegex.Name = "tsbFilterTypeRegex";
+			this.tsbFilterTypeRegex.Size = new System.Drawing.Size(23, 22);
+			this.tsbFilterTypeRegex.Text = "&R";
+			this.tsbFilterTypeRegex.ToolTipText = "Regex";
+			this.tsbFilterTypeRegex.Click += new System.EventHandler(this.tsbFilterTypeRegex_Click);
+			// 
+			// toolStripSeparator5
+			// 
+			this.toolStripSeparator5.Name = "toolStripSeparator5";
+			this.toolStripSeparator5.Size = new System.Drawing.Size(6, 25);
+			// 
+			// tsddbFilterObjects
+			// 
+			this.tsddbFilterObjects.AutoToolTip = false;
+			this.tsddbFilterObjects.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+			this.tsddbFilterObjects.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiFilterObjectsAll,
+            this.tsmiFilterObjectsNone,
+            this.tsmiFilterObjectsToggle,
+            this.toolStripSeparator4});
+			this.tsddbFilterObjects.Name = "tsddbFilterObjects";
+			this.tsddbFilterObjects.Size = new System.Drawing.Size(64, 22);
+			this.tsddbFilterObjects.Text = "対象(&O)";
+			// 
+			// tsmiFilterObjectsAll
+			// 
+			this.tsmiFilterObjectsAll.Name = "tsmiFilterObjectsAll";
+			this.tsmiFilterObjectsAll.Size = new System.Drawing.Size(191, 22);
+			this.tsmiFilterObjectsAll.Text = "全てチェック(&C)";
+			this.tsmiFilterObjectsAll.Click += new System.EventHandler(this.tsmiFilterObjectsAll_Click);
+			// 
+			// tsmiFilterObjectsNone
+			// 
+			this.tsmiFilterObjectsNone.Name = "tsmiFilterObjectsNone";
+			this.tsmiFilterObjectsNone.Size = new System.Drawing.Size(191, 22);
+			this.tsmiFilterObjectsNone.Text = "全てアンチェック(&U)";
+			this.tsmiFilterObjectsNone.Click += new System.EventHandler(this.tsmiFilterObjectsNone_Click);
+			// 
+			// tsmiFilterObjectsToggle
+			// 
+			this.tsmiFilterObjectsToggle.Name = "tsmiFilterObjectsToggle";
+			this.tsmiFilterObjectsToggle.Size = new System.Drawing.Size(191, 22);
+			this.tsmiFilterObjectsToggle.Text = "全て反転(&T)";
+			this.tsmiFilterObjectsToggle.Click += new System.EventHandler(this.tsmiFilterObjectsToggle_Click);
+			// 
+			// toolStripSeparator4
+			// 
+			this.toolStripSeparator4.Name = "toolStripSeparator4";
+			this.toolStripSeparator4.Size = new System.Drawing.Size(188, 6);
+			// 
+			// toolStripSeparator13
+			// 
+			this.toolStripSeparator13.Name = "toolStripSeparator13";
+			this.toolStripSeparator13.Size = new System.Drawing.Size(6, 25);
+			// 
+			// tslQuery
+			// 
+			this.tslQuery.Name = "tslQuery";
+			this.tslQuery.Size = new System.Drawing.Size(44, 22);
+			this.tslQuery.Text = "クエリ";
+			// 
+			// tstbFilter
+			// 
+			this.tstbFilter.Name = "tstbFilter";
+			this.tstbFilter.Size = new System.Drawing.Size(125, 25);
+			this.tstbFilter.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tstbFilter_KeyDown);
+			this.tstbFilter.TextChanged += new System.EventHandler(this.tstbFilter_TextChanged);
+			// 
+			// tslRegex
+			// 
+			this.tslRegex.Name = "tslRegex";
+			this.tslRegex.Size = new System.Drawing.Size(56, 22);
+			this.tslRegex.Text = "正規表現";
+			// 
+			// tstbAnswer
+			// 
+			this.tstbAnswer.Name = "tstbAnswer";
+			this.tstbAnswer.ReadOnly = true;
+			this.tstbAnswer.Size = new System.Drawing.Size(125, 25);
+			// 
 			// lvResult
 			// 
 			this.lvResult.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
@@ -773,145 +912,6 @@
 			this.ilLarge.ImageSize = new System.Drawing.Size(80, 60);
 			this.ilLarge.TransparentColor = System.Drawing.Color.Transparent;
 			// 
-			// tsFilter
-			// 
-			this.tsFilter.Dock = System.Windows.Forms.DockStyle.None;
-			this.tsFilter.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
-			this.tsFilter.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tslFilter,
-            this.toolStripSeparator9,
-            this.tsbFilterTypeNormal,
-            this.tsbFilterTypeMigemo,
-            this.tsbFilterTypeRegex,
-            this.toolStripSeparator5,
-            this.tsddbFilterObjects,
-            this.toolStripSeparator13,
-            this.tslQuery,
-            this.tstbFilter,
-            this.tslRegex,
-            this.tstbAnswer});
-			this.tsFilter.Location = new System.Drawing.Point(0, 0);
-			this.tsFilter.Name = "tsFilter";
-			this.tsFilter.Size = new System.Drawing.Size(600, 25);
-			this.tsFilter.Stretch = true;
-			this.tsFilter.TabIndex = 4;
-			this.tsFilter.Text = "tsFilter";
-			// 
-			// tslFilter
-			// 
-			this.tslFilter.Name = "tslFilter";
-			this.tslFilter.Size = new System.Drawing.Size(44, 22);
-			this.tslFilter.Text = "絞込み";
-			// 
-			// toolStripSeparator9
-			// 
-			this.toolStripSeparator9.Name = "toolStripSeparator9";
-			this.toolStripSeparator9.Size = new System.Drawing.Size(6, 25);
-			// 
-			// tsbFilterTypeNormal
-			// 
-			this.tsbFilterTypeNormal.AutoToolTip = false;
-			this.tsbFilterTypeNormal.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-			this.tsbFilterTypeNormal.Name = "tsbFilterTypeNormal";
-			this.tsbFilterTypeNormal.Size = new System.Drawing.Size(23, 22);
-			this.tsbFilterTypeNormal.Text = "&N";
-			this.tsbFilterTypeNormal.ToolTipText = "Normal";
-			this.tsbFilterTypeNormal.Click += new System.EventHandler(this.tsbFilterTypeNormal_Click);
-			// 
-			// tsbFilterTypeMigemo
-			// 
-			this.tsbFilterTypeMigemo.AutoToolTip = false;
-			this.tsbFilterTypeMigemo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-			this.tsbFilterTypeMigemo.Name = "tsbFilterTypeMigemo";
-			this.tsbFilterTypeMigemo.Size = new System.Drawing.Size(23, 22);
-			this.tsbFilterTypeMigemo.Text = "&M";
-			this.tsbFilterTypeMigemo.ToolTipText = "Migemo";
-			this.tsbFilterTypeMigemo.Click += new System.EventHandler(this.tsbFilterTypeMigemo_Click);
-			// 
-			// tsbFilterTypeRegex
-			// 
-			this.tsbFilterTypeRegex.AutoToolTip = false;
-			this.tsbFilterTypeRegex.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-			this.tsbFilterTypeRegex.Name = "tsbFilterTypeRegex";
-			this.tsbFilterTypeRegex.Size = new System.Drawing.Size(23, 22);
-			this.tsbFilterTypeRegex.Text = "&R";
-			this.tsbFilterTypeRegex.ToolTipText = "Regex";
-			this.tsbFilterTypeRegex.Click += new System.EventHandler(this.tsbFilterTypeRegex_Click);
-			// 
-			// toolStripSeparator5
-			// 
-			this.toolStripSeparator5.Name = "toolStripSeparator5";
-			this.toolStripSeparator5.Size = new System.Drawing.Size(6, 25);
-			// 
-			// tsddbFilterObjects
-			// 
-			this.tsddbFilterObjects.AutoToolTip = false;
-			this.tsddbFilterObjects.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-			this.tsddbFilterObjects.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiFilterObjectsAll,
-            this.tsmiFilterObjectsNone,
-            this.tsmiFilterObjectsToggle,
-            this.toolStripSeparator4});
-			this.tsddbFilterObjects.Name = "tsddbFilterObjects";
-			this.tsddbFilterObjects.Size = new System.Drawing.Size(64, 22);
-			this.tsddbFilterObjects.Text = "対象(&O)";
-			// 
-			// tsmiFilterObjectsAll
-			// 
-			this.tsmiFilterObjectsAll.Name = "tsmiFilterObjectsAll";
-			this.tsmiFilterObjectsAll.Size = new System.Drawing.Size(191, 22);
-			this.tsmiFilterObjectsAll.Text = "全てチェック(&C)";
-			this.tsmiFilterObjectsAll.Click += new System.EventHandler(this.tsmiFilterObjectsAll_Click);
-			// 
-			// tsmiFilterObjectsNone
-			// 
-			this.tsmiFilterObjectsNone.Name = "tsmiFilterObjectsNone";
-			this.tsmiFilterObjectsNone.Size = new System.Drawing.Size(191, 22);
-			this.tsmiFilterObjectsNone.Text = "全てアンチェック(&U)";
-			this.tsmiFilterObjectsNone.Click += new System.EventHandler(this.tsmiFilterObjectsNone_Click);
-			// 
-			// tsmiFilterObjectsToggle
-			// 
-			this.tsmiFilterObjectsToggle.Name = "tsmiFilterObjectsToggle";
-			this.tsmiFilterObjectsToggle.Size = new System.Drawing.Size(191, 22);
-			this.tsmiFilterObjectsToggle.Text = "全て反転(&T)";
-			this.tsmiFilterObjectsToggle.Click += new System.EventHandler(this.tsmiFilterObjectsToggle_Click);
-			// 
-			// toolStripSeparator4
-			// 
-			this.toolStripSeparator4.Name = "toolStripSeparator4";
-			this.toolStripSeparator4.Size = new System.Drawing.Size(188, 6);
-			// 
-			// toolStripSeparator13
-			// 
-			this.toolStripSeparator13.Name = "toolStripSeparator13";
-			this.toolStripSeparator13.Size = new System.Drawing.Size(6, 25);
-			// 
-			// tslQuery
-			// 
-			this.tslQuery.Name = "tslQuery";
-			this.tslQuery.Size = new System.Drawing.Size(44, 22);
-			this.tslQuery.Text = "クエリ";
-			// 
-			// tstbFilter
-			// 
-			this.tstbFilter.Name = "tstbFilter";
-			this.tstbFilter.Size = new System.Drawing.Size(125, 25);
-			this.tstbFilter.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tstbFilter_KeyDown);
-			this.tstbFilter.TextChanged += new System.EventHandler(this.tstbFilter_TextChanged);
-			// 
-			// tslRegex
-			// 
-			this.tslRegex.Name = "tslRegex";
-			this.tslRegex.Size = new System.Drawing.Size(56, 22);
-			this.tslRegex.Text = "正規表現";
-			// 
-			// tstbAnswer
-			// 
-			this.tstbAnswer.Name = "tstbAnswer";
-			this.tstbAnswer.ReadOnly = true;
-			this.tstbAnswer.Size = new System.Drawing.Size(125, 25);
-			// 
 			// timerSelectionDelay
 			// 
 			this.timerSelectionDelay.Interval = 10;
@@ -972,9 +972,9 @@
 			this.toolStripContainer1.TopToolStripPanel.PerformLayout();
 			this.toolStripContainer1.ResumeLayout(false);
 			this.toolStripContainer1.PerformLayout();
-			this.cmsResult.ResumeLayout(false);
 			this.tsFilter.ResumeLayout(false);
 			this.tsFilter.PerformLayout();
+			this.cmsResult.ResumeLayout(false);
 			this.ResumeLayout(false);
 
 		}

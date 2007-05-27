@@ -26,7 +26,8 @@
 			this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
 			this.webBrowser1 = new System.Windows.Forms.WebBrowser();
 			this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-			this.btnOpenTop = new System.Windows.Forms.Button();
+			this.btnOpenHttps = new System.Windows.Forms.Button();
+			this.btnOpenHttp = new System.Windows.Forms.Button();
 			this.btnClose = new System.Windows.Forms.Button();
 			this.btnQuit = new System.Windows.Forms.Button();
 			this.tableLayoutPanel1.SuspendLayout();
@@ -61,7 +62,8 @@
 			// 
 			// flowLayoutPanel1
 			// 
-			this.flowLayoutPanel1.Controls.Add(this.btnOpenTop);
+			this.flowLayoutPanel1.Controls.Add(this.btnOpenHttps);
+			this.flowLayoutPanel1.Controls.Add(this.btnOpenHttp);
 			this.flowLayoutPanel1.Controls.Add(this.btnClose);
 			this.flowLayoutPanel1.Controls.Add(this.btnQuit);
 			this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -72,29 +74,39 @@
 			this.flowLayoutPanel1.TabIndex = 2;
 			this.flowLayoutPanel1.WrapContents = false;
 			// 
-			// btnOpenTop
+			// btnOpenHttps
 			// 
-			this.btnOpenTop.Location = new System.Drawing.Point(3, 3);
-			this.btnOpenTop.Name = "btnOpenTop";
-			this.btnOpenTop.Size = new System.Drawing.Size(164, 23);
-			this.btnOpenTop.TabIndex = 0;
-			this.btnOpenTop.Text = "GyaOのトップページを開く(&O)";
-			this.btnOpenTop.UseVisualStyleBackColor = true;
-			this.btnOpenTop.Click += new System.EventHandler(this.btnOpenTop_Click);
+			this.btnOpenHttps.Location = new System.Drawing.Point(3, 3);
+			this.btnOpenHttps.Name = "btnOpenHttps";
+			this.btnOpenHttps.Size = new System.Drawing.Size(190, 23);
+			this.btnOpenHttps.TabIndex = 3;
+			this.btnOpenHttps.Text = "HTTPSで視聴設定ページを開く(&S)";
+			this.btnOpenHttps.UseVisualStyleBackColor = true;
+			this.btnOpenHttps.Click += new System.EventHandler(this.btnOpenHttps_Click);
+			// 
+			// btnOpenHttp
+			// 
+			this.btnOpenHttp.Location = new System.Drawing.Point(199, 3);
+			this.btnOpenHttp.Name = "btnOpenHttp";
+			this.btnOpenHttp.Size = new System.Drawing.Size(180, 23);
+			this.btnOpenHttp.TabIndex = 4;
+			this.btnOpenHttp.Text = "HTTPで視聴設定ページを開く(&H)";
+			this.btnOpenHttp.UseVisualStyleBackColor = true;
+			this.btnOpenHttp.Click += new System.EventHandler(this.btnOpenHttp_Click);
 			// 
 			// btnClose
 			// 
-			this.btnClose.Location = new System.Drawing.Point(173, 3);
+			this.btnClose.Location = new System.Drawing.Point(385, 3);
 			this.btnClose.Name = "btnClose";
 			this.btnClose.Size = new System.Drawing.Size(242, 23);
 			this.btnClose.TabIndex = 1;
-			this.btnClose.Text = "視聴登録が終わったのでウィンドウを閉じる(&C)";
+			this.btnClose.Text = "視聴設定が終わったのでウィンドウを閉じる(&C)";
 			this.btnClose.UseVisualStyleBackColor = true;
 			this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
 			// 
 			// btnQuit
 			// 
-			this.btnQuit.Location = new System.Drawing.Point(421, 3);
+			this.btnQuit.Location = new System.Drawing.Point(633, 3);
 			this.btnQuit.Name = "btnQuit";
 			this.btnQuit.Size = new System.Drawing.Size(165, 23);
 			this.btnQuit.TabIndex = 2;
@@ -124,8 +136,9 @@
 		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
 		private System.Windows.Forms.WebBrowser webBrowser1;
 		private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
-		private System.Windows.Forms.Button btnOpenTop;
 		private System.Windows.Forms.Button btnClose;
 		private System.Windows.Forms.Button btnQuit;
+		private System.Windows.Forms.Button btnOpenHttps;
+		private System.Windows.Forms.Button btnOpenHttp;
 	}
 }

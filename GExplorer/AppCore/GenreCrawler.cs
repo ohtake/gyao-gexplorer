@@ -147,11 +147,11 @@ namespace Yusen.GExplorer.AppCore {
 		
 		private const int MaxPhases = 4;
 
-		private static UriLinkTypePair ConvertUriWithoutQueryAndFragment(UriLinkTypePair pair) {
-			if (string.IsNullOrEmpty(pair.Uri.Fragment) && string.IsNullOrEmpty(pair.Uri.Query)) {
+		private static UriLinkTypePair ConvertUriWithoutFragment(UriLinkTypePair pair) {
+			if (string.IsNullOrEmpty(pair.Uri.Fragment)) {
 				return pair;
 			} else {
-				return new UriLinkTypePair(new Uri(pair.Uri.GetLeftPart(UriPartial.Path)), pair.LinkType);
+				return new UriLinkTypePair(new Uri(pair.Uri.GetLeftPart(UriPartial.Query)), pair.LinkType);
 			}
 		}
 		
@@ -252,10 +252,10 @@ namespace Yusen.GExplorer.AppCore {
 				}
 				this.pagesSuccess.Add(uri);
 
-				links = links.ConvertAll<UriLinkTypePair>(GenreCrawler.ConvertUriWithoutQueryAndFragment);
+				links = links.ConvertAll<UriLinkTypePair>(GenreCrawler.ConvertUriWithoutFragment);
 				foreach (UriLinkTypePair pair in links) {
 					//addMyList 関数は放送予定コンテンツをMyGyaOのリストへの追加にも使われるので無視する
-					if (pair.Uri.AbsoluteUri.StartsWith(@"javascript:addMylist(")) {
+					if (pair.Uri.AbsoluteUri.StartsWith(@"javascript:addMylist('cnt")) {
 						continue;
 					}
 					//ID抽出

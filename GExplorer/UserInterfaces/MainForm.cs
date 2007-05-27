@@ -90,7 +90,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 		private void genreSelctControl1_CrawlProgressChanged(object sender, ProgressChangedEventArgs e) {
 			ICrawlProgressState state = e.UserState as ICrawlProgressState;
 			this.tspbProgress.Value = state.TotalPercentage;
-			this.tsslMessage.Text = state.TotalMessage;
+			this.tsslMessage.Text = state.TotalMessage.Replace("&", "&&");
 		}
 		private void genreSelctControl1_CrawlStarted(object sender, EventArgs e) {
 			this.tsmiAbortCrawl.Enabled = true;
@@ -218,13 +218,22 @@ namespace Yusen.GExplorer.UserInterfaces {
 
 		private void SetDefaultStatusText() {
 			DateTime now = DateTime.Now;
-			CinnamonFriend friend = CinnamonFriend.WhoseBirthday(now.Month, now.Day);
+			CinnamonFriend[] friends = CinnamonFriend.WhoseBirthday(now.Month, now.Day);
 			
-			if (null == friend) {
+			if (friends.Length == 0) {
 				this.tsslMessage.Text = " ";
 			} else {
 				this.tsslMessage.Text = string.Format("{0}月{1}日は{2}の誕生日です．",
-					friend.BirthMonth, friend.BirthDay, friend.JapaneseName);
+					now.Month,
+					now.Day,
+					string.Join(
+						"と",
+						Array.ConvertAll<CinnamonFriend, string>(
+							friends,
+							delegate(CinnamonFriend friend){
+								return friend.JapaneseName;
+							}
+						)));
 			}
 		}
 		private void SetLastSelectContentDelayed(GContentClass cont) {
