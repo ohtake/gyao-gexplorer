@@ -17,19 +17,20 @@ using System.Drawing.Design;
 namespace Yusen.GExplorer.UserInterfaces {
 	sealed partial class DetailView : UserControl, IDetailViewBindingContract, INotifyPropertyChanged {
 		private static readonly Regex regexText = new Regex(
-			@"<div class=""txt_area02"">(?:\r|\n|\r\n)<ul>(?<Text>[\s\S]{0,5000}?)</ul>(?:\r|\n|\r\n)</div>",
+			@"<div id=""txtarea"">(?<Text>[\s\S]{0,5000}?)</div>",
 			RegexOptions.Compiled | RegexOptions.ExplicitCapture);
+		[Obsolete]
 		private static readonly Regex regexIgnoreText = new Regex(
 			@"<li>(?:\r|\n|\r\n)<p class=""ttl"">総合評価</p><p class=""star""><img src=""/recommend/img/star_\d+\.gif"" /></p><p class=""point"">10点中(?:\r|\n|\r\n)  \d+  点</p>(?:\r|\n|\r\n)<p class=""clear""></p>(?:\r|\n|\r\n)</li>|<li><a href=""mailto:address\?subject=&body=http://www\.gyao\.jp/sityou/catedetail/contents_id/cnt\d+/""><img src=""/sityou/img/img_info_friends\.gif"" /></a></li>",
 			RegexOptions.Compiled | RegexOptions.ExplicitCapture);
 		private static readonly Regex regexReviewCount = new Regex(
-			@"<p class=""revnum"">レビュー投稿数&nbsp;<span class=""num"">(?<Count>\d+)</span>",
+			@"<ul class=""part06""><li>レビュー投稿数</li><li> (?<Count>\d+)</li>",
 			RegexOptions.Compiled | RegexOptions.ExplicitCapture);
 		private static readonly Regex regexReviewAverageScore = new Regex(
-			@"<p class=""ttl"">総合評価</p><p class=""star""><img src=""/recommend/img/star_(?<Score>\d+)\.gif"" />",
+			@"<ul class=""part07""><li class=""txt01"">総合評価</li><li><img src=""/recommend/img/star_(?<Score>\d+)\.gif"" alt=""ポイント"" /></li>",
 			RegexOptions.Compiled | RegexOptions.ExplicitCapture);
 		private static readonly Regex regexReviewPost = new Regex(
-			@"<!--top-->(?:\r|\n|\r\n)<div class=""top"">(?:\r|\n|\r\n)<p class=""ttl"">(?<Title>.+?)</p>(?:\r|\n|\r\n)<p class=""date"">投稿日：(?<Posted>.+?)</p>(?:\r|\n|\r\n)<p class=""star""><img src=""/recommend/img/star_0*(?<Score>\d+)\.gif"" /></p>(?:\r|\n|\r\n)<p class=""point"">\d+点</p>(?:\r|\n|\r\n)<p class=""poster"">投稿者：(?<Author>.+?)</p>(?:\r|\n|\r\n)(?<NetaBare><p class=""neta""><img src=""/common/images/neta.gif"" /></p>(?:\r|\n|\r\n))?<p class=""ref_num"">(?<Denominator>\d+)人中(?<Numerator>\d+)人が「この番組レビューは参考になる」と評価しています。</p>(?:\r|\n|\r\n)<div class=""clear""></div>(?:\r|\n|\r\n)</div>(?:\r|\n|\r\n)<!--top-->(?:\r|\n|\r\n)<!--middle-->(?:\r|\n|\r\n)<div class=""middle"">(?<Body>.+?)</div>(?:\r|\n|\r\n)<!--middle-->",
+			@"<div class=""line"">(?:\r|\n|\r\n)<div class=""clearfix"">(?:\r|\n|\r\n)<h3 class=""part03"">(?<Title>.+?)</h3>(?:\r|\n|\r\n)<div class=""part04"">(?:\r|\n|\r\n)<ul><li class=""day"">投稿日：(?<Posted>.+?)</li><li><img src=""/recommend/img/star_0*(?<Score>\d+)\.gif"" /></li><li class=""txt03"">10点中\d+点</li></ul>(?:\r|\n|\r\n)<p>投稿者：(?<Author>.+?)(?<NetaBare><img src=""/common/img/neta.gif"" />(?:\r|\n|\r\n))?</p>(?:\r|\n|\r\n)</div>(?:\r|\n|\r\n)</div>(?:\r|\n|\r\n)<p class=""part05"">(?<Denominator>\d+)人中の(?<Numerator>\d+)人が「この番組レビューは参考になる」と評価しています。</p>(?:\r|\n|\r\n)<p class=""part06"">(?<Body>.+?)</p>",
 			RegexOptions.Compiled | RegexOptions.ExplicitCapture);
 		private static readonly string[] ColWidthPropertyNames = new string[] {
 			"ColWidthNetabare", "ColWidthScore", "ColWidthRef", "ColWidthTitle", "ColWidthAuthor", "ColWidthPosted",
@@ -78,21 +79,10 @@ namespace Yusen.GExplorer.UserInterfaces {
 		color:black;
 		background-color:white;
 	}
-	ul{
-		margin:0;
-		list-style:none;
-	}
-	li{
-		margin-bottom:1em;
-	}
-	li.sche_txt{
-		font-weight:bold;
-		color:red;
-	}
-	li.subtxt{
+	.part03{
 		font-size:80%;
 	}
-	li.copyright{
+	.part04{
 		text-align:right;
 		color:gray;
 	}
@@ -100,9 +90,9 @@ namespace Yusen.GExplorer.UserInterfaces {
 </head>
 <body>
 <!--
-<ul style=""オプションのスタイル"">
+<div style=""オプションのスタイル"">
 	説明文本体
-</ul>
+</div>
 -->
 </body>
 </html>";
@@ -183,7 +173,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 					string desc = m.Groups["Text"].Value;
 					desc = DetailView.regexIgnoreText.Replace(desc, string.Empty);
 					this.wbDescription.Document.Body.InnerHtml = string.Format(
-						@"<ul style=""{1}"">{0}</ul>", desc, this.descriptionStyle);
+						@"<div style=""{1}"">{0}</ul>", desc, this.descriptionStyle);
 				} else {
 					this.wbDescription.Document.Body.InnerHtml = "エラー: 正規表現にマッチしなかった";
 				}

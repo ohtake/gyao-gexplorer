@@ -161,7 +161,8 @@ namespace Yusen.GExplorer.AppCore {
 		private readonly CacheController cacheController;
 		private readonly CookieContainer cookieContainer;
 		private readonly BackgroundWorker bw;
-		
+
+		private readonly Regex regexList;
 		private readonly HtmlParserRegex parser;
 		private readonly CrawlProgressState ps;
 		
@@ -191,12 +192,12 @@ namespace Yusen.GExplorer.AppCore {
 			this.cookieContainer = cookieContainer;
 			this.bw = bw;
 
+			this.regexList = new Regex(string.Format(@"^http://www\.gyao\.jp/catetop/CatetopListChange\.php\?page=\d&target=1&genre_id={0}&sub_genre_id=&template=6&sort=2$", this.genre.GenreId));
 			this.parser = new HtmlParserRegex(Encoding.GetEncoding("Shift_JIS"), cookieContainer, this.options);
 		}
 		
 		public CrawlResult GetResult() {
-			this.pagesWaiting.Enqueue(this.genre.TimetableRecentlyUpdatedFirstUri);
-			this.pagesWaiting.Enqueue(this.genre.GenreTopPageUri);
+			this.pagesWaiting.Enqueue(new Uri(string.Format("http://www.gyao.jp/catetop/CatetopListChange.php?page=1&target=1&genre_id={0}&sub_genre_id=&template=6&sort=2", this.genre.GenreId)));
 			
 			if (this.bw.CancellationPending) return null;
 			this.StepPhaseAndReportProgress("一般ページの取得");
@@ -251,7 +252,7 @@ namespace Yusen.GExplorer.AppCore {
 					continue;
 				}
 				this.pagesSuccess.Add(uri);
-
+				
 				links = links.ConvertAll<UriLinkTypePair>(GenreCrawler.ConvertUriWithoutFragment);
 				foreach (UriLinkTypePair pair in links) {
 					//addMyList 関数は放送予定コンテンツをMyGyaOのリストへの追加にも使われるので無視する
@@ -414,7 +415,8 @@ namespace Yusen.GExplorer.AppCore {
 			return result;
 		}
 		private bool IsInRestriction(Uri uri) {
-			return uri.AbsoluteUri.StartsWith(this.genre.GenreTopPageUri.AbsoluteUri);
+			string absUri = uri.AbsoluteUri;
+			return absUri.StartsWith(this.genre.GenreTopPageUri.AbsoluteUri) || this.regexList.IsMatch(absUri);
 		}
 		private SortedDictionary<int, GContentClass> CreateContentsSortedDictionary(List<GContentClass> list) {
 			SortedDictionary<int, GContentClass> dic = new SortedDictionary<int, GContentClass>();

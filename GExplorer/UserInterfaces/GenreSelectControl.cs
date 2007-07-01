@@ -245,7 +245,6 @@ namespace Yusen.GExplorer.UserInterfaces {
 			this.tsmiGoToNextTab.Enabled = hasAnyTab && !(isSelected && isAloneTab);
 			this.tsmiStartCrawl.Enabled = isGGenre;
 			this.tsmiBrowseGenreTop.Enabled = isGGenre;
-			this.tsmiBrowseTimetableUpdated.Enabled = isGGenre;
 			this.tsmiCopyName.Enabled = isGGenre || isVGenre;
 			this.tsmiCopyUri.Enabled = isGGenre;
 			this.tsmiCopyNameAndUri.Enabled = isGGenre;
@@ -604,7 +603,6 @@ namespace Yusen.GExplorer.UserInterfaces {
 
 			this.tsmiCmsStartCrawl.Enabled = isGGenre;
 			this.tsmiCmsBrowseGenreTop.Enabled = isGGenre;
-			this.tsmiCmsBrowseTimetableUpdated.Enabled = isGGenre;
 			this.tsmiCmsCopyName.Enabled = isGGenre || isVGenre;
 			this.tsmiCmsCopyUri.Enabled = isGGenre;
 			this.tsmiCmsCopyNameAndUri.Enabled = isGGenre;
@@ -692,10 +690,6 @@ namespace Yusen.GExplorer.UserInterfaces {
 			GGenreTabPage ggtp = this.tabcGsc.SelectedTab as GGenreTabPage;
 			Program.BrowsePage(ggtp.Genre.GenreTopPageUri);
 		}
-		private void tsmiBrowseTimetableUpdated_Click(object sender, EventArgs e) {
-			GGenreTabPage ggtp = this.tabcGsc.SelectedTab as GGenreTabPage;
-			Program.BrowsePage(ggtp.Genre.TimetableRecentlyUpdatedFirstUri);
-		}
 		private void tsmiCopyName_Click(object sender, EventArgs e) {
 			GenreTabPage gtp = this.tabcGsc.SelectedTab as GenreTabPage;
 			Clipboard.SetText(gtp.Text);
@@ -738,10 +732,6 @@ namespace Yusen.GExplorer.UserInterfaces {
 		private void tsmiCmsBrowseGenreTop_Click(object sender, EventArgs e) {
 			GGenreTabPage ggtp = this.lastContextMenuSource as GGenreTabPage;
 			Program.BrowsePage(ggtp.Genre.GenreTopPageUri);
-		}
-		private void tsmiCmsBrowseTimetableUpdated_Click(object sender, EventArgs e) {
-			GGenreTabPage ggtp = this.lastContextMenuSource as GGenreTabPage;
-			Program.BrowsePage(ggtp.Genre.TimetableRecentlyUpdatedFirstUri);
 		}
 		private void tsmiCmsCopyName_Click(object sender, EventArgs e) {
 			Clipboard.SetText(this.lastContextMenuSource.Text);

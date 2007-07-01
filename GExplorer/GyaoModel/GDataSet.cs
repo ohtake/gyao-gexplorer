@@ -18,8 +18,7 @@ namespace Yusen.GExplorer.GyaoModel {
 				this.AddGGenreRow(31, "歌える♪カラオケ", "karaoke", "karaoke", 0xF0, 0x82, 0x00);
 				this.AddGGenreRow(25, "ゲーム", "game", "game", 0x00, 0x99, 0x66);
 				this.AddGGenreRow(29, "ジョッキー", "jockey", "jockey", 0x66, 0x00, 0xCC);
-				this.AddGGenreRow(24, "ショッピング", "shopping", "shopping", 0xFF, 0x66, 0x00);
-				
+
 				/*
 				 *  7	--> news
 				 *  8	ラジオ
@@ -35,6 +34,7 @@ namespace Yusen.GExplorer.GyaoModel {
 				 * 19	--> election
 				 * 20	ライフ＆カルチャー
 				 * 23	アンケート
+				 * 24	ショッピング
 				 * 26	テスト (pac0001397)
 				 * 27	マンション情報
 				 * 28	コミックス

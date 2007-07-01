@@ -35,15 +35,10 @@
 			this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiClose = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsgmiGenreTop = new Yusen.GExplorer.UserInterfaces.ToolStripGenreMenuItem();
-			this.tsgmiTimetableUpdated = new Yusen.GExplorer.UserInterfaces.ToolStripGenreMenuItem();
-			this.tsmiTimetableDeadline = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiTools = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiExportContentListToCrawlResultView = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiExtractImages = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
-			this.tsmiTimetableExpandAll = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiTimetableCollapseAll = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiGotoCampaign = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiFillCampaignForm = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
@@ -77,8 +72,6 @@
 			this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiFile,
             this.tsgmiGenreTop,
-            this.tsgmiTimetableUpdated,
-            this.tsmiTimetableDeadline,
             this.tsmiTools,
             this.tshmiHelp});
 			this.menuStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
@@ -186,29 +179,12 @@
 			this.tsgmiGenreTop.Text = "ジャンルトップ(&T)";
 			this.tsgmiGenreTop.GenreSelected += new System.EventHandler(this.tsgmiGenreTop_GenreSelected);
 			// 
-			// tsgmiTimetableUpdated
-			// 
-			this.tsgmiTimetableUpdated.Name = "tsgmiTimetableUpdated";
-			this.tsgmiTimetableUpdated.Size = new System.Drawing.Size(135, 22);
-			this.tsgmiTimetableUpdated.Text = "更新日優先番組表(&U)";
-			this.tsgmiTimetableUpdated.GenreSelected += new System.EventHandler(this.tsgmiTimetableUpdated_GenreSelected);
-			// 
-			// tsmiTimetableDeadline
-			// 
-			this.tsmiTimetableDeadline.Enabled = false;
-			this.tsmiTimetableDeadline.Name = "tsmiTimetableDeadline";
-			this.tsmiTimetableDeadline.Size = new System.Drawing.Size(147, 22);
-			this.tsmiTimetableDeadline.Text = "残り日数優先番組表(&D)";
-			// 
 			// tsmiTools
 			// 
 			this.tsmiTools.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiExportContentListToCrawlResultView,
             this.tsmiExtractImages,
             this.toolStripMenuItem1,
-            this.tsmiTimetableExpandAll,
-            this.tsmiTimetableCollapseAll,
-            this.toolStripMenuItem2,
             this.tsmiGotoCampaign,
             this.tsmiFillCampaignForm,
             this.toolStripMenuItem3,
@@ -237,25 +213,6 @@
 			// 
 			this.toolStripMenuItem1.Name = "toolStripMenuItem1";
 			this.toolStripMenuItem1.Size = new System.Drawing.Size(391, 6);
-			// 
-			// tsmiTimetableExpandAll
-			// 
-			this.tsmiTimetableExpandAll.Name = "tsmiTimetableExpandAll";
-			this.tsmiTimetableExpandAll.Size = new System.Drawing.Size(394, 22);
-			this.tsmiTimetableExpandAll.Text = "番組表の日程を全て展開する(&E)";
-			this.tsmiTimetableExpandAll.Click += new System.EventHandler(this.tsmiTimetableExpandAll_Click);
-			// 
-			// tsmiTimetableCollapseAll
-			// 
-			this.tsmiTimetableCollapseAll.Name = "tsmiTimetableCollapseAll";
-			this.tsmiTimetableCollapseAll.Size = new System.Drawing.Size(394, 22);
-			this.tsmiTimetableCollapseAll.Text = "番組表の日程を全て折りたたむ(&C)";
-			this.tsmiTimetableCollapseAll.Click += new System.EventHandler(this.tsmiTimetableCollapseAll_Click);
-			// 
-			// toolStripMenuItem2
-			// 
-			this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-			this.toolStripMenuItem2.Size = new System.Drawing.Size(391, 6);
 			// 
 			// tsmiGotoCampaign
 			// 
@@ -491,7 +448,6 @@
 		private System.Windows.Forms.ToolStripMenuItem tsmiPrintPreview;
 		private System.Windows.Forms.ToolStripMenuItem tsmiSaveAs;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
-		private System.Windows.Forms.ToolStripMenuItem tsmiTimetableDeadline;
 		private System.Windows.Forms.ToolStripMenuItem tsmiTools;
 		private System.Windows.Forms.ToolStripMenuItem tsmiGotoCampaign;
 		private System.Windows.Forms.ToolStripMenuItem tsmiExtractImages;
@@ -503,12 +459,8 @@
 		private System.Windows.Forms.ToolStripButton tsbGo;
 		private System.Windows.Forms.ToolStripTextBox tstbLivedoor;
 		private System.Windows.Forms.ToolStripButton tsbLivedoor;
-		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
-		private System.Windows.Forms.ToolStripMenuItem tsmiTimetableExpandAll;
-		private System.Windows.Forms.ToolStripMenuItem tsmiTimetableCollapseAll;
 		private GWebBrowser gwbMain;
 		private ToolStripGenreMenuItem tsgmiGenreTop;
-		private ToolStripGenreMenuItem tsgmiTimetableUpdated;
 		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
 		private System.Windows.Forms.ToolStripMenuItem tsmiOptions;
 	}

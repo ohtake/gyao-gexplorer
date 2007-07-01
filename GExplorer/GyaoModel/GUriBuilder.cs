@@ -9,9 +9,6 @@ namespace Yusen.GExplorer.GyaoModel {
 		public static Uri CreateGenreToppageUri(string rootDirectory) {
 			return new Uri("http://www.gyao.jp/" + rootDirectory + "/");
 		}
-		public static Uri CreateGenreTimetableRecentlyUpdatedUri(string genreId) {
-			return new Uri("http://www.gyao.jp/timetable/index.php?" + "genre_id=" + genreId);
-		}
 
 		public static Uri CreatePackagePageUri(string packageId) {
 			return new Uri("http://www.gyao.jp/sityou/catelist/pac_id/" + packageId + "/");

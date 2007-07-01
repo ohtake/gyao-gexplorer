@@ -93,12 +93,6 @@ namespace Yusen.GExplorer.GyaoModel {
 		public Uri GenreTopPageUri {
 			get {return GUriBuilder.CreateGenreToppageUri(this.RootDirectory);}
 		}
-		[Category("URI")]
-		[Description("更新日優先番組表のURI．")]
-		[XmlIgnore]
-		public Uri TimetableRecentlyUpdatedFirstUri {
-			get { return GUriBuilder.CreateGenreTimetableRecentlyUpdatedUri(this.GenreId); }
-		}
 
 		[Browsable(false)]
 		[XmlAttribute]
