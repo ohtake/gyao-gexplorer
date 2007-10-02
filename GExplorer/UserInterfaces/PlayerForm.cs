@@ -73,7 +73,6 @@ namespace Yusen.GExplorer.UserInterfaces {
 		private static readonly Regex regexClipBegin = new Regex(":clipBegin=([^:]*)");
 		private static readonly Regex regexAsxPhp = new Regex(@"http://www\.gyao\.jp/sityou/asx\.php\?[^""]+");
 		private static readonly Regex regexBannerKeyValue = new Regex(@"var\s+keyValue\s*=\s*""(.+?)""");
-		private static readonly Regex regexAgeThreshold = new Regex(@"<div align=""center""><img src=""/cinema/rating/img/r(\d+)");
 		private static readonly string tempAsxFilename = "AsxPhp.asx";
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -172,14 +171,13 @@ namespace Yusen.GExplorer.UserInterfaces {
 			Application.DoEvents();
 			
 			//年齢チェック
-			Match matchAge = PlayerForm.regexAgeThreshold.Match(body);
-			if (matchAge.Success) {
+			int? age = AdultUtility.FindAdultThresholdInContent(body);
+			if (age.HasValue) {
 				if (!this.options.DisableAdultCheckDialog) {
 					//ダイアログ表示前に停止
 					this.wmpMain.close();
 					this.wmpMain.currentPlaylist.clear();
-					int ageThreshold = int.Parse(matchAge.Groups[1].Value);
-					switch (MessageBox.Show(this, string.Format("あなたは{0}才以上ですか？", ageThreshold), "年齢制限", MessageBoxButtons.YesNo, MessageBoxIcon.Question)) {
+					switch (MessageBox.Show(this, string.Format("あなたは{0}才以上ですか？", age.Value), "年齢制限", MessageBoxButtons.YesNo, MessageBoxIcon.Question)) {
 						case DialogResult.Yes:
 							break;
 						default:

@@ -198,6 +198,7 @@ namespace Yusen.GExplorer.AppCore {
 		
 		public CrawlResult GetResult() {
 			this.pagesWaiting.Enqueue(new Uri(string.Format("http://www.gyao.jp/catetop/CatetopListChange.php?page=1&target=1&genre_id={0}&sub_genre_id=&template=6&sort=2", this.genre.GenreId)));
+			this.pagesWaiting.Enqueue(this.genre.GenreTopPageUri);
 			
 			if (this.bw.CancellationPending) return null;
 			this.StepPhaseAndReportProgress("一般ページの取得");
@@ -339,7 +340,7 @@ namespace Yusen.GExplorer.AppCore {
 					continue;
 				}
 				
-				if (!cont.GenreKey.HasValue || this.genre.GenreKey != cont.GenreKey.Value) {
+				if (cont.GenreKey.HasValue && this.genre.GenreKey != cont.GenreKey.Value) {
 					this.IgnoreException(new CrawlException(string.Format("<{0}> 他ジャンルにより無視．", GConvert.ToContentId(contKey))));
 					this.contsFailed.Add(contKey);
 					continue;
@@ -443,11 +444,11 @@ namespace Yusen.GExplorer.AppCore {
 		public CrawlOptions() {
 		}
 		
-		private int maxNormalPages = 16;
+		private int maxNormalPages = 32;
 		[Category("上限")]
 		[DisplayName("一般ページ数の上限")]
 		[Description("クローラが一般ページをクロールする際の一般ページ数の上限を指定します．")]
-		[DefaultValue(16)]
+		[DefaultValue(32)]
 		public int MaxNormalPages {
 			get { return this.maxNormalPages; }
 			set { this.maxNormalPages = value; }

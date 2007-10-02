@@ -33,22 +33,38 @@ namespace Yusen.GExplorer.GyaoModel {
 		public static Uri CreatePlayerUri(string contId, GBitrate bitrate) {
 			return new Uri(
 				"http://www.gyao.jp/login/judge_cookie/?"
-				+ "contentsId=" + contId
+				+ "login_from=shityou"
+				+ "&contentsId=" + contId
 				+ "&rateId=" + GConvert.ToBitrateId(bitrate)
-				+ "&login_from=shityou"
+				+ "&recommend="
+				+ "&contents_id="
+				+ "&option=detail");
+		}
+		/*
+		public static Uri CreateAdultPlayerUri(string contId, GBitrate bitrate) {
+			return new Uri("http://www.gyao.jp/login/judge_cookie.php?"
+				+ "login_from=shityou"
+				+ "&contentsId=" + contId
+				+ "&rateId=" + GConvert.ToBitrateId(bitrate)
+				+ "&check_flg=0"
 				+ "&chapterNo="
 				+ "&recommend="
-				+ "&contents_id=");
+				+ "&contents_id="
+				+ "&restart=0"
+				+ "&clipNo=0"
+				+ "&clipBegin=0"
+				+ "&pit=");
 		}
+		 */
 		public static Uri CreateRecommendationUri(string contId, GBitrate bitrate) {
 			return new Uri(
 				"http://www.gyao.jp/sityou/catedetail/?"
 				+ "login_from=shityou"
 				+ "&contentsId=" + contId
 				+ "&rateId=" + GConvert.ToBitrateId(bitrate)
-				+ "&chapterNo="
 				+ "&recommend=1"
-				+ "&contents_id=" + contId);
+				+ "&contents_id=" + contId
+				+ "&option=detail");
 		}
 		public static Uri CreateReviewListUri(string contId, string pacId) {
 			return new Uri(

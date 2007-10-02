@@ -722,6 +722,9 @@ namespace Yusen.GExplorer.UserInterfaces {
 			}));
 			this.ExecuteFilter();
 		}
+		private void tsbCloseFilter_Click(object sender, EventArgs e) {
+			this.FilterBarVisible = false;
+		}
 		#endregion
 		#region リストビューのイベントハンドラ
 		private void lvResult_MouseDoubleClick(object sender, MouseEventArgs e) {

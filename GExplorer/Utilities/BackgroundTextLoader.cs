@@ -17,7 +17,7 @@ namespace Yusen.GExplorer.Utilities {
 		public BackgroundTextLoader(Encoding encoding, CookieContainer cookieContainer, RequestCachePolicy requestCachePolicy, int timeout) {
 			this.encoding = encoding;
 			this.cookieContainer = cookieContainer;
-			this.requestCachePolicy = requestCachePolicy;
+			this.requestCachePolicy = new RequestCachePolicy(RequestCacheLevel.BypassCache); //requestCachePolicy;
 			this.timeout = timeout;
 		}
 
@@ -26,6 +26,15 @@ namespace Yusen.GExplorer.Utilities {
 			req.CookieContainer = this.cookieContainer;
 			req.CachePolicy = this.requestCachePolicy;
 			req.Timeout = this.timeout;
+			if (task.PostBody != null) {
+				req.Method = "POST";
+				req.ContentType = "application/x-www-form-urlencoded";
+				byte[] postData = Encoding.ASCII.GetBytes(task.PostBody);
+				req.ContentLength = postData.Length;
+				using (Stream reqStream = req.GetRequestStream()) {
+					reqStream.Write(postData, 0, postData.Length);
+				}
+			}
 			try {
 				string text;
 				HttpWebResponse res = req.GetResponse() as HttpWebResponse;
@@ -47,14 +56,21 @@ namespace Yusen.GExplorer.Utilities {
 
 	sealed class BackgroundTextLoadTask : SuccessiveTaskBase{
 		private Uri uri;
+		private string postBody = null;
 		private object userState;
 		
 		public BackgroundTextLoadTask(Uri uri, object userState) {
 			this.uri = uri;
 			this.userState = userState;
 		}
+		public BackgroundTextLoadTask(Uri uri, string postBody, object userState) : this(uri, userState){
+			this.postBody = postBody;
+		}
 		public Uri Uri {
 			get { return this.uri; }
+		}
+		public string PostBody {
+			get { return this.postBody; }
 		}
 		public Object UserState {
 			get { return this.userState; }

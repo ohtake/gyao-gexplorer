@@ -9,7 +9,7 @@ using System.Diagnostics;
 namespace Yusen.GExplorer.Cinnamoroll {
 	public partial class HappyControl : UserControl {
 		public HappyControl() {
-			InitializeComponent();
+			this.InitializeComponent();
 		}
 		
 		private void btnCafe_Click(object sender, EventArgs e) {

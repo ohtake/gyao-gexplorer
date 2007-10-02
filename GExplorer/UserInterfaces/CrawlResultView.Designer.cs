@@ -92,6 +92,7 @@
 			this.tstbFilter = new System.Windows.Forms.ToolStripTextBox();
 			this.tslRegex = new System.Windows.Forms.ToolStripLabel();
 			this.tstbAnswer = new System.Windows.Forms.ToolStripTextBox();
+			this.tsbCloseFilter = new System.Windows.Forms.ToolStripButton();
 			this.lvResult = new Yusen.GExplorer.UserInterfaces.DoubleBufferedListView();
 			this.chId = new System.Windows.Forms.ColumnHeader();
 			this.chTitle = new System.Windows.Forms.ColumnHeader();
@@ -617,7 +618,8 @@
             this.tslQuery,
             this.tstbFilter,
             this.tslRegex,
-            this.tstbAnswer});
+            this.tstbAnswer,
+            this.tsbCloseFilter});
 			this.tsFilter.Location = new System.Drawing.Point(0, 0);
 			this.tsFilter.Name = "tsFilter";
 			this.tsFilter.Size = new System.Drawing.Size(600, 25);
@@ -724,7 +726,7 @@
 			// tstbFilter
 			// 
 			this.tstbFilter.Name = "tstbFilter";
-			this.tstbFilter.Size = new System.Drawing.Size(125, 25);
+			this.tstbFilter.Size = new System.Drawing.Size(100, 25);
 			this.tstbFilter.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tstbFilter_KeyDown);
 			this.tstbFilter.TextChanged += new System.EventHandler(this.tstbFilter_TextChanged);
 			// 
@@ -738,7 +740,16 @@
 			// 
 			this.tstbAnswer.Name = "tstbAnswer";
 			this.tstbAnswer.ReadOnly = true;
-			this.tstbAnswer.Size = new System.Drawing.Size(125, 25);
+			this.tstbAnswer.Size = new System.Drawing.Size(100, 25);
+			// 
+			// tsbCloseFilter
+			// 
+			this.tsbCloseFilter.AutoToolTip = false;
+			this.tsbCloseFilter.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+			this.tsbCloseFilter.Name = "tsbCloseFilter";
+			this.tsbCloseFilter.Size = new System.Drawing.Size(51, 22);
+			this.tsbCloseFilter.Text = "隠す(&I)";
+			this.tsbCloseFilter.Click += new System.EventHandler(this.tsbCloseFilter_Click);
 			// 
 			// lvResult
 			// 
@@ -1078,5 +1089,6 @@
 		private ToolStripClassificationRuleMenuItem tscrmiCmsRules;
 		private ToolStripClassificationRuleMenuItem tscrmiRules;
 		private System.Windows.Forms.ToolStripMenuItem tsmiRedisplay;
+		private System.Windows.Forms.ToolStripButton tsbCloseFilter;
 	}
 }

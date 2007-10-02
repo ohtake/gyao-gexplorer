@@ -12,8 +12,8 @@ using System.ComponentModel;
 
 namespace Yusen.GExplorer.AppCore {
 	sealed class CacheController {
-		private static readonly Regex regexBreadGenre = new Regex(
-			@"<div id=""bread"">(?:\r|\n|\r\n)?<ul>(?:\r|\n|\r\n)?<li><a href=""http://www\.gyao\.jp/"">ホーム</a></li>(?:\r|\n|\r\n)?<li>&gt;</li>(?:\r|\n|\r\n)?<li><a href=""http://www\.gyao\.jp/(?<GenreRoot>[a-z]+?)/"">.*?</a></li>",
+		private static readonly Regex regexGName = new Regex(
+			@"var menu=new MenuByGName\('(?<GenreRoot>[a-z]+?)'",
 			RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.ExplicitCapture);
 		private static readonly Regex regexPackagePackage = new Regex(
 			@"<h1 class=""part01"">「(?<PackageName>.*?)」の表示</h1>[\s\S]{0,500}?<h2>(?<CatchCopy>.*?)</h2>[\s\S]{0,10}?<p class=""part03"">(?<PackageText1>.*?)</p>",
@@ -166,8 +166,16 @@ namespace Yusen.GExplorer.AppCore {
 				
 				reader = new StreamReader(req.GetResponse().GetResponseStream(), this.encoding);
 				string allHtml = reader.ReadToEnd();
+				
+				int? age = AdultUtility.FindAdultThresholdInContent(allHtml);
+				if (age.HasValue) {
+					req = AdultUtility.CreateAdultContentRequest(uri, this.cookieContainer, this.options.Timeout);
+					reader.Dispose();
+					reader = new StreamReader(req.GetResponse().GetResponseStream(), this.encoding);
+					allHtml = reader.ReadToEnd();
+				}
 
-				string genreRoot = null;
+				int? genreKey = null;
 				string packageId = null;
 				string title;
 				string seriesNumber;
@@ -177,9 +185,9 @@ namespace Yusen.GExplorer.AppCore {
 				
 				Match match =CacheController.regexContentPage.Match(allHtml);
 				if (match.Success) {
-					Match matchGenreRoot = CacheController.regexBreadGenre.Match(allHtml);
+					Match matchGenreRoot = CacheController.regexGName.Match(allHtml);
 					if (matchGenreRoot.Success) {
-						genreRoot = matchGenreRoot.Groups["GenreRoot"].Value;
+						genreKey = this.GetCachedGenre(matchGenreRoot.Groups["GenreRoot"].Value).GenreKey;
 					}
 					Match matchPacId = CacheController.regexInputPacId.Match(allHtml);
 					if (matchPacId.Success) {
@@ -194,11 +202,10 @@ namespace Yusen.GExplorer.AppCore {
 					throw new Exception(string.Format("詳細ページの解釈に失敗．{0}", GConvert.ToContentId(contKey)));
 				}
 
-				GGenreClass genre = this.GetCachedGenre(genreRoot);
 				GDataSet.GContentRow row = this.dataSet.GContent.NewGContentRow();
 				row.ContentKey = contKey;
 				if (!string.IsNullOrEmpty(packageId)) row.PackageKey = GConvert.ToPackageKey(packageId);
-				if (genre != null) row.GenreKey = genre.GenreKey;
+				if (genreKey.HasValue) row.GenreKey = genreKey.Value;
 				row.Title = title;
 				row.SeriesNumber = seriesNumber;
 				row.Subtitle = subtitle;
@@ -256,7 +263,7 @@ namespace Yusen.GExplorer.AppCore {
 
 				Match matchPackage = CacheController.regexPackagePackage.Match(allHtml);
 				if (matchPackage.Success) {
-					Match matchGenreRoot = CacheController.regexBreadGenre.Match(allHtml);
+					Match matchGenreRoot = CacheController.regexGName.Match(allHtml);
 					if (matchGenreRoot.Success) {
 						genre = this.GetCachedGenre(matchGenreRoot.Groups["GenreRoot"].Value);
 						genreKey = genre.GenreKey;

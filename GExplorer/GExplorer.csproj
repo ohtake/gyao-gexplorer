@@ -73,6 +73,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppCore\AdultUtility.cs" />
     <Compile Include="AppCore\ContentClassificationRule.cs" />
     <Compile Include="AppCore\ExternalCommand.cs" />
     <Compile Include="AppCore\VirtualGenres.cs" />

@@ -1,4 +1,4 @@
-﻿//#define PATCH_FOR_INVISIBLE_TEXT_IN_VISTA
+﻿//#define PATCH_FOR_INVISIBLE_TEXT_ON_VISTA
 
 using System;
 using System.Collections.Generic;
@@ -13,15 +13,12 @@ using Yusen.GExplorer.GyaoModel;
 using Yusen.GExplorer.Utilities;
 using System.ComponentModel.Design;
 using System.Drawing.Design;
+using Yusen.GExplorer.AppCore;
 
 namespace Yusen.GExplorer.UserInterfaces {
 	sealed partial class DetailView : UserControl, IDetailViewBindingContract, INotifyPropertyChanged {
 		private static readonly Regex regexText = new Regex(
-			@"<div id=""txtarea"">(?<Text>[\s\S]{0,5000}?)</div>",
-			RegexOptions.Compiled | RegexOptions.ExplicitCapture);
-		[Obsolete]
-		private static readonly Regex regexIgnoreText = new Regex(
-			@"<li>(?:\r|\n|\r\n)<p class=""ttl"">総合評価</p><p class=""star""><img src=""/recommend/img/star_\d+\.gif"" /></p><p class=""point"">10点中(?:\r|\n|\r\n)  \d+  点</p>(?:\r|\n|\r\n)<p class=""clear""></p>(?:\r|\n|\r\n)</li>|<li><a href=""mailto:address\?subject=&body=http://www\.gyao\.jp/sityou/catedetail/contents_id/cnt\d+/""><img src=""/sityou/img/img_info_friends\.gif"" /></a></li>",
+			@"<!--↓テキストエリア↓-->(?<Text>[\s\S]{0,5000}?)<!--↑テキストエリア↑-->",
 			RegexOptions.Compiled | RegexOptions.ExplicitCapture);
 		private static readonly Regex regexReviewCount = new Regex(
 			@"<ul class=""part06""><li>レビュー投稿数</li><li> (?<Count>\d+)</li>",
@@ -45,6 +42,24 @@ namespace Yusen.GExplorer.UserInterfaces {
 			}
 			public string Body {
 				get { return this.body; }
+			}
+		}
+		private sealed class ContentPageLoadRequestState {
+			private readonly GContentClass content;
+			private readonly int? age;
+
+			public ContentPageLoadRequestState(GContentClass cont): this(cont, null) {
+			}
+			public ContentPageLoadRequestState(GContentClass cont, int? age) {
+				this.content = cont;
+				this.age = age;
+			}
+
+			public GContentClass Content {
+				get { return this.content; }
+			}
+			public int? Age {
+				get { return this.age; }
 			}
 		}
 
@@ -73,18 +88,38 @@ namespace Yusen.GExplorer.UserInterfaces {
 <head>
 	<style type=""text/css"">
 	body{
-		margin:0;
-		font-size:12px;
-		line-height:1.4;
-		color:black;
-		background-color:white;
+		margin: 0;
+		font-size: 12px;
+		line-height: 1.4;
+		color: Black;
+		background-color: White;
+	}
+	#staff{
+		color: Teal;
+		background-color: Beige;
+		border: solid 1px BurlyWood;
+		margin: 0px 10px 5px 10px;
+		padding: 0px;
+	}
+	#staff h2, #staff p{
+		font-size: 100%;
+		margin: 0.25em;
+		padding: 0em;
 	}
 	.part03{
-		font-size:80%;
+		font-size: 80%;
 	}
 	.part04{
-		text-align:right;
-		color:gray;
+		text-align: right;
+		color: Gray;
+	}
+	#gexplorer_warning{
+		color: DarkRed;
+		background-color: Pink;
+		border: solid 1px DarkRed;
+		text-align: center;
+		margin: 0px 20px 5px 20px;
+		padding: 4px;
 	}
 	</style>
 </head>
@@ -134,7 +169,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 			}
 			if (this.LoadPageEnabled) {
 				this.bgTextLoader.ClearTasks();
-				this.bgTextLoader.AddTaskFirst(new BackgroundTextLoadTask(cont.ContentDetailUri, cont));
+				this.bgTextLoader.AddTaskFirst(new BackgroundTextLoadTask(cont.ContentDetailUri, new ContentPageLoadRequestState(cont)));
 			}
 			
 			this.ChangeEnabilityOfMenuItems();
@@ -155,7 +190,8 @@ namespace Yusen.GExplorer.UserInterfaces {
 			}
 		}
 		private void bgTextLoader_TaskCompleted(object sender, BackgroundTextLoadTaskCompletedEventArgs e) {
-			if (!object.ReferenceEquals(e.UserState, this.cont)) return;
+			ContentPageLoadRequestState reqState = e.UserState as ContentPageLoadRequestState;
+			if (!object.ReferenceEquals(reqState.Content, this.cont)) return;
 			if (this.InvokeRequired) {
 				this.Invoke(new EventHandler<BackgroundTextLoadTaskCompletedEventArgs>(this.bgTextLoader_TaskCompleted), sender, e);
 			} else {
@@ -168,14 +204,29 @@ namespace Yusen.GExplorer.UserInterfaces {
 					return;
 				}
 				string text = e.Text;
+
+				if (!reqState.Age.HasValue) {
+					int? age = AdultUtility.FindAdultThresholdInContent(text);
+					if (age.HasValue) {
+						this.bgTextLoader.AddTaskFirst(new BackgroundTextLoadTask(reqState.Content.ContentDetailUri, AdultUtility.AdultAnswerBody, new ContentPageLoadRequestState(reqState.Content, age.Value)));
+						return;
+					}
+				}
+				
 				Match m = DetailView.regexText.Match(text);
 				if (m.Success) {
 					string desc = m.Groups["Text"].Value;
-					desc = DetailView.regexIgnoreText.Replace(desc, string.Empty);
 					this.wbDescription.Document.Body.InnerHtml = string.Format(
-						@"<div style=""{1}"">{0}</ul>", desc, this.descriptionStyle);
+						@"{0}<div style=""{1}"">{2}</ul>",
+						reqState.Age.HasValue ?
+							string.Format(@"<div id=""gexplorer_warning"">R{0}のコンテンツです</div>", reqState.Age.Value)
+							: string.Empty,
+						this.descriptionStyle,
+						desc);
 				} else {
-					this.wbDescription.Document.Body.InnerHtml = "エラー: 正規表現にマッチしなかった";
+					this.wbDescription.Document.Body.InnerHtml =
+						string.Format(@"<div id=""gexplorer_warning"">正規表現にマッチしませんでした</div><pre><code>{0}</code></pre>",
+							HttpUtility.HtmlEncode(text));
 				}
 				m = DetailView.regexReviewCount.Match(text);
 				if (m.Success) {
@@ -372,7 +423,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 				this.OnPropertyChanged("ColWidthPosted");
 			}
 		}
-#if PATCH_FOR_INVISIBLE_TEXT_IN_VISTA
+#if PATCH_FOR_INVISIBLE_TEXT_ON_VISTA
 		[Browsable(false)]
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public bool EnablePatchForInvisibleTextInVista {
@@ -438,7 +489,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 		int ColWidthAuthor { get;set;}
 		int ColWidthPosted { get;set;}
 
-#if PATCH_FOR_INVISIBLE_TEXT_IN_VISTA
+#if PATCH_FOR_INVISIBLE_TEXT_ON_VISTA
 		bool EnablePatchForInvisibleTextInVista { get;set;}
 #endif
 	}
@@ -571,7 +622,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 			set { this.colWidthPosted = value; }
 		}
 
-#if PATCH_FOR_INVISIBLE_TEXT_IN_VISTA
+#if PATCH_FOR_INVISIBLE_TEXT_ON_VISTA
 		private bool enablePatchForInvisibleTextInVista = false;
 		[Category("不具合対策")]
 		[DisplayName("Vistaでのレビューテキスト")]
