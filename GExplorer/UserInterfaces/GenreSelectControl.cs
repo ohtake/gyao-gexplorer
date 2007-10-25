@@ -222,13 +222,16 @@ namespace Yusen.GExplorer.UserInterfaces {
 					this.StatusMessage = "選択したジャンルはまだクロールされていません．タブをダブルクリックするとクロールを開始します．";
 				}
 				this.SelectedCrawlResult = result;
+				
+				if (ggtp.Genre.GenreKey == 1) { //cinema
+					Yusen.GExplorer.Cinnamoroll.MovieUtility.ShowAdIfItsReleaseDate(this.FindForm());
+				}
+				
 				return;
 			} else if (null != vgtp) {
 				this.SelectedCrawlResult = vgtp.VirtualGenre.GetCrawlResult();
 				return;
 			}
-			
-			
 		}
 		private void ChangeEnabilityOfMainMenuItems() {
 			if (this.IsUpdatingGenreTabs) return;

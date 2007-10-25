@@ -217,15 +217,15 @@ namespace Yusen.GExplorer.UserInterfaces {
 		}
 
 		private void SetDefaultStatusText() {
-			DateTime now = DateTime.Now;
-			CinnamonFriend[] friends = CinnamonFriend.WhoseBirthday(now.Month, now.Day);
+			DateTime today = DateTime.Today;
+			CinnamonFriend[] friends = CinnamonFriend.WhoseBirthday(today.Month, today.Day);
 			
 			if (friends.Length == 0) {
 				this.tsslMessage.Text = " ";
 			} else {
 				this.tsslMessage.Text = string.Format("{0}月{1}日は{2}の誕生日です．",
-					now.Month,
-					now.Day,
+					today.Month,
+					today.Day,
 					string.Join(
 						"と",
 						Array.ConvertAll<CinnamonFriend, string>(

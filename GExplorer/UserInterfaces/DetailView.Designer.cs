@@ -257,7 +257,7 @@
 			// 
 			this.btnReviewList.Location = new System.Drawing.Point(3, 3);
 			this.btnReviewList.Name = "btnReviewList";
-			this.btnReviewList.Size = new System.Drawing.Size(70, 23);
+			this.btnReviewList.Size = new System.Drawing.Size(58, 23);
 			this.btnReviewList.TabIndex = 0;
 			this.btnReviewList.Text = "一覧(&V)";
 			this.btnReviewList.UseVisualStyleBackColor = true;
@@ -265,9 +265,9 @@
 			// 
 			// btnReviewInput
 			// 
-			this.btnReviewInput.Location = new System.Drawing.Point(79, 3);
+			this.btnReviewInput.Location = new System.Drawing.Point(67, 3);
 			this.btnReviewInput.Name = "btnReviewInput";
-			this.btnReviewInput.Size = new System.Drawing.Size(70, 23);
+			this.btnReviewInput.Size = new System.Drawing.Size(58, 23);
 			this.btnReviewInput.TabIndex = 1;
 			this.btnReviewInput.Text = "投稿(&P)";
 			this.btnReviewInput.UseVisualStyleBackColor = true;

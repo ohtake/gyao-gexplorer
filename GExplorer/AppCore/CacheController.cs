@@ -16,10 +16,10 @@ namespace Yusen.GExplorer.AppCore {
 			@"var menu=new MenuByGName\('(?<GenreRoot>[a-z]+?)'",
 			RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.ExplicitCapture);
 		private static readonly Regex regexPackagePackage = new Regex(
-			@"<h1 class=""part01"">「(?<PackageName>.*?)」の表示</h1>[\s\S]{0,500}?<h2>(?<CatchCopy>.*?)</h2>[\s\S]{0,10}?<p class=""part03"">(?<PackageText1>.*?)</p>",
+			@"<h1 class=""part01"">「(?<PackageName>.*?)」の動画一覧</h1>[\s\S]{0,500}?<h2>(?<CatchCopy>.*?)</h2>[\s\S]{0,10}?<p class=""part03"">(?<PackageText1>.*?)</p>",
 			RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.ExplicitCapture);
 		private static readonly Regex regexPackageContent = new Regex(
-			@"<p class=""part01""><a href=""/sityou/catedetail/contents_id/(?<ContentId>cnt\d{7})/""><img src="".{0,50}?"" alt=""画像"" border=""0"" /></a></p>(?:\r|\n|\r\n)<ul class=""part02""><li class=""sub"">(?<SeriesNumber>.*)&nbsp;&nbsp;(?<Subtitle>.*)</li><li>(?<Summary>.*)</li></ul>[\s\S]{0,1000}?<ul>(?:\r|\n|\r\n)<li><img src=""/common/images/img_clock.gif"" alt=""時間"" width=""13"" height=""13"" />(?<Duration>.*?)</li>(?:\r|\n|\r\n)<li>(?<Deadline>.*?)</li>(?:\r|\n|\r\n)</ul>",
+			@"<p class=""part01""><a href=""/sityou/catedetail/contents_id/(?<ContentId>cnt\d{7})/""><img src="".{0,50}?"" alt="".{0,200}?"" border=""0"" /></a></p>(?:\r|\n|\r\n)<ul class=""part02""><li><h3 class=""sub"">(?<SeriesNumber>.*?)&nbsp;&nbsp;(?<Subtitle>.*?)</h3></li><li>(?<Summary>.*?)</li></ul>[\s\S]{0,1000}?<ul>(?:\r|\n|\r\n)<li><img src=""/common/images/img_clock.gif"" alt=""時間"" width=""13"" height=""13"" />(?<Duration>.*?)</li>(?:\r|\n|\r\n)<li>(?<Deadline>.*?)</li>(?:\r|\n|\r\n)</ul>",
 			RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.ExplicitCapture);
 		private static readonly Regex regexContentPage = new Regex(
 			@"<h1 class=""part01"">(?<Title>.*?)&nbsp;(?:\r|\n|\r\n)(?:(?:(?<SeriesNumber>.*?)　)?(?<Subtitle>.*?))?</h1>(?:\r|\n|\r\n)<ul class=""part02""><li>番組時間(?:（CM除く）)?：</li><li>(?<Duration>.*?)</li></ul>(?:[\s\S]{0,6000}?<p class=""part02"">放送期間：(?<Deadline>.*?)</p>)?",
@@ -27,7 +27,7 @@ namespace Yusen.GExplorer.AppCore {
 		private static readonly Regex regexInputPacId = new Regex(
 			@"<a href=""http://www\.gyao\.jp/sityou_review/review_list\.php\?contents_id=cnt\d{7}&pac_id=(?<PackageId>pac\d{7})"">",
 			RegexOptions.Compiled | RegexOptions.ExplicitCapture | RegexOptions.Singleline);
-
+		
 		private readonly string cacheDirectory;
 		private readonly Encoding encoding = Encoding.GetEncoding("Shift_JIS");
 		
