@@ -72,6 +72,13 @@ namespace Yusen.GExplorer.GyaoModel {
 				+ "contents_id=" + contId
 				+ "&pac_id=" + pacId);
 		}
+		public static Uri CreateReviewListUri(string contId, string pacId, int startCount) {
+			return new Uri(
+				"http://www.gyao.jp/sityou_review/review_list.php?"
+				+ "contents_id=" + contId
+				+ "&pac_id=" + pacId
+				+ "&start=" + startCount.ToString());
+		}
 		public static Uri CreateReviewInputUri(string contId, string pacId) {
 			return new Uri(
 				"http://www.gyao.jp/sityou_review/review_input.php?"

@@ -162,7 +162,8 @@ namespace Yusen.GExplorer.AppCore {
 		private readonly CookieContainer cookieContainer;
 		private readonly BackgroundWorker bw;
 
-		private readonly Regex regexList;
+		private readonly Regex regexListAll;
+		private readonly Regex regexListAdult;
 		private readonly HtmlParserRegex parser;
 		private readonly CrawlProgressState ps;
 		
@@ -192,12 +193,31 @@ namespace Yusen.GExplorer.AppCore {
 			this.cookieContainer = cookieContainer;
 			this.bw = bw;
 
-			this.regexList = new Regex(string.Format(@"^http://www\.gyao\.jp/catetop/CatetopListChange\.php\?page=\d&target=1&genre_id={0}&sub_genre_id=&template=6&sort=2$", this.genre.GenreId));
+			this.regexListAll = new Regex(string.Format(@"^http://www\.gyao\.jp/catetop/CatetopListChange\.php\?page=\d+&target=1&genre_id={0}&sub_genre_id=&template=5&sort=2$", this.genre.GenreId));
+			switch (genre.GenreKey) {
+				case 1://cinema
+					this.regexListAdult = new Regex(@"^http://www\.gyao\.jp/catetop/CatetopListChange\.php\?page=\d+&target=1&genre_id=gen0000001&sub_genre_id=cin0000006&template=5&sort=2$");
+					break;
+				case 4://idol
+					this.regexListAdult = new Regex(@"^http://www\.gyao\.jp/catetop/CatetopListChange\.php\?page=\d+&target=1&genre_id=gen0000004&sub_genre_id=ido0000005&template=5&sort=2$");
+					break;
+				default:
+					this.regexListAdult = null;
+					break;
+			}
 			this.parser = new HtmlParserRegex(Encoding.GetEncoding("Shift_JIS"), cookieContainer, this.options);
 		}
 		
 		public CrawlResult GetResult() {
-			this.pagesWaiting.Enqueue(new Uri(string.Format("http://www.gyao.jp/catetop/CatetopListChange.php?page=1&target=1&genre_id={0}&sub_genre_id=&template=6&sort=2", this.genre.GenreId)));
+			this.pagesWaiting.Enqueue(new Uri(string.Format("http://www.gyao.jp/catetop/CatetopListChange.php?page=1&target=1&genre_id={0}&sub_genre_id=&template=5&sort=2", this.genre.GenreId)));
+			switch (this.genre.GenreKey) {
+				case 1://cinema
+					this.pagesWaiting.Enqueue(new Uri("http://www.gyao.jp/catetop/CatetopListChange.php?page=1&target=1&genre_id=gen0000001&sub_genre_id=cin0000006&template=5&sort=2"));
+					break;
+				case 4://idol
+					this.pagesWaiting.Enqueue(new Uri("http://www.gyao.jp/catetop/CatetopListChange.php?page=1&target=1&genre_id=gen0000004&sub_genre_id=ido0000005&template=5&sort=2"));
+					break;
+			}
 			this.pagesWaiting.Enqueue(this.genre.GenreTopPageUri);
 			
 			if (this.bw.CancellationPending) return null;
@@ -277,7 +297,7 @@ namespace Yusen.GExplorer.AppCore {
 						continue;
 					}
 					//IDが取れなかったらクロールキューに追加
-					if (this.IsInRestriction(pair.Uri)) {
+					if (this.IsListPage(pair.Uri) || (this.IsInsideRootDirectory(pair.Uri) && string.IsNullOrEmpty(pair.Uri.Query))) {
 						switch (pair.LinkType) {
 							case LinkType.AnchorOrFrame:
 								if (this.pagesWaiting.Contains(pair.Uri)) break;
@@ -415,9 +435,14 @@ namespace Yusen.GExplorer.AppCore {
 			}
 			return result;
 		}
-		private bool IsInRestriction(Uri uri) {
+		private bool IsListPage(Uri uri) {
 			string absUri = uri.AbsoluteUri;
-			return absUri.StartsWith(this.genre.GenreTopPageUri.AbsoluteUri) || this.regexList.IsMatch(absUri);
+			return this.regexListAll.IsMatch(absUri)
+				|| (this.regexListAdult != null && this.regexListAdult.IsMatch(absUri));
+		}
+		private bool IsInsideRootDirectory(Uri uri) {
+			string absUri = uri.AbsoluteUri;
+			return absUri.StartsWith(this.genre.GenreTopPageUri.AbsoluteUri);
 		}
 		private SortedDictionary<int, GContentClass> CreateContentsSortedDictionary(List<GContentClass> list) {
 			SortedDictionary<int, GContentClass> dic = new SortedDictionary<int, GContentClass>();

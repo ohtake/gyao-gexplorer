@@ -13,7 +13,7 @@ namespace Yusen.GExplorer.AppCore {
 		private readonly List<Uri> visitedPages;
 		private readonly List<Uri> notVisitedPages;
 		private readonly List<CrawlException> exceptions;
-
+		
 		public CrawlResult() {
 			this.time = DateTime.Now;
 			this.contents = new List<GContentClass>();

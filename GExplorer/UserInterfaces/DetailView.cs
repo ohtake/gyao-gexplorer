@@ -3,20 +3,23 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.Design;
 using System.Drawing;
+using System.Drawing.Design;
+using System.Net.Cache;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Web;
-using System.Net.Cache;
 using Yusen.GExplorer.GyaoModel;
-using Yusen.GExplorer.Utilities;
-using System.ComponentModel.Design;
-using System.Drawing.Design;
 using Yusen.GExplorer.AppCore;
+using Yusen.GExplorer.Utilities;
 
 namespace Yusen.GExplorer.UserInterfaces {
 	sealed partial class DetailView : UserControl, IDetailViewBindingContract, INotifyPropertyChanged {
+		private const int ReviewCountOnDetailPage = 5;
+		private const int ReviewCountOnListPage = 50;
+		
 		private static readonly Regex regexText = new Regex(
 			@"<!--↓テキストエリア↓-->(?<Text>[\s\S]{0,5000}?)<!--↑テキストエリア↑-->",
 			RegexOptions.Compiled | RegexOptions.ExplicitCapture);
@@ -35,34 +38,110 @@ namespace Yusen.GExplorer.UserInterfaces {
 		private static readonly string[] ColWidthPropertyNames = new string[] {
 			"ColWidthNetabare", "ColWidthScore", "ColWidthRef", "ColWidthTitle", "ColWidthAuthor", "ColWidthPosted",
 		};
-		
+		private static readonly Comparison<ReviewPostListViewItem>[] ReviewComparisons = new Comparison<ReviewPostListViewItem>[]{
+			new Comparison<ReviewPostListViewItem>(delegate(ReviewPostListViewItem x, ReviewPostListViewItem y){
+				return x.Netabare.CompareTo(y.Netabare);
+			}),
+			new Comparison<ReviewPostListViewItem>(delegate(ReviewPostListViewItem x, ReviewPostListViewItem y){
+				return - x.Score.CompareTo(y.Score);
+			}),
+			new Comparison<ReviewPostListViewItem>(delegate(ReviewPostListViewItem x, ReviewPostListViewItem y){
+				double refRateX = DetailView.CalculateReviewRefRate(x.Denominator, x.Numerator);
+				double refRateY = DetailView.CalculateReviewRefRate(y.Denominator, y.Numerator);
+				return - refRateX.CompareTo(refRateY);
+			}),
+			new Comparison<ReviewPostListViewItem>(delegate(ReviewPostListViewItem x, ReviewPostListViewItem y){
+				return x.Title.CompareTo(y.Title);
+			}),
+			new Comparison<ReviewPostListViewItem>(delegate(ReviewPostListViewItem x, ReviewPostListViewItem y){
+				return x.Author.CompareTo(y.Author);
+			}),
+			new Comparison<ReviewPostListViewItem>(delegate(ReviewPostListViewItem x, ReviewPostListViewItem y){
+				return - x.Posted.CompareTo(y.Posted);
+			}),
+		};
+		private static double CalculateReviewRefRate(int denominator, int numerator) {
+			if (numerator == 0 || denominator == 0) return 0;
+			else return (double)numerator / (double)denominator;
+		}
+
 		private sealed class ReviewPostListViewItem : ListViewItem {
-			private string body;
+			private readonly bool netabare;
+			private readonly int score;
+			private readonly int denominator;
+			private readonly int numerator;
+			private readonly string title;
+			private readonly string author;
+			private readonly string posted;
+			private readonly string body;
 
 			public ReviewPostListViewItem(bool netabare, string score, string denominator, string numerator, string title, string author, string posted, string body)
 				: base(new string[] { netabare ? "!" : string.Empty, score, string.Format("{0}/{1}", numerator, denominator), title, author, posted,  }) {
+				this.netabare = netabare;
+				this.score = int.Parse(score);
+				this.denominator = int.Parse(denominator);
+				this.numerator = int.Parse(numerator);
+				this.title = title;
+				this.author = author;
+				this.posted = posted;
 				this.body = body;
+			}
+			public bool Netabare {
+				get { return this.netabare; }
+			}
+			public int Score {
+				get { return this.score; }
+			}
+			public int Denominator {
+				get { return this.denominator; }
+			}
+			public int Numerator {
+				get { return this.numerator; }
+			}
+			public string Title {
+				get { return this.title; }
+			}
+			public string Author {
+				get { return this.author; }
+			}
+			public string Posted {
+				get { return this.posted; }
 			}
 			public string Body {
 				get { return this.body; }
 			}
 		}
-		private sealed class ContentPageLoadRequestState {
+		private abstract class PageRequestState {
 			private readonly GContentClass content;
-			private readonly int? age;
-
-			public ContentPageLoadRequestState(GContentClass cont): this(cont, null) {
-			}
-			public ContentPageLoadRequestState(GContentClass cont, int? age) {
+			public PageRequestState(GContentClass cont) {
 				this.content = cont;
-				this.age = age;
 			}
-
 			public GContentClass Content {
 				get { return this.content; }
 			}
+		}
+		private sealed class ContentPageRequestState : PageRequestState {
+			private readonly int? age;
+
+			public ContentPageRequestState(GContentClass cont): this(cont, null) {
+			}
+			public ContentPageRequestState(GContentClass cont, int? age) :base(cont) {
+				this.age = age;
+			}
+
 			public int? Age {
 				get { return this.age; }
+			}
+		}
+		private sealed class ReviewListPageRequestState : PageRequestState {
+			private readonly int startCount;
+
+			public ReviewListPageRequestState(GContentClass content, int startCount) :base(content) {
+				this.startCount = startCount;
+			}
+
+			public int StartCount {
+				get { return this.startCount; }
 			}
 		}
 
@@ -79,9 +158,25 @@ namespace Yusen.GExplorer.UserInterfaces {
 		private readonly BackgroundTextLoader bgTextLoader = new BackgroundTextLoader(Encoding.GetEncoding("Shift_JIS"), Program.CookieContainer, new RequestCachePolicy(RequestCacheLevel.Default), DetailViewOptions.PageTimeoutDefaultValue);
 		
 		private GContentClass cont;
+		private int reviewTotalCount = 0;
+		private readonly StackableComparisonsComparer<ReviewPostListViewItem> reviewComparer;
 		
 		public DetailView() {
 			InitializeComponent();
+
+			this.reviewComparer = new StackableComparisonsComparer<ReviewPostListViewItem>();
+			this.lvReview.ListViewItemSorter = this.reviewComparer;
+
+			List<ToolStripItem> sortMenus = new List<ToolStripItem>();
+			foreach (ColumnHeader ch in this.lvReview.Columns) {
+				ToolStripMenuItem tsmi = new ToolStripMenuItem(ch.Text);
+				tsmi.Tag = ch.Index;
+				tsmi.Click += delegate (object sender, EventArgs e){
+					this.PushReviewComparison((int)(sender as ToolStripMenuItem).Tag);
+				};
+				sortMenus.Add(tsmi);
+			}
+			this.tsmiSortReviewPosts.DropDownItems.AddRange(sortMenus.ToArray());
 		}
 		private void DetailView_Load(object sender, EventArgs e) {
 			if (base.DesignMode) return;
@@ -135,8 +230,9 @@ namespace Yusen.GExplorer.UserInterfaces {
 </body>
 </html>";
 			
-			this.ChangeEnabilityOfMenuItems();
-
+			this.ChangeEnabilityOfContentDrivenControls();
+			this.ChangeEnabilityOfReadMoreControls(false);
+			
 			this.bgImageLoader.TaskCompleted += new EventHandler<BackgroundImageLoadTaskComletedEventArgs>(bgImageLoader_TaskCompleted);
 			this.bgTextLoader.TaskCompleted += new EventHandler<BackgroundTextLoadTaskCompletedEventArgs>(bgTextLoader_TaskCompleted);
 			this.bgImageLoader.StartWorking();
@@ -149,7 +245,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 			};
 		}
 
-		private void ChangeEnabilityOfMenuItems() {
+		private void ChangeEnabilityOfContentDrivenControls() {
 			bool hasCont = (null != this.cont);
 
 			this.tsmiCopyName.Enabled = hasCont;
@@ -157,6 +253,16 @@ namespace Yusen.GExplorer.UserInterfaces {
 			this.tsmiCopyBoth.Enabled = hasCont;
 			this.tsmiCopyTriple.Enabled = hasCont;
 			this.tsmiCopyImage.Enabled = hasCont;
+
+			this.tsmiOpenReviewList.Enabled = hasCont;
+			this.tsmiOpenReviewPost.Enabled = hasCont;
+
+			this.btnReviewList.Enabled = hasCont;
+			this.btnReviewInput.Enabled = hasCont;
+		}
+		private void ChangeEnabilityOfReadMoreControls(bool enability) {
+			this.tsmiReadMoreReviews.Enabled = enability;
+			this.btnReadMore.Enabled = enability;
 		}
 
 		public void ViewDetail(GContentClass cont) {
@@ -165,17 +271,20 @@ namespace Yusen.GExplorer.UserInterfaces {
 			}
 			this.cont = cont;
 			this.pgProperty.SelectedObject = cont;
-
+			this.reviewTotalCount = 0;
+			this.reviewComparer.ClearComparisons();
+			this.ChangeEnabilityOfReadMoreControls(false);
+			
 			if (this.LoadImageEnabled) {
 				this.bgImageLoader.ClearTasks();
 				this.bgImageLoader.AddTaskFirst(new BackgroundImageLoadTask(cont.ImageLargeUri, cont));
 			}
 			if (this.LoadPageEnabled) {
 				this.bgTextLoader.ClearTasks();
-				this.bgTextLoader.AddTaskFirst(new BackgroundTextLoadTask(cont.ContentDetailUri, new ContentPageLoadRequestState(cont)));
+				this.bgTextLoader.AddTaskFirst(new BackgroundTextLoadTask(cont.ContentDetailUri, new ContentPageRequestState(cont)));
 			}
 			
-			this.ChangeEnabilityOfMenuItems();
+			this.ChangeEnabilityOfContentDrivenControls();
 		}
 
 		private void bgImageLoader_TaskCompleted(object sender, BackgroundImageLoadTaskComletedEventArgs e) {
@@ -193,81 +302,122 @@ namespace Yusen.GExplorer.UserInterfaces {
 			}
 		}
 		private void bgTextLoader_TaskCompleted(object sender, BackgroundTextLoadTaskCompletedEventArgs e) {
-			ContentPageLoadRequestState reqState = e.UserState as ContentPageLoadRequestState;
-			if (!object.ReferenceEquals(reqState.Content, this.cont)) return;
+			PageRequestState state = e.UserState as PageRequestState;
+			if (!object.ReferenceEquals(state.Content, this.cont)) return;
 			if (this.InvokeRequired) {
 				this.Invoke(new EventHandler<BackgroundTextLoadTaskCompletedEventArgs>(this.bgTextLoader_TaskCompleted), sender, e);
 			} else {
-				if(!e.Success){
-					this.wbDescription.Document.Body.InnerHtml = "取得失敗";
-					this.tabpReview.Text = "レビュー(取得失敗)";
-					this.lvReview.Items.Clear();
-					this.txtReview.Clear();
-					this.StatusMessage = string.Format("詳細ビューでの詳細ページ取得エラー: {0}", e.Error.Message);
-					return;
-				}
-				string text = e.Text;
+				ContentPageRequestState stateDetail = state as ContentPageRequestState;
+				ReviewListPageRequestState stateList = state as ReviewListPageRequestState;
 
-				if (!reqState.Age.HasValue) {
-					int? age = AdultUtility.FindAdultThresholdInContent(text);
-					if (age.HasValue) {
-						this.bgTextLoader.AddTaskFirst(new BackgroundTextLoadTask(reqState.Content.ContentDetailUri, AdultUtility.AdultAnswerBody, new ContentPageLoadRequestState(reqState.Content, age.Value)));
-						return;
-					}
-				}
-				
-				Match m = DetailView.regexText.Match(text);
-				if (m.Success) {
-					string desc = m.Groups["Text"].Value;
-					this.wbDescription.Document.Body.InnerHtml = string.Format(
-						@"{0}<div style=""{1}"">{2}</ul>",
-						reqState.Age.HasValue ?
-							string.Format(@"<div id=""gexplorer_warning"">R{0}のコンテンツです</div>", reqState.Age.Value)
-							: string.Empty,
-						this.descriptionStyle,
-						desc);
-				} else {
-					this.wbDescription.Document.Body.InnerHtml =
-						string.Format(@"<div id=""gexplorer_warning"">正規表現にマッチしませんでした</div><pre><code>{0}</code></pre>",
-							HttpUtility.HtmlEncode(text));
-				}
-				m = DetailView.regexReviewCount.Match(text);
-				if (m.Success) {
-					int reviewCount = int.Parse(m.Groups["Count"].Value);
-					m = DetailView.regexReviewAverageScore.Match(text);
-					if (!m.Success) goto reviewFail;
-					int aveScore = int.Parse(m.Groups["Score"].Value);
-					this.lvReview.BeginUpdate();
-					this.lvReview.Items.Clear();
-					for (m = DetailView.regexReviewPost.Match(text); m.Success; m = m.NextMatch()) {
-						this.lvReview.Items.Add(new ReviewPostListViewItem(
-							m.Groups["NetaBare"].Success,
-							m.Groups["Score"].Value,
-							m.Groups["Denominator"].Value,
-							m.Groups["Numerator"].Value,
-							HttpUtility.HtmlDecode(m.Groups["Title"].Value),
-							HttpUtility.HtmlDecode(m.Groups["Author"].Value),
-							m.Groups["Posted"].Value,
-							HttpUtility.HtmlDecode(m.Groups["Body"].Value)));
-					}
-					this.lvReview.EndUpdate();
-					this.tabpReview.Text = string.Format("レビュー(数{0} 評価{1})", reviewCount, aveScore);
-					goto reviewEnd;
-				} else {
-					goto reviewFail;
-				}
-			reviewFail:
-				this.tabpReview.Text = "レビュー(無いか取得失敗)";
-				this.lvReview.Items.Clear();
-			reviewEnd:
-				this.txtReview.Clear();
+				if (stateDetail != null) this.HandleTextLoadCompletedDetail(e, stateDetail);
+				else if (stateList != null) this.HandleTextLoadCompletedList(e, stateList);
+				else throw new ArgumentException();
 			}
 		}
-		
+		private void HandleTextLoadCompletedDetail(BackgroundTextLoadTaskCompletedEventArgs e, ContentPageRequestState reqStateDetail) {
+			if(!e.Success){
+				this.wbDescription.Document.Body.InnerHtml = "取得失敗";
+				this.tabpReview.Text = "レビュー(取得失敗)";
+				this.lvReview.Items.Clear();
+				this.txtReview.Clear();
+				this.StatusMessage = string.Format("詳細ビューでの詳細ページ取得エラー: {0}", e.Error.Message);
+				return;
+			}
+			string text = e.Text;
+
+			if (!reqStateDetail.Age.HasValue) {
+				int? age = AdultUtility.FindAdultThresholdInContent(text);
+				if (age.HasValue) {
+					this.bgTextLoader.AddTaskFirst(new BackgroundTextLoadTask(reqStateDetail.Content.ContentDetailUri, AdultUtility.AdultAnswerBody, new ContentPageRequestState(reqStateDetail.Content, age.Value)));
+					return;
+				}
+			}
+			
+			Match m = DetailView.regexText.Match(text);
+			if (m.Success) {
+				string desc = m.Groups["Text"].Value;
+				this.wbDescription.Document.Body.InnerHtml = string.Format(
+					@"{0}<div style=""{1}"">{2}</ul>",
+					reqStateDetail.Age.HasValue ?
+						string.Format(@"<div id=""gexplorer_warning"">R{0}のコンテンツです</div>", reqStateDetail.Age.Value)
+						: string.Empty,
+					this.descriptionStyle,
+					desc);
+			} else {
+				this.wbDescription.Document.Body.InnerHtml =
+					string.Format(@"<div id=""gexplorer_warning"">正規表現にマッチしませんでした</div><pre><code>{0}</code></pre>",
+						HttpUtility.HtmlEncode(text));
+			}
+			m = DetailView.regexReviewCount.Match(text);
+			if (m.Success) {
+				int reviewCount = int.Parse(m.Groups["Count"].Value);
+				m = DetailView.regexReviewAverageScore.Match(text);
+				if (!m.Success) goto reviewFail;
+				int aveScore = int.Parse(m.Groups["Score"].Value);
+				this.lvReview.BeginUpdate();
+				this.lvReview.Items.Clear();
+				for (m = DetailView.regexReviewPost.Match(text); m.Success; m = m.NextMatch()) {
+					this.lvReview.Items.Add(new ReviewPostListViewItem(
+						m.Groups["NetaBare"].Success,
+						m.Groups["Score"].Value,
+						m.Groups["Denominator"].Value,
+						m.Groups["Numerator"].Value,
+						HttpUtility.HtmlDecode(m.Groups["Title"].Value),
+						HttpUtility.HtmlDecode(m.Groups["Author"].Value),
+						m.Groups["Posted"].Value,
+						HttpUtility.HtmlDecode(m.Groups["Body"].Value)));
+				}
+				this.lvReview.EndUpdate();
+				this.tabpReview.Text = string.Format("レビュー(数{0} 評価{1})", reviewCount, aveScore);
+				this.reviewTotalCount = reviewCount;
+				this.ChangeEnabilityOfReadMoreControls(reviewCount > DetailView.ReviewCountOnDetailPage);
+				goto reviewEnd;
+			} else {
+				goto reviewFail;
+			}
+		reviewFail:
+			this.tabpReview.Text = "レビュー(無いか取得失敗)";
+			this.lvReview.Items.Clear();
+		reviewEnd:
+			this.txtReview.Clear();
+		}
+		private void HandleTextLoadCompletedList(BackgroundTextLoadTaskCompletedEventArgs e, ReviewListPageRequestState reqStateList) {
+			if (!e.Success) {
+				this.bgTextLoader.ClearTasks();
+				this.StatusMessage = string.Format("レビューの追加取得失敗エラー: {0}", e.Error.Message);
+				return;
+			}
+			
+			List<ReviewPostListViewItem> lvis = new List<ReviewPostListViewItem>();
+			for (Match m = DetailView.regexReviewListPost.Match(e.Text); m.Success; m = m.NextMatch()) {
+				lvis.Add(new ReviewPostListViewItem(
+						m.Groups["NetaBare"].Success,
+						m.Groups["Score"].Value,
+						m.Groups["Denominator"].Value,
+						m.Groups["Numerator"].Value,
+						HttpUtility.HtmlDecode(m.Groups["Title"].Value),
+						HttpUtility.HtmlDecode(m.Groups["Author"].Value),
+						m.Groups["Posted"].Value,
+						HttpUtility.HtmlDecode(m.Groups["Body"].Value)));
+			}
+			
+			if (lvis.Count <= 0) {
+				this.bgTextLoader.ClearTasks();
+				this.StatusMessage = "レビューの追加取得でレビューが一件も拾えなかった．";
+				return;
+			} else {
+				this.lvReview.Items.AddRange(lvis.ToArray());
+			}
+		}
+
 		private void lvReview_SelectedIndexChanged(object sender, EventArgs e) {
 			if (this.lvReview.SelectedItems.Count > 0) {
 				this.txtReview.Text = (this.lvReview.SelectedItems[0] as ReviewPostListViewItem).Body;
 			}
+		}
+		private void lvReview_ColumnClick(object sender, ColumnClickEventArgs e) {
+			this.PushReviewComparison(e.Column);
 		}
 		
 		private void OnPropertyChanged(string propertyName) {
@@ -306,6 +456,11 @@ namespace Yusen.GExplorer.UserInterfaces {
 		private void lvReview_ColumnWidthChanged(object sender, ColumnWidthChangedEventArgs e) {
 			this.OnPropertyChanged(DetailView.ColWidthPropertyNames[e.ColumnIndex]);
 		}
+		private void PushReviewComparison(int idx) {
+			this.reviewComparer.PushComparison(DetailView.ReviewComparisons[idx]);
+			this.lvReview.Sort();
+		}
+
 		#region IDetailViewBindingContract Members
 		[Browsable(false)]
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -440,6 +595,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 #endif
 		#endregion
 
+		#region メニュー
 		private void tsmiCopyName_Click(object sender, EventArgs e) {
 			Clipboard.SetText(ContentClipboardUtility.ConvertToName(this.cont));
 		}
@@ -462,17 +618,33 @@ namespace Yusen.GExplorer.UserInterfaces {
 				Clipboard.SetImage(this.pbImage.Image);
 			}
 		}
-
-		private void btnReviewList_Click(object sender, EventArgs e) {
-			if (null != this.cont) {
-				Program.BrowsePage(this.cont.ReviewListUri);
+		private void tsmiReadMoreReviews_Click(object sender, EventArgs e) {
+			this.ChangeEnabilityOfReadMoreControls(false);
+			for (int start = DetailView.ReviewCountOnDetailPage; start < this.reviewTotalCount; start += DetailView.ReviewCountOnListPage) {
+				Uri uri = GUriBuilder.CreateReviewListUri(this.cont.ContentId, this.cont.PackageId, start);
+				ReviewListPageRequestState state = new ReviewListPageRequestState(this.cont, start);
+				this.bgTextLoader.AddTaskLast(new BackgroundTextLoadTask(uri, state));
 			}
+			this.tabControl1.SelectedTab = this.tabpReview;
+		}
+		private void tsmiOpenReviewList_Click(object sender, EventArgs e) {
+			Program.BrowsePage(this.cont.ReviewListUri);
+		}
+		private void tsmiOpenReviewPost_Click(object sender, EventArgs e) {
+			Program.BrowsePage(this.cont.ReviewInputUri);
+		}
+		#endregion
+
+		private void btnReadMore_Click(object sender, EventArgs e) {
+			this.tsmiReadMoreReviews.PerformClick();
+		}
+		private void btnReviewList_Click(object sender, EventArgs e) {
+			this.tsmiOpenReviewList.PerformClick();
 		}
 		private void btnReviewInput_Click(object sender, EventArgs e) {
-			if (null != this.cont) {
-				Program.BrowsePage(this.cont.ReviewInputUri);
-			}
+			this.tsmiOpenReviewPost.PerformClick();
 		}
+
 	}
 
 	interface IDetailViewBindingContract : IBindingContract {

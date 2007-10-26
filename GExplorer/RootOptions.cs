@@ -1,11 +1,11 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Collections.Generic;
 using System.Text;
-using Yusen.GExplorer.AppCore;
-using System.ComponentModel;
-using System.Xml.Serialization;
-using Yusen.GExplorer.UserInterfaces;
 using System.IO;
+using System.Xml.Serialization;
+using Yusen.GExplorer.AppCore;
+using Yusen.GExplorer.UserInterfaces;
 
 namespace Yusen.GExplorer {
 	public sealed class RootOptions {

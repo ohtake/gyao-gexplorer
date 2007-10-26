@@ -122,6 +122,7 @@
 			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
 			this.inputBoxDialog1 = new Yusen.GExplorer.UserInterfaces.InputBoxDialog();
 			this.exceptionDialog1 = new Yusen.GExplorer.UserInterfaces.ExceptionDialog();
+			this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsResult.SuspendLayout();
 			this.toolStripContainer1.BottomToolStripPanel.SuspendLayout();
 			this.toolStripContainer1.ContentPanel.SuspendLayout();
@@ -619,6 +620,7 @@
             this.tstbFilter,
             this.tslRegex,
             this.tstbAnswer,
+            this.toolStripSeparator7,
             this.tsbCloseFilter});
 			this.tsFilter.Location = new System.Drawing.Point(0, 0);
 			this.tsFilter.Name = "tsFilter";
@@ -966,6 +968,11 @@
 			this.exceptionDialog1.Exception = null;
 			this.exceptionDialog1.Title = null;
 			// 
+			// toolStripSeparator7
+			// 
+			this.toolStripSeparator7.Name = "toolStripSeparator7";
+			this.toolStripSeparator7.Size = new System.Drawing.Size(6, 25);
+			// 
 			// CrawlResultView
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -1090,5 +1097,6 @@
 		private ToolStripClassificationRuleMenuItem tscrmiRules;
 		private System.Windows.Forms.ToolStripMenuItem tsmiRedisplay;
 		private System.Windows.Forms.ToolStripButton tsbCloseFilter;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
 	}
 }

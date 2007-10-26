@@ -143,6 +143,8 @@
 			this.okButton.Size = new System.Drawing.Size(75, 21);
 			this.okButton.TabIndex = 24;
 			this.okButton.Text = "&OK";
+			this.okButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.okButton_MouseDown);
+			this.okButton.MouseUp += new System.Windows.Forms.MouseEventHandler(this.okButton_MouseUp);
 			// 
 			// AboutBox
 			// 

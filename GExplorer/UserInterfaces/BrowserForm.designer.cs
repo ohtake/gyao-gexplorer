@@ -39,9 +39,6 @@
 			this.tsmiExportContentListToCrawlResultView = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiExtractImages = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
-			this.tsmiGotoCampaign = new System.Windows.Forms.ToolStripMenuItem();
-			this.tsmiFillCampaignForm = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiOptions = new System.Windows.Forms.ToolStripMenuItem();
 			this.tshmiHelp = new Yusen.GExplorer.UserInterfaces.ToolStripHelpMenuItem();
 			this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
@@ -185,9 +182,6 @@
             this.tsmiExportContentListToCrawlResultView,
             this.tsmiExtractImages,
             this.toolStripMenuItem1,
-            this.tsmiGotoCampaign,
-            this.tsmiFillCampaignForm,
-            this.toolStripMenuItem3,
             this.tsmiOptions});
 			this.tsmiTools.Name = "tsmiTools";
 			this.tsmiTools.Size = new System.Drawing.Size(74, 22);
@@ -213,26 +207,6 @@
 			// 
 			this.toolStripMenuItem1.Name = "toolStripMenuItem1";
 			this.toolStripMenuItem1.Size = new System.Drawing.Size(391, 6);
-			// 
-			// tsmiGotoCampaign
-			// 
-			this.tsmiGotoCampaign.Name = "tsmiGotoCampaign";
-			this.tsmiGotoCampaign.Size = new System.Drawing.Size(394, 22);
-			this.tsmiGotoCampaign.Text = "gotoCampaign関数をInvokeする(&G)";
-			this.tsmiGotoCampaign.Click += new System.EventHandler(this.tsmiGotoCampaign_Click);
-			// 
-			// tsmiFillCampaignForm
-			// 
-			this.tsmiFillCampaignForm.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.tsmiFillCampaignForm.Name = "tsmiFillCampaignForm";
-			this.tsmiFillCampaignForm.Size = new System.Drawing.Size(394, 22);
-			this.tsmiFillCampaignForm.Text = "キャンペーン応募フォームにフィル(&F)";
-			this.tsmiFillCampaignForm.Click += new System.EventHandler(this.tsmiFillCampaignForm_Click);
-			// 
-			// toolStripMenuItem3
-			// 
-			this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-			this.toolStripMenuItem3.Size = new System.Drawing.Size(391, 6);
 			// 
 			// tsmiOptions
 			// 
@@ -449,10 +423,8 @@
 		private System.Windows.Forms.ToolStripMenuItem tsmiSaveAs;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
 		private System.Windows.Forms.ToolStripMenuItem tsmiTools;
-		private System.Windows.Forms.ToolStripMenuItem tsmiGotoCampaign;
 		private System.Windows.Forms.ToolStripMenuItem tsmiExtractImages;
 		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
-		private System.Windows.Forms.ToolStripMenuItem tsmiFillCampaignForm;
 		private Yusen.GExplorer.UserInterfaces.ToolStripHelpMenuItem tshmiHelp;
 		private System.Windows.Forms.ToolStripMenuItem tsmiExportContentListToCrawlResultView;
 		private System.Windows.Forms.ToolStripComboBox tscbAddress;
@@ -461,7 +433,6 @@
 		private System.Windows.Forms.ToolStripButton tsbLivedoor;
 		private GWebBrowser gwbMain;
 		private ToolStripGenreMenuItem tsgmiGenreTop;
-		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
 		private System.Windows.Forms.ToolStripMenuItem tsmiOptions;
 	}
 }

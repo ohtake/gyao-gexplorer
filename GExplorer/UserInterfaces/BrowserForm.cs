@@ -292,24 +292,6 @@ namespace Yusen.GExplorer.UserInterfaces {
 			}
 			this.ViewImageCatalog(images);
 		}
-		private void tsmiGotoCampaign_Click(object sender, EventArgs e) {
-			this.gwbMain.Url = new Uri("javascript:gotoCampaign();");
-		}
-		private void tsmiFillCampaignForm_Click(object sender, EventArgs e) {
-			AppBasicOptions abo = Program.RootOptions.AppBasicOptions;
-			if (!abo.IsValidFormData) {
-				MessageBox.Show("ユーザ情報が設定されていません．\nオプションの基本設定でユーザ情報を入力してから実行してください．", "応募フォームのフィル", MessageBoxButtons.OK, MessageBoxIcon.Error);
-				return;
-			}
-			try {
-				this.SetFormText("name1", abo.NameFamily);
-				this.SetFormText("name2", abo.NameFirst);
-				this.SetFormText("email1", abo.EmailAddress);
-				this.SetFormText("email2", abo.EmailAddress);
-			} catch (Exception ex) {
-				MessageBox.Show("フィル失敗\n\n" + ex.Message, "応募フォームのフィル", MessageBoxButtons.OK, MessageBoxIcon.Error);
-			}
-		}
 		private void tsmiOptions_Click(object sender, EventArgs e) {
 			Program.ShowOptionsForm();
 		}

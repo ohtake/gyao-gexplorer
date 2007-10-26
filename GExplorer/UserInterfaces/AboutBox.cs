@@ -4,11 +4,18 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Reflection;
+using Yusen.GExplorer.Properties;
 
 namespace Yusen.GExplorer.UserInterfaces {
 	sealed partial class AboutBox : BaseForm {
+		private Image oldImage = null;
+		private Image newImage = null;
+
 		public AboutBox() {
 			InitializeComponent();
+
+			this.oldImage = this.logoPictureBox.Image;
+			this.newImage = Resources.BallpointPen;
 
 			//  Initialize the AboutBox to display the product information from the assembly information.
 			//  Change assembly information settings for your application through either:
@@ -95,5 +102,12 @@ namespace Yusen.GExplorer.UserInterfaces {
 			}
 		}
 		#endregion
+
+		private void okButton_MouseDown(object sender, MouseEventArgs e) {
+			this.logoPictureBox.Image = this.newImage;
+		}
+		private void okButton_MouseUp(object sender, MouseEventArgs e) {
+			this.logoPictureBox.Image = this.oldImage;
+		}
 	}
 }

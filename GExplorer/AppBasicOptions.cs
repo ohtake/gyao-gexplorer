@@ -77,41 +77,6 @@ namespace Yusen.GExplorer {
 			set { this.migemoDicFile = value; }
 		}
 
-		private string nameFamily = string.Empty;
-		[Category("ユーザ情報")]
-		[DisplayName("氏名(姓)")]
-		[Description("応募フォームのフィルに使います．注意: この設定は設定ファイルに保存されます．")]
-		[DefaultValue("")]
-		public string NameFamily {
-			get { return this.nameFamily; }
-			set { this.nameFamily = value; }
-		}
-		private string nameFirst = string.Empty;
-		[Category("ユーザ情報")]
-		[DisplayName("氏名(名)")]
-		[Description("応募フォームのフィルに使います．注意: この設定は設定ファイルに保存されます．")]
-		[DefaultValue("")]
-		public string NameFirst {
-			get { return this.nameFirst; }
-			set { this.nameFirst = value; }
-		}
-		private string emailAddress = string.Empty;
-		[Category("ユーザ情報")]
-		[DisplayName("Eメールアドレス")]
-		[Description("応募フォームのフィルに使います．注意: この設定は設定ファイルに保存されます．")]
-		[DefaultValue("")]
-		public string EmailAddress {
-			get { return this.emailAddress; }
-			set { this.emailAddress = value; }
-		}
-		[XmlIgnore]
-		[Browsable(false)]
-		public bool IsValidFormData {
-			get {
-				return !string.IsNullOrEmpty(this.NameFamily) && !string.IsNullOrEmpty(this.NameFirst) && !string.IsNullOrEmpty(this.EmailAddress);
-			}
-		}
-		
 		public Uri GetPlayerUriOf(GContentClass content) {
 			switch (this.Bitrate) {
 				case GBitrate.Standard:

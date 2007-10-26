@@ -26,7 +26,7 @@ namespace Yusen.GExplorer.Cinnamoroll {
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MovieAdForm));
 			this.lblCinnamon = new System.Windows.Forms.Label();
 			this.linkLabel1 = new System.Windows.Forms.LinkLabel();
-			this.button1 = new System.Windows.Forms.Button();
+			this.btnOk = new System.Windows.Forms.Button();
 			this.SuspendLayout();
 			// 
 			// lblCinnamon
@@ -35,38 +35,38 @@ namespace Yusen.GExplorer.Cinnamoroll {
 			this.lblCinnamon.Font = new System.Drawing.Font("MS PGothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
 			this.lblCinnamon.Location = new System.Drawing.Point(12, 9);
 			this.lblCinnamon.Name = "lblCinnamon";
-			this.lblCinnamon.Size = new System.Drawing.Size(476, 80);
-			this.lblCinnamon.TabIndex = 2;
+			this.lblCinnamon.Size = new System.Drawing.Size(478, 80);
+			this.lblCinnamon.TabIndex = 3;
 			this.lblCinnamon.Text = resources.GetString("lblCinnamon.Text");
 			// 
 			// linkLabel1
 			// 
 			this.linkLabel1.AutoSize = true;
-			this.linkLabel1.Location = new System.Drawing.Point(13, 118);
+			this.linkLabel1.Location = new System.Drawing.Point(13, 112);
 			this.linkLabel1.Name = "linkLabel1";
-			this.linkLabel1.Size = new System.Drawing.Size(155, 12);
-			this.linkLabel1.TabIndex = 1;
+			this.linkLabel1.Size = new System.Drawing.Size(129, 12);
+			this.linkLabel1.TabIndex = 2;
 			this.linkLabel1.TabStop = true;
-			this.linkLabel1.Text = "http://www.sanriomovie.com/";
+			this.linkLabel1.Text = "http://sanriomovie.com/";
 			this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
 			// 
-			// button1
+			// btnOk
 			// 
-			this.button1.DialogResult = System.Windows.Forms.DialogResult.OK;
-			this.button1.Location = new System.Drawing.Point(410, 107);
-			this.button1.Name = "button1";
-			this.button1.Size = new System.Drawing.Size(75, 23);
-			this.button1.TabIndex = 0;
-			this.button1.Text = "&OK";
-			this.button1.UseVisualStyleBackColor = true;
+			this.btnOk.DialogResult = System.Windows.Forms.DialogResult.OK;
+			this.btnOk.Location = new System.Drawing.Point(410, 101);
+			this.btnOk.Name = "btnOk";
+			this.btnOk.Size = new System.Drawing.Size(80, 23);
+			this.btnOk.TabIndex = 0;
+			this.btnOk.Text = "&OK";
+			this.btnOk.UseVisualStyleBackColor = true;
 			// 
 			// MovieAdForm
 			// 
-			this.AcceptButton = this.button1;
+			this.AcceptButton = this.btnOk;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(497, 144);
-			this.Controls.Add(this.button1);
+			this.ClientSize = new System.Drawing.Size(501, 138);
+			this.Controls.Add(this.btnOk);
 			this.Controls.Add(this.linkLabel1);
 			this.Controls.Add(this.lblCinnamon);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
@@ -86,6 +86,6 @@ namespace Yusen.GExplorer.Cinnamoroll {
 
 		private System.Windows.Forms.Label lblCinnamon;
 		private System.Windows.Forms.LinkLabel linkLabel1;
-		private System.Windows.Forms.Button button1;
+		private System.Windows.Forms.Button btnOk;
 	}
 }

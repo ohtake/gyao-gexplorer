@@ -40,6 +40,7 @@
 			this.chDate = new System.Windows.Forms.ColumnHeader();
 			this.txtReview = new System.Windows.Forms.TextBox();
 			this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+			this.btnReadMore = new System.Windows.Forms.Button();
 			this.btnReviewList = new System.Windows.Forms.Button();
 			this.btnReviewInput = new System.Windows.Forms.Button();
 			this.tabpContent = new System.Windows.Forms.TabPage();
@@ -52,6 +53,11 @@
 			this.tsmiCopyTriple = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiCopyImage = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
+			this.tsmiSortReviewPosts = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiReadMoreReviews = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiOpenReviewList = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiOpenReviewPost = new System.Windows.Forms.ToolStripMenuItem();
 			this.scRoot.Panel1.SuspendLayout();
 			this.scRoot.Panel2.SuspendLayout();
 			this.scRoot.SuspendLayout();
@@ -71,7 +77,7 @@
 			// scRoot
 			// 
 			this.scRoot.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.scRoot.Location = new System.Drawing.Point(0, 0);
+			this.scRoot.Location = new System.Drawing.Point(0, 26);
 			this.scRoot.Name = "scRoot";
 			this.scRoot.Orientation = System.Windows.Forms.Orientation.Horizontal;
 			// 
@@ -82,8 +88,8 @@
 			// scRoot.Panel2
 			// 
 			this.scRoot.Panel2.Controls.Add(this.tabControl1);
-			this.scRoot.Size = new System.Drawing.Size(246, 550);
-			this.scRoot.SplitterDistance = 191;
+			this.scRoot.Size = new System.Drawing.Size(246, 524);
+			this.scRoot.SplitterDistance = 181;
 			this.scRoot.TabIndex = 0;
 			this.scRoot.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.scRoot_SplitterMoved);
 			// 
@@ -92,7 +98,7 @@
 			this.pbImage.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.pbImage.Location = new System.Drawing.Point(0, 0);
 			this.pbImage.Name = "pbImage";
-			this.pbImage.Size = new System.Drawing.Size(246, 191);
+			this.pbImage.Size = new System.Drawing.Size(246, 181);
 			this.pbImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
 			this.pbImage.TabIndex = 0;
 			this.pbImage.TabStop = false;
@@ -107,7 +113,7 @@
 			this.tabControl1.Multiline = true;
 			this.tabControl1.Name = "tabControl1";
 			this.tabControl1.SelectedIndex = 0;
-			this.tabControl1.Size = new System.Drawing.Size(246, 355);
+			this.tabControl1.Size = new System.Drawing.Size(246, 339);
 			this.tabControl1.TabIndex = 0;
 			// 
 			// tabpDescription
@@ -115,7 +121,7 @@
 			this.tabpDescription.Controls.Add(this.wbDescription);
 			this.tabpDescription.Location = new System.Drawing.Point(4, 22);
 			this.tabpDescription.Name = "tabpDescription";
-			this.tabpDescription.Size = new System.Drawing.Size(238, 329);
+			this.tabpDescription.Size = new System.Drawing.Size(238, 313);
 			this.tabpDescription.TabIndex = 0;
 			this.tabpDescription.Text = "説明文";
 			this.tabpDescription.UseVisualStyleBackColor = true;
@@ -128,7 +134,7 @@
 			this.wbDescription.Location = new System.Drawing.Point(0, 0);
 			this.wbDescription.MinimumSize = new System.Drawing.Size(20, 20);
 			this.wbDescription.Name = "wbDescription";
-			this.wbDescription.Size = new System.Drawing.Size(238, 329);
+			this.wbDescription.Size = new System.Drawing.Size(238, 313);
 			this.wbDescription.TabIndex = 0;
 			this.wbDescription.WebBrowserShortcutsEnabled = false;
 			// 
@@ -137,7 +143,7 @@
 			this.tabpReview.Controls.Add(this.tableLayoutPanel1);
 			this.tabpReview.Location = new System.Drawing.Point(4, 22);
 			this.tabpReview.Name = "tabpReview";
-			this.tabpReview.Size = new System.Drawing.Size(238, 329);
+			this.tabpReview.Size = new System.Drawing.Size(238, 313);
 			this.tabpReview.TabIndex = 1;
 			this.tabpReview.Text = "レビュー新着分";
 			this.tabpReview.UseVisualStyleBackColor = true;
@@ -154,8 +160,8 @@
 			this.tableLayoutPanel1.RowCount = 2;
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 36F));
-			this.tableLayoutPanel1.Size = new System.Drawing.Size(238, 329);
-			this.tableLayoutPanel1.TabIndex = 1;
+			this.tableLayoutPanel1.Size = new System.Drawing.Size(238, 313);
+			this.tableLayoutPanel1.TabIndex = 0;
 			// 
 			// scReview
 			// 
@@ -171,8 +177,8 @@
 			// scReview.Panel2
 			// 
 			this.scReview.Panel2.Controls.Add(this.txtReview);
-			this.scReview.Size = new System.Drawing.Size(232, 287);
-			this.scReview.SplitterDistance = 143;
+			this.scReview.Size = new System.Drawing.Size(232, 271);
+			this.scReview.SplitterDistance = 135;
 			this.scReview.TabIndex = 0;
 			this.scReview.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.scReview_SplitterMoved);
 			// 
@@ -187,18 +193,18 @@
             this.chDate});
 			this.lvReview.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.lvReview.FullRowSelect = true;
-			this.lvReview.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
 			this.lvReview.HideSelection = false;
 			this.lvReview.Location = new System.Drawing.Point(0, 0);
 			this.lvReview.MultiSelect = false;
 			this.lvReview.Name = "lvReview";
 			this.lvReview.ShowItemToolTips = true;
-			this.lvReview.Size = new System.Drawing.Size(232, 143);
+			this.lvReview.Size = new System.Drawing.Size(232, 135);
 			this.lvReview.TabIndex = 0;
 			this.lvReview.UseCompatibleStateImageBehavior = false;
 			this.lvReview.View = System.Windows.Forms.View.Details;
 			this.lvReview.ColumnWidthChanged += new System.Windows.Forms.ColumnWidthChangedEventHandler(this.lvReview_ColumnWidthChanged);
 			this.lvReview.SelectedIndexChanged += new System.EventHandler(this.lvReview_SelectedIndexChanged);
+			this.lvReview.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.lvReview_ColumnClick);
 			// 
 			// chNeta
 			// 
@@ -239,36 +245,47 @@
 			this.txtReview.Name = "txtReview";
 			this.txtReview.ReadOnly = true;
 			this.txtReview.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-			this.txtReview.Size = new System.Drawing.Size(232, 140);
+			this.txtReview.Size = new System.Drawing.Size(232, 132);
 			this.txtReview.TabIndex = 0;
 			// 
 			// flowLayoutPanel1
 			// 
+			this.flowLayoutPanel1.Controls.Add(this.btnReadMore);
 			this.flowLayoutPanel1.Controls.Add(this.btnReviewList);
 			this.flowLayoutPanel1.Controls.Add(this.btnReviewInput);
 			this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 296);
+			this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 280);
 			this.flowLayoutPanel1.Name = "flowLayoutPanel1";
 			this.flowLayoutPanel1.Size = new System.Drawing.Size(232, 30);
-			this.flowLayoutPanel1.TabIndex = 1;
+			this.flowLayoutPanel1.TabIndex = 0;
 			this.flowLayoutPanel1.WrapContents = false;
+			// 
+			// btnReadMore
+			// 
+			this.btnReadMore.Location = new System.Drawing.Point(3, 3);
+			this.btnReadMore.Name = "btnReadMore";
+			this.btnReadMore.Size = new System.Drawing.Size(82, 23);
+			this.btnReadMore.TabIndex = 0;
+			this.btnReadMore.Text = "追加取得(&E)";
+			this.btnReadMore.UseVisualStyleBackColor = true;
+			this.btnReadMore.Click += new System.EventHandler(this.btnReadMore_Click);
 			// 
 			// btnReviewList
 			// 
-			this.btnReviewList.Location = new System.Drawing.Point(3, 3);
+			this.btnReviewList.Location = new System.Drawing.Point(91, 3);
 			this.btnReviewList.Name = "btnReviewList";
 			this.btnReviewList.Size = new System.Drawing.Size(58, 23);
-			this.btnReviewList.TabIndex = 0;
+			this.btnReviewList.TabIndex = 1;
 			this.btnReviewList.Text = "一覧(&V)";
 			this.btnReviewList.UseVisualStyleBackColor = true;
 			this.btnReviewList.Click += new System.EventHandler(this.btnReviewList_Click);
 			// 
 			// btnReviewInput
 			// 
-			this.btnReviewInput.Location = new System.Drawing.Point(67, 3);
+			this.btnReviewInput.Location = new System.Drawing.Point(155, 3);
 			this.btnReviewInput.Name = "btnReviewInput";
 			this.btnReviewInput.Size = new System.Drawing.Size(58, 23);
-			this.btnReviewInput.TabIndex = 1;
+			this.btnReviewInput.TabIndex = 2;
 			this.btnReviewInput.Text = "投稿(&P)";
 			this.btnReviewInput.UseVisualStyleBackColor = true;
 			this.btnReviewInput.Click += new System.EventHandler(this.btnReviewInput_Click);
@@ -278,7 +295,7 @@
 			this.tabpContent.Controls.Add(this.pgProperty);
 			this.tabpContent.Location = new System.Drawing.Point(4, 22);
 			this.tabpContent.Name = "tabpContent";
-			this.tabpContent.Size = new System.Drawing.Size(238, 329);
+			this.tabpContent.Size = new System.Drawing.Size(238, 313);
 			this.tabpContent.TabIndex = 2;
 			this.tabpContent.Text = "プロパティ";
 			this.tabpContent.UseVisualStyleBackColor = true;
@@ -288,7 +305,7 @@
 			this.pgProperty.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.pgProperty.Location = new System.Drawing.Point(0, 0);
 			this.pgProperty.Name = "pgProperty";
-			this.pgProperty.Size = new System.Drawing.Size(238, 329);
+			this.pgProperty.Size = new System.Drawing.Size(238, 313);
 			this.pgProperty.TabIndex = 0;
 			// 
 			// menuStrip1
@@ -297,7 +314,7 @@
             this.tsmiDetailView});
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
-			this.menuStrip1.Size = new System.Drawing.Size(246, 24);
+			this.menuStrip1.Size = new System.Drawing.Size(246, 26);
 			this.menuStrip1.TabIndex = 1;
 			this.menuStrip1.Text = "menuStrip1";
 			this.menuStrip1.Visible = false;
@@ -310,9 +327,14 @@
             this.tsmiCopyBoth,
             this.tsmiCopyTriple,
             this.toolStripMenuItem1,
-            this.tsmiCopyImage});
+            this.tsmiCopyImage,
+            this.toolStripMenuItem2,
+            this.tsmiSortReviewPosts,
+            this.tsmiReadMoreReviews,
+            this.tsmiOpenReviewList,
+            this.tsmiOpenReviewPost});
 			this.tsmiDetailView.Name = "tsmiDetailView";
-			this.tsmiDetailView.Size = new System.Drawing.Size(82, 20);
+			this.tsmiDetailView.Size = new System.Drawing.Size(82, 22);
 			this.tsmiDetailView.Text = "DetailView";
 			// 
 			// tsmiCopyName
@@ -354,6 +376,38 @@
 			this.tsmiCopyImage.Size = new System.Drawing.Size(318, 22);
 			this.tsmiCopyImage.Text = "画像をコピー(&I)";
 			this.tsmiCopyImage.Click += new System.EventHandler(this.tsmiCopyImage_Click);
+			// 
+			// toolStripMenuItem2
+			// 
+			this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+			this.toolStripMenuItem2.Size = new System.Drawing.Size(315, 6);
+			// 
+			// tsmiSortReviewPosts
+			// 
+			this.tsmiSortReviewPosts.Name = "tsmiSortReviewPosts";
+			this.tsmiSortReviewPosts.Size = new System.Drawing.Size(318, 22);
+			this.tsmiSortReviewPosts.Text = "レビューのソート(&S)";
+			// 
+			// tsmiReadMoreReviews
+			// 
+			this.tsmiReadMoreReviews.Name = "tsmiReadMoreReviews";
+			this.tsmiReadMoreReviews.Size = new System.Drawing.Size(318, 22);
+			this.tsmiReadMoreReviews.Text = "レビューの追加取得(&E)";
+			this.tsmiReadMoreReviews.Click += new System.EventHandler(this.tsmiReadMoreReviews_Click);
+			// 
+			// tsmiOpenReviewList
+			// 
+			this.tsmiOpenReviewList.Name = "tsmiOpenReviewList";
+			this.tsmiOpenReviewList.Size = new System.Drawing.Size(318, 22);
+			this.tsmiOpenReviewList.Text = "レビュー一覧ページをブラウザで開く(&V)";
+			this.tsmiOpenReviewList.Click += new System.EventHandler(this.tsmiOpenReviewList_Click);
+			// 
+			// tsmiOpenReviewPost
+			// 
+			this.tsmiOpenReviewPost.Name = "tsmiOpenReviewPost";
+			this.tsmiOpenReviewPost.Size = new System.Drawing.Size(318, 22);
+			this.tsmiOpenReviewPost.Text = "レビュー投稿ページをブラウザで開く(&P)";
+			this.tsmiOpenReviewPost.Click += new System.EventHandler(this.tsmiOpenReviewPost_Click);
 			// 
 			// DetailView
 			// 
@@ -416,5 +470,11 @@
 		private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
 		private System.Windows.Forms.Button btnReviewList;
 		private System.Windows.Forms.Button btnReviewInput;
+		private System.Windows.Forms.Button btnReadMore;
+		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
+		private System.Windows.Forms.ToolStripMenuItem tsmiSortReviewPosts;
+		private System.Windows.Forms.ToolStripMenuItem tsmiReadMoreReviews;
+		private System.Windows.Forms.ToolStripMenuItem tsmiOpenReviewList;
+		private System.Windows.Forms.ToolStripMenuItem tsmiOpenReviewPost;
 	}
 }
