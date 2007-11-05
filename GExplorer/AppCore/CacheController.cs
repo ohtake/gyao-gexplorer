@@ -36,9 +36,9 @@ namespace Yusen.GExplorer.AppCore {
 		private readonly SortedDictionary<int, GGenreClass> dicGenreByKey = new SortedDictionary<int, GGenreClass>();
 		private readonly SortedDictionary<string, GGenreClass> dicGenreByRoot = new SortedDictionary<string, GGenreClass>();
 		private readonly CookieContainer cookieContainer;
-
+		
 		private readonly CacheControllerOptions options;
-
+		
 		private CacheController() {
 		}
 		public CacheController(string cacheDirectory, CookieContainer cookieContainer, CacheControllerOptions options) : this(){

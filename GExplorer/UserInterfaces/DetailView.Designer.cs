@@ -38,11 +38,15 @@
 			this.chTitle = new System.Windows.Forms.ColumnHeader();
 			this.chAuthor = new System.Windows.Forms.ColumnHeader();
 			this.chDate = new System.Windows.Forms.ColumnHeader();
+			this.chLength = new System.Windows.Forms.ColumnHeader();
 			this.txtReview = new System.Windows.Forms.TextBox();
 			this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
 			this.btnReadMore = new System.Windows.Forms.Button();
 			this.btnReviewList = new System.Windows.Forms.Button();
 			this.btnReviewInput = new System.Windows.Forms.Button();
+			this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
+			this.btnVoteYes = new System.Windows.Forms.Button();
+			this.btnVoteNo = new System.Windows.Forms.Button();
 			this.tabpContent = new System.Windows.Forms.TabPage();
 			this.pgProperty = new System.Windows.Forms.PropertyGrid();
 			this.menuStrip1 = new System.Windows.Forms.MenuStrip();
@@ -58,6 +62,9 @@
 			this.tsmiReadMoreReviews = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiOpenReviewList = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiOpenReviewPost = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
+			this.tsmiVoteYes = new System.Windows.Forms.ToolStripMenuItem();
+			this.tsmiVoteNo = new System.Windows.Forms.ToolStripMenuItem();
 			this.scRoot.Panel1.SuspendLayout();
 			this.scRoot.Panel2.SuspendLayout();
 			this.scRoot.SuspendLayout();
@@ -70,6 +77,7 @@
 			this.scReview.Panel2.SuspendLayout();
 			this.scReview.SuspendLayout();
 			this.flowLayoutPanel1.SuspendLayout();
+			this.flowLayoutPanel2.SuspendLayout();
 			this.tabpContent.SuspendLayout();
 			this.menuStrip1.SuspendLayout();
 			this.SuspendLayout();
@@ -77,7 +85,7 @@
 			// scRoot
 			// 
 			this.scRoot.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.scRoot.Location = new System.Drawing.Point(0, 26);
+			this.scRoot.Location = new System.Drawing.Point(0, 0);
 			this.scRoot.Name = "scRoot";
 			this.scRoot.Orientation = System.Windows.Forms.Orientation.Horizontal;
 			// 
@@ -88,8 +96,8 @@
 			// scRoot.Panel2
 			// 
 			this.scRoot.Panel2.Controls.Add(this.tabControl1);
-			this.scRoot.Size = new System.Drawing.Size(246, 524);
-			this.scRoot.SplitterDistance = 181;
+			this.scRoot.Size = new System.Drawing.Size(246, 550);
+			this.scRoot.SplitterDistance = 189;
 			this.scRoot.TabIndex = 0;
 			this.scRoot.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.scRoot_SplitterMoved);
 			// 
@@ -98,7 +106,7 @@
 			this.pbImage.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.pbImage.Location = new System.Drawing.Point(0, 0);
 			this.pbImage.Name = "pbImage";
-			this.pbImage.Size = new System.Drawing.Size(246, 181);
+			this.pbImage.Size = new System.Drawing.Size(246, 189);
 			this.pbImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
 			this.pbImage.TabIndex = 0;
 			this.pbImage.TabStop = false;
@@ -113,7 +121,7 @@
 			this.tabControl1.Multiline = true;
 			this.tabControl1.Name = "tabControl1";
 			this.tabControl1.SelectedIndex = 0;
-			this.tabControl1.Size = new System.Drawing.Size(246, 339);
+			this.tabControl1.Size = new System.Drawing.Size(246, 357);
 			this.tabControl1.TabIndex = 0;
 			// 
 			// tabpDescription
@@ -121,7 +129,7 @@
 			this.tabpDescription.Controls.Add(this.wbDescription);
 			this.tabpDescription.Location = new System.Drawing.Point(4, 22);
 			this.tabpDescription.Name = "tabpDescription";
-			this.tabpDescription.Size = new System.Drawing.Size(238, 313);
+			this.tabpDescription.Size = new System.Drawing.Size(238, 331);
 			this.tabpDescription.TabIndex = 0;
 			this.tabpDescription.Text = "説明文";
 			this.tabpDescription.UseVisualStyleBackColor = true;
@@ -134,7 +142,7 @@
 			this.wbDescription.Location = new System.Drawing.Point(0, 0);
 			this.wbDescription.MinimumSize = new System.Drawing.Size(20, 20);
 			this.wbDescription.Name = "wbDescription";
-			this.wbDescription.Size = new System.Drawing.Size(238, 313);
+			this.wbDescription.Size = new System.Drawing.Size(238, 331);
 			this.wbDescription.TabIndex = 0;
 			this.wbDescription.WebBrowserShortcutsEnabled = false;
 			// 
@@ -143,7 +151,7 @@
 			this.tabpReview.Controls.Add(this.tableLayoutPanel1);
 			this.tabpReview.Location = new System.Drawing.Point(4, 22);
 			this.tabpReview.Name = "tabpReview";
-			this.tabpReview.Size = new System.Drawing.Size(238, 313);
+			this.tabpReview.Size = new System.Drawing.Size(238, 331);
 			this.tabpReview.TabIndex = 1;
 			this.tabpReview.Text = "レビュー新着分";
 			this.tabpReview.UseVisualStyleBackColor = true;
@@ -152,21 +160,23 @@
 			// 
 			this.tableLayoutPanel1.ColumnCount = 1;
 			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-			this.tableLayoutPanel1.Controls.Add(this.scReview, 0, 0);
-			this.tableLayoutPanel1.Controls.Add(this.flowLayoutPanel1, 0, 1);
+			this.tableLayoutPanel1.Controls.Add(this.scReview, 0, 1);
+			this.tableLayoutPanel1.Controls.Add(this.flowLayoutPanel1, 0, 0);
+			this.tableLayoutPanel1.Controls.Add(this.flowLayoutPanel2, 0, 2);
 			this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
 			this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-			this.tableLayoutPanel1.RowCount = 2;
+			this.tableLayoutPanel1.RowCount = 3;
+			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 36F));
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 36F));
-			this.tableLayoutPanel1.Size = new System.Drawing.Size(238, 313);
+			this.tableLayoutPanel1.Size = new System.Drawing.Size(238, 331);
 			this.tableLayoutPanel1.TabIndex = 0;
 			// 
 			// scReview
 			// 
 			this.scReview.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.scReview.Location = new System.Drawing.Point(3, 3);
+			this.scReview.Location = new System.Drawing.Point(3, 39);
 			this.scReview.Name = "scReview";
 			this.scReview.Orientation = System.Windows.Forms.Orientation.Horizontal;
 			// 
@@ -177,8 +187,8 @@
 			// scReview.Panel2
 			// 
 			this.scReview.Panel2.Controls.Add(this.txtReview);
-			this.scReview.Size = new System.Drawing.Size(232, 271);
-			this.scReview.SplitterDistance = 135;
+			this.scReview.Size = new System.Drawing.Size(232, 253);
+			this.scReview.SplitterDistance = 125;
 			this.scReview.TabIndex = 0;
 			this.scReview.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.scReview_SplitterMoved);
 			// 
@@ -190,7 +200,8 @@
             this.chRef,
             this.chTitle,
             this.chAuthor,
-            this.chDate});
+            this.chDate,
+            this.chLength});
 			this.lvReview.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.lvReview.FullRowSelect = true;
 			this.lvReview.HideSelection = false;
@@ -198,7 +209,7 @@
 			this.lvReview.MultiSelect = false;
 			this.lvReview.Name = "lvReview";
 			this.lvReview.ShowItemToolTips = true;
-			this.lvReview.Size = new System.Drawing.Size(232, 135);
+			this.lvReview.Size = new System.Drawing.Size(232, 125);
 			this.lvReview.TabIndex = 0;
 			this.lvReview.UseCompatibleStateImageBehavior = false;
 			this.lvReview.View = System.Windows.Forms.View.Details;
@@ -237,6 +248,12 @@
 			this.chDate.Text = "投稿日";
 			this.chDate.Width = 72;
 			// 
+			// chLength
+			// 
+			this.chLength.Text = "文字数";
+			this.chLength.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			this.chLength.Width = 36;
+			// 
 			// txtReview
 			// 
 			this.txtReview.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -245,7 +262,7 @@
 			this.txtReview.Name = "txtReview";
 			this.txtReview.ReadOnly = true;
 			this.txtReview.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-			this.txtReview.Size = new System.Drawing.Size(232, 132);
+			this.txtReview.Size = new System.Drawing.Size(232, 124);
 			this.txtReview.TabIndex = 0;
 			// 
 			// flowLayoutPanel1
@@ -254,7 +271,7 @@
 			this.flowLayoutPanel1.Controls.Add(this.btnReviewList);
 			this.flowLayoutPanel1.Controls.Add(this.btnReviewInput);
 			this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 280);
+			this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 3);
 			this.flowLayoutPanel1.Name = "flowLayoutPanel1";
 			this.flowLayoutPanel1.Size = new System.Drawing.Size(232, 30);
 			this.flowLayoutPanel1.TabIndex = 0;
@@ -290,12 +307,43 @@
 			this.btnReviewInput.UseVisualStyleBackColor = true;
 			this.btnReviewInput.Click += new System.EventHandler(this.btnReviewInput_Click);
 			// 
+			// flowLayoutPanel2
+			// 
+			this.flowLayoutPanel2.Controls.Add(this.btnVoteYes);
+			this.flowLayoutPanel2.Controls.Add(this.btnVoteNo);
+			this.flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.flowLayoutPanel2.Location = new System.Drawing.Point(3, 298);
+			this.flowLayoutPanel2.Name = "flowLayoutPanel2";
+			this.flowLayoutPanel2.Size = new System.Drawing.Size(232, 30);
+			this.flowLayoutPanel2.TabIndex = 1;
+			this.flowLayoutPanel2.WrapContents = false;
+			// 
+			// btnVoteYes
+			// 
+			this.btnVoteYes.Location = new System.Drawing.Point(3, 3);
+			this.btnVoteYes.Name = "btnVoteYes";
+			this.btnVoteYes.Size = new System.Drawing.Size(96, 23);
+			this.btnVoteYes.TabIndex = 0;
+			this.btnVoteYes.Text = "参考になった(&Y)";
+			this.btnVoteYes.UseVisualStyleBackColor = true;
+			this.btnVoteYes.Click += new System.EventHandler(this.btnVoteYes_Click);
+			// 
+			// btnVoteNo
+			// 
+			this.btnVoteNo.Location = new System.Drawing.Point(105, 3);
+			this.btnVoteNo.Name = "btnVoteNo";
+			this.btnVoteNo.Size = new System.Drawing.Size(96, 23);
+			this.btnVoteNo.TabIndex = 1;
+			this.btnVoteNo.Text = "ならなかった(&Z)";
+			this.btnVoteNo.UseVisualStyleBackColor = true;
+			this.btnVoteNo.Click += new System.EventHandler(this.btnVoteNo_Click);
+			// 
 			// tabpContent
 			// 
 			this.tabpContent.Controls.Add(this.pgProperty);
 			this.tabpContent.Location = new System.Drawing.Point(4, 22);
 			this.tabpContent.Name = "tabpContent";
-			this.tabpContent.Size = new System.Drawing.Size(238, 313);
+			this.tabpContent.Size = new System.Drawing.Size(238, 331);
 			this.tabpContent.TabIndex = 2;
 			this.tabpContent.Text = "プロパティ";
 			this.tabpContent.UseVisualStyleBackColor = true;
@@ -305,7 +353,7 @@
 			this.pgProperty.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.pgProperty.Location = new System.Drawing.Point(0, 0);
 			this.pgProperty.Name = "pgProperty";
-			this.pgProperty.Size = new System.Drawing.Size(238, 313);
+			this.pgProperty.Size = new System.Drawing.Size(238, 331);
 			this.pgProperty.TabIndex = 0;
 			// 
 			// menuStrip1
@@ -332,7 +380,10 @@
             this.tsmiSortReviewPosts,
             this.tsmiReadMoreReviews,
             this.tsmiOpenReviewList,
-            this.tsmiOpenReviewPost});
+            this.tsmiOpenReviewPost,
+            this.toolStripMenuItem3,
+            this.tsmiVoteYes,
+            this.tsmiVoteNo});
 			this.tsmiDetailView.Name = "tsmiDetailView";
 			this.tsmiDetailView.Size = new System.Drawing.Size(82, 22);
 			this.tsmiDetailView.Text = "DetailView";
@@ -409,6 +460,25 @@
 			this.tsmiOpenReviewPost.Text = "レビュー投稿ページをブラウザで開く(&P)";
 			this.tsmiOpenReviewPost.Click += new System.EventHandler(this.tsmiOpenReviewPost_Click);
 			// 
+			// toolStripMenuItem3
+			// 
+			this.toolStripMenuItem3.Name = "toolStripMenuItem3";
+			this.toolStripMenuItem3.Size = new System.Drawing.Size(315, 6);
+			// 
+			// tsmiVoteYes
+			// 
+			this.tsmiVoteYes.Name = "tsmiVoteYes";
+			this.tsmiVoteYes.Size = new System.Drawing.Size(318, 22);
+			this.tsmiVoteYes.Text = "レビューが参考になった(&Y)";
+			this.tsmiVoteYes.Click += new System.EventHandler(this.tsmiVoteYes_Click);
+			// 
+			// tsmiVoteNo
+			// 
+			this.tsmiVoteNo.Name = "tsmiVoteNo";
+			this.tsmiVoteNo.Size = new System.Drawing.Size(318, 22);
+			this.tsmiVoteNo.Text = "レビューが参考にならなかった(&Z)";
+			this.tsmiVoteNo.Click += new System.EventHandler(this.tsmiVoteNo_Click);
+			// 
 			// DetailView
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -431,6 +501,7 @@
 			this.scReview.Panel2.PerformLayout();
 			this.scReview.ResumeLayout(false);
 			this.flowLayoutPanel1.ResumeLayout(false);
+			this.flowLayoutPanel2.ResumeLayout(false);
 			this.tabpContent.ResumeLayout(false);
 			this.menuStrip1.ResumeLayout(false);
 			this.menuStrip1.PerformLayout();
@@ -476,5 +547,12 @@
 		private System.Windows.Forms.ToolStripMenuItem tsmiReadMoreReviews;
 		private System.Windows.Forms.ToolStripMenuItem tsmiOpenReviewList;
 		private System.Windows.Forms.ToolStripMenuItem tsmiOpenReviewPost;
+		private System.Windows.Forms.ColumnHeader chLength;
+		private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
+		private System.Windows.Forms.Button btnVoteYes;
+		private System.Windows.Forms.Button btnVoteNo;
+		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
+		private System.Windows.Forms.ToolStripMenuItem tsmiVoteYes;
+		private System.Windows.Forms.ToolStripMenuItem tsmiVoteNo;
 	}
 }

@@ -14,6 +14,8 @@ using System.Web;
 using Yusen.GExplorer.GyaoModel;
 using Yusen.GExplorer.AppCore;
 using Yusen.GExplorer.Utilities;
+using System.Net;
+using System.IO;
 
 namespace Yusen.GExplorer.UserInterfaces {
 	sealed partial class DetailView : UserControl, IDetailViewBindingContract, INotifyPropertyChanged {
@@ -27,16 +29,16 @@ namespace Yusen.GExplorer.UserInterfaces {
 			@"<ul class=""part06""><li>レビュー投稿数</li><li> (?<Count>\d+)</li>",
 			RegexOptions.Compiled | RegexOptions.ExplicitCapture);
 		private static readonly Regex regexReviewAverageScore = new Regex(
-			@"<ul class=""part07""><li class=""txt01"">総合評価</li><li><img src=""/recommend/img/star_(?<Score>\d+)\.gif"" alt=""ポイント"" /></li>",
+			@"<ul class=""part07 clearfix""><li class=""txt01"">総合評価</li>[\s\S]{0,50}?<li class=""txt02"">10点中(?<Score>\d+)点</li></ul>",
 			RegexOptions.Compiled | RegexOptions.ExplicitCapture);
 		private static readonly Regex regexReviewPost = new Regex(
-			@"<div class=""line"">(?:\r|\n|\r\n)<div class=""clearfix"">(?:\r|\n|\r\n)<h3 class=""part03"">(?<Title>.+?)</h3>(?:\r|\n|\r\n)<div class=""part04"">(?:\r|\n|\r\n)<ul><li class=""day"">投稿日：(?<Posted>.+?)</li><li><img src=""/recommend/img/star_0*(?<Score>\d+)\.gif"" /></li><li class=""txt03"">10点中\d+点</li></ul>(?:\r|\n|\r\n)<p>投稿者：(?<Author>.+?)(?<NetaBare><img src=""/common/img/neta.gif"" />(?:\r|\n|\r\n))?</p>(?:\r|\n|\r\n)</div>(?:\r|\n|\r\n)</div>(?:\r|\n|\r\n)<p class=""part05"">(?<Denominator>\d+)人中の(?<Numerator>\d+)人が「この番組レビューは参考になる」と評価しています。</p>(?:\r|\n|\r\n)<p class=""part06"">(?<Body>.{0,3000}?)</p>",
+			@"<div class=""line"">\r\n<div class=""clearfix"">\r\n<h3 class=""part03"">(?<Title>.+?)</h3>[\s\S]{0,60}?<ul><li class=""day"">投稿日：(?<Posted>.+?)</li><li[^>]*>0*(?<Score>\d+)点</li>[\s\S]{0,50}?</ul>[\s\S]{0,20}?<p>投稿者：(?<Author>.+?)(?<NetaBare><img src=""/common/img/neta\.gif"" />\r\n)?</p>[\s\S]{0,30}?<p class=""part05"">(?<Denominator>\d+)人中の(?<Numerator>\d+)人が.{0,100}?</p>\r\n<p class=""part06"">(?<Body>.{0,3000}?)</p>[\s\S]{0,150}?<span onclick=""javascript:voteReview\('(?<ReviewId>\d+)',\d+,1,voteResult\);"">",
 			RegexOptions.Compiled | RegexOptions.ExplicitCapture);
 		private static readonly Regex regexReviewListPost = new Regex(
-			@"<span class=""bk12b"">\d+&nbsp;(?<Title>.+?)</span>[\s\S]{0,20}?<td width=""140"" class=""bk10"">投稿者：(?<Author>.+?)</td>[\s\S]{0,20}?<td width=""118"" align=""center"" class=""bk10"">投稿日：(?<Posted>.+?)</td>[\s\S]{0,20}?<td width=""102"" align=""center""><img src=""/recommend/img/star_0*(?<Score>\d+)\.gif"" />[\s\S]{0,500}?(?<NetaBare><img src=""http://www.gyao.jp/common/img/neta.gif"" alt=""ネタバレ"" width=""40"" height=""15"" border=""0"">)?[\s\S]{0,50}?<td align=""right"" height=""35"" class=""bk10"">(?<Denominator>\d+)人中(?<Numerator>\d+)人が「この番組レビューは参考になる」と評価しています。</td>[\s\S]{0,100}?<p class=""marginT5B5 bk12"">(?<Body>.{0,3000}?)</p>",
+			@"<div class=""rev_cnt"">\r\n<ul><li class=""part01""><h3 class=""bk12b"">\d+&nbsp;(?<Title>.+?)</h3></li><li class=""part02"">投稿者：(?<Author>.+?)</li><li class=""part03"">投稿日：(?<Posted>.+?)</li><li class=""part04"">.{0,100}?</li><li class=""part05"">(?<Score>\d+)点</li></ul>\r\n<div>\r\n<p class=""part06"">\r\n(?<NetaBare><img src=""/common/img/neta\.gif"" width=""40"" height=""15"" alt="""" />)?</p><p class=""part07"">(?<Denominator>\d+)人中(?<Numerator>\d+)人が.{0,100}?</p></div>\r\n<p class=""part08"">(?<Body>.{0,3000}?)</p>[\s\S]{0,100}?<a href=""javascript:clickOnYes\((?<ReviewId>\d+),'cnt\d{7}','pac\d{7}','\d+','\d+'\);"">",
 			RegexOptions.Compiled | RegexOptions.ExplicitCapture);
 		private static readonly string[] ColWidthPropertyNames = new string[] {
-			"ColWidthNetabare", "ColWidthScore", "ColWidthRef", "ColWidthTitle", "ColWidthAuthor", "ColWidthPosted",
+			"ColWidthNetabare", "ColWidthScore", "ColWidthRef", "ColWidthTitle", "ColWidthAuthor", "ColWidthPosted","ColWidthLength",
 		};
 		private static readonly Comparison<ReviewPostListViewItem>[] ReviewComparisons = new Comparison<ReviewPostListViewItem>[]{
 			new Comparison<ReviewPostListViewItem>(delegate(ReviewPostListViewItem x, ReviewPostListViewItem y){
@@ -46,9 +48,9 @@ namespace Yusen.GExplorer.UserInterfaces {
 				return - x.Score.CompareTo(y.Score);
 			}),
 			new Comparison<ReviewPostListViewItem>(delegate(ReviewPostListViewItem x, ReviewPostListViewItem y){
-				double refRateX = DetailView.CalculateReviewRefRate(x.Denominator, x.Numerator);
-				double refRateY = DetailView.CalculateReviewRefRate(y.Denominator, y.Numerator);
-				return - refRateX.CompareTo(refRateY);
+				double refValX = DetailView.CalculateReviewRefValue(x.Denominator, x.Numerator);
+				double refValY = DetailView.CalculateReviewRefValue(y.Denominator, y.Numerator);
+				return - refValX.CompareTo(refValY);
 			}),
 			new Comparison<ReviewPostListViewItem>(delegate(ReviewPostListViewItem x, ReviewPostListViewItem y){
 				return x.Title.CompareTo(y.Title);
@@ -59,13 +61,36 @@ namespace Yusen.GExplorer.UserInterfaces {
 			new Comparison<ReviewPostListViewItem>(delegate(ReviewPostListViewItem x, ReviewPostListViewItem y){
 				return - x.Posted.CompareTo(y.Posted);
 			}),
+			new Comparison<ReviewPostListViewItem>(delegate(ReviewPostListViewItem x, ReviewPostListViewItem y){
+				return - x.BodyLength.CompareTo(y.BodyLength);
+			}),
 		};
-		private static double CalculateReviewRefRate(int denominator, int numerator) {
-			if (numerator == 0 || denominator == 0) return 0;
-			else return (double)numerator / (double)denominator;
+		private static double CalculateReviewRefValue(int denominator, int numerator) {
+			int yes = numerator;
+			int no = denominator - numerator;
+			return yes - no;
 		}
-
+		private static string VoteReview(int reviewId, bool voteStatus) {
+			string body = string.Format("method=vote&reviewID={0}&no=0&status={1}", reviewId, voteStatus ? 1 : 0);
+			HttpWebRequest req = HttpWebRequest.Create("http://www.gyao.jp/sityou_review/review_request.php") as HttpWebRequest;
+			req.Method = "POST";
+			req.ContentType = "application/x-www-form-urlencoded";
+			req.CookieContainer = Program.CookieContainer;
+			
+			byte[] postData = Encoding.ASCII.GetBytes(body);
+			req.ContentLength = postData.Length;
+			using (Stream reqStream = req.GetRequestStream()) {
+				reqStream.Write(postData, 0, postData.Length);
+			}
+			
+			HttpWebResponse res = req.GetResponse() as HttpWebResponse;
+			using (StreamReader reader = new StreamReader(res.GetResponseStream())) {
+				return reader.ReadToEnd();
+			}
+		}
+		
 		private sealed class ReviewPostListViewItem : ListViewItem {
+			private readonly int reviewId;
 			private readonly bool netabare;
 			private readonly int score;
 			private readonly int denominator;
@@ -75,16 +100,20 @@ namespace Yusen.GExplorer.UserInterfaces {
 			private readonly string posted;
 			private readonly string body;
 
-			public ReviewPostListViewItem(bool netabare, string score, string denominator, string numerator, string title, string author, string posted, string body)
-				: base(new string[] { netabare ? "!" : string.Empty, score, string.Format("{0}/{1}", numerator, denominator), title, author, posted,  }) {
+			public ReviewPostListViewItem(int reviewId, bool netabare, int score, int denominator, int numerator, string title, string author, string posted, string body)
+				: base(new string[] { netabare ? "!" : string.Empty, score.ToString(), string.Format("{0}/{1}", numerator, denominator), title, author, posted, body.Length.ToString(), }) {
+				this.reviewId = reviewId;
 				this.netabare = netabare;
-				this.score = int.Parse(score);
-				this.denominator = int.Parse(denominator);
-				this.numerator = int.Parse(numerator);
+				this.score = score;
+				this.denominator = denominator;
+				this.numerator = numerator;
 				this.title = title;
 				this.author = author;
 				this.posted = posted;
 				this.body = body;
+			}
+			public int ReviewId {
+				get { return this.reviewId; }
 			}
 			public bool Netabare {
 				get { return this.netabare; }
@@ -107,10 +136,14 @@ namespace Yusen.GExplorer.UserInterfaces {
 			public string Posted {
 				get { return this.posted; }
 			}
-			public string Body {
+			public string BodyText {
 				get { return this.body; }
 			}
+			public int BodyLength {
+				get { return this.body.Length; }
+			}
 		}
+
 		private abstract class PageRequestState {
 			private readonly GContentClass content;
 			public PageRequestState(GContentClass cont) {
@@ -232,6 +265,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 			
 			this.ChangeEnabilityOfContentDrivenControls();
 			this.ChangeEnabilityOfReadMoreControls(false);
+			this.ChangeEnebilityOfVoteControls(false);
 			
 			this.bgImageLoader.TaskCompleted += new EventHandler<BackgroundImageLoadTaskComletedEventArgs>(bgImageLoader_TaskCompleted);
 			this.bgTextLoader.TaskCompleted += new EventHandler<BackgroundTextLoadTaskCompletedEventArgs>(bgTextLoader_TaskCompleted);
@@ -264,6 +298,12 @@ namespace Yusen.GExplorer.UserInterfaces {
 			this.tsmiReadMoreReviews.Enabled = enability;
 			this.btnReadMore.Enabled = enability;
 		}
+		private void ChangeEnebilityOfVoteControls(bool enability) {
+			this.tsmiVoteYes.Enabled = enability;
+			this.tsmiVoteNo.Enabled = enability;
+			this.btnVoteYes.Enabled = enability;
+			this.btnVoteNo.Enabled = enability;
+		}
 
 		public void ViewDetail(GContentClass cont) {
 			if (null == cont) {
@@ -274,6 +314,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 			this.reviewTotalCount = 0;
 			this.reviewComparer.ClearComparisons();
 			this.ChangeEnabilityOfReadMoreControls(false);
+			this.ChangeEnebilityOfVoteControls(false);
 			
 			if (this.LoadImageEnabled) {
 				this.bgImageLoader.ClearTasks();
@@ -359,10 +400,11 @@ namespace Yusen.GExplorer.UserInterfaces {
 				this.lvReview.Items.Clear();
 				for (m = DetailView.regexReviewPost.Match(text); m.Success; m = m.NextMatch()) {
 					this.lvReview.Items.Add(new ReviewPostListViewItem(
+						int.Parse(m.Groups["ReviewId"].Value),
 						m.Groups["NetaBare"].Success,
-						m.Groups["Score"].Value,
-						m.Groups["Denominator"].Value,
-						m.Groups["Numerator"].Value,
+						int.Parse(m.Groups["Score"].Value),
+						int.Parse(m.Groups["Denominator"].Value),
+						int.Parse(m.Groups["Numerator"].Value),
 						HttpUtility.HtmlDecode(m.Groups["Title"].Value),
 						HttpUtility.HtmlDecode(m.Groups["Author"].Value),
 						m.Groups["Posted"].Value,
@@ -392,10 +434,11 @@ namespace Yusen.GExplorer.UserInterfaces {
 			List<ReviewPostListViewItem> lvis = new List<ReviewPostListViewItem>();
 			for (Match m = DetailView.regexReviewListPost.Match(e.Text); m.Success; m = m.NextMatch()) {
 				lvis.Add(new ReviewPostListViewItem(
+						int.Parse(m.Groups["ReviewId"].Value),
 						m.Groups["NetaBare"].Success,
-						m.Groups["Score"].Value,
-						m.Groups["Denominator"].Value,
-						m.Groups["Numerator"].Value,
+						int.Parse(m.Groups["Score"].Value),
+						int.Parse(m.Groups["Denominator"].Value),
+						int.Parse(m.Groups["Numerator"].Value),
 						HttpUtility.HtmlDecode(m.Groups["Title"].Value),
 						HttpUtility.HtmlDecode(m.Groups["Author"].Value),
 						m.Groups["Posted"].Value,
@@ -413,7 +456,11 @@ namespace Yusen.GExplorer.UserInterfaces {
 
 		private void lvReview_SelectedIndexChanged(object sender, EventArgs e) {
 			if (this.lvReview.SelectedItems.Count > 0) {
-				this.txtReview.Text = (this.lvReview.SelectedItems[0] as ReviewPostListViewItem).Body;
+				this.txtReview.Text = (this.lvReview.SelectedItems[0] as ReviewPostListViewItem).BodyText;
+				this.ChangeEnebilityOfVoteControls(true);
+			} else {
+				this.txtReview.Clear();
+				this.ChangeEnebilityOfVoteControls(false);
 			}
 		}
 		private void lvReview_ColumnClick(object sender, ColumnClickEventArgs e) {
@@ -581,6 +628,15 @@ namespace Yusen.GExplorer.UserInterfaces {
 				this.OnPropertyChanged("ColWidthPosted");
 			}
 		}
+		[Browsable(false)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+		public int ColWidthLength {
+			get { return this.chLength.Width; }
+			set {
+				this.chLength.Width = value;
+				this.OnPropertyChanged("ColWidthLength");
+			}
+		}
 #if PATCH_FOR_INVISIBLE_TEXT_ON_VISTA
 		[Browsable(false)]
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -633,8 +689,20 @@ namespace Yusen.GExplorer.UserInterfaces {
 		private void tsmiOpenReviewPost_Click(object sender, EventArgs e) {
 			Program.BrowsePage(this.cont.ReviewInputUri);
 		}
+		private void tsmiVoteYes_Click(object sender, EventArgs e) {
+			this.ChangeEnebilityOfVoteControls(false);
+			int reviewId = (this.lvReview.SelectedItems[0] as ReviewPostListViewItem).ReviewId;
+			string resText = DetailView.VoteReview(reviewId, true);
+			this.StatusMessage = string.Format("レビューが参考になったと投票しました．レビュー番号 {0}, レスポンス: {1}", reviewId, resText);
+		}
+		private void tsmiVoteNo_Click(object sender, EventArgs e) {
+			this.ChangeEnebilityOfVoteControls(false);
+			int reviewId = (this.lvReview.SelectedItems[0] as ReviewPostListViewItem).ReviewId;
+			string resText = DetailView.VoteReview(reviewId, false);
+			this.StatusMessage = string.Format("レビューが参考にならなかったと投票しました．レビュー番号 {0}, レスポンス: {1}", reviewId, resText);
+		}
 		#endregion
-
+		
 		private void btnReadMore_Click(object sender, EventArgs e) {
 			this.tsmiReadMoreReviews.PerformClick();
 		}
@@ -644,7 +712,12 @@ namespace Yusen.GExplorer.UserInterfaces {
 		private void btnReviewInput_Click(object sender, EventArgs e) {
 			this.tsmiOpenReviewPost.PerformClick();
 		}
-
+		private void btnVoteYes_Click(object sender, EventArgs e) {
+			this.tsmiVoteYes.PerformClick();
+		}
+		private void btnVoteNo_Click(object sender, EventArgs e) {
+			this.tsmiVoteNo.PerformClick();
+		}
 	}
 
 	interface IDetailViewBindingContract : IBindingContract {
@@ -663,6 +736,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 		int ColWidthTitle { get;set;}
 		int ColWidthAuthor { get;set;}
 		int ColWidthPosted { get;set;}
+		int ColWidthLength { get;set;}
 
 #if PATCH_FOR_INVISIBLE_TEXT_ON_VISTA
 		bool EnablePatchForInvisibleTextInVista { get;set;}
@@ -796,6 +870,15 @@ namespace Yusen.GExplorer.UserInterfaces {
 			get { return this.colWidthPosted; }
 			set { this.colWidthPosted = value; }
 		}
+		private int colWidthLength = -1;
+		[Category("カラム幅")]
+		[DisplayName("[6] 文字数")]
+		[Description("カラム '文字数' の幅を指定します．")]
+		[DefaultValue(-1)]
+		public int ColWidthLength {
+			get { return this.colWidthLength; }
+			set { this.colWidthLength = value; }
+		}
 
 #if PATCH_FOR_INVISIBLE_TEXT_ON_VISTA
 		private bool enablePatchForInvisibleTextInVista = false;
@@ -819,6 +902,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 			if (this.ColWidthTitle < 0) this.ColWidthTitle = dview.ColWidthTitle;
 			if (this.ColWidthAuthor < 0) this.ColWidthAuthor = dview.ColWidthAuthor;
 			if (this.ColWidthPosted < 0) this.ColWidthPosted = dview.ColWidthPosted;
+			if (this.ColWidthLength < 0) this.ColWidthLength = dview.ColWidthLength;
 		}
 	}
 }
