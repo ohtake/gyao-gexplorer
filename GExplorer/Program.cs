@@ -106,7 +106,7 @@ namespace Yusen.GExplorer {
 			return path;
 		}
 
-		private const int InitializationSteps = 9;
+		private const int InitializationSteps = 8;
 		private const int SerializationSteps = 5;
 		private static SplashForm splashForm;
 		private static MainForm mainForm;
@@ -229,19 +229,6 @@ namespace Yusen.GExplorer {
 				}
 			} catch (Exception e) {
 				Program.DisplayException("クッキーの読み込み失敗", e);
-			}
-			
-			Program.splashForm.StepProgress("ビットレートの設定");
-			if (Program.RootOptions.AppBasicOptions.PromptBitrateOnStartup) {
-				using (BitrateForm brf = new BitrateForm()) {
-					brf.Bitrate = Program.RootOptions.AppBasicOptions.Bitrate;
-					switch (brf.ShowDialog()) {
-						case DialogResult.OK:
-							Program.RootOptions.AppBasicOptions.Bitrate = brf.Bitrate;
-							Program.RootOptions.AppBasicOptions.PromptBitrateOnStartup = !brf.SkipNextTimeEnabled;
-							break;
-					}
-				}
 			}
 			
 			Program.splashForm.StepProgress("キャッシュの初期化と読み込み");

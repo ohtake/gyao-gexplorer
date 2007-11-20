@@ -9,7 +9,7 @@ namespace Yusen.GExplorer.AppCore {
 	static class AdultUtility {
 		public static readonly string AdultAnswerBody = "adult_ans=1\r\n";
 		private static readonly Regex regexAge = new Regex(
-			@"<img src=""/common/img/r(?<Age>\d+)",
+			@"<img src=""/common/img/r(?<Age>\d+)_r4",
 			RegexOptions.Compiled | RegexOptions.ExplicitCapture);
 		
 		public static int? FindAdultThresholdInContent(string contentHtml) {

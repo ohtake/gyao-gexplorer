@@ -189,16 +189,10 @@ namespace Yusen.GExplorer.GyaoModel {
 			get { return GUriBuilder.CreateContentDetailUri(this.ContentId); }
 		}
 		[Category("URI")]
-		[Description("再生ページ(大)のURI．")]
+		[Description("再生ページのURI．")]
 		[XmlIgnore]
 		public Uri PlayerLargeUri {
 			get { return GUriBuilder.CreatePlayerUri(this.ContentId, GBitrate.SuperFine); }
-		}
-		[Category("URI")]
-		[Description("再生ページ(小)のURI．")]
-		[XmlIgnore]
-		public Uri PlayerSmallUri {
-			get { return GUriBuilder.CreatePlayerUri(this.ContentId, GBitrate.Standard); }
 		}
 		[Category("URI")]
 		[Description("コンテンツ画像(大)のURI．")]
@@ -213,16 +207,10 @@ namespace Yusen.GExplorer.GyaoModel {
 			get { return GUriBuilder.CreateContentImageUri(this.ContentId, this.ImageDirectory, 's'); }
 		}
 		[Category("URI")]
-		[Description("おすすめページ(大)のURI．")]
+		[Description("おすすめページのURI．")]
 		[XmlIgnore]
 		public Uri RecommendationLargeUri {
 			get { return GUriBuilder.CreateRecommendationUri(this.ContentId, GBitrate.SuperFine); }
-		}
-		[Category("URI")]
-		[Description("おすすめページ(小)のURI．")]
-		[XmlIgnore]
-		public Uri RecommendationSmallUri {
-			get { return GUriBuilder.CreateRecommendationUri(this.ContentId, GBitrate.Standard); }
 		}
 		[Category("URI")]
 		[Description("レビュー一覧ページのURI．")]

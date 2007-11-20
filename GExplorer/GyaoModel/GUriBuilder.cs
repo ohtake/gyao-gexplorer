@@ -40,22 +40,6 @@ namespace Yusen.GExplorer.GyaoModel {
 				+ "&contents_id="
 				+ "&option=detail");
 		}
-		/*
-		public static Uri CreateAdultPlayerUri(string contId, GBitrate bitrate) {
-			return new Uri("http://www.gyao.jp/login/judge_cookie.php?"
-				+ "login_from=shityou"
-				+ "&contentsId=" + contId
-				+ "&rateId=" + GConvert.ToBitrateId(bitrate)
-				+ "&check_flg=0"
-				+ "&chapterNo="
-				+ "&recommend="
-				+ "&contents_id="
-				+ "&restart=0"
-				+ "&clipNo=0"
-				+ "&clipBegin=0"
-				+ "&pit=");
-		}
-		 */
 		public static Uri CreateRecommendationUri(string contId, GBitrate bitrate) {
 			return new Uri(
 				"http://www.gyao.jp/sityou/catedetail/?"

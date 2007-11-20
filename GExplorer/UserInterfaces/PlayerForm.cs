@@ -165,7 +165,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 			PageReaderWithCookie pageReader = new PageReaderWithCookie(Program.CookieContainer, this.options.PlaylistTimeout);
 			
 			//再生ページ取得
-			Uri playerPageUri = Program.RootOptions.AppBasicOptions.GetPlayerUriOf(this.currentContent);
+			Uri playerPageUri = this.currentContent.PlayerLargeUri;
 			Application.DoEvents();
 			string body = pageReader.GetResponseText(playerPageUri);
 			Application.DoEvents();
@@ -563,7 +563,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 			Program.BrowsePage(this.currentContent.ContentDetailUri);
 		}
 		private void tsmiBrowseRecommended_Click(object sender, EventArgs e) {
-			Program.BrowsePage(Program.RootOptions.AppBasicOptions.GetRecomendationUriOf(this.currentContent));
+			Program.BrowsePage(this.currentContent.RecommendationLargeUri);
 		}
 		private void tsmiBrowseReviewList_Click(object sender, EventArgs e) {
 			Program.BrowsePage(this.currentContent.ReviewListUri);

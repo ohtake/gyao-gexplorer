@@ -9,28 +9,8 @@ using System.Drawing.Design;
 using System.Windows.Forms;
 
 namespace Yusen.GExplorer {
-	[DefaultProperty("Bitrate")]
 	public sealed class AppBasicOptions {
 		public AppBasicOptions() {
-		}
-		
-		private GBitrate bitrate = GBitrate.SuperFine;
-		[Category("ビットレート")]
-		[DisplayName("ビットレート")]
-		[Description("ビットレートを指定します．")]
-		[DefaultValue(GBitrate.SuperFine)]
-		public GBitrate Bitrate {
-			get { return this.bitrate; }
-			set { this.bitrate = value; }
-		}
-		private bool promptBitrateOnStartup = true;
-		[Category("ビットレート")]
-		[DisplayName("起動時に確認")]
-		[Description("起動時にビットレートを確認します．")]
-		[DefaultValue(true)]
-		public bool PromptBitrateOnStartup {
-			get { return this.promptBitrateOnStartup; }
-			set { this.promptBitrateOnStartup = value; }
 		}
 		
 		[Category("GUI")]
@@ -75,27 +55,6 @@ namespace Yusen.GExplorer {
 		public string MigemoDicFile {
 			get { return this.migemoDicFile; }
 			set { this.migemoDicFile = value; }
-		}
-
-		public Uri GetPlayerUriOf(GContentClass content) {
-			switch (this.Bitrate) {
-				case GBitrate.Standard:
-					return content.PlayerSmallUri;
-				case GBitrate.SuperFine:
-					return content.PlayerLargeUri;
-				default:
-					throw new InvalidOperationException();
-			}
-		}
-		public Uri GetRecomendationUriOf(GContentClass content) {
-			switch (this.Bitrate) {
-				case GBitrate.Standard:
-					return content.RecommendationSmallUri;
-				case GBitrate.SuperFine:
-					return content.RecommendationLargeUri;
-				default:
-					throw new InvalidOperationException();
-			}
 		}
 	}
 }

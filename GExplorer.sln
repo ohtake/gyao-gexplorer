@@ -1,29 +1,22 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 9.00
-# Visual Studio 2005
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GExplorer", "GExplorer\GExplorer.csproj", "{80512014-643E-4E77-BEDD-FA0D0292DC52}"
-EndProject
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Makefiles", "Makefiles", "{E0A335A5-9F56-4508-B40E-A0A5E4091045}"
 	ProjectSection(SolutionItems) = preProject
 		BuildReleaseX86.cmd = BuildReleaseX86.cmd
-		CleanReleaseX86.cmd = CleanReleaseX86.cmd
-		RebuildReleaseX86.cmd = RebuildReleaseX86.cmd
+		BuildReleaseX86_Obsolete.cmd = BuildReleaseX86_Obsolete.cmd
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GExplorer", "GExplorer\GExplorer.csproj", "{80512014-643E-4E77-BEDD-FA0D0292DC52}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
 		Debug|x86 = Debug|x86
-		Release|Any CPU = Release|Any CPU
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{80512014-643E-4E77-BEDD-FA0D0292DC52}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{80512014-643E-4E77-BEDD-FA0D0292DC52}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{80512014-643E-4E77-BEDD-FA0D0292DC52}.Debug|x86.ActiveCfg = Debug|x86
 		{80512014-643E-4E77-BEDD-FA0D0292DC52}.Debug|x86.Build.0 = Debug|x86
-		{80512014-643E-4E77-BEDD-FA0D0292DC52}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{80512014-643E-4E77-BEDD-FA0D0292DC52}.Release|Any CPU.Build.0 = Release|Any CPU
 		{80512014-643E-4E77-BEDD-FA0D0292DC52}.Release|x86.ActiveCfg = Release|x86
 		{80512014-643E-4E77-BEDD-FA0D0292DC52}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
