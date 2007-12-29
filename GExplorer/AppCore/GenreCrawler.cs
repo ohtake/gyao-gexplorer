@@ -276,6 +276,11 @@ namespace Yusen.GExplorer.AppCore {
 				
 				links = links.ConvertAll<UriLinkTypePair>(GenreCrawler.ConvertUriWithoutFragment);
 				foreach (UriLinkTypePair pair in links) {
+					// http 以外は無視
+					if ("http" != pair.Uri.Scheme) {
+						continue;
+					}
+					
 					//addMyList 関数は放送予定コンテンツをMyGyaOのリストへの追加にも使われるので無視する
 					if (pair.Uri.AbsoluteUri.StartsWith(@"javascript:addMylist('cnt")) {
 						continue;

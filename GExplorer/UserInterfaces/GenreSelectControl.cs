@@ -223,10 +223,6 @@ namespace Yusen.GExplorer.UserInterfaces {
 				}
 				this.SelectedCrawlResult = result;
 				
-				if (ggtp.Genre.GenreKey == 1) { //cinema
-					Yusen.GExplorer.Cinnamoroll.MovieUtility.ShowAdIfItsReleaseDate(this.FindForm());
-				}
-				
 				return;
 			} else if (null != vgtp) {
 				this.SelectedCrawlResult = vgtp.VirtualGenre.GetCrawlResult();
