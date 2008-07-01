@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 namespace Yusen.GExplorer.GyaoModel {
 	public struct GDeadline : IComparable<GDeadline>{
 		private static readonly Regex regex = new Regex(
-			@"^(?<Month>\d{1,2})/(?<Date>\d{1,2})（(?<Day>.)）(?<Hour>.+)まで$",
+			@"^(?<Month>\d{1,2})/(?<Date>\d{1,2})（(?<Day>.)）(?<Hour>.+)$",
 			RegexOptions.ExplicitCapture | RegexOptions.Compiled);
 
 		private int month;

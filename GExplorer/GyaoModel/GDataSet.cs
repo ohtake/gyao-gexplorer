@@ -7,17 +7,17 @@ namespace Yusen.GExplorer.GyaoModel {
 				this.Clear();
 
 				this.AddGGenreRow( 1, "映画", "cinema", "cinema", 0xCC, 0x00, 0x00);
-				this.AddGGenreRow(22, "ニュース・ビジネス", "news", "newsbiz", 0x00, 0x33, 0x99);
-				this.AddGGenreRow( 3, "音楽", "music", "music", 0x99, 0x33, 0xCC);
-				this.AddGGenreRow( 5, "バラエティ", "variety", "variety", 0x66, 0xCC, 0x33);
 				this.AddGGenreRow( 2, "ドラマ", "drama", "dorama", 0xFF, 0x99, 0x66);
-				this.AddGGenreRow(21, "ビューティー＆ファッション", "beauty", "health", 0xFF, 0x99, 0xCC);
+				this.AddGGenreRow( 3, "音楽", "music", "music", 0x99, 0x33, 0xCC);
 				this.AddGGenreRow( 6, "アニメ", "anime", "anime", 0x00, 0x99, 0xFF);
-				this.AddGGenreRow( 4, "アイドル・グラビア", "idol", "idol", 0xFF, 0x66, 0xCC);
-				this.AddGGenreRow( 9, "スポーツ", "sports", "sports", 0x00, 0x66, 0xFF);
-				this.AddGGenreRow(31, "歌える♪カラオケ", "karaoke", "karaoke", 0xF0, 0x82, 0x00);
 				this.AddGGenreRow(25, "ゲーム", "game", "game", 0x00, 0x99, 0x66);
+				this.AddGGenreRow( 5, "バラエティ", "variety", "variety", 0x66, 0xCC, 0x33);
 				this.AddGGenreRow(29, "ジョッキー", "jockey", "jockey", 0x66, 0x00, 0xCC);
+				this.AddGGenreRow( 9, "スポーツ", "sports", "sports", 0x00, 0x66, 0xFF);
+				this.AddGGenreRow( 4, "女優・アイドル", "idol", "idol", 0xFF, 0x66, 0xCC);
+				this.AddGGenreRow(31, "歌える♪カラオケ", "karaoke", "karaoke", 0xF0, 0x82, 0x00);
+				//this.AddGGenreRow(22, "ニュース・ビジネス", "news", "newsbiz", 0x00, 0x33, 0x99);
+				//this.AddGGenreRow(21, "ビューティー＆ファッション", "beauty", "health", 0xFF, 0x99, 0xCC);
 
 				/*
 				 *  7	--> news

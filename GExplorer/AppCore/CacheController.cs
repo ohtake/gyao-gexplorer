@@ -12,17 +12,17 @@ using System.ComponentModel;
 
 namespace Yusen.GExplorer.AppCore {
 	sealed class CacheController {
-		private static readonly Regex regexGName = new Regex(
-			@"var menu=new MenuByGName\('(?<GenreRoot>[a-z]+?)'",
-			RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.ExplicitCapture);
+		private static readonly Regex regexGImgDir = new Regex(
+			@"<img src=""/img/info/(?<GImgDir>[a-z]+?)/(cnt\d{7}_l|pac\d{7}_m)\.jpg""",
+			RegexOptions.Compiled | RegexOptions.Singleline | RegexOptions.ExplicitCapture);
 		private static readonly Regex regexPackagePackage = new Regex(
-			@"<h1 class=""part01"">「(?<PackageName>.*?)」の動画一覧</h1>[\s\S]{0,500}?<h2>(?<CatchCopy>.*?)</h2>[\s\S]{0,10}?<p class=""part03"">(?<PackageText1>.*?)</p>",
+			@"<h1>「(?<PackageName>.*?)」の動画一覧</h1>[\s\S]{0,1000}?<h2>(?<CatchCopy>.*?)</h2>[\s\S]{0,10}?<p class=""part03"">(?<PackageText1>.*?)</p>",
 			RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.ExplicitCapture);
 		private static readonly Regex regexPackageContent = new Regex(
-			@"<p class=""part01""><a href=""/sityou/catedetail/contents_id/(?<ContentId>cnt\d{7})/""><img src="".{0,50}?"" alt="".{0,200}?"" border=""0"" /></a></p>(?:\r|\n|\r\n)<ul class=""part02""><li><h3 class=""sub"">(?<SeriesNumber>.*?)&nbsp;&nbsp;(?<Subtitle>.*?)</h3></li><li>(?<Summary>.*?)</li></ul>[\s\S]{0,1000}?<ul>(?:\r|\n|\r\n)<li><img src=""/common/images/img_clock.gif"" alt=""時間"" width=""13"" height=""13"" />(?<Duration>.*?)</li>(?:\r|\n|\r\n)<li>(?<Deadline>.*?)</li>(?:\r|\n|\r\n)</ul>",
+			@"<div class=""line"">(?:\r|\n|\r\n)<p class=""part01""><a href=""/sityou/catedetail/contents_id/(?<ContentId>cnt\d{7})/"">[\s\S]{0,200}?<ul class=""part02""><li><h3 class=""sub"">(?<SeriesNumber>.*?)&nbsp;&nbsp;(?<Subtitle>.*?)</h3></li><li>(?<Summary>.*?)</li></ul>[\s\S]{0,2000}?<li><img src=""/common/images/img_clock\.gif"" alt=""時間"" width=""13"" height=""13"" />(?<Duration>.*?)</li>(?:(?:\r|\n|\r\n)<li>(?<Deadline>.*?)まで</li>)?",
 			RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.ExplicitCapture);
 		private static readonly Regex regexContentPage = new Regex(
-			@"<h1 class=""part01"">(?<Title>.*?)&nbsp;(?:\r|\n|\r\n)(?:(?:(?<SeriesNumber>.*?)　)?(?<Subtitle>.*?))?</h1>(?:\r|\n|\r\n)<ul class=""part02""><li>番組時間(?:（CM除く）)?：</li><li>(?<Duration>.*?)</li></ul>(?:[\s\S]{0,6000}?<p class=""part02"">放送期間：(?<Deadline>.*?)</p>)?",
+			@"<h1>(?<Title>.*?)&nbsp;(?:\r|\n|\r\n)(?:(?:(?<SeriesNumber>.*?)　)?(?<Subtitle>.*?))?</h1>(?:\r|\n|\r\n)<ul><li>番組時間(?:（CM除く）)?:(?<Duration>.*?)</li>(?:[\s\S]{0,4000}?<li class=""day"">放送時間：(?<Deadline>.*?)まで</li>)?",
 			RegexOptions.Compiled | RegexOptions.ExplicitCapture | RegexOptions.Multiline);
 		private static readonly Regex regexInputPacId = new Regex(
 			@"<a href=""http://www\.gyao\.jp/sityou_review/review_list\.php\?contents_id=cnt\d{7}&pac_id=(?<PackageId>pac\d{7})"">",
@@ -34,7 +34,7 @@ namespace Yusen.GExplorer.AppCore {
 		private readonly GDataSet dataSet = new GDataSet();
 		private readonly List<GGenreClass> allGenres = new List<GGenreClass>();
 		private readonly SortedDictionary<int, GGenreClass> dicGenreByKey = new SortedDictionary<int, GGenreClass>();
-		private readonly SortedDictionary<string, GGenreClass> dicGenreByRoot = new SortedDictionary<string, GGenreClass>();
+		private readonly SortedDictionary<string, GGenreClass> dicGenreByImgDir = new SortedDictionary<string, GGenreClass>();
 		private readonly CookieContainer cookieContainer;
 		
 		private readonly CacheControllerOptions options;
@@ -57,9 +57,9 @@ namespace Yusen.GExplorer.AppCore {
 				return null;
 			}
 		}
-		private GGenreClass GetCachedGenre(string rootDirName) {
+		private GGenreClass GetCachedGenre(string imageDirName) {
 			GGenreClass ret;
-			if (this.dicGenreByRoot.TryGetValue(rootDirName, out ret)) {
+			if (this.dicGenreByImgDir.TryGetValue(imageDirName, out ret)) {
 				return ret;
 			} else {
 				return null;
@@ -92,12 +92,12 @@ namespace Yusen.GExplorer.AppCore {
 		private void CreateGenreClasses() {
 			this.allGenres.Clear();
 			this.dicGenreByKey.Clear();
-			this.dicGenreByRoot.Clear();
+			this.dicGenreByImgDir.Clear();
 			foreach (GDataSet.GGenreRow grow in this.dataSet.GGenre) {
 				GGenreClass genre = new GGenreClass(grow);
 				this.allGenres.Add(genre);
 				this.dicGenreByKey.Add(genre.GenreKey, genre);
-				this.dicGenreByRoot.Add(genre.RootDirectory, genre);
+				this.dicGenreByImgDir.Add(genre.ImageDirectory, genre);
 			}
 		}
 		public void ResetToDefaultGenres() {
@@ -185,9 +185,9 @@ namespace Yusen.GExplorer.AppCore {
 				
 				Match match =CacheController.regexContentPage.Match(allHtml);
 				if (match.Success) {
-					Match matchGenreRoot = CacheController.regexGName.Match(allHtml);
-					if (matchGenreRoot.Success) {
-						genreKey = this.GetCachedGenre(matchGenreRoot.Groups["GenreRoot"].Value).GenreKey;
+					Match matchGImgDir = CacheController.regexGImgDir.Match(allHtml);
+					if (matchGImgDir.Success) {
+						genreKey = this.GetCachedGenre(matchGImgDir.Groups["GImgDir"].Value).GenreKey;
 					}
 					Match matchPacId = CacheController.regexInputPacId.Match(allHtml);
 					if (matchPacId.Success) {
@@ -263,9 +263,9 @@ namespace Yusen.GExplorer.AppCore {
 
 				Match matchPackage = CacheController.regexPackagePackage.Match(allHtml);
 				if (matchPackage.Success) {
-					Match matchGenreRoot = CacheController.regexGName.Match(allHtml);
-					if (matchGenreRoot.Success) {
-						genre = this.GetCachedGenre(matchGenreRoot.Groups["GenreRoot"].Value);
+					Match matchGImgDir = CacheController.regexGImgDir.Match(allHtml);
+					if (matchGImgDir.Success) {
+						genre = this.GetCachedGenre(matchGImgDir.Groups["GImgDir"].Value);
 						genreKey = genre.GenreKey;
 					}
 					packageName = HtmlUtility.HtmlToText(matchPackage.Groups["PackageName"].Value);

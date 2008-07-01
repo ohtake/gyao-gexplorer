@@ -35,7 +35,7 @@ namespace Yusen.GExplorer.Cinnamoroll {
 		public static CinnamonFriend[] WhoseBirthday(int month, int day) {
 			List<CinnamonFriend> friends = new List<CinnamonFriend>();
 			foreach (CinnamonFriend friend in CinnamonFriend.GetFriendsEnumerable()) {
-				if (friend.BirthMonth == monthÅ@&& friend.BirthDay == day) {
+				if (friend.BirthMonth == month && friend.BirthDay == day) {
 					friends.Add(friend);
 				}
 			}

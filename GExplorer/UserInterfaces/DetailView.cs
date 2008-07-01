@@ -23,19 +23,19 @@ namespace Yusen.GExplorer.UserInterfaces {
 		private const int ReviewCountOnListPage = 50;
 		
 		private static readonly Regex regexText = new Regex(
-			@"<!--↓テキストエリア↓-->(?<Text>[\s\S]{0,5000}?)<!--↑テキストエリア↑-->",
+			@"<!--cntinfo2-->(?<Text>[\s\S]{0,5000}?)<!--/cntinfo2-->",
 			RegexOptions.Compiled | RegexOptions.ExplicitCapture);
 		private static readonly Regex regexReviewCount = new Regex(
-			@"<ul class=""part06""><li>レビュー投稿数</li><li> (?<Count>\d+)</li>",
+			@"<ul class=""rev""><li>レビュー投稿数</li><li>(?<Count>\d+)</li>",
 			RegexOptions.Compiled | RegexOptions.ExplicitCapture);
 		private static readonly Regex regexReviewAverageScore = new Regex(
-			@"<ul class=""part07 clearfix""><li class=""txt01"">総合評価</li>[\s\S]{0,50}?<li class=""txt02"">10点中(?<Score>\d+)点</li></ul>",
+			@"<ul class=""point""><li>総合評価</li><li class=""star\d+"">&nbsp;</li><li>10点中(?<Score>\d+)点</li>",
 			RegexOptions.Compiled | RegexOptions.ExplicitCapture);
 		private static readonly Regex regexReviewPost = new Regex(
-			@"<div class=""line"">\r\n<div class=""clearfix"">\r\n<h3 class=""part03"">(?<Title>.+?)</h3>[\s\S]{0,60}?<ul><li class=""day"">投稿日：(?<Posted>.+?)</li><li[^>]*>0*(?<Score>\d+)点</li>[\s\S]{0,50}?</ul>[\s\S]{0,20}?<p>投稿者：(?<Author>.+?)(?<NetaBare><img src=""/common/img/neta\.gif"" />\r\n)?</p>[\s\S]{0,30}?<p class=""part05"">(?<Denominator>\d+)人中の(?<Numerator>\d+)人が.{0,100}?</p>\r\n<p class=""part06"">(?<Body>.{0,3000}?)</p>[\s\S]{0,150}?<span onclick=""javascript:voteReview\('(?<ReviewId>\d+)',\d+,1,voteResult\);"">",
+			@"<div class=""line"">(?:\r|\n|\r\n)<div class=""clearfix"">(?:\r|\n|\r\n)<h3 class=""part03"" style=""word-wrap: break-word;"">(?<Title>[^<]+?)</h3>(?:\r|\n|\r\n)<div class=""part04"">(?:\r|\n|\r\n)<div class=""clearfix"">(?:\r|\n|\r\n)<ul><li class=""day"">投稿日：(?<Posted>[0-9/]+?)</li><li class=""star\d+"">(?<Score>\d+)点</li><li class=""txt03"">10点中\d+点</li></ul>(?:\r|\n|\r\n)</div>(?:\r|\n|\r\n)<p style=""word-wrap: break-word;"">投稿者：(?<Author>[^<]+?)(?<NetaBare><img src=""/common/img/neta\.gif"" />(?:\r|\n|\r\n)?)?</p>(?:\r|\n|\r\n)</div>(?:\r|\n|\r\n)</div>(?:\r|\n|\r\n)<p class=""part05"">(?<Denominator>\d+)人中の(?<Numerator>\d+)人が[^<]{0,100}?</p>(?:\r|\n|\r\n)<p class=""part06"" style=""word-wrap: break-word;"">(?<Body>[^<]{0,3000}?)</p>[\s\S]{0,150}?<span onclick=""javascript:voteReview\('(?<ReviewId>\d+)',\d+,1,voteResult\);"">",
 			RegexOptions.Compiled | RegexOptions.ExplicitCapture);
 		private static readonly Regex regexReviewListPost = new Regex(
-			@"<div class=""rev_cnt"">\r\n<ul><li class=""part01""><h3 class=""bk12b"">\d+&nbsp;(?<Title>.+?)</h3></li><li class=""part02"">投稿者：(?<Author>.+?)</li><li class=""part03"">投稿日：(?<Posted>.+?)</li><li class=""part04"">.{0,100}?</li><li class=""part05"">(?<Score>\d+)点</li></ul>\r\n<div>\r\n<p class=""part06"">\r\n(?<NetaBare><img src=""/common/img/neta\.gif"" width=""40"" height=""15"" alt="""" />)?</p><p class=""part07"">(?<Denominator>\d+)人中(?<Numerator>\d+)人が.{0,100}?</p></div>\r\n<p class=""part08"">(?<Body>.{0,3000}?)</p>[\s\S]{0,100}?<a href=""javascript:clickOnYes\((?<ReviewId>\d+),'cnt\d{7}','pac\d{7}','\d+','\d+'\);"">",
+			@"<div class=""rev_cnt"">(?:\r|\n|\r\n)<ul><li class=""part01""><h3 class=""bk12b"">\d+&nbsp;(?<Title>[^<]+?)</h3></li><li class=""part02"">投稿者：(?<Author>[^<]+?)</li><li class=""part03"">投稿日：(?<Posted>[0-9/]+?)</li><li class=""part04""><img src=""/recommend/img/star_\d+\.gif"" width=""75"" height=""15"" alt="""" /></li><li class=""part05"">(?<Score>\d+)点</li></ul>(?:\r|\n|\r\n)<div>(?:\r|\n|\r\n)<p class=""part06"">(?:\r|\n|\r\n)(?<NetaBare><img src=""/common/img/neta\.gif"" width=""40"" height=""15"" alt="""" />)?</p><p class=""part07"">(?<Denominator>\d+)人中(?<Numerator>\d+)人が[^<]{0,100}?</p></div>(?:\r|\n|\r\n)<p class=""part08"" style=""word-wrap: break-word;"">(?<Body>(?:[^<]){0,3000}?)</p>(?:[\s\S]{0,100}?)<a href=""javascript:clickOnYes\((?<ReviewId>\d+),'cnt\d{7}','pac\d{7}','\d+','\d+','/sityou_review/review_list\.php'\);"">",
 			RegexOptions.Compiled | RegexOptions.ExplicitCapture);
 		private static readonly string[] ColWidthPropertyNames = new string[] {
 			"ColWidthNetabare", "ColWidthScore", "ColWidthRef", "ColWidthTitle", "ColWidthAuthor", "ColWidthPosted","ColWidthLength",

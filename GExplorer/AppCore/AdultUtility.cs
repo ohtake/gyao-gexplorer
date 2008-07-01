@@ -7,7 +7,7 @@ using System.Net;
 
 namespace Yusen.GExplorer.AppCore {
 	static class AdultUtility {
-		public static readonly string AdultAnswerBody = "adult_ans=1\r\n";
+		public static readonly string AdultAnswerBody = "adult_ans=1";
 		private static readonly Regex regexAge = new Regex(
 			@"<img src=""/common/img/r(?<Age>\d+)_r4",
 			RegexOptions.Compiled | RegexOptions.ExplicitCapture);

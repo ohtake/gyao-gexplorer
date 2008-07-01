@@ -193,13 +193,13 @@ namespace Yusen.GExplorer.AppCore {
 			this.cookieContainer = cookieContainer;
 			this.bw = bw;
 
-			this.regexListAll = new Regex(string.Format(@"^http://www\.gyao\.jp/catetop/CatetopListChange\.php\?page=\d+&target=1&genre_id={0}&sub_genre_id=&template=5&sort=2$", this.genre.GenreId));
+			this.regexListAll = new Regex(string.Format(@"^http://www\.gyao\.jp/contentslist/\?type={0}&sort=4&page=\d+$", this.genre.RootDirectory));
 			switch (genre.GenreKey) {
 				case 1://cinema
-					this.regexListAdult = new Regex(@"^http://www\.gyao\.jp/catetop/CatetopListChange\.php\?page=\d+&target=1&genre_id=gen0000001&sub_genre_id=cin0000006&template=5&sort=2$");
+					this.regexListAdult = new Regex(@"^http://www\.gyao\.jp/contentslist/\?type=cad0000004&sort=4&page=\d+$");
 					break;
-				case 4://idol
-					this.regexListAdult = new Regex(@"^http://www\.gyao\.jp/catetop/CatetopListChange\.php\?page=\d+&target=1&genre_id=gen0000004&sub_genre_id=ido0000005&template=5&sort=2$");
+				case 2://drama
+					this.regexListAdult = new Regex(@"^http://www\.gyao\.jp/contentslist/\?type=cad0000008&sort=8&page=\d+$");
 					break;
 				default:
 					this.regexListAdult = null;
@@ -209,13 +209,13 @@ namespace Yusen.GExplorer.AppCore {
 		}
 		
 		public CrawlResult GetResult() {
-			this.pagesWaiting.Enqueue(new Uri(string.Format("http://www.gyao.jp/catetop/CatetopListChange.php?page=1&target=1&genre_id={0}&sub_genre_id=&template=5&sort=2", this.genre.GenreId)));
+			this.pagesWaiting.Enqueue(new Uri(string.Format("http://www.gyao.jp/contentslist/?type={0}&sort=4&page=1", this.genre.RootDirectory)));
 			switch (this.genre.GenreKey) {
 				case 1://cinema
-					this.pagesWaiting.Enqueue(new Uri("http://www.gyao.jp/catetop/CatetopListChange.php?page=1&target=1&genre_id=gen0000001&sub_genre_id=cin0000006&template=5&sort=2"));
+					this.pagesWaiting.Enqueue(new Uri("http://www.gyao.jp/contentslist/?type=cad0000004&sort=4&page=1"));
 					break;
 				case 4://idol
-					this.pagesWaiting.Enqueue(new Uri("http://www.gyao.jp/catetop/CatetopListChange.php?page=1&target=1&genre_id=gen0000004&sub_genre_id=ido0000005&template=5&sort=2"));
+					this.pagesWaiting.Enqueue(new Uri("http://www.gyao.jp/contentslist/?type=cad0000008&sort=4&page=1"));
 					break;
 			}
 			this.pagesWaiting.Enqueue(this.genre.GenreTopPageUri);

@@ -220,7 +220,9 @@ namespace Yusen.GExplorer.UserInterfaces {
 			DateTime today = DateTime.Today;
 			CinnamonFriend[] friends = CinnamonFriend.WhoseBirthday(today.Month, today.Day);
 			
-			if (friends.Length == 0) {
+			if(today.Year == 2008 && today.Month == 7 && today.Day == 4){
+				this.tsslMessage.Text = "今日は「シナモン the movie」と「ねずみ物語」のDVD発売日．おともだちパックを買って「A賞 シナモンがみんなに会いにいきます」を当てよう．";
+			} else if (friends.Length == 0) {
 				this.tsslMessage.Text = " ";
 			} else {
 				this.tsslMessage.Text = string.Format("{0}月{1}日は{2}の誕生日です．",
