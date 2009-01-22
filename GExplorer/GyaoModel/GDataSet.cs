@@ -23,15 +23,12 @@ namespace Yusen.GExplorer.GyaoModel {
 				this.AddGGenreRow(21, "美容／ビューティー", "beauty", "health", 0xFF, 0x99, 0xCC);
 				this.AddGGenreRow(22, "ニュース・ビジネス", "news", "newsbiz", 0x00, 0x33, 0x99);
 				
-				
-				
 				// ミックス (リストあり、画像なし)
 				this.AddGGenreRow(10001, "アジア", "asia", "dummy-asia", 0x00, 0x00, 0x00);
 				// ミックス (リストなし、画像なし)
 				this.AddGGenreRow(10002, "恋ストーリー", "lovestory", "dummy-lovestory", 0x00, 0x00, 0x00);
 				this.AddGGenreRow(10003, "昭和TV", "showa", "dummy-showa", 0x00, 0x00, 0x00);
 				this.AddGGenreRow(10004, "ちきゅう", "eco", "dummy-eco", 0x00, 0x00, 0x00);
-				this.AddGGenreRow(10005, "ママ", "mama", "dummy-mama", 0x00, 0x00, 0x00);
 				
 				
 				/*
