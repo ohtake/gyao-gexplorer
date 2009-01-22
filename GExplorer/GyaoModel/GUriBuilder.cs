@@ -38,7 +38,7 @@ namespace Yusen.GExplorer.GyaoModel {
 				+ "&rateId=" + GConvert.ToBitrateId(bitrate)
 				+ "&recommend="
 				+ "&contents_id="
-				+ "&option=detail");
+				+ "&code=");
 		}
 		public static Uri CreateRecommendationUri(string contId, GBitrate bitrate) {
 			return new Uri(
@@ -48,7 +48,7 @@ namespace Yusen.GExplorer.GyaoModel {
 				+ "&rateId=" + GConvert.ToBitrateId(bitrate)
 				+ "&recommend=1"
 				+ "&contents_id=" + contId
-				+ "&option=detail");
+				+ "&code=");
 		}
 		public static Uri CreateReviewListUri(string contId, string pacId) {
 			return new Uri(
