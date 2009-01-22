@@ -73,6 +73,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 		private static readonly Regex regexClipBegin = new Regex(":clipBegin=([^:]*)");
 		private static readonly Regex regexAsxPhp = new Regex(@"http://www\.gyao\.jp/sityou/asx\.php\?[^""]+");
 		private static readonly Regex regexBannerKeyValue = new Regex(@"var\s+keyValue\s*=\s*""(.+?)""");
+		private static readonly Regex regexPlayerRedirection = new Regex(@"""(http://www\.gyao\.jp/sityou/movie/[^""]{0,200}?)""");
 		private static readonly string tempAsxFilename = "AsxPhp.asx";
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -192,9 +193,22 @@ namespace Yusen.GExplorer.UserInterfaces {
 			}
 			
 			//asx.phpを検索
+			bool retryingAutobahn = false;
+		retryAutobahn:
 			Match matchAsxPhp = PlayerForm.regexAsxPhp.Match(body);
-			if (!matchAsxPhp.Success) {
-				throw new Exception("再生ページから asx.php のアドレスを取得できなかった．");
+			if (!retryingAutobahn && !matchAsxPhp.Success) {
+				// Autobahn の可能性
+				retryingAutobahn = true;
+				Match matchRedirection = PlayerForm.regexPlayerRedirection.Match(body);
+				if (matchRedirection.Success) {
+					body = pageReader.GetResponseText(new Uri(matchRedirection.Groups[1].Value));
+					Application.DoEvents();
+					goto retryAutobahn;
+				} else {
+					throw new Exception("asx.php のアドレスを取得できず Autobahn 後の遷移先も見つからなかった．");
+				}
+			} else if (!matchAsxPhp.Success) {
+				throw new Exception("Autobahn 後の遷移先を見つけたが asx.php のアドレスを取得できなかった．");
 			}
 			string asxPhpAddr = matchAsxPhp.Value;
 			//チャプタ
