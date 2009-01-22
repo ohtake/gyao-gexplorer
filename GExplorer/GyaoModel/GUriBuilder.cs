@@ -36,6 +36,7 @@ namespace Yusen.GExplorer.GyaoModel {
 				+ "login_from=shityou"
 				+ "&contentsId=" + contId
 				+ "&rateId=" + GConvert.ToBitrateId(bitrate)
+				+ "&chapterNo="
 				+ "&recommend="
 				+ "&contents_id="
 				+ "&code=");
@@ -46,6 +47,7 @@ namespace Yusen.GExplorer.GyaoModel {
 				+ "login_from=shityou"
 				+ "&contentsId=" + contId
 				+ "&rateId=" + GConvert.ToBitrateId(bitrate)
+				+ "&chapterNo="
 				+ "&recommend=1"
 				+ "&contents_id=" + contId
 				+ "&code=");
