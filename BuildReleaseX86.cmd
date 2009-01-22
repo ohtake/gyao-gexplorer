@@ -14,3 +14,4 @@ if exist %v35msbuild% (
 )
 
 endlocal
+pause
