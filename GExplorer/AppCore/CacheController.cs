@@ -25,7 +25,7 @@ namespace Yusen.GExplorer.AppCore {
 			@"<h1>(?<Title>.*?)&nbsp;(?:\r|\n|\r\n)(?:(?:(?<SeriesNumber>.*?)　)?(?<Subtitle>.*?))?</h1>(?:\r|\n|\r\n)<ul><li>番組時間(?:（CM除く）)?:(?<Duration>.*?)</li>(?:[\s\S]{0,4000}?<li class=""day"">放送時間：(?<Deadline>.*?)まで</li>)?",
 			RegexOptions.Compiled | RegexOptions.ExplicitCapture | RegexOptions.Multiline);
 		private static readonly Regex regexInputPacId = new Regex(
-			@"<a href=""http://www\.gyao\.jp/sityou_review/review_list\.php\?contents_id=cnt\d{7}&pac_id=(?<PackageId>pac\d{7})"">",
+			@"<a href=""/sityou_review/review_list\.php\?contents_id=cnt\d{7}&pac_id=(?<PackageId>pac\d{7})"">",
 			RegexOptions.Compiled | RegexOptions.ExplicitCapture | RegexOptions.Singleline);
 		
 		private readonly string cacheDirectory;
