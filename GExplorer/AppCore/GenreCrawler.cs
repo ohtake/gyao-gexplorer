@@ -332,7 +332,7 @@ namespace Yusen.GExplorer.AppCore {
 				try {
 					List<GContentClass> conts;
 					GPackageClass pac = this.cacheController.FetchPackage(pacKey, out conts);
-					if ((this.genre.GenreKey != 15 && this.genre.GenreKey < 10000) && (!pac.GenreKey.HasValue || this.genre.GenreKey != pac.GenreKey)) {
+					if ((this.genre.GenreKey < 10000) && (!pac.GenreKey.HasValue || this.genre.GenreKey != pac.GenreKey)) {
 						this.IgnoreException(new CrawlException(string.Format("<{0}> 他ジャンルにより無視．", GConvert.ToPackageId(pacKey))));
 						this.pacsFailed.Add(pacKey);
 						continue;
@@ -367,7 +367,7 @@ namespace Yusen.GExplorer.AppCore {
 					continue;
 				}
 				
-				if ((this.genre.GenreKey != 15 && this.genre.GenreKey < 10000) && (cont.GenreKey.HasValue && this.genre.GenreKey != cont.GenreKey.Value)) {
+				if ((this.genre.GenreKey < 10000) && (cont.GenreKey.HasValue && this.genre.GenreKey != cont.GenreKey.Value)) {
 					this.IgnoreException(new CrawlException(string.Format("<{0}> 他ジャンルにより無視．", GConvert.ToContentId(contKey))));
 					this.contsFailed.Add(contKey);
 					continue;
