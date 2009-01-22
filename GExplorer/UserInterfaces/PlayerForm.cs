@@ -295,7 +295,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 		private Uri CreateBannerUri(string dartTag) {
 			long ord = (long)(this.rand.NextDouble() * PlayerForm.OrdMax);
 			return new Uri(
-				"http://www1.gyao.jp/html.ng/site=gyao.cm.sky"
+				"http://www1.gyao.jp/html.ng/site=gyao.cm.widesky"
 				+ this.bannerKeyValue
 				+ "&zone=" + dartTag
 				+ "&ord=" + ord.ToString() + "?");
