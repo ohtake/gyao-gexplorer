@@ -209,14 +209,16 @@ namespace Yusen.GExplorer.AppCore {
 		}
 		
 		public CrawlResult GetResult() {
-			this.pagesWaiting.Enqueue(new Uri(string.Format("http://www.gyao.jp/contentslist/?type={0}&sort=4&page=1", this.genre.RootDirectory)));
-			switch (this.genre.GenreKey) {
-				case 1://cinema
-					this.pagesWaiting.Enqueue(new Uri("http://www.gyao.jp/contentslist/?type=cad0000004&sort=4&page=1"));
-					break;
-				case 4://idol
-					this.pagesWaiting.Enqueue(new Uri("http://www.gyao.jp/contentslist/?type=cad0000008&sort=4&page=1"));
-					break;
+			if(this.genre.GenreKey < 10002 && this.genre.GenreKey != 31){
+				this.pagesWaiting.Enqueue(new Uri(string.Format("http://www.gyao.jp/contentslist/?type={0}&sort=4&page=1", this.genre.RootDirectory)));
+				switch (this.genre.GenreKey) {
+					case 1://cinema
+						this.pagesWaiting.Enqueue(new Uri("http://www.gyao.jp/contentslist/?type=cad0000004&sort=4&page=1"));
+						break;
+					case 2://drama
+						this.pagesWaiting.Enqueue(new Uri("http://www.gyao.jp/contentslist/?type=cad0000008&sort=4&page=1"));
+						break;
+				}
 			}
 			this.pagesWaiting.Enqueue(this.genre.GenreTopPageUri);
 			
@@ -330,7 +332,7 @@ namespace Yusen.GExplorer.AppCore {
 				try {
 					List<GContentClass> conts;
 					GPackageClass pac = this.cacheController.FetchPackage(pacKey, out conts);
-					if (!pac.GenreKey.HasValue || this.genre.GenreKey != pac.GenreKey) {
+					if ((this.genre.GenreKey != 15 && this.genre.GenreKey < 10000) && (!pac.GenreKey.HasValue || this.genre.GenreKey != pac.GenreKey)) {
 						this.IgnoreException(new CrawlException(string.Format("<{0}> 他ジャンルにより無視．", GConvert.ToPackageId(pacKey))));
 						this.pacsFailed.Add(pacKey);
 						continue;
@@ -365,7 +367,7 @@ namespace Yusen.GExplorer.AppCore {
 					continue;
 				}
 				
-				if (cont.GenreKey.HasValue && this.genre.GenreKey != cont.GenreKey.Value) {
+				if ((this.genre.GenreKey != 15 && this.genre.GenreKey < 10000) && (cont.GenreKey.HasValue && this.genre.GenreKey != cont.GenreKey.Value)) {
 					this.IgnoreException(new CrawlException(string.Format("<{0}> 他ジャンルにより無視．", GConvert.ToContentId(contKey))));
 					this.contsFailed.Add(contKey);
 					continue;

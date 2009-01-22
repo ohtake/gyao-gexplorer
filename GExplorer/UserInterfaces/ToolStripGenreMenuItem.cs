@@ -55,7 +55,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 			if (null == Program.CacheController) return;
 
 			List<ToolStripItem> items = new List<ToolStripItem>();
-			foreach (GGenreClass genre in Program.CacheController.GetEnumerableOfAllGenres()) {
+			foreach (GGenreClass genre in Program.CacheController.GetEnumerableOfVisibleGenres()) {
 				ToolStripMenuItemWithGenre tsmiwg = new ToolStripMenuItemWithGenre(genre);
 				tsmiwg.Click += new EventHandler(tsmiwg_Click);
 				items.Add(tsmiwg);

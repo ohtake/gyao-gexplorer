@@ -8,6 +8,14 @@ namespace Yusen.GExplorer.GyaoModel {
 	[Serializable]
 	[DefaultProperty("ContentKey")]
 	public sealed class GContentClass : ICloneable{
+		[Obsolete]
+		private static string TrimMade(string d){
+			if(null != d && d.EndsWith("まで")){
+				d = d.Substring(0, d.Length - 2);
+			}
+			return d;
+		}
+		
 		private int contentKey;
 		private int? packageKey;
 		private int? genreKey;
@@ -120,7 +128,9 @@ namespace Yusen.GExplorer.GyaoModel {
 		[ReadOnly(true)]
 		public string DeadlineText {
 			get { return this.deadlineText; }
-			set { this.deadlineText = value; }
+			set {
+				this.deadlineText = GContentClass.TrimMade(value);
+			}
 		}
 		[Category("キャッシュ情報")]
 		[Description("データロウ作成日時．")]

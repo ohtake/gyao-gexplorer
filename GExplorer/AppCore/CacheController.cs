@@ -33,6 +33,7 @@ namespace Yusen.GExplorer.AppCore {
 		
 		private readonly GDataSet dataSet = new GDataSet();
 		private readonly List<GGenreClass> allGenres = new List<GGenreClass>();
+		private readonly List<GGenreClass> visibleGenres = new List<GGenreClass>();
 		private readonly SortedDictionary<int, GGenreClass> dicGenreByKey = new SortedDictionary<int, GGenreClass>();
 		private readonly SortedDictionary<string, GGenreClass> dicGenreByImgDir = new SortedDictionary<string, GGenreClass>();
 		private readonly CookieContainer cookieContainer;
@@ -46,8 +47,13 @@ namespace Yusen.GExplorer.AppCore {
 			this.cookieContainer = cookieContainer;
 			this.options = options;
 		}
+		[Obsolete]
 		public IEnumerable<GGenreClass> GetEnumerableOfAllGenres() {
 			return this.allGenres;
+		}
+		[Obsolete]
+		public IEnumerable<GGenreClass> GetEnumerableOfVisibleGenres() {
+			return this.visibleGenres;
 		}
 		private GGenreClass GetCachedGenre(int genreKey) {
 			GGenreClass ret;
@@ -91,11 +97,19 @@ namespace Yusen.GExplorer.AppCore {
 		}
 		private void CreateGenreClasses() {
 			this.allGenres.Clear();
+			this.visibleGenres.Clear();
 			this.dicGenreByKey.Clear();
 			this.dicGenreByImgDir.Clear();
 			foreach (GDataSet.GGenreRow grow in this.dataSet.GGenre) {
 				GGenreClass genre = new GGenreClass(grow);
 				this.allGenres.Add(genre);
+				switch(genre.GenreKey){
+					case 20: case 21: case 22:
+						break;
+					default:
+						this.visibleGenres.Add(genre);
+						break;
+				}
 				this.dicGenreByKey.Add(genre.GenreKey, genre);
 				this.dicGenreByImgDir.Add(genre.ImageDirectory, genre);
 			}

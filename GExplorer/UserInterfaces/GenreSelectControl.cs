@@ -653,7 +653,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 		private void tsmiAddAllGenres_Click(object sender, EventArgs e) {
 			bool isSelected = this.tabcGsc.SelectedIndex >= 0;
 			this.BeginUpdateGenreTabs();
-			foreach (GGenreClass genre in Program.CacheController.GetEnumerableOfAllGenres()) {
+			foreach (GGenreClass genre in Program.CacheController.GetEnumerableOfVisibleGenres()) {
 				this.AddTabIfNotExists(genre);
 			}
 			if (!isSelected) this.tabcGsc.SelectedIndex = -1;
@@ -767,7 +767,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 			} else {
 				if (options.RestoreOpenTabs) {
 					Dictionary<int, GGenreClass> genres = new Dictionary<int, GGenreClass>();
-					foreach (GGenreClass genre in Program.CacheController.GetEnumerableOfAllGenres()) {
+					foreach (GGenreClass genre in Program.CacheController.GetEnumerableOfVisibleGenres()) {
 						genres.Add(genre.GenreKey, genre);
 					}
 					this.BeginUpdateGenreTabs();

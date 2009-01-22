@@ -93,7 +93,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 
 			if (Program.CacheController == null) return;
 			this.tscbAddress.Items.Clear();
-			foreach (GGenreClass genre in Program.CacheController.GetEnumerableOfAllGenres()) {
+			foreach (GGenreClass genre in Program.CacheController.GetEnumerableOfVisibleGenres()) {
 				this.tscbAddress.Items.Add(genre.GenreTopPageUri);
 			}
 			if (null == Program.RootOptions) return;
