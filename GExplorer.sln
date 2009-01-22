@@ -4,7 +4,6 @@ Microsoft Visual Studio Solution File, Format Version 10.00
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Makefiles", "Makefiles", "{E0A335A5-9F56-4508-B40E-A0A5E4091045}"
 	ProjectSection(SolutionItems) = preProject
 		BuildReleaseX86.cmd = BuildReleaseX86.cmd
-		BuildReleaseX86_Obsolete.cmd = BuildReleaseX86_Obsolete.cmd
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GExplorer", "GExplorer\GExplorer.csproj", "{80512014-643E-4E77-BEDD-FA0D0292DC52}"
