@@ -16,7 +16,7 @@ namespace Yusen.GExplorer.GyaoModel {
 				this.AddGGenreRow(29, "ジョッキー", "jockey", "jockey", 0x66, 0x00, 0xCC);
 				this.AddGGenreRow( 9, "スポーツ", "sports", "sports", 0x00, 0x66, 0xFF);
 				this.AddGGenreRow( 4, "女優・アイドル", "idol", "idol", 0xFF, 0x66, 0xCC);
-				this.AddGGenreRow(31, "歌える♪カラオケ", "karaoke", "karaoke", 0xF0, 0x82, 0x00);
+				//this.AddGGenreRow(31, "歌える♪カラオケ", "karaoke", "karaoke", 0xF0, 0x82, 0x00);
 				
 				// 画像置き場？
 				this.AddGGenreRow(20, "カルチャー", "life", "culture", 0x00, 0x00, 0x00);
