@@ -13,7 +13,7 @@ using System.ComponentModel;
 namespace Yusen.GExplorer.AppCore {
 	sealed class CacheController {
 		private static readonly Regex regexGImgDir = new Regex(
-			@"<img src=""/img/info/(?<GImgDir>[a-z]+?)/(cnt\d{7}_l|pac\d{7}_m)\.jpg""",
+			@"<img (|[^>]{0,50}? )src=""/img/info/(?<GImgDir>[a-z]+?)/(cnt\d{7}_l|pac\d{7}_m)\.jpg""",
 			RegexOptions.Compiled | RegexOptions.Singleline | RegexOptions.ExplicitCapture);
 		private static readonly Regex regexPackagePackage = new Regex(
 			@"<h1>「(?<PackageName>.*?)」の動画一覧</h1>[\s\S]{0,1000}?<h2>(?<CatchCopy>.*?)</h2>[\s\S]{0,10}?<p class=""part03"">(?<PackageText1>.*?)</p>",
@@ -316,6 +316,10 @@ namespace Yusen.GExplorer.AppCore {
 			int? genreKey = (null != genre) ? genre.GenreKey : (int?)null;
 			GDataSet.GPackageRow row = this.dataSet.GPackage.FindByPackageKey(packageKey);
 			if (null != row) {
+				if (genre == null && !row.IsGenreKeyNull()) {
+					genre = this.GetCachedGenre(row.GenreKey);
+				}
+				
 				bool updateFlag = false;
 				if (genreKey.HasValue && (row.IsGenreKeyNull() || genreKey.Value != row.GenreKey)) {
 					row.GenreKey = genreKey.Value;
@@ -358,6 +362,13 @@ namespace Yusen.GExplorer.AppCore {
 			int? genreKey = (null != genre) ? genre.GenreKey : (int?)null;
 			GDataSet.GContentRow row = this.dataSet.GContent.FindByContentKey(contKey);
 			if (null != row) {
+				if (null == package && !row.IsPackageKeyNull()) {
+					this.TryFindPackage(row.PackageKey, out package);
+				}
+				if (null == genre && !row.IsGenreKeyNull()) {
+					genre = this.GetCachedGenre(row.GenreKey);
+				}
+				
 				bool updateFlag = false;
 				if (pacKey.HasValue && (row.IsPackageKeyNull() || pacKey.Value != row.PackageKey)) {
 					row.PackageKey = pacKey.Value;
