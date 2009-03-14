@@ -8,8 +8,8 @@
 ◆必要な環境
 .NET Framework の 2.0 以上が必要です．
 
-Windows Vista では 3.0 がプリインストールされています．
-Windows 98, Me, 2000, XP, 2003 ではインストールが必要です．
+Windows Vista, 7 では上位バージョンがプリインストールされています．
+Windows 98, Me, 2000, XP ではインストールが必要です．
 Windows 95 にはインストールできません．
 
 ◆Windowsのバージョンによる機能の制限
