@@ -73,7 +73,7 @@ namespace Yusen.GExplorer.UserInterfaces {
 		private static readonly Regex regexClipBegin = new Regex(":clipBegin=([^:]*)");
 		private static readonly Regex regexAsxPhp = new Regex(@"http://www\.gyao\.jp/sityou/asx\.php\?[^""]+");
 		private static readonly Regex regexBannerKeyValue = new Regex(@"var\s+keyValue\s*=\s*""(.+?)""");
-		private static readonly Regex regexPlayerRedirection = new Regex(@"""(http://www\.gyao\.jp/sityou/movie/[^""]{0,200}?)""");
+		private static readonly Regex regexPlayerRedirection = new Regex(@"location\.href=""(http://www\.gyao\.jp/sityou/movie/[^""]{0,200}?)"";");
 		private static readonly string tempAsxFilename = "AsxPhp.asx";
 		
 		public event PropertyChangedEventHandler PropertyChanged;
